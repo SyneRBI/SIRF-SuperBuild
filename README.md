@@ -14,7 +14,7 @@ Nikos Efthimiou says that if you run Ubuntu (or similar) on your laptop, Virtual
 	- wget http://launchpadlibrarian.net/199480915/libvpx1\_1.3.0-3ubuntu1\_amd64.deb
 	- sudo dpkg -i libvpx1*.deb
 
-3. Download Lubuntu_all_preinstalled.ova from UCL Dropbox (instructions for downloading will be sent by e-mail). 
+3. Download Lubuntu_CCPPETMR_VM.ova from UCL Dropbox (instructions for downloading will be sent by e-mail). 
 Warning: this file is ~1.9GB. (You can of course download to a USB stick to save space on your laptop).
 
 4. Open the downloaded OVA file (double-click or whatever is appropriate for your system). This should start VirtualBox with the "Import" dialog box.

@@ -27,7 +27,7 @@ You could try the following (but you might want to read-up on this first):
   - wget http://launchpadlibrarian.net/199480915/libvpx1_1.3.0-3ubuntu1_amd64.deb
   - sudo dpkg -i libvpx1*.deb
 
-3. Download Lubuntu_all_preinstalled.ova from UCL Dropbox (instructions 
+3. Download Lubuntu_CCPPETMR_VM.ova from UCL Dropbox (instructions 
 for downloading will be sent by e-mail). Warning: this file is ~1.8GB. 
 (You can of course download to a USB stick to save space on your laptop).
 
