@@ -33,4 +33,5 @@ make
 cd ../examples
 make
 
-
+cd ~/devel/CCPPETMR_VM
+cp HELP.txt ~/Desktop
