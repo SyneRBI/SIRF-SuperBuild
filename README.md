@@ -14,8 +14,8 @@ Nikos Efthimiou says that if you run Ubuntu (or similar) on your laptop, Virtual
 	- wget http://launchpadlibrarian.net/199480915/libvpx1\_1.3.0-3ubuntu1\_amd64.deb
 	- sudo dpkg -i libvpx1*.deb
 
-3. Download Lubuntu_CCPPETMR_VM.ova from UCL Dropbox (instructions for downloading will be sent by e-mail). 
-Warning: this file is ~1.9GB. (You can of course download to a USB stick to save space on your laptop).
+3. Download Lubuntu_CCPPETMR_VM.ova from http://www.ccppetmr.ac.uk/downloads.
+Warning: this file is ~1.9GB. (You can of course download to a USB stick to save space on your hard-disk).
 
 4. Open the downloaded OVA file (double-click or whatever is appropriate for your system). This should start VirtualBox with the "Import" dialog box.
 
@@ -69,7 +69,7 @@ To shut down your VM when you are finished with it, use one of the following opt
 
 This section is optional.
 
-Things work smoother if you have [the VirtualBox Guest Additions (VGA)](http://www.virtualbox.org/manual/ch04.html), essentially a set of drivers for the guest OS. The VM has these already installed but they will work properly if you have VirtualBox 4.3.30. Fortunately, it is not very hard to install the VGA for your VirtualBox version. Please follow [the standard instructions](https://www.virtualbox.org/manual/ch04.html#idp45859068609968), skipping step 1 (about dkms) as this has been done for you. Reboot your VM after installing the VGA.
+Things work smoother if you have [the VirtualBox Guest Additions (VGA)](http://www.virtualbox.org/manual/ch04.html), essentially a set of drivers for the guest OS. The VM has these already installed but they will only work properly if you have VirtualBox 4.3.30. Fortunately, it is not very hard to install the VGA for your VirtualBox version. Please follow [the standard instructions](https://www.virtualbox.org/manual/ch04.html#idp45859068609968), skipping step 1 (about dkms) as this has been done for you. Reboot your VM after installing the VGA.
 Please do this __after__ updating your VM as above.
 
 After installing the VGA, you might want to configure a shared directory between the host and the guest machine such that your virtual machine can "see" your "normal" files. Please read [the Virtualbox documentation on Folder Sharing](http://www.virtualbox.org/manual/ch04.html#sharedfolders). 
