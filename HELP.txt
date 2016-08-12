@@ -11,13 +11,12 @@ python stir_demo1.py etc.
 ================== NEW EXPERIMENTAL FEATURE ===============================
 
 If you want to stay abreast with the latest developments in Gadgetron, STIR
-and interfaces, then instead of running update_VM.sh you can do full update
-of your VM by performing the following steps.
+and interfaces, then instead of running update_VM.sh you can do more thorough update by performing the following steps.
 
 Change to ~/devel/CCPPETMR_VM and type git pull.
 
 Change to folder 'scripts' and type chmod +x *.sh, then type ./ADD_REMOTE.sh. 
-This is only needs to be done ONCE.
+This only needs to be done ONCE.
 
 Whenever you want to update your VM:
 
@@ -29,5 +28,5 @@ Whenever you want to update your VM:
   erase the value of TMP by typing export TMP= or simply close the terminal.
 
 Please be aware that it may not always be possible to keep interfaces
-synchronized with Gadgettron and STIR, and it is therefore a good idea
+synchronized with Gadgetron and STIR, and it is therefore a good idea
 to backup your VM by exporting it before the full update.
