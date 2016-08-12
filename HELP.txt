@@ -11,7 +11,7 @@ python stir_demo1.py etc.
 
 If you want to stay abreast with the latest developments:
 
-Change to ~/devel/CCPPETMR and type git pull. 
+Change to ~/devel/CCPPETMR_VM and type git pull. 
 
 Change to folder 'scripts' and type chmod +x *.sh, then type ./ADD_REMOTE.sh. 
 This is only needs to be done ONCE.
