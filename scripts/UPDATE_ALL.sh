@@ -42,4 +42,3 @@ cd cSTIR
 make
 cd ../pSTIR
 make
-
