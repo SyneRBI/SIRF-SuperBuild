@@ -11,12 +11,12 @@ python stir_demo1.py etc.
 ================== NEW EXPERIMENTAL FEATURE ===============================
 
 If you want to stay abreast with the latest developments in Gadgetron, STIR
-and interfaces, then instead of running update_VM.sh you can do more thorough update by performing the following steps.
+and interfaces, then instead of running update_VM.sh you can do a more thorough update by performing the following steps.
 
 Change to ~/devel/CCPPETMR_VM and type git pull.
 
-Change to folder 'scripts' and type chmod +x *.sh, then type ./ADD_REMOTE.sh. 
-This only needs to be done ONCE.
+Change to folder 'scripts' and type ./ADD_REMOTE.sh. This only needs to be 
+done ONCE.
 
 Whenever you want to update your VM:
 
