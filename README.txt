@@ -27,9 +27,9 @@ You could try the following (but you might want to read-up on this first):
   - wget http://launchpadlibrarian.net/199480915/libvpx1_1.3.0-3ubuntu1_amd64.deb
   - sudo dpkg -i libvpx1*.deb
 
-3. Download Lubuntu_CCPPETMR_VM.ova from UCL Dropbox (instructions 
-for downloading will be sent by e-mail). Warning: this file is ~1.8GB. 
-(You can of course download to a USB stick to save space on your laptop).
+3. Download Lubuntu_CCPPETMR_VM.ova from http://www.ccppetmr.ac.uk/downloads.
+Warning: this file is ~1.8GB. 
+(You can of course download to a USB stick to save space on your hard-disk).
 
 4. Open the downloaded OVA file (double-click or whatever is appropriate 
 for your system). This should start VirtualBox with the "Import" dialog box.
@@ -116,7 +116,7 @@ This section is optional.
 
 Things work smoother if you have the VirtualBox Guest Additions (VGA, 
 https://www.virtualbox.org/manual/ch04.html), essentially a set of drivers for 
-the guest OS. The VM has these already installed but they will work properly 
+the guest OS. The VM has these already installed but they will only work properly 
 if you have VirtualBox 4.3.30. Fortunately, it is not very hard to install the 
 VGA for your VirtualBox version. Please follow the standard instructions (https://www.virtualbox.org/manual/ch04.html#idp45859068609968), skipping step 1 
 (about dkms) as this has been done for you. Reboot your VM after installing the 
