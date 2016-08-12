@@ -1,12 +1,25 @@
-To make your Virtual Machine up-to-date, type update_VM.sh.
+To make interfaces to Gadgetron and STIR forks on CCPPETMR up-to-date, 
+type update_VM.sh.
 
 To run Gadgetron interface demos, first open a new terminal and type gadgetron.
-
-To run Gadgetron Python interface demos, open another terminal, change to 
-~/devel/xGadgetron/examples and type python demo1.py etc. To run Matlab demos,
-change Matlab work folder to ~/devel/xGadgetron/examples and type demo1 etc.
+Then open another terminal, change to ~/devel/xGadgetron/examples and type 
+python demo1.py etc. Type demo1.py -h to get a brief description of demo1.py
+and its usage.
 
 To run STIR Python interface demos, change to ~/devel/xSTIR/examples and type 
-python stir_demo1.py etc. To run Matlab demos, change to this folder in Matlab
-and type stir_demo_1 etc.
+python stir_demo1.py etc. 
+
+If you want to stay abreast with the latest developments:
+
+Change to ~/devel/CCPPETMR and type git pull. Change to scripts and type 
+chmod +x *.sh. Type ./ADD_REMOTE.sh. All this is is only needed to be done ONCE.
+
+Whenever you want to update your VM:
+
+- Type export TMP=<password you used to log in>.
+
+- Type ./UPDATE_ALL.sh.
+
+- When the above script finished (it may take about 1 hour), you may like to 
+  erase the value of TMP by typing export TMP= 
 
