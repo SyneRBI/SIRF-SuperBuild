@@ -4,13 +4,13 @@ cd ~/devel/ismrmrd
 git pull upstream master
 cd build
 make
-echo $TMP | sudo make install
+echo $TMP | sudo -S make install
 
 cd ~/devel/gadgetron
 git pull upstream master
 cd build
 make
-echo $TMP | sudo make install
+echo $TMP | sudo -S make install
 
 cd ~/devel/iUtilities
 git pull 
@@ -33,7 +33,7 @@ cd ~/devel/STIR
 git pull upstream master
 cd build
 make
-echo $TMP | sudo make install
+echo $TMP | sudo -S make install
 
 cd ~/devel/xSTIR
 git pull
