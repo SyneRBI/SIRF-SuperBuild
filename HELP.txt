@@ -1,17 +1,23 @@
 To make interfaces to Gadgetron and STIR forks on CCPPETMR up-to-date, 
 type update_VM.sh.
 
-To run Gadgetron interface demos, first open a new terminal and type gadgetron. Then open another terminal, change to ~/devel/xGadgetron/examples 
+To run Gadgetron interface demos, first open a new terminal and type gadgetron. 
+Then open another terminal, change to ~/devel/xGadgetron/examples 
 and type python demo1.py etc. Type demo1.py -h to get a brief description of 
 demo1.py and its usage.
 
 To run STIR Python interface demos, change to ~/devel/xSTIR/examples and type 
 python stir_demo1.py etc.
 
-================== NEW EXPERIMENTAL FEATURE ===============================
+================== NEW EXPERIMENTAL FEATURES ===============================
+
+---------------------------------------------
+Updating Gadgetron, STIR and their interfaces
+---------------------------------------------
 
 If you want to stay abreast with the latest developments in Gadgetron, STIR
-and interfaces, then instead of running update_VM.sh you can do a more thorough update by performing the following steps.
+and interfaces, then instead of running update_VM.sh you can do a more thorough 
+update by performing the following steps.
 
 Change to ~/devel/CCPPETMR_VM and type git pull.
 
@@ -29,4 +35,23 @@ Whenever you want to update your VM:
 
 Please be aware that it may not always be possible to keep interfaces
 synchronized with Gadgetron and STIR, and it is therefore a good idea
-to backup your VM by exporting it before the full update.
+to backup your VM e.g. by exporting it before the full update.
+
+-------------------------------
+Installing ismrmrd-python-tools
+-------------------------------
+
+Change to ~/devel/CCPPETMR_VM and type git pull.
+
+Change to folder 'scripts' and type ./INSTALL_ISMRMRD_PYTHON_TOOLS.sh. 
+
+----------------
+Installing SciPy
+----------------
+
+To run ismrmrd-python-tools scripts you need to have scipy installed on your VM,
+which is done by the following command:
+
+sudo apt-get install python-scipy
+
+
