@@ -14,7 +14,9 @@
 
 cd ~/devel/xSTIR
 git pull
-cd pSTIR
+cd cSTIR
+make
+cd ../pSTIR
 make
 
 cd ~/devel/iUtilities
