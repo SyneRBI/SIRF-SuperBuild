@@ -1,5 +1,7 @@
 #!/bin/sh
 
+sudo apt-get install python-scipy
+
 #cd ~/devel/gadgetron
 #git pull
 #cd build
