@@ -1,5 +1,7 @@
 #!/bin/sh
 
+sudo apt-get install python-scipy
+
 cd ~/devel/ismrmrd
 git pull upstream master
 cd build
