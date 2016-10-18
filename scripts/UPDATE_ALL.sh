@@ -42,3 +42,6 @@ cd cSTIR
 make
 cd ../pSTIR
 make
+
+cd ~/devel/CCPPETMR_VM
+cp HELP.txt ~/Desktop
