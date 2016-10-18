@@ -2,28 +2,16 @@
 
 sudo apt-get install python-scipy
 
-#cd ~/devel/gadgetron
-#git pull
-#cd build
-#make
-#make install
-
-#cd ~/devel/STIR
-#git pull
-#cd ../build/STIR
-#make
-#make install
+cd ~/devel/iUtilities
+git pull 
+make clean 
+make
 
 cd ~/devel/xSTIR
 git pull
 cd cSTIR
 make
 cd ../pSTIR
-make
-
-cd ~/devel/iUtilities
-git pull 
-make clean 
 make
 
 cd ../xGadgetron
