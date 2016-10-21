@@ -14,7 +14,7 @@ make
 cd ../pSTIR
 make
 
-cd ../xGadgetron
+cd ~/devel/xGadgetron
 git pull
 cd cGadgetron
 make clean 
