@@ -14,6 +14,17 @@ cd build
 make
 echo $TMP | sudo -S make install
 
+cd /tmp
+if [ ! -d gadgetron ]
+then
+mkdir gadgetron
+fi
+cd gadgetron
+if [ ! -d DebugFolder ]
+then
+mkdir DebugFolder
+fi
+
 cd ~/devel/iUtilities
 git pull 
 make clean 
