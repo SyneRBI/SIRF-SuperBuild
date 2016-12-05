@@ -1,17 +1,24 @@
 #!/bin/sh
 
-sudo apt-get install python-scipy
+TMP=virtual
+
+echo $TMP | sudo -S apt-get install python-scipy python-docopt
+
+cd ~/devel/ismrmrd
+git pull
+cd build
+make
+echo $TMP | sudo -S make install
+
+cd ~/devel/gadgetron
+git pull
+cd build
+make
+echo $TMP | sudo -S make install
 
 cd ~/devel/iUtilities
 git pull 
 make clean 
-make
-
-cd ~/devel/xSTIR
-git pull
-cd cSTIR
-make
-cd ../pSTIR
 make
 
 cd ~/devel/xGadgetron
@@ -23,6 +30,19 @@ cd ../pGadgetron
 make clean
 make
 cd ../examples
+make
+
+cd ~/devel/STIR
+git pull
+cd build
+make
+echo $TMP | sudo -S make install
+
+cd ~/devel/xSTIR
+git pull
+cd cSTIR
+make
+cd ../pSTIR
 make
 
 cd ~/devel/CCPPETMR_VM
