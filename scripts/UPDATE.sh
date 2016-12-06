@@ -25,7 +25,7 @@ cd ~/devel/xGadgetron
 git pull
 cd cGadgetron
 make clean 
-make
+make -f Makefile_VM
 cd ../pGadgetron
 make clean
 make
