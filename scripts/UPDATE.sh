@@ -22,8 +22,8 @@ make clean
 make
 
 cd ~/devel/xGadgetron
-git checkout master
 git pull
+git checkout master
 cd cGadgetron
 make clean 
 make -f Makefile_VM
@@ -40,8 +40,8 @@ make
 echo $TMP | sudo -S make install
 
 cd ~/devel/xSTIR
-git checkout master
 git pull
+git checkout master
 cd cSTIR
 make
 cd ../pSTIR
