@@ -22,6 +22,7 @@ make clean
 make
 
 cd ~/devel/xGadgetron
+git checkout master
 git pull
 cd cGadgetron
 make clean 
@@ -39,6 +40,7 @@ make
 echo $TMP | sudo -S make install
 
 cd ~/devel/xSTIR
+git checkout master
 git pull
 cd cSTIR
 make
