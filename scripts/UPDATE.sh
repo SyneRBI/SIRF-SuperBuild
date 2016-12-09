@@ -11,7 +11,7 @@ make
 echo $TMP | sudo -S make install
 
 cd ~/devel
-if [ -d ismrmrd-python-tools ]
+if [ -d ismrmrd-python-tools ]; then
   cd ismrmrd-python-tools/
   git pull
 else
