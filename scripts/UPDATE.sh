@@ -10,6 +10,15 @@ cd build
 make
 echo $TMP | sudo -S make install
 
+cd ~/devel
+if [ -d ismrmrd-python-tools ]
+  cd ismrmrd-python-tools/
+  git pull
+else
+  git clone  https://github.com/CCPPETMR/ismrmrd-python-tools
+  cd ismrmrd-python-tools/
+fi
+
 cd ~/devel/gadgetron
 git pull
 cd build
