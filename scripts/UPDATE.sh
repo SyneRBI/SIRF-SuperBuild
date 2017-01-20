@@ -2,7 +2,7 @@
 
 TMP=virtual
 
-echo $TMP | sudo -S apt-get install python-scipy python-docopt python-matplotlib
+sudo apt-get install python-scipy python-docopt python-matplotlib
 
 cd ~/devel/ismrmrd
 git pull
