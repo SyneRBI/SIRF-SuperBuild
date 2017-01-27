@@ -3,7 +3,7 @@ set(externalProjName ismrmrd)
 set(proj ismrmrd)
 
 # Set dependency list
-set(${proj}_DEPENDENCIES "HDF5;Boost")
+set(${proj}_DEPENDENCIES "HDF5;Boost;FFTW3")
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} PROJECT_VAR proj DEPENDS_VAR ${proj}_DEPENDENCIES)
@@ -25,6 +25,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
             -DHDF5_ROOT=${HDF5_ROOT}
             -DBOOST_ROOT=${BOOST_ROOT}
     INSTALL_DIR ${ismrmrd_Install_Dir}
+    DEPENDS
+        ${${proj}_DEPENDENCIES}
   )
 
     set(ismrmrd_ROOT        ${ismrmrd_Install_Dir})

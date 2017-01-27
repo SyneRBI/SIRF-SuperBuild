@@ -3,7 +3,7 @@ set(externalProjName SIRF)
 set(proj SIRF)
 
 # Set dependency list
-set(${proj}_DEPENDENCIES "STIR;Boost;HDF5;ismrmrd")
+set(${proj}_DEPENDENCIES "STIR;Boost;HDF5;ismrmrd;FFTW3")
 
 message(STATUS "MATLAB_ROOT=" ${MATLAB_ROOT})
 message(STATUS "STIR_DIR=" ${STIR_DIR})
@@ -41,6 +41,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -Dismrmrd_DIR=${ismrmrd_ROOT}
         -Dismrmrd_INCLUDE_DIRS=${ismrmrd_INCLUDE_DIRS}
     INSTALL_DIR ${SIRF_Install_Dir}
+    DEPENDS
+        ${${proj}_DEPENDENCIES}
   )
 
     set(SIRF_ROOT        ${SIRF_SOURCE_DIR})
