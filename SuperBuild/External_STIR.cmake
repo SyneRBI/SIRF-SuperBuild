@@ -14,7 +14,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ### --- Project specific additions here
   set(STIR_Install_Dir ${CMAKE_CURRENT_BINARY_DIR}/INSTALL)
 
-  set(${proj}_URL https://github.com/UCL/STIR )
+  set(${proj}_URL https://github.com/CCPPETMR/STIR )
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
@@ -23,9 +23,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     #BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/${proj}
     CMAKE_ARGS -DGRAPHICS=None
         -DBUILD_EXECUTABLES=OFF
+        -DBUILD_TESTING=OFF
+        -DBUILD_DOCUMENTATION=OFF
         -DCMAKE_POSITION_INDEPENDENT_CODE=ON
         -DBOOST_ROOT=${BOOST_ROOT}
         -DCMAKE_INSTALL_PREFIX=${STIR_Install_Dir}
+        -DGRAPHICS=None
     INSTALL_DIR ${STIR_Install_Dir}
   )
 
