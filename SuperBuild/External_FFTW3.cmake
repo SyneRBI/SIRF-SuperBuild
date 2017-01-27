@@ -1,7 +1,7 @@
 #These need to be unique globally
 set(externalProjName FFTW3)
 set(proj FFTW3)
-
+set(proj_COMPONENTS "COMPONENTS single")
 # Set dependency list
 set(${proj}_DEPENDENCIES "")
 
@@ -44,8 +44,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
  else()
     if(${USE_SYSTEM_${externalProjName}})
-      find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
-      message("USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
+      find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} ${${externalProjName}_COMPONENTS} REQUIRED)
+      message(STATUS "USING the system ${externalProjName}, found FFTW3_INCLUDE_DIR=${FFTW3_INCLUDE_DIR}, FFTW3_LIBRARY=${FFTW3_LIBRARY}")
   endif()
 endif()
 

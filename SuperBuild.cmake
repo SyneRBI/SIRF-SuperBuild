@@ -20,7 +20,7 @@ option(USE_SYSTEM_BOOST "Build using an external version of Boost" OFF)
 option(USE_SYSTEM_STIR "Build using an external version of STIR" OFF)
 option(USE_SYSTEM_HDF5 "Build using an external version of HDF5" OFF)
 option(USE_SYSTEM_ISMRMRD "Build using an external version of ISMRMRD" OFF)
-option(USE_SYSTEM_FFTW "Build using an external version of fftw" OFF)
+option(USE_SYSTEM_FFTW3 "Build using an external version of fftw" OFF)
 option(USE_SYSTEM_SIRF "Build using an external version of SIRF" OFF)
 
 
@@ -37,7 +37,7 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${PRIMARY_PROJECT_NAME}
 message(STATUS "")
 message(STATUS "BOOST_ROOT = " ${BOOST_ROOT})
 message(STATUS "ISMRMRD_ROOT = " ${ISMRMRD_ROOT})
-message(STATUS "FFTW3_ROOT = " ${FFTW3_ROOT})
+message(STATUS "FFTW3_ROOT_DIR = " ${FFTW3_ROOT_DIR})
 message(STATUS "STIR_DIR = " ${STIR_DIR})
 message(STATUS "HDF5_ROOT = " ${HDF5_ROOT})
 message(STATUS "MATLAB_ROOT = " ${MATLAB_ROOT})
