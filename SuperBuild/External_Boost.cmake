@@ -1,5 +1,5 @@
 #These need to be unique globally
-set(externalProjName BOOST)
+set(externalProjName Boost)
 set(proj Boost)
 
 # Set dependency list
