@@ -1,60 +1,85 @@
 #!/bin/sh
 
-TMP=virtual
-
 sudo apt-get install python-scipy python-docopt python-matplotlib
 
-cd ~/devel/ismrmrd
-git pull
-cd build
-make
-echo $TMP | sudo -S make install
-
-cd ~/devel
-if [ -d ismrmrd-python-tools ]; then
-  cd ismrmrd-python-tools/
-  git pull
-else
-  git clone  https://github.com/CCPPETMR/ismrmrd-python-tools
-  cd ismrmrd-python-tools/
+if [ -z $INSTALL_DIR ]
+then
+  export INSTALL_DIR=/home/stir/devel/build/install
+  echo 'export INSTALL_DIR=/home/stir/devel/build/install' >> ~/.bashrc
+  export LD_LIBRARY_PATH=$INSTALL_DIR/lib:$LD_LIBRARY_PATH
+  echo 'export LD_LIBRARY_PATH=$INSTALL_DIR/lib:$LD_LIBRARY_PATH' >> ~/.bashrc
+  export PYTHONPATH=$INSTALL_DIR/python:$SRC_PATH/ismrmrd-python-tools
+  echo 'export PYTHONPATH=$INSTALL_DIR/python:$SRC_PATH/ismrmrd-python-tools' >> ~/.bashrc
+  export CMAKE="cmake -DCMAKE_PREFIX_PATH:PATH=$INSTALL_DIR/lib/cmake -DCMAKE_INSTALL_PREFIX:PATH=$INSTALL_DIR"
+  echo 'export CMAKE="cmake -DCMAKE_PREFIX_PATH:PATH=$INSTALL_DIR/lib/cmake -DCMAKE_INSTALL_PREFIX:PATH=$INSTALL_DIR"' >> ~/.bashrc
+  export CCMAKE="ccmake -DCMAKE_PREFIX_PATH:PATH=$INSTALL_DIR/lib/cmake -DCMAKE_INSTALL_PREFIX:PATH=$INSTALL_DIR"
+  echo 'export CCMAKE="ccmake -DCMAKE_PREFIX_PATH:PATH=$INSTALL_DIR/lib/cmake -DCMAKE_INSTALL_PREFIX:PATH=$INSTALL_DIR"' >> ~/.bashrc
 fi
 
-cd ~/devel/gadgetron
+if [ ! -d /home/stir/devel/build/install ]
+then
+  cd /home/stir/devel/build
+  rm -r *
+  mkdir install
+fi
+
+cd $SRC_PATH/STIR
 git pull
-cd build
-make
-echo $TMP | sudo -S make install
+cd $BUILD_PATH
+if [ ! -d STIR ]
+then
+  mkdir STIR
+fi
+cd STIR
+$CMAKE -DGRAPHICS=None -DBUILD_EXECUTABLES=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON $SRC_PATH/STIR
+make install
 
-cd ~/devel/iUtilities
-git pull 
-make clean 
-make
-
-cd ~/devel/xGadgetron
+cd $SRC_PATH/ismrmrd
 git pull
-git checkout master
-cd cGadgetron
-make clean 
-make -f Makefile_VM
-cd ../pGadgetron
-make clean
-make
-cd ../examples
-make
+cd $BUILD_PATH
+if [ ! -d ismrmrd ]
+then
+  mkdir ismrmrd
+fi
+cd ismrmrd
+$CMAKE $SRC_PATH/ismrmrd
+make install
 
-cd ~/devel/STIR
+cd $SRC_PATH/gadgetron
 git pull
-cd build
-make
-echo $TMP | sudo -S make install
+cd $BUILD_PATH
+if [ ! -d gadgetron ]
+then
+  mkdir gadgetron
+fi
+cd gadgetron
+$CMAKE $SRC_PATH/gadgetron
+make install
 
-cd ~/devel/xSTIR
-git pull
-git checkout master
-cd cSTIR
-make
-cd ../pSTIR
-make
+cd $SRC_PATH
+if [ -d SIRF ]
+then
+  cd SIRF
+  git pull
+else
+  git clone https://github.com/CCPPETMR/SIRF
+fi
+cd $BUILD_PATH
+if [ ! -d SIRF ]
+then
+  mkdir SIRF
+fi
+cd SIRF
+$CMAKE $SRC_PATH/SIRF
+make install
 
-cd ~/devel/CCPPETMR_VM
-cp HELP.txt ~/Desktop
+cd $SRC_PATH
+if [ -d ismrmrd-python-tools ]
+then
+  cd ismrmrd-python-tools
+  git pull
+else
+  git clone https://github.com/CCPPETMR/ismrmrd-python-tools
+  cd ismrmrd-python-tools
+fi
+sudo python setup.py install
