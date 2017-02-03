@@ -1,6 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
 sudo apt-get install python-scipy python-docopt python-matplotlib
+
+source ~/.bashrc
 
 if [ -z $INSTALL_DIR ]
 then
