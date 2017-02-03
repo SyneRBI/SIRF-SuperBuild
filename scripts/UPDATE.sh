@@ -63,8 +63,9 @@ if [ -d SIRF ]
 then
   cd SIRF
   git pull
+  git submodule update
 else
-  git clone https://github.com/CCPPETMR/SIRF
+  git clone --recursive https://github.com/CCPPETMR/SIRF
 fi
 cd $BUILD_PATH
 if [ ! -d SIRF ]
