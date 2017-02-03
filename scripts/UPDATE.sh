@@ -19,7 +19,7 @@ fi
 if [ ! -d /home/stir/devel/build/install ]
 then
   cd /home/stir/devel/build
-  rm -r *
+  sudo rm -r -f *
   mkdir install
 fi
 
