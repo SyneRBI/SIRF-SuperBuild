@@ -10,8 +10,8 @@ then
   echo 'export INSTALL_DIR=/home/stir/devel/build/install' >> ~/.bashrc
   export LD_LIBRARY_PATH=$INSTALL_DIR/lib:$LD_LIBRARY_PATH
   echo 'export LD_LIBRARY_PATH=$INSTALL_DIR/lib:$LD_LIBRARY_PATH' >> ~/.bashrc
-  export PYTHONPATH=$INSTALL_DIR/python:$SRC_PATH/ismrmrd-python-tools
-  echo 'export PYTHONPATH=$INSTALL_DIR/python:$SRC_PATH/ismrmrd-python-tools' >> ~/.bashrc
+  export PYTHONPATH=$INSTALL_DIR/python
+  echo 'export PYTHONPATH=$INSTALL_DIR/python' >> ~/.bashrc
   export CMAKE="cmake -DCMAKE_PREFIX_PATH:PATH=$INSTALL_DIR/lib/cmake -DCMAKE_INSTALL_PREFIX:PATH=$INSTALL_DIR"
   echo 'export CMAKE="cmake -DCMAKE_PREFIX_PATH:PATH=$INSTALL_DIR/lib/cmake -DCMAKE_INSTALL_PREFIX:PATH=$INSTALL_DIR"' >> ~/.bashrc
   export CCMAKE="ccmake -DCMAKE_PREFIX_PATH:PATH=$INSTALL_DIR/lib/cmake -DCMAKE_INSTALL_PREFIX:PATH=$INSTALL_DIR"
