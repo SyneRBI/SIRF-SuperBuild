@@ -87,4 +87,13 @@ cd SIRF
 $CMAKE $SRC_PATH/SIRF
 make install
 
+cd ~/devel
+if [ -d xGadgetron ]
+then
+  rm -r xGadgetron
+fi
+if [ -d xSTIR ]
+then
+  rm -r xSTIR
+fi
 
