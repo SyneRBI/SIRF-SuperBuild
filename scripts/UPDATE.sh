@@ -90,10 +90,10 @@ make install
 cd ~/devel
 if [ -d xGadgetron ]
 then
-  rm -r xGadgetron
+  rm -r -f xGadgetron
 fi
 if [ -d xSTIR ]
 then
-  rm -r xSTIR
+  rm -r -f xSTIR
 fi
 
