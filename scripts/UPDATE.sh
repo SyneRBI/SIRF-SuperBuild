@@ -25,17 +25,6 @@ then
   mkdir install
 fi
 
-cd $SRC_PATH/STIR
-git pull
-cd $BUILD_PATH
-if [ ! -d STIR ]
-then
-  mkdir STIR
-fi
-cd STIR
-$CMAKE -DGRAPHICS=None -DBUILD_EXECUTABLES=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON $SRC_PATH/STIR
-make install
-
 cd $SRC_PATH/ismrmrd
 git pull
 cd $BUILD_PATH
@@ -45,6 +34,28 @@ then
 fi
 cd ismrmrd
 $CMAKE $SRC_PATH/ismrmrd
+make install
+
+cd $SRC_PATH
+if [ -d ismrmrd-python-tools ]
+then
+  cd ismrmrd-python-tools
+  git pull
+else
+  git clone https://github.com/CCPPETMR/ismrmrd-python-tools
+  cd ismrmrd-python-tools
+fi
+sudo python setup.py install
+
+cd $SRC_PATH/STIR
+git pull
+cd $BUILD_PATH
+if [ ! -d STIR ]
+then
+  mkdir STIR
+fi
+cd STIR
+$CMAKE -DGRAPHICS=None -DBUILD_EXECUTABLES=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON $SRC_PATH/STIR
 make install
 
 cd $SRC_PATH/gadgetron
@@ -76,13 +87,4 @@ cd SIRF
 $CMAKE $SRC_PATH/SIRF
 make install
 
-cd $SRC_PATH
-if [ -d ismrmrd-python-tools ]
-then
-  cd ismrmrd-python-tools
-  git pull
-else
-  git clone https://github.com/CCPPETMR/ismrmrd-python-tools
-  cd ismrmrd-python-tools
-fi
-sudo python setup.py install
+
