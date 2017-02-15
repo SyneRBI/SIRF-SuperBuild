@@ -96,4 +96,8 @@ if [ -d xSTIR ]
 then
   rm -r -f xSTIR
 fi
+if [ -d iUtilities ]
+then
+  rm -r -f iUtilities
+fi
 
