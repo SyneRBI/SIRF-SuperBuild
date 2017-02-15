@@ -74,7 +74,7 @@ if [ -d SIRF ]
 then
   cd SIRF
   git pull
-  git submodule update
+  git submodule update --init
 else
   git clone --recursive https://github.com/CCPPETMR/SIRF
 fi
