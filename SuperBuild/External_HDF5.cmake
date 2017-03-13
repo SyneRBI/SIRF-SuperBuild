@@ -52,6 +52,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
       message(STATUS "USING the system ${externalProjName}, found HDF5_C_LIBRARY_hdf5=${HDF5_C_LIBRARY_hdf5}")
   endif()
+  ExternalProject_Add_Empty(${proj} "${${proj}_DEPENDENCIES}")
 endif()
 
 mark_as_superbuild(
