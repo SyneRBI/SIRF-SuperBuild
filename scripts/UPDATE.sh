@@ -1,4 +1,7 @@
 #!/bin/bash
+# Exit if something goes wrong
+set -e
+trap 'echo An error occurred in $0 at line $LINENO. Current working-dir: $PWD' ERR
 
 sudo apt-get install python-scipy python-docopt python-matplotlib
 
@@ -18,8 +21,11 @@ then
   echo 'export CCMAKE="ccmake -DCMAKE_PREFIX_PATH:PATH=$INSTALL_DIR/lib/cmake -DCMAKE_INSTALL_PREFIX:PATH=$INSTALL_DIR"' >> ~/.bashrc
 fi
 
-if [ ! -d /home/stir/devel/build/install ]
+if [ ! -d $INSTALL_DIR ]
 then
+  # create it in a very dangerous fashion
+  # This is hopefully ok as we know what the history was of the VM.
+  # We will need to fix this when we create a new VM.
   cd /home/stir/devel/build
   sudo rm -r -f *
   mkdir install
@@ -31,9 +37,12 @@ cd $BUILD_PATH
 if [ ! -d ismrmrd ]
 then
   mkdir ismrmrd
+  cd ismrmrd
+  $CMAKE $SRC_PATH/ismrmrd
+else
+  cd ismrmrd
+  $CMAKE .
 fi
-cd ismrmrd
-$CMAKE $SRC_PATH/ismrmrd
 make install
 
 cd $SRC_PATH
@@ -53,9 +62,12 @@ cd $BUILD_PATH
 if [ ! -d STIR ]
 then
   mkdir STIR
+  cd STIR  
+  $CMAKE -DGRAPHICS=None -DBUILD_EXECUTABLES=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON $SRC_PATH/STIR
+else
+  cd STIR
+  $CMAKE .
 fi
-cd STIR
-$CMAKE -DGRAPHICS=None -DBUILD_EXECUTABLES=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON $SRC_PATH/STIR
 make install
 
 cd $SRC_PATH/gadgetron
@@ -64,9 +76,12 @@ cd $BUILD_PATH
 if [ ! -d gadgetron ]
 then
   mkdir gadgetron
+  cd gadgetron
+  $CMAKE $SRC_PATH/gadgetron
+else
+  cd gadgetron
+  $CMAKE .
 fi
-cd gadgetron
-$CMAKE $SRC_PATH/gadgetron
 make install
 
 cd $SRC_PATH
@@ -82,11 +97,15 @@ cd $BUILD_PATH
 if [ ! -d SIRF ]
 then
   mkdir SIRF
+  cd SIRF
+  $CMAKE $SRC_PATH/SIRF
+else
+  cd SIRF
+  $CMAKE .
 fi
-cd SIRF
-$CMAKE $SRC_PATH/SIRF
 make install
 
+# Clean-up of old code
 cd ~/devel
 if [ -d xGadgetron ]
 then
