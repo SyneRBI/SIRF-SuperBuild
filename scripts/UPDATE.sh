@@ -29,6 +29,7 @@ then
   cd /home/stir/devel/build
   sudo rm -r -f *
   mkdir install
+  mkdir install/bin
 fi
 
 cd $SRC_PATH/ismrmrd
@@ -104,6 +105,26 @@ else
   $CMAKE .
 fi
 make install
+
+# update STIR-exercises if it was installed
+if [ -d ~/STIR-exercises ]
+then
+    cd ~/STIR-exercises
+    git pull
+fi
+
+
+# copy scripts into the path
+cp -vp $SRC_PATH/CCPPETMR_VM/scripts/update*sh $INSTALL_DIR/bin
+# check if the directory is in the path
+if type update_VM_to_full_STIR.sh >/dev/null 2>&1
+then
+  : # ok
+else
+    echo "PATH=\$PATH:$INSTALL_DIR/bin" >> ~/.bashrc
+    echo "Close your terminal and re-open a new one to update your path, or type"
+    echo "PATH=\$PATH:$INSTALL_DIR/bin" 
+fi
 
 # Clean-up of old code
 cd ~/devel
