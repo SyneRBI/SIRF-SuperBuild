@@ -35,6 +35,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   )
 
   set(STIR_ROOT       ${STIR_Install_Dir})
+  set(STIR_DIR       ${CMAKE_CURRENT_BINARY_DIR}/INSTALL/lib/cmake)
   set(STIR_INCLUDE_DIRS ${STIR_ROOT}/stir)
 
    else()
