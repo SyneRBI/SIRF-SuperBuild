@@ -3,7 +3,9 @@
 set -e
 trap 'echo An error occurred in $0 at line $LINENO. Current working-dir: $PWD' ERR
 
-sudo apt-get install python-scipy python-docopt python-matplotlib
+PASSWD=virtual
+
+echo $PASSWD | sudo -S apt-get -y install python-scipy python-docopt python-matplotlib
 
 source ~/.bashrc
 
@@ -27,7 +29,7 @@ then
   # This is hopefully ok as we know what the history was of the VM.
   # We will need to fix this when we create a new VM.
   cd /home/stir/devel/build
-  sudo rm -r -f *
+  echo $PASSWD | sudo -S rm -r -f *
   mkdir install
   mkdir install/bin
 fi
@@ -55,7 +57,7 @@ else
   git clone https://github.com/CCPPETMR/ismrmrd-python-tools
   cd ismrmrd-python-tools
 fi
-sudo python setup.py install
+echo $PASSWD | sudo -S  python setup.py install
 
 cd $SRC_PATH/STIR
 git pull
@@ -122,8 +124,8 @@ then
   : # ok
 else
     echo "PATH=\$PATH:$INSTALL_DIR/bin" >> ~/.bashrc
-    echo "Close your terminal and re-open a new one to update your path, or type"
-    echo "PATH=\$PATH:$INSTALL_DIR/bin" 
+    echo "Close your terminal and re-open a new one to update your environment variables, or type"
+    echo ". ~/.bashrc"
 fi
 
 # Clean-up of old code
