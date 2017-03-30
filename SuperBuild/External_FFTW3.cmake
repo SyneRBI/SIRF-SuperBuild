@@ -31,7 +31,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     URL_HASH MD5=${${proj}_MD5}
     SOURCE_DIR ${FFTW_SOURCE_DIR}
     BINARY_DIR ${FFTW_SOURCE_DIR}
-    CONFIGURE_COMMAND ./configure --prefix ${FFTW_Install_Dir}
+    CONFIGURE_COMMAND ./configure --enable-float --with-pic --prefix ${FFTW_Install_Dir}
     INSTALL_DIR ${FFTW_Install_Dir}
   )
 
