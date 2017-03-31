@@ -9,7 +9,10 @@ The superBuild depends on CMake >= 3.7.
 
 ## Install
 
-Create a directory for the SuperBuild, e.g. devel.
+To compile and install SIRF with the SuperBuild:
+
+ 1. create a directory for the SuperBuild, e.g. devel.
+ * issue the following commands
 
 ```bash
 mkdir devel
@@ -23,6 +26,7 @@ cd SIRF-SuperBuild
 cmake .
 make
 ```
+Please notice that if you do not have CMake >= 3.7 you need to install it. During installation you will be asked to read and accept CMake's license.
 
 ## TODO
 
