@@ -1,7 +1,7 @@
 # SIRF-SuperBuild
 
 The SIRF-SuperBuild will allow the user to download and compile all the software
-needed to compile SIRF.
+needed to compile SIRF, except for [http://swig.org](SWIG).
 
 ## Dependencies
 
