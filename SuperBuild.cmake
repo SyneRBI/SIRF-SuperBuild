@@ -26,6 +26,7 @@ option(USE_SYSTEM_SIRF "Build using an external version of SIRF" OFF)
 
 set(${PRIMARY_PROJECT_NAME}_DEPENDENCIES
     Boost
+    SWIG
     STIR
     HDF5
     FFTW3

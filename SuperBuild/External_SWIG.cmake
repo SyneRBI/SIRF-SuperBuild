@@ -13,8 +13,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ### --- Project specific additions here
   set(SWIG_Install_Dir ${CMAKE_CURRENT_BINARY_DIR}/INSTALL)
-  set(SWIG_Configure_Script ${CMAKE_CURRENT_LIST_DIR}/External_FFTW_configure.cmake)
-  set(FFTW_Build_Script ${CMAKE_CURRENT_LIST_DIR}/External_FFTW_build.cmake)
+  set(SWIG_Configure_Script ${CMAKE_CURRENT_LIST_DIR}/External_SWIG_configure.cmake)
+  set(SWIG_Build_Script ${CMAKE_CURRENT_LIST_DIR}/External_SWIG_build.cmake)
 
   set(${proj}_URL http://prdownloads.sourceforge.net/swig/swig-3.0.12.tar.gz )
   set(${proj}_MD5 82133dfa7bba75ff9ad98a7046be687c )
@@ -29,11 +29,14 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
-    SOURCE_DIR ${FFTW_SOURCE_DIR}
+    SOURCE_DIR ${SWIG_SOURCE_DIR}
     BINARY_DIR ${SWIG_SOURCE_DIR}
-    CONFIGURE_COMMAND ./configure --prefix ${SWIG_Install_Dir}
+    CONFIGURE_COMMAND ./configure --without-pcre --prefix ${SWIG_Install_Dir}
     INSTALL_DIR ${SWIG_Install_Dir}
   )
+
+#The SWIG test-suite and examples are configured for the following languages:
+#perl5 python 
 
   set( SWIG_EXECUTABLE ${SWIG_Install_Dir}/bin/swig )
   set( SWIG_VERSION "3.0.12" )
