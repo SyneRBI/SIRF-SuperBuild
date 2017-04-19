@@ -36,6 +36,10 @@ make
 
 Please notice that if you do not have CMake >= 3.7 you need to install it. During installation you will be asked to read and accept CMake's license.
 
+## Installation instruction for Ubuntu 16.10
+
+They can be found [here](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-Ubuntu-16.04)
+
 ## TODO
 
 - ***Windows support***
