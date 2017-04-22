@@ -1,18 +1,22 @@
-Boost-prefix/
+*-prefix/
 Boost/
-CMakeCache.txt
-CMakeFiles/
-FFTW3-prefix/
 FFTW3/
-HDF5-prefix/
 HDF5/
 INSTALL/
 Makefile
-SIRF-prefix/
 SIRF/
-STIR-prefix/
 STIR/
-cmake_install.cmake
-ismrmrd-prefix/
 ismrmrd/
-	
+Gadgetron/
+SWIG/
+
+# CMake output files
+cmake_install.cmake
+CMakeCache.txt
+CMakeFiles/
+
+# backup files
+*~
+*#
+.#*
+*.bak
