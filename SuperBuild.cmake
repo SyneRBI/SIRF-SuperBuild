@@ -23,15 +23,21 @@ option(USE_SYSTEM_ISMRMRD "Build using an external version of ISMRMRD" OFF)
 option(USE_SYSTEM_FFTW3 "Build using an external version of fftw" OFF)
 option(USE_SYSTEM_SIRF "Build using an external version of SIRF" OFF)
 
+option(BUILD_GADGETRON "Build Gadgetron" ON)
 
 set(${PRIMARY_PROJECT_NAME}_DEPENDENCIES
     Boost
-    STIR
+    SWIG
     HDF5
     FFTW3
     ismrmrd
+    STIR
     SIRF
 )
+if (BUILD_GADGETRON)
+    list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES Gadgetron)
+endif()
+
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${PRIMARY_PROJECT_NAME}_DEPENDENCIES)
 
 message(STATUS "")
