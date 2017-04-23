@@ -7,7 +7,7 @@ else(WIN32)
     #--with-libraries=system,thread,program_options,log,math...
     #--without-libraries=atomic...
 
-    WORKING_DIRECTORY ${BUILD_DIR} RESULT_VARIABLE bootsrap_result)
+    WORKING_DIRECTORY ${BUILD_DIR} RESULT_VARIABLE bootstrap_result)
 
 endif(WIN32)
 

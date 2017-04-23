@@ -3,7 +3,7 @@ set(externalProjName SIRF)
 set(proj SIRF)
 
 # Set dependency list
-set(${proj}_DEPENDENCIES "STIR;Boost;HDF5;ismrmrd;FFTW3")
+set(${proj}_DEPENDENCIES "STIR;Boost;HDF5;ismrmrd;FFTW3;SWIG")
 
 message(STATUS "MATLAB_ROOT=" ${MATLAB_ROOT})
 message(STATUS "STIR_DIR=" ${STIR_DIR})
@@ -30,8 +30,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DCMAKE_PREFIX_PATH=${CMAKE_CURRENT_BINARY_DIR}/INSTALL
         -DCMAKE_LIBRARY_PATH=${CMAKE_CURRENT_BINARY_DIR}/INSTALL/lib
         -DCMAKE_INSTALL_PREFIX=${SIRF_Install_Dir}
-        -DBOOST_ROOT=${BOOST_ROOT}/include/boost
-        -DBOOST_INCLUDEDIR=${BOOST_ROOT}/include/boost
+        -DBOOST_INCLUDEDIR=${BOOST_ROOT}/include/
         -DBOOST_LIBRARYDIR=${BOOST_LIBRARY_DIR}
         -DMATLAB_ROOT=${MATLAB_ROOT}
         -DSTIR_DIR=${STIR_DIR}
