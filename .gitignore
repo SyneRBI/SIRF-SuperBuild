@@ -9,6 +9,8 @@ STIR/
 ISMRMRD/
 Gadgetron/
 SWIG/
+armadillo/
+googletest/
 
 # CMake output files
 cmake_install.cmake
