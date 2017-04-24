@@ -50,7 +50,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
  else()
     if(${USE_SYSTEM_${externalProjName}})
       find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
-      message(STATUS "USING the system ${externalProjName}, found HDF5_C_LIBRARY_hdf5=${HDF5_C_LIBRARY_hdf5}")
+      message(STATUS "USING the system ${externalProjName}, found HDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}, HDF5_C_LIBRARY_hdf5=${HDF5_C_LIBRARY_hdf5},HDF5_LIBRARIES=${HDF5_LIBRARIES}")
   endif()
   ExternalProject_Add_Empty(${proj} "${${proj}_DEPENDENCIES}")
 endif()
