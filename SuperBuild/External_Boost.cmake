@@ -45,7 +45,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   )
 
   set(BOOST_ROOT        ${Boost_Install_Dir})
-  set(BOOST_INCLUDEDIR ${Boost_Install_Dir}/include/boost)
+  set(BOOST_INCLUDEDIR ${Boost_Install_Dir}/include)
   set(BOOST_LIBRARY_DIR ${Boost_Install_Dir}/lib)
   #set(Boost_INCLUDE_DIR ${BOOST_SOURCE_DIR})
 
@@ -53,7 +53,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
  else()
     if(${USE_SYSTEM_${externalProjName}})
       find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
-      message("USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
+      message("USING the system ${externalProjName}, using BOOST_LIBRARY_DIR=${BOOST_LIBRARY_DIR}")
   endif()
    ExternalProject_Add_Empty(${proj} "${${proj}_DEPENDENCIES}")
 endif()

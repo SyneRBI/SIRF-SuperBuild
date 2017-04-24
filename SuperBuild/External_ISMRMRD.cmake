@@ -1,6 +1,6 @@
 #These need to be unique globally
-set(externalProjName ismrmrd)
-set(proj ismrmrd)
+set(externalProjName ISMRMRD)
+set(proj ISMRMRD)
 
 # Set dependency list
 set(${proj}_DEPENDENCIES "HDF5;Boost;FFTW3")
@@ -12,27 +12,28 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(ismrmrd_Install_Dir ${CMAKE_CURRENT_BINARY_DIR}/INSTALL)
+  set(ISMRMRD_Install_Dir ${CMAKE_CURRENT_BINARY_DIR}/INSTALL)
 
-  set(${proj}_URL https://github.com/ismrmrd/ismrmrd )
+  set(${proj}_URL https://github.com/CCPPETMR/ISMRMRD )
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
     SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
     #BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/${proj}
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${ismrmrd_Install_Dir}
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${ISMRMRD_Install_Dir}
             -DCMAKE_PREFIX_PATH=${CMAKE_CURRENT_BINARY_DIR}/INSTALL
             -DCMAKE_LIBRARY_PATH=${CMAKE_CURRENT_BINARY_DIR}/INSTALL/lib
             -DHDF5_ROOT=${HDF5_ROOT}
+	    -DHDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}
+	    -DHDF5_LIBRARIES=${HDF5_LIBRARIES}
             -DBOOST_ROOT=${BOOST_ROOT}
-    INSTALL_DIR ${ismrmrd_Install_Dir}
+    INSTALL_DIR ${ISMRMRD_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
 
-    set(ismrmrd_ROOT        ${ismrmrd_Install_Dir})
-    set(ismrmrd_INCLUDE_DIRS ${ismrmrd_Install_Dir}/include)
+    set(ISMRMRD_DIR        ${ISMRMRD_Install_Dir}/lib/cmake/ISMRMRD)
 
    else()
       if(${USE_SYSTEM_${externalProjName}})

@@ -16,11 +16,13 @@ STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 
 set(MATLAB_ROOT CACHE PATH "Path to Matlab root directory")
 
-option(USE_SYSTEM_BOOST "Build using an external version of Boost" OFF)
+option(USE_SYSTEM_Boost "Build using an external version of Boost" OFF)
 option(USE_SYSTEM_STIR "Build using an external version of STIR" OFF)
 option(USE_SYSTEM_HDF5 "Build using an external version of HDF5" OFF)
 option(USE_SYSTEM_ISMRMRD "Build using an external version of ISMRMRD" OFF)
 option(USE_SYSTEM_FFTW3 "Build using an external version of fftw" OFF)
+option(USE_SYSTEM_SWIG "Build using an external version of SWIG" OFF)
+#option(USE_SYSTEM_Gadgetron "Build using an external version of Gadgetron" OFF)
 option(USE_SYSTEM_SIRF "Build using an external version of SIRF" OFF)
 
 option(BUILD_GADGETRON "Build Gadgetron" ON)
@@ -31,7 +33,7 @@ set(${PRIMARY_PROJECT_NAME}_DEPENDENCIES
     SWIG
     HDF5
     FFTW3
-    ismrmrd
+    ISMRMRD
     STIR
     SIRF
 )
@@ -43,7 +45,7 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${PRIMARY_PROJECT_NAME}
 
 message(STATUS "")
 message(STATUS "BOOST_ROOT = " ${BOOST_ROOT})
-message(STATUS "ISMRMRD_ROOT = " ${ISMRMRD_ROOT})
+message(STATUS "ISMRMRD_DIR = " ${ISMRMRD_DIR})
 message(STATUS "FFTW3_ROOT_DIR = " ${FFTW3_ROOT_DIR})
 message(STATUS "STIR_DIR = " ${STIR_DIR})
 message(STATUS "HDF5_ROOT = " ${HDF5_ROOT})
