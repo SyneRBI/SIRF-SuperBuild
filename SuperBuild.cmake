@@ -27,6 +27,7 @@ option(BUILD_GADGETRON "Build Gadgetron" ON)
 
 set(${PRIMARY_PROJECT_NAME}_DEPENDENCIES
     Boost
+    googletest
     SWIG
     HDF5
     FFTW3
