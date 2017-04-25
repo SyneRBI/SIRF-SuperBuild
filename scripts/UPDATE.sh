@@ -1,6 +1,34 @@
 #!/bin/bash
+#
+# Script to install/update the CCP-PETMR VM. It could also be used for any other system
+# but will currently change your .bashrc. This is to be avoided later on.
+#
+# Authors: Kris Thielemans and Evgueni Ovtchinnikov
+# Copyright 2016-2017 University College London
+# Copyright 2016-2017 Rutherford Appleton Laboratory STFC
+#
+# This is software developed for the Collaborative Computational
+# Project in Positron Emission Tomography and Magnetic Resonance imaging
+# (http://www.ccppetmr.ac.uk/).
+
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0.txt
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+#=========================================================================
+
+
 # Exit if something goes wrong
 set -e
+# give a sensible error message (note: works only in bash)
 trap 'echo An error occurred in $0 at line $LINENO. Current working-dir: $PWD' ERR
 
 PASSWD=virtual
@@ -11,8 +39,8 @@ source ~/.bashrc
 
 if [ -z $INSTALL_DIR ]
 then
-  export INSTALL_DIR=/home/stir/devel/build/install
-  echo 'export INSTALL_DIR=/home/stir/devel/build/install' >> ~/.bashrc
+  export INSTALL_DIR=~/devel/build/install
+  echo 'export INSTALL_DIR=~/devel/build/install' >> ~/.bashrc
   export LD_LIBRARY_PATH=$INSTALL_DIR/lib:$LD_LIBRARY_PATH
   echo 'export LD_LIBRARY_PATH=$INSTALL_DIR/lib:$LD_LIBRARY_PATH' >> ~/.bashrc
   export PYTHONPATH=$INSTALL_DIR/python
@@ -28,87 +56,68 @@ then
   # create it in a very dangerous fashion
   # This is hopefully ok as we know what the history was of the VM.
   # We will need to fix this when we create a new VM.
-  cd /home/stir/devel/build
+  mkdir -p ~/devel/build
+  cd ~/devel/build
   echo $PASSWD | sudo -S rm -r -f *
   mkdir install
   mkdir install/bin
 fi
 
-cd $SRC_PATH/ismrmrd
-git pull
-cd $BUILD_PATH
-if [ ! -d ismrmrd ]
-then
-  mkdir ismrmrd
-  cd ismrmrd
-  $CMAKE $SRC_PATH/ismrmrd
-else
-  cd ismrmrd
-  $CMAKE .
-fi
-make install
+# define a function to get the source
+# argument: name of repo
+clone_or_pull()
+{
+  repo=$1
+  cd $SRC_PATH
+  if [ -d $repo ]
+  then
+    cd $repo
+    git pull
+    git submodule update --init
+  else
+    git clone --recursive https://github.com/CCPPETMR/$repo
+  fi
+}
 
-cd $SRC_PATH
-if [ -d ismrmrd-python-tools ]
-then
-  cd ismrmrd-python-tools
-  git pull
-else
-  git clone https://github.com/CCPPETMR/ismrmrd-python-tools
-  cd ismrmrd-python-tools
-fi
+# define a function to bulid and install
+# arguments: name_of_repo [cmake arguments]
+build_and_install()
+{
+  repo=$1
+  shift
+  cd $BUILD_PATH
+  if [ -d $repo ]
+  then
+    cd $repo
+    cmake .
+  else
+    mkdir $repo
+    cd $repo
+    $CMAKE $* $SRC_PATH/$repo
+  fi
+  make install
+}
+
+# function to do everything
+update()
+{
+  clone_or_pull $1
+  build_and_install $*
+}
+
+update ismrmrd
+update STIR  -DGRAPHICS=None -DBUILD_EXECUTABLES=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+update gadgetron
+update SIRF
+
+clone_or_pull ismrmrd-python-tools
+cd $SRC_PATH/ismrmrd-python-tools
+# TODO avoid sudo here
 echo $PASSWD | sudo -S  python setup.py install
 
-cd $SRC_PATH/STIR
-git pull
-cd $BUILD_PATH
-if [ ! -d STIR ]
-then
-  mkdir STIR
-  cd STIR  
-  $CMAKE -DGRAPHICS=None -DBUILD_EXECUTABLES=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON $SRC_PATH/STIR
-else
-  cd STIR
-  $CMAKE .
-fi
-make install
-
-cd $SRC_PATH/gadgetron
-git pull
-cd $BUILD_PATH
-if [ ! -d gadgetron ]
-then
-  mkdir gadgetron
-  cd gadgetron
-  $CMAKE $SRC_PATH/gadgetron
-else
-  cd gadgetron
-  $CMAKE .
-fi
-make install
-
-cd $SRC_PATH
-if [ -d SIRF ]
-then
-  cd SIRF
-  git pull
-  git submodule update --init
-else
-  git clone --recursive https://github.com/CCPPETMR/SIRF
-fi
-cd $BUILD_PATH
-if [ ! -d SIRF ]
-then
-  mkdir SIRF
-  cd SIRF
-  $CMAKE $SRC_PATH/SIRF
-else
-  cd SIRF
-  $CMAKE .
-fi
-make install
 
 # update STIR-exercises if it was installed
+# See update_VM_to_full_STIR.sh
 if [ -d ~/STIR-exercises ]
 then
     cd ~/STIR-exercises
@@ -127,19 +136,3 @@ else
     echo "Close your terminal and re-open a new one to update your environment variables, or type"
     echo ". ~/.bashrc"
 fi
-
-# Clean-up of old code
-cd ~/devel
-if [ -d xGadgetron ]
-then
-  rm -r -f xGadgetron
-fi
-if [ -d xSTIR ]
-then
-  rm -r -f xSTIR
-fi
-if [ -d iUtilities ]
-then
-  rm -r -f iUtilities
-fi
-
