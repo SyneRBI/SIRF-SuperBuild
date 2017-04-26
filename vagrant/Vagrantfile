@@ -91,7 +91,7 @@ Vagrant.configure("2") do |config|
 
     git clone https://github.com/CCPPETMR/CCPPETMR_VM.git
     bash CCPPETMR_VM/scripts/INSTALL_prerequisites_with_apt-get.sh
-    bash CCPPETMR_VM/scripts/UPDATE.sh
+    #bash CCPPETMR_VM/scripts/UPDATE.sh
     chown -R sirfuser:users /home/sirfuser/devel
     
    SHELL
