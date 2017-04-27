@@ -1,6 +1,6 @@
 *-prefix/
 Boost/
-FFTW3/
+FFTW3*/
 HDF5/
 INSTALL/
 Makefile
