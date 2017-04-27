@@ -1,7 +1,7 @@
 # SIRF-SuperBuild
 
 The SIRF-SuperBuild will allow the user to download and compile all the software
-needed to compile SIRF. There are still a [small number](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-Ubuntu-16.04#2-install-dependencies-for-gadgetron) of libraries that are not installed.
+needed to compile SIRF. There is still a [small number](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-Ubuntu-16.04#2-install-dependencies-for-gadgetron) of libraries that are not installed.
 by the SuperBuild.
 
 ## Dependencies
