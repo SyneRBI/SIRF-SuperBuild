@@ -43,7 +43,6 @@ They can be found [here](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-U
 ## TODO
 
 - ***Windows support***
-- Add swig
 - Sort out CMake Status messages.
 
 
