@@ -37,6 +37,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DHDF5_ROOT=${HDF5_ROOT}
         -DHDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}
         -DISMRMRD_DIR=${ISMRMRD_DIR}
+        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
     INSTALL_DIR ${SIRF_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}

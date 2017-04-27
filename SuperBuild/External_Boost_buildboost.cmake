@@ -1,42 +1,13 @@
-#Ben 26/01/2017 Not currently used.
 
 if(WIN32)
-set(XXX "
-# Needed
-        --with-system
-        --with-thread
-        --with-program_options
-        --with-locale
-        --with-format
-        --with-BLAH
-# Not Needed
-        --without-atomic
-        --without-chrono
-        --without-context
-        --without-date_time
-        --without-exception
-        --without-filesystem
-        --without-graph
-        --without-graph_parallel
-        --without-iostreams
-        --without-log
-        --without-math
-        --without-mpi
-        --without-python
-        --without-random
-        --without-regex
-        --without-serialization
-        --without-signals
-        --without-test
-        --without-timer
-        --without-wave
-"
-)
-  execute_process(COMMAND ./b2 install --prefix=${BOOST_INSTALL_DIR}
+  # TODO: would be better to use a variable but for some reason KT cannot pass the variable to the execute_process
+  # without strange error messages of b2
+  
+  execute_process(COMMAND ./b2 --with-system --with-filesystem --with-thread --with-program_options --with-chrono --with-date_time --with-atomic  --with-timer install --prefix=${BOOST_INSTALL_DIR}
     WORKING_DIRECTORY ${BUILD_DIR} RESULT_VARIABLE build_result)
 
 else(WIN32)
-
+  # selection of libraries has happened in the configure step
   execute_process(COMMAND ./b2 install
     WORKING_DIRECTORY ${BUILD_DIR} RESULT_VARIABLE build_result)
 

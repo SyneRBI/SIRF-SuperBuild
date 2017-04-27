@@ -26,8 +26,13 @@ option(USE_SYSTEM_SWIG "Build using an external version of SWIG" OFF)
 #option(USE_SYSTEM_Gadgetron "Build using an external version of Gadgetron" OFF)
 option(USE_SYSTEM_SIRF "Build using an external version of SIRF" OFF)
 
-option(BUILD_GADGETRON "Build Gadgetron" ON)
-
+if (WIN32)
+  set(build_Gadgetron_default OFF)
+else()
+  set(build_Gadgetron_default ON)
+endif()
+  
+  option(BUILD_GADGETRON "Build Gadgetron" ${build_Gadgetron_default})
 set(${PRIMARY_PROJECT_NAME}_DEPENDENCIES
     SIRF
 )
