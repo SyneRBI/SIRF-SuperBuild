@@ -3,7 +3,7 @@ set(externalProjName Gadgetron)
 set(proj Gadgetron)
 
 # Set dependency list
-set(${proj}_DEPENDENCIES "Boost;HDF5;ISMRMRD;FFTW3;googletest;armadillo")
+set(${proj}_DEPENDENCIES "Boost;HDF5;ISMRMRD;FFTW3double;googletest;armadillo")
 
 message(STATUS "MATLAB_ROOT=" ${MATLAB_ROOT})
 #message(STATUS "STIR_DIR=" ${STIR_DIR})
@@ -38,8 +38,10 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DHDF5_ROOT=${HDF5_ROOT}
         -DHDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}
         -DHDF5_LIBRARIES=${HDF5_LIBRARIES}
+        -DFFTW_LIBRARIES=${CMAKE_CURRENT_BINARY_DIR}/INSTALL/lib
+         -DFFTW_INCLUDES=${CMAKE_CURRENT_BINARY_DIR}/INSTALL/include
         -DISMRMRD_DIR=${ISMRMRD_DIR}
-    INSTALL_DIR ${Gadgetron_Install_Dir}
+	    INSTALL_DIR ${Gadgetron_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
