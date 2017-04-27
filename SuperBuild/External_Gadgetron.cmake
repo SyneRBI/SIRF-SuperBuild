@@ -22,6 +22,15 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${CMAKE_CURRENT_BINARY_DIR}/INSTALL)
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${CMAKE_CURRENT_BINARY_DIR}/INSTALL)
 
+  # work-around Gadgetron problem with old MKL
+find_package(MKL)
+if (MKL_FOUND)
+  if ( MKL_VERSION_STRING VERSION_LESS 11.2.0 )
+    message(WARNING "Gadgetron requires Intel MKL version >= 11.2.0 but found ${MKL_VERSION_STRING}. Disabling usage of MKL")
+    set(MKL_FOUND false)
+    set(MKLROOT_PATH=)
+  endif ()
+endif ()
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
@@ -38,9 +47,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DHDF5_ROOT=${HDF5_ROOT}
         -DHDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}
         -DHDF5_LIBRARIES=${HDF5_LIBRARIES}
-        -DFFTW_LIBRARIES=${CMAKE_CURRENT_BINARY_DIR}/INSTALL/lib
-         -DFFTW_INCLUDES=${CMAKE_CURRENT_BINARY_DIR}/INSTALL/include
+        -DFFTW_ROOT_DIR=${CMAKE_CURRENT_BINARY_DIR}/INSTALL
         -DISMRMRD_DIR=${ISMRMRD_DIR}
+        -DMKLROOT_PATH=${MKLROOT_PATH}
 	    INSTALL_DIR ${Gadgetron_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
