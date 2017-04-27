@@ -29,13 +29,6 @@ option(USE_SYSTEM_SIRF "Build using an external version of SIRF" OFF)
 option(BUILD_GADGETRON "Build Gadgetron" ON)
 
 set(${PRIMARY_PROJECT_NAME}_DEPENDENCIES
-    Boost
-    googletest
-    SWIG
-    HDF5
-    FFTW3
-    ISMRMRD
-    STIR
     SIRF
 )
 if (BUILD_GADGETRON)
