@@ -1,6 +1,6 @@
 #This needs to be unique globally
 set(proj SWIG)
-set(proj_COMPONENTS "COMPONENTS single")
+
 # Set dependency list
 set(${proj}_DEPENDENCIES "")
 
@@ -36,9 +36,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     CONFIGURE_COMMAND ./configure --without-pcre --prefix ${SWIG_Install_Dir}
     INSTALL_DIR ${SWIG_Install_Dir}
   )
-
-#The SWIG test-suite and examples are configured for the following languages:
-#perl5 python 
 
   set( SWIG_EXECUTABLE ${SWIG_Install_Dir}/bin/swig )
   set( SWIG_VERSION "3.0.12" )
