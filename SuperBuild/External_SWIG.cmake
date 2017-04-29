@@ -14,7 +14,29 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
+  
+  if (WIN32)
+  set(SWIG_Install_Dir ${CMAKE_CURRENT_BINARY_DIR}/INSTALL/SWIG-3.0.12)
+  # Just use precompiled version
+  set(${proj}_URL http://prdownloads.sourceforge.net/swig/swigwin-3.0.12.zip  )
+  set(${proj}_MD5 a49524dad2c91ae1920974e7062bfc93 )
+
+  ExternalProject_Add(${proj}
+    ${${proj}_EP_ARGS}
+    URL ${${proj}_URL}
+    URL_HASH MD5=${${proj}_MD5}
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND ""
+    INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory ${SWIG_Install_Dir}
+        COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${SWIG_Install_Dir}
+  )
+    set( SWIG_EXECUTABLE ${SWIG_Install_Dir}/swig.exe )
+  
+  return()
+  endif(WIN32)
+
   set(SWIG_Install_Dir ${CMAKE_CURRENT_BINARY_DIR}/INSTALL)
+  
   set(SWIG_Configure_Script ${CMAKE_CURRENT_LIST_DIR}/External_SWIG_configure.cmake)
   set(SWIG_Build_Script ${CMAKE_CURRENT_LIST_DIR}/External_SWIG_build.cmake)
 
@@ -39,7 +61,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   set( SWIG_EXECUTABLE ${SWIG_Install_Dir}/bin/swig )
   set( SWIG_VERSION "3.0.12" )
-  #set( SWIG_ROOT ${FFTW_Install_Dir} )
 
 
  else()

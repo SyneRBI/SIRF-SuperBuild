@@ -22,3 +22,12 @@ CMakeFiles/
 *#
 .#*
 *.bak
+
+# Visual Studio
+*.vcxproj
+*.vcxproj.filters
+*.sln
+.VS/
+WIN32/
+*.db
+*.opendb

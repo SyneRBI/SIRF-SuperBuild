@@ -20,13 +20,31 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   set(${proj}_URL http://www.fftw.org/fftw-3.3.5.tar.gz )
   set(${proj}_MD5 6cc08a3b9c7ee06fdd5b9eb02e06f569 )
-
+  
   if(CMAKE_COMPILER_IS_CLANGXX)
     set(CLANG_ARG -DCMAKE_COMPILER_IS_CLANGXX:BOOL=ON)
   endif()
 
-  set(FFTW_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj} )
+if (WIN32)
+  # Just use precompiled version
+  # TODO would prefer the next zip file but for KT using an ftp URL times-out (firewall?)
+  #set(${proj}_URL ftp://ftp.fftw.org/pub/fftw/fftw-3.3.5-dll64.zip )
+  #set(${proj}_MD5 cb3c5ad19a89864f036e7a2dd5be168c )
+  set(${proj}_URL https://s3.amazonaws.com/install-gadgetron-vs2013/Dependencies/FFTW/zip/FFTW3.zip )
+  set(${proj}_MD5 a42eac92d9ad06d7c53fb82b09df2b6e )
 
+  ExternalProject_Add(${proj}
+    ${${proj}_EP_ARGS}
+    URL ${${proj}_URL}
+    URL_HASH MD5=${${proj}_MD5}
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND ""
+    INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory ${FFTW_Install_Dir}
+        COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${FFTW_Install_Dir}/FFTW
+  )
+  set( FFTW3_ROOT_DIR ${FFTW_Install_Dir}/FFTW )
+else()
+  set(FFTW_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj} )
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
@@ -36,12 +54,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     CONFIGURE_COMMAND ./configure --enable-float --with-pic --prefix ${FFTW_Install_Dir}
     INSTALL_DIR ${FFTW_Install_Dir}
   )
-
-  #set(FFTW_ROOT        ${FFTW_SOURCE_DIR})
-  #set(FFTW_INCLUDE_DIR ${FFTW_SOURCE_DIR})
-
-  set( FFTW3_DIR ${FFTW_Install_Dir} )
-  set( FFTW3_ROOT ${FFTW_Install_Dir} )
+  set( FFTW3_ROOT_DIR ${FFTW_Install_Dir} )
+endif()
 
 
  else()

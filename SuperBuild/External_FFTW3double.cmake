@@ -1,8 +1,11 @@
 #This needs to be unique globally
 set(proj FFTW3double)
-set(proj_COMPONENTS "COMPONENTS single")
+set(proj_COMPONENTS "COMPONENTS double")
 # Set dependency list
-set(${proj}_DEPENDENCIES "")
+if (WIN32)
+  # rely on the "single" version to install everything
+  set(${proj}_DEPENDENCIES "FFTW3")
+endif()
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
@@ -11,6 +14,12 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 set(externalProjName ${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
+  if (WIN32)
+    # don't do anything
+    ExternalProject_Add_Empty(${proj})
+    return()
+  endif()
+    
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
@@ -37,11 +46,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     INSTALL_DIR ${FFTWdouble_Install_Dir}
   )
 
-  #set(FFTW_ROOT        ${FFTW_SOURCE_DIR})
-  #set(FFTW_INCLUDE_DIR ${FFTW_SOURCE_DIR})
-
-  set( FFTW3double_DIR ${FFTWdouble_Install_Dir} )
-  set( FFTW3double_ROOT ${FFTWdouble_Install_Dir} )
+  set( FFTW3_ROOT_DIR ${FFTWdouble_Install_Dir} )
 
 
  else()
