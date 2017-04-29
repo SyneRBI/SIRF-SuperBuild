@@ -31,7 +31,7 @@ addons:
     packages:
       - git-core
       - build-essential
-      - g++-4.9
+      - g++-5
       - libboost-all-dev
       - libhdf5-serial-dev
       - libfftw3-dev
@@ -60,7 +60,7 @@ install:
 script:
 
   - env
-  - CC=gcc-4.9 CXX=g++4.9 ./cmake-3.7.2-Linux-x86_64/bin/cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
+  - (export CC=gcc-5; export CXX=g++-5; ./cmake-3.7.2-Linux-x86_64/bin/cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS . )
   - make -j 8 all
   - mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
   - export PYTHONPATH=$PYTHONPATH:$PWD/INSTALL/python
