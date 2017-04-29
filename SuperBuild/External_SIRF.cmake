@@ -1,5 +1,4 @@
-#These need to be unique globally
-set(externalProjName SIRF)
+#This needs to be unique globally
 set(proj SIRF)
 
 # Set dependency list
@@ -9,7 +8,10 @@ message(STATUS "MATLAB_ROOT=" ${MATLAB_ROOT})
 message(STATUS "STIR_DIR=" ${STIR_DIR})
 
 # Include dependent projects if any
-ExternalProject_Include_Dependencies(${proj} PROJECT_VAR proj DEPENDS_VAR ${proj}_DEPENDENCIES)
+ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
+
+# Set external name (same as internal for now)
+set(externalProjName ${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
