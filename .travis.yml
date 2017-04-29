@@ -65,10 +65,13 @@ script:
   - ./cmake-3.7.2-Linux-x86_64/bin/cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
   - make -j 8 all
   - mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
-  - export PYTHONPATH=$PYTHONPATH:~$PWD/INSTALL/python
+  - export PYTHONPATH=$PYTHONPATH:$PWD/INSTALL/python
   - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/INSTALL/lib
   - export SIRF_PATH=$PWD/SIRF-SuperBuild/SIRF/
   - PATH=$PWD/bin:$PATH
   - python ./SIRF/src/xSTIR/pSTIR/tests/test1.py
+  - gadgetron >& gadgetron.log&
+  - python ./SIRF/src/xGadgetron/pGadgetron/tests/fully_sampled.py
+  - python ./SIRF/src/xGadgetron/pGadgetron/tests/undersampled.py
 
   
