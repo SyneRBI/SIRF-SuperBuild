@@ -13,12 +13,14 @@ os:
 
 # Environment variables:
 global:
-  - BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_armadillo=ON -DUSE_SYSTEM_SWIG=ON -DCMAKE_BUILD_TYPE=Release"
-#env:
+ - BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_SWIG=ON -DCMAKE_BUILD_TYPE=Release"
+  
+env:
+ - EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_SWIG=ON -DCMAKE_BUILD_TYPE=Release"
 
 
-# Ubuntu 16.04 LTS
-dist: xenial
+# Ubuntu 14.04 LTS
+dist: trusty
 
 # No need for sudo
 sudo: false
@@ -28,25 +30,25 @@ addons:
   apt:
     packages:
       - git-core
-      - build-essential 
-      - g++ 
+      - build-essential
+      - g++
       - swig
       - libboost-all-dev
-      - libhdf5-serial-dev 
-      - libfftw3-dev 
-      - python-dev 
-      - liblapack-dev 
+      - libhdf5-serial-dev
+      - libfftw3-dev
+      - python-dev
+      - liblapack-dev
       - libxml2-dev
-      - libxslt-dev 
-      - libarmadillo-dev 
+      - libxslt-dev
+      - libarmadillo-dev
       - libace-dev
-      - libgtest-dev 
+      - libgtest-dev
       - libplplot-dev
       - python-dev
-      - python-scipy 
-      - python-docopt  
-      - python-numpy 
-      - python-matplotlib 
+      - python-scipy
+      - python-docopt
+      - python-numpy
+      - python-matplotlib
       - root-system-bin
 
 # Actual compilation script
@@ -55,17 +57,18 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap homebrew/science; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install --with-cocoa root; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.tar.gz; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.tar.gz; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then tar xzf cmake-3.7.2-Linux-x86_64.tar.gz --strip-components=1; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then curl -0 https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.tar.gz -o cmake-3.7.2-Linux-x86_64.tar.gz; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then tar xzf cmake-3.7.2-Linux-x86_64.tar.gz; fi
 
 script:
-  - ~/bin/cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
+  - env
+  - ./cmake-3.7.2-Linux-x86_64/bin/cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
   - make -j 8 all
   - mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
   - export PYTHONPATH=$PYTHONPATH:~$PWD/INSTALL/python
   - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/INSTALL/lib
   - export SIRF_PATH=$PWD/SIRF-SuperBuild/SIRF/
   - PATH=$PWD/bin:$PATH
+  - python ./SIRF/src/xSTIR/pSTIR/tests/test1.py
 
   
