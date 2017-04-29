@@ -9,7 +9,7 @@ STIR/
 ISMRMRD/
 Gadgetron/
 SWIG/
-armadillo/
+Armadillo/
 googletest/
 
 # CMake output files

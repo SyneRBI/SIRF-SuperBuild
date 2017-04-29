@@ -21,7 +21,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(${proj}_MD5 c601f3a5ec6d50666aa3a539fa20e6ca )
 
   # name after extraction
-  set(${proj}_location armadillo)
+  set(${proj}_location Armadillo)
 
   if(CMAKE_COMPILER_IS_CLANGXX)
     set(CLANG_ARG -DCMAKE_COMPILER_IS_CLANGXX:BOOL=ON)
