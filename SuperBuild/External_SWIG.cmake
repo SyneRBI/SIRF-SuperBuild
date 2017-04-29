@@ -1,12 +1,14 @@
-#These need to be unique globally
-set(externalProjName SWIG)
+#This needs to be unique globally
 set(proj SWIG)
-set(proj_COMPONENTS "COMPONENTS single")
+
 # Set dependency list
 set(${proj}_DEPENDENCIES "")
 
 # Include dependent projects if any
-ExternalProject_Include_Dependencies(${proj} PROJECT_VAR proj DEPENDS_VAR ${proj}_DEPENDENCIES)
+ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
+
+# Set external name (same as internal for now)
+set(externalProjName ${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
@@ -56,9 +58,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     CONFIGURE_COMMAND ./configure --without-pcre --prefix ${SWIG_Install_Dir}
     INSTALL_DIR ${SWIG_Install_Dir}
   )
-
-#The SWIG test-suite and examples are configured for the following languages:
-#perl5 python 
 
   set( SWIG_EXECUTABLE ${SWIG_Install_Dir}/bin/swig )
   set( SWIG_VERSION "3.0.12" )

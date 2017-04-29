@@ -1,12 +1,14 @@
-#These need to be unique globally
-set(externalProjName ISMRMRD)
+#This needs to be unique globally
 set(proj ISMRMRD)
 
 # Set dependency list
 set(${proj}_DEPENDENCIES "HDF5;Boost;FFTW3")
 
 # Include dependent projects if any
-ExternalProject_Include_Dependencies(${proj} PROJECT_VAR proj DEPENDS_VAR ${proj}_DEPENDENCIES)
+ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
+
+# Set external name (same as internal for now)
+set(externalProjName ${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")

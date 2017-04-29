@@ -1,7 +1,8 @@
 # SIRF-SuperBuild
 
 The SIRF-SuperBuild will allow the user to download and compile all the software
-needed to compile SIRF, except for [http://swig.org](SWIG).
+needed to compile SIRF. There is still a [small number](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-Ubuntu-16.04#2-install-dependencies-for-gadgetron) of libraries that are not installed.
+by the SuperBuild.
 
 ## Dependencies
 
@@ -43,7 +44,6 @@ They can be found [here](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-U
 ## TODO
 
 - ***Windows support***
-- Add swig
 - Sort out CMake Status messages.
 
 
