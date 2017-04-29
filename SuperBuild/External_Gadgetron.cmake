@@ -2,7 +2,7 @@
 set(proj Gadgetron)
 
 # Set dependency list
-set(${proj}_DEPENDENCIES "Boost;HDF5;ISMRMRD;FFTW3double;googletest;armadillo")
+set(${proj}_DEPENDENCIES "Boost;HDF5;ISMRMRD;FFTW3double;googletest;Armadillo")
 
 message(STATUS "MATLAB_ROOT=" ${MATLAB_ROOT})
 #message(STATUS "STIR_DIR=" ${STIR_DIR})

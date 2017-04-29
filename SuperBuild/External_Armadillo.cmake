@@ -1,5 +1,5 @@
 #This needs to be unique globally
-set(proj armadillo)
+set(proj Armadillo)
 
 # Set dependency list
 set(${proj}_DEPENDENCIES "")
