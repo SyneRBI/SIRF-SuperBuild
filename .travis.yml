@@ -44,11 +44,6 @@ addons:
       - libace-dev
       - libgtest-dev
       - libplplot-dev
-      - python-dev
-      - python-scipy
-      - python-docopt
-      - python-numpy
-      - python-matplotlib
       - root-system-bin
 
 # Actual compilation script
@@ -60,7 +55,11 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then curl -0 https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.tar.gz -o cmake-3.7.2-Linux-x86_64.tar.gz; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then tar xzf cmake-3.7.2-Linux-x86_64.tar.gz; fi
 
+install:
+  - pip install --upgrade pip setuptools wheel
+  - pip install --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
 script:
+
   - env
   - ./cmake-3.7.2-Linux-x86_64/bin/cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
   - make -j 8 all
