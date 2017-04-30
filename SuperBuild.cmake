@@ -32,12 +32,14 @@ else()
   set(build_Gadgetron_default ON)
 endif()
   
-  option(BUILD_GADGETRON "Build Gadgetron" ${build_Gadgetron_default})
+option(BUILD_GADGETRON "Build Gadgetron" ${build_Gadgetron_default})
+
 set(${PRIMARY_PROJECT_NAME}_DEPENDENCIES
     SIRF
 )
 if (BUILD_GADGETRON)
-    list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES Gadgetron)
+  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES Gadgetron)
+  set(Armadillo_REQUIRED_VERSION 4.600)
 endif()
 
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${PRIMARY_PROJECT_NAME}_DEPENDENCIES)

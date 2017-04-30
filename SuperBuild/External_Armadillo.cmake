@@ -1,3 +1,10 @@
+# Add Armadillo
+#
+# Warning: CMake's FindArmadillo.cmake will always search in default CMake paths and cannot be
+# forced to search first in an alternative location (e.g. via ARMADILLO_ROOT or so).
+# Therefore future find_package statements might still find the system one even if you
+# build your own.
+
 #This needs to be unique globally
 set(proj Armadillo)
 
@@ -44,16 +51,14 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     INSTALL_DIR ${${proj}_Install_Dir}
   )
 
-  #set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
-  #set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
-
-  set( ${proj}_ROOT ${${proj}_Install_Dir} )
-  set( ${proj}_INCLUDE_DIRS ${${proj}_ROOT}/include )
-
+  # no point doing this as FindArmadillo doesn't honour any *_ROOT or *_DIR settings
+  #set( ARMADILLO_ROOT ${${proj}_Install_Dir} )
+  set(ARMADILLO_INCLUDE_DIRS ${${proj}_Install_Dir}/include )
+  # TODO: probably should set ARMADILLO_LIBRARIES
  else()
     if(${USE_SYSTEM_${externalProjName}})
       find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
-      message(STATUS "USING the system ${externalProjName}, found ${proj}_LIBRARIES=${${proj}_LIBRARIES}}")
+      message(STATUS "USING the system ${externalProjName}, found ARMADILLO_LIBRARIES=${ARMADILLO_LIBRARIES}}")
   endif()
   ExternalProject_Add_Empty(${proj} "${${proj}_DEPENDENCIES}")
 endif()
