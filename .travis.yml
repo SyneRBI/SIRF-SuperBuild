@@ -11,12 +11,13 @@ os:
   - linux
 #  - osx
 
-# Environment variables:
-global:
- - BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_Armadillo=ON -DCMAKE_BUILD_TYPE=Release"
-  
+# Environment variables
+# Note: On trusty we need to build Armadillo ourselves (the system version is too old)
 env:
- - EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_Armadillo=ON -DCMAKE_BUILD_TYPE=Release"
+  global:
+    - BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_FFTW3=ON -DCMAKE_BUILD_TYPE=Release"
+  matrix:
+    - EXTRA_BUILD_FLAGS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DUSE_SSYTEM_SWIG=ON" CC=gcc-5 CXX=g++-5 PYVER=3
 
 
 # Ubuntu 14.04 LTS
@@ -38,6 +39,7 @@ addons:
       - libhdf5-serial-dev
       - libfftw3-dev
       - python-dev
+      - python3-dev
       - liblapack-dev
       - libxml2-dev
       - libxslt-dev
@@ -47,8 +49,6 @@ addons:
       - libplplot-dev
       - root-system-bin
 
-# Actual compilation script
-
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap homebrew/science; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
@@ -57,21 +57,23 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then tar xzf cmake-3.7.2-Linux-x86_64.tar.gz; fi
 
 install:
-  - pip install --upgrade pip setuptools wheel
-  - pip install --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
+  - pip${PYVER} install --upgrade pip setuptools wheel
+  - pip${PYVER} install --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
+  - ./cmake-3.7.2-Linux-x86_64/bin/cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS . 
+  - make -j 8
+  - mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
+  
 script:
 
-  - env
-  - (export CC=gcc-5; export CXX=g++-5; ./cmake-3.7.2-Linux-x86_64/bin/cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS . )
-  - make -j 8 all
-  - mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
   - export PYTHONPATH=$PYTHONPATH:$PWD/INSTALL/python
   - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/INSTALL/lib
-  - export SIRF_PATH=$PWD/SIRF-SuperBuild/SIRF/
-  - PATH=$PWD/bin:$PATH
-  - python ./SIRF/src/xSTIR/pSTIR/tests/test1.py
-  - gadgetron >& gadgetron.log&
-  - python ./SIRF/src/xGadgetron/pGadgetron/tests/fully_sampled.py
-  - python ./SIRF/src/xGadgetron/pGadgetron/tests/undersampled.py
-
+  - export SIRF_PATH=$PWD/SIRF
+  - #env
+  - python${PYVER} ./SIRF/src/xSTIR/pSTIR/tests/test1.py
+  - ./INSTALL/bin/gadgetron >& gadgetron.log&
+  - cat gadgetron.log
+  - python${PYVER} ./SIRF/src/xGadgetron/pGadgetron/tests/fully_sampled.py
+  - # cat gadgetron.log
+  - python${PYVER} ./SIRF/src/xGadgetron/pGadgetron/tests/undersampled.py
+  - # cat gadgetron.log
   
