@@ -16,13 +16,13 @@ os:
 # Note: On trusty we need to build Armadillo ourselves (the system version is too old)
 env:
   global:
-    - BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=ON -DCMAKE_BUILD_TYPE=Release"
+    - BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DCMAKE_BUILD_TYPE=Release"
   matrix:
-    - EXTRA_BUILD_FLAGS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DUSE_SSYTEM_SWIG=ON -DUSE_SYSTEM_FFTW3=ON" CC=gcc-5 CXX=g++-5 PYVER=3
-    - EXTRA_BUILD_FLAGS=" -DUSE_SSYTEM_SWIG=ON" CC=clang CXX=clang++ PYVER=
+    - EXTRA_BUILD_FLAGS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DUSE_SYSTEM_HDF5=ON -DUSE_SSYTEM_SWIG=ON -DUSE_SYSTEM_FFTW3=ON" CC=gcc-5 CXX=g++-5 PYVER=3
+    - EXTRA_BUILD_FLAGS=" -DUSE_SSYTEM_SWIG=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_FFTW3=ON" CC=gcc-5 CXX=g++-5 PYVER=
 
-# This works as well
-# - EXTRA_BUILD_FLAGS=" -DUSE_SSYTEM_SWIG=ON -DUSE_SYSTEM_FFTW3=ON" CC=gcc-5 CXX=g++-5 PYVER=
+# This works on osx but we need to sort out the matrix
+#    - EXTRA_BUILD_FLAGS=" -DUSE_SSYTEM_SWIG=ON -DPYTHON_LIBRARY=$(python-config --prefix)/lib/libpython2.7.dylib -DPYTHON_INCLUDE_DIR=$(python-config --prefix)/include/python2.7 " CC=clang CXX=clang++ PYVER=
 
 
 # Ubuntu 14.04 LTS
@@ -57,28 +57,38 @@ addons:
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap homebrew/science; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install --with-cocoa root; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then curl -0 https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.tar.gz -o cmake-3.7.2-Linux-x86_64.tar.gz; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then tar xzf cmake-3.7.2-Linux-x86_64.tar.gz; fi
+  - # Note: boost is already installed on osx on travis so should not be included. However, we currently need boost-python
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install boost-python; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install ace; fi
+  - #if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install scipy matplotlib; fi
+  - # need curl to get more recent cmake
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install curl; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then curl -0 https://cmake.org/files/v3.8/cmake-3.8.0-Darwin-x86_64.tar.gz -o cmake.tar.gz; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then curl -0 https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.tar.gz -o cmake.tar.gz; fi
+  - tar xzf cmake.tar.gz
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then mv cmake-*/CMake.app/Contents/* cmake-*; fi
 
 install:
   - pip${PYVER} install --upgrade pip setuptools wheel
   - pip${PYVER} install --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
-  - ./cmake-3.7.2-Linux-x86_64/bin/cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS . 
-  - make -j 8
+  - ./cmake-*/bin/cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
+  - make -j 6
   - mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
+  - export PYTHONPATH=$PYTHONPATH:$PWD/INSTALL/python
+  - # Setting for Linux but doesn't harm elsewhere
+  - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/INSTALL/lib
+  - # Setting for MacOS but doesn't harm elsewhere
+  - export DYLD_FALLBACK_LIBRARY_PATH=$PWD/INSTALL/lib:$DYLD_FALLBACK_LIBRARY_PATH
+  - export SIRF_PATH=$PWD/SIRF
+  - #env
   
 script:
 
-  - export PYTHONPATH=$PYTHONPATH:$PWD/INSTALL/python
-  - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/INSTALL/lib
-  - export SIRF_PATH=$PWD/SIRF
-  - #env
+
   - python${PYVER} ./SIRF/src/xSTIR/pSTIR/tests/test1.py
   - ./INSTALL/bin/gadgetron >& gadgetron.log&
-  - cat gadgetron.log
   - python${PYVER} ./SIRF/src/xGadgetron/pGadgetron/tests/fully_sampled.py
-  - # cat gadgetron.log
   - python${PYVER} ./SIRF/src/xGadgetron/pGadgetron/tests/undersampled.py
-  - # cat gadgetron.log
+  - # print for debugging
+  - cat gadgetron.log
   
