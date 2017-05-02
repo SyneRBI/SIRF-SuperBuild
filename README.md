@@ -1,21 +1,21 @@
-# SIRF-SuperBuild
+# SIRF-SuperBuild [![Build Status](https://travis-ci.org/CCPPETMR/SIRF-SuperBuild.svg?branch=master)](https://travis-ci.org/CCPPETMR/SIRF-SuperBuild)
 
-The SIRF-SuperBuild will allow the user to download and compile all the software
-needed to compile SIRF. There is still a [small number](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-Ubuntu-16.04#2-install-dependencies-for-gadgetron) of libraries that are not installed.
-by the SuperBuild.
+The SIRF-SuperBuild allows the user to download and compile most of the software
+needed to compile SIRF and Gadgetron, and automatically build SIRF and Gadgetron. 
+There is still a small number of libraries that are not installed
+by the SuperBuild ([more info for Linux](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-Ubuntu-16.04#2-install-dependencies-for-gadgetron)).
 
 ## Dependencies
 
 The superBuild depends on CMake >= 3.7.
 
-## Install
-
-The following instructions are specific to a Linux system.
+## Generic instructions.
 
 To compile and install SIRF with the SuperBuild:
 
  1. create a directory for the SuperBuild, e.g. devel.
- 2. If you do not have CMake >= 3.7 issue the following commands
+ 2. If you do not have CMake >= 3.7 install it first ([download link](https://cmake.org/download/)). On Linux,
+you can issue the following commands
 
 ```bash
 mkdir devel
@@ -25,21 +25,29 @@ sudo mkdir /opt/cmake
 sudo bash cmake-3.7.2-Linux-x86_64.sh --prefix=/opt/cmake
 export PATH=/opt/cmake/bin:$PATH
 ```
+During installation you will be asked to read and accept CMake's license.
 
  3. Clone the project 
 
 ```bash
 git clone https://github.com/CCPPETMR/SIRF-SuperBuild.git
 cd SIRF-SuperBuild
+```
+
+ 4. Build and install
+```bash
 cmake .
 make
 ```
 
-Please notice that if you do not have CMake >= 3.7 you need to install it. During installation you will be asked to read and accept CMake's license.
 
-## Installation instruction for Ubuntu 16.10
+## Installation instructions for Ubuntu 16.10
 
 They can be found [here](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-Ubuntu-16.04)
+
+## Installation instructions for Mac OS
+
+They can be found [here](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-on-MacOS)
 
 ## TODO
 
