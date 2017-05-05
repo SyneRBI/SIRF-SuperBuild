@@ -61,8 +61,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         ${${proj}_DEPENDENCIES}
   )
 
-    set(GTEST_ROOT        ${googletest_SOURCE_DIR})
-    set(GTEST_INCLUDE_DIR ${googletest_SOURCE_DIR})
+    set(GTEST_ROOT        ${googletest_Install_Dir})
+    set(GTEST_INCLUDE_DIR ${googletest_Install_Dir/include})
 
    else()
       if(${USE_SYSTEM_${externalProjName}})

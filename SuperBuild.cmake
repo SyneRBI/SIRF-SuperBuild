@@ -71,6 +71,7 @@ message(STATUS "ISMRMRD_DIR = " ${ISMRMRD_DIR})
 message(STATUS "FFTW3_ROOT_DIR = " ${FFTW3_ROOT_DIR})
 message(STATUS "STIR_DIR = " ${STIR_DIR})
 message(STATUS "HDF5_ROOT = " ${HDF5_ROOT})
+message(STATUS "GTEST_ROOT = " ${GTEST_ROOT})
 message(STATUS "MATLAB_ROOT = " ${MATLAB_ROOT})
 
 #set(SIRF_Install_Dir ${CMAKE_CURRENT_BINARY_DIR}/SIRF-install)
