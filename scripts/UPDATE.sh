@@ -37,6 +37,19 @@ echo $PASSWD | sudo -S apt-get -y install python-scipy python-docopt python-matp
 
 source ~/.bashrc
 
+if [ -z $SRC_PATH ]
+then
+  export SRC_PATH=~/devel
+  echo 'export SRC_PATH=~/devel' > ~/.bashrc
+fi
+if [ ! -d $SRC_PATH ]
+then
+  # create it in a very dangerous fashion
+  # This is hopefully ok as we know what the history was of the VM.
+  # We will need to fix this when we create a new VM.
+  mkdir -p $SRC_PATH
+fi
+
 if [ -z $INSTALL_DIR ]
 then
   export INSTALL_DIR=~/devel/build/install

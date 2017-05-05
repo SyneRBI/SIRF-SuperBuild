@@ -82,7 +82,8 @@ Vagrant.configure("2") do |config|
     HOME=/home/sirfuser
     mkdir $HOME/devel
     cd $HOME/devel
-
+    
+	export SRC_PATH=$HOME/devel
     export INSTALL_DIR=$HOME/devel/build/install
     export LD_LIBRARY_PATH=$INSTALL_DIR/lib:$LD_LIBRARY_PATH
     export PYTHONPATH=$INSTALL_DIR/python 
