@@ -41,7 +41,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ### --- Project specific additions here
   set(Gadgetron_Install_Dir ${CMAKE_CURRENT_BINARY_DIR}/INSTALL)
-  set(${proj}_URL https://github.com/gadgetron/gadgetron )
+  set(${proj}_URL https://github.com/CCPPETMR/gadgetron )
 
   #message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${CMAKE_CURRENT_BINARY_DIR}/INSTALL)
