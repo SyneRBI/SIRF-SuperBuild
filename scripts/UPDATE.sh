@@ -35,8 +35,8 @@ if [ -r ~/.sirfrc ]
 then
   source ~/.sirfrc
 else
-  echo "I will create a ~/.sirfc file and source this from your .bashrc"
-  echo "source ~/.sirfc" >> ~/.bashrc
+  echo "I will create a ~/.sirfrc file and source this from your .bashrc"
+  echo "source ~/.sirfrc" >> ~/.bashrc
 fi
 
 if [ -r ~/.sirf_VM_version ]
@@ -58,8 +58,8 @@ fi
 if [ -z $SIRF_SRC_PATH ]
 then
   export SIRF_SRC_PATH=~/devel
-  # overwriting .sirfc but presumably it was empty anyway
-  echo 'SIRF_SRC_PATH=~/devel' > ~/.sirfrc
+  # overwriting .sirfrc but presumably it was empty anyway
+  echo 'export SIRF_SRC_PATH=~/devel' > ~/.sirfrc
 fi
 if [ ! -d $SIRF_SRC_PATH ]
 then
@@ -73,6 +73,8 @@ then
   echo "export SIRF_BUILD_PATH=$SIRF_BUILD_PATH" >> ~/.sirfrc
   export SIRF_INSTALL_PATH=$SIRF_SRC_PATH/build/install
   echo "export SIRF_INSTALL_PATH=$SIRF_INSTALL_PATH" >> ~/.sirfrc
+  export SIRF_PATH=$SIRF_SRC_PATH/SIRF
+  echo "export SIRF_PATH=$SIRF_PATH" >> ~/.sirfrc
   export LD_LIBRARY_PATH=$SIRF_INSTALL_PATH/lib:$LD_LIBRARY_PATH
   echo 'export LD_LIBRARY_PATH=$SIRF_INSTALL_PATH/lib:$LD_LIBRARY_PATH' >> ~/.sirfrc
   export PYTHONPATH=$SIRF_INSTALL_PATH/python
