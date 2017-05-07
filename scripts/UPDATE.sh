@@ -94,6 +94,7 @@ fi
 clone_or_pull()
 {
   repo=$1
+  echo "======================  Getting/updating source for $repo"
   cd $SIRF_SRC_PATH
   if [ -d $repo ]
   then
@@ -111,6 +112,7 @@ build_and_install()
 {
   repo=$1
   shift
+  echo "======================  Building $repo"
   cd $SIRF_BUILD_PATH
   if [ -d $repo ]
   then
@@ -121,6 +123,7 @@ build_and_install()
     cd $repo
     $CMAKE $* $SIRF_SRC_PATH/$repo
   fi
+  echo "======================  Installing $repo"
   make install
 }
 
@@ -135,6 +138,12 @@ update ismrmrd
 update STIR  -DGRAPHICS=None -DBUILD_EXECUTABLES=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON
 update gadgetron
 update SIRF
+
+# check if gadgetron config file exists
+gadgetron_config=$INSTALL_DIR/share/gadgetron/config/gadgetron.xml
+if [ ! -r  ${gadgetron_config} ]; then
+  cp ${gadgetron_config}.example ${gadgetron_config}
+fi
 
 clone_or_pull ismrmrd-python-tools
 cd $SIRF_SRC_PATH/ismrmrd-python-tools
