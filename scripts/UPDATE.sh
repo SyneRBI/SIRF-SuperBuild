@@ -140,7 +140,7 @@ update gadgetron
 update SIRF
 
 # check if gadgetron config file exists
-gadgetron_config=$INSTALL_DIR/share/gadgetron/config/gadgetron.xml
+gadgetron_config=$SIRF_INSTALL_PATH/share/gadgetron/config/gadgetron.xml
 if [ ! -r  ${gadgetron_config} ]; then
   cp ${gadgetron_config}.example ${gadgetron_config}
 fi
