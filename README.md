@@ -39,7 +39,19 @@ cd SIRF-SuperBuild
 cmake .
 make
 ```
+5. Source a script with the environment variables appropriate for your shell
 
+For instance, for sh/bash/ksh etc
+```bash
+source INSTALL/bin/env_ccppetmr.sh
+```
+You probably want to add a similar line (with absolute path) to your .bashrc/.profile.
+
+Or for csh
+```csh
+source INSTALL/bin/env_ccppetmr.csh
+```
+You probably want to add a similar line (with absolute path) to your .cshrc.
 
 ## Installation instructions for Ubuntu 16.10
 
