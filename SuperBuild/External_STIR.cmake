@@ -35,7 +35,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(STIR_Install_Dir ${CMAKE_CURRENT_BINARY_DIR}/INSTALL)
+  set(STIR_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
   set(${proj}_URL https://github.com/CCPPETMR/STIR )
 
@@ -58,7 +58,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   )
 
   set(STIR_ROOT       ${STIR_Install_Dir})
-  set(STIR_DIR       ${CMAKE_CURRENT_BINARY_DIR}/INSTALL/lib/cmake)
+  set(STIR_DIR       ${SUPERBUILD_INSTALL_DIR}/lib/cmake)
   set(STIR_INCLUDE_DIRS ${STIR_ROOT}/stir)
 
    else()

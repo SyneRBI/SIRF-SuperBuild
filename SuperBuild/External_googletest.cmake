@@ -39,12 +39,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(googletest_Install_Dir ${CMAKE_CURRENT_BINARY_DIR}/INSTALL)
+  set(googletest_Install_Dir ${SUPERBUILD_INSTALL_DIR})
   set(${proj}_URL https://github.com/google/googletest )
 
   #message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
-  set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${CMAKE_CURRENT_BINARY_DIR}/INSTALL)
-  set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${CMAKE_CURRENT_BINARY_DIR}/INSTALL)
+  set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
+  set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
@@ -52,9 +52,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
 
     CMAKE_ARGS
-        -DCMAKE_PREFIX_PATH=${CMAKE_CURRENT_BINARY_DIR}/INSTALL
-        -DCMAKE_LIBRARY_PATH=${CMAKE_CURRENT_BINARY_DIR}/INSTALL/lib
-        -DCMAKE_INCLUDE_PATH=${CMAKE_CURRENT_BINARY_DIR}/INSTALL
+        -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
+        -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
+        -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}
         -DCMAKE_INSTALL_PREFIX=${googletest_Install_Dir}
     INSTALL_DIR ${googletest_Install_Dir}
     DEPENDS

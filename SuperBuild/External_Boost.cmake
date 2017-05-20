@@ -35,7 +35,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(Boost_Install_Dir ${CMAKE_CURRENT_BINARY_DIR}/INSTALL)
+  set(Boost_Install_Dir ${SUPERBUILD_INSTALL_DIR})
   set(Boost_Configure_Script ${CMAKE_CURRENT_LIST_DIR}/External_Boost_configureboost.cmake)
   set(Boost_Build_Script ${CMAKE_CURRENT_LIST_DIR}/External_Boost_buildboost.cmake)
 

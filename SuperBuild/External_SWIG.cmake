@@ -39,7 +39,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ### --- Project specific additions here
   
   if (WIN32)
-  set(SWIG_Install_Dir ${CMAKE_CURRENT_BINARY_DIR}/INSTALL/SWIG-3.0.12)
+  set(SWIG_Install_Dir ${SUPERBUILD_INSTALL_DIR}/SWIG-3.0.12)
   # Just use precompiled version
   set(${proj}_URL http://prdownloads.sourceforge.net/swig/swigwin-3.0.12.zip  )
   set(${proj}_MD5 a49524dad2c91ae1920974e7062bfc93 )
@@ -58,7 +58,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   return()
   endif(WIN32)
 
-  set(SWIG_Install_Dir ${CMAKE_CURRENT_BINARY_DIR}/INSTALL)
+  set(SWIG_Install_Dir ${SUPERBUILD_INSTALL_DIR})
   
   set(SWIG_Configure_Script ${CMAKE_CURRENT_LIST_DIR}/External_SWIG_configure.cmake)
   set(SWIG_Build_Script ${CMAKE_CURRENT_LIST_DIR}/External_SWIG_build.cmake)

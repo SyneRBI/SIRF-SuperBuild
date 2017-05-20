@@ -35,7 +35,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(HDF5_Install_Dir ${CMAKE_CURRENT_BINARY_DIR}/INSTALL)
+  set(HDF5_Install_Dir ${SUPERBUILD_INSTALL_DIR})
   #set(HDF5_Configure_Script ${CMAKE_CURRENT_LIST_DIR}/External_HDF5_configureboost.cmake)
   #set(HDF5_Build_Script ${CMAKE_CURRENT_LIST_DIR}/External_HDF5_buildboost.cmake)
 

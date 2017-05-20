@@ -23,10 +23,16 @@
 set( SOURCE_DOWNLOAD_CACHE ${CMAKE_CURRENT_BINARY_DIR} CACHE PATH
     "The path for downloading external source directories" )
 
+mark_as_advanced( SOURCE_DOWNLOAD_CACHE )
+
 set(externalProjName ${PRIMARY_PROJECT_NAME})
 set(proj ${PRIMARY_PROJECT_NAME})
 
-mark_as_advanced( SOURCE_DOWNLOAD_CACHE )
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+  set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/INSTALL" CACHE PATH "Prefix for path for installation" FORCE)
+endif()
+
+set (SUPERBUILD_INSTALL_DIR ${CMAKE_INSTALL_PREFIX})
 
 include(ExternalProject)
 
@@ -83,6 +89,6 @@ message(STATUS "MATLAB_ROOT = " ${MATLAB_ROOT})
 
 # Make environment files
 set(SIRF_SRC_PATH ${CMAKE_CURRENT_LIST_DIR}/SIRF)
-set(CCPPETMR_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/INSTALL)
+set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
 configure_file(env_ccppetmr.sh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.sh)
 configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)

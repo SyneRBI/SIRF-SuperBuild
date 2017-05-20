@@ -42,7 +42,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(${proj}_Install_Dir ${CMAKE_CURRENT_BINARY_DIR}/INSTALL)
+  set(${proj}_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
   set(${proj}_URL   https://downloads.sourceforge.net/project/arma/armadillo-7.800.2.tar.xz?r=http%3A%2F%2Farma.sourceforge.net%2Fdownload.html&ts=1492950217&use_mirror=freefr
  )

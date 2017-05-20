@@ -38,7 +38,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(SIRF_Install_Dir ${CMAKE_CURRENT_BINARY_DIR}/INSTALL)
+  set(SIRF_Install_Dir ${SUPERBUILD_INSTALL_DIR})
   set(${proj}_URL https://github.com/CCPPETMR/SIRF )
 
   # Attempt to make Python settings consistent
@@ -57,7 +57,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   endif()
 
   message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
-  set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${CMAKE_CURRENT_BINARY_DIR}/INSTALL)
+  set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
@@ -66,8 +66,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
 
     CMAKE_ARGS
-        -DCMAKE_PREFIX_PATH=${CMAKE_CURRENT_BINARY_DIR}/INSTALL
-        -DCMAKE_LIBRARY_PATH=${CMAKE_CURRENT_BINARY_DIR}/INSTALL/lib
+        -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
+        -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
         -DCMAKE_INSTALL_PREFIX=${SIRF_Install_Dir}
         -DBOOST_INCLUDEDIR=${BOOST_ROOT}/include/
         -DBOOST_LIBRARYDIR=${BOOST_LIBRARY_DIR}

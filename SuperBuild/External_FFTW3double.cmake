@@ -47,7 +47,7 @@ if(NOT ( DEFINED "USE_SYSTEM_FFTW3" AND "${USE_SYSTEM_FFTW3}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(FFTWdouble_Install_Dir ${CMAKE_CURRENT_BINARY_DIR}/INSTALL)
+  set(FFTWdouble_Install_Dir ${SUPERBUILD_INSTALL_DIR})
   set(FFTWdouble_Configure_Script ${CMAKE_CURRENT_LIST_DIR}/External_FFTWdouble_configure.cmake)
   set(FFTW_Build_Script ${CMAKE_CURRENT_LIST_DIR}/External_FFTWdouble_build.cmake)
 
