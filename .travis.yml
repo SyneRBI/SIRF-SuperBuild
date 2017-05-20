@@ -74,12 +74,7 @@ install:
   - ./cmake-*/bin/cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
   - make -j 6
   - mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
-  - export PYTHONPATH=$PYTHONPATH:$PWD/INSTALL/python
-  - # Setting for Linux but doesn't harm elsewhere
-  - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/INSTALL/lib
-  - # Setting for MacOS but doesn't harm elsewhere
-  - export DYLD_FALLBACK_LIBRARY_PATH=$PWD/INSTALL/lib:$DYLD_FALLBACK_LIBRARY_PATH
-  - export SIRF_PATH=$PWD/SIRF
+  - source $PWD/INSTALL/bin/env_ccppetmr.sh
   - #env
   
 script:
