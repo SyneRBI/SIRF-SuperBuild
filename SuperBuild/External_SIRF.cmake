@@ -62,7 +62,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
-    GIT_TAG v0.9.0-rc2
+    GIT_TAG release-0.9.0
     SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
 
     CMAKE_ARGS
