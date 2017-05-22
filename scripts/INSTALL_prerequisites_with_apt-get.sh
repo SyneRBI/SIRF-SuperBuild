@@ -21,7 +21,7 @@ $SUDO apt-get install -y --no-install-recommends swig
 
 # TODO replace with pip install
 echo "Installing python libraries etc"
-$SUDO apt-get install -y --no-install-recommends  python-scipy python-docopt  python-numpy python-h5py python-matplotlib python-libxml2 python-psutil spyder
+$SUDO apt-get install -y --no-install-recommends  python-scipy python-docopt  python-numpy python-h5py python-matplotlib python-libxml2 python-psutil spyder python-tk
 
 
 # could do recent version of CMake
