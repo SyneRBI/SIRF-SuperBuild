@@ -48,8 +48,9 @@ so you should better shut it down and start again right after setting the displa
 
 4. Click on the activities on the top left corner and write `xterm` in the search box and press enter. This will open a terminal. Type
 
-      update_VM.sh
-      sudo /home/sirfuser/devel/CCPPETMR_VM/scripts/update_VGA.sh
+    update_VM.sh
+    
+    sudo /home/sirfuser/devel/CCPPETMR_VM/scripts/update_VGA.sh
 
 This commands update the virtual machine and the second fixes a potential mismatch between the installed Virtual Box Guest Addition (VGA) and the version of the virtual box you are running.
 
