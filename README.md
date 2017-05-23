@@ -61,3 +61,23 @@ To shut down your VM when you are finished with it, use one of the following opt
 (It is not advisable to "power-off" the VM as that can leave the file system of the VM in an undefined state).
 3. Use the VirtualBox main window do to any of the above.
 
+## Shared folders and other VirtualBox advanced features
+ 
+This section is optional.
+ 
+Things work smoother if you have [the VirtualBox Guest Additions (VGA)](http://www.virtualbox.org/manual/ch04.html), essentially a set of drivers for the guest OS. The VM has these already installed but they will only work properly if you have VirtualBox 4.3.30. Fortunately, it is not very hard to install the VGA for your VirtualBox version. Please follow [the standard instructions](https://www.virtualbox.org/manual/ch04.html#idp45859068609968), skipping step 1 (about dkms) as this has been done for you. Reboot your VM after installing the VGA.
+Please do this __after__ updating your VM as above.
+ 
+After installing the VGA, you might want to configure a shared directory between the host and the guest machine such that your virtual machine can "see" your "normal" files. Please read [the Virtualbox documentation on Folder Sharing](http://www.virtualbox.org/manual/ch04.html#sharedfolders). 
+Summary of steps (courtesy Nikos Efthimiou):
+ 
+ 1. Right click on the Lubuntu VM in VirtualBox main window and choose Settings.
+ 2. Choose "Shared Folders" (last item on the left).
+ 3. Add new folder, select the folder you want, and give it a name, e.g. MyLaptop (use small + button near the right edge of the dialog).
+ 4. Select folder and opt in "make permanent" and "auto mount".
+ 5. Start the Lubuntu VM (or switch to it) and open a terminal and type
+ 
+         mkdir ~/MyLaptop
+         sudo mount -t vboxsf -o rw,uid=1000,gid=1000 MyLaptop ~/MyLaptop
+ 
+ You will have to type the last command whenever you reboot your VM, or you could make this permanent by pasting the above command to /etc/rc.local before "exit 0" (non-trivial because of admin permissions).
