@@ -52,7 +52,7 @@ so you should better shut it down and start again right after setting the displa
     
     sudo /home/sirfuser/devel/CCPPETMR_VM/scripts/update_VGA.sh
 
-This commands update the virtual machine and the second fixes a potential mismatch between the installed Virtual Box Guest Addition (VGA) and the version of the virtual box you are running.
+This commands update the virtual machine and the second fixes a [potential mismatch](https://github.com/CCPPETMR/CCPPETMR_VM/issues/9) between the installed Virtual Box Guest Addition (VGA) and the version of the virtual box you are running.
 
 To shut down your VM when you are finished with it, use one of the following options. 
 
