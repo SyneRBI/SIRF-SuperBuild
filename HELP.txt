@@ -1,14 +1,20 @@
 This is a virtual machine with pre-installed versions of the CCP PETMR
 software SIRF and associated utilities.
 
+Check https://github.com/CCPPETMR/CCPPETMR_VM/wiki for more information.
+
 To get all software up-to-date, type
 
-   update_VM.sh.
+   update_VM.sh
 
-To run Gadgetron interface demos, first open a new terminal and type gadgetron. 
+To run MR demos, first open a new terminal and type
 
-Then open another terminal, change to ~/devel/SIRF/examples and check the
-readme.txt.
+    gadgetron
+
+Then open another terminal, change to ~/devel/SIRF/examples for both
+Python and MATLAB examples (some info is in the README.txt). However,
+MATLAB is not installed on this VM of course.
+
 
 Note that by default, STIR will not be fully installed, but only its
 necessary components for SIRF. If you want to use the STIR executables and/or
@@ -16,8 +22,8 @@ its own Python interface, type
 
     update_VM_to_full_STIR.sh
 
-This will also create a new folder ~/STIR-exercises with some example STIR files.
-
+This will also create a new folder ~/devel/STIR-exercises with some
+example STIR files.
 Note that you have to do this only once. Future calls to update_VM.sh
 will also update STIR completely.
 
