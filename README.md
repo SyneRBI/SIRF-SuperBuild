@@ -2,7 +2,7 @@
 
 This projects contains as series of scripts to create and install a virtual machine running SIRF and its prerequisites. 
 
-If instead, you are trying to find information on how to use the virtual machine that can be downloaded from our [website](http://www.ccppetmr.ac.uk/downloads) just check [here]()
+If instead, you are trying to find information on how to use the virtual machine that can be downloaded from our [website](http://www.ccppetmr.ac.uk/downloads) just check [here](https://github.com/CCPPETMR/CCPPETMR_VM/blob/master/INSTALL.md)
 
 ## Prerequisites
 
@@ -25,7 +25,7 @@ Now you created your VM! It's time to update it. Start the VM and open a termina
     update_VM.sh
 	sudo /home/sirfuser/devel/CCPPETMR_VM/scripts/update_VGA.sh
 	
-Refer to [here]() for further informations and instructions.
+Refer to [here](https://github.com/CCPPETMR/CCPPETMR_VM/blob/master/INSTALL.md) for further informations and instructions.
 
 The VM you created is very very bare and a better UI should be installed. To keep disk occupancy low we suggest to run
 
