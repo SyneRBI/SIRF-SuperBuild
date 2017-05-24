@@ -10,7 +10,8 @@ If you have any problems, please first re-check this web-page. If you cannot sol
 2. Install [VirtualBox](https://www.virtualbox.org). Please note that this will require administrator permissions. 
 You do not need to install the Oracle extensions to VirtualBox, although it might come in handy for USB support. 
 Although other Virtual Machine software might work, we have not tried this and will not be able to help to get this going. 
-Nikos Efthimiou says that if you run Ubuntu (or similar) on your laptop, VirtualBox might not install, unless you first upgrade to libvpx > 1. You could try the following (but you might want to read-up on this first):
+
+In 2015, Nikos Efthimiou said that if you run Ubuntu (or similar) on your laptop, VirtualBox might not install, unless you first upgrade to libvpx > 1. You could try the following (but you might want to read-up on this first):
 	- wget http://launchpadlibrarian.net/199480915/libvpx1\_1.3.0-3ubuntu1\_amd64.deb
 	- sudo dpkg -i libvpx1*.deb
 
@@ -46,11 +47,10 @@ If you see a dialog box about "starting in scaled mode", you can press OK to all
 	- The display resolution (default is 1024x768), can be changed from the system settings app.
 
 4. Click on the activities on the top left corner and write `terminal` in the search box and press enter. This will open a terminal. Type
-
-    update_VM.sh
-    
-    sudo /home/sirfuser/devel/CCPPETMR_VM/scripts/update_VGA.sh
-
+```
+update_VM.sh 
+sudo /home/sirfuser/devel/CCPPETMR_VM/scripts/update_VGA.sh
+```
 The first command updates the virtual machine and the second fixes a [potential mismatch](https://github.com/CCPPETMR/CCPPETMR_VM/issues/9) between the installed Virtual Box Guest Addition (VGA) and the version of the virtual box you are running.
 
 To shut down your VM when you are finished with it, use one of the following options. 
