@@ -18,7 +18,11 @@
 # limitations under the License.
 #
 #=========================================================================
-
+if (WIN32)
+ if(NOT "x_${CMAKE_GENERATOR_PLATFORM}" STREQUAL "x_x64")
+    message( FATAL_ERROR "The SuperBuild currently has Win64 hard-wired for dependent libraries. Please use a Win64 generator")
+ endif()
+endif()
 
 set( SOURCE_DOWNLOAD_CACHE ${CMAKE_CURRENT_BINARY_DIR} CACHE PATH
     "The path for downloading external source directories" )
