@@ -44,6 +44,14 @@ set(EXTERNAL_PROJECT_BUILD_TYPE "Release" CACHE STRING "Default build type for s
 set_property(CACHE EXTERNAL_PROJECT_BUILD_TYPE PROPERTY
 STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 
+# Make sure that some CMake variables are passed to all dependencies
+mark_as_superbuild(
+   PROJECTS ALL_PROJECTS
+   VARS CMAKE_GENERATOR:STRING CMAKE_GENERATOR_PLATFORM:STRING CMAKE_GENERATOR_TOOLSET:STRING
+        CMAKE_C_COMPILER:FILEPATH CMAKE_CXX_COMPILER:FILEPATH
+        CMAKE_INSTALL_PREFIX:PATH
+)
+
 
 set(MATLAB_ROOT CACHE PATH "Path to Matlab root directory")
 
