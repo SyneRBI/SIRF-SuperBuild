@@ -90,23 +90,26 @@ then
 fi
 
 # define a function to get the source
-# argument: name of repo
+# arguments: name_of_repo [git_ref]
 clone_or_pull()
 {
   repo=$1
+  git_ref=${2:-master} # default to master
   echo "======================  Getting/updating source for $repo"
   cd $SIRF_SRC_PATH
   if [ -d $repo ]
   then
     cd $repo
-    git pull
-    git submodule update --init
+    git fetch
   else
     git clone --recursive https://github.com/CCPPETMR/$repo
+    cd $repo
   fi
+  git checkout $git_ref
+  git submodule update --init
 }
 
-# define a function to bulid and install
+# define a function to build and install
 # arguments: name_of_repo [cmake arguments]
 build_and_install()
 {
@@ -134,7 +137,9 @@ update()
   build_and_install $*
 }
 
-update ismrmrd
+clone_or_pull ismrmrd f98df72fcd85e739fb41083561d8d96c951520bd
+build_and_install ismrmrd
+
 update STIR  -DGRAPHICS=None -DBUILD_EXECUTABLES=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON
 update gadgetron
 update SIRF
