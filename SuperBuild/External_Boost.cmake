@@ -39,8 +39,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(Boost_Configure_Script ${CMAKE_CURRENT_LIST_DIR}/External_Boost_configureboost.cmake)
   set(Boost_Build_Script ${CMAKE_CURRENT_LIST_DIR}/External_Boost_buildboost.cmake)
 
-  set(${proj}_URL http://downloads.sourceforge.net/project/boost/boost/1.63.0/boost_1_63_0.zip )
-  set(${proj}_MD5 3c706b3fc749884ea5510c39474fd732 )
+#  set(${proj}_URL http://downloads.sourceforge.net/project/boost/boost/1.63.0/boost_1_63_0.zip )
+#  set(${proj}_MD5 3c706b3fc749884ea5510c39474fd732 )
 
   if(CMAKE_COMPILER_IS_CLANGXX)
     set(CLANG_ARG -DCMAKE_COMPILER_IS_CLANGXX:BOOL=ON)

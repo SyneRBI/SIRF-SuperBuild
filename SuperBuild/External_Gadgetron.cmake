@@ -59,6 +59,7 @@ endif ()
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
+    GIT_TAG ${GADGETRON_TAG}
     SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
 
     CMAKE_ARGS

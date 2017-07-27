@@ -42,6 +42,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
+    GIT_TAG ${ISMRMRD_TAG}
     SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
     #BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/${proj}
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${ISMRMRD_Install_Dir}
