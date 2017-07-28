@@ -1,7 +1,9 @@
 #========================================================================
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
+# Author: Edoardo Pasca
 # Copyright 2017 University College London
+# Copyright 2017 STFC
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -18,29 +20,26 @@
 # limitations under the License.
 #
 #=========================================================================
-
-#This needs to be unique globally
+#These need to be unique globally
+set(externalProjName HDF5)
 set(proj HDF5)
 
 # Set dependency list
 set(${proj}_DEPENDENCIES "")
 
 # Include dependent projects if any
-ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
-
-# Set external name (same as internal for now)
-set(externalProjName ${proj})
+ExternalProject_Include_Dependencies(${proj} PROJECT_VAR proj DEPENDS_VAR ${proj}_DEPENDENCIES)
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(HDF5_Install_Dir ${SUPERBUILD_INSTALL_DIR})
+  set(HDF5_Install_Dir ${CMAKE_CURRENT_BINARY_DIR}/INSTALL)
   #set(HDF5_Configure_Script ${CMAKE_CURRENT_LIST_DIR}/External_HDF5_configureboost.cmake)
   #set(HDF5_Build_Script ${CMAKE_CURRENT_LIST_DIR}/External_HDF5_buildboost.cmake)
 
-  set(${proj}_URL https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.0-patch1/src/CMake-hdf5-1.10.0-patch1.tar.gz )
-  set(${proj}_MD5 6fb456d03a60f358f3c077288a6d1cd8 )
+#  set(${proj}_URL https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.0-patch1/src/CMake-hdf5-1.10.0-patch1.tar.gz )
+#  set(${proj}_MD5 6fb456d03a60f358f3c077288a6d1cd8 )
 
   if(CMAKE_COMPILER_IS_CLANGXX)
     set(CLANG_ARG -DCMAKE_COMPILER_IS_CLANGXX:BOOL=ON)
