@@ -37,8 +37,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ### --- Project specific additions here
   set(ISMRMRD_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
-  set(${proj}_URL https://github.com/CCPPETMR/ISMRMRD )
-
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
