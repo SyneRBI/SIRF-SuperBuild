@@ -46,12 +46,16 @@ set(FFTW3double_MD5 $FFTW3_MD5)
 
 
 ## STIR
-set(STIR_TAG stir_rel_3_00)
+
+set(STIR_URL https://github.com/UCL/STIR )
+set(STIR_TAG 9ef3b73b023cefc592af9a004d13297b736afa17)
 
 ## Gadgetron
+set(GADGETRON_URL https://github.com/gadgetron/gadgetron )
 set(GADGETRON_TAG v3.8.2)
 
 ## ISMRMRD
+set(ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
 set(ISMRMRD_TAG v1.3.2)
 
 ## HDF5
@@ -62,7 +66,7 @@ set(HDF5_MD5 6fb456d03a60f358f3c077288a6d1cd8 )
 if (WIN32)
   set(SWIG_URL http://prdownloads.sourceforge.net/swig/swigwin-3.0.12.zip  )
   set(SWIG_MD5 a49524dad2c91ae1920974e7062bfc93 )
-else(WIND32)
+else(WIN32)
   set(SWIG_URL http://prdownloads.sourceforge.net/swig/swig-3.0.12.tar.gz )
   set(SWIG_MD5 82133dfa7bba75ff9ad98a7046be687c )
 endif(WIN32)
@@ -73,9 +77,9 @@ set(googletest_TAG release-1.8.0)
 
 
 if (DEVEL_BUILD)
-set (default_SIRF_GIT_TAG master)
+set (SIRF_TAG master)
 else()
-set(default_SIRF_GIT_TAG v0.9.0)
+set(SIRF_TAG v0.9.0)
 endif()
 option(GIT_TAG_SIRF "git tag for SIRF" ${default_SIRF_GIT_TAG})
 
