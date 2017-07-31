@@ -41,7 +41,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ### --- Project specific additions here
   set(Gadgetron_Install_Dir ${SUPERBUILD_INSTALL_DIR})
-  set(${proj}_URL https://github.com/CCPPETMR/gadgetron )
 
   #message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
@@ -58,7 +57,7 @@ if (MKL_FOUND)
 endif ()
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
-    GIT_REPOSITORY ${${proj}_URL}
+    GIT_REPOSITORY ${GADGETRON_URL}
     GIT_TAG ${GADGETRON_TAG}
     SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
 
