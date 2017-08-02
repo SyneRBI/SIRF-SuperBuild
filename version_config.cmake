@@ -47,16 +47,20 @@ set(FFTW3double_MD5 $FFTW3_MD5)
 
 ## STIR
 
-set(STIR_URL https://github.com/UCL/STIR )
-set(STIR_TAG 9ef3b73b023cefc592af9a004d13297b736afa17)
+set(STIR_URL https://github.com/CCPPETMR/STIR )
+set(STIR_TAG 8bf37d9d7fdde7cb3a98a6f848d93827dbd98a18)
+#set(STIR_TAG 9ef3b73b023cefc592af9a004d13297b736afa17)
 
 ## Gadgetron
-set(GADGETRON_URL https://github.com/gadgetron/gadgetron )
-set(GADGETRON_TAG v3.8.2)
+set(GADGETRON_URL https://github.com/CCPPETMR/gadgetron )
+#set(GADGETRON_TAG v3.8.2)
+set(GADGETRON_TAG f03829ef45e57466829e6ec46da7a7cf61db1c8a)
 
 ## ISMRMRD
-set(ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
-set(ISMRMRD_TAG v1.3.2)
+set(ISMRMRD_URL https://github.com/CCPPETMR/ismrmrd )
+set(ISMRMRD_TAG 35012c6c8000616546c2d6b1757eba0c5b21b2d4)
+#set(ISMRMRD_TAG v1.3.2)
+
 
 ## HDF5
 set(HDF5_URL https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.0-patch1/src/CMake-hdf5-1.10.0-patch1.tar.gz )
