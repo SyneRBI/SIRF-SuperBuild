@@ -47,13 +47,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   endif()
 
 if (WIN32)
-  # Just use precompiled version
-  # TODO would prefer the next zip file but for KT using an ftp URL times-out (firewall?)
-  ##set(${proj}_URL ftp://ftp.fftw.org/pub/fftw/fftw-3.3.5-dll64.zip )
-  ##set(${proj}_MD5 cb3c5ad19a89864f036e7a2dd5be168c )
-  #set(${proj}_URL https://s3.amazonaws.com/install-gadgetron-vs2013/Dependencies/FFTW/zip/FFTW3.zip )
-  #set(${proj}_MD5 a42eac92d9ad06d7c53fb82b09df2b6e )
-
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}

@@ -40,9 +40,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   
   if (WIN32)
   set(SWIG_Install_Dir ${SUPERBUILD_INSTALL_DIR}/SWIG-3.0.12)
-  # Just use precompiled version
-#  set(${proj}_URL http://prdownloads.sourceforge.net/swig/swigwin-3.0.12.zip  )
-#  set(${proj}_MD5 a49524dad2c91ae1920974e7062bfc93 )
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}

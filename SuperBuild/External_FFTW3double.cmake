@@ -51,8 +51,6 @@ if(NOT ( DEFINED "USE_SYSTEM_FFTW3" AND "${USE_SYSTEM_FFTW3}" ) )
   set(FFTWdouble_Configure_Script ${CMAKE_CURRENT_LIST_DIR}/External_FFTWdouble_configure.cmake)
   set(FFTW_Build_Script ${CMAKE_CURRENT_LIST_DIR}/External_FFTWdouble_build.cmake)
 
-  set(${proj}_URL http://www.fftw.org/fftw-3.3.5.tar.gz )
-  set(${proj}_MD5 6cc08a3b9c7ee06fdd5b9eb02e06f569 )
 
   if(CMAKE_COMPILER_IS_CLANGXX)
     set(CLANG_ARG -DCMAKE_COMPILER_IS_CLANGXX:BOOL=ON)

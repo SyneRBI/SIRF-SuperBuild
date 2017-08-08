@@ -40,9 +40,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ### --- Project specific additions here
   set(googletest_Install_Dir ${SUPERBUILD_INSTALL_DIR})
-  set(${proj}_URL https://github.com/google/googletest )
 
-  #message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 

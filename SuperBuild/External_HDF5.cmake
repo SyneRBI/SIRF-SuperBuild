@@ -35,11 +35,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ### --- Project specific additions here
   set(HDF5_Install_Dir ${SUPERBUILD_INSTALL_DIR})
-  #set(HDF5_Configure_Script ${CMAKE_CURRENT_LIST_DIR}/External_HDF5_configureboost.cmake)
-  #set(HDF5_Build_Script ${CMAKE_CURRENT_LIST_DIR}/External_HDF5_buildboost.cmake)
-
-#  set(${proj}_URL https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.0-patch1/src/CMake-hdf5-1.10.0-patch1.tar.gz )
-#  set(${proj}_MD5 6fb456d03a60f358f3c077288a6d1cd8 )
 
   if(CMAKE_COMPILER_IS_CLANGXX)
     set(CLANG_ARG -DCMAKE_COMPILER_IS_CLANGXX:BOOL=ON)
