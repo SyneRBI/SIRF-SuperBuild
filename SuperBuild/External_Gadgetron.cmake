@@ -57,8 +57,8 @@ if (MKL_FOUND)
 endif ()
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
-    GIT_REPOSITORY ${GADGETRON_URL}
-    GIT_TAG ${GADGETRON_TAG}
+    GIT_REPOSITORY ${${proj}_URL}
+    GIT_TAG ${${proj}_TAG}
     SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
 
     CMAKE_ARGS
