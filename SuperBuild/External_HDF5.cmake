@@ -48,20 +48,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
-    #SOURCE_DIR ${HDF5_SOURCE_DIR}/hdf5-1.10.0-patch1
     BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/${proj}
     CONFIGURE_COMMAND ${CMAKE_COMMAND}
                              ${CLANG_ARG}
                              -DCMAKE_INSTALL_PREFIX:PATH=${HDF5_Install_Dir} "${HDF5_SOURCE_DIR}"
 
-    #BUILD_COMMAND ${CMAKE_COMMAND}
-    #                         -DBUILD_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/${proj}
-    #                         -DINSTALL_DIR:PATH=${HDF5_Install_Dir}
     INSTALL_DIR ${HDF5_Install_Dir}
   )
-
-  #set(HDF5_ROOT        ${HDF5_SOURCE_DIR})
-  #set(HDF5_INCLUDE_DIR ${HDF5_SOURCE_DIR})
 
   set( HDF5_ROOT ${HDF5_Install_Dir} )
   set( HDF5_INCLUDE_DIRS ${HDF5_ROOT}/include )
