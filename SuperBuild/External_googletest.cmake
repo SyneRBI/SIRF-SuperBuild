@@ -26,8 +26,6 @@ set(proj googletest)
 # Set dependency list
 set(${proj}_DEPENDENCIES "")
 
-#message(STATUS "MATLAB_ROOT=" ${MATLAB_ROOT})
-#message(STATUS "STIR_DIR=" ${STIR_DIR})
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
@@ -47,7 +45,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
-    GIT_TAG ${googletest_TAG}
+    GIT_TAG ${${proj}_TAG}
     SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
 
     CMAKE_ARGS
