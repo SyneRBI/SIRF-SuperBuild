@@ -49,7 +49,7 @@ if(NOT ( DEFINED "USE_SYSTEM_FFTW3" AND "${USE_SYSTEM_FFTW3}" ) )
   ### --- Project specific additions here
   set(FFTWdouble_Install_Dir ${SUPERBUILD_INSTALL_DIR})
   set(FFTWdouble_Configure_Script ${CMAKE_CURRENT_LIST_DIR}/External_FFTWdouble_configure.cmake)
-  set(FFTW_Build_Script ${CMAKE_CURRENT_LIST_DIR}/External_FFTWdouble_build.cmake)
+  set(FFTWdouble_Build_Script ${CMAKE_CURRENT_LIST_DIR}/External_FFTWdouble_build.cmake)
 
 
   if(CMAKE_COMPILER_IS_CLANGXX)
@@ -61,7 +61,7 @@ if(NOT ( DEFINED "USE_SYSTEM_FFTW3" AND "${USE_SYSTEM_FFTW3}" ) )
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
-    URL_HASH MD5=${${proj}_MD5}
+    URL_MD5 ${${proj}_MD5}
     SOURCE_DIR ${FFTWdouble_SOURCE_DIR}
     BINARY_DIR ${FFTWdouble_SOURCE_DIR}
     CONFIGURE_COMMAND ./configure --with-pic --prefix ${FFTWdouble_Install_Dir}
