@@ -35,10 +35,8 @@ set(Armadillo_MD5 c601f3a5ec6d50666aa3a539fa20e6ca )
 if(WIN32)
   # Just use precompiled version
   # TODO would prefer the next zip file but for KT using an ftp URL times-out (firewall?)
-  ##set(${proj}_URL ftp://ftp.fftw.org/pub/fftw/fftw-3.3.5-dll64.zip )
-  ##set(${proj}_MD5 cb3c5ad19a89864f036e7a2dd5be168c )
-  #set(${proj}_URL https://s3.amazonaws.com/install-gadgetron-vs2013/Dependencies/FFTW/zip/FFTW3.zip )
-  #set(${proj}_MD5 a42eac92d9ad06d7c53fb82b09df2b6e )
+  #set(${proj}_URL ftp://ftp.fftw.org/pub/fftw/fftw-3.3.5-dll64.zip )
+  #set(${proj}_MD5 cb3c5ad19a89864f036e7a2dd5be168c )
   set(FFTW3_URL https://s3.amazonaws.com/install-gadgetron-vs2013/Dependencies/FFTW/zip/FFTW3.zip )
   set(FFTW3_MD5 a42eac92d9ad06d7c53fb82b09df2b6e )
 else(WIN32)
@@ -46,8 +44,8 @@ else(WIN32)
   set(FFTW3_MD5 6cc08a3b9c7ee06fdd5b9eb02e06f569 )
 endif(WIN32)
 
-set(FFTW3double_URL $FFTW3_URL)
-set(FFTW3double_MD5 $FFTW3_MD5)
+set(FFTW3double_URL ${FFTW3_URL})
+set(FFTW3double_MD5 ${FFTW3_MD5})
 
 
 
@@ -55,17 +53,14 @@ set(FFTW3double_MD5 $FFTW3_MD5)
 
 set(STIR_URL https://github.com/CCPPETMR/STIR )
 set(STIR_TAG 8bf37d9d7fdde7cb3a98a6f848d93827dbd98a18)
-#set(STIR_TAG 9ef3b73b023cefc592af9a004d13297b736afa17)
 
 ## Gadgetron
 set(Gadgetron_URL https://github.com/CCPPETMR/gadgetron )
-#set(GADGETRON_TAG v3.8.2)
 set(Gadgetron_TAG f03829ef45e57466829e6ec46da7a7cf61db1c8a)
 
 ## ISMRMRD
 set(ISMRMRD_URL https://github.com/CCPPETMR/ismrmrd )
 set(ISMRMRD_TAG 35012c6c8000616546c2d6b1757eba0c5b21b2d4)
-#set(ISMRMRD_TAG v1.3.2)
 
 
 ## HDF5
