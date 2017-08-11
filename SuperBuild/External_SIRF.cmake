@@ -39,7 +39,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ### --- Project specific additions here
   set(SIRF_Install_Dir ${SUPERBUILD_INSTALL_DIR})
-  set(${proj}_URL https://github.com/CCPPETMR/SIRF )
 
   # Attempt to make Python settings consistent
   FIND_PACKAGE(PythonInterp)
@@ -62,7 +61,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
-    GIT_TAG release-0.9.0
+    GIT_TAG ${${proj}_TAG}
     SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
 
     CMAKE_ARGS

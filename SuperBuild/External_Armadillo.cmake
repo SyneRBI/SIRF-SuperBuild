@@ -44,9 +44,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ### --- Project specific additions here
   set(${proj}_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
-  set(${proj}_URL   https://downloads.sourceforge.net/project/arma/armadillo-7.800.2.tar.xz?r=http%3A%2F%2Farma.sourceforge.net%2Fdownload.html&ts=1492950217&use_mirror=freefr
- )
-  set(${proj}_MD5 c601f3a5ec6d50666aa3a539fa20e6ca )
 
   # name after extraction
   set(${proj}_location Armadillo)
@@ -66,9 +63,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
                              ${CLANG_ARG}
                              -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_Install_Dir} "${${proj}_SOURCE_DIR}"
 
-    #BUILD_COMMAND ${CMAKE_COMMAND}
-    #                         -DBUILD_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/${proj}
-    #                         -DINSTALL_DIR:PATH=${${proj}_Install_Dir}
     INSTALL_DIR ${${proj}_Install_Dir}
   )
 

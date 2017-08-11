@@ -39,9 +39,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(Boost_Configure_Script ${CMAKE_CURRENT_LIST_DIR}/External_Boost_configureboost.cmake)
   set(Boost_Build_Script ${CMAKE_CURRENT_LIST_DIR}/External_Boost_buildboost.cmake)
 
-#  set(${proj}_URL http://downloads.sourceforge.net/project/boost/boost/1.63.0/boost_1_63_0.zip )
-#  set(${proj}_MD5 3c706b3fc749884ea5510c39474fd732 )
-
   if(CMAKE_COMPILER_IS_CLANGXX)
     set(CLANG_ARG -DCMAKE_COMPILER_IS_CLANGXX:BOOL=ON)
   endif()
@@ -53,7 +50,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
     SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
-    #BINARY_DIR ${proj}-build
     BUILD_IN_SOURCE 1
 
     CONFIGURE_COMMAND ${CMAKE_COMMAND}
@@ -70,8 +66,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(BOOST_ROOT        ${Boost_Install_Dir})
   set(BOOST_INCLUDEDIR ${Boost_Install_Dir}/include)
   set(BOOST_LIBRARY_DIR ${Boost_Install_Dir}/lib)
-  #set(Boost_INCLUDE_DIR ${BOOST_SOURCE_DIR})
-
 
  else()
     if(${USE_SYSTEM_${externalProjName}})

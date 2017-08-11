@@ -37,14 +37,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ### --- Project specific additions here
   set(STIR_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
-  set(${proj}_URL https://github.com/CCPPETMR/STIR )
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
     GIT_TAG ${STIR_TAG}
     SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
-    #BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/${proj}
     CMAKE_ARGS -DGRAPHICS=None
         -DBUILD_EXECUTABLES=OFF
         -DBUILD_TESTING=OFF
