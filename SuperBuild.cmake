@@ -92,12 +92,21 @@ message(STATUS "MATLAB_ROOT = " ${MATLAB_ROOT})
 set(SIRF_SRC_PATH ${CMAKE_CURRENT_LIST_DIR}/SIRF)
 set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
 configure_file(env_ccppetmr.sh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.sh)
-# create .sirfrc
-configure_file(env_ccppetmr.sh.in $ENV{HOME}/.sirfrc)
-# append .sirfrc to .bashrc
-file(APPEND $ENV{HOME}/.bashrc "#Environment variables for SIRF
+
+if (EXISTS $ENV{HOME}/.sirfrc)
+   # copy new version of the env veriables to the file
+   configure_file(env_ccppetmr.sh.in $ENV{HOME}/.sirfrc)
+else()
+  # create .sirfrc
+  configure_file(env_ccppetmr.sh.in $ENV{HOME}/.sirfrc)
+  # append .sirfrc to .bashrc
+  file(APPEND $ENV{HOME}/.bashrc "#Environment variables for SIRF
 source ~/.sirfrc")
+endif()
+
 configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
 
-#Create a default Gadgetron configuration
-configure_file(${CCPPETMR_INSTALL}/share/gadgetron/config/gadgetron.xml.example ${CCPPETMR_INSTALL}/share/gadgetron/config/gadgetron.xml)
+#Create a default Gadgetron configuration if not present
+if(NOT EXISTS "${CCPPETMR_INSTALL}/share/gadgetron/config/gadgetron.xml")
+   configure_file(${CCPPETMR_INSTALL}/share/gadgetron/config/gadgetron.xml.example ${CCPPETMR_INSTALL}/share/gadgetron/config/gadgetron.xml)
+endif()
