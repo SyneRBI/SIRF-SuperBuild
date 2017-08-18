@@ -92,5 +92,3 @@ set(SIRF_SRC_PATH ${CMAKE_CURRENT_LIST_DIR}/SIRF)
 set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
 configure_file(env_ccppetmr.sh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.sh)
 configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
-#default gadgetron configuration
-configure_file(${CCPPETMR_INSTALL}/share/gadgetron/config/gadgetron.xml.example ${CCPPETMR_INSTALL}/share/gadgetron/config/gadgetron.xml)
