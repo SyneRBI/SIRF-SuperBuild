@@ -91,7 +91,9 @@ message(STATUS "MATLAB_ROOT = " ${MATLAB_ROOT})
 set(SIRF_SRC_PATH ${CMAKE_CURRENT_LIST_DIR}/SIRF)
 set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
 configure_file(env_ccppetmr.sh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.sh)
-<<<<<<< HEAD
+configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
+
+# Creates sirfrc and appends to the bashrc
 
 if (EXISTS $ENV{HOME}/.sirfrc)
    # copy new version of the env veriables to the file
@@ -110,6 +112,14 @@ configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
 if(NOT EXISTS "${CCPPETMR_INSTALL}/share/gadgetron/config/gadgetron.xml")
    configure_file(${CCPPETMR_INSTALL}/share/gadgetron/config/gadgetron.xml.example ${CCPPETMR_INSTALL}/share/gadgetron/config/gadgetron.xml)
 endif()
-=======
-configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
->>>>>>> ca1927c44e024422b06eb62937eee4e49f89c1db
+
+# add tests
+enable_testing()
+add_test(NAME MR_FULLY_SAMPLED
+         COMMAND bash tests/MR_test1.sh)
+
+add_test(NAME MR_UNDER_SAMPLED
+         COMMAND bash tests/MR_test2.sh)
+
+add_test(NAME PET_TEST1
+         COMMAND bash tests/PET_test1.sh)
