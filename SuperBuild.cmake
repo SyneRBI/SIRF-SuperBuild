@@ -87,11 +87,11 @@ message(STATUS "MATLAB_ROOT = " ${MATLAB_ROOT})
 #Need to configure main project here.
 #set(proj ${PRIMARY_PROJECT_NAME})
 
-# SETUP ENVIRONMENT VARIABLES
 # Make environment files
 set(SIRF_SRC_PATH ${CMAKE_CURRENT_LIST_DIR}/SIRF)
 set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
 configure_file(env_ccppetmr.sh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.sh)
+<<<<<<< HEAD
 
 if (EXISTS $ENV{HOME}/.sirfrc)
    # copy new version of the env veriables to the file
@@ -110,3 +110,6 @@ configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
 if(NOT EXISTS "${CCPPETMR_INSTALL}/share/gadgetron/config/gadgetron.xml")
    configure_file(${CCPPETMR_INSTALL}/share/gadgetron/config/gadgetron.xml.example ${CCPPETMR_INSTALL}/share/gadgetron/config/gadgetron.xml)
 endif()
+=======
+configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
+>>>>>>> ca1927c44e024422b06eb62937eee4e49f89c1db
