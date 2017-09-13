@@ -17,9 +17,12 @@ os:
 matrix:
   include:
   - python: 3.5
-    env: BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DCMAKE_BUILD_TYPE=Release" EXTRA_BUILD_FLAGS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DUSE_SYSTEM_HDF5=ON -DUSE_SSYTEM_SWIG=ON -DUSE_SYSTEM_FFTW3=ON" CC=gcc-5 CXX=g++-5 PYVER=3
+    env: EXTRA_BUILD_FLAGS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DUSE_SYSTEM_HDF5=ON -DUSE_SSYTEM_SWIG=ON -DUSE_SYSTEM_FFTW3=ON" CC=gcc-5 CXX=g++-5 PYVER=3
   - python: 2.7
-    env: BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DCMAKE_BUILD_TYPE=Release" EXTRA_BUILD_FLAGS=" -DUSE_SSYTEM_SWIG=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_FFTW3=ON" CC=gcc-5 CXX=g++-5 PYVER=
+    env: EXTRA_BUILD_FLAGS=" -DUSE_SSYTEM_SWIG=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_FFTW3=ON" CC=gcc-5 CXX=g++-5 PYVER=
+env:
+  global:
+    - BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DCMAKE_BUILD_TYPE=Release"
 
 # This works on osx but we need to sort out the matrix
 #    - EXTRA_BUILD_FLAGS=" -DUSE_SSYTEM_SWIG=ON -DPYTHON_LIBRARY=$(python-config --prefix)/lib/libpython2.7.dylib -DPYTHON_INCLUDE_DIR=$(python-config --prefix)/include/python2.7 " CC=clang CXX=clang++ PYVER=
