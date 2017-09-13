@@ -72,8 +72,8 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then mv cmake-*/CMake.app/Contents/* cmake-*; fi
 
 install:
-  - pip${PYVER} install --upgrade pip setuptools wheel
-  - pip${PYVER} install --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
+  - #pip install --upgrade pip setuptools wheel
+  - pip install --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
   - ./cmake-*/bin/cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
   - make -j 6
   - mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
@@ -81,9 +81,9 @@ install:
   - #env
 
 script:
-  - python${PYVER} ./SIRF/src/xSTIR/pSTIR/tests/test1.py
+  - python ./SIRF/src/xSTIR/pSTIR/tests/test1.py
   - ./INSTALL/bin/gadgetron >& gadgetron.log&
-  - python${PYVER} ./SIRF/src/xGadgetron/pGadgetron/tests/fully_sampled.py
-  - python${PYVER} ./SIRF/src/xGadgetron/pGadgetron/tests/undersampled.py
+  - python ./SIRF/src/xGadgetron/pGadgetron/tests/fully_sampled.py
+  - python ./SIRF/src/xGadgetron/pGadgetron/tests/undersampled.py
   - # print for debugging
   - cat gadgetron.log
