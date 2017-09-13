@@ -102,9 +102,10 @@ else()
   # create .sirfrc
   configure_file(env_ccppetmr.sh.in $ENV{HOME}/.sirfrc)
   # append .sirfrc to .bashrc
-  file(APPEND $ENV{HOME}/.bashrc "#Environment variables for SIRF
-source ~/.sirfrc")
+#  file(APPEND $ENV{HOME}/.bashrc "#Environment variables for SIRF
+#source ~/.sirfrc")
 endif()
+message("To set up all the environmental variables for SIRF, just type: source ~/.sirfrc")
 
 configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
 
