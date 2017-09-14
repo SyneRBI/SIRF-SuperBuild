@@ -49,19 +49,6 @@ set(FFTW3double_MD5 ${FFTW3_MD5})
 
 
 
-## STIR
-
-set(STIR_URL https://github.com/CCPPETMR/STIR )
-set(STIR_TAG 8bf37d9d7fdde7cb3a98a6f848d93827dbd98a18)
-
-## Gadgetron
-set(Gadgetron_URL https://github.com/CCPPETMR/gadgetron )
-set(Gadgetron_TAG f03829ef45e57466829e6ec46da7a7cf61db1c8a)
-
-## ISMRMRD
-set(ISMRMRD_URL https://github.com/CCPPETMR/ismrmrd )
-set(ISMRMRD_TAG 35012c6c8000616546c2d6b1757eba0c5b21b2d4)
-
 
 ## HDF5
 set(HDF5_URL https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.0-patch1/src/CMake-hdf5-1.10.0-patch1.tar.gz )
@@ -81,12 +68,37 @@ option(DEVEL_BUILD "Use current versions of major packages" OFF)
 set(googletest_URL https://github.com/google/googletest )
 set(googletest_TAG release-1.8.0)
 
+option (DEVEL_BUILD "Developer Build" ON)
 #SIRF
 set(SIRF_URL https://github.com/CCPPETMR/SIRF )
 if (DEVEL_BUILD)
-set (SIRF_TAG master)
+  set (SIRF_TAG master)
+  ## STIR
+  set(STIR_URL https://github.com/UCL/STIR )
+  set(STIR_TAG master)
+
+  ## Gadgetron
+  set(Gadgetron_URL https://github.com/gadgetron/gadgetron )
+  set(Gadgetron_TAG master)
+
+  ## ISMRMRD
+  set(ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
+  set(ISMRMRD_TAG master)
+
 else()
-set(SIRF_TAG v0.9.0)
+  set(SIRF_TAG v0.9.0)
+  ## STIR
+  set(STIR_URL https://github.com/CCPPETMR/STIR )
+  set(STIR_TAG 8bf37d9d7fdde7cb3a98a6f848d93827dbd98a18)
+
+  ## Gadgetron
+  set(Gadgetron_URL https://github.com/CCPPETMR/gadgetron )
+  set(Gadgetron_TAG f03829ef45e57466829e6ec46da7a7cf61db1c8a)
+
+  ## ISMRMRD
+  set(ISMRMRD_URL https://github.com/CCPPETMR/ismrmrd )
+  set(ISMRMRD_TAG 35012c6c8000616546c2d6b1757eba0c5b21b2d4)
+
 endif()
-option(GIT_TAG_SIRF "git tag for SIRF" ${default_SIRF_GIT_TAG})
+option(GIT_TAG_SIRF "git tag for SIRF" ${SIRF_TAG})
 
