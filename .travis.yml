@@ -64,7 +64,7 @@ before_install:
   - # Note: boost is already installed on osx on travis so should not be included. However, we currently need boost-python
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install boost-python; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install ace; fi
-    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install swig; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install swig; fi
   - #if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install scipy matplotlib; fi
   - # need curl to get more recent cmake
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install curl; fi
