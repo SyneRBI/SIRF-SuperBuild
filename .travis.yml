@@ -17,15 +17,15 @@ os:
 matrix:
   include:
   - python: 3.5
-    env: EXTRA_BUILD_FLAGS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_FFTW3=ON" CC=gcc-5 CXX=g++-5 PYVER=3
+    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_FFTW3=ON" CC=gcc-5 CXX=g++-5
   - python: 2.7
-    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_FFTW3=ON" CC=gcc-5 CXX=g++-5 PYVER=
+    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_FFTW3=ON" CC=gcc-5 CXX=g++-5
 env:
   global:
-    - BUILD_FLAGS="-DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_Boost=ON -DCMAKE_BUILD_TYPE=Release"
+    - BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DCMAKE_BUILD_TYPE=Release"
 
 # This works on osx but we need to sort out the matrix
-#   env: EXTRA_BUILD_FLAGS="-DPYTHON_LIBRARY=$(python-config --prefix)/lib/libpython2.7.dylib -DPYTHON_INCLUDE_DIR=$(python-config --prefix)/include/python2.7 " CC=clang CXX=clang++ PYVER=
+#   env: EXTRA_BUILD_FLAGS="-DPYTHON_LIBRARY=$(python-config --prefix)/lib/libpython2.7.dylib -DPYTHON_INCLUDE_DIR=$(python-config --prefix)/include/python2.7 " CC=clang CXX=clang++
 
 
 # Ubuntu 14.04 LTS
@@ -64,6 +64,7 @@ before_install:
   - # Note: boost is already installed on osx on travis so should not be included. However, we currently need boost-python
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install boost-python; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install ace; fi
+    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install swig; fi
   - #if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install scipy matplotlib; fi
   - # need curl to get more recent cmake
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install curl; fi
