@@ -68,7 +68,7 @@ option(DEVEL_BUILD "Use current versions of major packages" OFF)
 set(googletest_URL https://github.com/google/googletest )
 set(googletest_TAG release-1.8.0)
 
-option (DEVEL_BUILD "Developer Build" ON)
+option (DEVEL_BUILD "Developer Build" OFF)
 #SIRF
 set(SIRF_URL https://github.com/CCPPETMR/SIRF )
 if (DEVEL_BUILD)
