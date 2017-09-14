@@ -53,7 +53,7 @@ source INSTALL/bin/env_ccppetmr.csh
 ```
 You probably want to add a similar line (with absolute path) to your .cshrc.
 
-## Installation instructions for Ubuntu 16.10
+## Installation instructions for Ubuntu 16
 
 They can be found [here](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-Ubuntu-16.04)
 
@@ -65,5 +65,3 @@ They can be found [here](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-o
 
 - ***Windows support***
 - Sort out CMake Status messages.
-
-
