@@ -93,11 +93,6 @@ set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
 configure_file(env_ccppetmr.sh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.sh)
 configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
 
-# Creates sirfrc
-# copy new version of the env veriables to the file
-configure_file(env_ccppetmr.sh.in $ENV{HOME}/.sirfrc)
-essage("To set up all the environmental variables for SIRF, just type: source ~/.sirfrc")
-
 
 
 # add tests
