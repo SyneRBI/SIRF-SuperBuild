@@ -1,5 +1,5 @@
 # Language selection
-language: cpp python
+language: python
 
 # Currently commented out as set with environment flags
 # Both clang and gcc can be tested. The more is the better.
@@ -14,15 +14,18 @@ os:
 
 # Environment variables
 # Note: On trusty we need to build Armadillo ourselves (the system version is too old)
+matrix:
+  include:
+  - python: 3.5
+    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_FFTW3=ON" CC=gcc-5 CXX=g++-5
+  - python: 2.7
+    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_FFTW3=ON" CC=gcc-5 CXX=g++-5
 env:
   global:
     - BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DCMAKE_BUILD_TYPE=Release"
-  matrix:
-    - EXTRA_BUILD_FLAGS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DUSE_SYSTEM_HDF5=ON -DUSE_SSYTEM_SWIG=ON -DUSE_SYSTEM_FFTW3=ON" CC=gcc-5 CXX=g++-5 PYVER=3
-    - EXTRA_BUILD_FLAGS=" -DUSE_SSYTEM_SWIG=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_FFTW3=ON" CC=gcc-5 CXX=g++-5 PYVER=
 
 # This works on osx but we need to sort out the matrix
-#    - EXTRA_BUILD_FLAGS=" -DUSE_SSYTEM_SWIG=ON -DPYTHON_LIBRARY=$(python-config --prefix)/lib/libpython2.7.dylib -DPYTHON_INCLUDE_DIR=$(python-config --prefix)/include/python2.7 " CC=clang CXX=clang++ PYVER=
+#   env: EXTRA_BUILD_FLAGS="-DPYTHON_LIBRARY=$(python-config --prefix)/lib/libpython2.7.dylib -DPYTHON_INCLUDE_DIR=$(python-config --prefix)/include/python2.7 " CC=clang CXX=clang++
 
 
 # Ubuntu 14.04 LTS
@@ -53,6 +56,7 @@ addons:
       - libgtest-dev
       - libplplot-dev
       - root-system-bin
+      - swig
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap homebrew/science; fi
@@ -60,6 +64,7 @@ before_install:
   - # Note: boost is already installed on osx on travis so should not be included. However, we currently need boost-python
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install boost-python; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install ace; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install swig; fi
   - #if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install scipy matplotlib; fi
   - # need curl to get more recent cmake
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install curl; fi
@@ -69,21 +74,18 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then mv cmake-*/CMake.app/Contents/* cmake-*; fi
 
 install:
-  - pip${PYVER} install --upgrade pip setuptools wheel
-  - pip${PYVER} install --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
+  - #pip install --upgrade pip setuptools wheel
+  - pip install --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
   - ./cmake-*/bin/cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
   - make -j 6
   - mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
   - source $PWD/INSTALL/bin/env_ccppetmr.sh
   - #env
-  
+
 script:
-
-
-  - python${PYVER} ./SIRF/src/xSTIR/pSTIR/tests/test1.py
+  - python ./SIRF/src/xSTIR/pSTIR/tests/test1.py
   - ./INSTALL/bin/gadgetron >& gadgetron.log&
-  - python${PYVER} ./SIRF/src/xGadgetron/pGadgetron/tests/fully_sampled.py
-  - python${PYVER} ./SIRF/src/xGadgetron/pGadgetron/tests/undersampled.py
+  - python ./SIRF/src/xGadgetron/pGadgetron/tests/fully_sampled.py
+  - python ./SIRF/src/xGadgetron/pGadgetron/tests/undersampled.py
   - # print for debugging
   - cat gadgetron.log
-  
