@@ -7,7 +7,7 @@ then
   PID=`echo $a | gawk '{print $2}'`
   echo "Gadgetron is running with PID $PID" 
 else
-  #echo "Launching Gadgetron"
+  echo "Gadgetron is not running"
   #gadgetron &
   exit -1
 fi
