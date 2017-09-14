@@ -101,4 +101,5 @@ else()
 
 endif()
 option(GIT_TAG_SIRF "git tag for SIRF" ${SIRF_TAG})
+mark_as_advanced(STIR_URL STIR_TAG Gadgetron_URL Gadgetron_TAG ISMRMRD_URL ISMRMRD_TAG)
 
