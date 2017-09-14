@@ -61,6 +61,10 @@ They can be found [here](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-U
 
 They can be found [here](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-on-MacOS)
 
+## Installation instructions for Docker
+
+They can be found [here](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-on-Docker)
+
 ## TODO
 
 - ***Windows support***

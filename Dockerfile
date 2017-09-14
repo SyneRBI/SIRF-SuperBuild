@@ -1,5 +1,5 @@
 FROM ubuntu:16.04
-MAINTAINER Casper da Costa-Luis <casper.dcl@ieee.org>
+MAINTAINER Casper da Costa-Luis <imaging@caspersci.uk.to>
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -85,38 +85,13 @@ RUN git clone https://github.com/ismrmrd/ismrmrd-python-tools.git
 RUN cd ismrmrd-python-tools && $PIPINST .
 #RUN $PIPINST scipy
 
-# SuperBuild system deps
-RUN sudo apt update && sudo apt install -y \
-  libboost-all-dev      \
-  libhdf5-serial-dev    \
-  libfftw3-dev          \
-  libarmadillo-dev      \
-  libgtest-dev          \
-  swig
-# not sure about these
-RUN sudo apt update && sudo apt install -y \
-  liblapack-dev         \
-  libxml2-dev           \
-  libxslt-dev           \
-  libace-dev            \
-  libgtest-dev          \
-  libplplot-dev         \
-  root-system-bin
-
 RUN git clone https://github.com/CCPPETMR/SIRF-SuperBuild
-RUN mkdir SIRF-SuperBuild/BUILD
-RUN cd SIRF-SuperBuild/BUILD \
-  && . ~/py2/bin/activate   \
-  && /opt/cmake/cmake-3.7.2-Linux-x86_64/bin/cmake \
-  -DUSE_SYSTEM_Boost=ON     \
-  -DUSE_SYSTEM_HDF5=ON      \
-  -DUSE_SYSTEM_FFTW3=ON     \
-  -DUSE_SYSTEM_Armadillo=ON \
-  -DUSE_SYSTEM_SWIG=ON      \
-  ..                        \
+RUN cd SIRF-SuperBuild \
+  && . ~/py2/bin/activate \
+  && /opt/cmake/cmake-3.7.2-Linux-x86_64/bin/cmake . \
   && make -j8
 
-RUN mv SIRF-SuperBuild/BUILD/INSTALL/share/gadgetron/config/gadgetron.xml.example SIRF-SuperBuild/BUILD/INSTALL/share/gadgetron/config/gadgetron.xml
+RUN mv SIRF-SuperBuild/INSTALL/share/gadgetron/config/gadgetron.xml.example SIRF-SuperBuild/INSTALL/share/gadgetron/config/gadgetron.xml
 RUN echo '. ~/SIRF-SuperBuild/INSTALL/bin/env_ccppetmr.sh' >> .bashrc
 
 ENV DEBIAN_FRONTEND ''
