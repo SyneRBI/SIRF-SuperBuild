@@ -27,7 +27,7 @@ RUN curl -O https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.sh
 RUN echo y | bash cmake-3.7.2-Linux-x86_64.sh --prefix=/opt/cmake
 RUN rm cmake-3.7.2-Linux-x86_64.sh
 
-# Python
+# Python (build)
 RUN apt update && apt install -y \
   python-dev           \
   python-matplotlib
@@ -51,39 +51,29 @@ RUN sudo mkdir -p /usr/share/X11/xkb
 RUN [ -e /usr/bin/X ] || ln -s /usr/bin/Xorg /usr/bin/X
 
 ARG mainUser=sirfuser
-RUN addgroup --system $mainUser
-RUN adduser --home /home/$mainUser --shell /bin/bash --system --ingroup $mainUser $mainUser
-
+ARG UID=1000
+ARG GROUPS=1000
+RUN addgroup --system --gid $GROUPS $mainUser
+RUN adduser --home /home/$mainUser --shell /bin/bash --system --ingroup $mainUser --uid $UID $mainUser
 #RUN echo "$mainUser:x:${uid}:${gid}:$mainUser,,,:/home/$mainUser:/bin/bash" >> /etc/passwd
+
 RUN echo "$mainUser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/$mainUser
 
 USER $mainUser
 ENV HOME /home/$mainUser
 WORKDIR $HOME
 
-# CMake path
-RUN echo 'export PATH=/opt/cmake/cmake-3.7.2-Linux-x86_64/bin:$PATH' >> .bashrc
-
 # git completion
 RUN curl -O https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
-RUN echo '. ~/git-prompt.sh' >> .bashrc
-RUN echo '[ -f ~/.bash_aliases ] && . ~/.bash_aliases' >> .bashrc
-RUN echo 'if [ -n "$BASH_VERSION" ]; then if [ -f "$HOME/.bashrc" ]; then . "$HOME/.bashrc"; fi; fi' >> .profile
 
-# Python
+# Python (virtualenv)
 RUN curl -O https://bootstrap.pypa.io/get-pip.py
 RUN sudo -H python get-pip.py
 RUN rm get-pip.py
 RUN sudo -H python -m pip install -U pip virtualenv
 RUN virtualenv py2
 ARG PIPINST="$HOME/py2/bin/pip install -U"
-RUN echo '. ~/py2/bin/activate' >> .bashrc
 RUN $PIPINST cython
-RUN $PIPINST docopt
-RUN $PIPINST matplotlib
-RUN git clone https://github.com/ismrmrd/ismrmrd-python-tools.git
-RUN cd ismrmrd-python-tools && $PIPINST .
-#RUN $PIPINST scipy
 
 RUN git clone https://github.com/CCPPETMR/SIRF-SuperBuild
 RUN cd SIRF-SuperBuild \
@@ -92,7 +82,19 @@ RUN cd SIRF-SuperBuild \
   && make -j8
 
 RUN mv SIRF-SuperBuild/INSTALL/share/gadgetron/config/gadgetron.xml.example SIRF-SuperBuild/INSTALL/share/gadgetron/config/gadgetron.xml
-RUN echo '. ~/SIRF-SuperBuild/INSTALL/bin/env_ccppetmr.sh' >> .bashrc
+
+# Python (runtime)
+RUN $PIPINST docopt
+RUN $PIPINST matplotlib
+#RUN $PIPINST scipy
+RUN git clone https://github.com/ismrmrd/ismrmrd-python-tools.git
+RUN cd ismrmrd-python-tools && $PIPINST .
+
+ADD .bashrc .
+ADD .profile .
+RUN sudo chown $mainUser .bashrc .profile
+RUN sudo chgrp $mainUser .bashrc .profile
+RUN sudo chmod 644 .bashrc .profile
 
 ENV DEBIAN_FRONTEND ''
 
