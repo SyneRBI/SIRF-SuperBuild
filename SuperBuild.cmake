@@ -109,10 +109,6 @@ message("To set up all the environmental variables for SIRF, just type: source ~
 
 configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
 
-#Create a default Gadgetron configuration if not present
-#if(NOT EXISTS "${CCPPETMR_INSTALL}/share/gadgetron/config/gadgetron.xml")
-#   configure_file(${CCPPETMR_INSTALL}/share/gadgetron/config/gadgetron.xml.example ${CCPPETMR_INSTALL}/share/gadgetron/config/gadgetron.xml)
-#endif()
 
 # add tests
 enable_testing()
