@@ -7,8 +7,6 @@ services:
       context: .
       args:
         mainUser: sirfuser
-        UID: 1000
-        GROUPS: 1000
       cache_from:
         - ubuntu:16.04
         - ccppetmr/sirf:latest
@@ -17,9 +15,5 @@ services:
     cap_add:
       - NET_ADMIN
     network_mode: "bridge"
-    environment:
-      - DISPLAY
     volumes:
       - ./devel:/devel
-      - /tmp/.X11-unix:/tmp/.X11-unix
-      - /tmp/.docker.xauth:/tmp/.docker.xauth

@@ -1,5 +1,5 @@
 # CMake path
-export PATH=/opt/cmake/cmake-3.7.2-Linux-x86_64/bin:$PATH
+export PATH=/opt/cmake/bin:$PATH
 
 # completion
 [ -f /etc/bash_completion ] && . /etc/bash_completion
