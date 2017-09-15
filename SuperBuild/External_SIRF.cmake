@@ -82,6 +82,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 	INSTALL_DIR ${SIRF_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
+    TEST_AFTER_INSTALL 1
   )
 
     set(SIRF_ROOT        ${SIRF_SOURCE_DIR})
