@@ -93,6 +93,11 @@ set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
 configure_file(env_ccppetmr.sh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.sh)
 configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
 
+# create a default gadgetron config file if it doens't exist yet
+if(NOT EXISTS "${CCPPETMR_INSTALL}/share/gadgetron/config/gadgetron.xml")
+    configure_file(${CCPPETMR_INSTALL}/share/gadgetron/config/gadgetron.xml.example ${CCPPETMR_INSTALL}/share/gadgetron/config/gadgetron.xml)
+endif()
+
 
 
 # add tests
