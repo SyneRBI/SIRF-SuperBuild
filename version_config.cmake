@@ -49,6 +49,19 @@ set(FFTW3double_MD5 ${FFTW3_MD5})
 
 
 
+## STIR
+
+set(STIR_URL https://github.com/CCPPETMR/STIR )
+set(STIR_TAG 8bf37d9d7fdde7cb3a98a6f848d93827dbd98a18)
+
+## Gadgetron
+set(Gadgetron_URL https://github.com/CCPPETMR/gadgetron )
+set(Gadgetron_TAG f03829ef45e57466829e6ec46da7a7cf61db1c8a)
+
+## ISMRMRD
+set(ISMRMRD_URL https://github.com/CCPPETMR/ismrmrd )
+set(ISMRMRD_TAG 35012c6c8000616546c2d6b1757eba0c5b21b2d4)
+
 
 ## HDF5
 set(HDF5_URL https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.0-patch1/src/CMake-hdf5-1.10.0-patch1.tar.gz )
@@ -121,4 +134,3 @@ SET(ISMRMRD_TAG ${DEFAULT_ISMRMRD_TAG} CACHE STRING ON)
 SET(ISMRMRD_URL ${DEFAULT_ISMRMRD_URL} CACHE STRING ON)
 
 mark_as_advanced(SIRF_TAG STIR_URL STIR_TAG Gadgetron_URL Gadgetron_TAG ISMRMRD_URL ISMRMRD_TAG)
-
