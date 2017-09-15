@@ -97,11 +97,13 @@ configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
 
 # add tests
 enable_testing()
+include(FindPythonInterp)
 add_test(NAME MR_FULLY_SAMPLED
-         COMMAND bash tests/MR_test1.sh)
+         COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/SIRF/src/xGadgetron/pGadgetron/tests/fully_sampled.py)
 
 add_test(NAME MR_UNDER_SAMPLED
-         COMMAND bash tests/MR_test2.sh)
+         COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/SIRF/src/xGadgetron/pGadgetron/tests/undersampled.py)
 
 add_test(NAME PET_TEST1
-         COMMAND bash tests/PET_test1.sh)
+         COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/SIRF/src/xSTIR/pSTIR/tests/test1.py )
+
