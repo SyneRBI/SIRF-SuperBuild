@@ -81,15 +81,6 @@ endif ()
         ${${proj}_DEPENDENCIES}
   )
 
-    ExternalProject_Add_Step(${proj} after_install
-     	COMMENT "Creating default Gadgetron configuration if not present"
-	COMMAND 
-if(NOT EXISTS "${Gadgetron_Install_Dir}/share/gadgetron/config/gadgetron.xml")
-    configure_file(${Gadgetron_Install_Dir}/share/gadgetron/config/gadgetron.xml.example ${Gadgetron_Install_Dir}/share/gadgetron/config/gadgetron.xml)
-endif()
-    	DEPENDEES install
-    )
-
     set(Gadgetron_ROOT        ${Gadgetron_SOURCE_DIR})
     set(Gadgetron_INCLUDE_DIR ${Gadgetron_SOURCE_DIR})
 
