@@ -1,9 +1,13 @@
 # CMake path
-export PATH=/opt/cmake/bin:$PATH
+[ -d /opt/cmake/bin ] && export PATH="/opt/cmake/bin${PATH:+:${PATH}}"
 
 # completion
 [ -f /etc/bash_completion ] && . /etc/bash_completion
-[ -f ~/git-prompt.sh ] && . ~/git-prompt.sh
+[ -f ~/git-prompt.sh ] || \
+  curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh \
+  > ~/.git-prompt.sh
+  . ~/git-prompt.sh
+
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
 export PS1='sirf:\w$(__git_ps1)\$ '
 
@@ -11,7 +15,8 @@ export PS1='sirf:\w$(__git_ps1)\$ '
 [ -f ~/py2/bin/activate ] && . ~/py2/bin/activate
 
 # SIRF env
-[ -f ~/SIRF-SuperBuild/INSTALL/bin/env_ccppetmr.sh ] && . ~/SIRF-SuperBuild/INSTALL/bin/env_ccppetmr.sh
+[ -f ~/SIRF-SuperBuild/INSTALL/bin/env_ccppetmr.sh ] && \
+   . ~/SIRF-SuperBuild/INSTALL/bin/env_ccppetmr.sh
 
 # shared permissions
 # [ $(ls -l / | grep devel | awk '{print $3}') == $(whoami) ] || sudo chown -R $(whoami) /devel

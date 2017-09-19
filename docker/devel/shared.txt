@@ -2,7 +2,7 @@ This file's directory and all its contents are mounted as follows:
 
 Host:
 
-`/path/to/SIRF-Superbuild/devel`
+`SIRF-SuperBuild/docker/devel`
 
 Docker container (ccppetmr/sirf:latest):
 

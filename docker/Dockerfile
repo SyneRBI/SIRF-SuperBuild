@@ -6,46 +6,26 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get upgrade -y --no-install-recommends
 
 # Set locale, suppress warnings
-RUN apt-get update && apt-get install -y apt-utils curl locales
+RUN apt-get update && apt-get install -y apt-utils locales
 RUN locale-gen en_GB.UTF-8
 #ENV LC_ALL en_GB.UTF-8
 ENV LANG en_GB.UTF-8
 ENV LANGUAGE en_GB:en
 #RUN localectl set-locale LANG="en_GB.UTF-8"
 
-# Essential
-RUN apt-get update && apt-get install -y --no-install-recommends \
-  bash-completion      \
-  build-essential      \
-  git                  \
-  g++                  \
-  man                  \
-  make                 \
-  sudo
-
-# CMake
-RUN mkdir /opt/cmake
-RUN curl https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.sh > cmake.sh
-RUN echo y | bash cmake.sh --prefix=/opt/cmake --exclude-subdir
-RUN rm cmake.sh
+ADD build_essential-ubuntu.sh .
+RUN bash build_essential-ubuntu.sh
+RUN rm build_essential-ubuntu.sh
 
 # Python (build)
-RUN apt-get update && apt-get install -y --no-install-recommends \
-  python-dev           \
-  python-tk
+ADD build_python-ubuntu.sh .
+RUN bash build_python-ubuntu.sh
+RUN rm build_python-ubuntu.sh
 
 # Gadgetron
-RUN apt-get update && apt-get install -y --no-install-recommends \
-  h5utils              \
-  liblapack-dev        \
-  libace-dev
-# Not required (yet) by SIRF
-# libxml2-dev
-# libxslt-dev
-# python-h5py
-# python-libxml2
-# python-psutil
-# libplplot-dev
+ADD build_gadgetron-ubuntu.sh .
+RUN bash build_gadgetron-ubuntu.sh
+RUN rm build_gadgetron-ubuntu.sh
 
 # X11 forwarding
 RUN apt-get update && apt-get install -y --no-install-recommends libx11-xcb1
@@ -65,39 +45,21 @@ USER $mainUser
 ENV HOME /home/$mainUser
 WORKDIR $HOME
 
-# git completion
-RUN curl -O https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
-
 # Python (virtualenv)
-RUN curl -O https://bootstrap.pypa.io/get-pip.py
-RUN sudo -H python get-pip.py
-RUN rm get-pip.py
-RUN sudo -H python -m pip install -U pip virtualenv
-RUN virtualenv py2
-ARG PIPINST="$HOME/py2/bin/pip install -U"
-RUN $PIPINST cython
-
-RUN git clone https://github.com/CCPPETMR/SIRF-SuperBuild
-WORKDIR $HOME/SIRF-SuperBuild
-RUN . ~/py2/bin/activate \
-  && /opt/cmake/bin/cmake .
-RUN make -j
-
-RUN mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
-WORKDIR $HOME
-
-# Python (runtime)
-RUN $PIPINST docopt
-RUN $PIPINST matplotlib
-#RUN $PIPINST scipy
-RUN git clone https://github.com/ismrmrd/ismrmrd-python-tools.git
-RUN cd ismrmrd-python-tools && $PIPINST .
+ADD user_python-ubuntu.sh .
+RUN bash user_python-ubuntu.sh
+RUN rm user_python-ubuntu.sh
 
 ADD .bashrc .
 ADD .profile .
 RUN sudo chown $mainUser .bashrc .profile
 RUN sudo chgrp $mainUser .bashrc .profile
 RUN sudo chmod 644 .bashrc .profile
+
+# SIRF
+ADD user_sirf-ubuntu.sh .
+RUN bash --login user_sirf-ubuntu.sh
+RUN rm user_sirf-ubuntu.sh
 
 RUN sudo apt-get clean
 
