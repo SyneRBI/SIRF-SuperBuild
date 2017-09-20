@@ -81,12 +81,56 @@ option(DEVEL_BUILD "Use current versions of major packages" OFF)
 set(googletest_URL https://github.com/google/googletest )
 set(googletest_TAG release-1.8.0)
 
+option (DEVEL_BUILD "Developer Build" OFF)
+
+#Set the default versions for SIRF, STIR, Gadgetron and ISMRMRD
+# with devel build it uses latest version of upstream packages
+# otherwise uses the versions for SIRF 0.9
+
 #SIRF
 set(SIRF_URL https://github.com/CCPPETMR/SIRF )
 if (DEVEL_BUILD)
-set (SIRF_TAG master)
-else()
-set(SIRF_TAG v0.9.0)
-endif()
-option(GIT_TAG_SIRF "git tag for SIRF" ${default_SIRF_GIT_TAG})
+  set (SIRF_TAG master)
+  ## STIR
+  set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
+  set(DEFAULT_STIR_TAG master)
 
+  ## Gadgetron
+  set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
+  set(DEFAULT_Gadgetron_TAG master)
+
+  ## ISMRMRD
+  set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
+  set(DEFAULT_ISMRMRD_TAG master)
+
+else()
+  set(DEFAULT_SIRF_TAG v0.9.0)
+  ## STIR
+  set(DEFAULT_STIR_URL https://github.com/CCPPETMR/STIR )
+  set(DEFAULT_STIR_TAG 8bf37d9d7fdde7cb3a98a6f848d93827dbd98a18)
+
+  ## Gadgetron
+  set(DEFAULT_Gadgetron_URL https://github.com/CCPPETMR/gadgetron )
+  set(DEFAULT_Gadgetron_TAG f03829ef45e57466829e6ec46da7a7cf61db1c8a)
+
+  ## ISMRMRD
+  set(DEFAULT_ISMRMRD_URL https://github.com/CCPPETMR/ismrmrd )
+  set(DEFAULT_ISMRMRD_TAG 35012c6c8000616546c2d6b1757eba0c5b21b2d4)
+
+endif()
+
+
+# Set the tags for SIRF, STIR, Gadgetron and ISMRMRD
+# these can be overridden by the user
+SET(SIRF_TAG ${DEFAULT_SIRF_TAG} CACHE STRING ON)
+ 
+SET(STIR_TAG ${DEFAULT_STIR_TAG} CACHE STRING ON)
+SET(STIR_URL ${DEFAULT_STIR_URL} CACHE STRING ON)
+
+SET(Gadgetron_TAG ${DEFAULT_Gadgetron_TAG} CACHE STRING ON)
+SET(Gadgetron_URL ${DEFAULT_Gadgetron_URL} CACHE STRING ON)
+
+SET(ISMRMRD_TAG ${DEFAULT_ISMRMRD_TAG} CACHE STRING ON)
+SET(ISMRMRD_URL ${DEFAULT_ISMRMRD_URL} CACHE STRING ON)
+
+mark_as_advanced(SIRF_TAG STIR_URL STIR_TAG Gadgetron_URL Gadgetron_TAG ISMRMRD_URL ISMRMRD_TAG)
