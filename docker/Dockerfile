@@ -27,6 +27,11 @@ ADD build_gadgetron-ubuntu.sh .
 RUN bash build_gadgetron-ubuntu.sh
 RUN rm build_gadgetron-ubuntu.sh
 
+# SIRF external deps
+ADD build_system-ubuntu.sh .
+RUN bash build_system-ubuntu.sh
+RUN rm build_system-ubuntu.sh
+
 # X11 forwarding
 RUN apt-get update && apt-get install -y --no-install-recommends libx11-xcb1
 RUN sudo mkdir -p /usr/share/X11/xkb
@@ -58,7 +63,9 @@ RUN sudo chmod 644 .bashrc .profile
 
 # SIRF
 ADD user_sirf-ubuntu.sh .
-RUN bash --login user_sirf-ubuntu.sh
+RUN EXTRA_BUILD_FLAGS="-DCMAKE_BUILD_TYPE=Release -DUSE_SYSTEM_Boost=ON \
+  -DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_FFTW3=ON" \
+  bash --login user_sirf-ubuntu.sh
 RUN rm user_sirf-ubuntu.sh
 
 RUN sudo apt-get clean
