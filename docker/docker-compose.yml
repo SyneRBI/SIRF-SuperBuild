@@ -1,0 +1,19 @@
+version: '3.2'
+services:
+  sirf:
+    container_name: sirf
+    image: ccppetmr/sirf
+    build:
+      context: .
+      args:
+        mainUser: sirfuser
+      cache_from:
+        - ubuntu:16.04
+        - ccppetmr/sirf:latest
+    stdin_open: true
+    tty: true
+    cap_add:
+      - NET_ADMIN
+    network_mode: "bridge"
+    volumes:
+      - ./devel:/devel
