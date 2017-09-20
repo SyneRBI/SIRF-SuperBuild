@@ -3,10 +3,10 @@
 
 # completion
 [ -f /etc/bash_completion ] && . /etc/bash_completion
-[ -f ~/git-prompt.sh ] || \
+[ -f ~/.git-prompt.sh ] || \
   curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh \
   > ~/.git-prompt.sh
-  . ~/git-prompt.sh
+  . ~/.git-prompt.sh
 
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
 export PS1='sirf:\w$(__git_ps1)\$ '
