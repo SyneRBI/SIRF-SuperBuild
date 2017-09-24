@@ -3,7 +3,7 @@
 git clone https://github.com/CCPPETMR/SIRF-SuperBuild
 pushd SIRF-SuperBuild
 cmake $EXTRA_BUILD_FLAGS .
-make -j
+make -j 2
 
 [ -f INSTALL/share/gadgetron/config/gadgetron.xml ] || \
   mv INSTALL/share/gadgetron/config/gadgetron.xml.example \
