@@ -49,7 +49,7 @@ else
     SIRF_VM_VERSION=0.1
     echo virtual | sudo -S apt-get -y install python-scipy python-docopt python-matplotlib
   else
-    SIRF_VM_VERSION=0.9
+    SIRF_VM_VERSION=0.9.1
   fi
   echo "export SIRF_VM_VERSION=$SIRF_VM_VERSION" > ~/.sirf_VM_version
 fi
@@ -66,28 +66,49 @@ then
   mkdir -p $SIRF_SRC_PATH
 fi
 
+
+
 # location of installated files
-if [ -z $SIRF_INSTALL_PATH ]
-then
-  export SIRF_BUILD_PATH=$SIRF_SRC_PATH/build
-  echo "export SIRF_BUILD_PATH=$SIRF_BUILD_PATH" >> ~/.sirfrc
-  export SIRF_INSTALL_PATH=$SIRF_SRC_PATH/build/install
-  echo "export SIRF_INSTALL_PATH=$SIRF_INSTALL_PATH" >> ~/.sirfrc
-  export SIRF_PATH=$SIRF_SRC_PATH/SIRF
-  echo "export SIRF_PATH=$SIRF_PATH" >> ~/.sirfrc
-  export LD_LIBRARY_PATH=$SIRF_INSTALL_PATH/lib:$LD_LIBRARY_PATH
-  echo 'export LD_LIBRARY_PATH=$SIRF_INSTALL_PATH/lib:$LD_LIBRARY_PATH' >> ~/.sirfrc
-  export PYTHONPATH=$SIRF_INSTALL_PATH/python
-  echo 'export PYTHONPATH=$SIRF_INSTALL_PATH/python' >> ~/.sirfrc
-  echo "PATH=\$PATH:$SIRF_INSTALL_PATH/bin" >> ~/.sirfrc
-fi
+#if [ -z $SIRF_INSTALL_PATH ]
+#then
+#  export SIRF_BUILD_PATH=$SIRF_SRC_PATH/build
+#  echo "export SIRF_BUILD_PATH=$SIRF_BUILD_PATH" >> ~/.sirfrc
+#  export SIRF_INSTALL_PATH=$SIRF_SRC_PATH/build/install
+#  echo "export SIRF_INSTALL_PATH=$SIRF_INSTALL_PATH" >> ~/.sirfrc
+#  export SIRF_PATH=$SIRF_SRC_PATH/SIRF
+#  echo "export SIRF_PATH=$SIRF_PATH" >> ~/.sirfrc
+#  export LD_LIBRARY_PATH=$SIRF_INSTALL_PATH/lib:$LD_LIBRARY_PATH
+#  echo 'export LD_LIBRARY_PATH=$SIRF_INSTALL_PATH/lib:$LD_LIBRARY_PATH' >> ~/.sirfrc
+#  export PYTHONPATH=$SIRF_INSTALL_PATH/python
+#  echo 'export PYTHONPATH=$SIRF_INSTALL_PATH/python' >> ~/.sirfrc
+#  echo "PATH=\$PATH:$SIRF_INSTALL_PATH/bin" >> ~/.sirfrc
+#fi
+#
+#CMAKE="cmake -DCMAKE_PREFIX_PATH:PATH=$SIRF_INSTALL_PATH/lib/cmake -DCMAKE_INSTALL_PREFIX:PATH=$SIRF_INSTALL_PATH"
+#
+#if [ ! -d $SIRF_INSTALL_PATH ]
+#then
+#  mkdir -p $SIRF_INSTALL_PATH/bin
+#fi
+#
 
-CMAKE="cmake -DCMAKE_PREFIX_PATH:PATH=$SIRF_INSTALL_PATH/lib/cmake -DCMAKE_INSTALL_PREFIX:PATH=$SIRF_INSTALL_PATH"
 
-if [ ! -d $SIRF_INSTALL_PATH ]
-then
-  mkdir -p $SIRF_INSTALL_PATH/bin
-fi
+# SuperBuild
+SuperBuild(){
+  echo "==================== SuperBuild ====================="
+  cd $SIRF_SRC_PATH
+  git clone https://github.com/CCPPETMR/SIRF-SuperBuild.git
+  cd SIRF-SuperBuild
+  git checkout ctest
+  cmake . -DSIRF_TAG=40e3264963ba7448bffb1dcbc9b55ef00ace6f8c
+  make
+  cp INSTALL/bin/env_ccppetmr.sh ~/.sirfrc
+  if [ ! -f INSTALL/share/gadgetron/config/gadgetron.xml ] 
+  then 
+    cp INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
+  fi
+  source ~/.sirfrc
+}
 
 # define a function to get the source
 # arguments: name_of_repo [git_ref]
@@ -137,33 +158,35 @@ update()
   build_and_install $*
 }
 
-clone_or_pull ismrmrd f98df72fcd85e739fb41083561d8d96c951520bd
-build_and_install ismrmrd
+SuperBuild
 
-update STIR  -DGRAPHICS=None -DBUILD_EXECUTABLES=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON
-update gadgetron
-update SIRF
-
-# check if gadgetron config file exists
-gadgetron_config=$SIRF_INSTALL_PATH/share/gadgetron/config/gadgetron.xml
-if [ ! -r  ${gadgetron_config} ]; then
-  cp ${gadgetron_config}.example ${gadgetron_config}
-fi
-
-clone_or_pull ismrmrd-python-tools
-cd $SIRF_SRC_PATH/ismrmrd-python-tools
-python setup.py install --user
-
-
-# update STIR-exercises if it was installed
-# See update_VM_to_full_STIR.sh
-if [ -d $SIRF_SRC_PATH/STIR-exercises ]
-then
-    cd $SIRF_SRC_PATH/STIR-exercises
-    git pull
-fi
-
-
+#clone_or_pull ismrmrd f98df72fcd85e739fb41083561d8d96c951520bd
+#build_and_install ismrmrd
+#
+#update STIR  -DGRAPHICS=None -DBUILD_EXECUTABLES=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+#update gadgetron
+#update SIRF
+#
+## check if gadgetron config file exists
+#gadgetron_config=$SIRF_INSTALL_PATH/share/gadgetron/config/gadgetron.xml
+#if [ ! -r  ${gadgetron_config} ]; then
+#  cp ${gadgetron_config}.example ${gadgetron_config}
+#fi
+#
+#clone_or_pull ismrmrd-python-tools
+#cd $SIRF_SRC_PATH/ismrmrd-python-tools
+#python setup.py install --user
+#
+#
+## update STIR-exercises if it was installed
+## See update_VM_to_full_STIR.sh
+#if [ -d $SIRF_SRC_PATH/STIR-exercises ]
+#then
+#    cd $SIRF_SRC_PATH/STIR-exercises
+#    git pull
+#fi
+#
+#
 # copy scripts into the path
 cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/scripts/update*sh $SIRF_INSTALL_PATH/bin
 
