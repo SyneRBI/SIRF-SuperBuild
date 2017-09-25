@@ -49,7 +49,7 @@ else
     SIRF_VM_VERSION=0.1
     echo virtual | sudo -S apt-get -y install python-scipy python-docopt python-matplotlib
   else
-    SIRF_VM_VERSION=0.9.1
+    SIRF_VM_VERSION=0.9
   fi
   echo "export SIRF_VM_VERSION=$SIRF_VM_VERSION" > ~/.sirf_VM_version
 fi
@@ -107,25 +107,29 @@ SuperBuild(){
     git pull
   fi
   git checkout ctest
-  cmake . -DSIRF_TAG=03adfb591cfe3ccfb59b85753215a0aaebe4ec97
+  cmake .
   make -j2
   cp INSTALL/bin/env_ccppetmr.sh ~/.sirfrc
   if [ ! -f INSTALL/share/gadgetron/config/gadgetron.xml ] 
   then 
     cp INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
   fi
-  echo "*********************************************************"
-  echo "Your SIRF Installation is now Updated"
-  echo "We reccommend to delete old files and directories:"
-  echo ""
-  echo "sudo rm -r $SIRF_SRC_PATH/build"
-  echo "sudo rm -r $SIRF_SRC_PATH/gadgetron"
-  echo "sudo rm -r $SIRF_SRC_PATH/ismrmrd-python-tools"
-  echo "sudo rm -r $SIRF_SRC_PATH/ismrmrd"
-  echo "sudo rm -r $SIRF_SRC_PATH/SIRF"
-  echo "sudo rm -r $SIRF_SRC_PATH/STIR"
-  echo "*********************************************************"
-  
+
+  if [ $SIRF_VM_VERSION = "0.9" ] 
+  then 
+    echo "*********************************************************"
+    echo "Your SIRF Installation is now Updated"
+    echo "We reccommend to delete old files and directories:"
+    echo ""
+    echo "sudo rm -r $SIRF_SRC_PATH/build"
+    echo "sudo rm -r $SIRF_SRC_PATH/gadgetron"
+    echo "sudo rm -r $SIRF_SRC_PATH/ismrmrd-python-tools"
+    echo "sudo rm -r $SIRF_SRC_PATH/ismrmrd"
+    echo "sudo rm -r $SIRF_SRC_PATH/SIRF"
+    echo "sudo rm -r $SIRF_SRC_PATH/STIR"
+    echo "*********************************************************"
+    echo "export SIRF_VM_VERSION=0.9.1" > ~/.sirf_VM_version
+  fi
 }
 
 # define a function to get the source
@@ -206,6 +210,7 @@ SuperBuild
 #
 #
 # copy scripts into the path
+SIRF_INSTALL_PATH=$SIRF_SRC_PATH/SIRF-SuperBuild/INSTALL
 cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/scripts/update*sh $SIRF_INSTALL_PATH/bin
 
 # copy help file to Desktop
