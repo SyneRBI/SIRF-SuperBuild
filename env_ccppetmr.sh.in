@@ -18,3 +18,6 @@ PYTHONPATH=@CCPPETMR_INSTALL@/python:$PYTHONPATH
 export PYTHONPATH
 
 PATH=$PATH:@CCPPETMR_INSTALL@/bin
+
+# set nano as editor rather than vi
+export EDITOR=nano

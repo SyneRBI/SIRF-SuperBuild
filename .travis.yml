@@ -89,7 +89,6 @@ install:
 script:
   - python ./SIRF/src/xSTIR/pSTIR/tests/test1.py
   - ./INSTALL/bin/gadgetron >& gadgetron.log&
-  - python ./SIRF/src/xGadgetron/pGadgetron/tests/fully_sampled.py
-  - python ./SIRF/src/xGadgetron/pGadgetron/tests/undersampled.py
+  - ctest
   - # print for debugging
   - cat gadgetron.log
