@@ -67,32 +67,6 @@ then
 fi
 
 
-
-# location of installated files
-#if [ -z $SIRF_INSTALL_PATH ]
-#then
-#  export SIRF_BUILD_PATH=$SIRF_SRC_PATH/build
-#  echo "export SIRF_BUILD_PATH=$SIRF_BUILD_PATH" >> ~/.sirfrc
-#  export SIRF_INSTALL_PATH=$SIRF_SRC_PATH/build/install
-#  echo "export SIRF_INSTALL_PATH=$SIRF_INSTALL_PATH" >> ~/.sirfrc
-#  export SIRF_PATH=$SIRF_SRC_PATH/SIRF
-#  echo "export SIRF_PATH=$SIRF_PATH" >> ~/.sirfrc
-#  export LD_LIBRARY_PATH=$SIRF_INSTALL_PATH/lib:$LD_LIBRARY_PATH
-#  echo 'export LD_LIBRARY_PATH=$SIRF_INSTALL_PATH/lib:$LD_LIBRARY_PATH' >> ~/.sirfrc
-#  export PYTHONPATH=$SIRF_INSTALL_PATH/python
-#  echo 'export PYTHONPATH=$SIRF_INSTALL_PATH/python' >> ~/.sirfrc
-#  echo "PATH=\$PATH:$SIRF_INSTALL_PATH/bin" >> ~/.sirfrc
-#fi
-#
-#CMAKE="cmake -DCMAKE_PREFIX_PATH:PATH=$SIRF_INSTALL_PATH/lib/cmake -DCMAKE_INSTALL_PREFIX:PATH=$SIRF_INSTALL_PATH"
-#
-#if [ ! -d $SIRF_INSTALL_PATH ]
-#then
-#  mkdir -p $SIRF_INSTALL_PATH/bin
-#fi
-#
-
-
 # SuperBuild
 SuperBuild(){
   echo "==================== SuperBuild ====================="
@@ -180,35 +154,9 @@ update()
   build_and_install $*
 }
 
+# Launch the SuperBuild to update
 SuperBuild
 
-#clone_or_pull ismrmrd f98df72fcd85e739fb41083561d8d96c951520bd
-#build_and_install ismrmrd
-#
-#update STIR  -DGRAPHICS=None -DBUILD_EXECUTABLES=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON
-#update gadgetron
-#update SIRF
-#
-## check if gadgetron config file exists
-#gadgetron_config=$SIRF_INSTALL_PATH/share/gadgetron/config/gadgetron.xml
-#if [ ! -r  ${gadgetron_config} ]; then
-#  cp ${gadgetron_config}.example ${gadgetron_config}
-#fi
-#
-#clone_or_pull ismrmrd-python-tools
-#cd $SIRF_SRC_PATH/ismrmrd-python-tools
-#python setup.py install --user
-#
-#
-## update STIR-exercises if it was installed
-## See update_VM_to_full_STIR.sh
-#if [ -d $SIRF_SRC_PATH/STIR-exercises ]
-#then
-#    cd $SIRF_SRC_PATH/STIR-exercises
-#    git pull
-#fi
-#
-#
 # copy scripts into the path
 SIRF_INSTALL_PATH=$SIRF_SRC_PATH/SIRF-SuperBuild/INSTALL
 cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/scripts/update*sh $SIRF_INSTALL_PATH/bin
