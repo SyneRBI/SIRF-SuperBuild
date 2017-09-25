@@ -81,7 +81,7 @@ install:
   - #pip install --upgrade pip setuptools wheel
   - pip install --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
   - ./cmake-*/bin/cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
-  - make -j 6
+  - make
   - mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
   - source $PWD/INSTALL/bin/env_ccppetmr.sh
   - #env
