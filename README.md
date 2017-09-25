@@ -39,6 +39,7 @@ cd SIRF-SuperBuild
 cmake .
 make
 ```
+ 
 5. Source a script with the environment variables appropriate for your shell
 
 For instance, for sh/bash/ksh etc
@@ -92,6 +93,36 @@ The user may also run the SIRF tests independently of the SuperBuild. Just enter
 cd SIRF-prefix/src/SIRF-build
 ctest
 ```
+## Build of specific versions
+   
+The SuperBuild allows the user to change the versions of the projects it's building. This is done at the configuration stage that happens when you issue the `cmake` command in the root of the Superbuild. 
+
+There is a `DEVEL_BUILD` tag that allows to build the upstream/master versions of all packages
+   
+|TAG        | DEVEL_BUILD=OFF (default) | DEVEL_BUILD=ON |
+|:--------- |:--------------- |:-------------- |
+|`SIRF_TAG` | `v0.9.0`          | `master`         |
+|`STIR_URL` | https://github.com/CCPPETMR/STIR | https://github.com/UCL/STIR |
+|`STIR_TAG` | `8bf37d9d7fdde7cb3a98a6f848d93827dbd98a18` | `master` |
+|`Gadgetron_URL` | https://github.com/CCPPETMR/gadgetron |https://github.com/gadgetron/gadgetron |
+|`Gadgetron_TAG` | `f03829ef45e57466829e6ec46da7a7cf61db1c8a`  | `master` |
+|`ISMRMRD_URL` | https://github.com/CCPPETMR/ismrmrd | https://github.com/ismrmrd/ismrmrd |
+|`ISMRMRD_TAG` | `35012c6c8000616546c2d6b1757eba0c5b21b2d4` | `master` |
+
+To use the `DEVEL_BUILD` option one may (on the terminal)
+
+```bash
+
+cmake . -DDEVEL_BUILD=ON
+```
+
+Additionally one may want to use only a specific version of a package. This is achieved by adding the right tag to the command line (see the table above for available tags):
+
+```bash
+
+cmake . -DSIRF_TAG=<a valid hash>
+```
+
 ## Installation instructions for Ubuntu 16
 
 They can be found [here](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-Ubuntu-16.04)
