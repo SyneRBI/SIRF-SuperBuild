@@ -47,22 +47,6 @@ endif(WIN32)
 set(FFTW3double_URL ${FFTW3_URL})
 set(FFTW3double_MD5 ${FFTW3_MD5})
 
-
-
-## STIR
-
-set(STIR_URL https://github.com/CCPPETMR/STIR )
-set(STIR_TAG 8bf37d9d7fdde7cb3a98a6f848d93827dbd98a18)
-
-## Gadgetron
-set(Gadgetron_URL https://github.com/CCPPETMR/gadgetron )
-set(Gadgetron_TAG f03829ef45e57466829e6ec46da7a7cf61db1c8a)
-
-## ISMRMRD
-set(ISMRMRD_URL https://github.com/CCPPETMR/ismrmrd )
-set(ISMRMRD_TAG 35012c6c8000616546c2d6b1757eba0c5b21b2d4)
-
-
 ## HDF5
 set(HDF5_URL https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.0-patch1/src/CMake-hdf5-1.10.0-patch1.tar.gz )
 set(HDF5_MD5 6fb456d03a60f358f3c077288a6d1cd8 )
@@ -87,10 +71,9 @@ option (DEVEL_BUILD "Developer Build" OFF)
 # with devel build it uses latest version of upstream packages
 # otherwise uses the versions for SIRF 0.9
 
-#SIRF
-set(SIRF_URL https://github.com/CCPPETMR/SIRF )
+set(DEFAULT_SIRF_URL https://github.com/CCPPETMR/SIRF )
 if (DEVEL_BUILD)
-  set (SIRF_TAG master)
+  set (DEFAULT_SIRF_TAG master)
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
   set(DEFAULT_STIR_TAG master)
@@ -105,6 +88,7 @@ if (DEVEL_BUILD)
 
 else()
   set(DEFAULT_SIRF_TAG v0.9.0)
+
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/CCPPETMR/STIR )
   set(DEFAULT_STIR_TAG 8bf37d9d7fdde7cb3a98a6f848d93827dbd98a18)
@@ -122,6 +106,7 @@ endif()
 
 # Set the tags for SIRF, STIR, Gadgetron and ISMRMRD
 # these can be overridden by the user
+SET(SIRF_URL ${DEFAULT_SIRF_URL} CACHE STRING ON)
 SET(SIRF_TAG ${DEFAULT_SIRF_TAG} CACHE STRING ON)
  
 SET(STIR_TAG ${DEFAULT_STIR_TAG} CACHE STRING ON)
@@ -133,4 +118,4 @@ SET(Gadgetron_URL ${DEFAULT_Gadgetron_URL} CACHE STRING ON)
 SET(ISMRMRD_TAG ${DEFAULT_ISMRMRD_TAG} CACHE STRING ON)
 SET(ISMRMRD_URL ${DEFAULT_ISMRMRD_URL} CACHE STRING ON)
 
-mark_as_advanced(SIRF_TAG STIR_URL STIR_TAG Gadgetron_URL Gadgetron_TAG ISMRMRD_URL ISMRMRD_TAG)
+mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG Gadgetron_URL Gadgetron_TAG ISMRMRD_URL ISMRMRD_TAG)
