@@ -97,17 +97,35 @@ fi
 SuperBuild(){
   echo "==================== SuperBuild ====================="
   cd $SIRF_SRC_PATH
-  git clone https://github.com/CCPPETMR/SIRF-SuperBuild.git
-  cd SIRF-SuperBuild
+  # delete old VM build
+  if [ ! -d SIRF-SuperBuild ] 
+  then
+    git clone https://github.com/CCPPETMR/SIRF-SuperBuild.git
+    cd SIRF-SuperBuild
+  else
+    cd SIRF-SuperBuild
+    git pull
+  fi
   git checkout ctest
-  cmake . -DSIRF_TAG=40e3264963ba7448bffb1dcbc9b55ef00ace6f8c
-  make
+  cmake . -DSIRF_TAG=03adfb591cfe3ccfb59b85753215a0aaebe4ec97
+  make -j2
   cp INSTALL/bin/env_ccppetmr.sh ~/.sirfrc
   if [ ! -f INSTALL/share/gadgetron/config/gadgetron.xml ] 
   then 
     cp INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
   fi
-  source ~/.sirfrc
+  echo "*********************************************************"
+  echo "Your SIRF Installation is now Updated"
+  echo "We reccommend to delete old files and directories:"
+  echo ""
+  echo "sudo rm -r $SIRF_SRC_PATH/build"
+  echo "sudo rm -r $SIRF_SRC_PATH/gadgetron"
+  echo "sudo rm -r $SIRF_SRC_PATH/ismrmrd-python-tools"
+  echo "sudo rm -r $SIRF_SRC_PATH/ismrmrd"
+  echo "sudo rm -r $SIRF_SRC_PATH/SIRF"
+  echo "sudo rm -r $SIRF_SRC_PATH/STIR"
+  echo "*********************************************************"
+  
 }
 
 # define a function to get the source
