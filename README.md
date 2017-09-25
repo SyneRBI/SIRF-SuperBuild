@@ -53,6 +53,45 @@ source INSTALL/bin/env_ccppetmr.csh
 ```
 You probably want to add a similar line (with absolute path) to your .cshrc.
 
+6. Testing
+
+Tests for the SIRF-SuperBuild are currently the SIRF tests. The tests can contain tests from all SuperBuild projects.
+After setting the environment variables, you can run tests as:
+```bash
+ctest --verbose
+```
+
+Typical output will be something like 
+```
+test 1
+    Start 1: SIRF_TESTS
+
+1: Test command: /usr/local/bin/ctest "test"
+1: Test timeout computed to be: 9.99988e+06
+1: Test project /home/sirfuser/devel/SIRF-SuperBuild/SIRF-prefix/src/SIRF-build
+1:     Start 1: PET_TEST1
+1: 1/3 Test #1: PET_TEST1 ........................   Passed    2.94 sec
+1:     Start 2: MR_FULLY_SAMPLED
+1: 2/3 Test #2: MR_FULLY_SAMPLED .................   Passed    3.83 sec
+1:     Start 3: MR_UNDER_SAMPLED
+1: 3/3 Test #3: MR_UNDER_SAMPLED .................   Passed    2.93 sec
+1: 
+1: 100% tests passed, 0 tests failed out of 3
+1: 
+1: Total Test time (real) =   9.70 sec
+1/1 Test #1: SIRF_TESTS .......................   Passed    9.70 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   9.70 sec
+```
+
+The user may also run the SIRF tests independently of the SuperBuild. Just enter the SIRF build directory and launch ctest:
+
+```bash
+cd SIRF-prefix/src/SIRF-build
+ctest
+```
 ## Installation instructions for Ubuntu 16
 
 They can be found [here](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-Ubuntu-16.04)
