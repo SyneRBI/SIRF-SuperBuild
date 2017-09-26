@@ -94,10 +94,12 @@ cd SIRF-prefix/src/SIRF-build
 ctest
 ```
 ## Build of specific versions
-   
-The SuperBuild allows the user to change the versions of the projects it's building. This is done at the configuration stage that happens when you issue the `cmake` command in the root of the Superbuild. 
 
-There is a `DEVEL_BUILD` tag that allows to build the upstream/master versions of all packages
+By default, the SuperBuild will build the latest stable release of SIRF and associated versions of the dependencies. However, the SuperBuild allows the user to change the versions of the projects it's building. 
+
+This is done at the configuration stage that happens when you run `cmake`. 
+
+There is a `DEVEL_BUILD` tag that allows to build the upstream/master versions of all packages (`DEVEL_BUILD=ON`). In the following table are listed the default versions (hashes) of dependencies that are built by the SuperBuild (`DEVEL_BUILD=OFF`). 
    
 |TAG        | DEVEL_BUILD=OFF (default) | DEVEL_BUILD=ON |
 |:--------- |:--------------- |:-------------- |
@@ -122,6 +124,7 @@ Additionally one may want to use only a specific version of a package. This is a
 
 cmake . -DSIRF_TAG=<a valid hash>
 ```
+Note that the CMake options in the table are Advanced Options. When running the CMake GUI (or ccmake) they will therefore only be visible when you toggle those on.
 
 ## Installation instructions for Ubuntu 16
 
