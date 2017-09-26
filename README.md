@@ -41,7 +41,6 @@ During installation you will be asked to read and accept CMake's license.
 cd ~
 cd devel
 git clone https://github.com/CCPPETMR/SIRF-SuperBuild.git
-cd SIRF-SuperBuild
 ```
 
  ### Build and install
@@ -49,6 +48,7 @@ cd SIRF-SuperBuild
  Create a build directory and start the build and install process.
  
 ```bash
+cd ~/devel
 mkdir build
 cd build
 cmake ../SIRF-SuperBuild
@@ -62,6 +62,7 @@ Source a script with the environment variables appropriate for your shell
 
 For instance, for sh/bash/ksh etc
 ```bash
+cd ~/devel/build
 source INSTALL/bin/env_ccppetmr.sh
 ```
 You probably want to add a similar line (with absolute path) to your .bashrc/.profile.
@@ -78,7 +79,7 @@ Tests for the SIRF-SuperBuild are currently the SIRF tests. The tests can contai
 After setting the environment variables, you can run tests as:
 
 ```bash
-
+cd ~/devel/build
 ctest --verbose
 ```
 
@@ -110,6 +111,7 @@ Total Test time (real) =   9.70 sec
 The user may also run the SIRF tests independently of the SuperBuild. Just enter the SIRF build directory and launch ctest:
 
 ```bash
+cd ~/devel/build
 cd SIRF-prefix/src/SIRF-build
 ctest
 ```
@@ -134,14 +136,14 @@ There is a `DEVEL_BUILD` tag that allows to build the upstream/master versions o
 To use the `DEVEL_BUILD` option one may (on the terminal)
 
 ```bash
-
+cd ~/devel/build
 cmake ../SIRF-SuperBuild -DDEVEL_BUILD=ON
 ```
 
 Additionally one may want to use only a specific version of a package. This is achieved by adding the right tag to the command line (see the table above for available tags):
 
 ```bash
-
+cd ~/devel/build
 cmake ../SIRF-SuperBuild -DSIRF_TAG=<a valid hash>
 ```
 Note that the CMake options in the table are Advanced Options. When running the CMake GUI (or ccmake) they will therefore only be visible when you toggle those on. Additionally, these variables are cached, so they will keep the specified value unless cache is deleted.
