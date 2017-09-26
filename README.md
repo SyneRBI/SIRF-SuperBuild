@@ -11,14 +11,22 @@ The superBuild depends on CMake >= 3.7.
 
 ## Generic instructions.
 
-To compile and install SIRF with the SuperBuild:
+To compile and install SIRF with the SuperBuild follow these steps:
 
- 1. create a directory for the SuperBuild, e.g. devel.
- 2. If you do not have CMake >= 3.7 install it first ([download link](https://cmake.org/download/)). On Linux,
+### Create a directory for the SuperBuild
+
+```bash
+cd ~
+mkdir devel
+```
+
+### Install CMake >= 3.7 
+
+If you do not have CMake >= 3.7 install it first ([download link](https://cmake.org/download/)). On Ubuntu Linux,
 you can issue the following commands
 
 ```bash
-mkdir devel
+cd ~
 cd devel
 wget https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.sh
 sudo mkdir /opt/cmake
@@ -27,20 +35,30 @@ export PATH=/opt/cmake/bin:$PATH
 ```
 During installation you will be asked to read and accept CMake's license.
 
- 3. Clone the project 
+### Clone the SIRF-SuperBuild project 
 
 ```bash
+cd ~
+cd devel
 git clone https://github.com/CCPPETMR/SIRF-SuperBuild.git
 cd SIRF-SuperBuild
 ```
 
- 4. Build and install
-```bash
-cmake .
-make
-```
+ ### Build and install
  
-5. Source a script with the environment variables appropriate for your shell
+ Create a build directory and start the build and install process.
+ 
+```bash
+mkdir build
+cd build
+cmake ../SIRF-SuperBuild
+make -jN
+```
+where `N` are the number of cores available for the compilation.
+
+### Set Environment variables
+
+Source a script with the environment variables appropriate for your shell
 
 For instance, for sh/bash/ksh etc
 ```bash
@@ -54,11 +72,13 @@ source INSTALL/bin/env_ccppetmr.csh
 ```
 You probably want to add a similar line (with absolute path) to your .cshrc.
 
-6. Testing
+### Testing
 
 Tests for the SIRF-SuperBuild are currently the SIRF tests. The tests can contain tests from all SuperBuild projects.
 After setting the environment variables, you can run tests as:
+
 ```bash
+
 ctest --verbose
 ```
 
@@ -115,16 +135,16 @@ To use the `DEVEL_BUILD` option one may (on the terminal)
 
 ```bash
 
-cmake . -DDEVEL_BUILD=ON
+cmake ../SIRF-SuperBuild -DDEVEL_BUILD=ON
 ```
 
 Additionally one may want to use only a specific version of a package. This is achieved by adding the right tag to the command line (see the table above for available tags):
 
 ```bash
 
-cmake . -DSIRF_TAG=<a valid hash>
+cmake ../SIRF-SuperBuild -DSIRF_TAG=<a valid hash>
 ```
-Note that the CMake options in the table are Advanced Options. When running the CMake GUI (or ccmake) they will therefore only be visible when you toggle those on.
+Note that the CMake options in the table are Advanced Options. When running the CMake GUI (or ccmake) they will therefore only be visible when you toggle those on. Additionally, these variables are cached, so they will keep the specified value unless cache is deleted.
 
 ## Installation instructions for Ubuntu 16
 
