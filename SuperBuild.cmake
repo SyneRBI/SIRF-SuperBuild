@@ -89,7 +89,7 @@ message(STATUS "MATLAB_ROOT = " ${MATLAB_ROOT})
 #set(proj ${PRIMARY_PROJECT_NAME})
 
 # Make environment files
-set(SIRF_SRC_PATH ${CMAKE_CURRENT_LIST_DIR}/SIRF)
+set(SIRF_SRC_PATH ${SOURCE_DOWNLOAD_CACHE}/SIRF)
 set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
 configure_file(env_ccppetmr.sh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.sh)
 configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
