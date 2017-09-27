@@ -41,7 +41,7 @@ set_property(CACHE EXTERNAL_PROJECT_BUILD_TYPE PROPERTY
 STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 
 
-set(MATLAB_ROOT CACHE PATH "Path to Matlab root directory")
+set(Matlab_ROOT_DIR CACHE PATH "Path to Matlab root directory")
 
 option(USE_SYSTEM_Boost "Build using an external version of Boost" OFF)
 option(USE_SYSTEM_STIR "Build using an external version of STIR" OFF)
