@@ -27,8 +27,7 @@ set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/1.63.0/boost_
 set(Boost_MD5 3c706b3fc749884ea5510c39474fd732)
 
 ## Armadillo
-set(Armadillo_URL   https://downloads.sourceforge.net/project/arma/armadillo-7.800.2.tar.xz?r=http%3A%2F%2Farma.sourceforge.net%2Fdownload.html&ts=1492950217&use_mirror=freefr
- )
+set(Armadillo_URL   https://downloads.sourceforge.net/project/arma/armadillo-7.800.2.tar.xz)
 set(Armadillo_MD5 c601f3a5ec6d50666aa3a539fa20e6ca )
 
 ## FFTW3
@@ -53,10 +52,10 @@ set(HDF5_MD5 6fb456d03a60f358f3c077288a6d1cd8 )
 
 ## SWIG
 if (WIN32)
-  set(SWIG_URL http://prdownloads.sourceforge.net/swig/swigwin-3.0.12.zip  )
+  set(SWIG_URL http://downloads.sourceforge.net/swig/swigwin-3.0.12.zip  )
   set(SWIG_MD5 a49524dad2c91ae1920974e7062bfc93 )
 else(WIN32)
-  set(SWIG_URL http://prdownloads.sourceforge.net/swig/swig-3.0.12.tar.gz )
+  set(SWIG_URL http://downloads.sourceforge.net/swig/swig-3.0.12.tar.gz )
   set(SWIG_MD5 82133dfa7bba75ff9ad98a7046be687c )
 endif(WIN32)
 option(DEVEL_BUILD "Use current versions of major packages" OFF)
