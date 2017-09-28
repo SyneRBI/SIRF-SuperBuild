@@ -89,5 +89,6 @@ install:
 script:
   - ./INSTALL/bin/gadgetron >& gadgetron.log&
   - ctest --verbose
+  - cat SIRF-prefix/src/SIRF-build/Testing/Temporary/LastTest.log
   - # print for debugging
   - cat gadgetron.log
