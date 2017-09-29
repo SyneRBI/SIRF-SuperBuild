@@ -94,12 +94,12 @@ SuperBuild(){
     echo "Your SIRF Installation is now Updated"
     echo "We reccommend to delete old files and directories:"
     echo ""
-    echo "sudo rm -r $SIRF_SRC_PATH/build"
-    echo "sudo rm -r $SIRF_SRC_PATH/gadgetron"
-    echo "sudo rm -r $SIRF_SRC_PATH/ismrmrd-python-tools"
-    echo "sudo rm -r $SIRF_SRC_PATH/ismrmrd"
-    echo "sudo rm -r $SIRF_SRC_PATH/SIRF"
-    echo "sudo rm -r $SIRF_SRC_PATH/STIR"
+    echo "rm -rf $SIRF_SRC_PATH/build"
+    echo "rm -rf $SIRF_SRC_PATH/gadgetron"
+    echo "rm -rf $SIRF_SRC_PATH/ismrmrd-python-tools"
+    echo "rm -rf $SIRF_SRC_PATH/ismrmrd"
+    echo "rm -rf $SIRF_SRC_PATH/SIRF"
+    echo "rm -rf $SIRF_SRC_PATH/STIR"
     echo "*********************************************************"
     echo "export SIRF_VM_VERSION=0.9.1" > ~/.sirf_VM_version
   fi
