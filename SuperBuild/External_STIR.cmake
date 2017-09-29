@@ -52,7 +52,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DCMAKE_INSTALL_PREFIX=${STIR_Install_Dir}
         -DGRAPHICS=None
         -DCMAKE_CXX_STANDARD=11
-        -DSTIR_USE_BOOST_SHARED_PTR=On
+        -DDISABLE_ITK=On
+        -DDISABLE_CERN_ROOT_Support=On
     INSTALL_DIR ${STIR_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
