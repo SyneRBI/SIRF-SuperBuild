@@ -2,6 +2,7 @@
 # Author: Benjamin A Thomas
 # Author: Edoardo Pasca
 # Copyright 2017 University College London
+# Copyright 2017 Science Technology Facilities Council
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -88,7 +89,14 @@ message(STATUS "MATLAB_ROOT = " ${MATLAB_ROOT})
 #set(proj ${PRIMARY_PROJECT_NAME})
 
 # Make environment files
-set(SIRF_SRC_PATH ${CMAKE_CURRENT_LIST_DIR}/SIRF)
+set(SIRF_SRC_PATH ${SOURCE_DOWNLOAD_CACHE}/SIRF)
 set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
 configure_file(env_ccppetmr.sh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.sh)
 configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
+
+
+# add tests
+enable_testing()
+add_test(NAME SIRF_TESTS
+	 COMMAND ${CMAKE_CTEST_COMMAND} test WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/SIRF-prefix/src/SIRF-build/)
+

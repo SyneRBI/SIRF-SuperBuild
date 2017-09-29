@@ -81,15 +81,14 @@ install:
   - #pip install --upgrade pip setuptools wheel
   - pip install --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
   - ./cmake-*/bin/cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
-  - make -j 6
+  - make -j2
   - mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
   - source $PWD/INSTALL/bin/env_ccppetmr.sh
   - #env
 
 script:
-  - python ./SIRF/src/xSTIR/pSTIR/tests/test1.py
   - ./INSTALL/bin/gadgetron >& gadgetron.log&
-  - python ./SIRF/src/xGadgetron/pGadgetron/tests/fully_sampled.py
-  - python ./SIRF/src/xGadgetron/pGadgetron/tests/undersampled.py
+  - ctest --verbose
+  - cat SIRF-prefix/src/SIRF-build/Testing/Temporary/LastTest.log
   - # print for debugging
   - cat gadgetron.log
