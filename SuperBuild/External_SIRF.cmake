@@ -25,7 +25,7 @@ set(proj SIRF)
 # Set dependency list
 set(${proj}_DEPENDENCIES "STIR;Boost;HDF5;ISMRMRD;FFTW3;SWIG")
 
-message(STATUS "MATLAB_ROOT=" ${MATLAB_ROOT})
+message(STATUS "Matlab_ROOT_DIR=" ${Matlab_ROOT_DIR})
 message(STATUS "STIR_DIR=" ${STIR_DIR})
 
 # Include dependent projects if any
@@ -70,7 +70,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DCMAKE_INSTALL_PREFIX=${SIRF_Install_Dir}
         -DBOOST_INCLUDEDIR=${BOOST_ROOT}/include/
         -DBOOST_LIBRARYDIR=${BOOST_LIBRARY_DIR}
-        -DMATLAB_ROOT=${MATLAB_ROOT}
+        -DMatlab_ROOT_DIR=${Matlab_ROOT_DIR}
+        -DMATLAB_ROOT=${Matlab_ROOT_DIR} # pass this for compatibility with old SIRF
         -DSTIR_DIR=${STIR_DIR}
         -DHDF5_ROOT=${HDF5_ROOT}
         -DHDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}
