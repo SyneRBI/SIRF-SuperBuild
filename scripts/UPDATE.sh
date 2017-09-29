@@ -80,7 +80,6 @@ SuperBuild(){
     cd SIRF-SuperBuild
     git pull
   fi
-  git checkout ctest
   cmake .
   make -j2
   cp INSTALL/bin/env_ccppetmr.sh ~/.sirfrc
