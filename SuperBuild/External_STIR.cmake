@@ -37,15 +37,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ### --- Project specific additions here
   set(STIR_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
-  set(${proj}_URL https://github.com/UCL/STIR )
-  set(${proj}_GIT_TAG 753434bdc6ec3a5ab9c4bd89450cfde0fecc363b)
-  
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
-    GIT_TAG ${${proj}_GIT_TAG}
+    GIT_TAG ${STIR_TAG}
     SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
-    #BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/${proj}
     CMAKE_ARGS -DGRAPHICS=None
         -DBUILD_EXECUTABLES=OFF
         -DBUILD_TESTING=OFF
@@ -54,6 +51,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DBOOST_ROOT=${BOOST_ROOT}
         -DCMAKE_INSTALL_PREFIX=${STIR_Install_Dir}
         -DGRAPHICS=None
+        -DCMAKE_CXX_STANDARD=11
+        -DDISABLE_ITK=On
+        -DDISABLE_CERN_ROOT_Support=On
     INSTALL_DIR ${STIR_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}

@@ -6,8 +6,25 @@
 setenv SIRF_PATH @SIRF_SRC_PATH@
 # Where to find shared libraries
 # Setting for Linux but doesn't harm elsewhere
-setenv LD_LIBRARY_PATH @CCPPETMR_INSTALL@/lib:$LD_LIBRARY_PATH
+if $?LD_LIBRARY_PATH then
+	setenv LD_LIBRARY_PATH @CCPPETMR_INSTALL@/lib:$LD_LIBRARY_PATH
+else
+	setenv LD_LIBRARY_PATH @CCPPETMR_INSTALL@/lib
+endif
 # Setting for MacOS but doesn't harm elsewhere
-setenv DYLD_FALLBACK_LIBRARY_PATH @CCPPETMR_INSTALL@/lib:$DYLD_FALLBACK_LIBRARY_PATH
-setenv PYTHONPATH @CCPPETMR_INSTALL@/python:$PYTHONPATH
+if $?DYLD_FALLBACK_LIBRARY_PATH then
+	setenv DYLD_FALLBACK_LIBRARY_PATH @CCPPETMR_INSTALL@/lib:$DYLD_FALLBACK_LIBRARY_PATH
+else
+	setenv DYLD_FALLBACK_LIBRARY_PATH @CCPPETMR_INSTALL@/lib
+endif
+if $?PYTHONPATH then
+	setenv PYTHONPATH @CCPPETMR_INSTALL@/python:$PYTHONPATH
+else
+	setenv PYTHONPATH @CCPPETMR_INSTALL@/python
+endif
+if $?MATLABPATH then
+	setenv MATLABPATH @CCPPETMR_INSTALL@/matlab:$MATLABPATH
+else
+	setenv MATLABPATH @CCPPETMR_INSTALL@/matlab
+endif
 set path=( $path @CCPPETMR_INSTALL@/bin )
