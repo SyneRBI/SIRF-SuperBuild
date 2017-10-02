@@ -80,10 +80,7 @@ SuperBuild(){
     cd SIRF-SuperBuild
     git pull
   fi
-  cd .. 
-  mkdir build
-  cd build
-  cmake ../SIRF-SuperBuild -DUSE_SYSTEM_SWIG -DUSE_SYSTEM_BOOST -DUSE_SYSTEM_Armadillo -DUSE_SYSTEM_FFTW
+  cmake . -DUSE_SYSTEM_SWIG -DUSE_SYSTEM_BOOST -DUSE_SYSTEM_Armadillo -DUSE_SYSTEM_FFTW
   make -j2
   cp INSTALL/bin/env_ccppetmr.sh ~/.sirfrc
   echo "export EDITOR=nano" >> ~/.sirfrc
