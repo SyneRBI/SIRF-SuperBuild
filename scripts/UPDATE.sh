@@ -80,9 +80,13 @@ SuperBuild(){
     cd SIRF-SuperBuild
     git pull
   fi
-  cmake .
+  cd .. 
+  mkdir build
+  cd build
+  cmake ../SIRF-SuperBuild -DUSE_SYSTEM_SWIG -DUSE_SYSTEM_BOOST -DUSE_SYSTEM_Armadillo -DUSE_SYSTEM_FFTW
   make -j2
   cp INSTALL/bin/env_ccppetmr.sh ~/.sirfrc
+  echo "export EDITOR=nano" >> ~/.sirfrc
   if [ ! -f INSTALL/share/gadgetron/config/gadgetron.xml ] 
   then 
     cp INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
