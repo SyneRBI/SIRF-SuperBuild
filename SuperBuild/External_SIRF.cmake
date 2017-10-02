@@ -40,19 +40,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ### --- Project specific additions here
   set(SIRF_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
-  # Attempt to make Python settings consistent
-  FIND_PACKAGE(PythonInterp)
-  if (PYTHONINTERP_FOUND)
-   set(Python_ADDITIONAL_VERSIONS ${PYTHON_VERSION_STRING})
-    message(STATUS "Found PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}")
-    message(STATUS "Python version ${PYTHON_VERSION_STRING}")
-  endif()
-  FIND_PACKAGE(PythonLibs)
   set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
   if (BUILD_PYTHON)
     set(PYTHON_DEST "${SIRF_Install_Dir}/python" CACHE PATH "Destination for python modules")
-    message(STATUS "Using PYTHON_LIBRARY=${PYTHON_LIBRARY}")
-    message(STATUS "Using PYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR}")
   endif()
 
   message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
@@ -78,6 +68,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DHDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}
         -DISMRMRD_DIR=${ISMRMRD_DIR}
         -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
+        -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
         -DPYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR}
         -DPYTHON_LIBRARY=${PYTHON_LIBRARY}
         -DPYTHON_DEST=${PYTHON_DEST}

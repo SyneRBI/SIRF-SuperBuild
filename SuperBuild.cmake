@@ -53,6 +53,14 @@ mark_as_superbuild(
         CMAKE_INSTALL_PREFIX:PATH
 )
 
+# Attempt to make Python settings consistent
+FIND_PACKAGE(PythonInterp)
+if (PYTHONINTERP_FOUND)
+ set(Python_ADDITIONAL_VERSIONS ${PYTHON_VERSION_STRING})
+  message(STATUS "Found PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}")
+  message(STATUS "Python version ${PYTHON_VERSION_STRING}")
+endif()
+FIND_PACKAGE(PythonLibs)
 
 set(Matlab_ROOT_DIR CACHE PATH "Path to Matlab root directory")
 
@@ -92,6 +100,9 @@ message(STATUS "STIR_DIR = " ${STIR_DIR})
 message(STATUS "HDF5_ROOT = " ${HDF5_ROOT})
 message(STATUS "GTEST_ROOT = " ${GTEST_ROOT})
 message(STATUS "MATLAB_ROOT = " ${MATLAB_ROOT})
+message(STATUS "PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}")
+message(STATUS "PYTHON_LIBRARY=${PYTHON_LIBRARY}")
+message(STATUS "PYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR}")
 
 #set(SIRF_Install_Dir ${CMAKE_CURRENT_BINARY_DIR}/SIRF-install)
 #set(SIRF_URL https://github.com/CCPPETMR/SIRF )
