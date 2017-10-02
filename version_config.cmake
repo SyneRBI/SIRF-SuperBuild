@@ -86,15 +86,15 @@ if (DEVEL_BUILD)
   set(DEFAULT_ISMRMRD_TAG master)
 
 else()
-  set(DEFAULT_SIRF_TAG 359fca23b26a37821ba1961b87480f41efd6eda8)
+  set(DEFAULT_SIRF_TAG v0.9.1-rc1)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
   set(DEFAULT_STIR_TAG 41651b3a2007c58cbf1f7706bb2e269a21e870b1)
 
   ## Gadgetron
-  set(DEFAULT_Gadgetron_URL https://github.com/CCPPETMR/gadgetron )
-  set(DEFAULT_Gadgetron_TAG f03829ef45e57466829e6ec46da7a7cf61db1c8a)
+  set(DEFAULT_Gadgetron_URL https://github.com/CCPPETMR/gadgetron) # https://github.com/CCPPETMR/gadgetron )
+  set(DEFAULT_Gadgetron_TAG chroot_fixes)
 
   ## ISMRMRD
   set(DEFAULT_ISMRMRD_URL https://github.com/CCPPETMR/ismrmrd )
