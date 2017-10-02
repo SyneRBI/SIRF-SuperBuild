@@ -39,21 +39,11 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(FFTW_Configure_Script ${CMAKE_CURRENT_LIST_DIR}/External_FFTW_configure.cmake)
   set(FFTW_Build_Script ${CMAKE_CURRENT_LIST_DIR}/External_FFTW_build.cmake)
 
-  set(${proj}_URL http://www.fftw.org/fftw-3.3.5.tar.gz )
-  set(${proj}_MD5 6cc08a3b9c7ee06fdd5b9eb02e06f569 )
-  
   if(CMAKE_COMPILER_IS_CLANGXX)
     set(CLANG_ARG -DCMAKE_COMPILER_IS_CLANGXX:BOOL=ON)
   endif()
 
 if (WIN32)
-  # Just use precompiled version
-  # TODO would prefer the next zip file but for KT using an ftp URL times-out (firewall?)
-  #set(${proj}_URL ftp://ftp.fftw.org/pub/fftw/fftw-3.3.5-dll64.zip )
-  #set(${proj}_MD5 cb3c5ad19a89864f036e7a2dd5be168c )
-  set(${proj}_URL https://s3.amazonaws.com/install-gadgetron-vs2013/Dependencies/FFTW/zip/FFTW3.zip )
-  set(${proj}_MD5 a42eac92d9ad06d7c53fb82b09df2b6e )
-
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
@@ -84,7 +74,7 @@ endif()
       find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} ${${externalProjName}_COMPONENTS} REQUIRED)
       message(STATUS "USING the system ${externalProjName}, found FFTW3_INCLUDE_DIR=${FFTW3_INCLUDE_DIR}, FFTW3_LIBRARY=${FFTW3_LIBRARY}")
   endif()
-  ExternalProject_Add_Empty(${proj} "${${proj}_DEPENDENCIES}")
+  ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}")
 endif()
 
 mark_as_superbuild(

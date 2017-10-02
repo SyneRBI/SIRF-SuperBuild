@@ -2,6 +2,7 @@
 # Author: Benjamin A Thomas
 # Author: Edoardo Pasca
 # Copyright 2017 University College London
+# Copyright 2017 Science Technology Facilities Council
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -18,7 +19,11 @@
 # limitations under the License.
 #
 #=========================================================================
-
+if (WIN32)
+ if(NOT "x_${CMAKE_GENERATOR_PLATFORM}" STREQUAL "x_x64")
+    message( FATAL_ERROR "The SuperBuild currently has Win64 hard-wired for dependent libraries. Please use a Win64 generator")
+ endif()
+endif()
 
 set( SOURCE_DOWNLOAD_CACHE ${CMAKE_CURRENT_BINARY_DIR} CACHE PATH
     "The path for downloading external source directories" )
@@ -40,8 +45,24 @@ set(EXTERNAL_PROJECT_BUILD_TYPE "Release" CACHE STRING "Default build type for s
 set_property(CACHE EXTERNAL_PROJECT_BUILD_TYPE PROPERTY
 STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 
+# Make sure that some CMake variables are passed to all dependencies
+mark_as_superbuild(
+   PROJECTS ALL_PROJECTS
+   VARS CMAKE_GENERATOR:STRING CMAKE_GENERATOR_PLATFORM:STRING CMAKE_GENERATOR_TOOLSET:STRING
+        CMAKE_C_COMPILER:FILEPATH CMAKE_CXX_COMPILER:FILEPATH
+        CMAKE_INSTALL_PREFIX:PATH
+)
 
-set(MATLAB_ROOT CACHE PATH "Path to Matlab root directory")
+# Attempt to make Python settings consistent
+FIND_PACKAGE(PythonInterp)
+if (PYTHONINTERP_FOUND)
+ set(Python_ADDITIONAL_VERSIONS ${PYTHON_VERSION_STRING})
+  message(STATUS "Found PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}")
+  message(STATUS "Python version ${PYTHON_VERSION_STRING}")
+endif()
+FIND_PACKAGE(PythonLibs)
+
+set(Matlab_ROOT_DIR $ENV{Matlab_ROOT_DIR} CACHE PATH "Path to Matlab root directory" )
 
 option(USE_SYSTEM_Boost "Build using an external version of Boost" OFF)
 option(USE_SYSTEM_STIR "Build using an external version of STIR" OFF)
@@ -78,7 +99,10 @@ message(STATUS "FFTW3_ROOT_DIR = " ${FFTW3_ROOT_DIR})
 message(STATUS "STIR_DIR = " ${STIR_DIR})
 message(STATUS "HDF5_ROOT = " ${HDF5_ROOT})
 message(STATUS "GTEST_ROOT = " ${GTEST_ROOT})
-message(STATUS "MATLAB_ROOT = " ${MATLAB_ROOT})
+message(STATUS "Matlab_ROOT_DIR = " ${Matlab_ROOT_DIR})
+message(STATUS "PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}")
+message(STATUS "PYTHON_LIBRARY=${PYTHON_LIBRARY}")
+message(STATUS "PYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR}")
 
 #set(SIRF_Install_Dir ${CMAKE_CURRENT_BINARY_DIR}/SIRF-install)
 #set(SIRF_URL https://github.com/CCPPETMR/SIRF )
@@ -88,7 +112,14 @@ message(STATUS "MATLAB_ROOT = " ${MATLAB_ROOT})
 #set(proj ${PRIMARY_PROJECT_NAME})
 
 # Make environment files
-set(SIRF_SRC_PATH ${CMAKE_CURRENT_LIST_DIR}/SIRF)
+set(SIRF_SRC_PATH ${SOURCE_DOWNLOAD_CACHE}/SIRF)
 set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
 configure_file(env_ccppetmr.sh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.sh)
 configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
+
+
+# add tests
+enable_testing()
+add_test(NAME SIRF_TESTS
+	 COMMAND ${CMAKE_CTEST_COMMAND} test WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/SIRF-prefix/src/SIRF-build/)
+

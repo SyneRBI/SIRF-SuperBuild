@@ -1,0 +1,12 @@
+This file's directory and all its contents are mounted as follows:
+
+Host:
+
+`SIRF-SuperBuild/docker/devel`
+
+Docker container (ccppetmr/sirf:latest):
+
+`/devel`
+
+This means you can use editors & tools on the host machine with files in the
+container and vice versa.

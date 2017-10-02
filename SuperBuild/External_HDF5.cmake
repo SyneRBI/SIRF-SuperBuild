@@ -1,7 +1,9 @@
 #========================================================================
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
+# Author: Edoardo Pasca
 # Copyright 2017 University College London
+# Copyright 2017 STFC
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -18,8 +20,7 @@
 # limitations under the License.
 #
 #=========================================================================
-
-#This needs to be unique globally
+#These need to be unique globally
 set(proj HDF5)
 
 # Set dependency list
@@ -36,11 +37,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ### --- Project specific additions here
   set(HDF5_Install_Dir ${SUPERBUILD_INSTALL_DIR})
-  #set(HDF5_Configure_Script ${CMAKE_CURRENT_LIST_DIR}/External_HDF5_configureboost.cmake)
-  #set(HDF5_Build_Script ${CMAKE_CURRENT_LIST_DIR}/External_HDF5_buildboost.cmake)
-
-  set(${proj}_URL https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.0-patch1/src/CMake-hdf5-1.10.0-patch1.tar.gz )
-  set(${proj}_MD5 6fb456d03a60f358f3c077288a6d1cd8 )
 
   if(CMAKE_COMPILER_IS_CLANGXX)
     set(CLANG_ARG -DCMAKE_COMPILER_IS_CLANGXX:BOOL=ON)
@@ -52,20 +48,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
-    #SOURCE_DIR ${HDF5_SOURCE_DIR}/hdf5-1.10.0-patch1
     BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/${proj}
     CONFIGURE_COMMAND ${CMAKE_COMMAND}
                              ${CLANG_ARG}
                              -DCMAKE_INSTALL_PREFIX:PATH=${HDF5_Install_Dir} "${HDF5_SOURCE_DIR}"
 
-    #BUILD_COMMAND ${CMAKE_COMMAND}
-    #                         -DBUILD_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/${proj}
-    #                         -DINSTALL_DIR:PATH=${HDF5_Install_Dir}
     INSTALL_DIR ${HDF5_Install_Dir}
   )
-
-  #set(HDF5_ROOT        ${HDF5_SOURCE_DIR})
-  #set(HDF5_INCLUDE_DIR ${HDF5_SOURCE_DIR})
 
   set( HDF5_ROOT ${HDF5_Install_Dir} )
   set( HDF5_INCLUDE_DIRS ${HDF5_ROOT}/include )
@@ -75,7 +64,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
       message(STATUS "USING the system ${externalProjName}, found HDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}, HDF5_C_LIBRARY_hdf5=${HDF5_C_LIBRARY_hdf5},HDF5_LIBRARIES=${HDF5_LIBRARIES}")
   endif()
-  ExternalProject_Add_Empty(${proj} "${${proj}_DEPENDENCIES}")
+  ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}")
 endif()
 
 mark_as_superbuild(

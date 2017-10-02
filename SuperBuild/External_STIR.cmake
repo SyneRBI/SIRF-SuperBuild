@@ -37,13 +37,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ### --- Project specific additions here
   set(STIR_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
-  set(${proj}_URL https://github.com/CCPPETMR/STIR )
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
+    GIT_TAG ${STIR_TAG}
     SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
-    #BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/${proj}
     CMAKE_ARGS -DGRAPHICS=None
         -DBUILD_EXECUTABLES=OFF
         -DBUILD_TESTING=OFF
@@ -52,6 +51,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DBOOST_ROOT=${BOOST_ROOT}
         -DCMAKE_INSTALL_PREFIX=${STIR_Install_Dir}
         -DGRAPHICS=None
+        -DCMAKE_CXX_STANDARD=11
+        -DDISABLE_ITK=On
+        -DDISABLE_CERN_ROOT_Support=On
     INSTALL_DIR ${STIR_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
@@ -66,7 +68,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
         message("USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
     endif()
-    ExternalProject_Add_Empty(${proj} "${${proj}_DEPENDENCIES}")
+    ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}")
   endif()
 
   mark_as_superbuild(

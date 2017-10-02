@@ -25,7 +25,7 @@ set(proj SIRF)
 # Set dependency list
 set(${proj}_DEPENDENCIES "STIR;Boost;HDF5;ISMRMRD;FFTW3;SWIG")
 
-message(STATUS "MATLAB_ROOT=" ${MATLAB_ROOT})
+message(STATUS "Matlab_ROOT_DIR=" ${Matlab_ROOT_DIR})
 message(STATUS "STIR_DIR=" ${STIR_DIR})
 
 # Include dependent projects if any
@@ -39,21 +39,10 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ### --- Project specific additions here
   set(SIRF_Install_Dir ${SUPERBUILD_INSTALL_DIR})
-  set(${proj}_URL https://github.com/CCPPETMR/SIRF )
 
-  # Attempt to make Python settings consistent
-  FIND_PACKAGE(PythonInterp)
-  if (PYTHONINTERP_FOUND)
-   set(Python_ADDITIONAL_VERSIONS ${PYTHON_VERSION_STRING})
-    message(STATUS "Found PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}")
-    message(STATUS "Python version ${PYTHON_VERSION_STRING}")
-  endif()
-  FIND_PACKAGE(PythonLibs)
   set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
   if (BUILD_PYTHON)
     set(PYTHON_DEST "${SIRF_Install_Dir}/python" CACHE PATH "Destination for python modules")
-    message(STATUS "Using PYTHON_LIBRARY=${PYTHON_LIBRARY}")
-    message(STATUS "Using PYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR}")
   endif()
 
   message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
@@ -62,7 +51,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
-    GIT_TAG v0.9.0-rc2
+    GIT_TAG ${${proj}_TAG}
     SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
 
     CMAKE_ARGS
@@ -71,12 +60,15 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DCMAKE_INSTALL_PREFIX=${SIRF_Install_Dir}
         -DBOOST_INCLUDEDIR=${BOOST_ROOT}/include/
         -DBOOST_LIBRARYDIR=${BOOST_LIBRARY_DIR}
-        -DMATLAB_ROOT=${MATLAB_ROOT}
+        -DBOOST_ROOT=${BOOST_ROOT}
+        -DMatlab_ROOT_DIR=${Matlab_ROOT_DIR}
+        -DMATLAB_ROOT=${Matlab_ROOT_DIR} # pass this for compatibility with old SIRF
         -DSTIR_DIR=${STIR_DIR}
         -DHDF5_ROOT=${HDF5_ROOT}
         -DHDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}
         -DISMRMRD_DIR=${ISMRMRD_DIR}
         -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
+        -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
         -DPYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR}
         -DPYTHON_LIBRARY=${PYTHON_LIBRARY}
         -DPYTHON_DEST=${PYTHON_DEST}
@@ -93,7 +85,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
         message("USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
     endif()
-    ExternalProject_Add_Empty(${proj} "${${proj}_DEPENDENCIES}")
+    ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}")
   endif()
 
   mark_as_superbuild(
