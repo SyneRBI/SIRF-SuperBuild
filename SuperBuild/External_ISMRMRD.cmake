@@ -61,7 +61,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
         message("USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
     endif()
-    ExternalProject_Add_Empty(${proj} "${${proj}_DEPENDENCIES}")
+    ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}")
   endif()
 
   mark_as_superbuild(
