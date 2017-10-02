@@ -161,7 +161,7 @@ update()
 SuperBuild
 
 # copy scripts into the path
-SIRF_INSTALL_PATH=$SIRF_SRC_PATH/SIRF-SuperBuild/INSTALL
+SIRF_INSTALL_PATH=$SIRF_SRC_PATH/buildVM/INSTALL
 cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/scripts/update*sh $SIRF_INSTALL_PATH/bin
 
 # copy help file to Desktop
