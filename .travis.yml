@@ -29,17 +29,14 @@ matrix:
 #    python: 2.7
 #    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_SWIG=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DDEVEL_BUILD=ON" CC=gcc-5 CXX=g++-5
   - os: osx
-    python: 3.5
+    language: generic
     env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_FFTW3=ON" CC=gcc CXX=g++
   - os: osx
-    python: 2.7
-    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_FFTW3=ON" CC=gcc CXX=g++
-  - os: osx
-    python: 3.5
+    language: generic
     env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DDEVEL_BUILD=ON"
   - os: osx
-    python: 2.7
-    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_SWIG=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DDEVEL_BUILD=ON" CC=gcc-5 CXX=g++-5
+    language: generic
+    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_SWIG=OFF -DUSE_SYSTEM_HDF5=On -DUSE_SYSTEM_FFTW3=OFF -DDEVEL_BUILD=ON" CC=gcc-4.8 CXX=g++-4.8
 env:
   global:
     - BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DCMAKE_BUILD_TYPE=Release"
