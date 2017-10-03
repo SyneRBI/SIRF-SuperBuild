@@ -81,7 +81,10 @@ SuperBuild(){
     git pull
   fi
   cd ..
-  mkdir buildVM
+  if [ ! -d buildVM ] 
+  then 
+    mkdir buildVM
+  fi
   cd buildVM
   cmake ../SIRF-SuperBuild -DUSE_SYSTEM_SWIG=On -DUSE_SYSTEM_Boost=On -DUSE_SYSTEM_Armadillo=On -DUSE_SYSTEM_FFTW3=On
   make -j2
