@@ -7,29 +7,36 @@ language: python
 #  - clang
 #  - gcc
 
-# Cross-operating system test
-os:
-  - linux
-#  - osx
 
 # Environment variables
 # Note: On trusty we need to build Armadillo ourselves (the system version is too old)
+# Note: on OSX we don't seem to be able to use the system boost 1.65.1 due to a Mac-specific bug.
 matrix:
   include:
-  - python: 3.5
-    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_FFTW3=ON" CC=gcc-5 CXX=g++-5
-  - python: 2.7
-    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_FFTW3=ON" CC=gcc-5 CXX=g++-5
-  - python: 3.5
-    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DDEVEL_BUILD=ON" CC=gcc-5 CXX=g++-5
-  - python: 2.7
-    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_SWIG=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DDEVEL_BUILD=ON" CC=gcc-5 CXX=g++-5
+  - os: linux
+    python: 3.5
+    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_FFTW3=ON" CC=gcc-5 CXX=g++-5
+  - os: linux
+    python: 2.7
+    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_FFTW3=ON" CC=gcc-5 CXX=g++-5
+  - os: linux
+    python: 3.5
+    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DDEVEL_BUILD=ON" CC=gcc-5 CXX=g++-5
+  - os: linux
+    python: 2.7
+    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_SWIG=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DDEVEL_BUILD=ON" CC=gcc-5 CXX=g++-5
+  - os: osx
+    language: generic
+    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_HDF5=Off -DUSE_SYSTEM_SWIG=Off -DPYTHON_LIBRARY=$(python-config --prefix)/lib/libpython2.7.dylib -DPYTHON_INCLUDE_DIR=$(python-config --prefix)/include/python2.7 "" CC=gcc CXX=g++
+  - os: osx
+    language: generic
+    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=On -DDEVEL_BUILD=ON -DPYTHON_LIBRARY=$(python-config --prefix)/lib/libpython2.7.dylib -DPYTHON_INCLUDE_DIR=$(python-config --prefix)/include/python2.7 ""
+  - os: osx
+    language: generic
+    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_SWIG=On -DUSE_SYSTEM_HDF5=Off -DUSE_SYSTEM_FFTW3=OFF -DDEVEL_BUILD=ON -DPYTHON_LIBRARY=$(python-config --prefix)/lib/libpython2.7.dylib -DPYTHON_INCLUDE_DIR=$(python-config --prefix)/include/python2.7 "" CC=gcc CXX=g++
 env:
   global:
-    - BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DCMAKE_BUILD_TYPE=Release"
-
-# This works on osx but we need to sort out the matrix
-#   env: EXTRA_BUILD_FLAGS="-DPYTHON_LIBRARY=$(python-config --prefix)/lib/libpython2.7.dylib -DPYTHON_INCLUDE_DIR=$(python-config --prefix)/include/python2.7 " CC=clang CXX=clang++
+    - BUILD_FLAGS="-DCMAKE_BUILD_TYPE=Release"
 
 
 # Ubuntu 14.04 LTS
@@ -66,7 +73,7 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap homebrew/science; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
   - # Note: boost is already installed on osx on travis so should not be included. However, we currently need boost-python
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install boost-python; fi
+  - # if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install boost-python; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install ace; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install swig; fi
   - #if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install scipy matplotlib; fi
