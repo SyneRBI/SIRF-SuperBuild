@@ -27,13 +27,13 @@ matrix:
     env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_SWIG=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DDEVEL_BUILD=ON" CC=gcc-5 CXX=g++-5
   - os: osx
     language: generic
-    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_HDF5=Off -DUSE_SYSTEM_SWIG=Off -DPYTHON_LIBRARY=$(python-config --prefix)/lib/libpython2.7.dylib -DPYTHON_INCLUDE_DIR=$(python-config --prefix)/include/python2.7 "" CC=gcc CXX=g++
+    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_HDF5=Off -DUSE_SYSTEM_SWIG=Off -DPYTHON_LIBRARY=$(python-config --prefix)/lib/libpython2.7.dylib -DPYTHON_INCLUDE_DIR=$(python-config --prefix)/include/python2.7" CC=gcc CXX=g++
   - os: osx
     language: generic
-    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=On -DDEVEL_BUILD=ON -DPYTHON_LIBRARY=$(python-config --prefix)/lib/libpython2.7.dylib -DPYTHON_INCLUDE_DIR=$(python-config --prefix)/include/python2.7 ""
+    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=On -DDEVEL_BUILD=ON -DPYTHON_LIBRARY=$(python-config --prefix)/lib/libpython2.7.dylib -DPYTHON_INCLUDE_DIR=$(python-config --prefix)/include/python2.7 "
   - os: osx
     language: generic
-    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_SWIG=On -DUSE_SYSTEM_HDF5=Off -DUSE_SYSTEM_FFTW3=OFF -DDEVEL_BUILD=ON -DPYTHON_LIBRARY=$(python-config --prefix)/lib/libpython2.7.dylib -DPYTHON_INCLUDE_DIR=$(python-config --prefix)/include/python2.7 "" CC=gcc CXX=g++
+    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_SWIG=On -DUSE_SYSTEM_HDF5=Off -DUSE_SYSTEM_FFTW3=OFF -DDEVEL_BUILD=ON -DPYTHON_LIBRARY=$(python-config --prefix)/lib/libpython2.7.dylib -DPYTHON_INCLUDE_DIR=$(python-config --prefix)/include/python2.7" CC=gcc CXX=g++
 env:
   global:
     - BUILD_FLAGS="-DCMAKE_BUILD_TYPE=Release"
