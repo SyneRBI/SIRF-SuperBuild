@@ -37,14 +37,17 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ### --- Project specific additions here
   set(STIR_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
+  option(BUILD_STIR_EXECUTABLES "Build all STIR executables" OFF)
+  option(BUILD_STIR_SWIG_PYTHON "Build STIR Python interface" OFF)
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
     GIT_TAG ${STIR_TAG}
     SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
-    CMAKE_ARGS -DGRAPHICS=None
-        -DBUILD_EXECUTABLES=OFF
+    CMAKE_ARGS
+        -DBUILD_EXECUTABLES=${BUILD_STIR_EXECUTABLES}
+        -DBUILD_SWIG_PYTHON=${BUILD_STIR_SWIG_PYTHON}
         -DBUILD_TESTING=OFF
         -DBUILD_DOCUMENTATION=OFF
         -DCMAKE_POSITION_INDEPENDENT_CODE=ON
