@@ -71,7 +71,6 @@ fi
 SuperBuild(){
   echo "==================== SuperBuild ====================="
   cd $SIRF_SRC_PATH
-  # delete old VM build
   if [ ! -d SIRF-SuperBuild ] 
   then
     git clone https://github.com/CCPPETMR/SIRF-SuperBuild.git
@@ -88,7 +87,7 @@ SuperBuild(){
   cd buildVM
   cmake ../SIRF-SuperBuild -DUSE_SYSTEM_SWIG=On -DUSE_SYSTEM_Boost=On -DUSE_SYSTEM_Armadillo=On -DUSE_SYSTEM_FFTW3=On
   make -j2
-  cp INSTALL/bin/env_ccppetmr.sh ~/.sirfrc
+  echo "source $SIRF_SRC_PATH/buildVM/INSTALL/bin/env_ccppetmr.sh" > ~/.sirfrc
   echo "export EDITOR=nano" >> ~/.sirfrc
   if [ ! -f INSTALL/share/gadgetron/config/gadgetron.xml ] 
   then 
@@ -172,6 +171,8 @@ cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/HELP.txt ~/Desktop
 
 echo "SIRF update done!"
 echo "Contents of your .sirfrc is now as follows"
+echo "=================================================="
 cat ~/.sirfrc
+echo "=================================================="
 echo "This file is sourced from your .bashrc."
 echo "Close your terminal and re-open a new one to update your environment variables"
