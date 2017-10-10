@@ -27,9 +27,6 @@ set(proj Gadgetron)
 # Set dependency list
 set(${proj}_DEPENDENCIES "Boost;HDF5;ISMRMRD;FFTW3double;googletest;Armadillo")
 
-message(STATUS "MATLAB_ROOT=" ${MATLAB_ROOT})
-#message(STATUS "STIR_DIR=" ${STIR_DIR})
-
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 
@@ -68,7 +65,6 @@ endif ()
         -DCMAKE_INSTALL_PREFIX=${Gadgetron_Install_Dir}
         -DBOOST_INCLUDEDIR=${BOOST_ROOT}/include/
         -DBOOST_LIBRARYDIR=${BOOST_LIBRARY_DIR}
-        -DMATLAB_ROOT=${MATLAB_ROOT}
         -DGTEST_ROOT=${GTEST_ROOT}
         -DHDF5_ROOT=${HDF5_ROOT}
         -DHDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}
