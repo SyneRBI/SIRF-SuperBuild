@@ -157,6 +157,18 @@ update()
 # Launch the SuperBuild to update
 SuperBuild
 
+# Get extra python tools
+clone_or_pull ismrmrd-python-tools
+cd $SIRF_SRC_PATH/ismrmrd-python-tools
+python setup.py install --user
+
+# check STIR-exercises
+cd $cd $SIRF_SRC_PATH
+if [ -d STIR-exercises ]; then
+  cd STIR-exercises
+  git pull
+fi
+
 # copy scripts into the path
 SIRF_INSTALL_PATH=$SIRF_SRC_PATH/buildVM/INSTALL
 cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/scripts/update*sh $SIRF_INSTALL_PATH/bin
