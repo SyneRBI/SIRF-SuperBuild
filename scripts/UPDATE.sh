@@ -58,8 +58,6 @@ fi
 if [ -z $SIRF_SRC_PATH ]
 then
   export SIRF_SRC_PATH=~/devel
-  # overwriting .sirfrc but presumably it was empty anyway
-  echo 'export SIRF_SRC_PATH=~/devel' > ~/.sirfrc
 fi
 if [ ! -d $SIRF_SRC_PATH ]
 then
@@ -87,8 +85,6 @@ SuperBuild(){
   cd buildVM
   cmake ../SIRF-SuperBuild -DUSE_SYSTEM_SWIG=On -DUSE_SYSTEM_Boost=On -DUSE_SYSTEM_Armadillo=On -DUSE_SYSTEM_FFTW3=On
   make -j2
-  echo "source $SIRF_SRC_PATH/buildVM/INSTALL/bin/env_ccppetmr.sh" > ~/.sirfrc
-  echo "export EDITOR=nano" >> ~/.sirfrc
   if [ ! -f INSTALL/share/gadgetron/config/gadgetron.xml ] 
   then 
     cp INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
@@ -168,6 +164,15 @@ cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/scripts/update*sh $SIRF_INSTALL_PATH/bin
 
 # copy help file to Desktop
 cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/HELP.txt ~/Desktop
+
+if [ -r ~/.sirfc ]; then
+  echo "Moving existing ~/.sirfc to a backup copy"
+  mv -v ~/.sirfc ~/.sirfc.old
+fi
+echo "export SIRF_SRC_PATH=$SIRF_SRC_PATH" > ~/.sirfrc
+echo "source $SIRF_SRC_PATH/buildVM/INSTALL/bin/env_ccppetmr.sh" >> ~/.sirfrc
+echo "export EDITOR=nano" >> ~/.sirfrc
+
 
 echo "SIRF update done!"
 echo "Contents of your .sirfrc is now as follows"
