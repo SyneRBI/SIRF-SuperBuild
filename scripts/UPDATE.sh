@@ -103,7 +103,6 @@ SuperBuild(){
     echo "rm -rf $SIRF_SRC_PATH/SIRF"
     echo "rm -rf $SIRF_SRC_PATH/STIR"
     echo "*********************************************************"
-    echo "export SIRF_VM_VERSION=0.9.1" > ~/.sirf_VM_version
   fi
 }
 
@@ -172,6 +171,9 @@ fi
 echo "export SIRF_SRC_PATH=$SIRF_SRC_PATH" > ~/.sirfrc
 echo "source $SIRF_SRC_PATH/buildVM/INSTALL/bin/env_ccppetmr.sh" >> ~/.sirfrc
 echo "export EDITOR=nano" >> ~/.sirfrc
+
+# TODO get this from somewhere else
+echo "export SIRF_VM_VERSION=0.9.1" > ~/.sirf_VM_version
 
 
 echo "SIRF update done!"
