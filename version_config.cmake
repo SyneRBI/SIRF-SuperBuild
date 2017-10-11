@@ -93,8 +93,10 @@ else()
   set(DEFAULT_STIR_TAG 41651b3a2007c58cbf1f7706bb2e269a21e870b1)
 
   ## Gadgetron
-  set(DEFAULT_Gadgetron_URL https://github.com/CCPPETMR/gadgetron) # https://github.com/CCPPETMR/gadgetron )
-  set(DEFAULT_Gadgetron_TAG chroot_fixes)
+  set(DEFAULT_Gadgetron_URL https://github.com/CCPPETMR/gadgetron )
+  #https://github.com/CCPPETMR/gadgetron) 
+
+  set(DEFAULT_Gadgetron_TAG 00b96376568278a595e78879026bb3b0d5fbb98d )
 
   ## ISMRMRD
   set(DEFAULT_ISMRMRD_URL https://github.com/CCPPETMR/ismrmrd )
