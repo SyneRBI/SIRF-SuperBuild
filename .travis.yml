@@ -70,8 +70,8 @@ addons:
       - swig
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap homebrew/science; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap homebrew/science; fi
   - # Note: boost is already installed on osx on travis so should not be included. However, we currently need boost-python
   - # if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install boost-python; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install ace; fi
