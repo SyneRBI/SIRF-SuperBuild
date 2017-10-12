@@ -84,10 +84,12 @@ SuperBuild(){
   mkdir -p buildVM
   
   cd buildVM
-  cmake ../SIRF-SuperBuild -USIRF_URL -USIRF_TAG -USTIR_URL -USTIR_TAG -UGadgetron_URL -UGadgetron_TAG -UISMRMRD_URL -UISMRMRD_TAG -DUSE_SYSTEM_SWIG=On -DUSE_SYSTEM_Boost=On -DUSE_SYSTEM_Armadillo=On -DUSE_SYSTEM_FFTW3=On
+  cmake ../SIRF-SuperBuild -USIRF_URL -USIRF_TAG -USTIR_URL -USTIR_TAG -UGadgetron_URL -UGadgetron_TAG -UISMRMRD_URL -UISMRMRD_TAG -DUSE_SYSTEM_SWIG=On -DUSE_SYSTEM_Boost=On -DUSE_SYSTEM_Armadillo=On -DUSE_SYSTEM_FFTW3=On -DUSE_SYSTEM_HDF5=ON 
   make -j2
-  cp INSTALL/bin/env_ccppetmr.sh ~/.sirfrc
+  source INSTALL/bin/env_ccppetmr.sh
+  echo 'export SIRF_SRC_PATH=~/devel' > ~/.sirfrc
   echo "export EDITOR=nano" >> ~/.sirfrc
+  echo "source $SIRF_PATH/../INSTALL/bin/env_ccppetmr.sh" >>  ~/.sirfrc
   if [ ! -f INSTALL/share/gadgetron/config/gadgetron.xml ] 
   then 
     cp INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
