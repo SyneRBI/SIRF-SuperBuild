@@ -81,12 +81,10 @@ SuperBuild(){
     git pull
   fi
   cd ..
-  if [ ! -d buildVM ] 
-  then 
-    mkdir buildVM
-  fi
+  mkdir -p buildVM
+  
   cd buildVM
-  cmake ../SIRF-SuperBuild -DUSE_SYSTEM_SWIG=On -DUSE_SYSTEM_Boost=On -DUSE_SYSTEM_Armadillo=On -DUSE_SYSTEM_FFTW3=On
+  cmake ../SIRF-SuperBuild -USIRF_URL -USIRF_TAG -USTIR_URL -USTIR_TAG -UGadgetron_URL -UGadgetron_TAG -UISMRMRD_URL -UISMRMRD_TAG -DUSE_SYSTEM_SWIG=On -DUSE_SYSTEM_Boost=On -DUSE_SYSTEM_Armadillo=On -DUSE_SYSTEM_FFTW3=On
   make -j2
   cp INSTALL/bin/env_ccppetmr.sh ~/.sirfrc
   echo "export EDITOR=nano" >> ~/.sirfrc
