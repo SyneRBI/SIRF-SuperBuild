@@ -3,7 +3,7 @@
 # Script to install/update the CCP-PETMR VM. It could also be used for any other system
 # but will currently change your .sirfrc. This is to be avoided later on.
 #
-# Authors: Kris Thielemans and Evgueni Ovtchinnikov
+# Authors: Kris Thielemans, Evgueni Ovtchinnikov and Edoardo Pasca
 # Copyright 2016-2017 University College London
 # Copyright 2016-2017 Rutherford Appleton Laboratory STFC
 #
@@ -64,6 +64,7 @@ then
   mkdir -p $SIRF_SRC_PATH
 fi
 
+SIRF_INSTALL_PATH=$SIRF_SRC_PATH/install
 
 # SuperBuild
 SuperBuild(){
@@ -81,12 +82,12 @@ SuperBuild(){
   mkdir -p buildVM
   
   cd buildVM
-  cmake ../SIRF-SuperBuild -DCMAKE_INSTALL_PREFIX=${SIRF_SRC_PATH}/install -USIRF_URL -USIRF_TAG -USTIR_URL -USTIR_TAG -UGadgetron_URL -UGadgetron_TAG -UISMRMRD_URL -UISMRMRD_TAG -DUSE_SYSTEM_SWIG=On -DUSE_SYSTEM_Boost=On -DUSE_SYSTEM_Armadillo=On -DUSE_SYSTEM_FFTW3=On -DUSE_SYSTEM_HDF5=ON 
+  cmake ../SIRF-SuperBuild -DCMAKE_INSTALL_PREFIX=${SIRF_INSTALL_PATH} -USIRF_URL -USIRF_TAG -USTIR_URL -USTIR_TAG -UGadgetron_URL -UGadgetron_TAG -UISMRMRD_URL -UISMRMRD_TAG -DUSE_SYSTEM_SWIG=On -DUSE_SYSTEM_Boost=On -DUSE_SYSTEM_Armadillo=On -DUSE_SYSTEM_FFTW3=On -DUSE_SYSTEM_HDF5=ON
   make -j2
 
-  if [ ! -f INSTALL/share/gadgetron/config/gadgetron.xml ] 
+  if [ ! -f ${SIRF_INSTALL_PATH}/share/gadgetron/config/gadgetron.xml ]
   then 
-    cp ../install/share/gadgetron/config/gadgetron.xml.example ../install/share/gadgetron/config/gadgetron.xml
+    cp ${SIRF_INSTALL_PATH}/share/gadgetron/config/gadgetron.xml.example ${SIRF_INSTALL_PATH}/share/gadgetron/config/gadgetron.xml
   fi
 
   if [ $SIRF_VM_VERSION = "0.9" ] 
@@ -97,7 +98,6 @@ SuperBuild(){
     echo ""
     echo "rm -rf $SIRF_SRC_PATH/build"
     echo "rm -rf $SIRF_SRC_PATH/gadgetron"
-    echo "rm -rf $SIRF_SRC_PATH/ismrmrd-python-tools"
     echo "rm -rf $SIRF_SRC_PATH/ismrmrd"
     echo "rm -rf $SIRF_SRC_PATH/SIRF"
     echo "rm -rf $SIRF_SRC_PATH/STIR"
@@ -162,14 +162,13 @@ cd $SIRF_SRC_PATH/ismrmrd-python-tools
 python setup.py install --user
 
 # check STIR-exercises
-cd $cd $SIRF_SRC_PATH
+cd $SIRF_SRC_PATH
 if [ -d STIR-exercises ]; then
   cd STIR-exercises
   git pull
 fi
 
 # copy scripts into the path
-SIRF_INSTALL_PATH=$SIRF_SRC_PATH/install
 cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/scripts/update*sh $SIRF_INSTALL_PATH/bin
 
 # copy help file to Desktop
@@ -180,13 +179,13 @@ if [ -r ~/.sirfc ]; then
   mv -v ~/.sirfc ~/.sirfc.old
 fi
 echo "export SIRF_SRC_PATH=$SIRF_SRC_PATH" > ~/.sirfrc
-echo "source $SIRF_SRC_PATH/install/bin/env_ccppetmr.sh" >> ~/.sirfrc
+echo "source ${SIRF_INSTALL_PATH}/bin/env_ccppetmr.sh" >> ~/.sirfrc
 echo "export EDITOR=nano" >> ~/.sirfrc
 
 # TODO get this from somewhere else
-echo "export SIRF_VM_VERSION=0.9.1" > ~/.sirf_VM_version
+echo "export SIRF_VM_VERSION=0.9.2" > ~/.sirf_VM_version
 
-
+echo ""
 echo "SIRF update done!"
 echo "Contents of your .sirfrc is now as follows"
 echo "=================================================="
