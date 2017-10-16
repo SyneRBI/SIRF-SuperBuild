@@ -28,7 +28,12 @@ if [ -d ./STIR-exercises ]; then
    git pull
 else
    git clone https://github.com/UCL/STIR-exercises.git
-   echo "export STIR_exercises_PATH=$SIRF_SRC_PATH/STIR-exercises" >> ~/.sirfrc
+fi
+
+if [ -z "$STIR_exercises_PATH" ]; then
+    echo "export STIR_exercises_PATH=$SIRF_SRC_PATH/STIR-exercises" >> ~/.sirfrc
+    echo "Your ~/.sirfrc has been updated."
+    echo "Close your terminal and re-open a new one to update your environment variables"
 fi
 
 echo "All done"
