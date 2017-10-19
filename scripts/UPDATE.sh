@@ -181,6 +181,9 @@ fi
 echo "export SIRF_SRC_PATH=$SIRF_SRC_PATH" > ~/.sirfrc
 echo "source ${SIRF_INSTALL_PATH}/bin/env_ccppetmr.sh" >> ~/.sirfrc
 echo "export EDITOR=nano" >> ~/.sirfrc
+if [ -z "$STIR_exercises_PATH" ]; then
+    echo "export STIR_exercises_PATH=$SIRF_SRC_PATH/STIR-exercises" >> ~/.sirfrc
+fi
 
 # TODO get this from somewhere else
 echo "export SIRF_VM_VERSION=0.9.2" > ~/.sirf_VM_version
