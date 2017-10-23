@@ -9,11 +9,9 @@ If you have any problems, please first re-check this web-page. If you cannot sol
 
 2. Install [VirtualBox](https://www.virtualbox.org). Please note that this will require administrator permissions. 
 You do not need to install the Oracle extensions to VirtualBox, although it might come in handy for USB support. 
-Although other Virtual Machine software might work, we have not tried this and will not be able to help to get this going. 
+Although other Virtual Machine software might work, we have not tried this and will not be able to help to get this going.
 
-In 2015, Nikos Efthimiou said that if you run Ubuntu (or similar) on your laptop, VirtualBox might not install, unless you first upgrade to libvpx > 1. You could try the following (but you might want to read-up on this first):
-	- wget http://launchpadlibrarian.net/199480915/libvpx1\_1.3.0-3ubuntu1\_amd64.deb
-	- sudo dpkg -i libvpx1*.deb
+  (On older Ubuntu versions (e.g. 15.10), there were some problems installing VirtualBox related to `libvpx`, [check here](https://forums.virtualbox.org/viewtopic.php?f=7&t=74050).)
 
 3. Download the preinstalled virtual machine from http://www.ccppetmr.ac.uk/downloads.
 Warning: this file is ~1.7GB. (You can of course download to a USB stick to save space on your hard-disk).
@@ -33,7 +31,7 @@ Warning: this file is ~1.7GB. (You can of course download to a USB stick to save
 
 ## Running and updating the virtual machine
 
-Now you can start your virtual machine. If it fails to start with an error like "virtualbox vt-x is disabled in the bios", [check here](http://www.howtogeek.com/213795/how-to-enable-intel-vt-x-in-your-computers-bios-or-uefi-firmware/).
+Now you can start your virtual machine. If it fails to start with an error like "*virtualbox vt-x is disabled in the bios*", [check here](http://www.howtogeek.com/213795/how-to-enable-intel-vt-x-in-your-computers-bios-or-uefi-firmware/).
 If you see a dialog box about "starting in scaled mode", you can press OK to allow VirtualBox to scale the display larger or smaller, or you can press Cancel and start the machine again without scaling. (See [the Virtualbox site](https://www.virtualbox.org/manual/) for some info on the Host-Key etc).
 
 1. You should get a window where Ubuntu 16.04 will be starting (might take a few minutes). Wait until you see the log-in prompt.
