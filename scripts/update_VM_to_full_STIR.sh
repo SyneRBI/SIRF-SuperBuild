@@ -27,7 +27,12 @@ if [ -d ./STIR-exercises ]; then
    cd ./STIR-exercises
    git pull
 else
-   git clone https://github.com/UCL/STIR-exercises.git
+   git clone https://github.com/UCL/STIR-exercises.git 
+fi
+# create shortcut on Desktop
+if [ ! -r ~/Desktop/STIR-exercises-README.md ]; then
+    cd ~/Desktop
+    ln -s $SIRF_SRC_PATH/STIR-exercises/README.md STIR-exercises-README.md
 fi
 
 # Check if csh is present
