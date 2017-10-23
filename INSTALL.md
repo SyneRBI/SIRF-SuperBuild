@@ -9,9 +9,7 @@ If you have any problems, please first re-check this web-page. If you cannot sol
 
 2. Install [VirtualBox](https://www.virtualbox.org). Please note that this will require administrator permissions. 
 You do not need to install the Oracle extensions to VirtualBox, although it might come in handy for USB support. 
-Although other Virtual Machine software might work, we have not tried this and will not be able to help to get this going.
-
-  (On older Ubuntu versions (e.g. 15.10), there were some problems installing VirtualBox related to `libvpx`, [check here](https://forums.virtualbox.org/viewtopic.php?f=7&t=74050).)
+Although other Virtual Machine software might work, we have not tried this and will not be able to help to get this going. (On older Ubuntu versions (e.g. 15.10), there were some problems installing VirtualBox related to `libvpx`, [check here for some help](https://forums.virtualbox.org/viewtopic.php?f=7&t=74050).)
 
 3. Download the preinstalled virtual machine from http://www.ccppetmr.ac.uk/downloads.
 Warning: this file is ~1.7GB. (You can of course download to a USB stick to save space on your hard-disk).
