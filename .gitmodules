@@ -1,0 +1,3 @@
+[submodule "STIR-exercises"]
+	path = STIR-exercises
+	url = https://github.com/UCL/STIR-exercises.git
