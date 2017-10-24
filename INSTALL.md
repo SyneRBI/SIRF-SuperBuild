@@ -9,7 +9,10 @@ If you have any problems, please first re-check this web-page. If you cannot sol
 
 2. Install [VirtualBox](https://www.virtualbox.org). Please note that this will require administrator permissions. 
 You do not need to install the Oracle extensions to VirtualBox, although it might come in handy for USB support. 
-Although other Virtual Machine software might work, we have not tried this and will not be able to help to get this going. (On older Ubuntu versions (e.g. 15.10), there were some problems installing VirtualBox related to `libvpx`, [check here for some help](https://forums.virtualbox.org/viewtopic.php?f=7&t=74050).)
+Although other Virtual Machine software might work, we have not tried this and will not be able to help to get this going.
+  Some extra pointers if you experience problems with installing VirtualBox
+    - On older Ubuntu versions (e.g. 15.10), there were some problems installing VirtualBox related to `libvpx`, [check here for some help](https://forums.virtualbox.org/viewtopic.php?f=7&t=74050).
+    - If your VirtualBox is too old, you might experience problems with networking etc. Please use at least 5.0.40.
 
 3. Download the preinstalled virtual machine from http://www.ccppetmr.ac.uk/downloads.
 Warning: this file is ~1.7GB. (You can of course download to a USB stick to save space on your hard-disk).
@@ -37,24 +40,36 @@ If you see a dialog box about "starting in scaled mode", you can press OK to all
 2. Log in as user "sirfuser" with password "virtual" (please note that the default keyboard is with en_US locale: if you have an Azerty-type keyboard, you will have to type "virtuql" until you change your VM keyboard settings). You should get the Gnome3 desktop.
 
 3. Adjust your Ubuntu settings:
-    - To adjust the system settings you can click on the right top corner and then click on the keys icon to start the settings app, or click on "Activities" on the top right corner and then type "settings" and it should open the settings apps. From here you can add keyboard layout, locales and so forth. 
-	- The keyboard type is set to English-US. There are currently 3 preinstalled layouts: en_GB, en_US and pt.
-	- Default settings should allow you to access the internet from in the virtual machine. If not, please check [the Virtual Box documentation](http://www.virtualbox.org/manual/ch03.html#settings-network).
-	- The display resolution (default is 1024x768), can be changed from the system settings app.
-
-4. Click on the activities on the top left corner and write `terminal` in the search box and press enter. This will open a terminal. Type
+    - The keyboard type is set to English-UK. There are currently 3 preinstalled layouts: en_GB, en_US and pt.
+      You can change keyboard-type by clicking on the relevant icon in the top-right of the VM.
+      If you cannot find the layout that you need (e.g. to switch to a Mac keyboard), use
 ```
-update_VM.sh 
+sudo dpkg-reconfigure keyboard-configuration
+```
+
+    - Default settings should allow you to access the internet from in the virtual machine. If not, please check [the Virtual Box documentation](http://www.virtualbox.org/manual/ch03.html#settings-network).
+    - To adjust other system settings you can click on the right top corner and then click on the keys icon to start the settings app, or click on "Activities" on the top right corner and then type "settings" and it should open the settings apps. For instance, the display resolution (default is 1024x768) can be changed from the system settings app.
+
+4. Click on the *Activities* on the top left corner and write `terminal` in the search box and press enter. This will open a terminal. Type
+```
+update_VM.sh
+```
+5. In the menu-bar of the window that contains your VM, click on "Devices" and then "Insert Guest Additions CD".
+If this generates a window inside your VM to run the software on this "CD", say OK. Otherwise, type
+```
 sudo /home/sirfuser/devel/CCPPETMR_VM/scripts/update_VGA.sh
 ```
-The first command updates the virtual machine and the second fixes a [potential mismatch](https://github.com/CCPPETMR/CCPPETMR_VM/issues/9) between the installed Virtual Box Guest Addition (VGA) and the version of the virtual box you are running.
+This fixes a [potential mismatch](https://github.com/CCPPETMR/CCPPETMR_VM/issues/9) between the installed Virtual Box Guest Addition (VGA) and the version of VirtualBox you are running. If a new version was installed,
+please restart Ubuntu (arrow in top-right corner of your VM).
 
+## How to shut down the VM
 To shut down your VM when you are finished with it, use one of the following options. 
 
 1. Close the VM window and use "save machine state" (allowing you to resume from where you were).
-2. Shutdown the VM via the Ubuntu interface, or close the VM window and use "Send the shutdown signal". 
+2. Shutdown the VM via the Ubuntu interface (arrow in top-right corner), or close the VM window
+and use "Send the shutdown signal". 
 (It is not advisable to "power-off" the VM as that can leave the file system of the VM in an undefined state).
-3. Use the VirtualBox main window do to any of the above.
+3. Use the VirtualBox main window to do any of the above.
 
 ## Shared folders
  
