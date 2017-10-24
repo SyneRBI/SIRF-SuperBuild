@@ -40,26 +40,28 @@ If you see a dialog box about "starting in scaled mode", you can press OK to all
 2. Log in as user "sirfuser" with password "virtual" (please note that the default keyboard is with en_US locale: if you have an Azerty-type keyboard, you will have to type "virtuql" until you change your VM keyboard settings). You should get the Gnome3 desktop.
 
 3. Adjust your Ubuntu settings:
+    - Default settings should allow you to access the internet from in the virtual machine.
+      If not, please check [the Virtual Box documentation](http://www.virtualbox.org/manual/ch03.html#settings-network).
     - The keyboard type is set to English-UK. There are currently 3 preinstalled layouts: en_GB, en_US and pt.
       You can change keyboard-type by clicking on the relevant icon in the top-right of the VM.
       If you cannot find the layout that you need (e.g. to switch to a Mac keyboard), use
-```
-sudo dpkg-reconfigure keyboard-configuration
-```
 
-    - Default settings should allow you to access the internet from in the virtual machine. If not, please check [the Virtual Box documentation](http://www.virtualbox.org/manual/ch03.html#settings-network).
+      ```
+      sudo dpkg-reconfigure keyboard-configuration
+      ```
+
     - To adjust other system settings you can click on the right top corner and then click on the keys icon to start the settings app, or click on "Activities" on the top right corner and then type "settings" and it should open the settings apps. For instance, the display resolution (default is 1024x768) can be changed from the system settings app.
 
 4. Click on the *Activities* on the top left corner and write `terminal` in the search box and press enter. This will open a terminal. Type
-```
-update_VM.sh
-```
+   ```
+   update_VM.sh
+   ```
 5. In the menu-bar of the window that contains your VM, click on "Devices" and then "Insert Guest Additions CD".
-If this generates a window inside your VM to run the software on this "CD", say OK. Otherwise, type
-```
-sudo /home/sirfuser/devel/CCPPETMR_VM/scripts/update_VGA.sh
-```
-This fixes a [potential mismatch](https://github.com/CCPPETMR/CCPPETMR_VM/issues/9) between the installed Virtual Box Guest Addition (VGA) and the version of VirtualBox you are running. If a new version was installed,
+   If this generates a window inside your VM to run the software on this "CD", say OK. Otherwise, type
+   ```
+   sudo /home/sirfuser/devel/CCPPETMR_VM/scripts/update_VGA.sh
+    ```
+   This fixes a [potential mismatch](https://github.com/CCPPETMR/CCPPETMR_VM/issues/9) between the installed Virtual Box Guest Addition (VGA) and the version of VirtualBox you are running. If a new version was installed,
 please restart Ubuntu (arrow in top-right corner of your VM).
 
 ## How to shut down the VM
