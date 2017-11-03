@@ -35,8 +35,14 @@ if [ -r ~/.sirfrc ]
 then
   source ~/.sirfrc
 else
-  echo "I will create a ~/.sirfrc file and source this from your .bashrc"
-  echo "source ~/.sirfrc" >> ~/.bashrc
+  added=`grep -c "source ~/.sirfrc" ~/.bashrc`
+  if [ $added -eq "0" ] 
+  then
+    echo "I will create a ~/.sirfrc file and source this from your .bashrc"
+    echo "source ~/.sirfrc" >> ~/.bashrc
+  else
+  echo "source ~/.sirfrc already present $added times in .bashrc. Not adding"
+  fi
 fi
 
 if [ -r ~/.sirf_VM_version ]
