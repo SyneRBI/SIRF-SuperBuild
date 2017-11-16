@@ -10,8 +10,6 @@ LABEL \
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update && apt-get upgrade -y --no-install-recommends
-
 # Set locale, suppress warnings
 RUN apt-get update && apt-get install -y apt-utils locales
 RUN locale-gen en_GB.UTF-8
@@ -20,22 +18,22 @@ ENV LANG en_GB.UTF-8
 ENV LANGUAGE en_GB:en
 #RUN localectl set-locale LANG="en_GB.UTF-8"
 
-ADD build_essential-ubuntu.sh .
+COPY build_essential-ubuntu.sh .
 RUN bash build_essential-ubuntu.sh
 RUN rm build_essential-ubuntu.sh
 
 # Python (build)
-ADD build_python-ubuntu.sh .
+COPY build_python-ubuntu.sh .
 RUN bash build_python-ubuntu.sh
 RUN rm build_python-ubuntu.sh
 
 # Gadgetron
-ADD build_gadgetron-ubuntu.sh .
+COPY build_gadgetron-ubuntu.sh .
 RUN bash build_gadgetron-ubuntu.sh
 RUN rm build_gadgetron-ubuntu.sh
 
 # SIRF external deps
-ADD build_system-ubuntu.sh .
+COPY build_system-ubuntu.sh .
 RUN bash build_system-ubuntu.sh
 RUN rm build_system-ubuntu.sh
 
@@ -47,29 +45,29 @@ RUN [ -e /usr/bin/X ] || ln -s /usr/bin/Xorg /usr/bin/X
 ARG mainUser=sirfuser
 ARG UID=1000
 ARG GROUPS=1000
-RUN addgroup --system --gid $GROUPS $mainUser
-RUN adduser --home /home/$mainUser --shell /bin/bash --system --ingroup $mainUser --uid $UID $mainUser
+RUN addgroup --system --gid "$GROUPS" "$mainUser"
+RUN adduser --home /home/"$mainUser" --shell /bin/bash --system --ingroup "$mainUser" --uid "$UID" "$mainUser"
 #RUN echo "$mainUser:x:${uid}:${gid}:$mainUser,,,:/home/$mainUser:/bin/bash" >> /etc/passwd
 
-RUN echo "$mainUser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/$mainUser
+RUN echo "$mainUser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"$mainUser"
 
-USER $mainUser
-ENV HOME /home/$mainUser
+USER "$mainUser"
+ENV HOME /home/"$mainUser"
 WORKDIR $HOME
 
 # Python (virtualenv)
-ADD user_python-ubuntu.sh .
+COPY user_python-ubuntu.sh .
 RUN bash user_python-ubuntu.sh
 RUN rm user_python-ubuntu.sh
 
-ADD .bashrc .
-ADD .profile .
-RUN sudo chown $mainUser .bashrc .profile
-RUN sudo chgrp $mainUser .bashrc .profile
+COPY .bashrc .
+COPY .profile .
+RUN sudo chown "$mainUser" .bashrc .profile
+RUN sudo chgrp "$mainUser" .bashrc .profile
 RUN sudo chmod 644 .bashrc .profile
 
 # SIRF
-ADD user_sirf-ubuntu.sh .
+COPY user_sirf-ubuntu.sh .
 RUN EXTRA_BUILD_FLAGS="-DCMAKE_BUILD_TYPE=Release -DUSE_SYSTEM_Boost=ON \
   -DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_FFTW3=ON \
   -DUSE_SYSTEM_Armadillo=ON -DBUILD_STIR_EXECUTABLES=ON \
