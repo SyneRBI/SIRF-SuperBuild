@@ -24,7 +24,6 @@ set(proj SIRF)
 
 # Set dependency list
 set(${proj}_DEPENDENCIES "STIR;Boost;HDF5;ISMRMRD;FFTW3;SWIG;NiftyReg")
-#set(${proj}_DEPENDENCIES "STIR;Boost;HDF5;ISMRMRD;FFTW3;SWIG")
 
 message(STATUS "Matlab_ROOT_DIR=" ${Matlab_ROOT_DIR})
 message(STATUS "STIR_DIR=" ${STIR_DIR})
