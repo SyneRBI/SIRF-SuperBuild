@@ -1,7 +1,9 @@
 #========================================================================
+# Author: Richard Brown
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
 # Copyright 2017 University College London
+# Copyright 2017 STFC
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -20,14 +22,10 @@
 #=========================================================================
 
 #This needs to be unique globally
-set(proj SIRF)
+set(proj NiftyReg)
 
 # Set dependency list
-set(${proj}_DEPENDENCIES "STIR;Boost;HDF5;ISMRMRD;FFTW3;SWIG;NiftyReg")
-#set(${proj}_DEPENDENCIES "STIR;Boost;HDF5;ISMRMRD;FFTW3;SWIG")
-
-message(STATUS "Matlab_ROOT_DIR=" ${Matlab_ROOT_DIR})
-message(STATUS "STIR_DIR=" ${STIR_DIR})
+set(${proj}_DEPENDENCIES "")
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
@@ -39,15 +37,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(SIRF_Install_Dir ${SUPERBUILD_INSTALL_DIR})
+  set(${proj}_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
-  set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
-  if (BUILD_PYTHON)
-    set(PYTHON_DEST "${SIRF_Install_Dir}/python" CACHE PATH "Destination for python modules")
-  endif()
-
-  message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
+  #message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
+  set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
+
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
@@ -58,28 +53,15 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     CMAKE_ARGS
         -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
         -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
-        -DCMAKE_INSTALL_PREFIX=${SIRF_Install_Dir}
-        -DBOOST_INCLUDEDIR=${BOOST_ROOT}/include/
-        -DBOOST_LIBRARYDIR=${BOOST_LIBRARY_DIR}
-        -DBOOST_ROOT=${BOOST_ROOT}
-        -DMatlab_ROOT_DIR=${Matlab_ROOT_DIR}
-        -DMATLAB_ROOT=${Matlab_ROOT_DIR} # pass this for compatibility with old SIRF
-        -DSTIR_DIR=${STIR_DIR}
-        -DHDF5_ROOT=${HDF5_ROOT}
-        -DHDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}
-        -DISMRMRD_DIR=${ISMRMRD_DIR}
-        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
-        -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
-        -DPYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR}
-        -DPYTHON_LIBRARY=${PYTHON_LIBRARY}
-        -DPYTHON_DEST=${PYTHON_DEST}
-	INSTALL_DIR ${SIRF_Install_Dir}
+        -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}
+        -DCMAKE_INSTALL_PREFIX=${${proj}_Install_Dir}
+	    INSTALL_DIR ${${proj}_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
 
-    set(SIRF_ROOT        ${SIRF_SOURCE_DIR})
-    set(SIRF_INCLUDE_DIR ${SIRF_SOURCE_DIR})
+    set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
+    set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
 
    else()
       if(${USE_SYSTEM_${externalProjName}})

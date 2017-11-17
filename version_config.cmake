@@ -64,6 +64,10 @@ option(DEVEL_BUILD "Use current versions of major packages" OFF)
 set(googletest_URL https://github.com/google/googletest )
 set(googletest_TAG release-1.8.0)
 
+## NiftyReg
+set(NiftyReg_URL https://git.code.sf.net/p/niftyreg/git )
+set(NiftyReg_TAG CBSI-546-g62af1ca )
+
 option (DEVEL_BUILD "Developer Build" OFF)
 
 #Set the default versions for SIRF, STIR, Gadgetron and ISMRMRD
