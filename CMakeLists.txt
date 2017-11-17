@@ -5,6 +5,12 @@ include(version_config.cmake)
 include(ExternalProject)
 include(ExternalProjectDependency)
 
+# enable ccache https://ccache.samba.org/
+find_program(CCACHE_PROGRAM ccache)
+if(CCACHE_PROGRAM)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+endif()
+
 set(PRIMARY_PROJECT_NAME CCPPETMR)
 option(${PRIMARY_PROJECT_NAME}_SUPERBUILD "Build ${PRIMARY_PROJECT_NAME} and the projects it depends on via SuperBuild.cmake." ON)
 
