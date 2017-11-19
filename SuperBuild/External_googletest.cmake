@@ -50,8 +50,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
     CMAKE_ARGS
         -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
-        -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
-        -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}
         -DCMAKE_INSTALL_PREFIX=${googletest_Install_Dir}
     INSTALL_DIR ${googletest_Install_Dir}
     DEPENDS
