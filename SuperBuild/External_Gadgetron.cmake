@@ -52,6 +52,12 @@ if (MKL_FOUND)
     set(MKLROOT_PATH=)
   endif ()
 endif ()
+
+  option(BUILD_GADGETRON_NATIVE_PYTHON_SUPPORT
+    "Build Gadgetron Python gadgets (not required for SIRF)" OFF)
+  option(BUILD_GADGETRON_NATIVE_MATLAB_SUPPORT
+    "Build Gadgetron MATLAB gadgets (not required for SIRF)" OFF)
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
@@ -59,6 +65,8 @@ endif ()
     SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
 
     CMAKE_ARGS
+        -DBUILD_PYTHON_SUPPORT=${BUILD_GADGETRON_NATIVE_PYTHON_SUPPORT}
+        -DBUILD_MATLAB_SUPPORT=${BUILD_GADGETRON_NATIVE_MATLAB_SUPPORT}
         -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
         -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
         -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}
