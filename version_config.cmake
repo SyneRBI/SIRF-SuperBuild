@@ -96,7 +96,8 @@ else()
   set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
   #https://github.com/CCPPETMR/gadgetron) 
 
-  set(DEFAULT_Gadgetron_TAG 00b96376568278a595e78879026bb3b0d5fbb98d )
+  set(DEFAULT_Gadgetron_TAG e7eb430673eb3272e8a821b51750c0a2a96dafed )
+  #set(DEFAULT_Gadgetron_TAG 00b96376568278a595e78879026bb3b0d5fbb98d )
 
   ## ISMRMRD
   set(DEFAULT_ISMRMRD_URL https://github.com/CCPPETMR/ismrmrd )
