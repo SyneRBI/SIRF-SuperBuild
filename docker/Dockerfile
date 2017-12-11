@@ -56,9 +56,10 @@ ENV HOME /home/"$mainUser"
 WORKDIR $HOME
 
 # Python (virtualenv)
+COPY requirements.txt .
 COPY user_python-ubuntu.sh .
 RUN bash user_python-ubuntu.sh
-RUN rm user_python-ubuntu.sh
+RUN rm user_python-ubuntu.sh requirements.txt
 
 COPY .bashrc .
 COPY .profile .
