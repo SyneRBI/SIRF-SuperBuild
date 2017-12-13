@@ -47,7 +47,7 @@ Vagrant.configure("2") do |config|
        "--type", "dvddrive",
        "--medium", "emptydrive",
        ]
-	vb.name = "SIRF 0.9.3"
+	vb.name = "SIRF_1.0.0"
   end
 
   #
@@ -86,23 +86,19 @@ Vagrant.configure("2") do |config|
 	# set the current locale, otherwise the gnome-terminal doesn't start
 	sudo locale-gen en_GB.UTF-8
 	sudo update-locale LANG=en_GB.UTF-8
+	sudo localectl set-x11-keymap us
+	sudo localectl status
 	#sudo localectl set-x11-keymap us
 	#sudo localectl list-keymaps
 	#sudo localectl set-locale en_GB.UTF-8
-	# add the input-source to the gnome panel
-	PID=$(pgrep -u $SIRFUSERNAME gnome-session)
-    export DBUS_SESSION_BUS_ADDRESS=$(grep -z DBUS_SESSION_BUS_ADDRESS /proc/$PID/environ|cut -d= -f2-)
-	export DISPLAY=$(grep -z DISPLAY /proc/$PID/environ|cut -d= -f2-)
-    echo "display " $DISPLAY " dbus" $DBUS_SESSION_BUS_ADDRESS
-	sudo gsettings set org.gnome.desktop.input-sources sources "[('xkb','us'),('xkb','uk')]"
-    
+	
+	
 	# To hide vagrant from login screen:
     #  1. Log-in as vagrant
     #  2. In /var/lib/AccountsService/users/vagrant change 'SystemAccount=true'
-	#cat 'SystemAccount=true' > /var/lib/AccountsService/users/vagrant 
-	cp /var/lib/AccountsService/users/vagrant ~
-	sed -e 's/SystemAccount=.*/SystemAccount=true/' /var/lib/AccountsService/users/vagrant > ~/vagrant.user
-    sudo cp -v ~/vagrant.user /var/lib/AccountsService/users/vagrant
+	sudo echo '[User]' > vagrant
+	sudo echo 'SystemAccount=true' >> vagrant
+	sudo cp -v vagrant /var/lib/AccountsService/users/vagrant
 
     # Could add custom logos here: /etc/gdm3/greeter.dconf-defaults 
 
