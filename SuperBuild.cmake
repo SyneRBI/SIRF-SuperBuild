@@ -20,8 +20,12 @@
 #
 #=========================================================================
 if (WIN32)
- if(NOT "x_${CMAKE_GENERATOR_PLATFORM}" STREQUAL "x_x64")
-    message( FATAL_ERROR "The SuperBuild currently has Win64 hard-wired for dependent libraries. Please use a Win64 generator")
+ # used to check for CMAKE_GENERATOR_PLATFORM but that no longer works in 3.10
+ if(NOT "x_${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x_x64")
+    message(STATUS "CMAKE_GENERATOR: ${CMAKE_GENERATOR}")
+    message(STATUS "CMAKE_GENERATOR_PLATFORM: ${CMAKE_GENERATOR_PLATFORM}")
+    message(STATUS "CMAKE_VS_PLATFORM_NAME: ${CMAKE_VS_PLATFORM_NAME}")
+    message( FATAL_ERROR "The SuperBuild currently has Win64 hard-wired for dependent libraries. Please use a Win64 generator/toolset. Currently using platform '${CMAKE_VS_PLATFORM_NAME}'.")
  endif()
 endif()
 
