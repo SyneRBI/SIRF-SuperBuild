@@ -27,6 +27,8 @@ if $?MATLABPATH then
 else
 	setenv MATLABPATH @CCPPETMR_INSTALL@/matlab
 endif
+setenv MATLAB_BINARY @Matlab_MAIN_PROGRAM@
+
 set path=( $path @CCPPETMR_INSTALL@/bin )
 
 setenv SIRF_PYTHON_EXECUTABLE @PYTHON_EXECUTABLE@
