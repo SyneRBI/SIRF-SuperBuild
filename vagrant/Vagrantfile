@@ -46,6 +46,7 @@ Vagrant.configure("2") do |config|
        "--device", "0",
        "--type", "dvddrive",
        "--medium", "emptydrive",
+	   "--clipboard" , "bidirectional"
        ]
 	vb.name = "SIRF_1.0.0"
   end
