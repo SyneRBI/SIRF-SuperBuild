@@ -111,8 +111,16 @@ message(STATUS "PYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR}")
 #Need to configure main project here.
 #set(proj ${PRIMARY_PROJECT_NAME})
 
-#find Matlab and set the binary to the appropriate value
-find_package(Matlab MAIN_PROGRAM)
+#find Matlab and set the binary to the appropriate value if found
+find_package(Matlab COMPONENTS MAIN_PROGRAM)
+set(ENV_MATLAB_BINARY "#Matlab not found")
+if (Matlab_FOUND)
+  set(ENV_MATLAB_BINARY "\
+MATLABPATH=${CCPPETMR_INSTALL}/matlab \n \
+export MATLABPATH \n \
+MATLAB_BINARY=${Matlab_MAIN_PROGRAM} \n \
+export MATLAB_BINARY")
+endif()
 
 # Make environment files
 set(SIRF_SRC_PATH ${SOURCE_DOWNLOAD_CACHE}/SIRF)

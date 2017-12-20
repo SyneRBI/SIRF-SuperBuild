@@ -22,12 +22,8 @@ if $?PYTHONPATH then
 else
 	setenv PYTHONPATH @CCPPETMR_INSTALL@/python
 endif
-if $?MATLABPATH then
-	setenv MATLABPATH @CCPPETMR_INSTALL@/matlab:$MATLABPATH
-else
-	setenv MATLABPATH @CCPPETMR_INSTALL@/matlab
-endif
-setenv MATLAB_BINARY @Matlab_MAIN_PROGRAM@
+
+@ENV_MATLAB_BINARY@
 
 set path=( $path @CCPPETMR_INSTALL@/bin )
 
