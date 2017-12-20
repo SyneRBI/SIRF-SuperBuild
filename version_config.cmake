@@ -34,10 +34,10 @@ set(Armadillo_MD5 c601f3a5ec6d50666aa3a539fa20e6ca )
 if(WIN32)
   # Just use precompiled version
   # TODO would prefer the next zip file but for KT using an ftp URL times-out (firewall?)
-  #set(${proj}_URL ftp://ftp.fftw.org/pub/fftw/fftw-3.3.5-dll64.zip )
-  #set(${proj}_MD5 cb3c5ad19a89864f036e7a2dd5be168c )
-  set(FFTW3_URL https://s3.amazonaws.com/install-gadgetron-vs2013/Dependencies/FFTW/zip/FFTW3.zip )
-  set(FFTW3_MD5 a42eac92d9ad06d7c53fb82b09df2b6e )
+  set(FFTW3_URL ftp://ftp.fftw.org/pub/fftw/fftw-3.3.5-dll64.zip )
+  set(FFTW3_MD5 cb3c5ad19a89864f036e7a2dd5be168c )
+  #set(FFTW3_URL https://s3.amazonaws.com/install-gadgetron-vs2013/Dependencies/FFTW/zip/FFTW3.zip )
+  #set(FFTW3_MD5 a42eac92d9ad06d7c53fb82b09df2b6e )
 else(WIN32)
   set(FFTW3_URL http://www.fftw.org/fftw-3.3.5.tar.gz ) 
   set(FFTW3_MD5 6cc08a3b9c7ee06fdd5b9eb02e06f569 )
@@ -68,7 +68,7 @@ option (DEVEL_BUILD "Developer Build" OFF)
 
 #Set the default versions for SIRF, STIR, Gadgetron and ISMRMRD
 # with devel build it uses latest version of upstream packages
-# otherwise uses the versions for SIRF 0.9
+# otherwise uses the versions for current SIRF
 
 set(DEFAULT_SIRF_URL https://github.com/CCPPETMR/SIRF )
 if (DEVEL_BUILD)
