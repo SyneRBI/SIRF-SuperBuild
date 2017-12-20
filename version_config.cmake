@@ -47,8 +47,13 @@ set(FFTW3double_URL ${FFTW3_URL})
 set(FFTW3double_MD5 ${FFTW3_MD5})
 
 ## HDF5
-set(HDF5_URL https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.0-patch1/src/CMake-hdf5-1.10.0-patch1.tar.gz )
-set(HDF5_MD5 6fb456d03a60f358f3c077288a6d1cd8 )
+#if (WIN32)
+  set(HDF5_URL https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.1/src/hdf5-1.10.1.tar.gz)
+  set(HDF5_MD5 43a2f9466702fb1db31df98ae6677f15 )
+#else()
+#  set(HDF5_URL https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.0-patch1/src/CMake-hdf5-1.10.0-patch1.tar.gz )
+#  set(HDF5_MD5 6fb456d03a60f358f3c077288a6d1cd8 )
+#endif()
 
 ## SWIG
 if (WIN32)
@@ -100,8 +105,8 @@ else()
   #set(DEFAULT_Gadgetron_TAG 00b96376568278a595e78879026bb3b0d5fbb98d )
 
   ## ISMRMRD
-  set(DEFAULT_ISMRMRD_URL https://github.com/CCPPETMR/ismrmrd )
-  set(DEFAULT_ISMRMRD_TAG 35012c6c8000616546c2d6b1757eba0c5b21b2d4)
+  set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
+  set(DEFAULT_ISMRMRD_TAG 42d93137cc16c270c8ba065edd2496483161bd21)
 
 endif()
 
