@@ -111,6 +111,9 @@ message(STATUS "PYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR}")
 #Need to configure main project here.
 #set(proj ${PRIMARY_PROJECT_NAME})
 
+#find Matlab and set the binary to the appropriate value
+find_package(Matlab MAIN_PROGRAM)
+
 # Make environment files
 set(SIRF_SRC_PATH ${SOURCE_DOWNLOAD_CACHE}/SIRF)
 set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
