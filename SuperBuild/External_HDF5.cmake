@@ -42,17 +42,17 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set(CLANG_ARG -DCMAKE_COMPILER_IS_CLANGXX:BOOL=ON)
   endif()
 
-  set(HDF5_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}-prefix/src/HDF5/hdf5-1.10.0-patch1 )
+  #set(HDF5_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}-prefix/src/HDF5/hdf5-1.10.0-patch1 )
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
-    BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/${proj}
-    CONFIGURE_COMMAND ${CMAKE_COMMAND}
-                             ${CLANG_ARG}
-                             -DCMAKE_INSTALL_PREFIX:PATH=${HDF5_Install_Dir} "${HDF5_SOURCE_DIR}"
-
+    SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
+    #BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/${proj}
+    CMAKE_ARGS
+        ${CLANG_ARG}
+        -DHDF5_BUILD_EXAMPLES=OFF -DHDF5_BUILD_TOOLS=OFF -DHDF5_BUILD_HL_LIB=OFF -DBUILD_TESTING=OFF
     INSTALL_DIR ${HDF5_Install_Dir}
   )
 
