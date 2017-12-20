@@ -100,8 +100,8 @@ else()
   #set(DEFAULT_Gadgetron_TAG 00b96376568278a595e78879026bb3b0d5fbb98d )
 
   ## ISMRMRD
-  set(DEFAULT_ISMRMRD_URL https://github.com/CCPPETMR/ismrmrd )
-  set(DEFAULT_ISMRMRD_TAG 35012c6c8000616546c2d6b1757eba0c5b21b2d4)
+  set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
+  set(DEFAULT_ISMRMRD_TAG 42d93137cc16c270c8ba065edd2496483161bd21)
 
 endif()
 
