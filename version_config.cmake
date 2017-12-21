@@ -23,6 +23,7 @@
 
 ## BOOST
 set(Boost_VERSION 1.63.0)
+set(Boost_REQUIRED_VERSION 1.36.0)
 set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/1.63.0/boost_1_63_0.zip)
 set(Boost_MD5 3c706b3fc749884ea5510c39474fd732)
 
@@ -47,15 +48,18 @@ set(FFTW3double_URL ${FFTW3_URL})
 set(FFTW3double_MD5 ${FFTW3_MD5})
 
 ## HDF5
-#if (WIN32)
-  set(HDF5_URL https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.1/src/hdf5-1.10.1.tar.gz)
-  set(HDF5_MD5 43a2f9466702fb1db31df98ae6677f15 )
-#else()
-#  set(HDF5_URL https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.0-patch1/src/CMake-hdf5-1.10.0-patch1.tar.gz )
-#  set(HDF5_MD5 6fb456d03a60f358f3c077288a6d1cd8 )
-#endif()
+if (WIN32)
+  # 1.8.15 hdf5-targets.cmake refers to non-existent zlib files
+  # (or at least this was the case for older Anaconda installations)
+  set(HDF5_REQUIRED_VERSION 1.8.17)
+else()
+  set(HDF5_REQUIRED_VERSION 1.8)
+endif()
+set(HDF5_URL https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.1/src/hdf5-1.10.1.tar.gz)
+set(HDF5_MD5 43a2f9466702fb1db31df98ae6677f15 )
 
 ## SWIG
+set (SWIG_REQUIRED_VERSION 2)
 if (WIN32)
   set(SWIG_URL http://downloads.sourceforge.net/swig/swigwin-3.0.12.zip  )
   set(SWIG_MD5 a49524dad2c91ae1920974e7062bfc93 )
