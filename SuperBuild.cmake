@@ -61,6 +61,10 @@ if (PYTHONINTERP_FOUND)
   message(STATUS "Python version ${PYTHON_VERSION_STRING}")
 endif()
 find_package(PythonLibs)
+if (PYTHONLIBS_FOUND)
+  message(STATUS "Found PYTHON_INCLUDE_DIRS=${PYTHON_INCLUDE_DIRS}")
+  message(STATUS "Found PYTHON_LIBRARIES=${PYTHON_LIBRARIES}")
+endif()
 
 set(Matlab_ROOT_DIR $ENV{Matlab_ROOT_DIR} CACHE PATH "Path to Matlab root directory" )
 
