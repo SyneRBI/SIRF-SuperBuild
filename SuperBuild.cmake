@@ -58,7 +58,7 @@ mark_as_superbuild(
 )
 
 # Attempt to make Python settings consistent
-FIND_PACKAGE(PythonInterp)
+find_package(PythonInterp)
 if (PYTHONINTERP_FOUND)
   set(Python_ADDITIONAL_VERSIONS ${PYTHON_VERSION_STRING})
   message(STATUS "Found PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}")
@@ -115,9 +115,55 @@ message(STATUS "PYTHON_INCLUDE_DIRS=${PYTHON_INCLUDE_DIRS}")
 #Need to configure main project here.
 #set(proj ${PRIMARY_PROJECT_NAME})
 
+#find Matlab
+find_package(Matlab COMPONENTS MAIN_PROGRAM)
+
 # Make environment files
 set(SIRF_SRC_PATH ${SOURCE_DOWNLOAD_CACHE}/SIRF)
 set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
+
+## configure the environment files env_ccppetmr.sh/csh
+## We create a whole bash/csh block script which does set the appropriate
+## environment variables for Python and Matlab. 
+## in the env_ccppetmr scripts we perform a substitution of the whole block
+## during the configure_file() command call below.
+
+set(ENV_PYTHON_BASH "#####    Python not found    #####")
+set(ENV_PYTHON_CSH  "#####    Python not found    #####")
+if(PYTHONINTERP_FOUND)
+
+  set (ENV_PYTHON_CSH "\
+if $?PYTHONPATH then \n\
+	setenv PYTHONPATH ${CCPPETMR_INSTALL}/python:$PYTHONPATH \n\
+else \n\
+	setenv PYTHONPATH ${CCPPETMR_INSTALL}/python \n\
+setenv SIRF_PYTHON_EXECUTABLE ${PYTHON_EXECUTABLE}")
+
+  set (ENV_PYTHON_BASH "\
+PYTHONPATH=${CCPPETMR_INSTALL}/python:$PYTHONPATH \n\ 
+export PYTHONPATH \n\
+SIRF_PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} \n\
+export SIRF_PYTHON_EXECUTABLE")
+
+endif()
+
+set(ENV_MATLAB_BASH "#####     Matlab not found     #####")
+set(ENV_MATLAB_CSH  "#####     Matlab not found     #####")
+if (Matlab_FOUND)
+  set(ENV_MATLAB_BASH "\
+MATLABPATH=${CCPPETMR_INSTALL}/matlab\n\
+export MATLABPATH\n\
+SIRF_MATLAB_EXECUTABLE=${Matlab_MAIN_PROGRAM}\n\
+export SIRF_MATLAB_EXECUTABLE")
+  set(ENV_MATLAB_CSH "\
+if $?MATLABPATH then\n\
+	setenv MATLABPATH ${CCPPETMR_INSTALL}/matlab:$MATLABPATH\n\
+else\n\
+	setenv MATLABPATH ${CCPPETMR_INSTALL}/matlab \n\
+endif\n\
+setenv SIRF_MATLAB_EXECUTABLE ${Matlab_MAIN_PROGRAM}")
+endif()
+
 configure_file(env_ccppetmr.sh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.sh)
 configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
 
