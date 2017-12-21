@@ -77,7 +77,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   )
 
   set( SWIG_EXECUTABLE ${SWIG_Install_Dir}/bin/swig )
-  set( SWIG_VERSION "3.0.12" )
 
   endif(WIN32)
 
