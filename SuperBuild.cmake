@@ -71,6 +71,9 @@ if (PYTHONLIBS_FOUND)
 endif()
 
 set(Matlab_ROOT_DIR $ENV{Matlab_ROOT_DIR} CACHE PATH "Path to Matlab root directory" )
+# Find Matlab
+# Note that we need the main program for the configuration files and the tests)
+find_package(Matlab COMPONENTS MAIN_PROGRAM)
 
 option(USE_SYSTEM_Boost "Build using an external version of Boost" OFF)
 option(USE_SYSTEM_STIR "Build using an external version of STIR" OFF)
@@ -114,9 +117,6 @@ message(STATUS "PYTHON_INCLUDE_DIRS=${PYTHON_INCLUDE_DIRS}")
 
 #Need to configure main project here.
 #set(proj ${PRIMARY_PROJECT_NAME})
-
-#find Matlab
-find_package(Matlab COMPONENTS MAIN_PROGRAM)
 
 # Make environment files
 set(SIRF_SRC_PATH ${SOURCE_DOWNLOAD_CACHE}/SIRF)
