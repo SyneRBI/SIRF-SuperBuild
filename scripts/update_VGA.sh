@@ -32,18 +32,10 @@ trap 'echo An error occurred in $0 at line $LINENO. Current working-dir: $PWD' E
 if [ -r /media/*/VBOXADDITIONS*/VBoxLinuxAdditions.run ]; then
   VGArun=/media/*/VBOXADDITIONS*/VBoxLinuxAdditions.run
 else
-  # get the VB version using a trick from Ben Thomas
-  vboxver=`dmidecode | grep vboxVer | sed 's/.*_//'`
-  cd /tmp
-  # get the iso if it doesn't exist yet
-  if [ -r  VBoxGuestAdditions_${vboxver}.iso ]; then
-    echo "Using existing file /tmp/VBoxGuestAdditions_${vboxver}.iso"
-  else    
-    wget http://download.virtualbox.org/virtualbox/${vboxver}/VBoxGuestAdditions_${vboxver}.iso
-  fi
-  mkdir -p /media/VGAiso
-  mount -o loop VBoxGuestAdditions_${vboxver}.iso /media/VGAiso
-  VGArun=/media/VGAiso/VBoxLinuxAdditions.run
+    echo "Failed to find VBox Guest Additions CD!" >> /dev/stderr
+    echo "Please insert the CD and reboot the VM!" >> /dev/stderr
+    echo "Aborting!" >> /dev/stderr
+    exit
 fi
 
 # disable trapping if errors as we want to clean-up always
@@ -63,4 +55,3 @@ fi
 
 echo "Hopefully this all worked."
 echo "Best to reboot the VM now."
-
