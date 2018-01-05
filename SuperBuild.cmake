@@ -45,9 +45,8 @@ set (SUPERBUILD_INSTALL_DIR ${CMAKE_INSTALL_PREFIX})
 
 include(ExternalProject)
 
-set(EXTERNAL_PROJECT_BUILD_TYPE "Release" CACHE STRING "Default build type for support libraries")
-set_property(CACHE EXTERNAL_PROJECT_BUILD_TYPE PROPERTY
-STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+set(EXTERNAL_PROJECT_BUILD_TYPE "${CMAKE_BUILD_TYPE}" CACHE INTERNAL "Default build type for support libraries")
+message(STATUS "EXTERNAL_PROJECT_BUILD_TYPE: ${EXTERNAL_PROJECT_BUILD_TYPE}")
 
 # Make sure that some CMake variables are passed to all dependencies
 mark_as_superbuild(
@@ -90,7 +89,7 @@ if (WIN32)
 else()
   set(build_Gadgetron_default ON)
 endif()
-  
+
 option(BUILD_GADGETRON "Build Gadgetron" ${build_Gadgetron_default})
 
 set(${PRIMARY_PROJECT_NAME}_DEPENDENCIES
@@ -124,7 +123,7 @@ set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
 
 ## configure the environment files env_ccppetmr.sh/csh
 ## We create a whole bash/csh block script which does set the appropriate
-## environment variables for Python and Matlab. 
+## environment variables for Python and Matlab.
 ## in the env_ccppetmr scripts we perform a substitution of the whole block
 ## during the configure_file() command call below.
 
@@ -140,7 +139,7 @@ else \n\
 setenv SIRF_PYTHON_EXECUTABLE ${PYTHON_EXECUTABLE}")
 
   set (ENV_PYTHON_BASH "\
-PYTHONPATH=${CCPPETMR_INSTALL}/python:$PYTHONPATH \n\ 
+PYTHONPATH=${CCPPETMR_INSTALL}/python:$PYTHONPATH \n\
 export PYTHONPATH \n\
 SIRF_PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} \n\
 export SIRF_PYTHON_EXECUTABLE")
@@ -173,4 +172,3 @@ enable_testing()
 add_test(NAME SIRF_TESTS
          COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION>
          WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/SIRF-prefix/src/SIRF-build/)
-
