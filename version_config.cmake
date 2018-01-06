@@ -90,6 +90,10 @@ if (DEVEL_BUILD)
   set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
   set(DEFAULT_Gadgetron_TAG master)
 
+  ## siemens_to_ismrmrd
+  set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd )
+  set(DEFAULT_siemens_to_ismrmrd_TAG master)
+
   ## ISMRMRD
   set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
   set(DEFAULT_ISMRMRD_TAG master)
@@ -107,6 +111,10 @@ else()
 
   set(DEFAULT_Gadgetron_TAG e7eb430673eb3272e8a821b51750c0a2a96dafed )
   #set(DEFAULT_Gadgetron_TAG 00b96376568278a595e78879026bb3b0d5fbb98d )
+
+  ## siemens_to_ismrmrd
+  set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
+  set(DEFAULT_siemens_to_ismrmrd_TAG ba4773f9cf4bba5f3ccd19930e3548d8273fee01)
 
   ## ISMRMRD
   set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
@@ -126,7 +134,13 @@ SET(STIR_URL ${DEFAULT_STIR_URL} CACHE STRING ON)
 SET(Gadgetron_TAG ${DEFAULT_Gadgetron_TAG} CACHE STRING ON)
 SET(Gadgetron_URL ${DEFAULT_Gadgetron_URL} CACHE STRING ON)
 
+SET(siemens_to_ismrmrd_TAG ${DEFAULT_siemens_to_ismrmrd_TAG} CACHE STRING ON)
+SET(siemens_to_ismrmrd_URL ${DEFAULT_siemens_to_ismrmrd_URL} CACHE STRING ON)
+
 SET(ISMRMRD_TAG ${DEFAULT_ISMRMRD_TAG} CACHE STRING ON)
 SET(ISMRMRD_URL ${DEFAULT_ISMRMRD_URL} CACHE STRING ON)
 
-mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG Gadgetron_URL Gadgetron_TAG ISMRMRD_URL ISMRMRD_TAG)
+mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
+  Gadgetron_URL Gadgetron_TAG
+  siemens_to_ismrmrd_URL siemens_to_ismrmrd_TAG
+  ISMRMRD_URL ISMRMRD_TAG)

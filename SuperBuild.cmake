@@ -79,6 +79,7 @@ option(USE_SYSTEM_Boost "Build using an external version of Boost" OFF)
 option(USE_SYSTEM_STIR "Build using an external version of STIR" OFF)
 option(USE_SYSTEM_HDF5 "Build using an external version of HDF5" OFF)
 option(USE_SYSTEM_ISMRMRD "Build using an external version of ISMRMRD" OFF)
+option(USE_SYSTEM_siemens_to_ismrmrd "Build using an external version of siemens_to_ismrmrd" OFF)
 option(USE_SYSTEM_FFTW3 "Build using an external version of fftw" OFF)
 option(USE_SYSTEM_Armadillo "Build using an external version of Armadillo" OFF)
 option(USE_SYSTEM_SWIG "Build using an external version of SWIG" OFF)
@@ -92,6 +93,7 @@ else()
 endif()
   
 option(BUILD_GADGETRON "Build Gadgetron" ${build_Gadgetron_default})
+option(BUILD_siemens_to_ismrmrd "Build siemens_to_ismrmrd" OFF)
 
 set(${PRIMARY_PROJECT_NAME}_DEPENDENCIES
     SIRF
@@ -99,6 +101,10 @@ set(${PRIMARY_PROJECT_NAME}_DEPENDENCIES
 if (BUILD_GADGETRON)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES Gadgetron)
   set(Armadillo_REQUIRED_VERSION 4.600)
+endif()
+
+if (BUILD_siemens_to_ismrmrd)
+  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES siemens_to_ismrmrd)
 endif()
 
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${PRIMARY_PROJECT_NAME}_DEPENDENCIES)
