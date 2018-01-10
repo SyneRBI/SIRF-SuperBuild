@@ -23,7 +23,11 @@
 set(proj STIR)
 
 # Set dependency list
-set(${proj}_DEPENDENCIES "Boost")
+if (USE_ITK)
+  set(${proj}_DEPENDENCIES "Boost;ITK")
+else()
+  set(${proj}_DEPENDENCIES "Boost")
+endif()
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
@@ -40,12 +44,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   option(BUILD_STIR_EXECUTABLES "Build all STIR executables" OFF)
   option(BUILD_STIR_SWIG_PYTHON "Build STIR Python interface" OFF)
 
-  ExternalProject_Add(${proj}
-    ${${proj}_EP_ARGS}
-    GIT_REPOSITORY ${${proj}_URL}
-    GIT_TAG ${STIR_TAG}
-    SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
-    CMAKE_ARGS
+  set(STIR_CMAKE_ARGS 
         -DBUILD_EXECUTABLES=${BUILD_STIR_EXECUTABLES}
         -DBUILD_SWIG_PYTHON=${BUILD_STIR_SWIG_PYTHON}
         -DBUILD_TESTING=OFF
@@ -58,6 +57,28 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DDISABLE_ITK=On
         # Use 2 variables for ROOT to cover multiple STIR versions
         -DDISABLE_CERN_ROOT_SUPPORT=ON -DDISABLE_CERN_ROOT=ON
+   )
+
+  # Append CMAKE_ARGS for ITK choices
+  if (USE_ITK AND USE_SYSTEM_ITK)
+    set(STIR_CMAKE_ARGS 
+      ${STIR_CMAKE_ARGS} 
+      -DDISABLE_ITK=false
+        # If USE_SYSTEM_ITK, ITK_DIR will have been set via find_package in External_ITK.cmake
+        # If !USE_SYSTEM_ITK, ITK_DIR will get set during the installation of ITK
+      -DITK_DIR=${ITK_DIR}
+    )
+  # ITK not required, so disable
+  else()
+    set(CMAKE_ARGS ${CMAKE_ARGS} -DDISABLE_ITK=true)
+  endif()
+
+  ExternalProject_Add(${proj}
+    ${${proj}_EP_ARGS}
+    GIT_REPOSITORY ${${proj}_URL}
+    GIT_TAG ${STIR_TAG}
+    SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
+    CMAKE_ARGS ${STIR_CMAKE_ARGS}
     INSTALL_DIR ${STIR_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
