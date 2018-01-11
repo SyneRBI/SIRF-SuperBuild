@@ -70,7 +70,9 @@ if (PYTHONLIBS_FOUND)
   message(STATUS "Found PYTHON_LIBRARIES=${PYTHON_LIBRARIES}")
 endif()
 
+# Find Matlab
 set(Matlab_ROOT_DIR $ENV{Matlab_ROOT_DIR} CACHE PATH "Path to Matlab root directory" )
+find_package(Matlab COMPONENTS MAIN_PROGRAM)
 
 option(USE_SYSTEM_Boost "Build using an external version of Boost" OFF)
 option(USE_SYSTEM_STIR "Build using an external version of STIR" OFF)
@@ -119,9 +121,6 @@ message(STATUS "PYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR}")
 #Need to configure main project here.
 #set(proj ${PRIMARY_PROJECT_NAME})
 
-#find Matlab
-find_package(Matlab COMPONENTS MAIN_PROGRAM)
-
 # Make environment files
 set(SIRF_SRC_PATH ${SOURCE_DOWNLOAD_CACHE}/SIRF)
 set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
@@ -132,6 +131,8 @@ set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
 ## in the env_ccppetmr scripts we perform a substitution of the whole block
 ## during the configure_file() command call below.
 
+## Note that the MATLAB_DEST and PYTHON_DEST variables are currently set
+## in External_SIRF.cmake. That's a bit confusing of course (TODO).
 set(ENV_PYTHON_BASH "#####    Python not found    #####")
 set(ENV_PYTHON_CSH  "#####    Python not found    #####")
 if(PYTHONINTERP_FOUND)
