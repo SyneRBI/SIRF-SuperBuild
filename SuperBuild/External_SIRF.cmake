@@ -44,6 +44,10 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   if (BUILD_PYTHON)
     set(PYTHON_DEST "${SIRF_Install_Dir}/python" CACHE PATH "Destination for python modules")
   endif()
+  set (BUILD_MATLAB ${Matlab_FOUND})
+  if (BUILD_MATLAB)
+    set(MATLAB_DEST "${SIRF_Install_Dir}/matlab" CACHE PATH "Destination for matlab modules")
+  endif()
 
   message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
@@ -63,6 +67,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DBOOST_ROOT=${BOOST_ROOT}
         -DMatlab_ROOT_DIR=${Matlab_ROOT_DIR}
         -DMATLAB_ROOT=${Matlab_ROOT_DIR} # pass this for compatibility with old SIRF
+        -DMATLAB_DEST=${MATLAB_DEST}
         -DSTIR_DIR=${STIR_DIR}
         -DHDF5_ROOT=${HDF5_ROOT}
         -DHDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}

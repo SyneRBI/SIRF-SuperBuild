@@ -69,8 +69,8 @@ if (PYTHONLIBS_FOUND)
   message(STATUS "Found PYTHON_LIBRARIES=${PYTHON_LIBRARIES}")
 endif()
 
-set(Matlab_ROOT_DIR $ENV{Matlab_ROOT_DIR} CACHE PATH "Path to Matlab root directory" )
 # Find Matlab
+set(Matlab_ROOT_DIR $ENV{Matlab_ROOT_DIR} CACHE PATH "Path to Matlab root directory" )
 # Note that we need the main program for the configuration files and the tests)
 find_package(Matlab COMPONENTS MAIN_PROGRAM)
 
@@ -133,22 +133,24 @@ set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
 ## in the env_ccppetmr scripts we perform a substitution of the whole block
 ## during the configure_file() command call below.
 
+## Note that the MATLAB_DEST and PYTHON_DEST variables are currently set
+## in External_SIRF.cmake. That's a bit confusing of course (TODO).
 set(ENV_PYTHON_BASH "#####    Python not found    #####")
 set(ENV_PYTHON_CSH  "#####    Python not found    #####")
 if(PYTHONINTERP_FOUND)
 
   set (ENV_PYTHON_CSH "\
-if $?PYTHONPATH then \n\
-	setenv PYTHONPATH ${CCPPETMR_INSTALL}/python:$PYTHONPATH \n\
-else \n\
-	setenv PYTHONPATH ${CCPPETMR_INSTALL}/python \n\
-setenv SIRF_PYTHON_EXECUTABLE ${PYTHON_EXECUTABLE}")
+    if $?PYTHONPATH then \n\
+      setenv PYTHONPATH ${PYTHON_DEST}:$PYTHONPATH \n\
+    else \n\
+      setenv PYTHONPATH ${PYTHON_DEST} \n\
+      setenv SIRF_PYTHON_EXECUTABLE ${PYTHON_EXECUTABLE}")
 
   set (ENV_PYTHON_BASH "\
-PYTHONPATH=${CCPPETMR_INSTALL}/python:$PYTHONPATH \n\
-export PYTHONPATH \n\
-SIRF_PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} \n\
-export SIRF_PYTHON_EXECUTABLE")
+     PYTHONPATH=${PYTHON_DEST}:$PYTHONPATH \n\ 
+     export PYTHONPATH \n\
+     SIRF_PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} \n\
+     export SIRF_PYTHON_EXECUTABLE")
 
 endif()
 
@@ -156,17 +158,17 @@ set(ENV_MATLAB_BASH "#####     Matlab not found     #####")
 set(ENV_MATLAB_CSH  "#####     Matlab not found     #####")
 if (Matlab_FOUND)
   set(ENV_MATLAB_BASH "\
-MATLABPATH=${CCPPETMR_INSTALL}/matlab\n\
+MATLABPATH=${MATLAB_DEST}\n\
 export MATLABPATH\n\
 SIRF_MATLAB_EXECUTABLE=${Matlab_MAIN_PROGRAM}\n\
 export SIRF_MATLAB_EXECUTABLE")
   set(ENV_MATLAB_CSH "\
-if $?MATLABPATH then\n\
-	setenv MATLABPATH ${CCPPETMR_INSTALL}/matlab:$MATLABPATH\n\
-else\n\
-	setenv MATLABPATH ${CCPPETMR_INSTALL}/matlab \n\
-endif\n\
-setenv SIRF_MATLAB_EXECUTABLE ${Matlab_MAIN_PROGRAM}")
+   if $?MATLABPATH then\n\
+	setenv MATLABPATH ${MATLAB_DEST}:$MATLABPATH\n\
+   else\n\
+	setenv MATLABPATH ${MATLAB_DEST}\n\
+   endif\n\
+   setenv SIRF_MATLAB_EXECUTABLE ${Matlab_MAIN_PROGRAM}")
 endif()
 
 configure_file(env_ccppetmr.sh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.sh)
