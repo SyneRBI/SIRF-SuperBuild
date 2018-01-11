@@ -23,6 +23,7 @@
 
 ## BOOST
 set(Boost_VERSION 1.63.0)
+set(Boost_REQUIRED_VERSION 1.36.0)
 set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/1.63.0/boost_1_63_0.zip)
 set(Boost_MD5 3c706b3fc749884ea5510c39474fd732)
 
@@ -34,10 +35,10 @@ set(Armadillo_MD5 c601f3a5ec6d50666aa3a539fa20e6ca )
 if(WIN32)
   # Just use precompiled version
   # TODO would prefer the next zip file but for KT using an ftp URL times-out (firewall?)
-  #set(${proj}_URL ftp://ftp.fftw.org/pub/fftw/fftw-3.3.5-dll64.zip )
-  #set(${proj}_MD5 cb3c5ad19a89864f036e7a2dd5be168c )
-  set(FFTW3_URL https://s3.amazonaws.com/install-gadgetron-vs2013/Dependencies/FFTW/zip/FFTW3.zip )
-  set(FFTW3_MD5 a42eac92d9ad06d7c53fb82b09df2b6e )
+  set(FFTW3_URL ftp://ftp.fftw.org/pub/fftw/fftw-3.3.5-dll64.zip )
+  set(FFTW3_MD5 cb3c5ad19a89864f036e7a2dd5be168c )
+  #set(FFTW3_URL https://s3.amazonaws.com/install-gadgetron-vs2013/Dependencies/FFTW/zip/FFTW3.zip )
+  #set(FFTW3_MD5 a42eac92d9ad06d7c53fb82b09df2b6e )
 else(WIN32)
   set(FFTW3_URL http://www.fftw.org/fftw-3.3.5.tar.gz ) 
   set(FFTW3_MD5 6cc08a3b9c7ee06fdd5b9eb02e06f569 )
@@ -47,10 +48,18 @@ set(FFTW3double_URL ${FFTW3_URL})
 set(FFTW3double_MD5 ${FFTW3_MD5})
 
 ## HDF5
-set(HDF5_URL https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.0-patch1/src/CMake-hdf5-1.10.0-patch1.tar.gz )
-set(HDF5_MD5 6fb456d03a60f358f3c077288a6d1cd8 )
+if (WIN32)
+  # 1.8.15 hdf5-targets.cmake refers to non-existent zlib files
+  # (or at least this was the case for older Anaconda installations)
+  set(HDF5_REQUIRED_VERSION 1.8.17)
+else()
+  set(HDF5_REQUIRED_VERSION 1.8)
+endif()
+set(HDF5_URL https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.1/src/hdf5-1.10.1.tar.gz)
+set(HDF5_MD5 43a2f9466702fb1db31df98ae6677f15 )
 
 ## SWIG
+set (SWIG_REQUIRED_VERSION 2)
 if (WIN32)
   set(SWIG_URL http://downloads.sourceforge.net/swig/swigwin-3.0.12.zip  )
   set(SWIG_MD5 a49524dad2c91ae1920974e7062bfc93 )
@@ -68,7 +77,7 @@ option (DEVEL_BUILD "Developer Build" OFF)
 
 #Set the default versions for SIRF, STIR, Gadgetron and ISMRMRD
 # with devel build it uses latest version of upstream packages
-# otherwise uses the versions for SIRF 0.9
+# otherwise uses the versions for current SIRF
 
 set(DEFAULT_SIRF_URL https://github.com/CCPPETMR/SIRF )
 if (DEVEL_BUILD)
@@ -80,6 +89,10 @@ if (DEVEL_BUILD)
   ## Gadgetron
   set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
   set(DEFAULT_Gadgetron_TAG master)
+
+  ## siemens_to_ismrmrd
+  set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd )
+  set(DEFAULT_siemens_to_ismrmrd_TAG master)
 
   ## ISMRMRD
   set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
@@ -99,9 +112,13 @@ else()
   set(DEFAULT_Gadgetron_TAG e7eb430673eb3272e8a821b51750c0a2a96dafed )
   #set(DEFAULT_Gadgetron_TAG 00b96376568278a595e78879026bb3b0d5fbb98d )
 
+  ## siemens_to_ismrmrd
+  set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
+  set(DEFAULT_siemens_to_ismrmrd_TAG ba4773f9cf4bba5f3ccd19930e3548d8273fee01)
+
   ## ISMRMRD
-  set(DEFAULT_ISMRMRD_URL https://github.com/CCPPETMR/ismrmrd )
-  set(DEFAULT_ISMRMRD_TAG 35012c6c8000616546c2d6b1757eba0c5b21b2d4)
+  set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
+  set(DEFAULT_ISMRMRD_TAG 42d93137cc16c270c8ba065edd2496483161bd21)
 
 endif()
 
@@ -117,7 +134,13 @@ SET(STIR_URL ${DEFAULT_STIR_URL} CACHE STRING ON)
 SET(Gadgetron_TAG ${DEFAULT_Gadgetron_TAG} CACHE STRING ON)
 SET(Gadgetron_URL ${DEFAULT_Gadgetron_URL} CACHE STRING ON)
 
+SET(siemens_to_ismrmrd_TAG ${DEFAULT_siemens_to_ismrmrd_TAG} CACHE STRING ON)
+SET(siemens_to_ismrmrd_URL ${DEFAULT_siemens_to_ismrmrd_URL} CACHE STRING ON)
+
 SET(ISMRMRD_TAG ${DEFAULT_ISMRMRD_TAG} CACHE STRING ON)
 SET(ISMRMRD_URL ${DEFAULT_ISMRMRD_URL} CACHE STRING ON)
 
-mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG Gadgetron_URL Gadgetron_TAG ISMRMRD_URL ISMRMRD_TAG)
+mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
+  Gadgetron_URL Gadgetron_TAG
+  siemens_to_ismrmrd_URL siemens_to_ismrmrd_TAG
+  ISMRMRD_URL ISMRMRD_TAG)
