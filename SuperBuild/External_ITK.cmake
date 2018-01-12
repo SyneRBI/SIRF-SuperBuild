@@ -54,6 +54,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}
         -DCMAKE_INSTALL_PREFIX=${${proj}_Install_Dir}
 	      -DBUILD_SHARED_LIBS=true
+        -DCMAKE_BUILD_TYPE=release
+        -DBUILD_TESTING=false
+        -DBUILD_EXAMPLES=false
 	  INSTALL_DIR ${${proj}_Install_Dir}
     DEPENDS ${${proj}_DEPENDENCIES}
   )
