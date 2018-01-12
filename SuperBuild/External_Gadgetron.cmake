@@ -26,9 +26,6 @@ set(proj Gadgetron)
 
 # Set dependency list
 set(${proj}_DEPENDENCIES "Boost;HDF5;ISMRMRD;FFTW3double;Armadillo;GTest")
-if(${USE_SYSTEM_GTest})
-  find_package(GTest)
-endif()
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
