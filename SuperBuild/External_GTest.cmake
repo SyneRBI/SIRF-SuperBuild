@@ -21,7 +21,7 @@
 #=========================================================================
 
 #This needs to be unique globally
-set(proj googletest)
+set(proj GTest)
 
 # Set dependency list
 set(${proj}_DEPENDENCIES "")
@@ -37,7 +37,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(googletest_Install_Dir ${SUPERBUILD_INSTALL_DIR})
+  set(GTest_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
@@ -50,14 +50,14 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
     CMAKE_ARGS
         -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
-        -DCMAKE_INSTALL_PREFIX=${googletest_Install_Dir}
-    INSTALL_DIR ${googletest_Install_Dir}
+        -DCMAKE_INSTALL_PREFIX=${GTest_Install_Dir}
+    INSTALL_DIR ${GTest_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
 
-    set(GTEST_ROOT        ${googletest_Install_Dir})
-    set(GTEST_INCLUDE_DIR ${googletest_Install_Dir/include})
+    set(GTEST_ROOT        ${GTest_Install_Dir})
+    set(GTEST_INCLUDE_DIR ${GTest_Install_Dir/include})
 
    else()
       if(${USE_SYSTEM_${externalProjName}})
