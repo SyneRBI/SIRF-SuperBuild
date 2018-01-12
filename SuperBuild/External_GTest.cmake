@@ -57,19 +57,18 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   )
 
     set(GTEST_ROOT        ${GTest_Install_Dir})
-    set(GTEST_INCLUDE_DIR ${GTest_Install_Dir/include})
 
-   else()
+  else()
       if(${USE_SYSTEM_${externalProjName}})
+        message("USING the system ${externalProjName}, set GTEST_ROOT if needed.")
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
-        message("USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
     endif()
     ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}")
   endif()
 
   mark_as_superbuild(
     VARS
-      ${externalProjName}_DIR:PATH
+      GTEST_ROOT:PATH
     LABELS
       "FIND_PACKAGE"
   )
