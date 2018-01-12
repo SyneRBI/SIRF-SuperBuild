@@ -13,6 +13,7 @@ To create a new VM yourself, you need to have both [Vagrant](https://www.vagrant
 
 Clone our repository and launch vagrant in the vagrant directory. In windows you should be running something like MinGW terminal, not the windows command line.
 
+    vagrant plugin install vagrant-vbguest
     vagrant up
 	
 The pre-built Ubuntu machine is downloaded and then configured. Virtual Box should be launched and you should see it appearing. After this first phase you should be able to launch 
