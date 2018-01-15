@@ -183,7 +183,7 @@ fi
 cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/scripts/update*sh $SIRF_INSTALL_PATH/bin
 
 # copy help file to Desktop
-test [ ! -d ~/Desktop ]
+if [ ! -d ~/Desktop ]
 then
   if [ -e ~/Desktop ]
     then 
