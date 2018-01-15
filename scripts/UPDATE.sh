@@ -35,6 +35,10 @@ if [ -r ~/.sirfrc ]
 then
   source ~/.sirfrc
 else
+  if [ ! -e ~/.bashrc ]
+  then 
+    touch ~/.bashrc
+  fi
   added=`grep -c "source ~/.sirfrc" ~/.bashrc`
   if [ $added -eq "0" ] 
   then
