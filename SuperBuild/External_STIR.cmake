@@ -64,7 +64,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   #     1. !USE_ITK                     <- Disable ITK
   #     2.  USE_ITK &&  USE_SYSTEM_ITK  <- Need to set ITK_DIR, set with find_package in External_ITK.cmake
   #     3.  USE_ITK && !USE_SYSTEM_ITK  <- No need to do anything (ITK_DIR will get set during the installation of ITK)
-  # STIR enables ITK by default (If it is found, so no need to set -DDISABLE_ITK=ON for cases 2 and 3)
+  # STIR enables ITK by default (If it is found, so no need to set -DDISABLE_ITK=OFF for cases 2 and 3)
   if (!USE_ITK)
     set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DDISABLE_ITK=ON)
   elseif (USE_ITK AND USE_SYSTEM_ITK)
