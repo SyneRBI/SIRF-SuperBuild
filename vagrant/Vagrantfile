@@ -87,6 +87,14 @@ Vagrant.configure("2") do |config|
     
 	# set the current locale, otherwise the gnome-terminal doesn't start
 	sudo locale-gen en_GB.UTF-8
+	sudo locale-gen en_US.UTF-8
+	sudo locale-gen de_DE.UTF-8
+	sudo locale-gen fr_FR.UTF-8
+	sudo locale-gen it_IT.UTF-8
+	sudo locale-gen pt_PT.UTF-8
+	sudo locale-gen pt_BR.UTF-8
+	sudo locale-gen ja_JP.UTF-8
+	sudo locale-gen zh_CN.UTF-8
 	sudo update-locale LANG=en_GB.UTF-8
 	sudo localectl set-x11-keymap uk
 	sudo localectl status
