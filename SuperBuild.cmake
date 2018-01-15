@@ -85,6 +85,12 @@ option(USE_SYSTEM_SWIG "Build using an external version of SWIG" OFF)
 #option(USE_SYSTEM_Gadgetron "Build using an external version of Gadgetron" OFF)
 option(USE_SYSTEM_SIRF "Build using an external version of SIRF" OFF)
 
+# ITK
+option(USE_ITK "Use ITK" OFF)
+if (USE_ITK)
+  option(USE_SYSTEM_ITK "Build using an external version of ITK" OFF)
+endif()
+
 if (WIN32)
   set(build_Gadgetron_default OFF)
 else()
