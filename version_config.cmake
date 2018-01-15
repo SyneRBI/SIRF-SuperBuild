@@ -74,7 +74,7 @@ set(googletest_URL https://github.com/google/googletest )
 set(googletest_TAG release-1.8.0)
 
 ## ITK
-set(ITK_URL git://itk.org/ITK.git)
+set(ITK_URL https://itk.org/ITK.git)
 set(ITK_TAG v4.13.0)
 
 option (DEVEL_BUILD "Developer Build" OFF)

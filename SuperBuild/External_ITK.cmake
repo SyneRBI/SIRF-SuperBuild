@@ -53,15 +53,14 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
         -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}
         -DCMAKE_INSTALL_PREFIX=${${proj}_Install_Dir}
-	      -DBUILD_SHARED_LIBS=true
-        -DCMAKE_BUILD_TYPE=release
-        -DBUILD_TESTING=false
-        -DBUILD_EXAMPLES=false
+	    -DBUILD_SHARED_LIBS=ON
+        -DCMAKE_BUILD_TYPE=${EXTERNAL_PROJECT_BUILD_TYPE}
+        -DBUILD_TESTING=OFF
+        -DBUILD_EXAMPLES=OFF
 	  INSTALL_DIR ${${proj}_Install_Dir}
     DEPENDS ${${proj}_DEPENDENCIES}
   )
 
-  set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
   set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
 
 else()
