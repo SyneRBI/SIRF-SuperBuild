@@ -183,7 +183,15 @@ fi
 cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/scripts/update*sh $SIRF_INSTALL_PATH/bin
 
 # copy help file to Desktop
-cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/HELP.txt ~/Desktop
+test [ ! -d ~/Desktop ]
+then
+  if [ -e ~/Desktop ]
+    then 
+	mv ~/Desktop ~/Desktop.file
+  fi
+  mkdir ~/Desktop 
+fi 
+cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/HELP.txt ~/Desktop/
 
 if [ -r ~/.sirfc ]; then
   echo "Moving existing ~/.sirfc to a backup copy"
