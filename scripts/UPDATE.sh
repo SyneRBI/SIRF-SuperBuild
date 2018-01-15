@@ -39,7 +39,8 @@ else
   then 
     touch ~/.bashrc
   fi
-  added=`grep -c "source ~/.sirfrc" ~/.bashrc`
+  #added=`grep -c "source ~/.sirfrc" ~/.bashrc`
+  added=`cat ~/.bashrc | gawk 'BEGIN{v=0;} {if ($0 == "source ~/.sirfrc") v=v+1;} END{print v}'`
   if [ $added -eq "0" ] 
   then
     echo "I will create a ~/.sirfrc file and source this from your .bashrc"
