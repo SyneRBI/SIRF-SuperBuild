@@ -70,8 +70,8 @@ endif(WIN32)
 option(DEVEL_BUILD "Use current versions of major packages" OFF)
 
 ## Googletest
-set(googletest_URL https://github.com/google/googletest )
-set(googletest_TAG release-1.8.0)
+set(GTest_URL https://github.com/google/googletest )
+set(GTest_TAG release-1.8.0)
 
 ## ITK
 set(ITK_URL https://itk.org/ITK.git)
