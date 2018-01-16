@@ -1,5 +1,5 @@
 Vagrant.configure("2") do |config|
-  config.vm.box = "box-cutter/ubuntu1604"
+  config.vm.box = "ubuntu/xenial64"
   config.vm.synced_folder '.', '/vagrant', disabled: true
 
   # Disable automatic box update checking. If you disable this, then
@@ -38,6 +38,18 @@ Vagrant.configure("2") do |config|
   # Customize the amount of memory on the VM:
     vb.cpus = "2"
     vb.memory = "4096"
+	
+	vb.customize "pre-boot", [
+       "storageattach", :id,
+       "--storagectl", "IDE",
+        "--port", "1",
+       "--device", "0",
+       "--type", "dvddrive",
+       "--medium", "emptydrive",
+       ]
+	vb.name = "SIRF_1.0.0"
+	vb.customize ["modifyvm", :id, 
+	              "--clipboard", "bidirectional"]
   end
 
   #
@@ -63,15 +75,45 @@ Vagrant.configure("2") do |config|
     adduser $SIRFUSERNAME sudo
     { echo $SIRFPASS; echo $SIRFPASS; } | passwd $SIRFUSERNAME 
 
-    apt-get update
-    apt-get install -y wget git xorg xterm gdm menu gksu synaptic gnome-session gnome-panel metacity --no-install-recommends
+   apt-get update
+	# mark grup as hold as it requires user intervention on upgrade!
+	apt-mark hold grub-pc
+	# upgrade the list of packages
+	apt-get upgrade -y
+	#install upgrades
+	apt-get install -y wget git xorg xterm gdm menu gksu synaptic gnome-session gnome-panel metacity --no-install-recommends
     apt-get install -y at-spi2-core gnome-terminal gnome-control-center nautilus 
     service gdm start
-
-    # To hide vagrant from login screen:
+    
+	# set the current locale, otherwise the gnome-terminal doesn't start
+	sudo locale-gen en_GB.UTF-8
+	sudo locale-gen en_US.UTF-8
+	sudo locale-gen de_DE.UTF-8
+	sudo locale-gen fr_FR.UTF-8
+	sudo locale-gen it_IT.UTF-8
+	sudo locale-gen pt_PT.UTF-8
+	sudo locale-gen pt_BR.UTF-8
+	sudo locale-gen ja_JP.UTF-8
+	sudo locale-gen zh_CN.UTF-8
+	sudo update-locale LANG=en_GB.UTF-8
+	sudo localectl set-x11-keymap uk
+	sudo localectl status
+	#sudo localectl set-x11-keymap us
+	#sudo localectl list-keymaps
+	#sudo localectl set-locale en_GB.UTF-8
+	
+	
+	# To hide vagrant from login screen:
     #  1. Log-in as vagrant
     #  2. In /var/lib/AccountsService/users/vagrant change 'SystemAccount=true'
+	sudo echo '[User]' > vagrant
+	sudo echo 'SystemAccount=true' >> vagrant
+	sudo cp -v vagrant /var/lib/AccountsService/users/vagrant
 
+	# To Ubuntu user from login screen:
+	#sudo echo '[User]' > Ubuntu
+	#sudo echo 'SystemAccount=true' >> Ubuntu
+	#sudo cp -v Ubuntu /var/lib/AccountsService/users/Ubuntu
     # Could add custom logos here: /etc/gdm3/greeter.dconf-defaults 
 
     cd /opt
@@ -91,9 +133,12 @@ Vagrant.configure("2") do |config|
     export CCMAKE="ccmake -DCMAKE_PREFIX_PATH:PATH=$INSTALL_DIR/lib/cmake -DCMAKE_INSTALL_PREFIX:PATH=$INSTALL_DIR"
 
     git clone https://github.com/CCPPETMR/CCPPETMR_VM.git
-    bash CCPPETMR_VM/scripts/INSTALL_prerequisites_with_apt-get.sh
-    #bash CCPPETMR_VM/scripts/UPDATE.sh
-    chown -R sirfuser:users /home/sirfuser/devel
+	cd CCPPETMR_VM
+	git checkout xenial64
+	git pull
+    bash $SRC_PATH/CCPPETMR_VM/scripts/INSTALL_prerequisites_with_apt-get.sh
+    bash $SRC_PATH/CCPPETMR_VM/scripts/UPDATE.sh
+    chown -R sirfuser:users /home/sirfuser/
     
    SHELL
 end

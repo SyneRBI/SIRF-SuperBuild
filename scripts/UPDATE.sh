@@ -35,7 +35,12 @@ if [ -r ~/.sirfrc ]
 then
   source ~/.sirfrc
 else
-  added=`grep -c "source ~/.sirfrc" ~/.bashrc`
+  if [ ! -e ~/.bashrc ]
+  then 
+    touch ~/.bashrc
+  fi
+  #added=`grep -c "source ~/.sirfrc" ~/.bashrc`
+  added=`cat ~/.bashrc | gawk 'BEGIN{v=0;} {if ($0 == "source ~/.sirfrc") v=v+1;} END{print v}'`
   if [ $added -eq "0" ] 
   then
     echo "I will create a ~/.sirfrc file and source this from your .bashrc"
@@ -178,7 +183,15 @@ fi
 cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/scripts/update*sh $SIRF_INSTALL_PATH/bin
 
 # copy help file to Desktop
-cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/HELP.txt ~/Desktop
+if [ ! -d ~/Desktop ]
+then
+  if [ -e ~/Desktop ]
+    then 
+	mv ~/Desktop ~/Desktop.file
+  fi
+  mkdir ~/Desktop 
+fi 
+cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/HELP.txt ~/Desktop/
 
 if [ -r ~/.sirfc ]; then
   echo "Moving existing ~/.sirfc to a backup copy"
