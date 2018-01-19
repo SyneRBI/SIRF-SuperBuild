@@ -1,8 +1,8 @@
 # This file sets environment variables for the CCP PETMR software.
-# Use it like this
-#    source /path/to/whereever/env_ccppetmr.sh
-# Preferably add this line to your .basrhc, .profile or whatever file is appropriate for your shell
-
+# Use it like this		
+#    source /path/to/whereever/env_ccppetmr.sh		
+# Preferably add this line to your .basrhc, .profile or whatever file is appropriate for your shell		
+  		  
 SIRF_PATH=@SIRF_SRC_PATH@
 export SIRF_PATH
 
@@ -21,4 +21,3 @@ export DYLD_FALLBACK_LIBRARY_PATH
 @ENV_MATLAB_BASH@
 
 PATH=$PATH:@CCPPETMR_INSTALL@/bin
-export STIR_exercises_PATH="$SIRF_PATH/../STIR-exercises"
