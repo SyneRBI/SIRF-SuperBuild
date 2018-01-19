@@ -1,3 +1,4 @@
+# This file sets environment variables for the CCP PETMR software.
 # Use it like this		
 #    source /path/to/whereever/env_ccppetmr.sh		
 # Preferably add this line to your .basrhc, .profile or whatever file is appropriate for your shell		
@@ -20,4 +21,3 @@ export DYLD_FALLBACK_LIBRARY_PATH
 @ENV_MATLAB_BASH@
 
 PATH=$PATH:@CCPPETMR_INSTALL@/bin
-

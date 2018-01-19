@@ -1,0 +1,4 @@
+nose
+nose-timer
+coveralls
+codecov
