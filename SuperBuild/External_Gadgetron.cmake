@@ -53,8 +53,9 @@ if (MKL_FOUND)
   endif ()
 endif ()
 
-  option(BUILD_GADGETRON_NATIVE_PYTHON_SUPPORT
-    "Build Gadgetron Python gadgets (not required for SIRF)" OFF)
+  #option(BUILD_GADGETRON_NATIVE_PYTHON_SUPPORT
+  #  "Build Gadgetron Python gadgets (not required for SIRF)" OFF)
+  set(BUILD_GADGETRON_NATIVE_PYTHON_SUPPORT OFF) # <-Disabled for v1.0
   option(BUILD_GADGETRON_NATIVE_MATLAB_SUPPORT
     "Build Gadgetron MATLAB gadgets (not required for SIRF)" OFF)
 
