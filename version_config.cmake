@@ -78,6 +78,7 @@ set(ITK_URL https://itk.org/ITK.git)
 set(ITK_TAG v4.13.0)
 
 option (DEVEL_BUILD "Developer Build" OFF)
+mark_as_advanced(DEVEL_BUILD)
 
 #Set the default versions for SIRF, STIR, Gadgetron and ISMRMRD
 # with devel build it uses latest version of upstream packages
