@@ -33,7 +33,11 @@ sudo mkdir /opt/cmake
 sudo bash cmake-3.7.2-Linux-x86_64.sh --prefix=/opt/cmake
 export PATH=/opt/cmake/bin:$PATH
 ```
-During installation you will be asked to read and accept CMake's license.
+During installation you will be asked to read and accept CMake's license. If you answered the last question during the CMake installation with yes, then you should use
+
+```
+export PATH=/opt/cmake/cmake-3.7.2-Linux-x86_64/bin:$PATH
+```
 
 ### Clone the SIRF-SuperBuild project 
 
@@ -56,6 +60,11 @@ make -jN
 ```
 where `N` are the number of cores available for the compilation.
 
+### Rename the example configuration file for Gadgetron
+```
+mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
+```
+
 ### Set Environment variables
 
 Source a script with the environment variables appropriate for your shell
@@ -73,10 +82,16 @@ source INSTALL/bin/env_ccppetmr.csh
 ```
 You probably want to add a similar line (with absolute path) to your .cshrc.
 
+### Open a terminal and start Gadgetron
+If you didn't add any of the above statements to your .bashrc or .cshrc, you will have to source env_ccpetmr.* again in this terminal first.
+```
+gadgetron
+```
+
 ### Testing
 
 Tests for the SIRF-SuperBuild are currently the SIRF tests. The tests can contain tests from all SuperBuild projects.
-After setting the environment variables, you can run tests as:
+After setting the environment variables and starting Gadgetron, you can run tests as:
 
 ```bash
 cd ~/devel/build
