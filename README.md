@@ -83,7 +83,7 @@ source INSTALL/bin/env_ccppetmr.csh
 You probably want to add a similar line (with absolute path) to your .cshrc.
 
 ### Open a terminal and start Gadgetron
-If you didn't add the PATH statement to your .bashrc or .cshrc, you will have to repeat them in this terminal first
+If you didn't add any of the above statements to your .bashrc or .cshrc, you will have to source env_ccpetmr.* again in this terminal first.
 ```
 gadgetron
 ```
