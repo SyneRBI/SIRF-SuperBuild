@@ -3,7 +3,7 @@
 The SIRF-SuperBuild allows the user to download and compile most of the software
 needed to compile SIRF and Gadgetron, and automatically build SIRF and Gadgetron. 
 There is still a small number of libraries that are not installed
-by the SuperBuild ([more info for Linux](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-Ubuntu-16.04#2-install-dependencies-for-gadgetron)).
+by the SuperBuild, [see below for more info for your operating system](#os-specific-information).
 
 ## Dependencies
 
@@ -38,6 +38,11 @@ During installation you will be asked to read and accept CMake's license. If you
 ```
 export PATH=/opt/cmake/cmake-3.7.2-Linux-x86_64/bin:$PATH
 ```
+Note that the above `PATH` statements won't work if you are running csh. The equivalent would be for instance
+```csh
+set path = ( /opt/cmake/bin $path )
+```
+You might want to add the `PATH` line to your start-up file (e.g. `.profile` or `.cshrc`).
 
 ### Clone the SIRF-SuperBuild project 
 
@@ -163,15 +168,16 @@ cmake ../SIRF-SuperBuild -DSIRF_TAG=<a valid hash>
 ```
 Note that the CMake options in the table are Advanced Options. When running the CMake GUI (or ccmake) they will therefore only be visible when you toggle those on. Additionally, these variables are cached, so they will keep the specified value unless cache is deleted.
 
-## Installation instructions for Ubuntu 16
+## OS specific information
+### Installation instructions for Ubuntu
 
 They can be found [here](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-Ubuntu-16.04)
 
-## Installation instructions for Mac OS
+### Installation instructions for Mac OS
 
 They can be found [here](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-on-MacOS)
 
-## Installation instructions for Docker
+### Installation instructions for Docker
 
 They can be found [here](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-on-Docker)
 
