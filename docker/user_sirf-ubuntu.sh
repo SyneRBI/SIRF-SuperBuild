@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # SIRF
-git clone https://github.com/CCPPETMR/SIRF-SuperBuild --recursive \
-  -b system-build
+git clone https://github.com/CCPPETMR/SIRF-SuperBuild --recursive -b master
 pushd SIRF-SuperBuild
 cmake $EXTRA_BUILD_FLAGS .
 make -j 2
