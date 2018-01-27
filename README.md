@@ -54,16 +54,24 @@ git clone https://github.com/CCPPETMR/SIRF-SuperBuild.git
 
  ### Build and install
  
- Create a build directory and start the build and install process.
+ Create a build directory and configure the software.
  
 ```bash
 cd ~/devel
 mkdir build
 cd build
 cmake ../SIRF-SuperBuild
+```
+Use your build environment to build and install the project. On Linux/OSX etc, you would normally use
+```bash
 make -jN
 ```
-where `N` are the number of cores available for the compilation.
+where `N` are the number of cores you want to use for the compilation. For Eclipse/XCode/Visual Studio, you could open the project, or try something like
+```bash
+cmake --build . --config Release
+```
+
+Note that there is no separate install step.
 
 ### Rename the example configuration file for Gadgetron
 ```
@@ -128,13 +136,15 @@ test 1
 Total Test time (real) =   9.70 sec
 ```
 
-The user may also run the SIRF tests independently of the SuperBuild. Just enter the SIRF build directory and launch ctest:
+The user may also run the SIRF tests independently of the SuperBuild. Just enter the SIRF build directory and launch `ctest`:
 
 ```bash
 cd ~/devel/build
 cd SIRF-prefix/src/SIRF-build
-ctest
+ctest --verbose
 ```
+If you see failures, you might not have followed the above steps correctly, or have some missing Python modules.
+
 ## Build of specific versions
 
 By default, the SuperBuild will build the latest stable release of SIRF and associated versions of the dependencies. However, the SuperBuild allows the user to change the versions of the projects it's building. 
