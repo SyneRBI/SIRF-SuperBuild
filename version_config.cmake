@@ -86,22 +86,22 @@ mark_as_advanced(DEVEL_BUILD)
 
 set(DEFAULT_SIRF_URL https://github.com/CCPPETMR/SIRF )
 if (DEVEL_BUILD)
-  set (DEFAULT_SIRF_TAG master)
+  set (DEFAULT_SIRF_TAG origin/master)
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG master)
+  set(DEFAULT_STIR_TAG origin/master)
 
   ## Gadgetron
   set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
-  set(DEFAULT_Gadgetron_TAG master)
+  set(DEFAULT_Gadgetron_TAG origin/master)
 
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd )
-  set(DEFAULT_siemens_to_ismrmrd_TAG master)
+  set(DEFAULT_siemens_to_ismrmrd_TAG origin/master)
 
   ## ISMRMRD
   set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
-  set(DEFAULT_ISMRMRD_TAG master)
+  set(DEFAULT_ISMRMRD_TAG origin/master)
 
 else()
   set(DEFAULT_SIRF_TAG v0.9.2)
