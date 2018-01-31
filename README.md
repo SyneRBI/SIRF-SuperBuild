@@ -5,22 +5,44 @@ needed to compile SIRF and Gadgetron, and automatically build SIRF and Gadgetron
 There is still a small number of libraries that are not installed
 by the SuperBuild, [see below for more info for your operating system](#os-specific-information).
 
-## Dependencies
+## Table of Contents
+
+1. [Dependencies](#Dependencies)
+2. [Generic instructions](#Generic_instructions)
+    1. [Create the SuperBuild directory](#Create_the_SuperBuild_directory)
+    2. [Install CMake](#Install_CMake)
+    3. [Clone the SIRF-SuperBuild project](#Clone_SIRF-SuperBuild)
+    4. [Build and install](#Build_and_install)
+    5. [Example Gadgetron configuration file](#Example_Gadgetron_configuration_file)
+    6. [Set Environment variables](#Set_Environment_variables)
+    7. [Open a terminal and start Gadgetron](#Start_Gadgetron)
+    8. [Testing](#Testing)
+3. [Building with specific versions of dependencies](#Building_specific_version_dependencies)
+4. [OS specific information](#OS_specific_information)
+   1. [Installation instructions for Ubuntu](#Ubuntu_installation)
+   2. [Installation instructions for Mac OS](#OSX_installation)
+   3. [Installation instructions for Docker](#Docker_installation)
+5. [Advanced installation](#Advanced_installation)
+   1. [SIRF and MATLAB](#SIRF_and_MATLAB)
+   2. [Compiling against your own packages](#Compiling_own_packages)
+6. [TODO](#TODO)
+
+## Dependencies <a name="Dependencies"></a>
 
 The superBuild depends on CMake >= 3.7.
 
-## Generic instructions.
+## Generic instructions <a name="Generic_instructions"></a>
 
 To compile and install SIRF with the SuperBuild follow these steps:
 
-### Create a directory for the SuperBuild
+### Create the SuperBuild directory <a name="Create_the_SuperBuild_directory"></a>
 
 ```bash
 cd ~
 mkdir devel
 ```
 
-### Install CMake >= 3.7 
+### Install CMake >= 3.7  <a name="Install_CMake"></a>
 
 If you do not have CMake >= 3.7 install it first ([download link](https://cmake.org/download/)). On Ubuntu Linux,
 you can issue the following commands
@@ -44,7 +66,7 @@ set path = ( /opt/cmake/bin $path )
 ```
 You might want to add the `PATH` line to your start-up file (e.g. `.profile` or `.cshrc`).
 
-### Clone the SIRF-SuperBuild project 
+### Clone the SIRF-SuperBuild project  <a name="Clone_SIRF-SuperBuild"></a>
 
 ```bash
 cd ~
@@ -52,9 +74,9 @@ cd devel
 git clone https://github.com/CCPPETMR/SIRF-SuperBuild.git
 ```
 
- ### Build and install
+### Build and install <a name="Build_and_install"></a>
  
- Create a build directory and configure the software.
+Create a build directory and configure the software.
  
 ```bash
 cd ~/devel
@@ -73,12 +95,14 @@ cmake --build . --config Release
 
 Note that there is no separate install step.
 
-### Rename the example configuration file for Gadgetron
+### Example Gadgetron configuration file <a name="Example_Gadgetron_configuration_file"></a>
+
+Gadgetron requires a configuration file. An example is supplied and, as a starting point, this can be copied and used as the real thing:
 ```
 mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
 ```
 
-### Set Environment variables
+### Set Environment variables <a name="Set_Environment_variables"></a>
 
 Source a script with the environment variables appropriate for your shell
 
@@ -95,13 +119,17 @@ source INSTALL/bin/env_ccppetmr.csh
 ```
 You probably want to add a similar line (with absolute path) to your .cshrc.
 
-### Open a terminal and start Gadgetron
-If you didn't add any of the above statements to your .bashrc or .cshrc, you will have to source env_ccpetmr.* again in this terminal first.
+### Open a terminal and start Gadgetron <a name="Start_Gadgetron"></a>
+
+To be able to use Gadgetron, a Gadgetron client must already be open in another terminal window. To do this, open a new terminal window and enter:
+
 ```
 gadgetron
 ```
 
-### Testing
+N.B.: If you didn't add any of the above statements to your .bashrc or .cshrc, you will have to source env_ccpetmr.* again in this terminal first.
+
+### Testing <a name="Testing"></a>
 
 Tests for the SIRF-SuperBuild are currently the SIRF tests. The tests can contain tests from all SuperBuild projects.
 After setting the environment variables and starting Gadgetron, you can run tests as:
@@ -145,7 +173,7 @@ ctest --verbose
 ```
 If you see failures, you might not have followed the above steps correctly, or have some missing Python modules.
 
-## Build of specific versions
+## Building with specific versions of dependencies <a name="Building_specific_version_dependencies"></a>
 
 By default, the SuperBuild will build the latest stable release of SIRF and associated versions of the dependencies. However, the SuperBuild allows the user to change the versions of the projects it's building. 
 
@@ -178,20 +206,34 @@ cmake ../SIRF-SuperBuild -DSIRF_TAG=<a valid hash>
 ```
 Note that the CMake options in the table are Advanced Options. When running the CMake GUI (or ccmake) they will therefore only be visible when you toggle those on. Additionally, these variables are cached, so they will keep the specified value unless cache is deleted.
 
-## OS specific information
-### Installation instructions for Ubuntu
+## OS specific information <a name="OS_specific_information"></a>
+### Installation instructions for Ubuntu <a name="Ubuntu_installation"></a>
 
 They can be found [here](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-Ubuntu-16.04)
 
-### Installation instructions for Mac OS
+### Installation instructions for Mac OS <a name="OSX_installation"></a>
 
 They can be found [here](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-on-MacOS)
 
-### Installation instructions for Docker
+### Installation instructions for Docker <a name="Docker_installation"></a>
 
 They can be found [here](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-on-Docker)
 
-## TODO
+## Advanced installation <a name="Advanced_installation"></a>
+
+### SIRF and MATLAB <a name="SIRF_and_MATLAB"></a>
+SIRF can be used from MATLAB. For more information on this, see our [SIRF and MATLAB page](SIRF-and-MATLAB).
+
+### Compiling against your own packages <a name="Compiling_own_packages"></a>
+SIRF depends on many packages. By default, these packages are installed by the Superbuild. However, the user can decide to compile SIRF against their own versions of certain packages. This can be done via the `USE_SYSTEM_*` options in `CMake`. For example, if you wish to compile SIRF against a version of Boost that is already on your machine, you could set `USE_SYSTEM_BOOST` to `ON`.
+
+This `USE_SYSTEM_*` function can be used for as many or as few packages as desired. Advantages to building against your own version of certain packages are decreased compilation times and the potential to use newer versions of these packages. 
+
+However, we have only tested SIRF with the versions of the required dependencies that are built by default in the Superbuild. If you decide to compile SIRF using system versions of the dependencies, you run a greater risk of something going wrong. 
+
+For this reason, we advise new SIRF users to compile with all the `USE_SYSTEM_*` options disabled. If you decide to use system versions of certain packages, we would be interested to hear about it any compatibility issues that you may run into.
+
+## TODO  <a name="TODO"></a>
 
 - ***Windows support***
 - Sort out CMake Status messages.
