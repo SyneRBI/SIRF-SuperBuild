@@ -29,7 +29,9 @@ by the SuperBuild, [see below for more info for your operating system](#os-speci
 
 ## Dependencies <a name="Dependencies"></a>
 
-The superBuild depends on CMake >= 3.7.
+The SuperBuild depends on CMake >= 3.7.
+
+If you are building Gadgetron there are a series of [additional dependencies](https://github.com/gadgetron/gadgetron/wiki/List-of-Dependencies), which must be met.
 
 ## Generic instructions <a name="Generic_instructions"></a>
 
