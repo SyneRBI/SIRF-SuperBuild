@@ -25,6 +25,7 @@ by the SuperBuild, [see below for more info for your operating system](#os-speci
 5. [Advanced installation](#Advanced_installation)
    1. [SIRF and MATLAB](#SIRF_and_MATLAB)
    2. [Compiling against your own packages](#Compiling_own_packages)
+   3. [Python and MATLAB installation locations](#Python_and_MATLAB_installation_locations)
 6. [TODO](#TODO)
 
 ## Dependencies <a name="Dependencies"></a>
@@ -234,6 +235,12 @@ This `USE_SYSTEM_*` function can be used for as many or as few packages as desir
 However, we have only tested SIRF with the versions of the required dependencies that are built by default in the Superbuild. If you decide to compile SIRF using system versions of the dependencies, you run a greater risk of something going wrong. 
 
 For this reason, we advise new SIRF users to compile with all the `USE_SYSTEM_*` options disabled. If you decide to use system versions of certain packages, we would be interested to hear about it any compatibility issues that you may run into.
+
+### Python and MATLAB installation locations <a name="Python_and_MATLAB_installation_locations"></a>
+
+By default, Python and MATLAB executables and libraries are installed under `CMAKE_INSTALL_PREFIX/python` and `CMAKE_INSTALL_PREFIX/matlab`, respectively. If you wish for them to be installed elsewhere, you can simply cut and paste these folders to their desired locations. 
+
+In this case, you would then need to ensure that `PYTHONPATH` and `MATLABPATH` are updated accordingly. This is because the sourced `env_ccppetmr` will point to the original (old) location.
 
 ## TODO  <a name="TODO"></a>
 
