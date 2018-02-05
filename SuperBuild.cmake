@@ -41,6 +41,18 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/INSTALL" CACHE PATH "Prefix for path for installation" FORCE)
 endif()
 
+# If OSX give the advanced option to use absolute paths for shared libraries
+if (APPLE)
+  option(SHARED_LIBS_ABS_PATH "Force shared libraries to be installed with absolute paths (as opposed to rpaths)" ON)
+  mark_as_advanced( SHARED_LIBS_ABS_PATH )  
+  if (SHARED_LIBS_ABS_PATH)
+    # Set install_name_dir as the absolute path to install_prefix/lib
+    GET_FILENAME_COMPONENT(CMAKE_INSTALL_NAME_DIR ${CMAKE_INSTALL_PREFIX}/lib REALPATH)
+    # Mark it as superbuild so that it gets passed to all dependencies
+    mark_as_superbuild( PROJECTS ALL_PROJECTS VARS CMAKE_INSTALL_NAME_DIR:PATH )
+  endif(SHARED_LIBS_ABS_PATH)
+endif(APPLE)
+
 set (SUPERBUILD_INSTALL_DIR ${CMAKE_INSTALL_PREFIX})
 
 include(ExternalProject)
