@@ -56,14 +56,17 @@ if(NOT ( DEFINED "USE_SYSTEM_FFTW3" AND "${USE_SYSTEM_FFTW3}" ) )
     set(CLANG_ARG -DCMAKE_COMPILER_IS_CLANGXX:BOOL=ON)
   endif()
 
-  set(FFTWdouble_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj} )
-
+  #set(FFTWdouble_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj} )
+  set(${proj}_SOURCE_DIR "${SOURCE_DOWNLOAD_CACHE}/Source/${proj}" )
+  set(${proj}_BINARY_DIR "${SOURCE_DOWNLOAD_CACHE}/Build/${proj}" )
+  
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
     URL_MD5 ${${proj}_MD5}
-    SOURCE_DIR ${FFTWdouble_SOURCE_DIR}
-    BINARY_DIR ${FFTWdouble_SOURCE_DIR}
+    SOURCE_DIR ${${proj}_SOURCE_DIR}
+    BINARY_DIR ${${proj}_BINARY_DIR}
+	
     CONFIGURE_COMMAND ./configure --with-pic --prefix ${FFTWdouble_Install_Dir}
     INSTALL_DIR ${FFTWdouble_Install_Dir}
   )

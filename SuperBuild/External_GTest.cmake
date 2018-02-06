@@ -42,8 +42,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
-  set(${proj}_SOURCE_DIR "${EP_BASE}/Source/${proj}" )
-  set(${proj}_BINARY_DIR "${EP_BASE}/Build/${proj}" )
+  set(${proj}_SOURCE_DIR "${SOURCE_DOWNLOAD_CACHE}/Source/${proj}" )
+  set(${proj}_BINARY_DIR "${SOURCE_DOWNLOAD_CACHE}/Build/${proj}" )
   
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}

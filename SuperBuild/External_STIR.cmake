@@ -69,8 +69,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   elseif (USE_ITK AND USE_SYSTEM_ITK)
     set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DITK_DIR=${ITK_DIR})
   endif()
-  set(${proj}_SOURCE_DIR "${EP_BASE}/Source/${proj}" )
-  set(${proj}_BINARY_DIR "${EP_BASE}/Build/${proj}" )
+  et(${proj}_SOURCE_DIR "${SOURCE_DOWNLOAD_CACHE}/Source/${proj}" )
+  set(${proj}_BINARY_DIR "${SOURCE_DOWNLOAD_CACHE}/Build/${proj}" )
   
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
