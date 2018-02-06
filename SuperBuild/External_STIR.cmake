@@ -78,6 +78,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     GIT_TAG ${STIR_TAG}
     #SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
     SOURCE_DIR ${${proj}_SOURCE_DIR}
+	BINARY_DIR ${${proj}_BINARY_DIR}
 	
 	CMAKE_ARGS ${STIR_CMAKE_ARGS}
     INSTALL_DIR ${STIR_Install_Dir}
