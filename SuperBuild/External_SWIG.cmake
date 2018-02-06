@@ -65,13 +65,15 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   endif()
 
   set(SWIG_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj} )
-
+  set(${proj}_SOURCE_DIR "${EP_BASE}/Source/${proj}" )
+  set(${proj}_BINARY_DIR "${EP_BASE}/Build/${proj}" )
+  
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
-    SOURCE_DIR ${SWIG_SOURCE_DIR}
-    BINARY_DIR ${SWIG_SOURCE_DIR}
+    SOURCE_DIR ${${proj}_SOURCE_DIR}
+    BINARY_DIR ${${proj}_BINARY_DIR}
     CONFIGURE_COMMAND ./configure --without-pcre --prefix ${SWIG_Install_Dir}
     INSTALL_DIR ${SWIG_Install_Dir}
   )

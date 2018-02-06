@@ -43,13 +43,16 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   endif()
 
   #set(HDF5_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}-prefix/src/HDF5/hdf5-1.10.0-patch1 )
-
+  set(${proj}_SOURCE_DIR "${EP_BASE}/Source/${proj}" )
+  set(${proj}_BINARY_DIR "${EP_BASE}/Build/${proj}" )
+  
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
-    SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
-    #BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/${proj}
+    SOURCE_DIR ${${proj}_SOURCE_DIR}
+    BINARY_DIR ${${proj}_BINARY_DIR}
+	
     CMAKE_ARGS
         ${CLANG_ARG}
         -DHDF5_BUILD_EXAMPLES=OFF -DHDF5_BUILD_TOOLS=OFF -DHDF5_BUILD_HL_LIB=OFF -DBUILD_TESTING=OFF

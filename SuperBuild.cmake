@@ -31,6 +31,7 @@ endif()
 
 set( SOURCE_DOWNLOAD_CACHE ${CMAKE_CURRENT_BINARY_DIR} CACHE PATH
     "The path for downloading external source directories" )
+set_directory_properties(PROPERTIES EP_BASE ${SOURCE_DOWNLOAD_CACHE})
 
 mark_as_advanced( SOURCE_DOWNLOAD_CACHE )
 

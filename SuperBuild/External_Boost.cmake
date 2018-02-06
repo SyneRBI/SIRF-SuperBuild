@@ -43,13 +43,16 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set(CLANG_ARG -DCMAKE_COMPILER_IS_CLANGXX:BOOL=ON)
   endif()
 
-  set(BOOST_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj})
-
+  #set(BOOST_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj})
+  set(${proj}_SOURCE_DIR "${EP_BASE}/Source/${proj}" )
+  set(${proj}_BINARY_DIR "${EP_BASE}/Build/${proj}" )
+  
+  
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
-    SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
+    SOURCE_DIR ${${proj}_SOURCE_DIR}
     BUILD_IN_SOURCE 1
 
     CONFIGURE_COMMAND ${CMAKE_COMMAND}
@@ -64,7 +67,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   )
 
   set(BOOST_ROOT        ${Boost_Install_Dir})
-  set(BOOST_INCLUDEDIR ${Boost_Install_Dir}/include)
+  set(BOOST_INCLUDEDIR  ${Boost_Install_Dir}/include)
   set(BOOST_LIBRARY_DIR ${Boost_Install_Dir}/lib)
 
  else()

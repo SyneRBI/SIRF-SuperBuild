@@ -55,13 +55,15 @@ if (WIN32)
   )
   set( FFTW3_ROOT_DIR ${FFTW_Install_Dir}/FFTW )
 else()
-  set(FFTW_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj} )
+  #set(FFTW_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj} )
+  set(${proj}_SOURCE_DIR "${EP_BASE}/Source/${proj}" )
+  set(${proj}_BINARY_DIR "${EP_BASE}/Build/${proj}" )
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
-    SOURCE_DIR ${FFTW_SOURCE_DIR}
-    BINARY_DIR ${FFTW_SOURCE_DIR}
+    SOURCE_DIR ${${proj}_SOURCE_DIR}
+    BINARY_DIR ${${proj}_BINARY_DIR}
     CONFIGURE_COMMAND ./configure --enable-float --with-pic --prefix ${FFTW_Install_Dir}
     INSTALL_DIR ${FFTW_Install_Dir}
   )

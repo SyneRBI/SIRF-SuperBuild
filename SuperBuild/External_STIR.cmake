@@ -69,13 +69,17 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   elseif (USE_ITK AND USE_SYSTEM_ITK)
     set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DITK_DIR=${ITK_DIR})
   endif()
-
+  set(${proj}_SOURCE_DIR "${EP_BASE}/Source/${proj}" )
+  set(${proj}_BINARY_DIR "${EP_BASE}/Build/${proj}" )
+  
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
     GIT_TAG ${STIR_TAG}
-    SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
-    CMAKE_ARGS ${STIR_CMAKE_ARGS}
+    #SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
+    SOURCE_DIR ${${proj}_SOURCE_DIR}
+	
+	CMAKE_ARGS ${STIR_CMAKE_ARGS}
     INSTALL_DIR ${STIR_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}

@@ -59,12 +59,16 @@ endif ()
   option(BUILD_GADGETRON_NATIVE_MATLAB_SUPPORT
     "Build Gadgetron MATLAB gadgets (not required for SIRF)" OFF)
 
+  set(${proj}_SOURCE_DIR "${EP_BASE}/Source/${proj}" )
+  set(${proj}_BINARY_DIR "${EP_BASE}/Build/${proj}" )
+  
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
     GIT_TAG ${${proj}_TAG}
-    SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
-
+    SOURCE_DIR ${${proj}_SOURCE_DIR}
+    BINARY_DIR ${${proj}_BINARY_DIR}
+	
     CMAKE_ARGS
         -DBUILD_PYTHON_SUPPORT=${BUILD_GADGETRON_NATIVE_PYTHON_SUPPORT}
         -DBUILD_MATLAB_SUPPORT=${BUILD_GADGETRON_NATIVE_MATLAB_SUPPORT}

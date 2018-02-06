@@ -36,12 +36,16 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ### --- Project specific additions here
   set(ISMRMRD_Install_Dir ${SUPERBUILD_INSTALL_DIR})
-
+  set(${proj}_SOURCE_DIR "${EP_BASE}/Source/${proj}" )
+  set(${proj}_BINARY_DIR "${EP_BASE}/Build/${proj}" )
+  
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
     GIT_TAG ${${proj}_TAG}
-    SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
+    SOURCE_DIR ${${proj}_SOURCE_DIR}
+    BINARY_DIR ${${proj}_BINARY_DIR}
+	
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${ISMRMRD_Install_Dir}
             -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
             -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
