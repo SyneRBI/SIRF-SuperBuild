@@ -1,7 +1,9 @@
 #========================================================================
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
+# Author: Edoardo Pasca
 # Copyright 2017 University College London
+# Copyright 2017 Science Technology Facilities Council
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -58,13 +60,20 @@ else()
   #set(FFTW_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj} )
   set(${proj}_SOURCE_DIR "${SOURCE_DOWNLOAD_CACHE}/Source/${proj}" )
   set(${proj}_BINARY_DIR "${SOURCE_DOWNLOAD_CACHE}/Build/${proj}" )
+  set(${proj}_DOWNLOAD_DIR "${SOURCE_DOWNLOAD_CACHE}/Download/${proj}" )
+  set(${proj}_STAMP_DIR "${SOURCE_DOWNLOAD_CACHE}/Stamp/${proj}" )
+  set(${proj}_TMP_DIR "${SOURCE_DOWNLOAD_CACHE}/tmp/${proj}" )
+  
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
     SOURCE_DIR ${${proj}_SOURCE_DIR}
     BINARY_DIR ${${proj}_BINARY_DIR}
-    CONFIGURE_COMMAND ./configure --enable-float --with-pic --prefix ${FFTW_Install_Dir}
+    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+    STAMP_DIR ${${proj}_STAMP_DIR}
+    TMP_DIR ${${proj}_TMP_DIR}
+    CONFIGURE_COMMAND ${${proj}_SOURCE_DIR}/configure --enable-float --with-pic --prefix ${FFTW_Install_Dir}
     INSTALL_DIR ${FFTW_Install_Dir}
   )
   set( FFTW3_ROOT_DIR ${FFTW_Install_Dir} )

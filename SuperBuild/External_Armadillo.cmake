@@ -53,19 +53,33 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   endif()
 
   #set(${proj}_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}-prefix/src/${${proj}_location} )
+  
   set(${proj}_SOURCE_DIR "${SOURCE_DOWNLOAD_CACHE}/Source/${proj}" )
   set(${proj}_BINARY_DIR "${SOURCE_DOWNLOAD_CACHE}/Build/${proj}" )
+  set(${proj}_DOWNLOAD_DIR "${SOURCE_DOWNLOAD_CACHE}/Download/${proj}" )
+  set(${proj}_STAMP_DIR "${SOURCE_DOWNLOAD_CACHE}/Stamp/${proj}" )
+  set(${proj}_TMP_DIR "${SOURCE_DOWNLOAD_CACHE}/tmp/${proj}" )
   
   
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
-	SOURCE_DIR ${${proj}_SOURCE_DIR}
+	
+    SOURCE_DIR ${${proj}_SOURCE_DIR}
     BINARY_DIR ${${proj}_BINARY_DIR}
-    CONFIGURE_COMMAND ${CMAKE_COMMAND}
-                             ${CLANG_ARG}
-                             -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_Install_Dir} "${${proj}_SOURCE_DIR}"
+    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+    STAMP_DIR ${${proj}_STAMP_DIR}
+    TMP_DIR ${${proj}_TMP_DIR}
+
+    #CONFIGURE_COMMAND ${CMAKE_COMMAND}
+    #                         ${CLANG_ARG}
+    #                         -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_Install_Dir} "${${proj}_SOURCE_DIR}"
+    
+    CMAKE_ARGS
+        -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
+        -DCMAKE_INSTALL_PREFIX=${${proj}_Install_Dir}
+        ${CLANG_ARG}
 
     INSTALL_DIR ${${proj}_Install_Dir}
   )

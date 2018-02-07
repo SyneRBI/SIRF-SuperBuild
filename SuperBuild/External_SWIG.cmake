@@ -67,6 +67,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(SWIG_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj} )
   set(${proj}_SOURCE_DIR "${SOURCE_DOWNLOAD_CACHE}/Source/${proj}" )
   set(${proj}_BINARY_DIR "${SOURCE_DOWNLOAD_CACHE}/Build/${proj}" )
+  set(${proj}_DOWNLOAD_DIR "${SOURCE_DOWNLOAD_CACHE}/Download/${proj}" )
+  set(${proj}_STAMP_DIR "${SOURCE_DOWNLOAD_CACHE}/Stamp/${proj}" )
+  set(${proj}_TMP_DIR "${SOURCE_DOWNLOAD_CACHE}/tmp/${proj}" )
   
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
@@ -74,8 +77,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     URL_HASH MD5=${${proj}_MD5}
     SOURCE_DIR ${${proj}_SOURCE_DIR}
     BINARY_DIR ${${proj}_BINARY_DIR}
-    CONFIGURE_COMMAND ./configure --without-pcre --prefix ${SWIG_Install_Dir}
-    INSTALL_DIR ${SWIG_Install_Dir}
+    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+    STAMP_DIR ${${proj}_STAMP_DIR}
+    TMP_DIR ${${proj}_TMP_DIR}
+
+    CONFIGURE_COMMAND ${${proj}_SOURCE_DIR}/configure --without-pcre --prefix ${SWIG_Install_Dir}
+    INSTALL_DIR ${${proj}_Install_Dir}
   )
 
   set( SWIG_EXECUTABLE ${SWIG_Install_Dir}/bin/swig )

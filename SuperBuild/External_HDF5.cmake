@@ -45,17 +45,29 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   #set(HDF5_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}-prefix/src/HDF5/hdf5-1.10.0-patch1 )
   set(${proj}_SOURCE_DIR "${SOURCE_DOWNLOAD_CACHE}/Source/${proj}" )
   set(${proj}_BINARY_DIR "${SOURCE_DOWNLOAD_CACHE}/Build/${proj}" )
+  set(${proj}_DOWNLOAD_DIR "${SOURCE_DOWNLOAD_CACHE}/Download/${proj}" )
+  set(${proj}_STAMP_DIR "${SOURCE_DOWNLOAD_CACHE}/Stamp/${proj}" )
+  set(${proj}_TMP_DIR "${SOURCE_DOWNLOAD_CACHE}/tmp/${proj}" )
+  
   
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
+
     SOURCE_DIR ${${proj}_SOURCE_DIR}
     BINARY_DIR ${${proj}_BINARY_DIR}
+    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+    STAMP_DIR ${${proj}_STAMP_DIR}
+    TMP_DIR ${${proj}_TMP_DIR}
+
 	
     CMAKE_ARGS
         ${CLANG_ARG}
-        -DHDF5_BUILD_EXAMPLES=OFF -DHDF5_BUILD_TOOLS=OFF -DHDF5_BUILD_HL_LIB=OFF -DBUILD_TESTING=OFF
+        -DHDF5_BUILD_EXAMPLES=OFF 
+        -DHDF5_BUILD_TOOLS=OFF 
+        -DHDF5_BUILD_HL_LIB=OFF 
+        -DBUILD_TESTING=OFF
     INSTALL_DIR ${HDF5_Install_Dir}
   )
 
