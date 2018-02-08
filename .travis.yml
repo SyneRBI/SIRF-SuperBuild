@@ -149,13 +149,18 @@ before_install:
       )
     elif [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       export PY_EXE=python$PYMVER
-      curl -0 https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.tar.gz -o cmake.tar.gz
-      tar xzf cmake.tar.gz
+      if [[ "$DOCKER_BUILD" != "1" ]]; then
+        curl -0 https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.tar.gz -o cmake.tar.gz
+        tar xzf cmake.tar.gz
+      fi
     fi
- # cmake override
- - pushd cmake-*/bin
- - export PATH="$PWD:$PATH"
- - popd
+ - |
+    if [[ "$DOCKER_BUILD" != "1" ]]; then
+      # cmake override
+      pushd cmake-*/bin
+      export PATH="$PWD:$PATH"
+      popd
+    fi
  # get pip
  - curl -0 https://bootstrap.pypa.io/get-pip.py -o get-pip.py
  - $PY_EXE get-pip.py --user
@@ -163,9 +168,9 @@ before_install:
  - $PY_EXE -m pip install --user -U pip setuptools wheel
  # ensure python bin dir exists (and coverage dependencies installed)
  - $PY_EXE -m pip install --user -U nose codecov coveralls
- # pip path fix
  - |
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      # pip path fix
       # show lib/site-packages path
       $PY_EXE -m pydoc pip | grep -i -A 1 file
       $PY_EXE -m pydoc codecov | grep -i -A 1 file
