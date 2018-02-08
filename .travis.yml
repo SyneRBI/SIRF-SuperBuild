@@ -211,9 +211,9 @@ install:
 script:
  - |
     if [[ "$DOCKER_BUILD" == "1" ]]; then
-      # push images
+      # push images - but only after tests pass within the container!
       docker login -u $DOCKER_USR -p "$DOCKER_PWD"
-      docker-compose push
+      docker-compose run --rm sirf /bin/bash --login -c /devel/test.sh && docker-compose push
     else
       ./INSTALL/bin/gadgetron >& gadgetron.log&
       # print for debugging
