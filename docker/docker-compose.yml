@@ -1,19 +1,29 @@
 version: '3.2'
 services:
-  sirf:
-    container_name: sirf
-    image: ccppetmr/sirf
-    build:
-      context: .
-      args:
-        mainUser: sirfuser
-      cache_from:
-        - ubuntu:16.04
-        - ccppetmr/sirf:latest
-    stdin_open: true
-    tty: true
-    cap_add:
-      - NET_ADMIN
-    network_mode: "bridge"
-    volumes:
-      - ./devel:/devel
+ sirf:
+  container_name: sirf
+  image: ccppetmr/sirf
+  build:
+   context: .
+   # depends_on:
+   #  - base
+   cache_from:
+    - ccppetmr/base:latest
+    - ccppetmr/sirf:latest
+  stdin_open: true
+  tty: true
+  cap_add:
+   - NET_ADMIN
+  network_mode: "bridge"
+  volumes:
+   - ./devel:/devel
+ base:
+  image: ccppetmr/base
+  build:
+   context: .
+   dockerfile: Dockerfile-base
+   args:
+    mainUser: sirfuser
+   cache_from:
+    - ubuntu:16.04
+    - ccppetmr/base:latest

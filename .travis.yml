@@ -49,7 +49,7 @@ matrix:
    python: 2.7
    # +DEVEL -fftw3 -hdf5 +swig
    env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" CC=gcc CXX=g++ PYMVER=2
- #  itk
+ # itk
  - os: linux
    python: 3
    # +itk +fftw3 +hdf5
@@ -58,6 +58,11 @@ matrix:
    python: 2.7
    # +itk -hdf5 +swig
    env: EXTRA_BUILD_FLAGS="-DUSE_ITK=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" CC=gcc CXX=g++ PYMVER=2
+ # docker
+ - os: linux
+   python: 2.7
+   # +DEVEL +fftw3 +hdf5 +siemens_to_ismrmrd +swig
+   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON" CC=gcc-5 CXX=g++-5 PYMVER=2 DOCKER=1
 
 env:
  global:
@@ -68,8 +73,10 @@ env:
 # Ubuntu 14.04 LTS
 dist: trusty
 
-# No need for sudo
-sudo: false
+# sudo required for docker
+sudo: required
+services:
+ - docker
 
 # Compilation dependencies
 addons:
@@ -195,3 +202,18 @@ script:
  - cat builds/SIRF/build/Testing/Temporary/LastTest.log
  # may exceed 4MB travis log limit
  - cat gadgetron.log
+
+after_success:
+ - |
+    if [[ "$BUILD_DOCKER" == "1" ]]; then
+      cd docker
+      # pull base image
+      docker pull ccppetmr/base
+      # rebuild base image (using above cache)
+      docker build -t ccppetmr/base --build-arg UID=1000 --build-arg GROUPS=1000 --pull -f Dockerfile-base .
+      # build sirf
+      docker-compose build --build-arg UID=1000 --build-arg GROUPS=1000 sirf
+      # push images
+      docker login -u $DOCKER_USR -p "$DOCKER_PWD"
+      docker-compose push
+    fi
