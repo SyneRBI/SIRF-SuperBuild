@@ -188,16 +188,16 @@ install:
  - |
     if [[ "$DOCKER_BUILD" == "1" ]]; then
       cd docker
-      # pull base image
-      docker pull ccppetmr/base
+      # pull base image - or not since travis seems to rebuild without cache?
+      # docker pull ccppetmr/base
       # rebuild base image (using above cache)
-      docker build -t ccppetmr/base --build-arg UID=1000 --build-arg GROUPS=1000 --pull -f Dockerfile-base .
+      docker-compose build --build-arg UID=1000 --build-arg GROUPS=1000 --pull base
       # build sirf with travis' ccache
       rm -rf devel/.ccache/
       mv ~/.ccache devel/
       docker-compose build sirf
       rm -rf devel/.ccache/*
-      docker-compose run --rm sirf /bin/bash -c 'cp -R ccache/* /devel/.ccache/'
+      docker-compose run --rm sirf /bin/bash -c 'sudo cp -R ccache/* /devel/.ccache/'
       mv devel/.ccache ~
     else
       $PY_EXE -m pip install --user --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
