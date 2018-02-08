@@ -205,14 +205,14 @@ script:
 
 after_success:
  - |
-    if [[ "$BUILD_DOCKER" == "1" ]]; then
+    if [[ "$DOCKER" == "1" ]]; then
       cd docker
       # pull base image
       docker pull ccppetmr/base
       # rebuild base image (using above cache)
       docker build -t ccppetmr/base --build-arg UID=1000 --build-arg GROUPS=1000 --pull -f Dockerfile-base .
       # build sirf
-      docker-compose build --build-arg UID=1000 --build-arg GROUPS=1000 sirf
+      docker-compose build sirf
       # push images
       docker login -u $DOCKER_USR -p "$DOCKER_PWD"
       docker-compose push
