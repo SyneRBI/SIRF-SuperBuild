@@ -133,7 +133,6 @@ before_install:
       export BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_EXECUTABLE=$PY_EXE"
       ( set -ev
         brew update
-        brew tap homebrew/science
         # boost is already installed but 1.65 doesn't work so update
         brew upgrade boost
         # we currently need boost-python
@@ -234,4 +233,3 @@ script:
       # may exceed 4MB travis log limit
       cat gadgetron.log
     fi
- - echo done
