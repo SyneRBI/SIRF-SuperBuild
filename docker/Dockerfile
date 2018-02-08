@@ -70,8 +70,8 @@ RUN sudo chmod 644 .bashrc .profile
 # SIRF
 COPY user_sirf-ubuntu.sh .
 RUN EXTRA_BUILD_FLAGS="-DCMAKE_BUILD_TYPE=Release -DUSE_SYSTEM_Boost=ON \
-  -DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_FFTW3=ON \
-  -DUSE_SYSTEM_Armadillo=ON" \
+  -DDEVEL_BUILD=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_FFTW3=ON \
+  -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON" \
   bash --login user_sirf-ubuntu.sh
 RUN rm user_sirf-ubuntu.sh
 

@@ -9,7 +9,9 @@ apt-get install -y --no-install-recommends \
   g++                  \
   man                  \
   make                 \
+  ccache               \
   sudo
+apt-get clean
 
 # CMake
 mkdir /opt/cmake

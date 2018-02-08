@@ -13,3 +13,4 @@ apt-get install -y --no-install-recommends \
   libxml2-dev          \
   libxslt-dev          \
   swig
+apt-get clean

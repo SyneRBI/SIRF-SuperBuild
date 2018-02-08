@@ -12,3 +12,4 @@ apt-get install -y --no-install-recommends \
 # python-libxml2
 # python-psutil
 # libplplot-dev
+apt-get clean

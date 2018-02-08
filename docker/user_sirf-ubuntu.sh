@@ -2,7 +2,7 @@
 # SIRF
 git clone https://github.com/CCPPETMR/SIRF-SuperBuild --recursive -b master
 pushd SIRF-SuperBuild
-cmake $EXTRA_BUILD_FLAGS .
+PATH=/usr/lib/ccache:"$PATH" cmake $EXTRA_BUILD_FLAGS .
 make -j 2
 
 [ -f INSTALL/share/gadgetron/config/gadgetron.xml ] || \
