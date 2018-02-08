@@ -113,6 +113,8 @@ cache:
 before_install:
  - mkdir -p ~/.local/bin
  - pushd ~/.local/bin
+ # Note: use ( set -ev; ... ) to echo commands and exit immediately on failure
+ # in compounds statements (note that export/cd etc won't persist).
  - |
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       export BUILD_FLAGS="$BUILD_FLAGS -DSHARED_LIBS_ABS_PATH=ON"
@@ -122,28 +124,30 @@ before_install:
         export BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_LIBRARY=$PYINST/2.7/lib/libpython2.7.dylib"
         export BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_INCLUDE_DIR=$PYINST/2.7/include/python2.7"
       else
-        brew install python3
+        brew install python3 || travis_terminate 1
         export PYINST=/usr/local/Cellar/python3/3.6.4_2/Frameworks/Python.framework/Versions
         export PY_EXE=$PYINST/$PYMVER.6/bin/python3.6
         export BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_LIBRARY=$PYINST/3.6/Python"
         export BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_INCLUDE_DIR=$PYINST/3.6/include/python3.6m"
       fi
       export BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_EXECUTABLE=$PY_EXE"
-      brew update
-      brew tap homebrew/science
-      # boost is already installed but 1.65 doesn't work so update
-      brew upgrade boost
-      # we currently need boost-python
-      # brew install boost-python
-      brew install ace
-      brew install swig
-      brew install ccache
-      # brew install scipy matplotlib
-      # need curl to get more recent cmake
-      brew install curl
-      curl -0 https://cmake.org/files/v3.8/cmake-3.8.0-Darwin-x86_64.tar.gz -o cmake.tar.gz
-      tar xzf cmake.tar.gz
-      mv cmake-*/CMake.app/Contents/* cmake-*
+      ( set -ev
+        brew update
+        brew tap homebrew/science
+        # boost is already installed but 1.65 doesn't work so update
+        brew upgrade boost
+        # we currently need boost-python
+        # brew install boost-python
+        brew install ace
+        brew install swig
+        brew install ccache
+        # brew install scipy matplotlib
+        # need curl to get more recent cmake
+        brew install curl
+        curl -0 https://cmake.org/files/v3.8/cmake-3.8.0-Darwin-x86_64.tar.gz -o cmake.tar.gz
+        tar xzf cmake.tar.gz
+        mv cmake-*/CMake.app/Contents/* cmake-*
+      )
     elif [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       export PY_EXE=python$PYMVER
       curl -0 https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.tar.gz -o cmake.tar.gz
@@ -188,25 +192,29 @@ install:
  - |
     if [[ "$DOCKER_BUILD" == "1" ]]; then
       cd docker
-      # pull base image - or not since travis seems to rebuild without cache?
-      # TODO: docker save/load (also would help registry uploads/downloads)
-      # docker pull ccppetmr/base
-      # rebuild base image (using above cache)
-      docker-compose build --build-arg UID=1000 --build-arg GROUPS=1000 --pull base
-      # build sirf with travis' ccache
-      rm -rf devel/.ccache
-      mv ~/.ccache devel/
-      docker-compose build sirf
-      # TODO: why is sudo required here?
-      sudo rm -rf devel/.ccache/*
-      docker-compose run --rm sirf /bin/bash -c 'sudo cp -R ccache/* /devel/.ccache/'
-      mv devel/.ccache ~
+      ( set -ev
+        # pull base image - or not since travis seems to rebuild without cache?
+        # TODO: docker save/load (also would help registry uploads/downloads)
+        # docker pull ccppetmr/base
+        # rebuild base image (using above cache)
+        docker-compose build --build-arg UID=1000 --build-arg GROUPS=1000 --pull base
+        # build sirf with travis' ccache
+        rm -rf devel/.ccache
+        mv ~/.ccache devel/
+        docker-compose build sirf
+        # TODO: why is sudo required here?
+        sudo rm -rf devel/.ccache/*
+        docker-compose run --rm sirf /bin/bash -c 'sudo cp -R ccache/* /devel/.ccache/'
+        mv devel/.ccache ~
+      )
     else
-      $PY_EXE -m pip install --user --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
-      cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
-      # Job may timeout (>50min) if no ccache, otherwise should be <1min:
-      make
-      mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
+      ( set -ev
+        $PY_EXE -m pip install --user --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
+        cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
+        # Job may timeout (>50min) if no ccache, otherwise should be <1min:
+        make
+        mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
+      )
       source $PWD/INSTALL/bin/env_ccppetmr.sh
     fi
 
@@ -214,7 +222,7 @@ script:
  - |
     if [[ "$DOCKER_BUILD" == "1" ]]; then
       # push images - but only after tests pass within the container!
-      docker login -u $DOCKER_USR -p "$DOCKER_PWD"
+      echo "$DOCKER_PWD" | docker login -u $DOCKER_USR --password-stdin
       docker-compose run --rm sirf /bin/bash --login -c /devel/test.sh && docker-compose push
     else
       ./INSTALL/bin/gadgetron >& gadgetron.log&
@@ -226,3 +234,4 @@ script:
       # may exceed 4MB travis log limit
       cat gadgetron.log
     fi
+ - echo done
