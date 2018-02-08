@@ -192,16 +192,14 @@ install:
     if [[ "$DOCKER_BUILD" == "1" ]]; then
       cd docker
       ( set -ev
-        # pull base image - or not since travis seems to rebuild without cache?
-        # TODO: docker save/load (also would help registry uploads/downloads)
-        # docker pull ccppetmr/base
-        # rebuild base image (using above cache)
-        docker-compose build --build-arg UID=1000 --build-arg GROUPS=1000 --pull base
-        # build sirf with travis' ccache
+        # pull previous base image for its layer cache
+        docker pull ccppetmr/base
+        # rebuild base image (using above docker cache)
+        # and sirf image (with travis' ccache)
         rm -rf devel/.ccache
         mv ~/.ccache devel/
-        docker-compose build sirf
-        # TODO: why is sudo required here?
+        docker-compose build --pull base sirf
+        # replace travis' ccache with the built images's
         sudo rm -rf devel/.ccache/*
         docker-compose run --rm sirf /bin/bash -c 'sudo cp -R ccache/* /devel/.ccache/'
         mv devel/.ccache ~
