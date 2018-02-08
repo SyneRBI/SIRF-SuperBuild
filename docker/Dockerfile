@@ -1,4 +1,4 @@
-FROM ccppetmr/base
+FROM ccppetmr/base:latest
 LABEL \
   author.name="Casper da Costa-Luis"          \
   author.email=imaging@caspersci.uk.to        \
@@ -20,7 +20,7 @@ RUN rm user_python-ubuntu.sh requirements.txt
 COPY devel/.ccache/ ccache/
 RUN sudo chown -R $(id -un) ccache/
 RUN sudo chgrp -R $(id -gn) ccache/
-RUN ccache -o cache_dir=$PWD/ccache
+RUN ccache -o cache_dir="$PWD"/ccache
 COPY user_sirf-ubuntu.sh .
 RUN EXTRA_BUILD_FLAGS="-DCMAKE_BUILD_TYPE=Release -DUSE_SYSTEM_Boost=ON \
   -DDEVEL_BUILD=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_FFTW3=ON \
