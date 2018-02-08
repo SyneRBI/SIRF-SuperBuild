@@ -1,6 +1,10 @@
 # CMake path
 [ -d /opt/cmake/bin ] && export PATH="/opt/cmake/bin${PATH:+:${PATH}}"
 
+# ccache
+[ -d /usr/lib/ccache ] && export PATH=/usr/lib/ccache:"$PATH"
+[ -d /devel/.ccache ] && ccache -o cache_dir=/devel/.ccache
+
 # completion
 [ -f /etc/bash_completion ] && . /etc/bash_completion
 [ -f ~/.git-prompt.sh ] || \
