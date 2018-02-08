@@ -94,7 +94,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} ${${externalProjName}_COMPONENTS} REQUIRED)
       message(STATUS "USING the system ${externalProjName}, found SWIG_EXECUTABLE=${SWIG_EXECUTABLE}, SWIG_VERSION=${SWIG_VERSION}")
   endif()
-  ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}")
+  ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
+    SOURCE_DIR ${${proj}_SOURCE_DIR}
+    BINARY_DIR ${${proj}_BINARY_DIR}
+    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+    STAMP_DIR ${${proj}_STAMP_DIR}
+    TMP_DIR ${${proj}_TMP_DIR}
+  )
 endif()
 
 mark_as_superbuild(
