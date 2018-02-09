@@ -58,8 +58,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
-  set(${proj}_SOURCE_DIR "${SOURCE_DOWNLOAD_CACHE}/Source/${proj}" )
-  set(${proj}_BINARY_DIR "${SOURCE_DOWNLOAD_CACHE}/Build/${proj}" )
   
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
