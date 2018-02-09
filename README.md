@@ -17,16 +17,15 @@ by the SuperBuild, [see below for more info for your operating system](#os-speci
     6. [Set Environment variables](#Set_Environment_variables)
     7. [Open a terminal and start Gadgetron](#Start_Gadgetron)
     8. [Testing](#Testing)
-3. [Building with specific versions of dependencies](#Building_specific_version_dependencies)
-4. [OS specific information](#OS_specific_information)
+3. [OS specific information](#OS_specific_information)
    1. [Installation instructions for Ubuntu](#Ubuntu_installation)
    2. [Installation instructions for Mac OS](#OSX_installation)
    3. [Installation instructions for Docker](#Docker_installation)
-5. [Advanced installation](#Advanced_installation)
-   1. [SIRF and MATLAB](#SIRF_and_MATLAB)
-   2. [Compiling against your own packages](#Compiling_own_packages)
-   3. [Python and MATLAB installation locations](#Python_and_MATLAB_installation_locations)
-6. [TODO](#TODO)
+4. [Advanced installation](#Advanced_installation)
+   1. [Compiling against your own packages](#Compiling_own_packages)
+   2. [Python and MATLAB installation locations](#Python_and_MATLAB_installation_locations)
+   3. [Building with specific versions of dependencies](#Building_specific_version_dependencies)
+5. [TODO](#TODO)
 
 ## Dependencies <a name="Dependencies"></a>
 
@@ -176,7 +175,37 @@ ctest --verbose
 ```
 If you see failures, you might not have followed the above steps correctly, or have some missing Python modules.
 
-## Building with specific versions of dependencies <a name="Building_specific_version_dependencies"></a>
+## OS specific information <a name="OS_specific_information"></a>
+### Installation instructions for Ubuntu <a name="Ubuntu_installation"></a>
+
+They can be found [here](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-Ubuntu-16.04)
+
+### Installation instructions for Mac OS <a name="OSX_installation"></a>
+
+They can be found [here](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-on-MacOS)
+
+### Installation instructions for Docker <a name="Docker_installation"></a>
+
+They can be found [here](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-on-Docker)
+
+## Advanced installation <a name="Advanced_installation"></a>
+
+### Compiling against your own packages <a name="Compiling_own_packages"></a>
+SIRF depends on many packages. By default, these packages are installed by the Superbuild. However, the user can decide to compile SIRF against their own versions of certain packages. This can be done via the `USE_SYSTEM_*` options in `CMake`. For example, if you wish to compile SIRF against a version of Boost that is already on your machine, you could set `USE_SYSTEM_BOOST` to `ON`.
+
+This `USE_SYSTEM_*` function can be used for as many or as few packages as desired. Advantages to building against your own version of certain packages are decreased compilation times and the potential to use newer versions of these packages. 
+
+However, we have only tested SIRF with the versions of the required dependencies that are built by default in the Superbuild. If you decide to compile SIRF using system versions of the dependencies, you run a greater risk of something going wrong. 
+
+For this reason, we advise new SIRF users to compile with all the `USE_SYSTEM_*` options disabled. If you decide to use system versions of certain packages, we would be interested to hear about it any compatibility issues that you may run into.
+
+### Python and MATLAB installation locations <a name="Python_and_MATLAB_installation_locations"></a>
+
+By default, Python and MATLAB executables and libraries are installed under `CMAKE_INSTALL_PREFIX/python` and `CMAKE_INSTALL_PREFIX/matlab`, respectively. If you wish for them to be installed elsewhere, you can simply cut and paste these folders to their desired locations. 
+
+In this case, you would then need to ensure that `PYTHONPATH` and `MATLABPATH` are updated accordingly. This is because the sourced `env_ccppetmr` will point to the original (old) location.
+
+### Building with specific versions of dependencies <a name="Building_specific_version_dependencies"></a>
 
 By default, the SuperBuild will build the latest stable release of SIRF and associated versions of the dependencies. However, the SuperBuild allows the user to change the versions of the projects it's building. 
 
@@ -215,39 +244,6 @@ You could do
 ```sh
 cmake -DDEVEL_BUILD=ON -USIRF_URL -USIRF_TAG -USTIR_URL -USTIR_TAG -UGadgetron_URL -UGadgetron_TAG -UISMRMRD_URL -UISMRMRD_TAG .
 ```
-
-## OS specific information <a name="OS_specific_information"></a>
-### Installation instructions for Ubuntu <a name="Ubuntu_installation"></a>
-
-They can be found [here](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-Ubuntu-16.04)
-
-### Installation instructions for Mac OS <a name="OSX_installation"></a>
-
-They can be found [here](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-on-MacOS)
-
-### Installation instructions for Docker <a name="Docker_installation"></a>
-
-They can be found [here](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-on-Docker)
-
-## Advanced installation <a name="Advanced_installation"></a>
-
-### SIRF and MATLAB <a name="SIRF_and_MATLAB"></a>
-SIRF can be used from MATLAB. For more information on this, see our [SIRF and MATLAB page](SIRF-and-MATLAB).
-
-### Compiling against your own packages <a name="Compiling_own_packages"></a>
-SIRF depends on many packages. By default, these packages are installed by the Superbuild. However, the user can decide to compile SIRF against their own versions of certain packages. This can be done via the `USE_SYSTEM_*` options in `CMake`. For example, if you wish to compile SIRF against a version of Boost that is already on your machine, you could set `USE_SYSTEM_BOOST` to `ON`.
-
-This `USE_SYSTEM_*` function can be used for as many or as few packages as desired. Advantages to building against your own version of certain packages are decreased compilation times and the potential to use newer versions of these packages. 
-
-However, we have only tested SIRF with the versions of the required dependencies that are built by default in the Superbuild. If you decide to compile SIRF using system versions of the dependencies, you run a greater risk of something going wrong. 
-
-For this reason, we advise new SIRF users to compile with all the `USE_SYSTEM_*` options disabled. If you decide to use system versions of certain packages, we would be interested to hear about it any compatibility issues that you may run into.
-
-### Python and MATLAB installation locations <a name="Python_and_MATLAB_installation_locations"></a>
-
-By default, Python and MATLAB executables and libraries are installed under `CMAKE_INSTALL_PREFIX/python` and `CMAKE_INSTALL_PREFIX/matlab`, respectively. If you wish for them to be installed elsewhere, you can simply cut and paste these folders to their desired locations. 
-
-In this case, you would then need to ensure that `PYTHONPATH` and `MATLABPATH` are updated accordingly. This is because the sourced `env_ccppetmr` will point to the original (old) location.
 
 ## TODO  <a name="TODO"></a>
 
