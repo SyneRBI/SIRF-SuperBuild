@@ -209,4 +209,4 @@ configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
 enable_testing()
 add_test(NAME SIRF_TESTS
          COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION>
-         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Build/SIRF/)
+         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/builds/SIRF/build/)

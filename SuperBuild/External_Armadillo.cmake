@@ -1,7 +1,9 @@
 #========================================================================
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
+# Author: Edoardo Pasca
 # Copyright 2017 University College London
+# Copyright 2017 Science Technology Facilities Council
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
