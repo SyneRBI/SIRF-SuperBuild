@@ -31,13 +31,17 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
+set(${proj}_SOURCE_DIR "${SOURCE_DOWNLOAD_CACHE}/sources/${proj}" )
+set(${proj}_BINARY_DIR "${SOURCE_DOWNLOAD_CACHE}/builds/${proj}/build" )
+set(${proj}_DOWNLOAD_DIR "${SOURCE_DOWNLOAD_CACHE}/downloads/${proj}" )
+set(${proj}_STAMP_DIR "${SOURCE_DOWNLOAD_CACHE}/builds/${proj}/stamp" )
+set(${proj}_TMP_DIR "${SOURCE_DOWNLOAD_CACHE}/builds/${proj}/tmp" )
+
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
   set(ISMRMRD_Install_Dir ${SUPERBUILD_INSTALL_DIR})
-  set(${proj}_SOURCE_DIR "${SOURCE_DOWNLOAD_CACHE}/Source/${proj}" )
-  set(${proj}_BINARY_DIR "${SOURCE_DOWNLOAD_CACHE}/Build/${proj}" )
   
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
@@ -45,6 +49,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     GIT_TAG ${${proj}_TAG}
     SOURCE_DIR ${${proj}_SOURCE_DIR}
     BINARY_DIR ${${proj}_BINARY_DIR}
+    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+    STAMP_DIR ${${proj}_STAMP_DIR}
+    TMP_DIR ${${proj}_TMP_DIR}
 	
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${ISMRMRD_Install_Dir}
             -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
@@ -64,8 +71,14 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       if(${USE_SYSTEM_${externalProjName}})
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
         message("USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
-    endif()
-    ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}")
+   endif()
+   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
+    SOURCE_DIR ${${proj}_SOURCE_DIR}
+    BINARY_DIR ${${proj}_BINARY_DIR}
+    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+    STAMP_DIR ${${proj}_STAMP_DIR}
+    TMP_DIR ${${proj}_TMP_DIR}
+   )
   endif()
 
   mark_as_superbuild(
