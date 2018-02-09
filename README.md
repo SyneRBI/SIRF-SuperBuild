@@ -25,7 +25,7 @@ by the SuperBuild, [see below for more info for your operating system](#os-speci
    1. [Compiling against your own packages](#Compiling_own_packages)
    2. [Python and MATLAB installation locations](#Python_and_MATLAB_installation_locations)
    3. [Building with specific versions of dependencies](#Building_specific_version_dependencies)
-5. [TODO](#TODO)
+
 
 ## Dependencies <a name="Dependencies"></a>
 
@@ -244,8 +244,3 @@ You could do
 ```sh
 cmake -DDEVEL_BUILD=ON -USIRF_URL -USIRF_TAG -USTIR_URL -USTIR_TAG -UGadgetron_URL -UGadgetron_TAG -UISMRMRD_URL -UISMRMRD_TAG .
 ```
-
-## TODO  <a name="TODO"></a>
-
-- ***Windows support***
-- Sort out CMake Status messages.
