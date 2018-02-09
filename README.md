@@ -182,17 +182,17 @@ By default, the SuperBuild will build the latest stable release of SIRF and asso
 
 This is done at the configuration stage that happens when you run `cmake`. 
 
-There is a `DEVEL_BUILD` tag that allows to build the upstream/master versions of all packages (`DEVEL_BUILD=ON`). In the following table are listed the default versions (hashes) of dependencies that are built by the SuperBuild (`DEVEL_BUILD=OFF`). 
+There is a `DEVEL_BUILD` tag that allows to build the upstream/master versions of all packages (`DEVEL_BUILD=ON`). In the following table are listed example versions (hashes) of dependencies that are built by the SuperBuild. The current default values can be found in [version_config.cmake](version_config.cmake).
    
 |TAG        | DEVEL_BUILD=OFF (default) | DEVEL_BUILD=ON |
 |:--------- |:--------------- |:-------------- |
-|`SIRF_TAG` | `v0.9.0`          | `master`         |
-|`STIR_URL` | https://github.com/CCPPETMR/STIR | https://github.com/UCL/STIR |
-|`STIR_TAG` | `8bf37d9d7fdde7cb3a98a6f848d93827dbd98a18` | `master` |
-|`Gadgetron_URL` | https://github.com/CCPPETMR/gadgetron |https://github.com/gadgetron/gadgetron |
-|`Gadgetron_TAG` | `f03829ef45e57466829e6ec46da7a7cf61db1c8a`  | `master` |
-|`ISMRMRD_URL` | https://github.com/CCPPETMR/ismrmrd | https://github.com/ismrmrd/ismrmrd |
-|`ISMRMRD_TAG` | `35012c6c8000616546c2d6b1757eba0c5b21b2d4` | `master` |
+|`SIRF_TAG` | `v1.0.0`          | `origin/master`         |
+|`STIR_URL` |  https://github.com/UCL/STIR | https://github.com/UCL/STIR |
+|`STIR_TAG` | `41651b3a2007c58cbf1f7706bb2e269a21e870b1` | `origin/master` |
+|`Gadgetron_URL` | https://github.com/gadgetron/gadgetron |https://github.com/gadgetron/gadgetron |
+|`Gadgetron_TAG` | `e7eb430673eb3272e8a821b51750c0a2a96dafed`  | `origin/master` |
+|`ISMRMRD_URL` | https://github.com/ismrmrd/ismrmrd | https://github.com/ismrmrd/ismrmrd |
+|`ISMRMRD_TAG` | `42d93137cc16c270c8ba065edd2496483161bd21` | `origin/master` |
 
 To use the `DEVEL_BUILD` option one may (on the terminal)
 
@@ -207,7 +207,14 @@ Additionally one may want to use only a specific version of a package. This is a
 cd ~/devel/build
 cmake ../SIRF-SuperBuild -DSIRF_TAG=<a valid hash>
 ```
-Note that the CMake options in the table are Advanced Options. When running the CMake GUI (or ccmake) they will therefore only be visible when you toggle those on. Additionally, these variables are cached, so they will keep the specified value unless cache is deleted.
+Note that the CMake options in the table are Advanced Options. When running the CMake GUI (or ccmake) they will therefore only be visible when you toggle those on.
+
+*Warning:* All these variables are cached. This means that once set, you have to change them one by one. Setting
+`DEVEL_BUILD=ON` will therefore not work as expected on an existing build. You will need to delete the cached variables first.
+You could do
+```sh
+cmake -DDEVEL_BUILD=ON -USIRF_URL -USIRF_TAG -USTIR_URL -USTIR_TAG -UGadgetron_URL -UGadgetron_TAG -UISMRMRD_URL -UISMRMRD_TAG .
+```
 
 ## OS specific information <a name="OS_specific_information"></a>
 ### Installation instructions for Ubuntu <a name="Ubuntu_installation"></a>
