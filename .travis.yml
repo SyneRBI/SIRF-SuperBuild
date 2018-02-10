@@ -208,7 +208,8 @@ install:
         # and sirf image (with travis' ccache)
         rm -rf devel/.ccache
         mv ~/.ccache devel/
-        $DCC build --pull base sirf
+        $DCC build --pull base
+        $DCC build sirf
         # extract updated ccache
         sudo rm -rf devel/.ccache/*
         $DCC run --rm sirf /bin/bash -c 'sudo cp -R ccache/* /devel/.ccache/'

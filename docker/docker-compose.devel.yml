@@ -3,9 +3,6 @@ services:
  sirf:
   container_name: sirf_devel
   image: ccppetmr/sirf:devel
-   cache_from:
-    - ccppetmr/base:latest
-    - ccppetmr/sirf:devel
   build:
    args:
-    EXTRA_BUILD_FLAGS "-DDEVEL_BUILD=ON"
+    EXTRA_BUILD_FLAGS: "-DDEVEL_BUILD=ON"
