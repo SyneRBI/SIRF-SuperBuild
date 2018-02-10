@@ -60,8 +60,11 @@ matrix:
    env: EXTRA_BUILD_FLAGS="-DUSE_ITK=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" CC=gcc CXX=g++ PYMVER=2
  # docker
  - os: linux
-   # +DEVEL +armadillo +fftw3 +hdf5 +siemens_to_ismrmrd +swig
+   # +armadillo +fftw3 +hdf5 +siemens_to_ismrmrd +swig
    env: DOCKER_BUILD=1
+ - os: linux
+   # +DEVEL +armadillo +fftw3 +hdf5 +siemens_to_ismrmrd +swig
+   env: DOCKER_BUILD=DEVEL
 
 env:
  global:
@@ -149,13 +152,13 @@ before_install:
       )
     elif [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       export PY_EXE=python$PYMVER
-      if [[ "$DOCKER_BUILD" != "1" ]]; then
+      if [[ -z "$DOCKER_BUILD" ]]; then
         curl -0 https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.tar.gz -o cmake.tar.gz
         tar xzf cmake.tar.gz
       fi
     fi
  - |
-    if [[ "$DOCKER_BUILD" != "1" ]]; then
+    if [[ -z "$DOCKER_BUILD" ]]; then
       # cmake override
       pushd cmake-*/bin
       export PATH="$PWD:$PATH"
@@ -194,10 +197,10 @@ before_install:
 
 install:
  - |
-    if [[ "$DOCKER_BUILD" == "1" ]]; then
+    if [[ -n "$DOCKER_BUILD" ]]; then
       cd docker
-      export DCC=docker-compose -f $PWD/docker-compose.yml
-      export DCC_DEV=docker-compose -f $PWD/docker-compose.yml -f $PWD/docker-compose.devel.yml
+      export DCC="docker-compose -f $PWD/docker-compose.yml"
+      [[ "$DOCKER_BUILD" == DEVEL ]] && export DCC="$DCC -f $PWD/docker-compose.devel.yml"
       ( set -ev
         # pull previous base image for its layer cache
         docker pull ccppetmr/base
@@ -209,11 +212,6 @@ install:
         # extract updated ccache
         sudo rm -rf devel/.ccache/*
         $DCC run --rm sirf /bin/bash -c 'sudo cp -R ccache/* /devel/.ccache/'
-        # devel build
-        $DCC_DEV build sirf
-        # extract updated ccache
-        sudo rm -rf devel/.ccache/*
-        $DCC_DEV run --rm sirf /bin/bash -c 'sudo cp -R ccache/* /devel/.ccache/'
         # replace travis' ccache with the built images's
         mv devel/.ccache ~
       )
@@ -230,11 +228,10 @@ install:
 
 script:
  - |
-    if [[ "$DOCKER_BUILD" == "1" ]]; then
+    if [[ -n "$DOCKER_BUILD" ]]; then
       # push images - but only after tests pass within the container!
       echo "$DOCKER_PWD" | docker login -u $DOCKER_USR --password-stdin
       $DCC run --rm sirf /bin/bash --login -c /devel/test.sh && $DCC push
-      $DCC_DEV run --rm sirf /bin/bash --login -c /devel/test.sh && $DCC_DEV push sirf
     else
       ./INSTALL/bin/gadgetron >& gadgetron.log&
       # print for debugging
