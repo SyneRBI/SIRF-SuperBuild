@@ -2,7 +2,7 @@ version: '3.2'
 services:
  sirf:
   container_name: sirf
-  image: ccppetmr/sirf
+  image: ccppetmr/sirf:latest
   build:
    context: .
    # depends_on:
@@ -18,7 +18,7 @@ services:
   volumes:
    - ./devel:/devel
  base:
-  image: ccppetmr/base
+  image: ccppetmr/base:latest
   build:
    context: .
    dockerfile: Dockerfile-base

@@ -196,6 +196,8 @@ install:
  - |
     if [[ "$DOCKER_BUILD" == "1" ]]; then
       cd docker
+      export DCC=docker-compose -f $PWD/docker-compose.yml
+      export DCC_DEV=docker-compose -f $PWD/docker-compose.yml -f $PWD/docker-compose.devel.yml
       ( set -ev
         # pull previous base image for its layer cache
         docker pull ccppetmr/base
@@ -203,10 +205,16 @@ install:
         # and sirf image (with travis' ccache)
         rm -rf devel/.ccache
         mv ~/.ccache devel/
-        docker-compose build --pull base sirf
-        # replace travis' ccache with the built images's
+        $DCC build --pull base sirf
+        # extract updated ccache
         sudo rm -rf devel/.ccache/*
-        docker-compose run --rm sirf /bin/bash -c 'sudo cp -R ccache/* /devel/.ccache/'
+        $DCC run --rm sirf /bin/bash -c 'sudo cp -R ccache/* /devel/.ccache/'
+        # devel build
+        $DCC_DEV build sirf
+        # extract updated ccache
+        sudo rm -rf devel/.ccache/*
+        $DCC_DEV run --rm sirf /bin/bash -c 'sudo cp -R ccache/* /devel/.ccache/'
+        # replace travis' ccache with the built images's
         mv devel/.ccache ~
       )
     else
@@ -225,7 +233,8 @@ script:
     if [[ "$DOCKER_BUILD" == "1" ]]; then
       # push images - but only after tests pass within the container!
       echo "$DOCKER_PWD" | docker login -u $DOCKER_USR --password-stdin
-      docker-compose run --rm sirf /bin/bash --login -c /devel/test.sh && docker-compose push
+      $DCC run --rm sirf /bin/bash --login -c /devel/test.sh && $DCC push
+      $DCC_DEV run --rm sirf /bin/bash --login -c /devel/test.sh && $DCC_DEV push sirf
     else
       ./INSTALL/bin/gadgetron >& gadgetron.log&
       # print for debugging

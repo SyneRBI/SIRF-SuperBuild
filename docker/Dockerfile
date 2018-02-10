@@ -13,7 +13,7 @@ ENV DEBIAN_FRONTEND noninteractive
 # Python (virtualenv)
 COPY requirements.txt .
 COPY user_python-ubuntu.sh .
-RUN bash user_python-ubuntu.sh
+RUN bash --login user_python-ubuntu.sh
 RUN rm user_python-ubuntu.sh requirements.txt
 
 # SIRF
@@ -22,10 +22,12 @@ RUN sudo chown -R $(id -un) ccache/
 RUN sudo chgrp -R $(id -gn) ccache/
 RUN ccache -o cache_dir="$PWD"/ccache
 COPY user_sirf-ubuntu.sh .
-RUN EXTRA_BUILD_FLAGS="-DCMAKE_BUILD_TYPE=Release -DUSE_SYSTEM_Boost=ON \
-  -DDEVEL_BUILD=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_FFTW3=ON \
-  -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON" \
-  bash --login user_sirf-ubuntu.sh
+ARG BUILD_FLAGS="\
+  -DCMAKE_BUILD_TYPE=Release -DUSE_SYSTEM_Boost=ON \
+  -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_FFTW3=ON \
+  -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
+ARG EXTRA_BUILD_FLAGS=""
+RUN bash --login user_sirf-ubuntu.sh
 RUN rm user_sirf-ubuntu.sh
 
 ENV DEBIAN_FRONTEND ''

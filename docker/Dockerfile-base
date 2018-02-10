@@ -39,7 +39,7 @@ RUN rm build_system-ubuntu.sh
 
 # X11 forwarding
 RUN apt-get update && apt-get install -y --no-install-recommends libx11-xcb1
-RUN sudo mkdir -p /usr/share/X11/xkb
+RUN mkdir -p /usr/share/X11/xkb
 RUN [ -e /usr/bin/X ] || ln -s /usr/bin/Xorg /usr/bin/X
 
 ARG mainUser=sirfuser
@@ -51,18 +51,17 @@ RUN adduser --home /home/"$mainUser" --shell /bin/bash --system --ingroup "$main
 
 RUN echo "$mainUser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"$mainUser"
 
-USER "$mainUser"
 ENV HOME /home/"$mainUser"
 WORKDIR $HOME
 
 COPY .bashrc .
 COPY .profile .
-RUN sudo chown "$mainUser" .bashrc .profile
-RUN sudo chgrp "$mainUser" .bashrc .profile
-RUN sudo chmod 644 .bashrc .profile
+RUN chown "$mainUser" .bashrc .profile
+RUN chgrp "$mainUser" .bashrc .profile
+RUN chmod 644 .bashrc .profile
 
-RUN sudo apt-get clean
-
+RUN apt-get clean
+USER "$mainUser"
 ENV DEBIAN_FRONTEND ''
 
 CMD cd $HOME && /bin/bash --init-file .profile
