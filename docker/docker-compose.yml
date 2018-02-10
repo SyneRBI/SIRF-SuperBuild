@@ -6,9 +6,9 @@ services:
   build:
    context: .
    # depends_on:
-   #  - base
+   #  - core
    cache_from:
-    - ccppetmr/base:latest
+    - ccppetmr/sirf:core
     - ccppetmr/sirf:latest
   stdin_open: true
   tty: true
@@ -17,13 +17,13 @@ services:
   network_mode: "bridge"
   volumes:
    - ./devel:/devel
- base:
-  image: ccppetmr/base:latest
+ core:
+  image: ccppetmr/sirf:core
   build:
    context: .
-   dockerfile: Dockerfile-base
+   dockerfile: Dockerfile-core
    args:
     mainUser: sirfuser
    cache_from:
     - ubuntu:16.04
-    - ccppetmr/base:latest
+    - ccppetmr/sirf:core

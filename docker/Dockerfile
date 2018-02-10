@@ -1,4 +1,4 @@
-FROM ccppetmr/base:latest
+FROM ccppetmr/sirf:core
 LABEL \
   author.name="Casper da Costa-Luis"          \
   author.email=imaging@caspersci.uk.to        \

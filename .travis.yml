@@ -203,12 +203,12 @@ install:
       [[ "$DOCKER_BUILD" == DEVEL ]] && export DCC="$DCC -f $PWD/docker-compose.devel.yml"
       ( set -ev
         # pull previous base image for its layer cache
-        docker pull ccppetmr/base
+        docker pull ccppetmr/sirf:core
         # rebuild base image (using above docker cache)
         # and sirf image (with travis' ccache)
         rm -rf devel/.ccache
         mv ~/.ccache devel/
-        $DCC build --pull base
+        $DCC build --pull core
         $DCC build sirf
         # extract updated ccache
         sudo rm -rf devel/.ccache/*
