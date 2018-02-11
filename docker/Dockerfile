@@ -17,11 +17,11 @@ RUN bash --login user_python-ubuntu.sh
 RUN rm user_python-ubuntu.sh requirements.txt
 
 # SIRF
-COPY devel/.ccache/ ccache/
-RUN sudo chown -R $(id -un) ccache/
-RUN sudo chgrp -R $(id -gn) ccache/
-RUN ccache -o cache_dir="$PWD"/ccache
 COPY user_sirf-ubuntu.sh .
+COPY devel/.ccache/ ccache/
+RUN sudo chown -R "$(id -un)" ccache/
+RUN sudo chgrp -R "$(id -gn)" ccache/
+RUN ccache -o cache_dir="$PWD"/ccache
 ARG BUILD_FLAGS="\
   -DCMAKE_BUILD_TYPE=Release -DUSE_SYSTEM_Boost=ON \
   -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_FFTW3=ON \

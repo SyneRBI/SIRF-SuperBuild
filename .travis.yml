@@ -232,7 +232,15 @@ script:
     if [[ -n "$DOCKER_BUILD" ]]; then
       # push images - but only after tests pass within the container!
       echo "$DOCKER_PWD" | docker login -u $DOCKER_USR --password-stdin
-      $DCC run --rm sirf /bin/bash --login -c /devel/test.sh && $DCC push
+      $DCC run --rm sirf /bin/bash --login -c /devel/test.sh \
+        && $DCC push \
+        && if [[ -n "$TRAVIS_TAG" && "$DOCKER_BUILD" != DEVEL ]]; then ( set -ev
+             # tag release
+             docker tag ccppetmr/sirf:latest ccppetmr/sirf:"$TRAVIS_TAG"
+             docker tag ccppetmr/sirf:latest ccppetmr/sirf:release
+             docker push ccppetmr/sirf:"$TRAVIS_TAG"
+             docker push ccppetmr/sirf:release
+           ); fi
     else
       ./INSTALL/bin/gadgetron >& gadgetron.log&
       # print for debugging
