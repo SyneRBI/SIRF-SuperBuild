@@ -29,8 +29,9 @@ if (WIN32)
  endif()
 endif()
 
-set( SOURCE_DOWNLOAD_CACHE ${CMAKE_CURRENT_BINARY_DIR} CACHE PATH
+set( SUPERBUILD_WORK_DIR ${CMAKE_CURRENT_BINARY_DIR} CACHE PATH
     "The path for downloading external source directories" )
+set(SOURCE_ROOT_DIR "${CMAKE_CURRENT_BINARY_DIR}/sources/"  CACHE PATH "blabla")
 
 mark_as_advanced( SOURCE_DOWNLOAD_CACHE )
 
