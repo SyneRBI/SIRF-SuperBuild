@@ -61,6 +61,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DCMAKE_INSTALL_PREFIX=${STIR_Install_Dir}
         -DGRAPHICS=None
         -DCMAKE_CXX_STANDARD=11
+        -DSTIR_OPENMP=${BUILD_STIR_WITH_OPENMP}
         # Use 2 variables for ROOT to cover multiple STIR versions
         -DDISABLE_CERN_ROOT_SUPPORT=ON -DDISABLE_CERN_ROOT=ON
    )
