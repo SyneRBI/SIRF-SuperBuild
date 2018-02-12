@@ -154,7 +154,7 @@ message(STATUS "PYTHON_INCLUDE_DIRS=${PYTHON_INCLUDE_DIRS}")
 #set(proj ${PRIMARY_PROJECT_NAME})
 
 # Make environment files
-set(SIRF_SRC_PATH ${SOURCE_DOWNLOAD_CACHE}/SIRF)
+set(SIRF_SRC_PATH ${SOURCE_DOWNLOAD_CACHE}/sources/SIRF)
 set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
 
 ## configure the environment files env_ccppetmr.sh/csh
