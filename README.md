@@ -3,7 +3,10 @@
 This project contains as series of files and scripts to create and install a virtual machine running [SIRF](https://github.com/CCPPETMR/SIRF) and its prerequisites. 
 
 ## Installation and usage
-If you are trying to find information on how to use the virtual machine that can be downloaded from our [website](http://www.ccppetmr.ac.uk/downloads) just check our wiki and [here](INSTALL.md).
+If you are trying to find information on how to use the virtual machine that can be downloaded 
+from our [website](http://www.ccppetmr.ac.uk/downloads) just check the
+[installation  instructions](INSTALL.md) and our [wiki](https://github.com/CCPPETMR/CCPPETMR_VM/wiki)
+for basic usage.
 
 ## Prerequisites for machine creation
 
