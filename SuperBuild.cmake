@@ -29,8 +29,9 @@ if (WIN32)
  endif()
 endif()
 
-set( SOURCE_DOWNLOAD_CACHE ${CMAKE_CURRENT_BINARY_DIR} CACHE PATH
+set(SUPERBUILD_WORK_DIR ${CMAKE_CURRENT_BINARY_DIR} CACHE PATH
     "The path for downloading external source directories" )
+set(SOURCE_ROOT_DIR "${CMAKE_CURRENT_BINARY_DIR}/sources/"  CACHE PATH "blabla")
 
 mark_as_advanced( SOURCE_DOWNLOAD_CACHE )
 
@@ -107,6 +108,7 @@ option(USE_SYSTEM_SWIG "Build using an external version of SWIG" OFF)
 #option(USE_SYSTEM_Gadgetron "Build using an external version of Gadgetron" OFF)
 option(USE_SYSTEM_SIRF "Build using an external version of SIRF" OFF)
 option(USE_SYSTEM_GTest "Build using an external version of GTest" OFF)
+option(BUILD_STIR_WITH_OPENMP "Build STIR with OpenMP acceleration" OFF)
 
 # ITK
 option(USE_ITK "Use ITK" OFF)
@@ -153,7 +155,7 @@ message(STATUS "PYTHON_INCLUDE_DIRS=${PYTHON_INCLUDE_DIRS}")
 #set(proj ${PRIMARY_PROJECT_NAME})
 
 # Make environment files
-set(SIRF_SRC_PATH ${SOURCE_DOWNLOAD_CACHE}/SIRF)
+set(SIRF_SRC_DIR ${SOURCE_ROOT_DIR}/SIRF)
 set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
 
 ## configure the environment files env_ccppetmr.sh/csh
@@ -208,4 +210,4 @@ configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
 enable_testing()
 add_test(NAME SIRF_TESTS
          COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION>
-         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/SIRF-prefix/src/SIRF-build/)
+         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/builds/SIRF/build/)

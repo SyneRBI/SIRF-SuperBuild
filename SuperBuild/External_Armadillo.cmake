@@ -1,7 +1,9 @@
 #========================================================================
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
+# Author: Edoardo Pasca
 # Copyright 2017 University College London
+# Copyright 2017 Science Technology Facilities Council
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -38,6 +40,12 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
+set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
+set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
+set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
+set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
+set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
+
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
@@ -52,16 +60,29 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set(CLANG_ARG -DCMAKE_COMPILER_IS_CLANGXX:BOOL=ON)
   endif()
 
-  set(${proj}_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}-prefix/src/${${proj}_location} )
-
+  #set(${proj}_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}-prefix/src/${${proj}_location} )
+  
+  
+  
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
-    BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/${proj}
-    CONFIGURE_COMMAND ${CMAKE_COMMAND}
-                             ${CLANG_ARG}
-                             -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_Install_Dir} "${${proj}_SOURCE_DIR}"
+	
+    SOURCE_DIR ${${proj}_SOURCE_DIR}
+    BINARY_DIR ${${proj}_BINARY_DIR}
+    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+    STAMP_DIR ${${proj}_STAMP_DIR}
+    TMP_DIR ${${proj}_TMP_DIR}
+
+    #CONFIGURE_COMMAND ${CMAKE_COMMAND}
+    #                         ${CLANG_ARG}
+    #                         -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_Install_Dir} "${${proj}_SOURCE_DIR}"
+    
+    CMAKE_ARGS
+        -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
+        -DCMAKE_INSTALL_PREFIX=${${proj}_Install_Dir}
+        ${CLANG_ARG}
 
     INSTALL_DIR ${${proj}_Install_Dir}
   )
@@ -75,7 +96,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
       message(STATUS "USING the system ${externalProjName}, found ARMADILLO_LIBRARIES=${ARMADILLO_LIBRARIES}}")
   endif()
-  ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}")
+  ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
+    SOURCE_DIR ${${proj}_SOURCE_DIR}
+    BINARY_DIR ${${proj}_BINARY_DIR}
+    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+    STAMP_DIR ${${proj}_STAMP_DIR}
+    TMP_DIR ${${proj}_TMP_DIR}
+  )
 endif()
 
 mark_as_superbuild(

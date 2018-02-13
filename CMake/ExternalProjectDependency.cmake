@@ -688,7 +688,7 @@ endmacro()
 #
 macro(ExternalProject_Add_Empty project_name)
   set(options)
-  set(oneValueArgs)
+  set(oneValueArgs BINARY_DIR SOURCE_DIR TMP_DIR STAMP_DIR DOWNLOAD_DIR INSTALL_DIR)
   set(multiValueArgs DEPENDS)
   cmake_parse_arguments(_sb "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
@@ -701,8 +701,12 @@ macro(ExternalProject_Add_Empty project_name)
   endif()
 
   ExternalProject_Add(${project_name}
-    SOURCE_DIR ${CMAKE_BINARY_DIR}/${project_name}
-    BINARY_DIR ${project_name}-build
+    SOURCE_DIR ${_sb_SOURCE_DIR}
+    BINARY_DIR ${_sb_BINARY_DIR}
+    DOWNLOAD_DIR ${_sb_DOWNLOAD_DIR}
+    STAMP_DIR ${_sb_STAMP_DIR}
+    TMP_DIR ${_sb_TMP_DIR}
+    INSTALL_DIR ${_sb_TMP_DIR}
     DOWNLOAD_COMMAND ""
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""

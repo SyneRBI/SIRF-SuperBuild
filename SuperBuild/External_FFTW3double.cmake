@@ -36,6 +36,12 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
+set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
+set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
+set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
+set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
+set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
+
 # use FFTW variable
 if(NOT ( DEFINED "USE_SYSTEM_FFTW3" AND "${USE_SYSTEM_FFTW3}" ) )
   if (WIN32)
@@ -56,15 +62,18 @@ if(NOT ( DEFINED "USE_SYSTEM_FFTW3" AND "${USE_SYSTEM_FFTW3}" ) )
     set(CLANG_ARG -DCMAKE_COMPILER_IS_CLANGXX:BOOL=ON)
   endif()
 
-  set(FFTWdouble_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj} )
-
+  #set(FFTWdouble_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj} )
+  
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
     URL_MD5 ${${proj}_MD5}
-    SOURCE_DIR ${FFTWdouble_SOURCE_DIR}
-    BINARY_DIR ${FFTWdouble_SOURCE_DIR}
-    CONFIGURE_COMMAND ./configure --with-pic --prefix ${FFTWdouble_Install_Dir}
+    SOURCE_DIR ${${proj}_SOURCE_DIR}
+    BINARY_DIR ${${proj}_BINARY_DIR}
+    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+    STAMP_DIR ${${proj}_STAMP_DIR}
+    TMP_DIR ${${proj}_TMP_DIR}
+    CONFIGURE_COMMAND ${${proj}_SOURCE_DIR}/configure --with-pic --prefix ${FFTWdouble_Install_Dir}
     INSTALL_DIR ${FFTWdouble_Install_Dir}
   )
 
@@ -76,7 +85,13 @@ if(NOT ( DEFINED "USE_SYSTEM_FFTW3" AND "${USE_SYSTEM_FFTW3}" ) )
       find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} ${${externalProjName}_COMPONENTS} REQUIRED)
       message(STATUS "USING the system ${externalProjName}, found FFTW3double_INCLUDE_DIR=${FFTW3double_INCLUDE_DIR}, FFTW3double_LIBRARY=${FFTW3double_LIBRARY}")
   endif()
-  ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}")
+  ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
+    SOURCE_DIR ${${proj}_SOURCE_DIR}
+    BINARY_DIR ${${proj}_BINARY_DIR}
+    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+    STAMP_DIR ${${proj}_STAMP_DIR}
+    TMP_DIR ${${proj}_TMP_DIR}
+)
 endif()
 
 mark_as_superbuild(

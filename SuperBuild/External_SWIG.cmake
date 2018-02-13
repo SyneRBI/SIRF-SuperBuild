@@ -33,6 +33,12 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
+set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
+set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
+set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
+set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
+set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
+
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
@@ -64,16 +70,20 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set(CLANG_ARG -DCMAKE_COMPILER_IS_CLANGXX:BOOL=ON)
   endif()
 
-  set(SWIG_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj} )
-
+  set(SWIG_SOURCE_DIR ${${proj}_SOURCE_DIR} )
+  
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
-    SOURCE_DIR ${SWIG_SOURCE_DIR}
-    BINARY_DIR ${SWIG_SOURCE_DIR}
-    CONFIGURE_COMMAND ./configure --without-pcre --prefix ${SWIG_Install_Dir}
-    INSTALL_DIR ${SWIG_Install_Dir}
+    SOURCE_DIR ${${proj}_SOURCE_DIR}
+    BINARY_DIR ${${proj}_BINARY_DIR}
+    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+    STAMP_DIR ${${proj}_STAMP_DIR}
+    TMP_DIR ${${proj}_TMP_DIR}
+
+    CONFIGURE_COMMAND ${${proj}_SOURCE_DIR}/configure --without-pcre --prefix ${SWIG_Install_Dir}
+    INSTALL_DIR ${${proj}_Install_Dir}
   )
 
   set( SWIG_EXECUTABLE ${SWIG_Install_Dir}/bin/swig )
@@ -85,7 +95,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} ${${externalProjName}_COMPONENTS} REQUIRED)
       message(STATUS "USING the system ${externalProjName}, found SWIG_EXECUTABLE=${SWIG_EXECUTABLE}, SWIG_VERSION=${SWIG_VERSION}")
   endif()
-  ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}")
+  ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
+    SOURCE_DIR ${${proj}_SOURCE_DIR}
+    BINARY_DIR ${${proj}_BINARY_DIR}
+    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+    STAMP_DIR ${${proj}_STAMP_DIR}
+    TMP_DIR ${${proj}_TMP_DIR}
+  )
 endif()
 
 mark_as_superbuild(
