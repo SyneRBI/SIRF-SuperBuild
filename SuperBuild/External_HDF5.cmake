@@ -32,11 +32,11 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
-set(${proj}_SOURCE_DIR "${SOURCE_DOWNLOAD_CACHE}/sources/${proj}" )
-set(${proj}_BINARY_DIR "${SOURCE_DOWNLOAD_CACHE}/builds/${proj}/build" )
-set(${proj}_DOWNLOAD_DIR "${SOURCE_DOWNLOAD_CACHE}/downloads/${proj}" )
-set(${proj}_STAMP_DIR "${SOURCE_DOWNLOAD_CACHE}/builds/${proj}/stamp" )
-set(${proj}_TMP_DIR "${SOURCE_DOWNLOAD_CACHE}/builds/${proj}/tmp" )
+set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
+set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
+set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
+set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
+set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
 
   
 

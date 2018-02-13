@@ -3,7 +3,7 @@
 #    source /path/to/whereever/env_ccppetmr.sh		
 # Preferably add this line to your .basrhc, .profile or whatever file is appropriate for your shell		
   		  
-SIRF_PATH=@SIRF_SRC_PATH@
+SIRF_PATH=@SIRF_SRC_DIR@
 export SIRF_PATH
 
 # Where to find shared libraries
