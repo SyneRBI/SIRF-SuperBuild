@@ -70,7 +70,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set(CLANG_ARG -DCMAKE_COMPILER_IS_CLANGXX:BOOL=ON)
   endif()
 
-  set(SWIG_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj} )
+  set(SWIG_SOURCE_DIR ${${proj}_SOURCE_DIR} )
   
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
