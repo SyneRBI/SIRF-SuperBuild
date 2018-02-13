@@ -1,14 +1,14 @@
 # CCPPETMR Virtual Machine installation and running instructions
 
-If you have any problems, please first re-check this web-page. If you cannot solve your issue, please email CCP-PETMR-USERS @ JISCMAIL.AC.UK
+If you have any problems, please first re-check this web-page. If you cannot solve your issue, please email CCP-PETMR-USERS @ JISCMAIL.AC.UK
 
 
 ## Initial download and installation
 
 1. Make sure you have enough free disk-space on your laptop (~10GB for installation).
 
-2. Install [VirtualBox](https://www.virtualbox.org). Please note that this will require administrator permissions. 
-You do not need to install the Oracle extensions to VirtualBox, although it might come in handy for USB support. 
+2. Install [VirtualBox](https://www.virtualbox.org). Please note that this will require administrator permissions. 
+You do not need to install the Oracle extensions to VirtualBox, although it might come in handy for USB support. 
 Although other Virtual Machine software might work, we have not tried this and will not be able to help to get this going.
   Some extra pointers if you experience problems with installing VirtualBox
     - On older Ubuntu versions (e.g. 15.10), there were some problems installing VirtualBox related to `libvpx`, [check here for some help](https://forums.virtualbox.org/viewtopic.php?f=7&t=74050).
@@ -32,16 +32,16 @@ Warning: this file is ~1.7GB. (You can of course download to a USB stick to save
 
 ## Running and updating the virtual machine
 
-Now you can start your virtual machine. If it fails to start with an error like "*virtualbox vt-x is disabled in the bios*", [check here](http://www.howtogeek.com/213795/how-to-enable-intel-vt-x-in-your-computers-bios-or-uefi-firmware/).
-If you see a dialog box about "starting in scaled mode", you can press OK to allow VirtualBox to scale the display larger or smaller, or you can press Cancel and start the machine again without scaling. (See [the Virtualbox site](https://www.virtualbox.org/manual/) for some info on the Host-Key etc).
+Now you can start your virtual machine. If it fails to start with an error like "*virtualbox vt-x is disabled in the bios*", [check here](http://www.howtogeek.com/213795/how-to-enable-intel-vt-x-in-your-computers-bios-or-uefi-firmware/).
+If you see a dialog box about "starting in scaled mode", you can press OK to allow VirtualBox to scale the display larger or smaller, or you can press Cancel and start the machine again without scaling. (See [the Virtualbox site](https://www.virtualbox.org/manual/) for some info on the Host-Key etc).
 
 1. You should get a window where Ubuntu 16.04 will be starting (might take a few minutes). Wait until you see the log-in prompt.
 
-2. Log in as user "sirfuser" with password "virtual" (please note that the default keyboard is with en_US locale: if you have an Azerty-type keyboard, you will have to type "virtuql" until you change your VM keyboard settings). You should get the Gnome3 desktop.
+2. Log in as user "sirfuser" with password "virtual" (please note that the default keyboard is with en_US locale: if you have an Azerty-type keyboard, you will have to type "virtuql" until you change your VM keyboard settings). You should get the Gnome3 desktop.
 
 3. Adjust your Ubuntu settings:
     - Default settings should allow you to access the internet from in the virtual machine.
-      If not, please check [the Virtual Box documentation](http://www.virtualbox.org/manual/ch03.html#settings-network).
+      If not, please check [the Virtual Box documentation](http://www.virtualbox.org/manual/ch03.html#settings-network).
     - The keyboard type is set to English-UK. There are currently 3 preinstalled layouts: en_GB, en_US and pt.
       You can change keyboard-type by clicking on the relevant icon in the top-right of the VM.
       If you cannot find the layout that you need (e.g. to switch to a Mac keyboard), use
@@ -92,3 +92,15 @@ Summary of steps (courtesy Nikos Efthimiou):
          sudo mount -t vboxsf -o rw,uid=1000,gid=1000 MyLaptop ~/MyLaptop
  
  You will have to type the last command whenever you reboot your VM, or you could make this permanent by pasting the above command to /etc/rc.local before "exit 0" (non-trivial because of admin permissions).
+
+## Using VM as a Gadgetron server
+
+You can use CCPPETMR Virtual Machine as a Gadgetron server if you cannot install Gadgetron on you computer (we ourselves have not yet succeeded in installing it under Windows). For this, you need to set up communication between your computer and VM in the following manner.
+
+* Start Virtual Machine.
+
+* Forward port 9002 to VM (in Oracle VM VirtualBox Manager: go to Settings->Network, click on Port Forwarding, add new forwarding rule by clicking on +, set Host Port and Guest Port to 9002).
+
+* Open a new Linux terminal on VM and type 'gadgetron' there.
+
+This will enable you to run SIRF MR demos on your computer.

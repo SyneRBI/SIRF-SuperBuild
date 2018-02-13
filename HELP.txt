@@ -18,3 +18,16 @@ Then open another terminal, change to
 and check some of the examples (some info is in the README.md). 
 
 There are also examples for MATLAB, but MATLAB is not installed on this VM of course.
+
+You can use CCPPETMR Virtual Machine as a Gadgetron server if you cannot 
+install Gadgetron on you computer (we ourselves have not yet succeeded in 
+installing it under Windows). For this, you need to set up communication 
+between your computer and VM in the following manner.
+
+* Start Virtual Machine.
+
+* Forward port 9002 to VM (in Oracle VM VirtualBox Manager: go to Settings->Network, click on Port Forwarding, add new forwarding rule by clicking on +, set Host Port and Guest Port to 9002).
+
+* Open a new Linux terminal on VM and type 'gadgetron' there.
+
+This will enable you to run SIRF MR demos on your computer.
