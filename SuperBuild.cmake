@@ -137,6 +137,10 @@ if (BUILD_siemens_to_ismrmrd)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES siemens_to_ismrmrd)
 endif()
 
+if (BUILD_petmr_rd_tools)
+  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES petmr_rd_tools)
+endif()
+
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${PRIMARY_PROJECT_NAME}_DEPENDENCIES)
 
 message(STATUS "")

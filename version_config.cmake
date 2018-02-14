@@ -103,6 +103,11 @@ if (DEVEL_BUILD)
   set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
   set(DEFAULT_ISMRMRD_TAG origin/master)
 
+  ## petmr-rd-tools
+  set(DEFAULT_petmr_rd_tools_URL https://github.com/UCL/petmr-rd-tools )
+  set(DEFAULT_petmr_rd_tools_TAG origin/master)
+
+
 else()
   set(DEFAULT_SIRF_TAG 6409e3753940136077b658af67112bd28545a3ce)
 
@@ -125,6 +130,10 @@ else()
   set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
   set(DEFAULT_ISMRMRD_TAG 42d93137cc16c270c8ba065edd2496483161bd21)
 
+  ## petmr-rd-tools
+  set(DEFAULT_petmr_rd_tools_URL https://github.com/UCL/petmr-rd-tools )
+  set(DEFAULT_petmr_rd_tools_TAG b6f46e777b1a5ecec52d5cf0573a0f070f9b277b)
+
 endif()
 
 
@@ -145,7 +154,11 @@ SET(siemens_to_ismrmrd_URL ${DEFAULT_siemens_to_ismrmrd_URL} CACHE STRING ON)
 SET(ISMRMRD_TAG ${DEFAULT_ISMRMRD_TAG} CACHE STRING ON)
 SET(ISMRMRD_URL ${DEFAULT_ISMRMRD_URL} CACHE STRING ON)
 
+SET(petmr_rd_tools_TAG ${DEFAULT_petmr_rd_tools_TAG} CACHE STRING ON)
+SET(petmr_rd_tools_URL ${DEFAULT_petmr_rd_tools_URL} CACHE STRING ON)
+
 mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   Gadgetron_URL Gadgetron_TAG
   siemens_to_ismrmrd_URL siemens_to_ismrmrd_TAG
-  ISMRMRD_URL ISMRMRD_TAG)
+  ISMRMRD_URL ISMRMRD_TAG
+  petmr_rd_tools_URL petmr_rd_tools_TAG)
