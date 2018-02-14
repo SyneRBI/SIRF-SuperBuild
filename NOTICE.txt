@@ -1,6 +1,6 @@
 CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
-Copyright 2017 University College London (UCL)
-Copyright 2017 Rutherford Appleton Laboratory STFC
+Copyright 2017-2018 University College London (UCL)
+Copyright 2017-2018 Rutherford Appleton Laboratory STFC
 
 This software product is developed for the Collaborative Computational 
 Project in Positron Emission Tomography and Magnetic Resonance imaging
@@ -11,3 +11,6 @@ Main contributors (see each file for authors):
 Benjamin A Thomas(UCL)
 Kris Thielemans (UCL)
 Edoardo Pasca (STFC)
+Casper da Costa-Luis (KCL)
+Richard Brown (UCL)
+Evgueni Ovtchinnikov (STFC)
