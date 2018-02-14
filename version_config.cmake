@@ -104,11 +104,11 @@ if (DEVEL_BUILD)
   set(DEFAULT_ISMRMRD_TAG origin/master)
 
 else()
-  set(DEFAULT_SIRF_TAG 6409e3753940136077b658af67112bd28545a3ce)
+  set(DEFAULT_SIRF_TAG d8975119e4134fb86620e5d31ed15526d793243c)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG f482bcc5c7c3b8f92a0dc05dc04bd501caf6967e )
+  set(DEFAULT_STIR_TAG bbc4acd55ad88c2040d22e2a192633841821f588 )
 
   ## Gadgetron
   set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
