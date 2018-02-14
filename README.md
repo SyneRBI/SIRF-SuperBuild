@@ -1,4 +1,6 @@
-# SIRF-SuperBuild [![Build Status](https://travis-ci.org/CCPPETMR/SIRF-SuperBuild.svg?branch=master)](https://travis-ci.org/CCPPETMR/SIRF-SuperBuild)
+# SIRF-SuperBuild
+
+[![CI-badge]][CI-link] [![style-badge]][style-link] [![docker-badge]][docker-link]
 
 The SIRF-SuperBuild allows the user to download and compile most of the software
 needed to compile SIRF and Gadgetron, and automatically build SIRF and Gadgetron. 
@@ -244,3 +246,10 @@ You could do
 ```sh
 cmake -DDEVEL_BUILD=ON -USIRF_URL -USIRF_TAG -USTIR_URL -USTIR_TAG -UGadgetron_URL -UGadgetron_TAG -UISMRMRD_URL -UISMRMRD_TAG .
 ```
+
+[CI-badge]: https://travis-ci.org/CCPPETMR/SIRF-SuperBuild.svg?branch=master
+[CI-link]: https://travis-ci.org/CCPPETMR/SIRF-SuperBuild
+[style-badge]: https://api.codacy.com/project/badge/Grade/c1a4613d4bd247d19780881f8194eaf8
+[style-link]: https://www.codacy.com/app/CCP-PETMR/SIRF-SuperBuild
+[docker-badge]: https://img.shields.io/docker/pulls/ccppetmr/sirf.svg
+[docker-link]: https://hub.docker.com/r/ccppetmr/sirf
