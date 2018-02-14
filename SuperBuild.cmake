@@ -124,6 +124,7 @@ endif()
 
 option(BUILD_GADGETRON "Build Gadgetron" ${build_Gadgetron_default})
 option(BUILD_siemens_to_ismrmrd "Build siemens_to_ismrmrd" OFF)
+option(BUILD_petmr_rd_tools "Build petmr_rd_tools" OFF)
 
 set(${PRIMARY_PROJECT_NAME}_DEPENDENCIES
     SIRF

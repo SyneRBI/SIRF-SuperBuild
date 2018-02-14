@@ -25,8 +25,8 @@
 set(proj petmr_rd_tools)
 
 # Set dependency list
-set(${proj}_DEPENDENCIES "Boost;ITK;GLOG")
-# TODO should add LibXml2, LibXslt
+set(${proj}_DEPENDENCIES "Boost")
+# Also requires ITK and glog
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
