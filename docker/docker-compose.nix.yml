@@ -1,11 +1,6 @@
 version: '3.2'
 services:
  sirf:
-  # perhaps uncomment the following and insert the host uid and gid (run `id`)
-  # build:
-  #  args:
-  #   UID: 1000
-  #   GROUPS: 1000
   environment:
    - DISPLAY
   volumes:

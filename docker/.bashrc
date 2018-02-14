@@ -16,11 +16,11 @@
 export PS1='sirf:\w$(__git_ps1)\$ '
 
 # Python (virtualenv)
-[ -f ~/py2/bin/activate ] && . ~/py2/bin/activate
+[ -f /opt/pyvenv/bin/activate ] && . /opt/pyvenv/bin/activate
 
 # SIRF env
-[ -f ~/SIRF-SuperBuild/INSTALL/bin/env_ccppetmr.sh ] && \
-   . ~/SIRF-SuperBuild/INSTALL/bin/env_ccppetmr.sh
+[ -f /opt/SIRF-SuperBuild/INSTALL/bin/env_ccppetmr.sh ] && \
+   . /opt/SIRF-SuperBuild/INSTALL/bin/env_ccppetmr.sh
 
 # shared permissions
 # [ $(ls -l / | grep devel | awk '{print $3}') == $(whoami) ] || sudo chown -R $(whoami) /devel
