@@ -9,17 +9,23 @@ mainUser=${mainUser:-sirfuser}
 OLD_HOME=/home-away
 export HOME=/home/$mainUser
 
+if [ -d $HOME ]; then
+  cd $HOME
+  exec gosu $mainUser "$@"
+fi
+
 cd /
 mv $OLD_HOME $HOME
 cd $HOME
 
 echo "$UID:$GID Creating and switching to: $mainUser:$USER_ID:$GROUP_ID"
 # groupadd -g $GROUP_ID -o -f $mainUser
-addgroup --system --gid "$GROUP_ID" "$mainUser"
+addgroup --quiet --system --gid "$GROUP_ID" "$mainUser"
 # useradd --shell /bin/bash -u $USER_ID -o -c "" -M -d $HOME \
 #   -g $mainUser -G sudo $mainUser \
 #   -p $(echo somepassword | openssl passwd -1 -stdin)
-adduser --system --shell /bin/bash --no-create-home --home /home/"$mainUser" \
+adduser --quiet --system --shell /bin/bash \
+  --no-create-home --home /home/"$mainUser" \
   --ingroup "$mainUser" --uid "$USER_ID" "$mainUser"
 
 echo "$mainUser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"$mainUser"
