@@ -1,0 +1,8 @@
+version: '3.2'
+services:
+ sirf:
+  container_name: sirf_devel
+  image: ccppetmr/sirf:devel
+  build:
+   args:
+    EXTRA_BUILD_FLAGS: "-DDEVEL_BUILD=ON"

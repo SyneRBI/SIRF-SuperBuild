@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SIRF external dependencies
-apt-get update
-apt-get install -y --no-install-recommends \
+apt-get update -qq
+apt-get install -yq --no-install-recommends \
   hdf5-tools           \
   hdfview              \
   libarmadillo-dev     \
@@ -13,3 +13,4 @@ apt-get install -y --no-install-recommends \
   libxml2-dev          \
   libxslt-dev          \
   swig
+apt-get clean

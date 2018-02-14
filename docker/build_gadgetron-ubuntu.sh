@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Gadgetron
-apt-get update
-apt-get install -y --no-install-recommends \
+apt-get update -qq
+apt-get install -yq --no-install-recommends \
   h5utils              \
   liblapack-dev        \
   libace-dev
@@ -12,3 +12,4 @@ apt-get install -y --no-install-recommends \
 # python-libxml2
 # python-psutil
 # libplplot-dev
+apt-get clean
