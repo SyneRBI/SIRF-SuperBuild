@@ -25,8 +25,8 @@
 set(proj petmr_rd_tools)
 
 # Set dependency list
-set(${proj}_DEPENDENCIES "Boost")
-# Also requires ITK and glog
+set(${proj}_DEPENDENCIES "Boost;ITK")
+# Also requires glog
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
@@ -48,27 +48,32 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
-  
-  
+
+  set(petmr_rd_tools_CMAKE_ARGS
+      -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
+      -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
+      -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}
+      -DCMAKE_INSTALL_PREFIX=${petmr_rd_tools_Install_Dir}
+      -DBOOST_INCLUDEDIR=${BOOST_ROOT}/include/
+      -DBOOST_LIBRARYDIR=${BOOST_LIBRARY_DIR}
+      )
+
+  if (USE_SYSTEM_ITK)
+    set(petmr_rd_tools_CMAKE_ARGS ${petmr_rd_tools_CMAKE_ARGS} -DITK_DIR=${ITK_DIR})
+  endif()
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
     GIT_TAG ${${proj}_TAG}
-	
+
     SOURCE_DIR ${${proj}_SOURCE_DIR}
     BINARY_DIR ${${proj}_BINARY_DIR}
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
     STAMP_DIR ${${proj}_STAMP_DIR}
     TMP_DIR ${${proj}_TMP_DIR}
-
-    CMAKE_ARGS
-        -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
-        -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
-        -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}
-        -DCMAKE_INSTALL_PREFIX=${petmr_rd_tools_Install_Dir}
-        -DBOOST_INCLUDEDIR=${BOOST_ROOT}/include/
-        -DBOOST_LIBRARYDIR=${BOOST_LIBRARY_DIR}
-	    INSTALL_DIR ${petmr_rd_tools_Install_Dir}
+    CMAKE_ARGS ${petmr_rd_tools_CMAKE_ARGS}
+	INSTALL_DIR ${petmr_rd_tools_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
