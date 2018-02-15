@@ -104,7 +104,7 @@ if (DEVEL_BUILD)
   set(DEFAULT_ISMRMRD_TAG origin/master)
 
 else()
-  set(DEFAULT_SIRF_TAG d8975119e4134fb86620e5d31ed15526d793243c)
+  set(DEFAULT_SIRF_TAG v1.0.0-rc.1)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
