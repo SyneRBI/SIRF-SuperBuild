@@ -12,7 +12,7 @@ You do not need to install the Oracle extensions to VirtualBox, although it migh
 Although other Virtual Machine software might work, we have not tried this and will not be able to help to get this going.
   Some extra pointers if you experience problems with installing VirtualBox
     - On older Ubuntu versions (e.g. 15.10), there were some problems installing VirtualBox related to `libvpx`, [check here for some help](https://forums.virtualbox.org/viewtopic.php?f=7&t=74050).
-    - If your VirtualBox is too old, you might experience problems with networking etc. Please use at least 5.0.40.
+    - If your VirtualBox is too old, you might experience problems with networking etc. Please use at least 5.0.40 (at least 5.2.6 on a Mac).
 
 3. Download the preinstalled virtual machine from http://www.ccppetmr.ac.uk/downloads.
 Warning: this file is ~1.7GB. (You can of course download to a USB stick to save space on your hard-disk).
