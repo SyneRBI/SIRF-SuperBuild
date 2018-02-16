@@ -122,6 +122,7 @@ option(BUILD_petmr_rd_tools "Build petmr_rd_tools" OFF)
 
 if (BUILD_petmr_rd_tools)
     set(USE_ITK ON CACHE BOOL "Use ITK" FORCE)
+    option(USE_SYSTEM_glog "Build using an external version of glog" OFF)
 endif()
 
 # ITK
