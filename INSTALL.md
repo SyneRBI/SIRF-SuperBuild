@@ -44,19 +44,19 @@ If you see a dialog box about "starting in scaled mode", you can press OK to all
       If not, please check [the Virtual Box documentation](http://www.virtualbox.org/manual/ch03.html#settings-network).
     - The keyboard type is set to English-UK. There are currently 3 preinstalled layouts: en_GB, en_US and pt.
       You can change keyboard-type by clicking on the relevant icon in the top-right of the VM.
-      If you cannot find the layout that you need (e.g. to switch to a Mac keyboard), use
+      If you cannot find the layout that you need (e.g. to switch to a Mac keyboard), open a terminal by clicking "Activities" at top left and type "terminal" in the search box, then use
 
       ```
       sudo dpkg-reconfigure keyboard-configuration
       ```
 
-    - To adjust other system settings you can click on the right top corner and then click on the keys icon to start the settings app, or click on "Activities" on the top right corner and then type "settings" and it should open the settings apps. For instance, the display resolution (default is 1024x768) can be changed from the system settings app.
+    - To adjust other system settings you can click on the right top corner and then click on the tools icon (spanner and screwdriver) to start the settings app, or click on "Activities" on the top left corner and then type "settings" in the search box and it should open the settings apps. For instance, the display resolution (default is 1024x768) can be changed from the system settings app.
 
 4. Click on the *Activities* on the top left corner and write `terminal` in the search box and press enter. This will open a terminal. Type
    ```
    update_VM.sh
    ```
-5. In the menu-bar of the window that contains your VM, click on "Devices" and then "Insert Guest Additions CD".
+5. In the menu-bar of the window that contains your VM, click on "Devices" and then "Insert Guest Additions CD". (On a Mac, with the VM window selected, this menu bar is at the top of the screen).
    If this generates a window inside your VM to run the software on this "CD", say OK. Otherwise, type
    ```
    sudo /home/sirfuser/devel/CCPPETMR_VM/scripts/update_VGA.sh
