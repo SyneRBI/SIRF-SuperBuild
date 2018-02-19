@@ -50,6 +50,8 @@ Vagrant.configure("2") do |config|
 	vb.name = "SIRF_1.0.0-rc.1"
 	vb.customize ["modifyvm", :id, 
 	              "--clipboard", "bidirectional"]
+	#vb.customize [ "modifyvm", :id, 
+	#              "--uartmode1", "disconnected" ]
   end
 
   #
@@ -75,7 +77,9 @@ Vagrant.configure("2") do |config|
     adduser $SIRFUSERNAME sudo
     { echo $SIRFPASS; echo $SIRFPASS; } | passwd $SIRFUSERNAME 
 
-   apt-get update
+	sed -i 's/ console=ttyS0//' /etc/default/grub.d/50-cloudimg-settings.cfg
+    update-grub
+    apt-get update
 	# mark grup as hold as it requires user intervention on upgrade!
 	apt-mark hold grub-pc
 	# upgrade the list of packages
@@ -83,7 +87,8 @@ Vagrant.configure("2") do |config|
 	#install upgrades
 	apt-get install -y wget git xorg xterm gdm menu gksu synaptic gnome-session gnome-panel metacity --no-install-recommends
     apt-get install -y at-spi2-core gnome-terminal gnome-control-center nautilus 
-    service gdm start
+    
+	service gdm start
     
 	# set the current locale, otherwise the gnome-terminal doesn't start
 	sudo locale-gen en_GB.UTF-8
