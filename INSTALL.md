@@ -37,7 +37,7 @@ If you see a dialog box about "starting in scaled mode", you can press OK to all
 
 1. You should get a window where Ubuntu 16.04 will be starting (might take a few minutes). Wait until you see the log-in prompt.
 
-2. Log in as user "sirfuser" with password "virtual" (please note that the default keyboard is with en_US locale: if you have an Azerty-type keyboard, you will have to type "virtuql" until you change your VM keyboard settings). You should get the Gnome3 desktop.
+2. Log in as user "sirfuser" with password "virtual" (please note that the default keyboard is with `en_GB` locale: if you have an Azerty-type keyboard, you will have to type "virtuql" until you change your VM keyboard settings). You should get the Gnome3 desktop.
 
 3. Adjust your Ubuntu settings:
     - Default settings should allow you to access the internet from in the virtual machine.
@@ -56,7 +56,8 @@ If you see a dialog box about "starting in scaled mode", you can press OK to all
    ```
    update_VM.sh
    ```
-5. In the menu-bar of the window that contains your VM, click on "Devices" and then "Insert Guest Additions CD". (On a Mac, with the VM window selected, this menu bar is at the top of the screen).
+5. The current (1.0.0-rc.1) VM has been created with Virtual Box 5.1.18 and the Guest Additions have been installed. If you have a different version of Virtual Box you might experience issues, especially running the X server. You should update the Guest Additions by downloading the [appropriate file](http://download.virtualbox.org/virtualbox/) matching your VirtualBox version from Oracle. 
+In the menu-bar of the window that contains your VM, click on "Devices" and then "Insert Guest Additions CD". (On a Mac, with the VM window selected, this menu bar is at the top of the screen).
    If this generates a window inside your VM to run the software on this "CD", say OK. Otherwise, type
    ```
    sudo /home/sirfuser/devel/CCPPETMR_VM/scripts/update_VGA.sh
