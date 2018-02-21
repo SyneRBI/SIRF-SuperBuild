@@ -26,3 +26,10 @@ The pre-built Ubuntu machine is downloaded and then configured. Virtual Box shou
 That will finish up the creation steps. 
 
 Refer to [here](https://github.com/CCPPETMR/CCPPETMR_VM/blob/master/INSTALL.md) for further informations and instructions.
+
+## VirtualBox Guest Additions
+In case you experience glitches, especially related to the X Server, you need to update the [VirtualBox Guest Additions](https://www.virtualbox.org/manual/ch04.html) to match your version of VirtualBox.
+
+## Pre-built downloads
+A pre-built VM with SIRF installed is currently available at [www.ccppetmr.ac.uk/node/120](www.ccppetmr.ac.uk/node/120). Notice that it has been created with Oracle VirtualBox 5.2.6 and contains the VirtualBox Guest Additions for such a version. 
+
