@@ -61,8 +61,8 @@ else
 
         ERRORCODE=$?
         if [ $? -ne 1 ]; then
-          if [ -r /media/cdrom/VBOXADDITIONS*/VBoxLinuxAdditions.run ]; then
-            VGArun=/media/cdrom/VBOXADDITIONS*/VBoxLinuxAdditions.run
+          if [ -r /media/cdrom/VBoxLinuxAdditions.run ]; then
+            VGArun=/media/cdrom/VBoxLinuxAdditions.run
           else
             echo "Could not find VGA on /media/cdrom either!" >> /dev/stderr
           fi
@@ -82,6 +82,14 @@ sh $VGArun
 # clean up
 if [ -r /media/VGAiso/VBoxLinuxAdditions.run ]; then
   umount /media/VGAiso
+  # don't delete the iso in case we need to re-run
+  echo ""
+  #echo "You could delete /tmp/VBoxGuestAdditions_${vboxver}.iso"
+fi
+
+# clean up
+if [ -r /media/cdrom/VBoxLinuxAdditions.run ]; then
+  umount /media/cdrom
   # don't delete the iso in case we need to re-run
   echo ""
   #echo "You could delete /tmp/VBoxGuestAdditions_${vboxver}.iso"
