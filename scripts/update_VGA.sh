@@ -51,8 +51,24 @@ else
     if [ -r /media/*/VBOXADDITIONS*/VBoxLinuxAdditions.run ]; then
       VGArun=/media/*/VBOXADDITIONS*/VBoxLinuxAdditions.run
     else
-        echo "CD still not found. Aborting!" >> /dev/stderr
-        exit
+        echo "CD still not found. Trying /dev/sr0 !" >> /dev/stderr
+
+        if [ ! -e /media/cdrom ]; then
+          mkdir -p /media/cdrom
+        fi
+
+        mount /dev/sr0 /media/cdrom
+
+        ERRORCODE=$?
+        if [ $? eq 1 ]; then
+          if [ -r /media/cdrom/VBOXADDITIONS*/VBoxLinuxAdditions.run ]; then
+            VGArun=/media/cdrom/VBOXADDITIONS*/VBoxLinuxAdditions.run
+          else
+            echo "Could not find VGA on /media/cdrom either!" >> /dev/stderr
+          fi
+        else
+          echo "Could not mount to /media/cdrom either!" >> /dev/stderr
+        fi
     fi
 fi
 
