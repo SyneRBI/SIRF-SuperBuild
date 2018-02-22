@@ -57,20 +57,21 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
     SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
+    BINARY_DIR ${${proj}_SOURCE_DIR}
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
     STAMP_DIR ${${proj}_STAMP_DIR}
+    INSTALL_DIR ${Boost_Install_Dir}
     TMP_DIR ${${proj}_TMP_DIR}
-    BUILD_IN_SOURCE 1
+    BUILD_IN_SOURCE 0
 
     CONFIGURE_COMMAND ${CMAKE_COMMAND}
                              ${CLANG_ARG}
-                             -DBUILD_DIR:PATH=${${proj}_BINARY_DIR}
+                             -DBUILD_DIR:PATH=${${proj}_SOURCE_DIR}
                              -DBOOST_INSTALL_DIR:PATH=${Boost_Install_Dir}
                              -P ${Boost_Configure_Script}
     INSTALL_COMMAND ""
     BUILD_COMMAND ${CMAKE_COMMAND}
-                             -DBUILD_DIR:PATH=${${proj}_BINARY_DIR}
+                             -DBUILD_DIR:PATH=${${proj}_SOURCE_DIR}
                              -DBOOST_INSTALL_DIR:PATH=${Boost_Install_Dir} -P ${Boost_Build_Script}
   )
 

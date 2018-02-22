@@ -21,7 +21,8 @@
 if(WIN32)
   execute_process(COMMAND bootstrap.bat
     WORKING_DIRECTORY ${BUILD_DIR} RESULT_VARIABLE bootstrap_result)
-else(WIN32)
+else()
+  message("Build dir is : ${BUILD_DIR}")
   execute_process(COMMAND ./bootstrap.sh --prefix=${BOOST_INSTALL_DIR}
     --with-libraries=system,filesystem,thread,program_options,chrono,date_time,atomic,timer,regex
     #--with-libraries=system,thread,program_options,log,math...
