@@ -56,14 +56,14 @@ If you see a dialog box about "starting in scaled mode", you can press OK to all
    ```
    update_VM.sh
    ```
-5. The current (1.0.0-rc.1) VM has been created with Virtual Box 5.1.18 and the Guest Additions have been installed. If you have a different version of Virtual Box you might experience issues, especially running the X server. You should update the Guest Additions by downloading the [appropriate file](http://download.virtualbox.org/virtualbox/) matching your VirtualBox version from Oracle. 
-In the menu-bar of the window that contains your VM, click on "Devices" and then "Insert Guest Additions CD". (On a Mac, with the VM window selected, this menu bar is at the top of the screen).
-   If this generates a window inside your VM to run the software on this "CD", say OK. Otherwise, type
-   ```
-   sudo /home/sirfuser/devel/CCPPETMR_VM/scripts/update_VGA.sh
-    ```
-   This fixes a [potential mismatch](https://github.com/CCPPETMR/CCPPETMR_VM/issues/9) between the installed Virtual Box Guest Addition (VGA) and the version of VirtualBox you are running. If a new version was installed,
-please restart Ubuntu (arrow in top-right corner of your VM).
+5.  The VM has been created with a particular version of Virtual Box (see the Download page) and with the [VirtualBox Guest Additions](https://www.virtualbox.org/manual/ch04.html) (VGA) pre-installed. If you have a different version of Virtual Box you might experience [issues](https://github.com/CCPPETMR/CCPPETMR_VM/issues/9), especially [running the X server](https://github.com/CCPPETMR/CCPPETMR_VM/issues/60#issuecomment-367611385). If you are using a different version of VirtualBox we therefore strongly recommend to sync your VGA version as follows:
+
+  - In the menu-bar of the window that contains your VM, click on "Devices" and then "Insert Guest Additions CD". (On a Mac, with the VM window selected, this menu bar is at the top of the screen).
+  - If this generates a window inside your VM to run the software on this "CD", say OK. Otherwise, type
+```
+   sudo ~/devel/CCPPETMR_VM/scripts/update_VGA.sh
+   sudo reboot
+```
 
 ## How to shut down the VM
 To shut down your VM when you are finished with it, use one of the following options. 
