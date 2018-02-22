@@ -60,7 +60,7 @@ else
         mount /dev/sr0 /media/cdrom
 
         ERRORCODE=$?
-        if [ $? eq 1 ]; then
+        if [ $? -ne 1 ]; then
           if [ -r /media/cdrom/VBOXADDITIONS*/VBoxLinuxAdditions.run ]; then
             VGArun=/media/cdrom/VBOXADDITIONS*/VBoxLinuxAdditions.run
           else
