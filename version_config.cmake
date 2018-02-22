@@ -73,6 +73,10 @@ option(DEVEL_BUILD "Use current versions of major packages" OFF)
 set(GTest_URL https://github.com/google/googletest )
 set(GTest_TAG release-1.8.0)
 
+## glog
+set(glog_URL https://github.com/google/glog )
+set(glog_TAG v035)
+
 ## ITK
 set(ITK_URL https://itk.org/ITK.git)
 set(ITK_TAG v4.13.0)
@@ -103,6 +107,14 @@ if (DEVEL_BUILD)
   set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
   set(DEFAULT_ISMRMRD_TAG origin/master)
 
+  ## petmr-rd-tools
+  set(DEFAULT_petmr_rd_tools_URL https://github.com/UCL/petmr-rd-tools )
+  set(DEFAULT_petmr_rd_tools_TAG origin/master)
+
+  ## glog
+  set(DEFAULT_glog_URL https://github.com/google/glog )
+  set(DEFAULT_glog_TAG v035)
+
 else()
   set(DEFAULT_SIRF_TAG v1.0.0-rc.1)
 
@@ -125,6 +137,14 @@ else()
   set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
   set(DEFAULT_ISMRMRD_TAG 42d93137cc16c270c8ba065edd2496483161bd21)
 
+  ## petmr-rd-tools
+  set(DEFAULT_petmr_rd_tools_URL https://github.com/UCL/petmr-rd-tools )
+  set(DEFAULT_petmr_rd_tools_TAG b6f46e777b1a5ecec52d5cf0573a0f070f9b277b)
+
+  ## glog
+  set(DEFAULT_glog_URL https://github.com/google/glog )
+  set(DEFAULT_glog_TAG v035)
+
 endif()
 
 
@@ -145,7 +165,15 @@ SET(siemens_to_ismrmrd_URL ${DEFAULT_siemens_to_ismrmrd_URL} CACHE STRING ON)
 SET(ISMRMRD_TAG ${DEFAULT_ISMRMRD_TAG} CACHE STRING ON)
 SET(ISMRMRD_URL ${DEFAULT_ISMRMRD_URL} CACHE STRING ON)
 
+SET(petmr_rd_tools_TAG ${DEFAULT_petmr_rd_tools_TAG} CACHE STRING ON)
+SET(petmr_rd_tools_URL ${DEFAULT_petmr_rd_tools_URL} CACHE STRING ON)
+
+SET(glog_URL ${DEFAULT_glog_URL} CACHE STRING ON)
+SET(glog_TAG ${DEFAULT_glog_TAG} CACHE STRING ON)
+
 mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   Gadgetron_URL Gadgetron_TAG
   siemens_to_ismrmrd_URL siemens_to_ismrmrd_TAG
-  ISMRMRD_URL ISMRMRD_TAG)
+  ISMRMRD_URL ISMRMRD_TAG
+  petmr_rd_tools_URL petmr_rd_tools_TAG
+  glog_URL glog_TAG)

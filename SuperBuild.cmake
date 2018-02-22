@@ -110,12 +110,6 @@ option(USE_SYSTEM_SIRF "Build using an external version of SIRF" OFF)
 option(USE_SYSTEM_GTest "Build using an external version of GTest" OFF)
 option(BUILD_STIR_WITH_OPENMP "Build STIR with OpenMP acceleration" OFF)
 
-# ITK
-option(USE_ITK "Use ITK" OFF)
-if (USE_ITK)
-  option(USE_SYSTEM_ITK "Build using an external version of ITK" OFF)
-endif()
-
 if (WIN32)
   set(build_Gadgetron_default OFF)
 else()
@@ -124,6 +118,18 @@ endif()
 
 option(BUILD_GADGETRON "Build Gadgetron" ${build_Gadgetron_default})
 option(BUILD_siemens_to_ismrmrd "Build siemens_to_ismrmrd" OFF)
+option(BUILD_petmr_rd_tools "Build petmr_rd_tools" OFF)
+
+if (BUILD_petmr_rd_tools)
+    set(USE_ITK ON CACHE BOOL "Use ITK" FORCE)
+    option(USE_SYSTEM_glog "Build using an external version of glog" OFF)
+endif()
+
+# ITK
+option(USE_ITK "Use ITK" OFF)
+if (USE_ITK)
+  option(USE_SYSTEM_ITK "Build using an external version of ITK" OFF)
+endif()
 
 set(${PRIMARY_PROJECT_NAME}_DEPENDENCIES
     SIRF
@@ -135,6 +141,10 @@ endif()
 
 if (BUILD_siemens_to_ismrmrd)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES siemens_to_ismrmrd)
+endif()
+
+if (BUILD_petmr_rd_tools)
+  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES petmr_rd_tools)
 endif()
 
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${PRIMARY_PROJECT_NAME}_DEPENDENCIES)
