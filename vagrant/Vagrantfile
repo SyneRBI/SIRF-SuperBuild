@@ -95,6 +95,7 @@ Vagrant.configure("2") do |config|
 	sudo locale-gen en_US.UTF-8
 	sudo locale-gen de_DE.UTF-8
 	sudo locale-gen fr_FR.UTF-8
+	sudo locale-gen es_ES.UTF-8
 	sudo locale-gen it_IT.UTF-8
 	sudo locale-gen pt_PT.UTF-8
 	sudo locale-gen pt_BR.UTF-8
@@ -115,10 +116,8 @@ Vagrant.configure("2") do |config|
 	sudo echo 'SystemAccount=true' >> vagrant
 	sudo cp -v vagrant /var/lib/AccountsService/users/vagrant
 
-	# To Ubuntu user from login screen:
-	#sudo echo '[User]' > Ubuntu
-	#sudo echo 'SystemAccount=true' >> Ubuntu
-	#sudo cp -v Ubuntu /var/lib/AccountsService/users/Ubuntu
+	# To remove the Ubuntu user from VM:
+        sudo deluser --remove-home ubuntu
     # Could add custom logos here: /etc/gdm3/greeter.dconf-defaults 
 
     cd /opt
