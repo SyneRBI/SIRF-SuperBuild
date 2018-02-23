@@ -3,7 +3,7 @@
 # Script to install/update VirtualBox Guest Additions on a Linux system.
 #
 # Authors: Kris Thielemans and Ben Thomas
-# Copyright 2017 University College London
+# Copyright 2017-2018 University College London
 #
 # This is software developed for the Collaborative Computational
 # Project in Positron Emission Tomography and Magnetic Resonance imaging
@@ -52,15 +52,11 @@ else
       VGArun=/media/*/VBOXADDITIONS*/VBoxLinuxAdditions.run
     else
         echo "CD still not found. Trying /dev/sr0 !" >> /dev/stderr
+        mkdir -p /media/cdrom
 
-        if [ ! -e /media/cdrom ]; then
-          mkdir -p /media/cdrom
-        fi
+        ARGS="mount -t iso9660 /dev/sr0 /media/cdrom"
 
-        mount /dev/sr0 /media/cdrom
-
-        ERRORCODE=$?
-        if [ $? -ne 1 ]; then
+        if eval $ARGS ; then
           if [ -r /media/cdrom/VBoxLinuxAdditions.run ]; then
             VGArun=/media/cdrom/VBoxLinuxAdditions.run
           else
