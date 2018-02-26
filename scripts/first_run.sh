@@ -1,8 +1,7 @@
-#! /bin/sh
+#! /bin/bash
 
 #========================================================================
 # Author: Edoardo Pasca
-# Copyright 2018 University College London
 # Copyright 2018 Science Technology Facilities Council
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) virtual machine.
@@ -30,11 +29,11 @@ export DISPLAY=$(grep -z DISPLAY /proc/$PID/environ | cut -d= -f2-)
 #echo "display " $DISPLAY " dbus " $DBUS_SESSION_BUS_ADDRESS
 
 # add input sources
-sudo gsettings set org.gnome.desktop.input-sources sources "[('xkb','uk'), ('xkb','us'),('xkb','de'),('xkb','fr'),('xkb','es'),('xkb','it'),('xkb','pt'),('xkb','br'),('xkb','jp'),('xkb','cn')]"
+gsettings set org.gnome.desktop.input-sources sources "[('xkb','uk'), ('xkb','us'),('xkb','de'),('xkb','fr'),('xkb','es'),('xkb','it'),('xkb','pt'),('xkb','br'),('xkb','jp'),('xkb','cn')]"
 # remove screen lock for sirfuser
-sudo gsettings set org.gnome.desktop.lockdown disable-lock-screen 'true'
+gsettings set org.gnome.desktop.lockdown disable-lock-screen 'true'
 
 #zerofill
-sudo dd if=/dev/zero of=/EMPTY bs=1M
-sudo rm -f /EMPTY
-dd 
+dd if=/dev/zero of=/tmp/EMPTY bs=1M
+rm -f /tmp/EMPTY
+ 
