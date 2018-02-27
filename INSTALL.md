@@ -58,12 +58,19 @@ If you see a dialog box about "starting in scaled mode", you can press OK to all
    ```
 5. The VM has been created with a particular version of Virtual Box (see the Download page) and with the [VirtualBox Guest Additions](https://www.virtualbox.org/manual/ch04.html) (VGA) pre-installed. If you have a different version of Virtual Box you might experience [issues](https://github.com/CCPPETMR/CCPPETMR_VM/issues/9), especially [running the X server](https://github.com/CCPPETMR/CCPPETMR_VM/issues/60#issuecomment-367611385). If you are using a different version of VirtualBox we therefore strongly recommend to sync your VGA version as follows:\
 In the menu-bar of the window that contains your VM, click on "Devices" and then "Insert Guest Additions CD". (On a Mac, with the VM window selected, this menu bar is at the top of the screen). If this generates a window inside your VM to run the software on this "CD", say OK. Otherwise, type
-   ```
+
+  ```
    sudo ~/devel/CCPPETMR_VM/scripts/update_VGA.sh
-   sudo reboot
+  ```
+
+6.After the creation of the VM, there are still a small number of configuration steps which can be run as `sirfuser`. These steps involve minor configuration of the Gnome environment and the zero-fill trick to reduce the size of the VM.
+
+  ```
+    ~/devel/CCPPETMR_VM/scripts/first_run.sh
   ```
 
 ## How to shut down the VM
+
 To shut down your VM when you are finished with it, use one of the following options. 
 
 1. Close the VM window and use "save machine state" (allowing you to resume from where you were).
