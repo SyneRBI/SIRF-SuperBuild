@@ -98,8 +98,10 @@ Vagrant.configure("2") do |config|
     adduser $SIRFUSERNAME sudo
     { echo $SIRFPASS; echo $SIRFPASS; } | passwd $SIRFUSERNAME 
 
+	# remove serial port from grub configuration
 	sed -i 's/ console=ttyS0//' /etc/default/grub.d/50-cloudimg-settings.cfg
     update-grub
+	# update the system
     apt-get update
 	# mark grup as hold as it requires user intervention on upgrade!
 	apt-mark hold grub-pc
@@ -107,7 +109,7 @@ Vagrant.configure("2") do |config|
 	apt-get upgrade -y
 	#install upgrades
 	apt-get install -y wget git xorg xterm gdm menu gksu synaptic gnome-session gnome-panel metacity --no-install-recommends
-    apt-get install -y at-spi2-core gnome-terminal gnome-control-center nautilus 
+    apt-get install -y at-spi2-core gnome-terminal gnome-control-center nautilus dmz-cursor-theme
     
 	service gdm start
     
@@ -125,9 +127,6 @@ Vagrant.configure("2") do |config|
 	sudo update-locale LANG=en_GB.UTF-8
 	sudo localectl set-x11-keymap uk
 	sudo localectl status
-	#sudo localectl set-x11-keymap us
-	#sudo localectl list-keymaps
-	#sudo localectl set-locale en_GB.UTF-8
 	
 	
 	# To hide vagrant from login screen:
@@ -138,7 +137,7 @@ Vagrant.configure("2") do |config|
 	sudo cp -v vagrant /var/lib/AccountsService/users/vagrant
 
 	# To remove the Ubuntu user from VM:
-        sudo deluser --remove-home ubuntu
+    sudo deluser --remove-home ubuntu
     # Could add custom logos here: /etc/gdm3/greeter.dconf-defaults 
 
     cd /opt
@@ -149,19 +148,12 @@ Vagrant.configure("2") do |config|
     HOME=/home/sirfuser
     mkdir $HOME/devel
     cd $HOME/devel
-    
-	export SRC_PATH=$HOME/devel
-    export INSTALL_DIR=$HOME/devel/build/install
-    export LD_LIBRARY_PATH=$INSTALL_DIR/lib:$LD_LIBRARY_PATH
-    export PYTHONPATH=$INSTALL_DIR/python 
-    export CMAKE="cmake -DCMAKE_PREFIX_PATH:PATH=$INSTALL_DIR/lib/cmake -DCMAKE_INSTALL_PREFIX:PATH=$INSTALL_DIR"
-    export CCMAKE="ccmake -DCMAKE_PREFIX_PATH:PATH=$INSTALL_DIR/lib/cmake -DCMAKE_INSTALL_PREFIX:PATH=$INSTALL_DIR"
-
+	
     git clone https://github.com/CCPPETMR/CCPPETMR_VM.git
 	cd CCPPETMR_VM
 	git pull
-    bash $SRC_PATH/CCPPETMR_VM/scripts/INSTALL_prerequisites_with_apt-get.sh
-    bash $SRC_PATH/CCPPETMR_VM/scripts/UPDATE.sh
+    bash $HOME/devel/CCPPETMR_VM/scripts/INSTALL_prerequisites_with_apt-get.sh
+    bash $HOME/devel/CCPPETMR_VM/scripts/UPDATE.sh
     chown -R sirfuser:users /home/sirfuser/
     
    SHELL
