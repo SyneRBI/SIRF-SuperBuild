@@ -212,6 +212,8 @@ install:
       ( set -ev
         # pull previous base image for its layer cache
         docker pull ccppetmr/sirf:core
+        # count the docker pull (prefix `d`)
+        clone_count_decrement d
         # rebuild base image (using above docker cache)
         # and sirf image (with travis' ccache)
         rm -rf devel/.ccache
