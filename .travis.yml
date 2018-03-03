@@ -217,6 +217,9 @@ install:
         rm -rf devel/.ccache
         mv ~/.ccache devel/
         $DCC build --pull core
+        # don't count the extra clone we're about to do
+        # TODO: Do we need this? Is docker a distinct cloner from travis?
+        # cloners_count_decrement
         $DCC build sirf
         # extract updated ccache
         sudo rm -rf devel/.ccache/*

@@ -1,4 +1,4 @@
-FROM ubuntu:16.04 as core
+FROM ubuntu:16.04 as base
 LABEL \
   author.name="Casper da Costa-Luis"          \
   author.email=imaging@caspersci.uk.to        \
@@ -10,13 +10,16 @@ LABEL \
 
 ENV DEBIAN_FRONTEND noninteractive
 
+COPY raw-ubuntu.sh .
+RUN bash raw-ubuntu.sh
+RUN rm raw-ubuntu.sh
+
 # Set locale, suppress warnings
-RUN apt-get update && apt-get install -y apt-utils locales
-RUN locale-gen en_GB.UTF-8
 #ENV LC_ALL en_GB.UTF-8
 ENV LANG en_GB.UTF-8
 ENV LANGUAGE en_GB:en
-#RUN localectl set-locale LANG="en_GB.UTF-8"
+
+FROM base as core
 
 COPY build_essential-ubuntu.sh .
 RUN bash build_essential-ubuntu.sh
@@ -53,9 +56,7 @@ COPY entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/bin/bash"]
 
-## end of core ##
-
-FROM ccppetmr/sirf:core as sirf
+FROM core as sirf
 LABEL description="CCP PET-MR SIRF"
 
 ENV DEBIAN_FRONTEND noninteractive
