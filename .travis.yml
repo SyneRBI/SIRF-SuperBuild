@@ -222,9 +222,9 @@ install:
         # cloners_count_decrement
         $DCC build sirf
         # extract updated ccache
-        sudo rm -rf devel/.ccache/*
-        $DCC run --rm sirf /bin/bash -c 'sudo cp -a /opt/ccache/* /devel/.ccache/'
-        # replace travis' ccache with the built images's
+        rm -rf devel/.ccache/*
+        $DCC run --rm sirf /bin/bash -c 'cp -a /opt/ccache/* /devel/.ccache/'
+        # replace travis' ccache with the built image's
         mv devel/.ccache ~
       )
     else
@@ -243,7 +243,7 @@ script:
     if [[ -n "$DOCKER_BUILD" ]]; then
       # push images - but only after tests pass within the container!
       echo "$DOCKER_PWD" | docker login -u $DOCKER_USR --password-stdin
-      $DCC run --rm sirf /bin/bash --login -c /devel/test.sh \
+      $DCC run --rm sirf /bin/bash --login -c '/devel/test.sh 1' \
         && $DCC push \
         && if [[ -n "$TRAVIS_TAG" && "$DOCKER_BUILD" != DEVEL ]]; then ( set -ev
              # tag release
