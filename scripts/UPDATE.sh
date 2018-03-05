@@ -107,16 +107,15 @@ SuperBuild(){
     cd SIRF-SuperBuild
     git fetch
   fi
-# go to SIRF_TAG
-if [ $1 = 'default' ] 
-then
- # get the latest tag matching v
- SIRF_TAG=`git fetch; git describe --abbrev=0 --tags --match=v*`
-else
- SIRF_TAG=$1
-fi
-echo "***********************************git checkout $SIRF_TAG"
-git checkout $SIRF_TAG
+  # go to SIRF_TAG
+  if [ $1 = 'default' ] 
+  then
+   # get the latest tag matching v
+   SIRF_TAG=`git fetch; git describe --abbrev=0 --tags --match=v*`
+  else
+   SIRF_TAG=$1
+  fi
+  git checkout $SIRF_TAG
   cd ..
   mkdir -p buildVM
   
