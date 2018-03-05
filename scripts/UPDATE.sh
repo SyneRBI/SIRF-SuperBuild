@@ -36,6 +36,16 @@ while getopts :t: option
  case "${option}"
   in
   t) SIRF_TAG=$OPTARG;;
+  h)
+   echo "Usage: $0 [-t tag]"
+   echo "Use the tag option to checkout a specific version."
+   echo "Otherwise the most recent release will be used."
+   exit 
+   ;;
+  *)
+   echo "Wrong option passed."
+   exit 1
+  ;;
  esac
 done
 
@@ -95,8 +105,7 @@ SuperBuild(){
     cd SIRF-SuperBuild
   else
     cd SIRF-SuperBuild
-    git checkout master
-    git pull
+    git fetch
   fi
 # go to SIRF_TAG
 if [ $1 = 'default' ] 
