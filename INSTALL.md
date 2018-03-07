@@ -63,11 +63,7 @@ In the menu-bar of the window that contains your VM, click on "Devices" and then
    sudo ~/devel/CCPPETMR_VM/scripts/update_VGA.sh
   ```
 
-6.After the creation of the VM, there are still a small number of configuration steps which can be run as `sirfuser`. These steps involve minor configuration of the Gnome environment and the zero-fill trick to reduce the size of the VM.
 
-  ```
-    ~/devel/CCPPETMR_VM/scripts/first_run.sh
-  ```
 
 ## How to shut down the VM
 
