@@ -129,7 +129,13 @@ before_install:
       else
         brew upgrade python || travis_terminate 1
         brew install python3 || travis_terminate 1
-        export PYINST=/usr/local/Cellar/python3/3.6.*/Frameworks/Python.framework/Versions
+
+        TARGETPYVER=`find /usr/local/Cellar/python3/* -type d  -maxdepth 0 | sed 's#.*/##' | sort -V | tail -n 1`
+        if [ -z $TARGETPYVER ]; then
+          travis_terminate 1
+        fi
+        export PYINST="/usr/local/Cellar/python3/${TARGETPYVER}/Frameworks/Python.framework/Versions"
+
         export PY_EXE=$PYINST/$PYMVER.6/bin/python3.6
         export BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_LIBRARY=$PYINST/3.6/Python"
         export BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_INCLUDE_DIR=$PYINST/3.6/include/python3.6m"
