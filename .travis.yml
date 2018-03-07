@@ -175,8 +175,8 @@ before_install:
  - git clone https://$GITHUB_API_TOKEN@github.com/CCPPETMR/github-stats --branch $TRAVIS_REPO_SLUG
  # update with last fortnight's clones from GitHub API
  - source github-stats/setup.sh
- # decrement to skip counting travis' clone, and print total number of clones
- - clone_count_decrement
+ # count unique clones, excluding travis, and print total
+ - gh_stats_count -k uniques
  - |
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       # pip path fix
@@ -204,8 +204,6 @@ before_install:
 install:
  - |
     if [[ -n "$DOCKER_BUILD" ]]; then
-      # don't count the extra docker clone
-      clone_count_decrement
       cd docker
       export DCC="docker-compose -f $PWD/docker-compose.yml"
       [[ "$DOCKER_BUILD" == DEVEL ]] && export DCC="$DCC -f $PWD/docker-compose.devel.yml"
@@ -213,7 +211,7 @@ install:
         # pull previous base image for its layer cache
         docker pull ccppetmr/sirf:core
         # count the docker pull (prefix `d`)
-        clone_count_decrement d
+        gh_stats_count -k uniques --decrement -pd
         # rebuild base image (using above docker cache)
         # and sirf image (with travis' ccache)
         rm -rf devel/.ccache
