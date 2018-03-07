@@ -31,15 +31,18 @@ set -e
 # give a sensible error message (note: works only in bash)
 trap 'echo An error occurred in $0 at line $LINENO. Current working-dir: $PWD' ERR
 SIRF_TAG='default'
-while getopts ht: option
+num_parallel=2
+while getopts ht:j: option
  do
  case "${option}"
   in
   t) SIRF_TAG=$OPTARG;;
+  j) num_parallel=$OPTARG;;
   h)
-   echo "Usage: $0 [-t tag]"
+   echo "Usage: $0 [-t tag] [-j n]"
    echo "Use the tag option to checkout a specific version."
    echo "Otherwise the most recent release will be used."
+   echo "Use the -j option to change the number of parallel builds from the default ${num_parallel}"
    exit 
    ;;
   *)
@@ -129,7 +132,7 @@ SuperBuild(){
   
   cd buildVM
   cmake ../SIRF-SuperBuild -DCMAKE_INSTALL_PREFIX=${SIRF_INSTALL_PATH} -USIRF_URL -USIRF_TAG -USTIR_URL -USTIR_TAG -UGadgetron_URL -UGadgetron_TAG -UISMRMRD_URL -UISMRMRD_TAG -DUSE_SYSTEM_SWIG=On -DUSE_SYSTEM_Boost=On -DUSE_SYSTEM_Armadillo=On -DUSE_SYSTEM_FFTW3=On -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=On
-  make -j2
+  make -j${num_parallel}
 
   if [ ! -f ${SIRF_INSTALL_PATH}/share/gadgetron/config/gadgetron.xml ]
   then 
