@@ -4,8 +4,8 @@
 # but will currently change your .sirfrc. This is to be avoided later on.
 #
 # Authors: Kris Thielemans, Evgueni Ovtchinnikov and Edoardo Pasca
-# Copyright 2016-2017 University College London
-# Copyright 2016-2017 Rutherford Appleton Laboratory STFC
+# Copyright 2016-2018 University College London
+# Copyright 2016-2018 Rutherford Appleton Laboratory STFC
 #
 # This is software developed for the Collaborative Computational
 # Project in Positron Emission Tomography and Magnetic Resonance imaging
@@ -31,7 +31,7 @@ set -e
 # give a sensible error message (note: works only in bash)
 trap 'echo An error occurred in $0 at line $LINENO. Current working-dir: $PWD' ERR
 SIRF_TAG='default'
-while getopts :t: option
+while getopts ht: option
  do
  case "${option}"
   in
@@ -43,11 +43,19 @@ while getopts :t: option
    exit 
    ;;
   *)
-   echo "Wrong option passed."
+   echo "Wrong option passed. Use the -h option to get some help." >&2
    exit 1
   ;;
  esac
 done
+# get rid of processed options
+shift $((OPTIND-1))
+
+if [ $# -ne 0 ]
+then
+  echo "Wrong command line format. Use the -h option to get some help." >&2
+  exit 1
+fi
 
 if [ -r ~/.sirfrc ]
 then
