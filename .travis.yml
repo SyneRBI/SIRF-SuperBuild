@@ -130,7 +130,7 @@ before_install:
         brew upgrade python || travis_terminate 1
         brew install python3 || travis_terminate 1
 
-        TARGETPYVER=`find /usr/local/Cellar/python3/* -type d  -maxdepth 0 | sed 's#.*/##' | sort -V | tail -n 1`
+        TARGETPYVER=`find /usr/local/Cellar/python3/ -type d  -maxdepth 1 | sed 's#.*/##' | sort -V | tail -n 1`
         if [ -z $TARGETPYVER ]; then
           travis_terminate 1
         fi
