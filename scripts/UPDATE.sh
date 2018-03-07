@@ -122,7 +122,7 @@ SuperBuild(){
   if [ $1 = 'default' ] 
   then
    # get the latest tag matching v
-   SB_TAG=`git fetch; git describe --abbrev=0 --tags --match=v*`
+   SB_TAG=`git fetch; git for-each-ref refs/tags/v* --sort=-taggerdate --format='%(refname:short)' --count=1`
   else
    SB_TAG=$1
   fi
