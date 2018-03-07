@@ -32,6 +32,8 @@ export DISPLAY=$(grep -z DISPLAY /proc/$PID/environ | cut -d= -f2-)
 gsettings set org.gnome.desktop.input-sources sources "[('xkb','uk'), ('xkb','us'),('xkb','de'),('xkb','fr'),('xkb','es'),('xkb','it'),('xkb','pt'),('xkb','br'),('xkb','jp'),('xkb','cn')]"
 # remove screen lock for sirfuser
 gsettings set org.gnome.desktop.lockdown disable-lock-screen 'true'
+# enlarge pointer size
+gsettings set org.gnome.desktop.interface cursor-size 120
 
 #zerofill
 dd if=/dev/zero of=/tmp/EMPTY bs=1M
