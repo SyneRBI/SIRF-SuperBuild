@@ -30,6 +30,24 @@
 set -e
 # give a sensible error message (note: works only in bash)
 trap 'echo An error occurred in $0 at line $LINENO. Current working-dir: $PWD' ERR
+SIRF_TAG='default'
+while getopts :t: option
+ do
+ case "${option}"
+  in
+  t) SIRF_TAG=$OPTARG;;
+  h)
+   echo "Usage: $0 [-t tag]"
+   echo "Use the tag option to checkout a specific version."
+   echo "Otherwise the most recent release will be used."
+   exit 
+   ;;
+  *)
+   echo "Wrong option passed."
+   exit 1
+  ;;
+ esac
+done
 
 if [ -r ~/.sirfrc ]
 then
@@ -87,8 +105,17 @@ SuperBuild(){
     cd SIRF-SuperBuild
   else
     cd SIRF-SuperBuild
-    git pull
+    git fetch
   fi
+  # go to SIRF_TAG
+  if [ $1 = 'default' ] 
+  then
+   # get the latest tag matching v
+   SIRF_TAG=`git fetch; git describe --abbrev=0 --tags --match=v*`
+  else
+   SIRF_TAG=$1
+  fi
+  git checkout $SIRF_TAG
   cd ..
   mkdir -p buildVM
   
@@ -165,7 +192,7 @@ update()
 }
 
 # Launch the SuperBuild to update
-SuperBuild
+SuperBuild $SIRF_TAG
 
 # Get extra python tools
 clone_or_pull ismrmrd-python-tools

@@ -5,6 +5,7 @@ echo "Updating..."
 cd ~/devel/CCPPETMR_VM
 git pull
 cd scripts
-./UPDATE.sh
+
+./UPDATE.sh $*
 
 echo "All done"
