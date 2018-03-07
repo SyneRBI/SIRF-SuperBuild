@@ -20,6 +20,7 @@ by the SuperBuild, [see below for more info for your operating system](#os-speci
     6. [Set Environment variables](#Set_Environment_variables)
     7. [Open a terminal and start Gadgetron](#Start_Gadgetron)
     8. [Testing](#Testing)
+    9. [Running examples](#Running_examples)
 3. [OS specific information](#OS_specific_information)
    1. [Installation instructions for Ubuntu](#Ubuntu_installation)
    2. [Installation instructions for Mac OS](#OSX_installation)
@@ -178,6 +179,14 @@ ctest --verbose
 ```
 If you see failures, you might not have followed the above steps correctly, or have some missing Python modules.
 
+### Running examples <a name="Running_examples"></a>
+We distribute examples for both Python and MATLAB. You can find them as follows:
+```bash
+cd $SIRF_PATH
+cd examples
+ls
+```
+See [our related Wiki page](https://github.com/CCPPETMR/SIRF/wiki/Examples) for more information.
 ## OS specific information <a name="OS_specific_information"></a>
 ### Installation instructions for Ubuntu <a name="Ubuntu_installation"></a>
 
