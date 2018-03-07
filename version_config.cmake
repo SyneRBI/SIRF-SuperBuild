@@ -116,7 +116,7 @@ if (DEVEL_BUILD)
   set(DEFAULT_glog_TAG v035)
 
 else()
-  set(DEFAULT_SIRF_TAG v1.0.0-rc.1)
+  set(DEFAULT_SIRF_TAG v1.0.0-rc.2)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
@@ -139,7 +139,7 @@ else()
 
   ## petmr-rd-tools
   set(DEFAULT_petmr_rd_tools_URL https://github.com/UCL/petmr-rd-tools )
-  set(DEFAULT_petmr_rd_tools_TAG b6f46e777b1a5ecec52d5cf0573a0f070f9b277b)
+  set(DEFAULT_petmr_rd_tools_TAG b88281f79e8c4a3781ebda7663f1ce7f5cab6e68)
 
   ## glog
   set(DEFAULT_glog_URL https://github.com/google/glog )
