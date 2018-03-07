@@ -33,3 +33,12 @@ In case you experience glitches, especially related to the X Server, you need to
 ## Pre-built downloads
 A pre-built VM with SIRF installed is currently available at [www.ccppetmr.ac.uk/downloads](www.ccppetmr.ac.uk/downloads). Notice that it has been created with Oracle VirtualBox 5.2.6 and contains the VirtualBox Guest Additions for such a version. 
 
+### Pre-built VM final steps
+When building the official prebuilt VM with SIRF pre-installed, we follow the steps above. 
+Additionally we run the script `first_run.sh` which
+
+1. changes some settings of the gnome desktop environment
+2. compacts the size of the appliance. This step involves filling the virtual hard drive with an enourmous file followed by its removal.
+
+Users are **not required** to run the `first_run.sh` script.
+
