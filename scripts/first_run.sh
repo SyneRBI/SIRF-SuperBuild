@@ -36,6 +36,9 @@ gsettings set org.gnome.desktop.lockdown disable-lock-screen 'true'
 gsettings set org.gnome.desktop.interface cursor-size 120
 
 #zerofill
+echo "Now creating a very large file filled with zeroes, and then delete it"
+echo "such that VirtualBox will create a compact OVA file."
+echo "You will see message saying \"error writing '/tmp/EMPTY'\". This is expected."
 dd if=/dev/zero of=/tmp/EMPTY bs=1M
 rm -f /tmp/EMPTY
  
