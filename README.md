@@ -43,9 +43,10 @@ To compile and install SIRF with the SuperBuild follow these steps:
 
 ### Create the SuperBuild directory <a name="Create_the_SuperBuild_directory"></a>
 
+We will assume in these instructions that you want to install the software in `~/devel'. You 
+can of course decide to put it elsewhere. Let's create it first.
 ```bash
-cd ~
-mkdir devel
+mkdir ~/devel
 ```
 
 ### Install CMake >= 3.7  <a name="Install_CMake"></a>
@@ -54,8 +55,6 @@ If you do not have CMake >= 3.7 install it first ([download link](https://cmake.
 you can issue the following commands
 
 ```bash
-cd ~
-cd devel
 wget https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.sh
 sudo mkdir /opt/cmake
 sudo bash cmake-3.7.2-Linux-x86_64.sh --prefix=/opt/cmake
@@ -83,6 +82,10 @@ git clone https://github.com/CCPPETMR/SIRF-SuperBuild.git
 ### Build and install <a name="Build_and_install"></a>
  
 Create a build directory and configure the software.
+
+Note that if you want to use MATLAB, you need to use (and specify) a compiler supported by MATLAB
+and might have to tell CMake where MATLAB is located. Please
+check our [SIRF and MATLAB page](https://github.com/CCPPETMR/SIRF/wiki/SIRF-and-MATLAB).
  
 ```bash
 cd ~/devel
@@ -121,6 +124,7 @@ You probably want to add a similar line (with absolute path) to your .bashrc/.pr
 
 Or for csh
 ```csh
+cd ~/devel/build
 source INSTALL/bin/env_ccppetmr.csh
 ```
 You probably want to add a similar line (with absolute path) to your .cshrc.
