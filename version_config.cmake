@@ -116,7 +116,7 @@ if (DEVEL_BUILD)
   set(DEFAULT_glog_TAG v035)
 
 else()
-  set(DEFAULT_SIRF_TAG v1.0.0-rc.3)
+  set(DEFAULT_SIRF_TAG v1.0.0)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
