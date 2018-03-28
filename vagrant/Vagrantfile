@@ -68,7 +68,7 @@ Vagrant.configure("2") do |config|
        "--type", "dvddrive",
        "--medium", "emptydrive",
        ]
-	vb.name = "SIRF_1.0.0-rc.3"
+	vb.name = "SIRF_1.0.0"
 	vb.customize ["modifyvm", :id, 
 	              "--clipboard", "bidirectional"]
 	#vb.customize [ "modifyvm", :id, 
