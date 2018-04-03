@@ -15,7 +15,7 @@ Although other Virtual Machine software might work, we have not tried this and w
     - If your VirtualBox is too old, you might experience problems with networking etc. Please use at least 5.0.40 (at least 5.2.6 on a Mac).
 
 3. Download the preinstalled virtual machine from http://www.ccppetmr.ac.uk/downloads.
-Warning: this file is ~1.7GB. (You can of course download to a USB stick to save space on your hard-disk).
+Warning: this file is ~1.6GB. (You can of course download to a USB stick to save space on your hard-disk).
 
 4. Open the downloaded OVA file (double-click or whatever is appropriate for your system). This should start VirtualBox with the "Import" dialog box.
 
