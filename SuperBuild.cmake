@@ -97,7 +97,7 @@ set(Matlab_ROOT_DIR $ENV{Matlab_ROOT_DIR} CACHE PATH "Path to Matlab root direct
 # Note that we need the main program for the configuration files and the tests)
 find_package(Matlab COMPONENTS MAIN_PROGRAM)
 
-if (UNIX)
+if (UNIX AND NOT APPLE)
   option(USE_SYSTEM_Boost "Build using an external version of Boost" OFF)
 else()
   option(USE_SYSTEM_Boost "Build using an external version of Boost" ON)
