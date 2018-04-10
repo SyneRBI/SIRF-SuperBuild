@@ -40,6 +40,7 @@ echo "$SRC_DIR/ccpi/Python"
 
 cmake ../SIRF-SuperBuild \
     -DCMAKE_INSTALL_PREFIX=${PREFIX} \
+    -DPYTHON_DEST="${SP_DIR}/sirf" \
     -USIRF_URL \
     -USIRF_TAG \
     -USTIR_URL \
