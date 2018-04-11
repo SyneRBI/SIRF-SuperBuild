@@ -25,10 +25,10 @@
 #
 #=========================================================================
 
-if [ -z "$SIRF_VERSION" ]; then
-    echo "Need to set SIRF_VERSION"
-    exit 1
-fi  
+#if [ -z "$SIRF_VERSION" ]; then
+#    echo "Need to set SIRF_VERSION"
+#    exit 1
+#fi  
 
 mkdir "$SRC_DIR/build"
 mkdir "$SRC_DIR/SIRF-SuperBuild"
@@ -40,15 +40,17 @@ echo "$SRC_DIR/ccpi/Python"
 
 cmake ../SIRF-SuperBuild \
     -DCMAKE_INSTALL_PREFIX=${PREFIX} \
-    -DPYTHON_DEST="${SP_DIR}/sirf" \
+    -DPYTHON_DEST=${SP_DIR}/sirf \
     -USIRF_URL \
     -USIRF_TAG \
+    -DSIRF_TAG=a4f7bd8676bb9c08dd6ba66a55e4ccbddce3bf5f\
     -USTIR_URL \
     -USTIR_TAG \
     -UGadgetron_URL \
     -UGadgetron_TAG \
     -UISMRMRD_URL \
     -UISMRMRD_TAG \
+    -DBUILD_GADGETRON=On \
     -DUSE_SYSTEM_SWIG=On \
     -DUSE_SYSTEM_Boost=Off \
     -DUSE_SYSTEM_Armadillo=Off \
