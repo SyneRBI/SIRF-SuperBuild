@@ -49,11 +49,10 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
   if (BUILD_PYTHON)
-    message("PYTHON_DEST ${PYTHON_DEST}")
-    if (NOT ${PYTHON_DEST})
+    if (PYTHON_DEST)
+    else()
       set(PYTHON_DEST "${SIRF_Install_Dir}/python" CACHE PATH "Destination for python modules")
     endif()
-    message("PYTHON_DEST ${PYTHON_DEST}")
   endif()
   set (BUILD_MATLAB ${Matlab_FOUND})
   if (BUILD_MATLAB)
