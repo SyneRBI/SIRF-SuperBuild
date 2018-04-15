@@ -85,9 +85,9 @@ After installing the VGA, you might want to configure a shared directory between
 Summary of steps (courtesy Nikos Efthimiou):
  
  1. Right click on the CCPPETMR VM in VirtualBox main window and choose Settings.
- 2. Choose "Shared Folders" (last item on the left).
- 3. Add new folder, select the folder you want, and give it a name, e.g. MyLaptop (use small + button near the right edge of the dialog).
- 4. Select folder and opt in "make permanent" and "auto mount".
+ 2. Choose "Shared Folders".
+ 3. Add new folder (use small + button near the right edge of the dialog), select the folder you want, and give it a name, e.g. MyLaptop.
+ 4. Select folder and check "make permanent" and "auto mount".
  5. Start the CCPPETMR VM (or switch to it) and open a terminal and type
  
          mkdir ~/MyLaptop
