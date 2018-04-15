@@ -101,7 +101,7 @@ You can use CCPPETMR Virtual Machine as a Gadgetron server if you cannot install
 
 * Start Virtual Machine.
 
-* Forward port 9002 to VM (in Oracle VM VirtualBox Manager: go to Settings->Network, click on Port Forwarding, add new forwarding rule by clicking on +, set Host Port and Guest Port to 9002).
+* Forward port 9002 to VM (in Oracle VM VirtualBox Manager: go to Settings->Network, Advanced, click on Port Forwarding, add new forwarding rule by clicking on +, set Host Port and Guest Port to 9002).
 
 * Open a new Linux terminal on VM and type 'gadgetron' there.
 
