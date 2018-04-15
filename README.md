@@ -37,7 +37,7 @@ sudo shutdown -r now
 ```
 
 ## Pre-built downloads
-A pre-built VM with SIRF installed is currently available at [www.ccppetmr.ac.uk/downloads](www.ccppetmr.ac.uk/downloads). Notice that it has been created with Oracle VirtualBox 5.2.6 and contains the VirtualBox Guest Additions for such a version. 
+A pre-built VM with SIRF installed is currently available at [www.ccppetmr.ac.uk/downloads](www.ccppetmr.ac.uk/downloads). Notice that it has been created with Oracle VirtualBox 5.2.8 and contains the VirtualBox Guest Additions for such a version. 
 
 ### Pre-built VM final steps
 When building the official prebuilt VM with SIRF pre-installed, we follow the steps above. 
