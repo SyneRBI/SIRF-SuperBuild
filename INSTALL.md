@@ -93,7 +93,7 @@ Summary of steps (courtesy Nikos Efthimiou):
          mkdir ~/MyLaptop
          sudo mount -t vboxsf -o rw,uid=1000,gid=1000 MyLaptop ~/MyLaptop
  
- You will have to type the last command whenever you reboot your VM, or you could make this permanent by pasting the above command to /etc/rc.local before "exit 0" (non-trivial because of admin permissions).
+ You will have to type the last command whenever you reboot your VM, or you could make this permanent by pasting the above command to /etc/rc.local before "exit 0" (non-trivial because of admin permissions). The '1000's in the above refer to the user and group ids of the user. These are not always 1000 - to check, at the command line, type the command `id`.
 
 ## Using VM as a Gadgetron server
 
