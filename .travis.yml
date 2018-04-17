@@ -215,16 +215,21 @@ install:
         # rebuild base image (using above docker cache)
         # and sirf image (with travis' ccache)
         rm -rf devel/.ccache
-        mv ~/.ccache devel/
+        if [[ -n "$DOCKER_RECREATE_CCACHE" ]]; then
+          mkdir devel/.ccache
+          sudo rm -rf ~/.ccache
+        else
+          mv ~/.ccache devel/
+        fi
         $DCC build --pull core
         # don't count the extra clone we're about to do
         # TODO: Do we need this? Is docker a distinct cloner from travis?
         # cloners_count_decrement
         $DCC build sirf
         # extract updated ccache
-        rm -rf devel/.ccache/*
-        $DCC run --rm sirf /bin/bash -c 'cp -a /opt/ccache/* /devel/.ccache/'
-        # replace travis' ccache with the built image's
+        sudo rm -rf devel/.ccache/*
+        $DCC run --rm sirf /bin/bash -c 'sudo cp -a /opt/ccache/* /devel/.ccache/'
+        # replace travis' ccache with the built images's
         mv devel/.ccache ~
       )
     else
