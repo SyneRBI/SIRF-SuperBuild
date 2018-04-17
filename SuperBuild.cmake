@@ -1,6 +1,7 @@
 #========================================================================
 # Author: Benjamin A Thomas
 # Author: Edoardo Pasca
+# Author: Casper da Costa-Luis
 # Copyright 2017 University College London
 # Copyright 2017 Science Technology Facilities Council
 #
@@ -178,25 +179,27 @@ set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
 ## in the env_ccppetmr scripts we perform a substitution of the whole block
 ## during the configure_file() command call below.
 
-## Note that the MATLAB_DEST and PYTHON_DEST variables are currently set
-## in External_SIRF.cmake. That's a bit confusing of course (TODO).
+## Note that the (MATLAB|PYTHON)_DEST and PYTHON_STRATEGY variables are
+## currently set in External_SIRF.cmake. That's a bit confusing of course (TODO).
 set(ENV_PYTHON_BASH "#####    Python not found    #####")
 set(ENV_PYTHON_CSH  "#####    Python not found    #####")
 if(PYTHONINTERP_FOUND)
+  if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
+    set(COMMENT_OUT_PREFIX "")
+  else()
+    set(COMMENT_OUT_PREFIX "#")
+  endif()
 
   set (ENV_PYTHON_CSH "\
-    if $?PYTHONPATH then \n\
-      setenv PYTHONPATH ${PYTHON_DEST}:$PYTHONPATH \n\
-    else \n\
-      setenv PYTHONPATH ${PYTHON_DEST} \n\
-      setenv SIRF_PYTHON_EXECUTABLE ${PYTHON_EXECUTABLE}")
+    ${COMMENT_OUT_PREFIX}if $?PYTHONPATH then \n\
+    ${COMMENT_OUT_PREFIX}  setenv PYTHONPATH ${PYTHON_DEST}:$PYTHONPATH \n\
+    ${COMMENT_OUT_PREFIX}else \n\
+    ${COMMENT_OUT_PREFIX}  setenv PYTHONPATH ${PYTHON_DEST} \n\
+    setenv SIRF_PYTHON_EXECUTABLE ${PYTHON_EXECUTABLE}")
 
   set (ENV_PYTHON_BASH "\
-     PYTHONPATH=${PYTHON_DEST}:$PYTHONPATH \n\
-     export PYTHONPATH \n\
-     SIRF_PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} \n\
-     export SIRF_PYTHON_EXECUTABLE")
-
+    ${COMMENT_OUT_PREFIX}export PYTHONPATH=\"${PYTHON_DEST}\${PYTHONPATH:+:\${PYTHONPATH}}\" \n\
+    export SIRF_PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}")
 endif()
 
 set(ENV_MATLAB_BASH "#####     Matlab not found     #####")
@@ -218,7 +221,6 @@ endif()
 
 configure_file(env_ccppetmr.sh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.sh)
 configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
-
 
 # add tests
 enable_testing()

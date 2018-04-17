@@ -50,6 +50,11 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
   if (BUILD_PYTHON)
     set(PYTHON_DEST "${SIRF_Install_Dir}/python" CACHE PATH "Destination for python modules")
+    set(PYTHON_STRATEGY "PYTHONPATH" CACHE STRING "\
+      PYTHONPATH: prefix PYTHONPATH \n\
+      SETUP_PY:   execute ${PYTHON_EXECUTABLE} setup.py install \n\
+      CONDA:      do nothing")
+    set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
   endif()
   set (BUILD_MATLAB ${Matlab_FOUND})
   if (BUILD_MATLAB)
@@ -58,7 +63,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
-  
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
@@ -88,6 +93,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DPYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIRS}
         -DPYTHON_LIBRARY=${PYTHON_LIBRARIES}
         -DPYTHON_DEST=${PYTHON_DEST}
+        -DPYTHON_STRATEGY=${PYTHON_STRATEGY}
 	INSTALL_DIR ${SIRF_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
