@@ -186,16 +186,14 @@ if(PYTHONINTERP_FOUND)
 
   set (ENV_PYTHON_CSH "\
     if $?PYTHONPATH then \n\
-      setenv PYTHONPATH ${PYTHON_DEST}:$PYTHONPATH \n\
+      #setenv PYTHONPATH ${PYTHON_DEST}:$PYTHONPATH \n\
     else \n\
-      setenv PYTHONPATH ${PYTHON_DEST} \n\
+      #setenv PYTHONPATH ${PYTHON_DEST} \n\
       setenv SIRF_PYTHON_EXECUTABLE ${PYTHON_EXECUTABLE}")
 
   set (ENV_PYTHON_BASH "\
-     PYTHONPATH=${PYTHON_DEST}:$PYTHONPATH \n\
-     export PYTHONPATH \n\
-     SIRF_PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} \n\
-     export SIRF_PYTHON_EXECUTABLE")
+     #export PYTHONPATH=${PYTHON_DEST}:$PYTHONPATH \n\
+     export SIRF_PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}")
 
 endif()
 
@@ -218,6 +216,27 @@ endif()
 
 configure_file(env_ccppetmr.sh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.sh)
 configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
+
+if(PYTHONINTERP_FOUND)
+  set(SETUP_PY_IN "${CMAKE_CURRENT_SOURCE_DIR}/SuperBuild/setup.py.in")
+  set(SETUP_PY "${PYTHON_DEST}/setup.py")
+  set(SETUP_PY_INIT "${PYTHON_DEST}/sirf/__init__.py")
+  message(STATUS "setup.py: ${SETUP_PY}")
+
+  configure_file("${SETUP_PY_IN}" "${SETUP_PY}")
+
+  add_custom_command(OUTPUT "${SETUP_PY_INIT}"
+    COMMAND "${CMAKE_COMMAND}" -E make_directory "${PYTHON_DEST}/sirf"
+    COMMAND "${CMAKE_COMMAND}" -E touch "${SETUP_PY_INIT}"
+    COMMAND "${PYTHON_EXECUTABLE}" setup.py build
+    DEPENDS "${SETUP_PY_IN}"
+    WORKING_DIRECTORY "${PYTHON_DEST}")
+
+  add_custom_target(pybuild_stir ALL DEPENDS ${SETUP_PY_INIT})
+
+  install(CODE "execute_process(COMMAND\n\
+    \"${PYTHON_EXECUTABLE}\" -m pip install -U -e \"${CCPPETMR_INSTALL}\")")
+endif(PYTHONINTERP_FOUND)
 
 
 # add tests
