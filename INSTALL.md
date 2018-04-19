@@ -79,7 +79,7 @@ and use "Send the shutdown signal".
  
 This section is optional.
  
-Warning: we strongly recommend to copy data from a shared folder to “local” disk to avoid a problem with a VB bug.
+Warning: we strongly recommend to copy data from a shared folder to a “local” folder (in your VM) to avoid a problem with a VB bug.
  
 After installing the VGA, you might want to configure a shared directory between the host and the guest machine such that your virtual machine can "see" your "normal" files. Please read [the Virtualbox documentation on Folder Sharing](http://www.virtualbox.org/manual/ch04.html#sharedfolders). 
 Summary of steps (courtesy Nikos Efthimiou):
@@ -91,9 +91,13 @@ Summary of steps (courtesy Nikos Efthimiou):
  5. Start the CCPPETMR VM (or switch to it) and open a terminal and type
  
          mkdir ~/MyLaptop
-         sudo mount -t vboxsf -o rw,uid=1000,gid=1000 MyLaptop ~/MyLaptop
- 
- You will have to type the last command whenever you reboot your VM, or you could make this permanent by pasting the above command to /etc/rc.local before "exit 0" (non-trivial because of admin permissions). The '1000's in the above refer to the user and group ids of the user. These are not always 1000 - to check, at the command line, type the command `id`.
+         sudo mount -t vboxsf -o rw,uid=1002,gid=1002 MyLaptop ~/MyLaptop
+ The '1002's in the above refer to the user and group ids of the user. These are not always 1000 - to check, at the command line, type the command `id`.
+ You will have to type the last command whenever you reboot your VM, or you could make this permanent by pasting the above command to /etc/rc.local before "exit 0" (non-trivial because of admin permissions). 
+
+If you want you can unmount the folder by typing
+
+        sudo umount -t vboxsf MyLaptop
 
 ## Using VM as a Gadgetron server
 
