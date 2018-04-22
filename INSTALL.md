@@ -63,6 +63,7 @@ In the menu-bar of the window that contains your VM, click on "Devices" and then
    sudo ~/devel/CCPPETMR_VM/scripts/update_VGA.sh
   ```
 
+6. Currently (20 April, 2018, SIRF_1.0.0) people are reporting problems after the VM is shutdown or rebooted. The VM windows system may fail to start and you are left with a flashing VM terminal window that stabilises after a few minutes. If your cursor has gone, it may be "in" this terminal window and can be released (on a Mac by pressing the Apple command key). To restore proper functionality, follow the instructions in point 5 above, even if you already had the correct VGA installed. If you have previously 'inserted' the CD you may get an error message that you need to ignore. Then reboot.
 
 
 ## How to shut down the VM
