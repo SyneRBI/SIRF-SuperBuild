@@ -1,4 +1,4 @@
-version: '3.2'
+version: '3.4'
 services:
  sirf:
   container_name: sirf
@@ -10,6 +10,7 @@ services:
    USER_ID: ${UID:-1000}
   build:
    context: .
+   target: sirf
    # depends_on:
    #  - core
    cache_from:
@@ -26,7 +27,7 @@ services:
   image: ccppetmr/sirf:core
   build:
    context: .
-   dockerfile: Dockerfile-core
+   target: core
    cache_from:
     - ubuntu:16.04
     - ccppetmr/sirf:core

@@ -215,8 +215,16 @@ install:
         # rebuild base image (using above docker cache)
         # and sirf image (with travis' ccache)
         rm -rf devel/.ccache
-        mv ~/.ccache devel/
+        if [[ -n "$DOCKER_RECREATE_CCACHE" ]]; then
+          mkdir devel/.ccache
+          sudo rm -rf ~/.ccache
+        else
+          mv ~/.ccache devel/
+        fi
         $DCC build --pull core
+        # don't count the extra clone we're about to do
+        # TODO: Do we need this? Is docker a distinct cloner from travis?
+        # cloners_count_decrement
         $DCC build sirf
         # extract updated ccache
         sudo rm -rf devel/.ccache/*
@@ -240,7 +248,7 @@ script:
     if [[ -n "$DOCKER_BUILD" ]]; then
       # push images - but only after tests pass within the container!
       echo "$DOCKER_PWD" | docker login -u $DOCKER_USR --password-stdin
-      $DCC run --rm sirf /bin/bash --login -c /devel/test.sh \
+      $DCC run --rm sirf /bin/bash --login -c '/devel/test.sh 1' \
         && $DCC push \
         && if [[ -n "$TRAVIS_TAG" && "$DOCKER_BUILD" != DEVEL ]]; then ( set -ev
              # tag release

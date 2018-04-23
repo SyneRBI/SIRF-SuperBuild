@@ -1,15 +1,29 @@
 #!/usr/bin/env bash
-pip install -U nose
+
+## Usage:
+# test.sh [<DEBUG_LEVEL>]
+#
+# Arguments:
+#   <DEBUG_LEVEL>  : [default: 0]
+##
+
+DEBUG="${1:-0}"
+this=$(dirname "${BASH_SOURCE[0]}")
+
+pip install -U -r "$this"/requirements-test.txt
+
 pushd $SIRF_PATH/../..
 
 ./INSTALL/bin/gadgetron >& gadgetron.log&
 # print for debugging
-cat builds/SIRF/build/CMakeCache.txt
+[ "$DEBUG" != 0 ] && cat builds/SIRF/build/CMakeCache.txt
 ctest -VV
 ret=$?
 # print for debugging
-cat builds/SIRF/build/Testing/Temporary/LastTest.log
+[ "$DEBUG" != 0 ] && cat builds/SIRF/build/Testing/Temporary/LastTest.log
 # may exceed 4MB travis log limit
-cat gadgetron.log
+[ "$DEBUG" != 0 ] && cat gadgetron.log
+
 popd
+
 exit $ret
