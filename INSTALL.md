@@ -93,7 +93,7 @@ Summary of steps (courtesy Nikos Efthimiou):
  
          mkdir ~/MyLaptop
          sudo mount -t vboxsf -o rw,uid=1002,gid=1002 MyLaptop ~/MyLaptop
- The '1002's in the above refer to the user and group ids of the user. These are not always 1000 - to check, at the command line, type the command `id`.
+ The '1002's in the above refer to the user and group ids of the user. These are not always 1002 - to check, at the command line, type the command `id`.
  You will have to type the last command whenever you reboot your VM, or you could make this permanent by pasting the above command to /etc/rc.local before "exit 0" (non-trivial because of admin permissions). 
 
 If you want you can unmount the folder by typing
