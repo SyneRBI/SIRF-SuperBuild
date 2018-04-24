@@ -10,8 +10,8 @@ build:
     
 requirements:
   build:
-#    - boost ==1.64.0	
-#    - boost-cpp ==1.64.0 
+    #- boost ==1.64.0	
+    #- boost-cpp ==1.64.0 
 #    - boost
 #    - boost-cpp
     - python 3.6 # [py36]
@@ -36,6 +36,7 @@ requirements:
   run:
     #- boost
 #    - libtiff
+    #- boost ==1.64.0
     - vc 14 # [win and py35]
     - vc 9  # [win and py27]
     - python 3.6 # [py36]
@@ -47,6 +48,8 @@ requirements:
     - h5py
     - psutil
     - fftw
+    - libgcc-ng
+    - libstdcxx-ng
 
 	
 about:

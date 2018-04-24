@@ -38,9 +38,10 @@ cd $SRC_DIR/build
 
 echo "$SRC_DIR/ccpi/Python"
 
+#site-packages ${SP_DIR}/sirf
 cmake ../SIRF-SuperBuild \
     -DCMAKE_INSTALL_PREFIX=${PREFIX} \
-    -DPYTHON_DEST=${SP_DIR}/sirf \
+    -DPYTHON_DEST=${PREFIX}/python\
     -USIRF_URL \
     -USIRF_TAG \
     -DSIRF_TAG=a4f7bd8676bb9c08dd6ba66a55e4ccbddce3bf5f\
@@ -56,10 +57,14 @@ cmake ../SIRF-SuperBuild \
     -DUSE_SYSTEM_Armadillo=Off \
     -DUSE_SYSTEM_FFTW3=On \
     -DUSE_SYSTEM_HDF5=ON \
-    -DBUILD_siemens_to_ismrmrd=On
+    -DBUILD_siemens_to_ismrmrd=On \
+    -DCONDA_BUILD=On
 
-make  -j1
+make  -j3
 cp ${PREFIX}/share/gadgetron/config/gadgetron.xml.example ${PREFIX}/share/gadgetron/config/gadgetron.xml
+
+cd ${PREFIX}/python
+${PYTHON} setup.py install
 
 # add to 
 #echo "${PREFIX}/python" > ${PREFIX}
