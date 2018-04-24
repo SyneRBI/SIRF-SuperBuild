@@ -64,7 +64,7 @@ make  -j3
 cp ${PREFIX}/share/gadgetron/config/gadgetron.xml.example ${PREFIX}/share/gadgetron/config/gadgetron.xml
 
 cd ${PREFIX}/python
-${PYTHON} setup.py develop
+${PYTHON} setup.py install
 
 # add to 
 #echo "${PREFIX}/python" > ${PREFIX}

@@ -48,6 +48,8 @@ requirements:
     - h5py
     - psutil
     - fftw
+    - libgcc-ng
+    - libstdcxx-ng
 
 	
 about:
