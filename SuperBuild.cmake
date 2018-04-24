@@ -235,6 +235,7 @@ if(PYTHONINTERP_FOUND)
   python_pkg_alias(pGadgetron "sirf.pGadgetron")
   python_pkg_alias(pSTIR "sirf.pSTIR")
   python_pkg_alias(pUtilities "sirf.pUtilities")
+  python_pkg_alias(pyiutilities "sirf.pyiutilities")
   # convert to python CSV tuple for setup.py configure_file
   string(REPLACE ";" "', '" PYTHON_SETUP_PKGS_CSV "${PYTHON_SETUP_PKGS}")
   set(PYTHON_SETUP_PKGS_CSV "'${PYTHON_SETUP_PKGS_CSV}'")
@@ -257,9 +258,11 @@ if(PYTHONINTERP_FOUND)
 
   add_custom_target(pybuild_sirf ALL DEPENDS ${SETUP_PY_INIT})
 
-  # N.B. `-e` picks up cythonised libraries without messing with LD_LIBRARY_PATH
-  install(CODE "execute_process(COMMAND\n\
-    \"${PYTHON_EXECUTABLE}\" -m pip install -U -e \"${PYTHON_DEST}\")")
+  if (NOT CONDA_BUILD)
+    # N.B. `-e` picks up cythonised libraries without messing with LD_LIBRARY_PATH
+    install(CODE "execute_process(COMMAND\n\
+      \"${PYTHON_EXECUTABLE}\" -m pip install -U -e \"${PYTHON_DEST}\")")
+  endif()
 endif(PYTHONINTERP_FOUND)
 
 
