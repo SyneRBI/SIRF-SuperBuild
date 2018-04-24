@@ -28,11 +28,11 @@ That will finish up the creation steps.
 Refer to [here](https://github.com/CCPPETMR/CCPPETMR_VM/blob/master/INSTALL.md) for further informations and instructions.
 
 ## VirtualBox Guest Additions
-In case you experience glitches, especially related to the X Server, you need to update the [VirtualBox Guest Additions](https://www.virtualbox.org/manual/ch04.html) to match your version of VirtualBox.
+In case you experience glitches, especially related to the X Server, you need to update the [VirtualBox Guest Additions](https://www.virtualbox.org/manual/ch04.html) to match your version of VirtualBox. We provide a simple script that should update the VGA
 
 ```bash
-sudo mount /dev/cdrom /media
-sudo /media/VBoxLinuxAdditions.run
+cd ~/devel/CCPPETMR_VM
+bash ./scripts/update_VGA.sh
 sudo shutdown -r now
 ```
 
