@@ -50,6 +50,7 @@ requirements:
     - fftw
     - libgcc-ng
     - libstdcxx-ng
+    - openblas
 
 	
 about:
