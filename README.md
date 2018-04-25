@@ -4,10 +4,11 @@ This project contains as series of files and scripts to create and install a vir
 
 ## Installation and usage
 If you are trying to find information on how to use the virtual machine that can be downloaded 
-from our [website](http://www.ccppetmr.ac.uk/downloads) just check the
+from our [website](http://www.ccppetmr.ac.uk/downloads), just check the
 [installation  instructions](INSTALL.md) and our [wiki](https://github.com/CCPPETMR/CCPPETMR_VM/wiki)
 for basic usage.
 
+The remainder of this file documents how to build your own VM.
 ## Prerequisites for machine creation
 
 To create a new VM yourself, you need to have both [Vagrant](https://www.vagrantup.com) and [Virtual Box](https://www.virtualbox.org) installed on your machine.
@@ -27,17 +28,8 @@ That will finish up the creation steps.
 
 Refer to [here](https://github.com/CCPPETMR/CCPPETMR_VM/blob/master/INSTALL.md) for further informations and instructions.
 
-## VirtualBox Guest Additions
-In case you experience glitches, especially related to the X Server, you need to update the [VirtualBox Guest Additions](https://www.virtualbox.org/manual/ch04.html) to match your version of VirtualBox. We provide a simple script that should update the VGA
-
-```bash
-cd ~/devel/CCPPETMR_VM
-bash ./scripts/update_VGA.sh
-sudo shutdown -r now
-```
-
 ## Pre-built downloads
-A pre-built VM with SIRF installed is currently available at [www.ccppetmr.ac.uk/downloads](www.ccppetmr.ac.uk/downloads). Notice that it has been created with Oracle VirtualBox 5.2.8 and contains the VirtualBox Guest Additions for such a version. 
+A pre-built VM with SIRF installed is currently available at [www.ccppetmr.ac.uk/downloads](www.ccppetmr.ac.uk/downloads). The page states which version of VirtualBox was used to create it. 
 
 ### Pre-built VM final steps
 When building the official prebuilt VM with SIRF pre-installed, we follow the steps above. 
