@@ -7,7 +7,7 @@ If you have any problems, please first re-check this web-page. If you cannot sol
 
 1. Make sure you have enough free disk-space on your laptop (~10GB for installation).
 
-2. Install [VirtualBox](https://www.virtualbox.org). Please note that this will require administrator permissions. 
+2. Install [VirtualBox](https://www.virtualbox.org), our [Download page](http://www.ccppetmr.ac.uk/downloads) specifies the recommended version. Please note that this will require administrator permissions. 
 You do not need to install the Oracle extensions to VirtualBox, although it might come in handy for USB support. 
 Although other Virtual Machine software might work, we have not tried this and will not be able to help to get this going.
   Some extra pointers if you experience problems with installing VirtualBox
@@ -42,7 +42,7 @@ If you see a dialog box about "starting in scaled mode", you can press OK to all
 3. Adjust your Ubuntu settings:
     - Default settings should allow you to access the internet from in the virtual machine.
       If not, please check [the Virtual Box documentation](http://www.virtualbox.org/manual/ch03.html#settings-network).
-    - The keyboard type is set to English-UK. There are currently 3 preinstalled layouts: en_GB, en_US and pt.
+    - The keyboard type is set to English-UK. There are currently a few preinstalled layouts, including en_GB, en_US, Portuguese, Spanish etc.
       You can change keyboard-type by clicking on the relevant icon in the top-right of the VM.
       If you cannot find the layout that you need (e.g. to switch to a Mac keyboard), open a terminal by clicking "Activities" at top left and type "terminal" in the search box, then use
 
@@ -50,22 +50,21 @@ If you see a dialog box about "starting in scaled mode", you can press OK to all
       sudo dpkg-reconfigure keyboard-configuration
       ```
 
-    - To adjust other system settings you can click on the right top corner and then click on the tools icon (spanner and screwdriver) to start the settings app, or click on "Activities" on the top left corner and then type "settings" in the search box and it should open the settings apps. For instance, the display resolution (default is 1024x768) can be changed from the system settings app.
+    - To adjust other system settings you can click on the right top corner and then click on the tools icon (spanner and screwdriver) to start the settings app, or click on "Activities" on the top left corner and then type "settings" in the search box and it should open the settings apps.
 
-4. Click on the *Activities* on the top left corner and write `terminal` in the search box and press enter. This will open a terminal. Type
-   ```
-   update_VM.sh
-   ```
-5. The VM has been created with a particular version of Virtual Box (see the Download page) and with the [VirtualBox Guest Additions](https://www.virtualbox.org/manual/ch04.html) (VGA) pre-installed. If you have a different version of Virtual Box you might experience [issues](https://github.com/CCPPETMR/CCPPETMR_VM/issues/9), especially [running the X server](https://github.com/CCPPETMR/CCPPETMR_VM/issues/60#issuecomment-367611385). If you are using a different version of VirtualBox we therefore strongly recommend to sync your VGA version as follows:\
+4. The VM has been created with a particular version of Virtual Box (see the Download page) and with the [VirtualBox Guest Additions](https://www.virtualbox.org/manual/ch04.html) (VGA) pre-installed. If you have a different (or even the same) version of Virtual Box you might experience [issues](https://github.com/CCPPETMR/CCPPETMR_VM/issues/9), especially [running the X server](https://github.com/CCPPETMR/CCPPETMR_VM/issues/60#issuecomment-367611385). If you are using a different version of VirtualBox we therefore strongly recommend to sync your VGA version as follows:\
 In the menu-bar of the window that contains your VM, click on "Devices" and then "Insert Guest Additions CD". (On a Mac, with the VM window selected, this menu bar is at the top of the screen). If this generates a window inside your VM to run the software on this "CD", say OK. Otherwise, type
 
   ```
-   sudo ~/devel/CCPPETMR_VM/scripts/update_VGA.sh
+   sudo /home/sirfuser/devel/CCPPETMR_VM/scripts/update_VGA.sh
   ```
 
-6. Currently (20 April, 2018, SIRF_1.0.0) people are reporting problems after the VM is shutdown or rebooted. The VM windows system may fail to start and you are left with a flashing VM terminal window that stabilises after a few minutes. If your cursor has gone, it may be "in" this terminal window and can be released (on a Mac by pressing the Apple command key). To restore proper functionality, follow the instructions in point 5 above, even if you already had the correct VGA installed. If you have previously 'inserted' the CD you may get an error message that you need to ignore. Then reboot.
+5. Currently (20 April, 2018, SIRF_1.0.0) people are reporting problems after the VM is shutdown or rebooted. The VM windows system may fail to start and you are left with a flashing VM terminal window that stabilises after a few minutes. If your cursor has gone, it may be "in" this terminal window and can be released (press the Host Key (on most systems, right-ctrl, on a Mac the Apple command key). To restore proper functionality, follow the instructions in point 5 above, even if you already had the correct VGA installed. If you have previously 'inserted' the CD you may get an error message that you need to ignore. Then reboot.
 
-
+6. To get the latest updates, including to switch to a new release, click on the *Activities* on the top left corner and write `terminal` in the search box and press enter. This will open a terminal. Type
+   ```
+   update_VM.sh
+   ```
 ## How to shut down the VM
 
 To shut down your VM when you are finished with it, use one of the following options. 
@@ -94,6 +93,7 @@ Summary of steps (courtesy Nikos Efthimiou):
          mkdir ~/MyLaptop
          sudo mount -t vboxsf -o rw,uid=1002,gid=1002 MyLaptop ~/MyLaptop
  The '1002's in the above refer to the user and group ids of the user. These are not always 1002 - to check, at the command line, type the command `id`.
+ 
  You will have to type the last command whenever you reboot your VM, or you could make this permanent by pasting the above command to /etc/rc.local before "exit 0" (non-trivial because of admin permissions). 
 
 If you want you can unmount the folder by typing
@@ -108,6 +108,8 @@ You can use CCPPETMR Virtual Machine as a Gadgetron server if you cannot install
 
 * Forward port 9002 to VM (in Oracle VM VirtualBox Manager: go to Settings->Network, Advanced, click on Port Forwarding, add new forwarding rule by clicking on +, set Host Port and Guest Port to 9002).
 
-* Open a new Linux terminal on VM and type 'gadgetron' there.
+* Open a new terminal on the VM and type 'gadgetron' there.
+
+* Keep the VM running and run Python or Matlab on your normal computer.
 
 This will enable you to run SIRF MR demos on your computer.
