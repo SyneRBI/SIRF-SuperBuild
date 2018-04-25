@@ -31,7 +31,7 @@ Warning: this file is ~1.8GB. (You can of course download to a USB stick to save
 
 8. In the VirtualBox window, select your new VM and press the Settings icon. In the "General" category, "Advanced" tab, check that "Shared Clipboard" is set to "bidirectional".
 
-## Running and updating the virtual machine
+## Initial configuration of the virtual machine
 
 Now you can start your virtual machine. If it fails to start with an error like "*virtualbox vt-x is disabled in the bios*", [check here](http://www.howtogeek.com/213795/how-to-enable-intel-vt-x-in-your-computers-bios-or-uefi-firmware/).
 If you see a dialog box about "starting in scaled mode", you can press OK to allow VirtualBox to scale the display larger or smaller, or you can press Cancel and start the machine again without scaling. (See [the Virtualbox site](https://www.virtualbox.org/manual/) for some info on the Host-Key etc).
@@ -60,14 +60,13 @@ In the menu-bar of the window that contains your VM, click on "Devices" and then
    sudo /home/sirfuser/devel/CCPPETMR_VM/scripts/update_VGA.sh
    sudo shutdown -r now
   ```
-The VM will reboot.
+The VM will reboot. (You will have to do this again if you upgrade your VirtualBox version).
 
 5. Currently (20 April, 2018, SIRF_1.0.0) people are reporting problems after the VM is shutdown or rebooted. The VM windows system may fail to start and you are left with a flashing VM terminal window that stabilises after a few minutes. If your cursor has gone, it may be "in" this terminal window and can be released (press the Host Key (on most systems, right-ctrl, on a Mac the Apple command key). To restore proper functionality, follow the instructions in point 5 above, even if you already had the correct VGA installed. If you have previously 'inserted' the CD you may get an error message that you need to ignore. Then reboot.
 
-6. To get the latest updates, including to switch to a new release, click on the *Activities* on the top left corner and write `terminal` in the search box and press enter. This will open a terminal. Type
-   ```
-   update_VM.sh
-   ```
+## Usage 
+Check our [wiki](https://github.com/CCPPETMR/CCPPETMR_VM/wiki) for usage instructions.
+
 ## How to shut down the VM
 
 To shut down your VM when you are finished with it, use one of the following options. 
