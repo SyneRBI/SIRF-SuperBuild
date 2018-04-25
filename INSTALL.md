@@ -4,6 +4,7 @@ If you have any problems, please first re-check this web-page. If you cannot sol
 
 
 ## Initial download and installation
+This section assumes you want to use our pre-configured VM (which is recommended!). Check the [README](README.md) for instructions on how to build a new VM yourself.
 
 1. Make sure you have enough free disk-space on your laptop (~10GB for installation).
 
@@ -15,7 +16,7 @@ Although other Virtual Machine software might work, we have not tried this and w
     - If your VirtualBox is too old, you might experience problems with networking etc. Please use at least 5.0.40 (at least 5.2.6 on a Mac).
 
 3. Download the preinstalled virtual machine from http://www.ccppetmr.ac.uk/downloads.
-Warning: this file is ~1.6GB. (You can of course download to a USB stick to save space on your hard-disk).
+Warning: this file is ~1.8GB. (You can of course download to a USB stick to save space on your hard-disk).
 
 4. Open the downloaded OVA file (double-click or whatever is appropriate for your system). This should start VirtualBox with the "Import" dialog box.
 
@@ -57,7 +58,9 @@ In the menu-bar of the window that contains your VM, click on "Devices" and then
 
   ```
    sudo /home/sirfuser/devel/CCPPETMR_VM/scripts/update_VGA.sh
+   sudo shutdown -r now
   ```
+The VM will reboot.
 
 5. Currently (20 April, 2018, SIRF_1.0.0) people are reporting problems after the VM is shutdown or rebooted. The VM windows system may fail to start and you are left with a flashing VM terminal window that stabilises after a few minutes. If your cursor has gone, it may be "in" this terminal window and can be released (press the Host Key (on most systems, right-ctrl, on a Mac the Apple command key). To restore proper functionality, follow the instructions in point 5 above, even if you already had the correct VGA installed. If you have previously 'inserted' the CD you may get an error message that you need to ignore. Then reboot.
 
