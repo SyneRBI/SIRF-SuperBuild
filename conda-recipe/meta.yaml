@@ -34,9 +34,6 @@ requirements:
 
 
   run:
-    #- boost
-#    - libtiff
-    #- boost ==1.64.0
     - vc 14 # [win and py35]
     - vc 9  # [win and py27]
     - python 3.6 # [py36]
