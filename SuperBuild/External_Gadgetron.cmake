@@ -96,6 +96,7 @@ endif ()
         -DFFTW_ROOT_DIR=${SUPERBUILD_INSTALL_DIR}
         -DISMRMRD_DIR=${ISMRMRD_DIR}
         -DMKLROOT_PATH=${MKLROOT_PATH}
+        -DACE_INCLUDE_DIR=${SUPERBUILD_INSTALL_DIR}/lib
 	    INSTALL_DIR ${Gadgetron_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
