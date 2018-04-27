@@ -28,7 +28,7 @@ set(proj Gadgetron)
 #set(${proj}_DEPENDENCIES "Boost;HDF5;ISMRMRD;FFTW3double;Armadillo;GTest")
 #if(NOT USE_SYSTEM_ACE)
 
-  set(${proj}_DEPENDENCIES "libACE;Boost;HDF5;ISMRMRD;FFTW3double;Armadillo;GTest")
+  set(${proj}_DEPENDENCIES "ACE;Boost;HDF5;ISMRMRD;FFTW3double;Armadillo;GTest")
 
 #endif()
 

@@ -115,8 +115,8 @@ if (DEVEL_BUILD)
   set(DEFAULT_glog_URL https://github.com/google/glog )
   set(DEFAULT_glog_TAG v035)
  
-  set(DEFAULT_libACE_URL https://github.com/paskino/libace-conda)
-  set(DEFAULT_libACE_TAG origin/master)
+  set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
+  set(DEFAULT_ACE_TAG origin/master)
 
 else()
   set(DEFAULT_SIRF_TAG v1.0.0)
@@ -148,8 +148,8 @@ else()
   set(DEFAULT_glog_URL https://github.com/google/glog )
   set(DEFAULT_glog_TAG v035)
 
-  set(DEFAULT_libACE_URL https://github.com/paskino/libace-conda)
-  set(DEFAULT_libACE_TAG origin/master)
+  set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
+  set(DEFAULT_ACE_TAG origin/master)
 endif()
 
 
@@ -176,8 +176,8 @@ SET(petmr_rd_tools_URL ${DEFAULT_petmr_rd_tools_URL} CACHE STRING ON)
 SET(glog_URL ${DEFAULT_glog_URL} CACHE STRING ON)
 SET(glog_TAG ${DEFAULT_glog_TAG} CACHE STRING ON)
 
-set(libACE_URL ${DEFAULT_libACE_URL} CACHE STRING ON)
-set(libACE_TAG ${DEFAULT_libACE_TAG} CACHE STRING ON)
+set(ACE_URL ${DEFAULT_ACE_URL} CACHE STRING ON)
+set(ACE_TAG ${DEFAULT_ACE_TAG} CACHE STRING ON)
 
 mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   Gadgetron_URL Gadgetron_TAG

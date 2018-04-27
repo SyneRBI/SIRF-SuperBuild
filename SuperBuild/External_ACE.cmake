@@ -22,7 +22,7 @@
 #=========================================================================
 
 #This needs to be unique globally
-set(proj libACE)
+set(proj ACE)
 
 # Set dependency list
 set(${proj}_DEPENDENCIES "")
