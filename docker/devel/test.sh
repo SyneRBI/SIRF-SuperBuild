@@ -14,7 +14,11 @@ pip install -U -r "$this"/requirements-test.txt
 
 pushd $SIRF_PATH/../..
 
+# start gadgetron
+GCONFIG=./INSTALL/share/gadgetron/config/gadgetron.xml
+[ -f "$GCONFIG" ] || cp "$GCONFIG".example "$GCONFIG"
 ./INSTALL/bin/gadgetron >& gadgetron.log&
+
 # print for debugging
 [ "$DEBUG" != 0 ] && cat builds/SIRF/build/CMakeCache.txt
 ctest -VV
