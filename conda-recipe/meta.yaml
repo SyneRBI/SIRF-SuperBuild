@@ -31,6 +31,8 @@ requirements:
     - fftw
     - swig >=3
     - libxslt
+    - armadillo
+    - gtest
 
 
   run:
@@ -48,7 +50,8 @@ requirements:
     - libgcc-ng
     - libstdcxx-ng
     - openblas
-
+    - armadillo
+    - gtest
 	
 about:
   home: http://www.ccppetmr.ac.uk
