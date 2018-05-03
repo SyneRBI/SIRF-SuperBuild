@@ -172,7 +172,7 @@ before_install:
  # ensure python bin dir exists (and coverage dependencies installed)
  - $PY_EXE -m pip install --user -U nose codecov coveralls
  # for counting clones, excluding ours
- - git clone https://$GITHUB_API_TOKEN@github.com/CCPPETMR/github-stats --branch $TRAVIS_REPO_SLUG
+ - git clone https://$GITHUB_API_TOKEN@github.com/ccp-petmr-codebot/github-stats --branch $TRAVIS_REPO_SLUG
  # update with last fortnight's clones from GitHub API
  - source github-stats/setup.sh
  # count unique clones, excluding travis, and print total
@@ -267,3 +267,11 @@ script:
       # may exceed 4MB travis log limit
       cat gadgetron.log
     fi
+
+# post to slack.com
+notifications:
+ slack:
+  rooms:
+   - secure: "ZSBIUaNNQ7925etI0EtB+S5DnU++htNPUQYr78Lv8chhpx/2wTjFCxc7nVLhUHuqAblTnL2UkJj/f6rPecd+StgUBZcZboEIxYxju53xvi3pW7IdkzSNPYcFMQvyRpk562d9VUzK+iaOxdQaXyqEttCHTJNP4P2AcSILuRZPiNVk673lFXq8s8Hkhui64WzGkA5rPh1H6DObDoynME4MyuBRjygslCKBn5DiejTq2xhKdyIe6q+Nd1Vd456shcUNCgnbsrpq6Ik1tIUDBs+lCYvBN/ST6HfisL1cUNOqM0rVhNJBVNWVMOpGwkoKMfN5ZFl90HXiB9MGI7WDU7tzvdvFN/nsjfXBPAEYIvdHx6RkIIn2GeoAO9S9UZiyUNThjxs9jg7TJdLPaow1PIbLRrNi4WXpE4PYYzc7krGsZgIlhBx4SfMOXT7PLUevGOumRVetyddbVRIhJ6v92h29joQuwSKim2bVsOyznbTyLqn0ysIkqTD7aLov09Sh7Ni8VzVN/sWtlinzk1jIzpL4NxEzWKHL58q2lddyE6kD7FZCxw7dIdIMy3V84zt9oRzGNXETgzi5ClHXkHyYjoOGBbySG4v3Letlai0m0vhFvPGHhk8KZzyR9OUPJ6XZcmIdr5QJb4Nlc1b8r4INn7BNOiRAo4GSk1NJKze1gjdV6Ig="
+  on_success: change
+  on_failure: always
