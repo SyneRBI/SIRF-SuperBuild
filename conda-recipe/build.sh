@@ -44,7 +44,7 @@ cmake ../SIRF-SuperBuild \
     -DPYTHON_DEST_DIR=${PREFIX}/python\
     -USIRF_URL \
     -USIRF_TAG \
-    -DSIRF_TAG=1237daebaab4aeccd4e6a14cb0eef0b55b49ef7c \
+    -DSIRF_TAG=a27aee80e8db38767a4b42e8bbca34e9cc5d901d \
     -USTIR_URL \
     -USTIR_TAG \
     -UGadgetron_URL \
@@ -53,20 +53,17 @@ cmake ../SIRF-SuperBuild \
     -UISMRMRD_TAG \
     -DBUILD_GADGETRON=ON \
     -DUSE_SYSTEM_SWIG=ON \
-    -DUSE_SYSTEM_Boost=OFF \
+    -DUSE_SYSTEM_Boost=Off \
     -DUSE_SYSTEM_Armadillo=ON \
     -DUSE_SYSTEM_FFTW3=ON \
     -DUSE_SYSTEM_HDF5=ON \
     -DBUILD_siemens_to_ismrmrd=ON \
-    -DUSE_SYSTEM_GTEST=ON \
+    -DUSE_SYSTEM_Gtest=ON \
     -DCONDA_BUILD=ON
 
-make -j
+make -j1
 cp ${PREFIX}/share/gadgetron/config/gadgetron.xml.example ${PREFIX}/share/gadgetron/config/gadgetron.xml
 
 cd ${PREFIX}/python
 ${PYTHON} setup.py install
 
-# add to 
-#echo "${PREFIX}/python" > ${PREFIX}
-#${PREFIX}/python

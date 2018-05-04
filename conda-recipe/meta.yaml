@@ -10,10 +10,7 @@ build:
     
 requirements:
   build:
-    #- boost ==1.64.0	
-    #- boost-cpp ==1.64.0 
-#    - boost
-#    - boost-cpp
+    #- boost-dev ==1.63
     - python 3.6 # [py36]
     - python 2.7 # [py27]
     - cmake >=3.1
@@ -40,6 +37,7 @@ requirements:
     - vc 9  # [win and py27]
     - python 3.6 # [py36]
     - python 2.7 # [py27]
+    #- boost-dev ==1.63
     - numpy
     - scipy
     - matplotlib
