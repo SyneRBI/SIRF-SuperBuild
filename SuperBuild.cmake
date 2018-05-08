@@ -219,6 +219,15 @@ export SIRF_MATLAB_EXECUTABLE")
    setenv SIRF_MATLAB_EXECUTABLE ${Matlab_MAIN_PROGRAM}")
 endif()
 
+# set GADGETRON_HOME if Gadgetron is built
+if (BUILD_GADGETRON)
+
+  set(ENV_GADGETRON_HOME_SH "\
+GADGETRON_HOME=${CCPPETMR_INSTALL}\n\
+export GADGETRON_HOME\n")
+  set(ENV_GADGETRON_HOME_CSH "setenv GADGETRON_HOME ${CCPPETMR_INSTALL}\n")
+endif()
+
 configure_file(env_ccppetmr.sh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.sh)
 configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
 

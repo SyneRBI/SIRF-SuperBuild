@@ -26,3 +26,5 @@ endif
 
 set path=( $path @CCPPETMR_INSTALL@/bin )
 
+# Export Gadgetron Home
+@ENV_GADGETRON_HOME_CSH@
