@@ -68,7 +68,7 @@ Vagrant.configure("2") do |config|
        "--type", "dvddrive",
        "--medium", "emptydrive",
        ]
-	vb.name = "SIRF_1.0.0"
+	vb.name = "SIRF_1.0.1-rc.1"
 	vb.customize ["modifyvm", :id, 
 	              "--clipboard", "bidirectional"]
 	#vb.customize [ "modifyvm", :id, 
@@ -109,7 +109,7 @@ Vagrant.configure("2") do |config|
 	apt-get upgrade -y
 	#install upgrades
 	apt-get install -y wget git xorg xterm gdm menu gksu synaptic gnome-session gnome-panel metacity --no-install-recommends
-    apt-get install -y at-spi2-core gnome-terminal gnome-control-center nautilus dmz-cursor-theme
+    apt-get install -y at-spi2-core gnome-terminal gnome-control-center nautilus dmz-cursor-theme network-manager network-manager-gnome
     
 	# start gnome display manager
 	service gdm start
@@ -154,8 +154,9 @@ Vagrant.configure("2") do |config|
     git clone https://github.com/CCPPETMR/CCPPETMR_VM.git
 	cd CCPPETMR_VM
 	git pull
+	git checkout install_new_packages
     bash $HOME/devel/CCPPETMR_VM/scripts/INSTALL_prerequisites_with_apt-get.sh
-    bash $HOME/devel/CCPPETMR_VM/scripts/UPDATE.sh
+    #bash $HOME/devel/CCPPETMR_VM/scripts/UPDATE.sh
     chown -R sirfuser:users /home/sirfuser/
     
    SHELL
