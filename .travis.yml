@@ -15,15 +15,19 @@ language: cpp
 # so try to keep this concise to avoid need to update
 matrix:
  include:
+ - os: linux
+   python: 3
+   # +boost -itk +fftw3 +hdf5 -ace
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=OFF" CC=gcc-5 CXX=g++-5 PYMVER=3
  # linux g{cc,++}-5 py{27,3}
  - os: linux
    python: 3
-   # +boost +fftw3 +hdf5
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON" CC=gcc-5 CXX=g++-5 PYMVER=3
+   # +boost +fftw3 +hdf5 +ace
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON" CC=gcc-5 CXX=g++-5 PYMVER=3
  - os: linux
    python: 2.7
-   # +boost +fftw3 +hdf5 +siemens_to_ismrmrd +swig
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON" CC=gcc-5 CXX=g++-5 PYMVER=2
+   # +boost +fftw3 +hdf5 +siemens_to_ismrmrd +swig +ace
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_ACE=ON" CC=gcc-5 CXX=g++-5 PYMVER=2
  - os: linux
    python: 3
    # +DEVEL +boost -hdf5 -fftw3 +siemens_to_ismrmrd
