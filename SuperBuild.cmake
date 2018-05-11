@@ -113,7 +113,7 @@ option(USE_SYSTEM_SWIG "Build using an external version of SWIG" OFF)
 #option(USE_SYSTEM_Gadgetron "Build using an external version of Gadgetron" OFF)
 option(USE_SYSTEM_SIRF "Build using an external version of SIRF" OFF)
 option(USE_SYSTEM_GTest "Build using an external version of GTest" OFF)
-option(BUILD_STIR_WITH_OPENMP "Build STIR with OpenMP acceleration" OFF)
+option(BUILD_STIR_WITH_OPENMP "Build STIR with OpenMP acceleration" ${UNIX})
 
 if (WIN32)
   set(build_Gadgetron_default OFF)
