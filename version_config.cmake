@@ -116,11 +116,11 @@ if (DEVEL_BUILD)
   set(DEFAULT_glog_TAG v035)
 
 else()
-  set(DEFAULT_SIRF_TAG v1.0.0)
+  set(DEFAULT_SIRF_TAG v1.1.0-rc.1)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG 5710d438090a972bd7b0636ff6de5315519b78e9 )
+  set(DEFAULT_STIR_TAG cc7c16451abe1af7d0c02cc790f5d0752c2a7b68 )
 
   ## Gadgetron
   set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
