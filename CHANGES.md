@@ -1,8 +1,9 @@
 # ChangeLog
 
-## master
-- added pip
-- added jupyer and firefox
+## 1.1.0
+- added pip, firefox 
+- added spyder and jupyer via pip
+- Virtual Machine is built with Virtual Box 5.2.12
 
 ## v1.0.0
 - Creation of VM is automated by a vagrant script, and a `first_run.sh` script to execute after the VM is up for the first time
