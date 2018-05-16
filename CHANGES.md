@@ -1,6 +1,6 @@
 # ChangeLog
 
-## v1.1.0-rc.1
+## v1.1.0
 
 - Added PYTHON_DEST_DIR variable, which allows the user to select the install destination of the SIRF python modules. PYTHON_DEST_DIR is a cached variable which can be updated on the GUI. If PYTHON_DEST_DIR is not set, we will install in ${CMAKE_INSTALL_PREFIX}/python. Likewise for MATLAB_DEST_DIR.
 - Export `GADGETRON_HOME` environment variable (necessary for recent versions of Gadgetron)
