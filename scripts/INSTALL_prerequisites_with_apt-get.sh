@@ -21,10 +21,10 @@ $SUDO apt-get install -y --no-install-recommends swig
 
 # TODO replace with pip install
 echo "Installing python libraries etc"
-$SUDO apt-get install -y --no-install-recommends  python-scipy python-docopt  python-numpy python-h5py python-matplotlib python-libxml2 python-psutil spyder python-tk python-nose
+$SUDO apt-get install -y --no-install-recommends  python-scipy python-docopt  python-numpy python-h5py python-matplotlib python-libxml2 python-psutil python-tk python-nose
 
 echo "installing glog"
 $SUDO apt-get install -y libgoogle-glog-dev
 
-echo "installing ipython notebook and browser"
-$SUDO apt-get install -y firefox ipython-notebook
+echo "installing pip for jupyter"
+$SUDO apt-get install -y python-pip python-qt4

@@ -231,6 +231,10 @@ fi
 # copy scripts into the path
 cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/scripts/update*sh $SIRF_INSTALL_PATH/bin
 
+# install the SIRF-Exercises
+cd $SIRF_SRC_PATH
+clone_or_pull SIRF-Exercises
+
 # copy help file to Desktop
 if [ ! -d ~/Desktop ]
 then
