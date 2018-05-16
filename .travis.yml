@@ -240,7 +240,7 @@ install:
         $PY_EXE -m pip install --user --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
         cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
         # Job may timeout (>50min) if no ccache, otherwise should be <1min:
-        make
+        make || travis_terminate $?
         mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
       )
       source $PWD/INSTALL/bin/env_ccppetmr.sh
