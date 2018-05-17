@@ -177,6 +177,7 @@ clone_or_pull()
   then
     cd $repo
     git fetch
+    git pull
   else
     git clone --recursive https://github.com/CCPPETMR/$repo
     cd $repo
