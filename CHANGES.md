@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 1.1.1
+- no change. 
+
 ## 1.1.0
 - added pip, firefox 
 - added spyder and jupyer via pip
