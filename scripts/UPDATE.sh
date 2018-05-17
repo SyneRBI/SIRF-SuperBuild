@@ -235,7 +235,7 @@ cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/scripts/update*sh $SIRF_INSTALL_PATH/bin
 # install the SIRF-Exercises
 cd $SIRF_SRC_PATH
 clone_or_pull SIRF-Exercises
-python -m pip --user nbstripout
+python -m pip install --user nbstripout
 cd $SIRF_SRC_PATH/SIRF-Exercises
 nbstripout --install
 
