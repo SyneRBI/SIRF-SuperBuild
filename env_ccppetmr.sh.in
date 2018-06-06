@@ -20,7 +20,7 @@ export DYLD_FALLBACK_LIBRARY_PATH
 #####     Environment variables for Matlab    
 @ENV_MATLAB_BASH@
 
-PATH=$PATH:@CCPPETMR_INSTALL@/bin
+PATH=@CCPPETMR_INSTALL@/bin:$PATH
 
 # Export Gadgetron Home
 @ENV_GADGETRON_HOME_SH@
