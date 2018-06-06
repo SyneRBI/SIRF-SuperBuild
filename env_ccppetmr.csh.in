@@ -24,7 +24,7 @@ endif
 #####     Environment variables for Matlab   
 @ENV_MATLAB_CSH@
 
-set path=( $path @CCPPETMR_INSTALL@/bin )
+set path=( @CCPPETMR_INSTALL@/bin $path )
 
 # Export Gadgetron Home
 @ENV_GADGETRON_HOME_CSH@
