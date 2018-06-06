@@ -1,7 +1,7 @@
 # ChangeLog
 
 ## 1.1.1
-- no change. 
+- added nbstripout (https://github.com/kynan/nbstripout) to handle conflicts in SIRF-Exercises
 
 ## 1.1.0
 - added pip, firefox 
