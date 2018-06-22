@@ -1,6 +1,7 @@
 #========================================================================
 # Author: Benjamin A Thomas
 # Author: Edoardo Pasca
+# Author: Casper da Costa-Luis
 # Copyright 2017 University College London
 # Copyright 2017 Science Technology Facilities Council
 #
@@ -112,8 +113,13 @@ option(USE_SYSTEM_SWIG "Build using an external version of SWIG" OFF)
 #option(USE_SYSTEM_Gadgetron "Build using an external version of Gadgetron" OFF)
 option(USE_SYSTEM_SIRF "Build using an external version of SIRF" OFF)
 option(USE_SYSTEM_GTest "Build using an external version of GTest" OFF)
-option(BUILD_STIR_WITH_OPENMP "Build STIR with OpenMP acceleration" OFF)
 option(USE_SYSTEM_ACE "Build using an external version of ACE" ON)
+if (APPLE)
+  set (build_STIR_OPENMP_default OFF)
+else()
+  set (build_STIR_OPENMP_default ON)
+endif()  
+option(BUILD_STIR_WITH_OPENMP "Build STIR with OpenMP acceleration" ${build_STIR_OPENMP_default})
 
 if (WIN32)
   set(build_Gadgetron_default OFF)
@@ -179,47 +185,57 @@ set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
 ## in the env_ccppetmr scripts we perform a substitution of the whole block
 ## during the configure_file() command call below.
 
-## Note that the MATLAB_DEST and PYTHON_DEST variables are currently set
-## in External_SIRF.cmake. That's a bit confusing of course (TODO).
+## Note that the (MATLAB|PYTHON)_DEST and PYTHON_STRATEGY variables are
+## currently set in External_SIRF.cmake. That's a bit confusing of course (TODO).
 set(ENV_PYTHON_BASH "#####    Python not found    #####")
 set(ENV_PYTHON_CSH  "#####    Python not found    #####")
 if(PYTHONINTERP_FOUND)
+  if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
+    set(COMMENT_OUT_PREFIX "")
+  else()
+    set(COMMENT_OUT_PREFIX "#")
+  endif()
 
   set (ENV_PYTHON_CSH "\
-    if $?PYTHONPATH then \n\
-      setenv PYTHONPATH ${PYTHON_DEST}:$PYTHONPATH \n\
-    else \n\
-      setenv PYTHONPATH ${PYTHON_DEST} \n\
-      setenv SIRF_PYTHON_EXECUTABLE ${PYTHON_EXECUTABLE}")
+    ${COMMENT_OUT_PREFIX}if $?PYTHONPATH then \n\
+    ${COMMENT_OUT_PREFIX}  setenv PYTHONPATH ${PYTHON_DEST}:$PYTHONPATH \n\
+    ${COMMENT_OUT_PREFIX}else \n\
+    ${COMMENT_OUT_PREFIX}  setenv PYTHONPATH ${PYTHON_DEST} \n\
+    setenv SIRF_PYTHON_EXECUTABLE ${PYTHON_EXECUTABLE}")
 
   set (ENV_PYTHON_BASH "\
-     PYTHONPATH=${PYTHON_DEST}:$PYTHONPATH \n\
-     export PYTHONPATH \n\
-     SIRF_PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} \n\
-     export SIRF_PYTHON_EXECUTABLE")
-
+    ${COMMENT_OUT_PREFIX}export PYTHONPATH=\"${PYTHON_DEST}\${PYTHONPATH:+:\${PYTHONPATH}}\" \n\
+    export SIRF_PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}")
 endif()
 
 set(ENV_MATLAB_BASH "#####     Matlab not found     #####")
 set(ENV_MATLAB_CSH  "#####     Matlab not found     #####")
 if (Matlab_FOUND)
   set(ENV_MATLAB_BASH "\
-MATLABPATH=${MATLAB_DEST}\n\
+  MATLABPATH=${MATLAB_DEST}\n\
 export MATLABPATH\n\
 SIRF_MATLAB_EXECUTABLE=${Matlab_MAIN_PROGRAM}\n\
 export SIRF_MATLAB_EXECUTABLE")
   set(ENV_MATLAB_CSH "\
    if $?MATLABPATH then\n\
-	setenv MATLABPATH ${MATLAB_DEST}:$MATLABPATH\n\
+     setenv MATLABPATH ${MATLAB_DEST}:$MATLABPATH\n\
    else\n\
-	setenv MATLABPATH ${MATLAB_DEST}\n\
+     setenv MATLABPATH ${MATLAB_DEST}\n\
    endif\n\
    setenv SIRF_MATLAB_EXECUTABLE ${Matlab_MAIN_PROGRAM}")
 endif()
 
+# set GADGETRON_HOME if Gadgetron is built
+if (BUILD_GADGETRON)
+
+  set(ENV_GADGETRON_HOME_SH "\
+GADGETRON_HOME=${CCPPETMR_INSTALL}\n\
+export GADGETRON_HOME\n")
+  set(ENV_GADGETRON_HOME_CSH "setenv GADGETRON_HOME ${CCPPETMR_INSTALL}\n")
+endif()
+
 configure_file(env_ccppetmr.sh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.sh)
 configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
-
 
 # add tests
 enable_testing()

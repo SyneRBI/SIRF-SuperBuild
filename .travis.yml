@@ -124,22 +124,25 @@ before_install:
  # in compounds statements (note that export/cd etc won't persist).
  - |
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      export BUILD_FLAGS="$BUILD_FLAGS -DSHARED_LIBS_ABS_PATH=ON"
+      brew update
+      BUILD_FLAGS="$BUILD_FLAGS -DSHARED_LIBS_ABS_PATH=ON"
       if [ $PYMVER == 2 ]; then
-        export PYINST=/System/Library/Frameworks/Python.framework/Versions
-        export PY_EXE=$PYINST/$PYMVER.7/bin/python2.7
-        export BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_LIBRARY=$PYINST/2.7/lib/libpython2.7.dylib"
-        export BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_INCLUDE_DIR=$PYINST/2.7/include/python2.7"
+        PYINST=/System/Library/Frameworks/Python.framework/Versions
+        PY_EXE=$PYINST/$PYMVER.7/bin/python2.7
+        BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_LIBRARY=$PYINST/2.7/lib/libpython2.7.dylib"
+        BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_INCLUDE_DIR=$PYINST/2.7/include/python2.7"
       else
-        brew install python3 || travis_terminate 1
-        export PYINST=/usr/local/Cellar/python3/3.6.4_2/Frameworks/Python.framework/Versions
-        export PY_EXE=$PYINST/$PYMVER.6/bin/python3.6
-        export BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_LIBRARY=$PYINST/3.6/Python"
-        export BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_INCLUDE_DIR=$PYINST/3.6/include/python3.6m"
+        brew upgrade python || travis_terminate 1
+        # find exact location of Python executable to pass to CMake
+        PY_INST=`echo /usr/local/Cellar/python/3.*/Frameworks/Python.framework/Versions/3.*`
+        PY_EXE=$PY_INST/bin/python3
+        PY_LIB=$PY_INST/Python
+        PY_INC=$PY_INST/Headers
+        # This is not necessary if we give the actual path for the executable
+        # BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_LIBRARY=$PY_LIB -DPYTHON_INCLUDE_DIR=$PY_INC"
       fi
-      export BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_EXECUTABLE=$PY_EXE"
+      BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_EXECUTABLE=$PY_EXE"
       ( set -ev
-        brew update
         # boost is already installed but 1.65 doesn't work so update
         brew upgrade boost
         # we currently need boost-python
@@ -155,7 +158,7 @@ before_install:
         mv cmake-*/CMake.app/Contents/* cmake-*
       )
     elif [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      export PY_EXE=python$PYMVER
+      PY_EXE=python$PYMVER
       if [[ -z "$DOCKER_BUILD" ]]; then
         curl -0 https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.tar.gz -o cmake.tar.gz
         tar xzf cmake.tar.gz
@@ -176,7 +179,7 @@ before_install:
  # ensure python bin dir exists (and coverage dependencies installed)
  - $PY_EXE -m pip install --user -U nose codecov coveralls
  # for counting clones, excluding ours
- - git clone https://$GITHUB_API_TOKEN@github.com/CCPPETMR/github-stats --branch $TRAVIS_REPO_SLUG
+ - git clone https://$GITHUB_API_TOKEN@github.com/ccp-petmr-codebot/github-stats --branch $TRAVIS_REPO_SLUG
  # update with last fortnight's clones from GitHub API
  - source github-stats/setup.sh
  # count unique clones, excluding travis, and print total
@@ -203,7 +206,7 @@ before_install:
  - export PATH="$PWD:$PATH"
  - popd
  # N.B.: don't put into build matrix to allow caching.
- - export BUILD_FLAGS="$BUILD_FLAGS -DPYVER=$PYMVER"
+ - BUILD_FLAGS="$BUILD_FLAGS -DPYVER=$PYMVER"
 
 install:
  - |
@@ -241,7 +244,7 @@ install:
         $PY_EXE -m pip install --user --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
         cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
         # Job may timeout (>50min) if no ccache, otherwise should be <1min:
-        make
+        make || travis_terminate 1
         mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
       )
       source $PWD/INSTALL/bin/env_ccppetmr.sh
@@ -271,3 +274,11 @@ script:
       # may exceed 4MB travis log limit
       cat gadgetron.log
     fi
+
+# post to slack.com
+notifications:
+ slack:
+  rooms:
+   - secure: "ZSBIUaNNQ7925etI0EtB+S5DnU++htNPUQYr78Lv8chhpx/2wTjFCxc7nVLhUHuqAblTnL2UkJj/f6rPecd+StgUBZcZboEIxYxju53xvi3pW7IdkzSNPYcFMQvyRpk562d9VUzK+iaOxdQaXyqEttCHTJNP4P2AcSILuRZPiNVk673lFXq8s8Hkhui64WzGkA5rPh1H6DObDoynME4MyuBRjygslCKBn5DiejTq2xhKdyIe6q+Nd1Vd456shcUNCgnbsrpq6Ik1tIUDBs+lCYvBN/ST6HfisL1cUNOqM0rVhNJBVNWVMOpGwkoKMfN5ZFl90HXiB9MGI7WDU7tzvdvFN/nsjfXBPAEYIvdHx6RkIIn2GeoAO9S9UZiyUNThjxs9jg7TJdLPaow1PIbLRrNi4WXpE4PYYzc7krGsZgIlhBx4SfMOXT7PLUevGOumRVetyddbVRIhJ6v92h29joQuwSKim2bVsOyznbTyLqn0ysIkqTD7aLov09Sh7Ni8VzVN/sWtlinzk1jIzpL4NxEzWKHL58q2lddyE6kD7FZCxw7dIdIMy3V84zt9oRzGNXETgzi5ClHXkHyYjoOGBbySG4v3Letlai0m0vhFvPGHhk8KZzyR9OUPJ6XZcmIdr5QJb4Nlc1b8r4INn7BNOiRAo4GSk1NJKze1gjdV6Ig="
+  on_success: change
+  on_failure: always

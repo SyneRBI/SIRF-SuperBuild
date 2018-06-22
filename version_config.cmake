@@ -119,11 +119,11 @@ if (DEVEL_BUILD)
   set(DEFAULT_ACE_TAG origin/master)
 
 else()
-  set(DEFAULT_SIRF_TAG v1.0.0)
+  set(DEFAULT_SIRF_TAG v1.1.1)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG 5710d438090a972bd7b0636ff6de5315519b78e9 )
+  set(DEFAULT_STIR_TAG 9ecbf0abd048cd0a8f19250f6cc7b4c199870c26)
 
   ## Gadgetron
   set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
