@@ -49,14 +49,31 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
   if (BUILD_PYTHON)
-    if (PYTHON_DEST)
+    set(PYTHON_DEST_DIR "" CACHE PATH "Directory of the SIRF Python modules")
+    if (PYTHON_DEST_DIR)
+     set(PYTHON_DEST "${PYTHON_DEST_DIR}")
     else()
-      set(PYTHON_DEST "${SIRF_Install_Dir}/python" CACHE PATH "Destination for python modules")
+      set(PYTHON_DEST "${CMAKE_INSTALL_PREFIX}/python")
     endif()
+    message(STATUS "Python libraries found")
+    message(STATUS "SIRF Python modules will be installed in " ${PYTHON_DEST})
+
+    set(PYTHON_STRATEGY "PYTHONPATH" CACHE STRING "\
+      PYTHONPATH: prefix PYTHONPATH \n\
+      SETUP_PY:   execute ${PYTHON_EXECUTABLE} setup.py install \n\
+      CONDA:      do nothing")
+    set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
   endif()
   set (BUILD_MATLAB ${Matlab_FOUND})
   if (BUILD_MATLAB)
-    set(MATLAB_DEST "${SIRF_Install_Dir}/matlab" CACHE PATH "Destination for matlab modules")
+    set(MATLAB_DEST_DIR "" CACHE PATH "Directory of the SIRF Matlab libraries")
+    if (MATLAB_DEST_DIR)
+      set(MATLAB_DEST "${MATLAB_DEST_DIR}")
+    else()
+      set(MATLAB_DEST "${CMAKE_INSTALL_PREFIX}/matlab")
+    endif()
+    message(STATUS "Matlab libraries found")
+    message(STATUS "SIRF Matlab libraries will be installed in " ${MATLAB_DEST})
   endif()
 
   message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
@@ -81,7 +98,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DBOOST_ROOT=${BOOST_ROOT}
         -DMatlab_ROOT_DIR=${Matlab_ROOT_DIR}
         -DMATLAB_ROOT=${Matlab_ROOT_DIR} # pass this for compatibility with old SIRF
-        -DMATLAB_DEST=${MATLAB_DEST}
+        -DMATLAB_DEST_DIR=${MATLAB_DEST_DIR}
         -DSTIR_DIR=${STIR_DIR}
         -DHDF5_ROOT=${HDF5_ROOT}
         -DHDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}
@@ -90,7 +107,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
         -DPYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIRS}
         -DPYTHON_LIBRARY=${PYTHON_LIBRARIES}
+<<<<<<< HEAD
         -DPYTHON_DEST_DIR=${PYTHON_DEST}/sirf
+=======
+        -DPYTHON_DEST_DIR=${PYTHON_DEST_DIR}
+        -DPYTHON_STRATEGY=${PYTHON_STRATEGY}
+>>>>>>> 5acdcf35184508edc7552dda2d17231303c20d1e
 	INSTALL_DIR ${SIRF_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}

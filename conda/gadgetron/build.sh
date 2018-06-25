@@ -32,11 +32,12 @@
 
 mkdir "$SRC_DIR/build"
 mkdir "$SRC_DIR/SIRF-SuperBuild"
-cp -rv "$RECIPE_DIR/../" "$SRC_DIR/SIRF-SuperBuild"
+#cp -rv "$RECIPE_DIR/../../" "$SRC_DIR/SIRF-SuperBuild"
+rsync -rv --exclude=.git "$RECIPE_DIR/../../" "$SRC_DIR/SIRF-SuperBuild"
+
 
 cd $SRC_DIR/build
 
-echo "$SRC_DIR/ccpi/Python"
 
 #site-packages ${SP_DIR}/sirf
 cmake ../SIRF-SuperBuild \
@@ -53,19 +54,22 @@ cmake ../SIRF-SuperBuild \
     -UISMRMRD_TAG \
     -DBUILD_GADGETRON=On \
     -DUSE_SYSTEM_SWIG=On \
-    -DUSE_SYSTEM_Boost=Off \
+    -DUSE_SYSTEM_Boost=On \
     -DUSE_SYSTEM_Armadillo=On \
+    -DUSE_SYSTEM_ISMRMRD=ON\
+    -DUSE_SYSTEM_STIR=Off\
     -DUSE_SYSTEM_FFTW3=On \
     -DUSE_SYSTEM_HDF5=ON \
-    -DBUILD_siemens_to_ismrmrd=On \
-    -DUSE_SYSTEM_GTEST=On\
+    -DBUILD_siemens_to_ismrmrd=Off \
+    -DUSE_SYSTEM_GTest=On\
     -DCONDA_BUILD=On
 
-make  -j1
+make  -j3 Gadgetron VERBOSE=0
+
 cp ${PREFIX}/share/gadgetron/config/gadgetron.xml.example ${PREFIX}/share/gadgetron/config/gadgetron.xml
 
-cd ${PREFIX}/python
-${PYTHON} setup.py install
+#cd ${PREFIX}/python
+#${PYTHON} setup.py install
 
 # add to 
 #echo "${PREFIX}/python" > ${PREFIX}
