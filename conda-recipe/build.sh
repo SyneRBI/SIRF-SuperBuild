@@ -61,7 +61,7 @@ cmake ../SIRF-SuperBuild \
     -DUSE_SYSTEM_GTEST=On\
     -DCONDA_BUILD=On
 
-make  -j1
+make -j1
 cp ${PREFIX}/share/gadgetron/config/gadgetron.xml.example ${PREFIX}/share/gadgetron/config/gadgetron.xml
 
 cd ${PREFIX}/python
