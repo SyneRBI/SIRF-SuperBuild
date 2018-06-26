@@ -149,7 +149,7 @@ else()
   set(DEFAULT_glog_TAG v035)
 
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
-  set(DEFAULT_ACE_TAG 94c53175d8a4b812413f463db77a240bccb846b8)
+  set(DEFAULT_ACE_TAG origin/master)
 endif()
 
 
