@@ -51,7 +51,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   endif()
 
   #set(HDF5_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}-prefix/src/HDF5/hdf5-1.10.0-patch1 )
-  
+  set (HDF5_BUILD_HL_LIB "OFF")
+  find_package(CUDA)
+  if (CUDA_FOUND)
+     message("<<<<<<<<<<<<<<<<< CUDA FOUND >>>>>>>>>>>>>>>>>>>>>")
+     set(HDF5_BUILD_HL_LIB "ON")
+  endif()
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
@@ -68,7 +74,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         ${CLANG_ARG}
         -DHDF5_BUILD_EXAMPLES=OFF 
         -DHDF5_BUILD_TOOLS=OFF 
-        -DHDF5_BUILD_HL_LIB=OFF 
+	-DHDF5_BUILD_HL_LIB=${HDF5_BUILD_HL_LIB} 
         -DBUILD_TESTING=OFF
     INSTALL_DIR ${HDF5_Install_Dir}
   )
