@@ -20,8 +20,9 @@
 # limitations under the License.
 #
 #=========================================================================
-#These need to be unique globally
-set(proj HDF5)
+
+#This needs to be unique globally
+set(proj ACE)
 
 # Set dependency list
 set(${proj}_DEPENDENCIES "")
@@ -38,55 +39,43 @@ set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
 set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
 set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
 
-  
-
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(HDF5_Install_Dir ${SUPERBUILD_INSTALL_DIR})
+  set(libACE_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
-  if(CMAKE_COMPILER_IS_CLANGXX)
-    set(CLANG_ARG -DCMAKE_COMPILER_IS_CLANGXX:BOOL=ON)
-  endif()
+  #message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
+  set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
+  set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
-  #set(HDF5_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}-prefix/src/HDF5/hdf5-1.10.0-patch1 )
-  set (HDF5_BUILD_HL_LIB "OFF")
-  find_package(CUDA)
-  if (CUDA_FOUND)
-     message("<<<<<<<<<<<<<<<<< CUDA FOUND >>>>>>>>>>>>>>>>>>>>>")
-     set(HDF5_BUILD_HL_LIB "ON")
-  endif()
+  
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
-    URL ${${proj}_URL}
-    URL_HASH MD5=${${proj}_MD5}
-
+    GIT_REPOSITORY ${${proj}_URL}
+    GIT_TAG ${${proj}_TAG}
     SOURCE_DIR ${${proj}_SOURCE_DIR}
     BINARY_DIR ${${proj}_BINARY_DIR}
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
     STAMP_DIR ${${proj}_STAMP_DIR}
     TMP_DIR ${${proj}_TMP_DIR}
-
 	
     CMAKE_ARGS
-        ${CLANG_ARG}
-        -DHDF5_BUILD_EXAMPLES=OFF 
-        -DHDF5_BUILD_TOOLS=OFF 
-	-DHDF5_BUILD_HL_LIB=${HDF5_BUILD_HL_LIB} 
-        -DBUILD_TESTING=OFF
-    INSTALL_DIR ${HDF5_Install_Dir}
+        -DCMAKE_INSTALL_PREFIX=${Gadgetron_Install_Dir}
+	    INSTALL_DIR ${Gadgetron_Install_Dir}
+    DEPENDS
+        ${${proj}_DEPENDENCIES}
   )
 
-  set( HDF5_ROOT ${HDF5_Install_Dir} )
-  set( HDF5_INCLUDE_DIRS ${HDF5_ROOT}/include )
+    set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
+    set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
 
- else()
-    if(${USE_SYSTEM_${externalProjName}})
-      find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
-      message(STATUS "USING the system ${externalProjName}, found HDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}, HDF5_C_LIBRARY_hdf5=${HDF5_C_LIBRARY_hdf5},HDF5_LIBRARIES=${HDF5_LIBRARIES}")
-  endif()
+   else()
+      if(${USE_SYSTEM_${externalProjName}})
+        find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
+        message("USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
+    endif()
   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
     SOURCE_DIR ${${proj}_SOURCE_DIR}
     BINARY_DIR ${${proj}_BINARY_DIR}
@@ -94,11 +83,11 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     STAMP_DIR ${${proj}_STAMP_DIR}
     TMP_DIR ${${proj}_TMP_DIR}
   )
-endif()
+  endif()
 
-mark_as_superbuild(
-  VARS
-    ${externalProjName}_DIR:PATH
-  LABELS
-    "FIND_PACKAGE"
-)
+  mark_as_superbuild(
+    VARS
+      ${externalProjName}_DIR:PATH
+    LABELS
+      "FIND_PACKAGE"
+  )
