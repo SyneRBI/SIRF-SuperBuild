@@ -28,7 +28,10 @@ if (USE_ITK)
 else()
   set(${proj}_DEPENDENCIES "Boost")
 endif()
-
+if (BUILD_STIR_SWIG_PYTHON)
+  list(APPEND ${proj}_DEPENDENCIES "SWIG")
+endif()
+  
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 
