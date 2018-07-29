@@ -50,8 +50,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
   set(ENV{CIL_VERSION} 0.10.1)
-  set(CCPi-RGL_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
-  set(CCPi-RGL_TAG origin/windows_fix)
+  #set(CCPi-RGL_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
+  #set(CCPi-RGL_TAG origin/windows_fix)
   message("CIL URL " ${${proj}_URL}  ) 
   message("CIL TAG " ${${proj}_TAG}  ) 
 

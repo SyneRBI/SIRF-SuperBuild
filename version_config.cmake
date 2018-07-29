@@ -118,6 +118,12 @@ if (DEVEL_BUILD)
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
   set(DEFAULT_ACE_TAG origin/master)
 
+  # CCPi CIL
+  set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
+  set(DEFAULT_CCPi-Framework_TAG origin/master)
+  set(DEFAULT_CCPi-RGL_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
+  set(DEFAULT_CCPi-RGL_TAG origin/master)
+
 else()
   set(DEFAULT_SIRF_TAG v1.1.1)
 
@@ -150,6 +156,13 @@ else()
 
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
   set(DEFAULT_ACE_TAG origin/master)
+  
+  # CCPi CIL
+  set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
+  set(DEFAULT_CCPi-Framework_TAG origin/master)
+  set(DEFAULT_CCPi-RGL_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
+  set(DEFAULT_CCPi-RGL_TAG origin/master)
+
 endif()
 
 
@@ -179,6 +192,10 @@ SET(glog_TAG ${DEFAULT_glog_TAG} CACHE STRING ON)
 set(ACE_URL ${DEFAULT_ACE_URL} CACHE STRING ON)
 set(ACE_TAG ${DEFAULT_ACE_TAG} CACHE STRING ON)
 
+set(CCPi-RGL_URL ${DEFAULT_CCPi-RGL_URL} CACHE STRING ON)
+set(CCPi-RGL_TAG ${DEFAULT_CCPi-RGL_TAG} CACHE STRING ON)
+set(CCPi-Framework_URL ${DEFAULT_CCPi-Framework_URL} CACHE STRING ON)
+set(CCPi-Framework_TAG ${DEFAULT_CCPi-Framework_TAG} CACHE STRING ON)
 mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   Gadgetron_URL Gadgetron_TAG
   siemens_to_ismrmrd_URL siemens_to_ismrmrd_TAG
