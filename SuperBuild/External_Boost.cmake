@@ -31,6 +31,12 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
+set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
+set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
+set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
+set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
+set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
+
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
@@ -43,36 +49,48 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set(CLANG_ARG -DCMAKE_COMPILER_IS_CLANGXX:BOOL=ON)
   endif()
 
-  set(BOOST_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj})
-
+  #set(BOOST_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj})
+  
+  
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
-    SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
-    BUILD_IN_SOURCE 1
+    SOURCE_DIR ${${proj}_SOURCE_DIR}
+    BINARY_DIR ${${proj}_SOURCE_DIR}
+    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+    STAMP_DIR ${${proj}_STAMP_DIR}
+    INSTALL_DIR ${Boost_Install_Dir}
+    TMP_DIR ${${proj}_TMP_DIR}
+    BUILD_IN_SOURCE 0
 
     CONFIGURE_COMMAND ${CMAKE_COMMAND}
                              ${CLANG_ARG}
-                             -DBUILD_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/${proj}
+                             -DBUILD_DIR:PATH=${${proj}_SOURCE_DIR}
                              -DBOOST_INSTALL_DIR:PATH=${Boost_Install_Dir}
                              -P ${Boost_Configure_Script}
     INSTALL_COMMAND ""
     BUILD_COMMAND ${CMAKE_COMMAND}
-                             -DBUILD_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/${proj}
+                             -DBUILD_DIR:PATH=${${proj}_SOURCE_DIR}
                              -DBOOST_INSTALL_DIR:PATH=${Boost_Install_Dir} -P ${Boost_Build_Script}
   )
 
   set(BOOST_ROOT        ${Boost_Install_Dir})
-  set(BOOST_INCLUDEDIR ${Boost_Install_Dir}/include)
+  set(BOOST_INCLUDEDIR  ${Boost_Install_Dir}/include)
   set(BOOST_LIBRARY_DIR ${Boost_Install_Dir}/lib)
 
  else()
     if(${USE_SYSTEM_${externalProjName}})
       find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
       message("USING the system ${externalProjName}, using BOOST_LIBRARY_DIR=${BOOST_LIBRARY_DIR}")
-  endif()
-   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}")
+ endif()
+   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
+    SOURCE_DIR ${${proj}_SOURCE_DIR}
+    BINARY_DIR ${${proj}_BINARY_DIR}
+    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+    STAMP_DIR ${${proj}_STAMP_DIR}
+    TMP_DIR ${${proj}_TMP_DIR}
+  )
 endif()
 
 mark_as_superbuild(

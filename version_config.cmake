@@ -2,8 +2,8 @@
 # Author: Edoardo Pasca
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
-# Copyright 2017 University College London
-# Copyright 2017 Science Technology Facilities Council
+# Copyright 2017-2018 University College London
+# Copyright 2017-2018 Science Technology Facilities Council
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -23,6 +23,7 @@
 
 ## BOOST
 set(Boost_VERSION 1.63.0)
+set(Boost_REQUIRED_VERSION 1.36.0)
 set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/1.63.0/boost_1_63_0.zip)
 set(Boost_MD5 3c706b3fc749884ea5510c39474fd732)
 
@@ -34,10 +35,10 @@ set(Armadillo_MD5 c601f3a5ec6d50666aa3a539fa20e6ca )
 if(WIN32)
   # Just use precompiled version
   # TODO would prefer the next zip file but for KT using an ftp URL times-out (firewall?)
-  #set(${proj}_URL ftp://ftp.fftw.org/pub/fftw/fftw-3.3.5-dll64.zip )
-  #set(${proj}_MD5 cb3c5ad19a89864f036e7a2dd5be168c )
-  set(FFTW3_URL https://s3.amazonaws.com/install-gadgetron-vs2013/Dependencies/FFTW/zip/FFTW3.zip )
-  set(FFTW3_MD5 a42eac92d9ad06d7c53fb82b09df2b6e )
+  set(FFTW3_URL https://www.ccppetmr.ac.uk/sites/www.ccppetmr.ac.uk/files/downloads/fftw-3.3.5-dll64.zip )
+  set(FFTW3_MD5 cb3c5ad19a89864f036e7a2dd5be168c )
+  #set(FFTW3_URL https://s3.amazonaws.com/install-gadgetron-vs2013/Dependencies/FFTW/zip/FFTW3.zip )
+  #set(FFTW3_MD5 a42eac92d9ad06d7c53fb82b09df2b6e )
 else(WIN32)
   set(FFTW3_URL http://www.fftw.org/fftw-3.3.5.tar.gz ) 
   set(FFTW3_MD5 6cc08a3b9c7ee06fdd5b9eb02e06f569 )
@@ -47,10 +48,18 @@ set(FFTW3double_URL ${FFTW3_URL})
 set(FFTW3double_MD5 ${FFTW3_MD5})
 
 ## HDF5
-set(HDF5_URL https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.0-patch1/src/CMake-hdf5-1.10.0-patch1.tar.gz )
-set(HDF5_MD5 6fb456d03a60f358f3c077288a6d1cd8 )
+if (WIN32)
+  # 1.8.15 hdf5-targets.cmake refers to non-existent zlib files
+  # (or at least this was the case for older Anaconda installations)
+  set(HDF5_REQUIRED_VERSION 1.8.17)
+else()
+  set(HDF5_REQUIRED_VERSION 1.8)
+endif()
+set(HDF5_URL https://www.ccppetmr.ac.uk/sites/www.ccppetmr.ac.uk/files/downloads/hdf5-1.10.1.tar.gz)
+set(HDF5_MD5 43a2f9466702fb1db31df98ae6677f15 )
 
 ## SWIG
+set (SWIG_REQUIRED_VERSION 2)
 if (WIN32)
   set(SWIG_URL http://downloads.sourceforge.net/swig/swigwin-3.0.12.zip  )
   set(SWIG_MD5 a49524dad2c91ae1920974e7062bfc93 )
@@ -61,51 +70,90 @@ endif(WIN32)
 option(DEVEL_BUILD "Use current versions of major packages" OFF)
 
 ## Googletest
-set(googletest_URL https://github.com/google/googletest )
-set(googletest_TAG release-1.8.0)
+set(GTest_URL https://github.com/google/googletest )
+set(GTest_TAG release-1.8.0)
+
+## glog
+set(glog_URL https://github.com/google/glog )
+set(glog_TAG v035)
+
+## ITK
+set(ITK_URL https://itk.org/ITK.git)
+set(ITK_TAG v4.13.0)
 
 ## NiftyReg
 set(NiftyReg_URL https://git.code.sf.net/p/niftyreg/git )
 set(NiftyReg_TAG CBSI-546-g62af1ca )
 
 option (DEVEL_BUILD "Developer Build" OFF)
+mark_as_advanced(DEVEL_BUILD)
 
 #Set the default versions for SIRF, STIR, Gadgetron and ISMRMRD
 # with devel build it uses latest version of upstream packages
-# otherwise uses the versions for SIRF 0.9
+# otherwise uses the versions for current SIRF
 
 set(DEFAULT_SIRF_URL https://github.com/CCPPETMR/SIRF )
 if (DEVEL_BUILD)
-  set (DEFAULT_SIRF_TAG master)
+  set (DEFAULT_SIRF_TAG origin/master)
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG master)
+  set(DEFAULT_STIR_TAG origin/master)
 
   ## Gadgetron
   set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
-  set(DEFAULT_Gadgetron_TAG master)
+  set(DEFAULT_Gadgetron_TAG origin/master)
+
+  ## siemens_to_ismrmrd
+  set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd )
+  set(DEFAULT_siemens_to_ismrmrd_TAG origin/master)
 
   ## ISMRMRD
   set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
-  set(DEFAULT_ISMRMRD_TAG master)
+  set(DEFAULT_ISMRMRD_TAG origin/master)
+
+  ## petmr-rd-tools
+  set(DEFAULT_petmr_rd_tools_URL https://github.com/UCL/petmr-rd-tools )
+  set(DEFAULT_petmr_rd_tools_TAG origin/master)
+
+  ## glog
+  set(DEFAULT_glog_URL https://github.com/google/glog )
+  set(DEFAULT_glog_TAG v035)
+ 
+  set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
+  set(DEFAULT_ACE_TAG origin/master)
 
 else()
-  set(DEFAULT_SIRF_TAG v0.9.2)
+  set(DEFAULT_SIRF_TAG v1.1.1)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG 41651b3a2007c58cbf1f7706bb2e269a21e870b1)
+  set(DEFAULT_STIR_TAG 9ecbf0abd048cd0a8f19250f6cc7b4c199870c26)
 
   ## Gadgetron
   set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
   #https://github.com/CCPPETMR/gadgetron) 
 
-  set(DEFAULT_Gadgetron_TAG 00b96376568278a595e78879026bb3b0d5fbb98d )
+  set(DEFAULT_Gadgetron_TAG e7eb430673eb3272e8a821b51750c0a2a96dafed )
+  #set(DEFAULT_Gadgetron_TAG 00b96376568278a595e78879026bb3b0d5fbb98d )
+
+  ## siemens_to_ismrmrd
+  set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
+  set(DEFAULT_siemens_to_ismrmrd_TAG ba4773f9cf4bba5f3ccd19930e3548d8273fee01)
 
   ## ISMRMRD
-  set(DEFAULT_ISMRMRD_URL https://github.com/CCPPETMR/ismrmrd )
-  set(DEFAULT_ISMRMRD_TAG 35012c6c8000616546c2d6b1757eba0c5b21b2d4)
+  set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
+  set(DEFAULT_ISMRMRD_TAG 42d93137cc16c270c8ba065edd2496483161bd21)
 
+  ## petmr-rd-tools
+  set(DEFAULT_petmr_rd_tools_URL https://github.com/UCL/petmr-rd-tools )
+  set(DEFAULT_petmr_rd_tools_TAG b88281f79e8c4a3781ebda7663f1ce7f5cab6e68)
+
+  ## glog
+  set(DEFAULT_glog_URL https://github.com/google/glog )
+  set(DEFAULT_glog_TAG v035)
+
+  set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
+  set(DEFAULT_ACE_TAG origin/master)
 endif()
 
 
@@ -120,7 +168,24 @@ SET(STIR_URL ${DEFAULT_STIR_URL} CACHE STRING ON)
 SET(Gadgetron_TAG ${DEFAULT_Gadgetron_TAG} CACHE STRING ON)
 SET(Gadgetron_URL ${DEFAULT_Gadgetron_URL} CACHE STRING ON)
 
+SET(siemens_to_ismrmrd_TAG ${DEFAULT_siemens_to_ismrmrd_TAG} CACHE STRING ON)
+SET(siemens_to_ismrmrd_URL ${DEFAULT_siemens_to_ismrmrd_URL} CACHE STRING ON)
+
 SET(ISMRMRD_TAG ${DEFAULT_ISMRMRD_TAG} CACHE STRING ON)
 SET(ISMRMRD_URL ${DEFAULT_ISMRMRD_URL} CACHE STRING ON)
 
-mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG Gadgetron_URL Gadgetron_TAG ISMRMRD_URL ISMRMRD_TAG)
+SET(petmr_rd_tools_TAG ${DEFAULT_petmr_rd_tools_TAG} CACHE STRING ON)
+SET(petmr_rd_tools_URL ${DEFAULT_petmr_rd_tools_URL} CACHE STRING ON)
+
+SET(glog_URL ${DEFAULT_glog_URL} CACHE STRING ON)
+SET(glog_TAG ${DEFAULT_glog_TAG} CACHE STRING ON)
+
+set(ACE_URL ${DEFAULT_ACE_URL} CACHE STRING ON)
+set(ACE_TAG ${DEFAULT_ACE_TAG} CACHE STRING ON)
+
+mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
+  Gadgetron_URL Gadgetron_TAG
+  siemens_to_ismrmrd_URL siemens_to_ismrmrd_TAG
+  ISMRMRD_URL ISMRMRD_TAG
+  petmr_rd_tools_URL petmr_rd_tools_TAG
+  glog_URL glog_TAG)

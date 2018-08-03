@@ -25,13 +25,19 @@
 set(proj Gadgetron)
 
 # Set dependency list
-set(${proj}_DEPENDENCIES "Boost;HDF5;ISMRMRD;FFTW3double;googletest;Armadillo")
+set(${proj}_DEPENDENCIES "ACE;Boost;HDF5;ISMRMRD;FFTW3double;Armadillo;GTest")
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
+
+set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
+set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
+set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
+set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
+set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
@@ -52,22 +58,37 @@ if (MKL_FOUND)
     set(MKLROOT_PATH=)
   endif ()
 endif ()
+
+  #option(BUILD_GADGETRON_NATIVE_PYTHON_SUPPORT
+  #  "Build Gadgetron Python gadgets (not required for SIRF)" OFF)
+  set(BUILD_GADGETRON_NATIVE_PYTHON_SUPPORT OFF) # <-Disabled for v1.0
+  option(BUILD_GADGETRON_NATIVE_MATLAB_SUPPORT
+    "Build Gadgetron MATLAB gadgets (not required for SIRF)" OFF)
+
+  
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
     GIT_TAG ${${proj}_TAG}
-    SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
-
+    SOURCE_DIR ${${proj}_SOURCE_DIR}
+    BINARY_DIR ${${proj}_BINARY_DIR}
+    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+    STAMP_DIR ${${proj}_STAMP_DIR}
+    TMP_DIR ${${proj}_TMP_DIR}
+	
     CMAKE_ARGS
+        -DBUILD_PYTHON_SUPPORT=${BUILD_GADGETRON_NATIVE_PYTHON_SUPPORT}
+        -DBUILD_MATLAB_SUPPORT=${BUILD_GADGETRON_NATIVE_MATLAB_SUPPORT}
         -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
         -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
-        -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}
+        -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}/include
         -DCMAKE_INSTALL_PREFIX=${Gadgetron_Install_Dir}
         -DBOOST_INCLUDEDIR=${BOOST_ROOT}/include/
         -DBOOST_LIBRARYDIR=${BOOST_LIBRARY_DIR}
-	-DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
-        -DPYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR}
-        -DPYTHON_LIBRARY=${PYTHON_LIBRARY}
+        -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
+        -DPYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIRS}
+        -DPYTHON_LIBRARY=${PYTHON_LIBRARIES}
         -DGTEST_ROOT=${GTEST_ROOT}
         -DHDF5_ROOT=${HDF5_ROOT}
         -DHDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}
@@ -88,7 +109,13 @@ endif ()
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
         message("USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
     endif()
-    ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}")
+  ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
+    SOURCE_DIR ${${proj}_SOURCE_DIR}
+    BINARY_DIR ${${proj}_BINARY_DIR}
+    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+    STAMP_DIR ${${proj}_STAMP_DIR}
+    TMP_DIR ${${proj}_TMP_DIR}
+  )
   endif()
 
   mark_as_superbuild(

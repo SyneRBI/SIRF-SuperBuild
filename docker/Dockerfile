@@ -1,68 +1,89 @@
-FROM ubuntu:16.04
-MAINTAINER Casper da Costa-Luis <imaging@caspersci.uk.to>
+FROM ubuntu:16.04 as base
+LABEL \
+  author.name="Casper da Costa-Luis"          \
+  author.email=imaging@caspersci.uk.to        \
+  maintainer.email=ccppetmr@stfc.ac.uk        \
+  maintainer.url=https://www.ccppetmr.ac.uk/  \
+  source.url=https://github.com/CCPPETMR/SIRF-SuperBuild/  \
+  licence="MPLv2.0 (https://www.mozilla.org/en-GB/MPL/2.0/)"  \
+  description="CCP PET-MR Ubuntu"
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update && apt-get upgrade -y --no-install-recommends
+COPY raw-ubuntu.sh .
+RUN bash raw-ubuntu.sh
+RUN rm raw-ubuntu.sh
 
 # Set locale, suppress warnings
-RUN apt-get update && apt-get install -y apt-utils locales
-RUN locale-gen en_GB.UTF-8
 #ENV LC_ALL en_GB.UTF-8
 ENV LANG en_GB.UTF-8
 ENV LANGUAGE en_GB:en
-#RUN localectl set-locale LANG="en_GB.UTF-8"
 
-ADD build_essential-ubuntu.sh .
+FROM base as core
+
+COPY build_essential-ubuntu.sh .
 RUN bash build_essential-ubuntu.sh
 RUN rm build_essential-ubuntu.sh
 
 # Python (build)
-ADD build_python-ubuntu.sh .
+COPY build_python-ubuntu.sh .
 RUN bash build_python-ubuntu.sh
 RUN rm build_python-ubuntu.sh
 
 # Gadgetron
-ADD build_gadgetron-ubuntu.sh .
+COPY build_gadgetron-ubuntu.sh .
 RUN bash build_gadgetron-ubuntu.sh
 RUN rm build_gadgetron-ubuntu.sh
 
+# SIRF external deps
+COPY build_system-ubuntu.sh .
+RUN bash build_system-ubuntu.sh
+RUN rm build_system-ubuntu.sh
+
 # X11 forwarding
-RUN apt-get update && apt-get install -y --no-install-recommends libx11-xcb1
-RUN sudo mkdir -p /usr/share/X11/xkb
+RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
+  libx11-xcb1 \
+  && apt-get clean
+RUN mkdir -p /usr/share/X11/xkb
 RUN [ -e /usr/bin/X ] || ln -s /usr/bin/Xorg /usr/bin/X
 
-ARG mainUser=sirfuser
-ARG UID=1000
-ARG GROUPS=1000
-RUN addgroup --system --gid $GROUPS $mainUser
-RUN adduser --home /home/$mainUser --shell /bin/bash --system --ingroup $mainUser --uid $UID $mainUser
-#RUN echo "$mainUser:x:${uid}:${gid}:$mainUser,,,:/home/$mainUser:/bin/bash" >> /etc/passwd
+RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
+  gosu \
+  && apt-get clean
+ENV DEBIAN_FRONTEND ''
+WORKDIR /home-away
+COPY entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["/bin/bash"]
 
-RUN echo "$mainUser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/$mainUser
+FROM core as sirf
+LABEL description="CCP PET-MR SIRF"
 
-USER $mainUser
-ENV HOME /home/$mainUser
-WORKDIR $HOME
+ENV DEBIAN_FRONTEND noninteractive
+
+COPY .bashrc .
+COPY .profile .
+RUN chmod 644 .bashrc .profile
 
 # Python (virtualenv)
-ADD user_python-ubuntu.sh .
+COPY requirements.txt .
+COPY user_python-ubuntu.sh .
 RUN bash user_python-ubuntu.sh
-RUN rm user_python-ubuntu.sh
-
-ADD .bashrc .
-ADD .profile .
-RUN sudo chown $mainUser .bashrc .profile
-RUN sudo chgrp $mainUser .bashrc .profile
-RUN sudo chmod 644 .bashrc .profile
+RUN rm user_python-ubuntu.sh requirements.txt
 
 # SIRF
-ADD user_sirf-ubuntu.sh .
-RUN bash --login user_sirf-ubuntu.sh
+COPY user_sirf-ubuntu.sh .
+COPY devel/.ccache/ /opt/ccache/
+RUN ccache -o cache_dir=/opt/ccache
+ARG BUILD_FLAGS="\
+  -DCMAKE_BUILD_TYPE=Release -DBUILD_STIR_WITH_OPENMP=ON \
+  -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON \
+  -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
+ARG EXTRA_BUILD_FLAGS=""
+RUN bash user_sirf-ubuntu.sh
 RUN rm user_sirf-ubuntu.sh
 
-RUN sudo apt-get clean
+RUN mv ~/.git-prompt.sh .
 
 ENV DEBIAN_FRONTEND ''
-
-CMD cd $HOME && /bin/bash --init-file .profile
+CMD ["/bin/bash"]

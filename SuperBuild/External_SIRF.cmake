@@ -34,6 +34,13 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
+set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
+set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
+set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
+set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
+set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
+
+
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
@@ -42,7 +49,31 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
   if (BUILD_PYTHON)
-    set(PYTHON_DEST "${SIRF_Install_Dir}/python" CACHE PATH "Destination for python modules")
+    set(PYTHON_DEST_DIR "" CACHE PATH "Directory of the SIRF Python modules")
+    if (PYTHON_DEST_DIR)
+     set(PYTHON_DEST "${PYTHON_DEST_DIR}")
+    else()
+      set(PYTHON_DEST "${CMAKE_INSTALL_PREFIX}/python")
+    endif()
+    message(STATUS "Python libraries found")
+    message(STATUS "SIRF Python modules will be installed in " ${PYTHON_DEST})
+
+    set(PYTHON_STRATEGY "PYTHONPATH" CACHE STRING "\
+      PYTHONPATH: prefix PYTHONPATH \n\
+      SETUP_PY:   execute ${PYTHON_EXECUTABLE} setup.py install \n\
+      CONDA:      do nothing")
+    set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
+  endif()
+  set (BUILD_MATLAB ${Matlab_FOUND})
+  if (BUILD_MATLAB)
+    set(MATLAB_DEST_DIR "" CACHE PATH "Directory of the SIRF Matlab libraries")
+    if (MATLAB_DEST_DIR)
+      set(MATLAB_DEST "${MATLAB_DEST_DIR}")
+    else()
+      set(MATLAB_DEST "${CMAKE_INSTALL_PREFIX}/matlab")
+    endif()
+    message(STATUS "Matlab libraries found")
+    message(STATUS "SIRF Matlab libraries will be installed in " ${MATLAB_DEST})
   endif()
 
   message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
@@ -52,7 +83,11 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
     GIT_TAG ${${proj}_TAG}
-    SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}
+    SOURCE_DIR ${${proj}_SOURCE_DIR}
+    BINARY_DIR ${${proj}_BINARY_DIR}
+    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+    STAMP_DIR ${${proj}_STAMP_DIR}
+    TMP_DIR ${${proj}_TMP_DIR}
 
     CMAKE_ARGS
         -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
@@ -63,15 +98,17 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DBOOST_ROOT=${BOOST_ROOT}
         -DMatlab_ROOT_DIR=${Matlab_ROOT_DIR}
         -DMATLAB_ROOT=${Matlab_ROOT_DIR} # pass this for compatibility with old SIRF
+        -DMATLAB_DEST_DIR=${MATLAB_DEST_DIR}
         -DSTIR_DIR=${STIR_DIR}
         -DHDF5_ROOT=${HDF5_ROOT}
         -DHDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}
         -DISMRMRD_DIR=${ISMRMRD_DIR}
         -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
         -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
-        -DPYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR}
-        -DPYTHON_LIBRARY=${PYTHON_LIBRARY}
-        -DPYTHON_DEST=${PYTHON_DEST}
+        -DPYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIRS}
+        -DPYTHON_LIBRARY=${PYTHON_LIBRARIES}
+        -DPYTHON_DEST_DIR=${PYTHON_DEST_DIR}
+        -DPYTHON_STRATEGY=${PYTHON_STRATEGY}
 	INSTALL_DIR ${SIRF_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
@@ -84,8 +121,14 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       if(${USE_SYSTEM_${externalProjName}})
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
         message("USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
-    endif()
-    ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}")
+   endif()
+    ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
+      SOURCE_DIR ${${proj}_SOURCE_DIR}
+      BINARY_DIR ${${proj}_BINARY_DIR}
+      DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+      STAMP_DIR ${${proj}_STAMP_DIR}
+      TMP_DIR ${${proj}_TMP_DIR}
+    )
   endif()
 
   mark_as_superbuild(

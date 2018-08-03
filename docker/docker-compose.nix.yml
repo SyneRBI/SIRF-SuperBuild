@@ -1,13 +1,8 @@
-version: '3.2'
+version: '3.4'
 services:
-  sirf:
-    # perhaps uncomment the following and insert the host uid and gid (run `id`)
-    # build:
-    #   args:
-    #     UID: 1000
-    #     GROUPS: 1000
-    environment:
-      - DISPLAY
-    volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
-      - /tmp/.docker.xauth:/tmp/.docker.xauth
+ sirf:
+  environment:
+   - DISPLAY
+  volumes:
+   - /tmp/.X11-unix:/tmp/.X11-unix
+   - /tmp/.docker.xauth:/tmp/.docker.xauth

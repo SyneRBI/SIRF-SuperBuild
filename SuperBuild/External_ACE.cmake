@@ -3,7 +3,7 @@
 # Author: Kris Thielemans
 # Author: Edoardo Pasca
 # Copyright 2017 University College London
-# Copyright 2017 Science Technology Facilities Council
+# Copyright 2017 STFC
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -21,15 +21,8 @@
 #
 #=========================================================================
 
-# Add Armadillo
-#
-# Warning: CMake's FindArmadillo.cmake will always search in default CMake paths and cannot be
-# forced to search first in an alternative location (e.g. via ARMADILLO_ROOT or so).
-# Therefore future find_package statements might still find the system one even if you
-# build your own.
-
 #This needs to be unique globally
-set(proj Armadillo)
+set(proj ACE)
 
 # Set dependency list
 set(${proj}_DEPENDENCIES "")
@@ -50,52 +43,39 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(${proj}_Install_Dir ${SUPERBUILD_INSTALL_DIR})
+  set(libACE_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
+  #message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
+  set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
+  set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
-  # name after extraction
-  set(${proj}_location Armadillo)
-
-  if(CMAKE_COMPILER_IS_CLANGXX)
-    set(CLANG_ARG -DCMAKE_COMPILER_IS_CLANGXX:BOOL=ON)
-  endif()
-
-  #set(${proj}_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}-prefix/src/${${proj}_location} )
   
-  
-  
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
-    URL ${${proj}_URL}
-    URL_HASH MD5=${${proj}_MD5}
-	
+    GIT_REPOSITORY ${${proj}_URL}
+    GIT_TAG ${${proj}_TAG}
     SOURCE_DIR ${${proj}_SOURCE_DIR}
     BINARY_DIR ${${proj}_BINARY_DIR}
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
     STAMP_DIR ${${proj}_STAMP_DIR}
     TMP_DIR ${${proj}_TMP_DIR}
-
-    #CONFIGURE_COMMAND ${CMAKE_COMMAND}
-    #                         ${CLANG_ARG}
-    #                         -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_Install_Dir} "${${proj}_SOURCE_DIR}"
-    
+	
     CMAKE_ARGS
-        -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
-        -DCMAKE_INSTALL_PREFIX=${${proj}_Install_Dir}
-        ${CLANG_ARG}
-
-    INSTALL_DIR ${${proj}_Install_Dir}
+        -DCMAKE_INSTALL_PREFIX=${Gadgetron_Install_Dir}
+	    INSTALL_DIR ${Gadgetron_Install_Dir}
+    DEPENDS
+        ${${proj}_DEPENDENCIES}
   )
 
-  # no point doing this as FindArmadillo doesn't honour any *_ROOT or *_DIR settings
-  #set( ARMADILLO_ROOT ${${proj}_Install_Dir} )
-  set(ARMADILLO_INCLUDE_DIRS ${${proj}_Install_Dir}/include )
-  # TODO: probably should set ARMADILLO_LIBRARIES
- else()
-    if(${USE_SYSTEM_${externalProjName}})
-      find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
-      message(STATUS "USING the system ${externalProjName}, found ARMADILLO_LIBRARIES=${ARMADILLO_LIBRARIES}}")
-  endif()
+    set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
+    set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
+
+   else()
+      if(${USE_SYSTEM_${externalProjName}})
+        find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
+        message("USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
+    endif()
   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
     SOURCE_DIR ${${proj}_SOURCE_DIR}
     BINARY_DIR ${${proj}_BINARY_DIR}
@@ -103,11 +83,11 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     STAMP_DIR ${${proj}_STAMP_DIR}
     TMP_DIR ${${proj}_TMP_DIR}
   )
-endif()
+  endif()
 
-mark_as_superbuild(
-  VARS
-    ${externalProjName}_DIR:PATH
-  LABELS
-    "FIND_PACKAGE"
-)
+  mark_as_superbuild(
+    VARS
+      ${externalProjName}_DIR:PATH
+    LABELS
+      "FIND_PACKAGE"
+  )

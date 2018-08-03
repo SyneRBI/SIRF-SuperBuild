@@ -1,16 +1,41 @@
 #!/usr/bin/env bash
-# Python (virtualenv)
-curl -O https://bootstrap.pypa.io/get-pip.py
-sudo -H python get-pip.py
-rm get-pip.py
-sudo -H python -m pip install -U pip virtualenv
-virtualenv ~/py2
-export PIPINST="$HOME/py2/bin/pip install -U"
+[ -f .bashrc ] && . .bashrc
+INSTALL_DIR="${1:-/opt/pyvenv}"
+PYTHON="${2:-miniconda}"
+
+# Python
+case "$PYTHON" in
+miniconda)
+  # miniconda
+  curl https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh > miniconda.sh
+  echo -e "\nyes\n${INSTALL_DIR}" | bash miniconda.sh
+  rm miniconda.sh
+  source "$INSTALL_DIR"/bin/activate
+  conda config --add channels conda-forge
+  conda update -c conda-forge -y conda
+  conda update -c conda-forge -y --all
+  ;;
+*python*)
+  # virtualenv
+  curl https://bootstrap.pypa.io/get-pip.py > get-pip.py
+  ${PYTHON} get-pip.py
+  rm get-pip.py
+  ${PYTHON} -m pip install -U pip virtualenv
+  ${PYTHON} -m virtualenv "$INSTALL_DIR"
+  source "$INSTALL_DIR"/bin/activate
+  ;;
+*)
+  >&2 echo "unknown '\$PYTHON' '$PYTHON'"
+  exit 1
+  ;;
+esac
 
 # Python (runtime)
-$PIPINST docopt
-#$PIPINST cython
-$PIPINST matplotlib
-#PIPINST scipy
-git clone https://github.com/ismrmrd/ismrmrd-python-tools.git
-$PIPINST ./ismrmrd-python-tools
+if [ -f requirements.txt ]; then
+  pip install -U -r requirements.txt
+fi
+
+if [ "$PYTHON" = "miniconda" ]; then
+  conda update -c conda-forge -y --all
+  conda clean -y --all
+fi

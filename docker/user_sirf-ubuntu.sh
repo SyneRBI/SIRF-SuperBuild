@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
+[ -f .bashrc ] && . .bashrc
 # SIRF
-git clone https://github.com/CCPPETMR/SIRF-SuperBuild
-pushd SIRF-SuperBuild
-cmake .
-make -j
+git clone https://github.com/CCPPETMR/SIRF-SuperBuild --recursive -b master /opt/SIRF-SuperBuild
+pushd /opt/SIRF-SuperBuild
+cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
+make -j 2
 
 [ -f INSTALL/share/gadgetron/config/gadgetron.xml ] || \
   mv INSTALL/share/gadgetron/config/gadgetron.xml.example \
