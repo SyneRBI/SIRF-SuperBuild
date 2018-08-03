@@ -23,7 +23,11 @@
 set(proj SIRF)
 
 # Set dependency list
-set(${proj}_DEPENDENCIES "STIR;Boost;HDF5;ISMRMRD;FFTW3;SWIG;NiftyReg")
+if (${USE_NiftyReg})
+  set(${proj}_DEPENDENCIES "STIR;Boost;HDF5;ISMRMRD;FFTW3;SWIG;NiftyReg")
+else()
+  set(${proj}_DEPENDENCIES "STIR;Boost;HDF5;ISMRMRD;FFTW3;SWIG")
+endif()
 
 message(STATUS "Matlab_ROOT_DIR=" ${Matlab_ROOT_DIR})
 message(STATUS "STIR_DIR=" ${STIR_DIR})
