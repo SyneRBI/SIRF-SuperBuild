@@ -83,7 +83,7 @@ set(ITK_TAG v4.13.0)
 
 ## NiftyReg
 set(NiftyReg_URL https://git.code.sf.net/p/niftyreg/git )
-set(NiftyReg_TAG CBSI-546-g62af1ca )
+set(NiftyReg_TAG 4e4525b84223c182b988afaa85e32ac027774c42 )
 
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
