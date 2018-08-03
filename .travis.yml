@@ -18,6 +18,14 @@ matrix:
  - os: linux
    python: 3
    # +boost -itk +fftw3 +hdf5 -ace
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=OFF -DUSE_NiftyReg=ON" CC=gcc-5 CXX=g++-5 PYMVER=3
+ - os: linux
+   python: 2.7
+   # +boost -itk +fftw3 +hdf5 -ace
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=OFF -DUSE_NiftyReg=ON" CC=gcc-5 CXX=g++-5 PYMVER=3
+ - os: linux
+   python: 3
+   # +boost -itk +fftw3 +hdf5 -ace
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=OFF" CC=gcc-5 CXX=g++-5 PYMVER=3
  # linux g{cc,++}-5 py{27,3}
  - os: linux
