@@ -127,7 +127,7 @@ else()
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG 9ecbf0abd048cd0a8f19250f6cc7b4c199870c26)
+  set(DEFAULT_STIR_TAG 311e5252142e64ffb4de682a6963c90782dfeed4)
 
   ## Gadgetron
   set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
