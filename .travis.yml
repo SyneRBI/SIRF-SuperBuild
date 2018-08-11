@@ -142,11 +142,12 @@ before_install:
       else
         brew upgrade python || travis_terminate 1
         # find exact location of Python executable to pass to CMake
-        PY_INST=`echo /usr/local/Cellar/python/3.*/Frameworks/Python.framework/Versions/3.*`
-        PY_EXE=$PY_INST/bin/python3
-        PY_LIB=$PY_INST/Python
-        PY_INC=$PY_INST/Headers
-        # This is not necessary if we give the actual path for the executable
+        # we attempt to find the last one if there are multiple Python 3 versions installed
+        PY_INST=$(ls /usr/local/Cellar/python/$PYMVER.*/Frameworks/Python.framework/Versions/$PYMVER.*|tail -n 1)
+        PY_EXE=$PY_INST/bin/python$PYMVER
+        # Next lines are not necessary if we give the actual path for the executable to cmake
+        #PY_LIB=$PY_INST/Python
+        #PY_INC=$PY_INST/Headers
         # BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_LIBRARY=$PY_LIB -DPYTHON_INCLUDE_DIR=$PY_INC"
       fi
       BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_EXECUTABLE=$PY_EXE"
@@ -172,6 +173,7 @@ before_install:
         tar xzf cmake.tar.gz
       fi
     fi
+ - echo "Using Python executable $PY_EXE"
  - |
     if [[ -z "$DOCKER_BUILD" ]]; then
       # cmake override
