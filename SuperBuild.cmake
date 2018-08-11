@@ -133,6 +133,7 @@ endif()
 option(BUILD_GADGETRON "Build Gadgetron" ${build_Gadgetron_default})
 option(BUILD_siemens_to_ismrmrd "Build siemens_to_ismrmrd" OFF)
 option(BUILD_petmr_rd_tools "Build petmr_rd_tools" OFF)
+option(BUILD_NiftyReg "Build NiftyReg" OFF)
 
 if (BUILD_petmr_rd_tools)
     set(USE_ITK ON CACHE BOOL "Use ITK" FORCE)
@@ -159,6 +160,10 @@ endif()
 
 if (BUILD_petmr_rd_tools)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES petmr_rd_tools)
+endif()
+
+if (BUILD_NiftyReg)
+  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES NiftyReg)
 endif()
 
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${PRIMARY_PROJECT_NAME}_DEPENDENCIES)
