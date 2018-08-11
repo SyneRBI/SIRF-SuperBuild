@@ -200,9 +200,9 @@ before_install:
       $PY_EXE -m pydoc pip | grep -i -A 1 file
       $PY_EXE -m pydoc codecov | grep -i -A 1 file
       # append python bin dir to path (consult output from previous lines)
-      pushd $HOME/Library/Python/$PYMVER*/bin
-      export PATH="$PWD:$PATH"
-      popd
+      #pushd $HOME/Library/Python/$PYMVER*/bin
+      #export PATH="$PWD:$PATH"
+      #popd
     fi
  - $PY_EXE --version
  - $PY_EXE -m pip --version
