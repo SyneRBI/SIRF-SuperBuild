@@ -143,7 +143,10 @@ before_install:
         brew upgrade python || travis_terminate 1
         # find exact location of Python executable to pass to CMake
         # we attempt to find the last one if there are multiple Python 3 versions installed
+        find /usr/local/Cellar/python/ -type f -name python\* 
+        ls /usr/local/Cellar/python/$PYMVER.*/Frameworks/Python.framework/Versions/$PYMVER.*
         PY_INST=$(ls /usr/local/Cellar/python/$PYMVER.*/Frameworks/Python.framework/Versions/$PYMVER.*|tail -n 1)
+        echo XX${PY_INST}XX
         PY_EXE=$PY_INST/bin/python$PYMVER
         # Next lines are not necessary if we give the actual path for the executable to cmake
         #PY_LIB=$PY_INST/Python
