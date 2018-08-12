@@ -144,10 +144,17 @@ before_install:
         # find exact location of Python executable to pass to CMake
         # we attempt to find the last one if there are multiple Python 3 versions installed
         find /usr/local/Cellar/python/ -type f -name python\* 
-        ls /usr/local/Cellar/python/$PYMVER.*/Frameworks/Python.framework/Versions/$PYMVER.*
-        PY_INST=$(ls /usr/local/Cellar/python/$PYMVER.*/Frameworks/Python.framework/Versions/$PYMVER.*|tail -n 1)
+        ls -d1 /usr/local/Cellar/python/$PYMVER.*/Frameworks/Python.framework/Versions/$PYMVER.*
+        PY_INST=$(ls -d1 /usr/local/Cellar/python/$PYMVER.*/Frameworks/Python.framework/Versions/$PYMVER.*|tail -n 1)
         echo XX${PY_INST}XX
+        PYMVER=$(basename ${PY_INST})
+        echo PYMVER $PYMVER
         PY_EXE=$PY_INST/bin/python$PYMVER
+        if [ ! -x "$PY_EXE" ]; then
+          echo "Something wrong with finding Python executable for OSX"
+          echo "PY_EXE = $PY_EXE"
+          travis_terminate 1
+        fi
         # Next lines are not necessary if we give the actual path for the executable to cmake
         #PY_LIB=$PY_INST/Python
         #PY_INC=$PY_INST/Headers
