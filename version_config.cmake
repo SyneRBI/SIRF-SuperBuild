@@ -120,7 +120,7 @@ if (DEVEL_BUILD)
   set(DEFAULT_glog_TAG v035)
  
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
-  set(DEFAULT_ACE_TAG origin/master)
+  set(DEFAULT_ACE_TAG origin/install_fixes)
 
 else()
   set(DEFAULT_SIRF_TAG v1.1.1)
@@ -153,7 +153,7 @@ else()
   set(DEFAULT_glog_TAG v035)
 
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
-  set(DEFAULT_ACE_TAG origin/master)
+  set(DEFAULT_ACE_TAG origin/install_fixes)
 endif()
 
 

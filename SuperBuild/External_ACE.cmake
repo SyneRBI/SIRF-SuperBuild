@@ -60,14 +60,17 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
     STAMP_DIR ${${proj}_STAMP_DIR}
     TMP_DIR ${${proj}_TMP_DIR}
-    INSTALL_DIR ${libACE_Install_Dir}
 	
-    INSTALL_COMMAND make ACE 
     CMAKE_ARGS
-        -DCMAKE_INSTALL_PREFIX=${libACE_Install_Dir}
+        -DCMAKE_INSTALL_PREFIX=${Gadgetron_Install_Dir}
+	-DLIBRARY_DIR=${libACE_Install_Dir}/lib
+	-DINCLUDE_DIR=${libACE_Install_Dir}/include
+
+    INSTALL_COMMAND make ACE
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
+
     set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
     set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
 
