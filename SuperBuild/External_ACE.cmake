@@ -63,7 +63,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 	
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX=${Gadgetron_Install_Dir}
-	    INSTALL_DIR ${Gadgetron_Install_Dir}
+	-DINSTALL_DIR=${libACE_Install_Dir}/lib
+	-DINCLUDE_DIR=${libACE_Install_Dir}/include
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )

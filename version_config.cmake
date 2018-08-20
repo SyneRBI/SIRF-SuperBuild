@@ -201,4 +201,7 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   siemens_to_ismrmrd_URL siemens_to_ismrmrd_TAG
   ISMRMRD_URL ISMRMRD_TAG
   petmr_rd_tools_URL petmr_rd_tools_TAG
-  glog_URL glog_TAG)
+  glog_URL glog_TAG
+  CCPi-Framework_URL CCPi-Framework_TAG
+  CCPi-RGL_URL CCPi-RGL_TAG
+)
