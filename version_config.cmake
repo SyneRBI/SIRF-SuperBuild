@@ -130,11 +130,11 @@ else()
   set(DEFAULT_STIR_TAG 9e62872c74cbcea1886d107cb22ab28a5a33083e)
 
   ## Gadgetron
-  set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
-  #https://github.com/CCPPETMR/gadgetron) 
+  #set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
+  set(DEFAULT_Gadgetron_URL https://github.com/CCPPETMR/gadgetron )
 
-  set(DEFAULT_Gadgetron_TAG e7eb430673eb3272e8a821b51750c0a2a96dafed )
-  #set(DEFAULT_Gadgetron_TAG 00b96376568278a595e78879026bb3b0d5fbb98d )
+  #set(DEFAULT_Gadgetron_TAG e7eb430673eb3272e8a821b51750c0a2a96dafed )
+  set(DEFAULT_Gadgetron_TAG 1bd78b1d565ed836451f8c474ccc95bdaa395b5e )
 
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
