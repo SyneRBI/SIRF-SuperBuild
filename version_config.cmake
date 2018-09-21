@@ -123,6 +123,8 @@ if (DEVEL_BUILD)
   set(DEFAULT_CCPi-Framework_TAG origin/master)
   set(DEFAULT_CCPi-RGL_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
   set(DEFAULT_CCPi-RGL_TAG origin/master)
+  set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
+  set(DEFAULT_CCPi-FrameworkPlugins_TAG origin/master)
 
 else()
   set(DEFAULT_SIRF_URL https://github.com/CCPPETMR/Hackathon-SIRF )
@@ -163,6 +165,8 @@ else()
   set(DEFAULT_CCPi-Framework_TAG origin/master)
   set(DEFAULT_CCPi-RGL_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
   set(DEFAULT_CCPi-RGL_TAG origin/master)
+  set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
+  set(DEFAULT_CCPi-FrameworkPlugins_TAG origin/master)
 
 endif()
 
@@ -197,6 +201,9 @@ set(CCPi-RGL_URL ${DEFAULT_CCPi-RGL_URL} CACHE STRING ON)
 set(CCPi-RGL_TAG ${DEFAULT_CCPi-RGL_TAG} CACHE STRING ON)
 set(CCPi-Framework_URL ${DEFAULT_CCPi-Framework_URL} CACHE STRING ON)
 set(CCPi-Framework_TAG ${DEFAULT_CCPi-Framework_TAG} CACHE STRING ON)
+set(CCPi-FrameworkPlugins_URL ${DEFAULT_CCPi-FrameworkPlugins_URL} CACHE STRING ON)
+set(CCPi-FrameworkPlugins_TAG ${DEFAULT_CCPi-FrameworkPlugins_TAG} CACHE STRING ON)
+
 mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   Gadgetron_URL Gadgetron_TAG
   siemens_to_ismrmrd_URL siemens_to_ismrmrd_TAG
@@ -204,5 +211,6 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   petmr_rd_tools_URL petmr_rd_tools_TAG
   glog_URL glog_TAG
   CCPi-Framework_URL CCPi-Framework_TAG
+  CCPi-FrameworkPlugins_URL CCPi-FrameworkPlugins_TAG
   CCPi-RGL_URL CCPi-RGL_TAG
 )
