@@ -125,7 +125,8 @@ if (DEVEL_BUILD)
   set(DEFAULT_CCPi-RGL_TAG origin/master)
 
 else()
-  set(DEFAULT_SIRF_TAG v1.1.1)
+  set(DEFAULT_SIRF_URL https://github.com/CCPPETMR/Hackathon-SIRF )
+  set(DEFAULT_SIRF_TAG origin/convert_spdhg_to_cil)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
