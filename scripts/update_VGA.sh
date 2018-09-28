@@ -68,10 +68,15 @@ else
     fi
 fi
 
+echo ""
+echo "I will now attempt to run $VGArun"
+echo "(even if things above failed)"
+echo ""
+
 # disable trapping if errors as we want to clean-up always
 # even if the installer fails
 set +e
-trap "echo Something failed. Proceeding anyway." ERR
+trap "echo Something failed. Proceeding with umount etc." ERR
 # execute the installer
 sh $VGArun
 
