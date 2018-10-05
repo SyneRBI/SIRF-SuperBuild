@@ -98,7 +98,9 @@ endif()
 
 mark_as_superbuild(
   VARS
-    ${externalProjName}_DIR:PATH
+    ${externalProjName}_ROOT_DIR:PATH
+  PROJECTS
+    ALL_PROJECTS
   LABELS
     "FIND_PACKAGE"
 )
