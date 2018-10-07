@@ -56,9 +56,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory ${SWIG_Install_Dir}
         COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${SWIG_Install_Dir}
   )
-    set( SWIG_EXECUTABLE ${SWIG_Install_Dir}/swig.exe )
+    set( SWIG_EXECUTABLE:FILEPATH ${SWIG_Install_Dir}/swig.exe )
   
-  return()
   else(WIN32)
 
   set(SWIG_Install_Dir ${SUPERBUILD_INSTALL_DIR})
@@ -86,7 +85,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     INSTALL_DIR ${${proj}_Install_Dir}
   )
 
-  set( SWIG_EXECUTABLE ${SWIG_Install_Dir}/bin/swig )
+  set( SWIG_EXECUTABLE:FILEPATH ${SWIG_Install_Dir}/bin/swig )
 
   endif(WIN32)
 
@@ -105,8 +104,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 endif()
 
 mark_as_superbuild(
+  ALL_PROJECTS
   VARS
-    ${externalProjName}_DIR:PATH
+    SWIG_EXECUTABLE:FILEPATH
   LABELS
     "FIND_PACKAGE"
 )
