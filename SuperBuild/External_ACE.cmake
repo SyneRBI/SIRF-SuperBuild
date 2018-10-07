@@ -2,8 +2,8 @@
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
 # Author: Edoardo Pasca
-# Copyright 2017 University College London
-# Copyright 2017 STFC
+# Copyright 2017, 2018 University College London
+# Copyright 2017, 2018 STFC
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -45,7 +45,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ### --- Project specific additions here
   set(libACE_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
-  #message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
@@ -62,17 +61,19 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     TMP_DIR ${${proj}_TMP_DIR}
 	
     CMAKE_ARGS
-        -DCMAKE_INSTALL_PREFIX=${Gadgetron_Install_Dir}
+        -DCMAKE_INSTALL_PREFIX=${libACE_Install_Dir}
 	-DLIBRARY_DIR=${libACE_Install_Dir}/lib
 	-DINCLUDE_DIR=${libACE_Install_Dir}/include
 
+    # TODO this relies on using "make", but we could be build with something else
     INSTALL_COMMAND make ACE
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
 
-    set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
-    set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
+   # not used
+   # set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
+   # set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
 
    else()
       if(${USE_SYSTEM_${externalProjName}})
@@ -88,9 +89,10 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   )
   endif()
 
-  mark_as_superbuild(
-    VARS
-      ${externalProjName}_DIR:PATH
-    LABELS
-      "FIND_PACKAGE"
-  )
+# Currently, setting ACE_ROOT has no effect, see https://github.com/CCPPETMR/SIRF-SuperBuild/issues/147
+#  mark_as_superbuild(
+#    VARS
+#      ${externalProjName}_ROOT:PATH
+#    LABELS
+#      "FIND_PACKAGE"
+#  )
