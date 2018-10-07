@@ -171,7 +171,6 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${PRIMARY_PROJECT_NAME}
 message(STATUS "")
 message(STATUS "BOOST_ROOT = " ${BOOST_ROOT})
 message(STATUS "ISMRMRD_DIR = " ${ISMRMRD_DIR})
-message(STATUS "FFTW3_ROOT_DIR = " ${FFTW3_ROOT_DIR})
 message(STATUS "STIR_DIR = " ${STIR_DIR})
 message(STATUS "HDF5_ROOT = " ${HDF5_ROOT})
 message(STATUS "GTEST_ROOT = " ${GTEST_ROOT})
