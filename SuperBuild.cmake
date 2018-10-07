@@ -51,7 +51,7 @@ if (APPLE)
     # Set install_name_dir as the absolute path to install_prefix/lib
     GET_FILENAME_COMPONENT(CMAKE_INSTALL_NAME_DIR ${CMAKE_INSTALL_PREFIX}/lib REALPATH)
     # Mark it as superbuild so that it gets passed to all dependencies
-    mark_as_superbuild( PROJECTS ALL_PROJECTS VARS CMAKE_INSTALL_NAME_DIR:PATH )
+    mark_as_superbuild( ALL_PROJECTS VARS CMAKE_INSTALL_NAME_DIR:PATH )
   endif(SHARED_LIBS_ABS_PATH)
 endif(APPLE)
 
@@ -64,7 +64,7 @@ message(STATUS "EXTERNAL_PROJECT_BUILD_TYPE: ${EXTERNAL_PROJECT_BUILD_TYPE}")
 
 # Make sure that some CMake variables are passed to all dependencies
 mark_as_superbuild(
-   PROJECTS ALL_PROJECTS
+   ALL_PROJECTS
    VARS CMAKE_GENERATOR:STRING CMAKE_GENERATOR_PLATFORM:STRING CMAKE_GENERATOR_TOOLSET:STRING
         CMAKE_C_COMPILER:FILEPATH CMAKE_CXX_COMPILER:FILEPATH
         CMAKE_INSTALL_PREFIX:PATH
