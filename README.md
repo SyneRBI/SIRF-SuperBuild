@@ -261,6 +261,17 @@ You could do
 cmake -DDEVEL_BUILD=ON -USIRF_URL -USIRF_TAG -USTIR_URL -USTIR_TAG -UGadgetron_URL -UGadgetron_TAG -UISMRMRD_URL -UISMRMRD_TAG .
 ```
 
+#Notes
+
+* As CMake doesn't come with FFTW3 support, it is currently necessary to have FindFFTW3.cmake reproduced 3 times. sigh.
+
+* This is poorely documented in FindFFTW3.cmake, which could be fixed by a PR to Gadgetron, ISMRMRD and SIRF. Similarly, we could fix FindFFTW3.cmake to also use the CMake variable.
+
+* KT has tried to use set(ENV{FFTW3_ROOT_DIR} bloe) in our External_FindFFTW.cmake. This however doesn't pass the environment variable to the CMake instances for Gadgetron etc.
+
+* By the way, when using USE_SYSTEM_FFTW3=OFF, CMake currently does find our own installation even if the FFTW3_ROOT_DIR env variable (as find_library etc give precedence to MAKE_PREFIX_PATH over HINTS ).
+
+
 [CI-badge]: https://travis-ci.org/CCPPETMR/SIRF-SuperBuild.svg?branch=master
 [CI-link]: https://travis-ci.org/CCPPETMR/SIRF-SuperBuild
 [style-badge]: https://api.codacy.com/project/badge/Grade/c1a4613d4bd247d19780881f8194eaf8
