@@ -269,7 +269,7 @@ cmake -DDEVEL_BUILD=ON -USIRF_URL -USIRF_TAG -USTIR_URL -USTIR_TAG -UGadgetron_U
 
 * KT has tried to use `set(ENV{FFTW3_ROOT_DIR} bloe)` in our External_FindFFTW.cmake. This however doesn't pass the environment variable to the CMake instances for Gadgetron etc.
 
-* By the way, when using `USE_SYSTEM_FFTW3=OFF`, CMake currently does find our own installation even if the `FFTW3_ROOT_DIR` env variable (as find_library etc give precedence to `MAKE_PREFIX_PATH` over HINTS ).
+* By the way, when using `USE_SYSTEM_FFTW3=OFF`, CMake currently does find our own installation even if the `FFTW3_ROOT_DIR` env variable (as find_library etc give precedence to `MAKE_PREFIX_PATH` over `HINTS` ).
 
 * CMake does come with FindArmadillo.cmake but it currently (at least up to CMake 3.12) has no variable to specify its location at all. This implies that when using `USE_SYSTEM_ARMADILLO=On`, you have to install armadillo installed in a system location, unless some extra work is done. See this post on stackoverflow for some suggestions, which we haven't tried.
 
