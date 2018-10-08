@@ -231,9 +231,9 @@ There is a `DEVEL_BUILD` tag that allows to build the upstream/master versions o
    
 |TAG        | DEVEL_BUILD=OFF (default) | DEVEL_BUILD=ON |
 |:--------- |:--------------- |:-------------- |
-|`SIRF_TAG` | `v1.0.0`          | `origin/master`         |
+|`SIRF_TAG` | `v1.1.1`          | `origin/master`         |
 |`STIR_URL` |  https://github.com/UCL/STIR | https://github.com/UCL/STIR |
-|`STIR_TAG` | `41651b3a2007c58cbf1f7706bb2e269a21e870b1` | `origin/master` |
+|`STIR_TAG` | `a5fefe741f97a65de95ac51ac612719f5000ac47` | `origin/master` |
 |`Gadgetron_URL` | https://github.com/gadgetron/gadgetron |https://github.com/gadgetron/gadgetron |
 |`Gadgetron_TAG` | `e7eb430673eb3272e8a821b51750c0a2a96dafed`  | `origin/master` |
 |`ISMRMRD_URL` | https://github.com/ismrmrd/ismrmrd | https://github.com/ismrmrd/ismrmrd |
