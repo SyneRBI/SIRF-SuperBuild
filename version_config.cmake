@@ -22,10 +22,10 @@
 #=========================================================================
 
 ## BOOST
-set(Boost_VERSION 1.63.0)
-set(Boost_REQUIRED_VERSION 1.36.0)
-set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/1.63.0/boost_1_63_0.zip)
-set(Boost_MD5 3c706b3fc749884ea5510c39474fd732)
+set(Boost_VERSION 1.64.0)
+set(Boost_REQUIRED_VERSION 1.64.0)
+set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/1.64.0/boost_1_64_0.zip)
+set(Boost_MD5 36093e4018aecd5b0e31e80457ac5fc1)
 
 ## Armadillo
 set(Armadillo_URL   https://downloads.sourceforge.net/project/arma/armadillo-7.800.2.tar.xz)
@@ -81,6 +81,10 @@ set(glog_TAG v035)
 set(ITK_URL https://itk.org/ITK.git)
 set(ITK_TAG v4.13.0)
 
+## NiftyReg
+set(NiftyReg_URL https://git.code.sf.net/p/niftyreg/git )
+set(NiftyReg_TAG 4e4525b84223c182b988afaa85e32ac027774c42 )
+
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
 
@@ -114,13 +118,17 @@ if (DEVEL_BUILD)
   ## glog
   set(DEFAULT_glog_URL https://github.com/google/glog )
   set(DEFAULT_glog_TAG v035)
+ 
+  set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
+  set(DEFAULT_ACE_TAG origin/master)
 
 else()
   set(DEFAULT_SIRF_TAG v1.1.1)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG 9ecbf0abd048cd0a8f19250f6cc7b4c199870c26)
+  set(DEFAULT_STIR_TAG a5fefe741f97a65de95ac51ac612719f5000ac47)
+#  set(DEFAULT_STIR_TAG 9e62872c74cbcea1886d107cb22ab28a5a33083e)
 
   ## Gadgetron
   set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
@@ -146,6 +154,8 @@ else()
   set(DEFAULT_glog_URL https://github.com/google/glog )
   set(DEFAULT_glog_TAG v035)
 
+  set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
+  set(DEFAULT_ACE_TAG origin/master)
 endif()
 
 
@@ -171,6 +181,9 @@ SET(petmr_rd_tools_URL ${DEFAULT_petmr_rd_tools_URL} CACHE STRING ON)
 
 SET(glog_URL ${DEFAULT_glog_URL} CACHE STRING ON)
 SET(glog_TAG ${DEFAULT_glog_TAG} CACHE STRING ON)
+
+set(ACE_URL ${DEFAULT_ACE_URL} CACHE STRING ON)
+set(ACE_TAG ${DEFAULT_ACE_TAG} CACHE STRING ON)
 
 mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   Gadgetron_URL Gadgetron_TAG
