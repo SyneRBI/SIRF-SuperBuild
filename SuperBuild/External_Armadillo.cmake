@@ -89,8 +89,10 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   # no point doing this as FindArmadillo doesn't honour any *_ROOT or *_DIR settings
   #set( ARMADILLO_ROOT ${${proj}_Install_Dir} )
-  set(ARMADILLO_INCLUDE_DIRS ${${proj}_Install_Dir}/include )
-  # TODO: probably should set ARMADILLO_LIBRARIES
+  #set(ARMADILLO_INCLUDE_DIRS ${${proj}_Install_Dir}/include )
+  # Instead, it might be possible to set ARMADILLO_INCLUDE_DIR and ARMADILLO_LIBRARY
+  # as cached variables such that find_library doesn't attempt to find them again.
+  # We haven't tried this, and it doesn't seem to be needed.
  else()
     if(${USE_SYSTEM_${externalProjName}})
       find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
@@ -105,9 +107,11 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   )
 endif()
 
-mark_as_superbuild(
-  VARS
-    ${externalProjName}_DIR:PATH
-  LABELS
-    "FIND_PACKAGE"
-)
+# no point doing this as FindArmadillo doesn't honour any *_ROOT or *_DIR settings
+#mark_as_superbuild(
+#  ALL_PROJECTS
+#  VARS
+#    ${externalProjName}_DIR:PATH
+#  LABELS
+#    "FIND_PACKAGE"
+#)
