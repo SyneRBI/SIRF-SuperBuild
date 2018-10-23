@@ -51,7 +51,7 @@ if (APPLE)
     # Set install_name_dir as the absolute path to install_prefix/lib
     GET_FILENAME_COMPONENT(CMAKE_INSTALL_NAME_DIR ${CMAKE_INSTALL_PREFIX}/lib REALPATH)
     # Mark it as superbuild so that it gets passed to all dependencies
-    mark_as_superbuild( PROJECTS ALL_PROJECTS VARS CMAKE_INSTALL_NAME_DIR:PATH )
+    mark_as_superbuild( ALL_PROJECTS VARS CMAKE_INSTALL_NAME_DIR:PATH )
   endif(SHARED_LIBS_ABS_PATH)
 endif(APPLE)
 
@@ -64,7 +64,7 @@ message(STATUS "EXTERNAL_PROJECT_BUILD_TYPE: ${EXTERNAL_PROJECT_BUILD_TYPE}")
 
 # Make sure that some CMake variables are passed to all dependencies
 mark_as_superbuild(
-   PROJECTS ALL_PROJECTS
+   ALL_PROJECTS
    VARS CMAKE_GENERATOR:STRING CMAKE_GENERATOR_PLATFORM:STRING CMAKE_GENERATOR_TOOLSET:STRING
         CMAKE_C_COMPILER:FILEPATH CMAKE_CXX_COMPILER:FILEPATH
         CMAKE_INSTALL_PREFIX:PATH
@@ -171,7 +171,6 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${PRIMARY_PROJECT_NAME}
 message(STATUS "")
 message(STATUS "BOOST_ROOT = " ${BOOST_ROOT})
 message(STATUS "ISMRMRD_DIR = " ${ISMRMRD_DIR})
-message(STATUS "FFTW3_ROOT_DIR = " ${FFTW3_ROOT_DIR})
 message(STATUS "STIR_DIR = " ${STIR_DIR})
 message(STATUS "HDF5_ROOT = " ${HDF5_ROOT})
 message(STATUS "GTEST_ROOT = " ${GTEST_ROOT})
