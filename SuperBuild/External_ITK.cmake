@@ -25,7 +25,7 @@
 set(proj ITK)
 
 # Set dependency list
-set(${proj}_DEPENDENCIES "")
+set(${proj}_DEPENDENCIES "HDF5")
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
@@ -67,6 +67,10 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DCMAKE_INSTALL_PREFIX=${${proj}_Install_Dir}
 	    -DBUILD_SHARED_LIBS=ON
       -DCMAKE_BUILD_TYPE=${EXTERNAL_PROJECT_BUILD_TYPE}
+      -DHDF5_ROOT=${HDF5_ROOT}
+      -DHDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}
+      -DHDF5_LIBRARIES=${HDF5_LIBRARIES}
+      -DITK_USE_SYSTEM_HDF5=ON
       -DBUILD_TESTING=OFF
       -DBUILD_EXAMPLES=OFF
 	  INSTALL_DIR ${${proj}_Install_Dir}
