@@ -36,7 +36,8 @@ if [ ! -r ~/Desktop/STIR-exercises-README.md ]; then
 fi
 
 # Check if csh is present
-command -v csh >/dev/null 2>&1 || { echo >&2 "We need csh. Please type 'sudo apt-get install tcsh'"; }
+# commented out as no longer necessary
+# command -v csh >/dev/null 2>&1 || { echo >&2 "We need csh. Please type 'sudo apt-get install tcsh'"; }
                                     
 if [ -z "$STIR_exercises_PATH" ]; then
     echo "export STIR_exercises_PATH=$SIRF_SRC_PATH/STIR-exercises" >> ~/.sirfrc
