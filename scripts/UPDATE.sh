@@ -146,8 +146,10 @@ SuperBuild(){
   make -j${num_parallel}
 
   if [ ! -f ${SIRF_INSTALL_PATH}/share/gadgetron/config/gadgetron.xml ]
-  then 
-    cp ${SIRF_INSTALL_PATH}/share/gadgetron/config/gadgetron.xml.example ${SIRF_INSTALL_PATH}/share/gadgetron/config/gadgetron.xml
+  then
+      if [ ! -f ${SIRF_INSTALL_PATH}/share/gadgetron/config/gadgetron.xml.example ]
+          cp ${SIRF_INSTALL_PATH}/share/gadgetron/config/gadgetron.xml.example ${SIRF_INSTALL_PATH}/share/gadgetron/config/gadgetron.xml
+      fi
   fi
 
   if [ $SIRF_VM_VERSION = "0.9" ] 
