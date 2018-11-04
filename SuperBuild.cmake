@@ -98,6 +98,36 @@ set(Matlab_ROOT_DIR $ENV{Matlab_ROOT_DIR} CACHE PATH "Path to Matlab root direct
 # Note that we need the main program for the configuration files and the tests)
 find_package(Matlab COMPONENTS MAIN_PROGRAM)
 
+# Set destinations for Python/MATLAB files
+set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
+if (BUILD_PYTHON)
+  set(PYTHON_DEST_DIR "" CACHE PATH "Directory of the SIRF and/or STIR Python modules")
+  if (PYTHON_DEST_DIR)
+   set(PYTHON_DEST "${PYTHON_DEST_DIR}")
+  else()
+    set(PYTHON_DEST "${CMAKE_INSTALL_PREFIX}/python")
+  endif()
+  message(STATUS "Python libraries found")
+  message(STATUS "SIRF and/or STIR Python modules will be installed in " ${PYTHON_DEST})
+
+  set(PYTHON_STRATEGY "PYTHONPATH" CACHE STRING "\
+    PYTHONPATH: prefix PYTHONPATH \n\
+    SETUP_PY:   execute ${PYTHON_EXECUTABLE} setup.py install \n\
+    CONDA:      do nothing")
+  set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
+endif()
+set (BUILD_MATLAB ${Matlab_FOUND})
+if (BUILD_MATLAB)
+  set(MATLAB_DEST_DIR "" CACHE PATH "Directory of the SIRF and/or STIR Matlab libraries")
+  if (MATLAB_DEST_DIR)
+    set(MATLAB_DEST "${MATLAB_DEST_DIR}")
+  else()
+    set(MATLAB_DEST "${CMAKE_INSTALL_PREFIX}/matlab")
+  endif()
+  message(STATUS "Matlab libraries found")
+  message(STATUS "SIRF and/or STIR Matlab libraries will be installed in " ${MATLAB_DEST})
+endif()
+
 if (UNIX AND NOT APPLE)
   option(USE_SYSTEM_Boost "Build using an external version of Boost" OFF)
 else()
@@ -130,6 +160,8 @@ else()
   set(build_Gadgetron_default ON)
 endif()
 
+option(BUILD_SIRF "Build SIRF" ON)
+option(BUILD_STIR "Build STIR" ON)
 option(BUILD_GADGETRON "Build Gadgetron" ${build_Gadgetron_default})
 option(BUILD_siemens_to_ismrmrd "Build siemens_to_ismrmrd" OFF)
 option(BUILD_petmr_rd_tools "Build petmr_rd_tools" OFF)
@@ -146,9 +178,18 @@ if (USE_ITK)
   option(USE_SYSTEM_ITK "Build using an external version of ITK" OFF)
 endif()
 
-set(${PRIMARY_PROJECT_NAME}_DEPENDENCIES
-    SIRF
-)
+## build list of dependencies, based on options above
+# first set to empty
+set(${PRIMARY_PROJECT_NAME}_DEPENDENCIES)
+
+if (BUILD_SIRF)
+  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES SIRF)
+endif()
+
+if (BUILD_STIR)
+  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES STIR)
+endif()
+
 if (BUILD_GADGETRON)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES Gadgetron)
   set(Armadillo_REQUIRED_VERSION 4.600)
@@ -192,8 +233,6 @@ set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
 ## in the env_ccppetmr scripts we perform a substitution of the whole block
 ## during the configure_file() command call below.
 
-## Note that the (MATLAB|PYTHON)_DEST and PYTHON_STRATEGY variables are
-## currently set in External_SIRF.cmake. That's a bit confusing of course (TODO).
 set(ENV_PYTHON_BASH "#####    Python not found    #####")
 set(ENV_PYTHON_CSH  "#####    Python not found    #####")
 if(PYTHONINTERP_FOUND)
