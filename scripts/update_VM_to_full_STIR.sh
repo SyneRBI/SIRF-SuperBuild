@@ -28,7 +28,12 @@ if [ -d ./STIR-exercises ]; then
    git pull
 else
    git clone https://github.com/UCL/STIR-exercises.git 
+   cd ./STIR-exercises
 fi
+
+python -m pip install --user nbstripout
+nbstripout --install
+
 # create shortcut on Desktop
 if [ ! -r ~/Desktop/STIR-exercises-README.md ]; then
     cd ~/Desktop
