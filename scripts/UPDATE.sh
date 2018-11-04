@@ -147,7 +147,7 @@ SuperBuild(){
 
   if [ ! -f ${SIRF_INSTALL_PATH}/share/gadgetron/config/gadgetron.xml ]
   then
-      if [ ! -f ${SIRF_INSTALL_PATH}/share/gadgetron/config/gadgetron.xml.example ]
+      if [ -f ${SIRF_INSTALL_PATH}/share/gadgetron/config/gadgetron.xml.example ]
       then
           cp ${SIRF_INSTALL_PATH}/share/gadgetron/config/gadgetron.xml.example ${SIRF_INSTALL_PATH}/share/gadgetron/config/gadgetron.xml
       fi
