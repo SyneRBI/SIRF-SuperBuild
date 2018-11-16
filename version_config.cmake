@@ -131,7 +131,6 @@ if (DEVEL_BUILD)
   set(DEFAULT_CCPi-FrameworkPlugins_TAG origin/master)
 
 else()
-  set(DEFAULT_SIRF_URL https://github.com/CCPPETMR/Hackathon-SIRF )
   set(DEFAULT_SIRF_TAG origin/spdhg_from_cil)
 
   ## STIR
