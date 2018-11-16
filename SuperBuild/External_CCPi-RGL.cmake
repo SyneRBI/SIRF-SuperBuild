@@ -88,20 +88,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     TMP_DIR ${${proj}_TMP_DIR}
     INSTALL_DIR ${libcilreg_Install_Dir}
     
-    ##CONFIGURE_COMMAND ""
-    #CONFIGURE_COMMAND ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR} ${${proj}_BINARY_DIR} 
-    #  COMMAND grep -vx "make install" ${${proj}_SOURCE_DIR}/recipes/regularisers/build.sh > ${${proj}_BINARY_DIR}/recipes/regularisers/build.sh
-      #COMMAND grep -vx "\$PYTHON setup-regularisers.py install" ${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe/build.sh > ${${proj}_BINARY_DIR}/Wrappers/Python/conda-recipe/build.sh
-    #  COMMAND sed -e "s/install/build_ext --inplace/" ${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe/build.sh > ${${proj}_BINARY_DIR}/Wrappers/Python/conda-recipe/build.sh
-
-    #BUILD_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=0.10.0 SRC_DIR=${${proj}_BINARY_DIR} RECIPE_DIR=${${proj}_SOURCE_DIR}/recipes/regularisers PYTHON=${PYTHON_EXECUTABLE} CONDA_PREFIX=${${proj}_BINARY_DIR} bash ${${proj}_BINARY_DIR}/recipes/regularisers/build.sh
-    # COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=0.10.0 SRC_DIR=${${proj}_BINARY_DIR} RECIPE_DIR=${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe PYTHON=${PYTHON_EXECUTABLE} CONDA_PREFIX=${${proj}_BINARY_DIR} PREFIX=${libcilreg_Install_Dir} LIBRARY_PATH=${${proj}_BINARY_DIR}/build/build/:$ENV{LIBRARY_PATH} bash ${${proj}_BINARY_DIR}/Wrappers/Python/conda-recipe/build.sh
-
-    ##INSTALL_COMMAND ""
-    #INSTALL_COMMAND ${CMAKE_COMMAND} -E copy ${${proj}_BINARY_DIR}/build/build/libcilreg.so ${libcilreg_Install_Dir}/lib
-    #   COMMAND ${CMAKE_COMMAND} -E copy_directory ${${proj}_BINARY_DIR}/ccpi/Python/ccpi ${PYTHON_DEST}/ccpi
-    ##BUILD_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=0.10.0 SRC_DIR=${${proj}_BINARY_DIR} RECIPE_DIR=${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe PYTHON=${PYTHON_EXECUTABLE}
-    ##INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/Wrappers/Python/ccpi ${PYTHON_DEST}/ccpi
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX=${libcilreg_Install_Dir}
         -DBUILD_PYTHON_WRAPPERS=ON -DCMAKE_BUILD_TYPE=Release 

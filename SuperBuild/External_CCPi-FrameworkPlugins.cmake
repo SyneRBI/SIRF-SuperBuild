@@ -49,9 +49,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
-  set(ENV{CIL_VERSION} 0.10.1)
-  #set(CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
-  #set(CCPi-Framework_TAG origin/master)
   message("CIL proj " ${proj}  ) 
   message("CIL URL " ${${proj}_URL}  ) 
   message("CIL TAG " ${${proj}_TAG}  ) 
