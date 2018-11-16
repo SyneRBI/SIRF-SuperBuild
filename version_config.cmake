@@ -167,11 +167,11 @@ else()
   
   # CCPi CIL
   set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
-  set(DEFAULT_CCPi-Framework_TAG 510849ab4e0524a8778c4870d9536002aaf8c376 )
+  set(DEFAULT_CCPi-Framework_TAG ccb9a65318aa5ca1b72edfa9acf349cd14ad3747 )
   set(DEFAULT_CCPi-RGL_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
-  set(DEFAULT_CCPi-RGL_TAG origin/master)
+  set(DEFAULT_CCPi-RGL_TAG a106da50c7f428db2e4115fe1bdc0c156a933a21 )
   set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
-  set(DEFAULT_CCPi-FrameworkPlugins_TAG origin/master)
+  set(DEFAULT_CCPi-FrameworkPlugins_TAG 0cb81711927adee9f2d1973a8af2b7799dd28ab6 )
 
 endif()
 
