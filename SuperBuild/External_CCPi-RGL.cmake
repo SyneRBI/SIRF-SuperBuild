@@ -30,6 +30,11 @@ set(${proj}_DEPENDENCIES "")
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 
+find_package(Cython)
+if(NOT ${Cython_FOUND})
+    message(FATAL_ERROR "CCPi-Regularisation-Toolkit depends on Cython")
+endif()
+
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
