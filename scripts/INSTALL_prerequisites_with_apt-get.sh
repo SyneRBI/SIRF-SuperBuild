@@ -19,6 +19,9 @@ echo "Installing SWIG..."
 
 $SUDO apt-get install -y --no-install-recommends swig
 
+echo "Installing doxygen related packages"
+$SUDO apt-get install -y --no-install-recommendsd oxygen graphviz
+
 # replaced with pip install
 #echo "Installing python libraries etc"
 #$SUDO apt-get install -y --no-install-recommends  python-scipy python-docopt  python-numpy python-h5py python-matplotlib python-libxml2 python-psutil python-tk python-nose
