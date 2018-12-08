@@ -236,8 +236,6 @@ PY_USER_BIN=`python -c 'import site; import os; print ( os.path.join(site.USER_B
 export PATH=${PY_USER_BIN}:${PATH}
 nbstripout --install
 
-fi
-
 # check STIR-exercises
 cd $SIRF_SRC_PATH
 if [ -d STIR-exercises ]; then
