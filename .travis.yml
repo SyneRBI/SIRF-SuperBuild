@@ -120,6 +120,8 @@ addons:
    - python3-dev
    - python-tk
    - python3-tk
+   - libopenblas-dev 
+   - libatlas-base-dev
    - liblapack-dev
    - libxml2-dev
    - libarmadillo-dev
