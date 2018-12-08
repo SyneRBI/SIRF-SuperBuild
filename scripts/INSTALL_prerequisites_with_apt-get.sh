@@ -19,12 +19,18 @@ echo "Installing SWIG..."
 
 $SUDO apt-get install -y --no-install-recommends swig
 
-# TODO replace with pip install
-echo "Installing python libraries etc"
-$SUDO apt-get install -y --no-install-recommends  python-scipy python-docopt  python-numpy python-h5py python-matplotlib python-libxml2 python-psutil python-tk python-nose
+echo "Installing doxygen related packages"
+$SUDO apt-get install -y --no-install-recommends doxygen graphviz
+
+# replaced with pip install
+#echo "Installing python libraries etc"
+#$SUDO apt-get install -y --no-install-recommends  python-scipy python-docopt  python-numpy python-h5py python-matplotlib python-libxml2 python-psutil python-tk python-nose
 
 echo "installing glog"
 $SUDO apt-get install -y libgoogle-glog-dev
 
 echo "installing pip for jupyter"
-$SUDO apt-get install -y python-pip python-qt4
+qt=pyqt5
+$SUDO apt-get install -y python-pip python-${qt} python-${qt}.qtsvg python-${qt}.qtwebkit
+$SUDO python -m pip install --upgrade pip wheel setuptools
+$SUDO python -m pip install --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
