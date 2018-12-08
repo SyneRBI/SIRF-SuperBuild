@@ -20,7 +20,7 @@ echo "Installing SWIG..."
 $SUDO apt-get install -y --no-install-recommends swig
 
 echo "Installing doxygen related packages"
-$SUDO apt-get install -y --no-install-recommendsd oxygen graphviz
+$SUDO apt-get install -y --no-install-recommends doxygen graphviz
 
 # replaced with pip install
 #echo "Installing python libraries etc"
