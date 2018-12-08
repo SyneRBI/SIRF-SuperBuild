@@ -51,35 +51,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ### --- Project specific additions here
   set(SIRF_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
-  set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
-  if (BUILD_PYTHON)
-    set(PYTHON_DEST_DIR "" CACHE PATH "Directory of the SIRF Python modules")
-    if (PYTHON_DEST_DIR)
-     set(PYTHON_DEST "${PYTHON_DEST_DIR}")
-    else()
-      set(PYTHON_DEST "${CMAKE_INSTALL_PREFIX}/python")
-    endif()
-    message(STATUS "Python libraries found")
-    message(STATUS "SIRF Python modules will be installed in " ${PYTHON_DEST})
-
-    set(PYTHON_STRATEGY "PYTHONPATH" CACHE STRING "\
-      PYTHONPATH: prefix PYTHONPATH \n\
-      SETUP_PY:   execute ${PYTHON_EXECUTABLE} setup.py install \n\
-      CONDA:      do nothing")
-    set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
-  endif()
-  set (BUILD_MATLAB ${Matlab_FOUND})
-  if (BUILD_MATLAB)
-    set(MATLAB_DEST_DIR "" CACHE PATH "Directory of the SIRF Matlab libraries")
-    if (MATLAB_DEST_DIR)
-      set(MATLAB_DEST "${MATLAB_DEST_DIR}")
-    else()
-      set(MATLAB_DEST "${CMAKE_INSTALL_PREFIX}/matlab")
-    endif()
-    message(STATUS "Matlab libraries found")
-    message(STATUS "SIRF Matlab libraries will be installed in " ${MATLAB_DEST})
-  endif()
-
   message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
 
