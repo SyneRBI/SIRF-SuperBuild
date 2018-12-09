@@ -119,6 +119,8 @@ addons:
    - libplplot-dev
    - swig
    - ccache
+   # for building ACE (note: Trusty only)
+   - realpath
    # not in whitelist
    - libxslt-dev
    - libace-dev
