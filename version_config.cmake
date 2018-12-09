@@ -22,10 +22,11 @@
 #=========================================================================
 
 ## BOOST
-set(Boost_VERSION 1.64.0)
-set(Boost_REQUIRED_VERSION 1.64.0)
-set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/1.64.0/boost_1_64_0.zip)
-set(Boost_MD5 36093e4018aecd5b0e31e80457ac5fc1)
+# Gadgetron needs 1.65
+set(Boost_VERSION 1.65.1)
+set(Boost_REQUIRED_VERSION 1.65.1)
+set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/1.65.1/boost_1_65_1.zip)
+set(Boost_MD5 9824a7a3e25c9d4fdf2def07bce8651c)
 
 ## Armadillo
 set(Armadillo_URL   https://downloads.sourceforge.net/project/arma/armadillo-7.800.2.tar.xz)
@@ -94,12 +95,6 @@ mark_as_advanced(DEVEL_BUILD)
 
 set(DEFAULT_SIRF_URL https://github.com/CCPPETMR/SIRF )
 if (DEVEL_BUILD)
-
-  # Gadgetron needs 1.65
-  set(Boost_VERSION 1.65.1)
-  set(Boost_REQUIRED_VERSION 1.65.1)
-  set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/1.65.1/boost_1_65_1.zip)
-  set(Boost_MD5 9824a7a3e25c9d4fdf2def07bce8651c)
 
   set (DEFAULT_SIRF_TAG origin/master)
   ## STIR
