@@ -18,32 +18,32 @@ matrix:
  - os: linux
    python: 3
    # +boost -itk +fftw3 +hdf5 -ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=OFF -DUSE_NiftyReg=ON" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=3
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=OFF -DUSE_NiftyReg=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
  - os: linux
    python: 2.7
    # +boost -itk +fftw3 +hdf5 -ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=OFF -DUSE_NiftyReg=ON" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=3
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=OFF -DUSE_NiftyReg=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
  - os: linux
    python: 3
    # +boost -itk +fftw3 +hdf5 -ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=OFF" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=3
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=OFF" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
  # linux g{cc,++}-5 py{27,3}
  - os: linux
    python: 3
    # +boost +fftw3 +hdf5 +ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=3
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
  - os: linux
    python: 2.7
    # +boost +fftw3 +hdf5 +siemens_to_ismrmrd +swig +ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_ACE=ON" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=2
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_ACE=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=2
  - os: linux
    python: 3
    # +DEVEL +boost -hdf5 -fftw3 +siemens_to_ismrmrd
-   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DBUILD_siemens_to_ismrmrd=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DBUILD_siemens_to_ismrmrd=ON" MATRIX_EVAL="CC=gcc-7 CXX=g++-7" PYMVER=3
  - os: linux
    python: 2.7
    # +DEVEL -boost -fftw3 -hdf5 -swig
-   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=2
+   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" MATRIX_EVAL="CC=gcc-7 CXX=g++-7" PYMVER=2
  # osx g{cc,++} py{27,36}
  - os: osx
    python: 2.7
@@ -65,7 +65,7 @@ matrix:
  - os: linux
    python: 3
    # +boost +itk +fftw3 +hdf5
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=3
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
  - os: osx
    python: 2.7
    # +boost +itk -hdf5 +swig
@@ -100,8 +100,8 @@ addons:
   packages:
    - git-core
    - build-essential
-   - g++-5
    - g++-6
+   - g++-7
    - libboost-all-dev
    - libhdf5-serial-dev
    - libfftw3-dev
@@ -210,11 +210,11 @@ before_install:
  - $PY_EXE -m pip freeze
  # ccache compiler override
  - ln -s "$(which ccache)" g++
- - ln -s "$(which ccache)" g++-5
  - ln -s "$(which ccache)" g++-6
+ - ln -s "$(which ccache)" g++-7
  - ln -s "$(which ccache)" gcc
- - ln -s "$(which ccache)" gcc-5
  - ln -s "$(which ccache)" gcc-6
+ - ln -s "$(which ccache)" gcc-7
  - export PATH="$PWD:$PATH"
  - popd
  # N.B.: don't put into build matrix to allow caching.
