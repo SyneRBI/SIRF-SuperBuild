@@ -22,11 +22,21 @@
 #=========================================================================
 
 ## BOOST
-# Gadgetron needs 1.65
-set(Boost_VERSION 1.65.1)
-set(Boost_REQUIRED_VERSION 1.65.1)
-set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/1.65.1/boost_1_65_1.zip)
-set(Boost_MD5 9824a7a3e25c9d4fdf2def07bce8651c)
+  # Gadgetron needs 1.65
+if (APPLE) # really should be checking for CLang
+    # Boost 1.65 contains a bug for recent Clang https://github.com/CCPPETMR/SIRF-SuperBuild/issues/170
+    set(Boost_VERSION 1.68.0)
+    set(Boost_REQUIRED_VERSION 1.66.0)
+    set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_68_0.zip)
+    set(Boost_MD5 f4096c4583947b0eb103c8539f1623a3)
+else()
+    # Use version in Ubuntu 18.04
+    set(Boost_VERSION 1.65.1)
+    set(Boost_REQUIRED_VERSION 1.65.1)
+    set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_65_1.zip)
+    set(Boost_MD5 9824a7a3e25c9d4fdf2def07bce8651c)
+endif()
+
 
 ## Armadillo
 set(Armadillo_URL   https://downloads.sourceforge.net/project/arma/armadillo-7.800.2.tar.xz)
@@ -129,8 +139,7 @@ else()
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG a5fefe741f97a65de95ac51ac612719f5000ac47)
-#  set(DEFAULT_STIR_TAG 9e62872c74cbcea1886d107cb22ab28a5a33083e)
+  set(DEFAULT_STIR_TAG fd3a7576a11930856d6af50d217f17d4848c2bff)
 
   ## Gadgetron
   set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
