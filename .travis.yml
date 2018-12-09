@@ -174,6 +174,10 @@ before_install:
         brew install ace
         brew install swig
         brew install ccache
+        string='My long string'
+        if [[ $BUILD_FLAGS == *"SYSTEM_FFTW3=ON"* ]]; then
+            brew install fftw
+        fi
         # need curl to get pip and more recent cmake
         brew install curl
         #brew install cmake # already present
