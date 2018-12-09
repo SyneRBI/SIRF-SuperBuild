@@ -117,7 +117,8 @@ if (DEVEL_BUILD)
 
   ## Gadgetron
   set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
-  set(DEFAULT_Gadgetron_TAG origin/master)
+  #set(DEFAULT_Gadgetron_TAG origin/master)
+  set (DEFAULT_Gadgetron_TAG v3.17.0)
 
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd )
@@ -125,7 +126,8 @@ if (DEVEL_BUILD)
 
   ## ISMRMRD
   set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
-  set(DEFAULT_ISMRMRD_TAG origin/master)
+  #set(DEFAULT_ISMRMRD_TAG origin/master)
+  set (DEFAULT_ISMRMRD_TAG v1.4.0)
 
   ## petmr-rd-tools
   set(DEFAULT_petmr_rd_tools_URL https://github.com/UCL/petmr-rd-tools )
