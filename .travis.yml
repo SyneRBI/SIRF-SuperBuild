@@ -242,7 +242,7 @@ install:
         # pull previous base image for its layer cache
         docker pull ccppetmr/sirf:core
         # count the docker pull (prefix `d`)
-        # gh_stats_count -k uniques --decrement -pd
+        [[ -n "$GITHUB_API_TOKEN" ]] && gh_stats_count -k uniques --decrement -pd
         # rebuild base image (using above docker cache)
         # and sirf image (with travis' ccache)
         rm -rf devel/.ccache
