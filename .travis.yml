@@ -19,65 +19,65 @@ matrix:
    python: 3
    # +boost -itk +fftw3 +hdf5 -ace
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=OFF -DUSE_NiftyReg=ON" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=3
- - os: linux
-   python: 2.7
-   # +boost -itk +fftw3 +hdf5 -ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=OFF -DUSE_NiftyReg=ON" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=3
- - os: linux
-   python: 3
-   # +boost -itk +fftw3 +hdf5 -ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=OFF" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=3
- # linux g{cc,++}-5 py{27,3}
- - os: linux
-   python: 3
-   # +boost +fftw3 +hdf5 +ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=3
- - os: linux
-   python: 2.7
-   # +boost +fftw3 +hdf5 +siemens_to_ismrmrd +swig +ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_ACE=ON" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=2
- - os: linux
-   python: 3
-   # +DEVEL +boost -hdf5 -fftw3 +siemens_to_ismrmrd
-   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DBUILD_siemens_to_ismrmrd=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
- - os: linux
-   python: 2.7
-   # +DEVEL -boost -fftw3 -hdf5 -swig
-   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=2
- # osx g{cc,++} py{27,36}
- - os: osx
-   python: 2.7
-   # Note: can't test SYSTEM_Boost=OFF due to excessive log size (https://github.com/CCPPETMR/SIRF-SuperBuild/issues/167)
-   # -boost -hdf5 -swig
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
- - os: osx
-   # -boost -hdf5 -swig
-   python: 3
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_SWIG=ON" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=3
- - os: osx
-   python: 2.7
-   # +DEVEL +boost -hdf5 +swig
-   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
- - os: osx
-   python: 2.7
-   # +DEVEL +boost -fftw3 -hdf5 +swig
-   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
- # itk
- - os: linux
-   python: 3
-   # +boost +itk +fftw3 +hdf5
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=3
- - os: osx
-   python: 2.7
-   # +boost +itk -hdf5 +swig
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
- # docker
- - os: linux
-   # +armadillo +boost +fftw3 +hdf5 +siemens_to_ismrmrd +swig
-   env: DOCKER_BUILD=1
- - os: linux
-   # +DEVEL +armadillo +boost +fftw3 +hdf5 +siemens_to_ismrmrd +swig
-   env: DOCKER_BUILD=DEVEL
+ # - os: linux
+   # python: 2.7
+   # # +boost -itk +fftw3 +hdf5 -ace
+   # env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=OFF -DUSE_NiftyReg=ON" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=3
+ # - os: linux
+   # python: 3
+   # # +boost -itk +fftw3 +hdf5 -ace
+   # env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=OFF" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=3
+ # # linux g{cc,++}-5 py{27,3}
+ # - os: linux
+   # python: 3
+   # # +boost +fftw3 +hdf5 +ace
+   # env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=3
+ # - os: linux
+   # python: 2.7
+   # # +boost +fftw3 +hdf5 +siemens_to_ismrmrd +swig +ace
+   # env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_ACE=ON" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=2
+ # - os: linux
+   # python: 3
+   # # +DEVEL +boost -hdf5 -fftw3 +siemens_to_ismrmrd
+   # env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DBUILD_siemens_to_ismrmrd=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+ # - os: linux
+   # python: 2.7
+   # # +DEVEL -boost -fftw3 -hdf5 -swig
+   # env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=2
+ # # osx g{cc,++} py{27,36}
+ # - os: osx
+   # python: 2.7
+   # # Note: can't test SYSTEM_Boost=OFF due to excessive log size (https://github.com/CCPPETMR/SIRF-SuperBuild/issues/167)
+   # # -boost -hdf5 -swig
+   # env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
+ # - os: osx
+   # # -boost -hdf5 -swig
+   # python: 3
+   # env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_SWIG=ON" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=3
+ # - os: osx
+   # python: 2.7
+   # # +DEVEL +boost -hdf5 +swig
+   # env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
+ # - os: osx
+   # python: 2.7
+   # # +DEVEL +boost -fftw3 -hdf5 +swig
+   # env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
+ # # itk
+ # - os: linux
+   # python: 3
+   # # +boost +itk +fftw3 +hdf5
+   # env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=3
+ # - os: osx
+   # python: 2.7
+   # # +boost +itk -hdf5 +swig
+   # env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
+ # # docker
+ # - os: linux
+   # # +armadillo +boost +fftw3 +hdf5 +siemens_to_ismrmrd +swig
+   # env: DOCKER_BUILD=1
+ # - os: linux
+   # # +DEVEL +armadillo +boost +fftw3 +hdf5 +siemens_to_ismrmrd +swig
+   # env: DOCKER_BUILD=DEVEL
 
 env:
  global:
@@ -186,17 +186,19 @@ before_install:
         brew install curl
         #brew install cmake # already present
         # alternative: get our own
-        #curl -0 https://cmake.org/files/v3.8/cmake-3.8.0-Darwin-x86_64.tar.gz -o cmake.tar.gz
-        #tar xzf cmake.tar.gz
-        #mv cmake-*/CMake.app/Contents/* cmake-*
-        #export PATH="$PWD/cmake-*/bin:$PATH"
+        #curl -L -O https://cmake.org/files/v3.8/cmake-3.8.0-Darwin-x86_64.tar.gz
+        #tar xzf cmake-*.tar.gz
+        #mv cmake-*/CMake.app/Contents/* cmake
+        #export PATH="$PWD/cmake/bin:$PATH"
       )
     elif [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       PY_EXE=python$PYMVER
       if [[ -z "$DOCKER_BUILD" ]]; then
-        curl -0 https://github.com/Kitware/CMake/releases/download/v3.13.1/cmake-3.13.1-Linux-x86_64.tar.gz -o cmake.tar.gz
-        tar xzf cmake.tar.gz
-        export PATH="$PWD/cmake-*/bin:$PATH"
+        curl -L -O https://github.com/Kitware/CMake/releases/download/v3.13.1/cmake-3.13.1-Linux-x86_64.tar.gz
+        ls -l cmake-*
+        tar xzf cmake-*.tar.gz
+        mv cmake-*x86_64 cmake
+        export PATH="$PWD/cmake/bin:$PATH"
       fi
     fi
  - echo "Using Python executable $PY_EXE"
