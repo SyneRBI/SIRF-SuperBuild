@@ -194,8 +194,8 @@ before_install:
     elif [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       PY_EXE=python$PYMVER
       if [[ -z "$DOCKER_BUILD" ]]; then
-        curl -0 https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.tar.gz -o cmake.tar.gz
-        tar xzf cmake.tar.gz
+        wget -c https://github.com/Kitware/CMake/releases/download/v3.13.1/cmake-3.13.1-Linux-x86_64.tar.gz
+        tar xzf cmake-3.13.1-Linux-x86_64.tar.gz
         export PATH="$PWD/cmake-*/bin:$PATH"
       fi
     fi
@@ -265,9 +265,9 @@ install:
         $PY_EXE -m pip install --user --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
         cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
         # Job may timeout (>50min) if no ccache, otherwise should be <1min:
-        make || travis_terminate 1
+        make 
         mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
-      )
+      ) || travis_terminate 1
       source $PWD/INSTALL/bin/env_ccppetmr.sh
     fi
 
