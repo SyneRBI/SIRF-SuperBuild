@@ -18,11 +18,11 @@ matrix:
  - os: linux
    python: 3
    # +boost -itk +fftw3 +hdf5 -ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=OFF -DUSE_NiftyReg=ON" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=3
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=OFF -DUSE_NiftyReg=ON" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=3
  - os: linux
    python: 2.7
    # +boost -itk +fftw3 +hdf5 -ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=OFF -DUSE_NiftyReg=ON" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=3
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=OFF -DUSE_NiftyReg=ON" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=3
  - os: linux
    python: 3
    # +boost -itk +fftw3 +hdf5 -ace
@@ -194,8 +194,8 @@ before_install:
     elif [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       PY_EXE=python$PYMVER
       if [[ -z "$DOCKER_BUILD" ]]; then
-        wget -c https://github.com/Kitware/CMake/releases/download/v3.13.1/cmake-3.13.1-Linux-x86_64.tar.gz
-        tar xzf cmake-3.13.1-Linux-x86_64.tar.gz
+        curl -0 https://github.com/Kitware/CMake/releases/download/v3.13.1/cmake-3.13.1-Linux-x86_64.tar.gz -o cmake.tar.gz
+        tar xzf cmake.tar.gz
         export PATH="$PWD/cmake-*/bin:$PATH"
       fi
     fi
