@@ -10,48 +10,53 @@ language: cpp
 # - gcc
 
 # Environment variables
-# Note: On trusty we need to build Armadillo ourselves (the system version is too old)
+# Note: On trusty we need to build Armadillo and boost ourselves (the system versions are too old)
+# Note: On OSX we can't test SYSTEM_Boost=OFF due to excessive log size (https://github.com/CCPPETMR/SIRF-SuperBuild/issues/167)
+# Note: currently ACE is not building correctly, so ACE is not built on any configuration https://github.com/CCPPETMR/SIRF-SuperBuild/issues/#174
+# Note: on Trusty, g++-7 causes errors with the system ACE, so cannot use g++-7 or later https://github.com/CCPPETMR/SIRF-SuperBuild/issues/169
 # Note: altering the matrix here will cause re-building of caches,
 # so try to keep this concise to avoid need to update
+# Note: the line above each `env` contains a resume of the parameters passed to cmake.
+#       + or - refer to the value of the parameter affecting the specific package is passed to cmake:
+#       i.e. -boost == -DUSE_SYSTEM_Boost=OFF, which means that Boost will be built.
 matrix:
  include:
  - os: linux
    python: 3
-   # +boost -itk +fftw3 +hdf5 -ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=OFF -DUSE_NiftyReg=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+   # -boost -itk +fftw3 +hdf5 +ace +niftyreg
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DUSE_NiftyReg=ON" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=3
  - os: linux
    python: 2.7
-   # +boost -itk +fftw3 +hdf5 -ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=OFF -DUSE_NiftyReg=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+   # -boost -itk +fftw3 +hdf5 +ace +niftyreg
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DUSE_NiftyReg=ON" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=3
  - os: linux
    python: 3
-   # +boost -itk +fftw3 +hdf5 -ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=OFF" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+   # -boost -itk +fftw3 +hdf5 +ace
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=3
  # linux g{cc,++}-5 py{27,3}
  - os: linux
    python: 3
-   # +boost +fftw3 +hdf5 +ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+   # -boost +fftw3 +hdf5 +ace
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=3
  - os: linux
    python: 2.7
-   # +boost +fftw3 +hdf5 +siemens_to_ismrmrd +swig +ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_ACE=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=2
+   # -boost +fftw3 +hdf5 +siemens_to_ismrmrd +swig +ace
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_ACE=ON" MATRIX_EVAL="CC=gcc-5 CXX=g++-5" PYMVER=2
  - os: linux
    python: 3
-   # +DEVEL +boost -hdf5 -fftw3 +siemens_to_ismrmrd -ace
-   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DBUILD_siemens_to_ismrmrd=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+   # +DEVEL -boost -hdf5 -fftw3 +siemens_to_ismrmrd
+   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DBUILD_siemens_to_ismrmrd=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
  - os: linux
    python: 2.7
-   # +DEVEL -boost -fftw3 -hdf5 -swig +ace
-   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_ACE=OFF -DUSE_SYSTEM_SWIG=OFF" MATRIX_EVAL="CC=gcc-7 CXX=g++-7" PYMVER=2
+   # +DEVEL -boost -fftw3 -hdf5 -swig
+   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=2
  # osx g{cc,++} py{27,36}
  - os: osx
    python: 2.7
-   # Note: can't test SYSTEM_Boost=OFF due to excessive log size (https://github.com/CCPPETMR/SIRF-SuperBuild/issues/167)
-   # -boost -hdf5 -swig
+   # +boost -hdf5 -swig
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
  - os: osx
-   # -boost -hdf5 -swig
+   # +boost -hdf5 +fftw3 +swig
    python: 3
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_SWIG=ON" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=3
  - os: osx
@@ -65,8 +70,8 @@ matrix:
  # itk
  - os: linux
    python: 3
-   # +boost +itk +fftw3 +hdf5
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+   # -boost +itk +fftw3 +hdf5
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_ITK=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
  - os: osx
    python: 2.7
    # +boost +itk -hdf5 +swig
@@ -110,7 +115,7 @@ addons:
    - python3-dev
    - python-tk
    - python3-tk
-   - libopenblas-dev 
+   - libopenblas-dev
    - libatlas-base-dev
    - liblapack-dev
    - libxml2-dev
@@ -132,7 +137,7 @@ cache:
   - pip
 
 before_install:
- # Set C and C++ compiler etc using trick from 
+ # Set C and C++ compiler etc using trick from
  # https://docs.travis-ci.com/user/languages/cpp/#c11c11-and-beyond-and-toolchain-versioning
  - eval "${MATRIX_EVAL}"
  - $CC --version
@@ -186,17 +191,19 @@ before_install:
         brew install curl
         #brew install cmake # already present
         # alternative: get our own
-        #curl -0 https://cmake.org/files/v3.8/cmake-3.8.0-Darwin-x86_64.tar.gz -o cmake.tar.gz
-        #tar xzf cmake.tar.gz
-        #mv cmake-*/CMake.app/Contents/* cmake-*
-        #export PATH="$PWD/cmake-*/bin:$PATH"
+        #curl -L -O https://cmake.org/files/v3.8/cmake-3.8.0-Darwin-x86_64.tar.gz
+        #tar xzf cmake-*.tar.gz
+        #mv cmake-*/CMake.app/Contents/* cmake
+        #export PATH="$PWD/cmake/bin:$PATH"
       )
     elif [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       PY_EXE=python$PYMVER
       if [[ -z "$DOCKER_BUILD" ]]; then
-        curl -0 https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.tar.gz -o cmake.tar.gz
-        tar xzf cmake.tar.gz
-        export PATH="$PWD/cmake-*/bin:$PATH"
+        curl -L -O https://github.com/Kitware/CMake/releases/download/v3.13.1/cmake-3.13.1-Linux-x86_64.tar.gz
+        ls -l cmake-*
+        tar xzf cmake-*.tar.gz
+        mv cmake-*x86_64 cmake
+        export PATH="$PWD/cmake/bin:$PATH"
       fi
     fi
  - echo "Using Python executable $PY_EXE"
@@ -208,11 +215,14 @@ before_install:
  # ensure python bin dir exists (and coverage dependencies installed)
  - $PY_EXE -m pip install --user -U nose codecov coveralls
  # for counting clones, excluding ours
- # - git clone https://$GITHUB_API_TOKEN@github.com/ccp-petmr-codebot/github-stats --branch $TRAVIS_REPO_SLUG
- # update with last fortnight's clones from GitHub API
- # - source github-stats/setup.sh
- # count unique clones, excluding travis, and print total
- # - gh_stats_count -k uniques
+ - |
+    if [[ -n "$GITHUB_API_TOKEN" ]]; then
+      git clone https://$GITHUB_API_TOKEN@github.com/ccp-petmr-codebot/github-stats --branch $TRAVIS_REPO_SLUG
+      # update with last fortnight's clones from GitHub API
+      source github-stats/setup.sh
+      # count unique clones, excluding travis, and print total
+      gh_stats_count -k uniques
+    fi
  - $PY_EXE --version
  - $PY_EXE -m pip --version
  - $PY_EXE -m pip freeze
@@ -239,7 +249,7 @@ install:
         # pull previous base image for its layer cache
         docker pull ccppetmr/sirf:core
         # count the docker pull (prefix `d`)
-        # gh_stats_count -k uniques --decrement -pd
+        [[ -n "$GITHUB_API_TOKEN" ]] && gh_stats_count -k uniques --decrement -pd
         # rebuild base image (using above docker cache)
         # and sirf image (with travis' ccache)
         rm -rf devel/.ccache
@@ -265,9 +275,9 @@ install:
         $PY_EXE -m pip install --user --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
         cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
         # Job may timeout (>50min) if no ccache, otherwise should be <1min:
-        make || travis_terminate 1
+        make 
         mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
-      )
+      ) || travis_terminate 1
       source $PWD/INSTALL/bin/env_ccppetmr.sh
     fi
 
