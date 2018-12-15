@@ -1,8 +1,8 @@
 #! /bin/bash
 
 #========================================================================
-# Author: Kris Thielemans
-# Copyright 2018 University College London
+# Author: Edoardo Pasca
+# Copyright 2018 Science Technology Facilities Council
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) virtual machine.
 #
@@ -20,11 +20,11 @@
 #
 #=========================================================================
 
-# script to adjust gnome settings and other bits to be run only once 
-# after VM is created
+# script  allow a VM export to be compact
 
-location=`dirname $0`
-
-$location/configure_gnome.sh
-
-$location/zero_fill.sh
+echo "Now creating a very large file filled with zeroes, and then delete it"
+echo "such that VirtualBox will create a compact OVA file."
+echo "You will see message saying \"error writing '/tmp/EMPTY'\". This is expected."
+dd if=/dev/zero of=/tmp/EMPTY bs=1M
+rm -f /tmp/EMPTY
+ 
