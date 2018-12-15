@@ -16,11 +16,16 @@ echo "Installing Gadgetron pre-requisites..."
 
 $SUDO apt-get install -y --no-install-recommends libhdf5-serial-dev git-core cmake \
       build-essential libfftw3-dev h5utils \
-      hdf5-tools hdfview python-dev liblapack-dev libxml2-dev \
-      libxslt-dev libarmadillo-dev libace-dev  \
-      libgtest-dev libplplot-dev \
+      hdf5-tools hdfview liblapack-dev \
+      libarmadillo-dev libace-dev  \
+      libgtest-dev \
       libopenblas-dev libatlas-base-dev \
+      libxml2-dev libxslt-dev # for siemens_to_ismrmrd
 #      g++-6 gcc-6 
+# Gadgetron dependencies, not required (yet) by SIRF
+# only plplot install once https://github.com/gadgetron/gadgetron/issues/608 fixed
+# in the Gadgetron version that we use
+# libplplot-dev
 
 echo "Installing boost 1.65 or later"
 tmp=`apt-cache search libboost|grep ALL|egrep libboost[1-9]`
