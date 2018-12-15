@@ -12,8 +12,9 @@ $SUDO apt-get install -y --no-install-recommends libhdf5-serial-dev git-core cma
       libboost-all-dev build-essential libfftw3-dev h5utils \
       hdf5-tools hdfview python-dev liblapack-dev libxml2-dev \
       libxslt-dev libarmadillo-dev libace-dev  \
-      g++ libgtest-dev libplplot-dev \
-      python-dev
+      libgtest-dev libplplot-dev \
+      libopenblas-dev libatlas-base-dev \
+#      g++-6 gcc-6 
 
 echo "Installing SWIG..."
 
@@ -29,8 +30,9 @@ $SUDO apt-get install -y --no-install-recommends doxygen graphviz
 echo "installing glog"
 $SUDO apt-get install -y libgoogle-glog-dev
 
-echo "installing pip for jupyter"
+echo "Installing python APT packages"
+# we will use pip for most
+# some extra package needed for jupyter
 qt=pyqt5
-$SUDO apt-get install -y python-pip python-${qt} python-${qt}.qtsvg python-${qt}.qtwebkit
-$SUDO python -m pip install --upgrade pip wheel setuptools
-$SUDO python -m pip install --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
+$SUDO apt-get install -y python-dev python-pip python-tk python-${qt} python-${qt}.qtsvg python-${qt}.qtwebkit
+echo "Run INSTALL_python_packages.sh after this."

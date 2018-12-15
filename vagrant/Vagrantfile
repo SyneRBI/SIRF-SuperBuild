@@ -146,11 +146,12 @@ Vagrant.configure("2") do |config|
 	
     git clone https://github.com/CCPPETMR/CCPPETMR_VM.git
     cd CCPPETMR_VM
+    #git checkout ubuntu18.04
     bash $userHOME/devel/CCPPETMR_VM/scripts/INSTALL_prerequisites_with_apt-get.sh
     bash $userHOME/devel/CCPPETMR_VM/scripts/INSTALL_CMake.sh /usr/local
-    # install jupyter and firefox
+    bash $userHOME/devel/CCPPETMR_VM/scripts/INSTALL_python_packages.sh
+
     apt-get install -y firefox
-    python -m pip install --upgrade pip
     python -m pip install jupyter
     python -m pip install spyder
     chown -R $SIRFUSERNAME:users $userHOME
