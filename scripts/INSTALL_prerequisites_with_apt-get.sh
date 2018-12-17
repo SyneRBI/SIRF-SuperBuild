@@ -28,9 +28,12 @@ $SUDO apt-get install -y --no-install-recommends libhdf5-serial-dev git-core cma
 # libplplot-dev
 
 echo "Installing boost 1.65 or later"
-tmp=`apt-cache search libboost|grep ALL|egrep libboost[1-9]`
+# first find current boost version (if any)
+# the 'tail' makes sure we use the last one listed by apt-cache in case there is more than 1 version
+tmp=`apt-cache search libboost|grep ALL|egrep libboost[1-9]|tail -n 1`
 boost_major=${tmp:8:1}
 boost_minor=${tmp:10:2}
+echo "Found Boost major version ${boost_major}, minor ${boost_minor}"
 if [ $boost_major -gt 1 -o $boost_minor -gt 64 ]
 then
     $SUDO apt install libboost-dev
