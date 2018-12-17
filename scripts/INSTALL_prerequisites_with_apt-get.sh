@@ -51,8 +51,6 @@ else
     $SUDO apt install -y libboost1.68-dev
 fi
 
-exit
-
 echo "Installing SWIG..."
 
 $SUDO apt-get install -y --no-install-recommends swig
