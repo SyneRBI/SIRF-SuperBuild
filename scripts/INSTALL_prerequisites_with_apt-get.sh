@@ -36,7 +36,7 @@ boost_minor=${tmp:10:2}
 echo "Found Boost major version ${boost_major}, minor ${boost_minor}"
 if [ $boost_major -gt 1 -o $boost_minor -gt 64 ]
 then
-    $SUDO apt install libboost-dev
+    $SUDO apt install -y libboost-dev
 else    
     # packaged boost is too old
     # we need to find a ppa that has it. This is unsafe and likely prone to falling over
