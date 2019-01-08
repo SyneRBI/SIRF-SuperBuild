@@ -1,5 +1,6 @@
 # code adapted from 
 # https://github.com/symengine/symengine.py/blob/master/cmake/FindCython.cmake
+# MIT License https://github.com/symengine/symengine.py/blob/master/LICENSE
 # 16/11/18
 #
 # Cython

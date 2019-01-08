@@ -2,8 +2,8 @@
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
 # Author: Edoardo Pasca
-# Copyright 2017 University College London
-# Copyright 2017 STFC
+# Copyright 2017-2018 University College London
+# Copyright 2017-2018 STFC
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -66,7 +66,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     # $PYTHONPATH directory
   set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
   if (BUILD_PYTHON)
-    set(PYTHON_DEST_DIR "" CACHE PATH "Directory of the SIRF Python modules")
+    set(PYTHON_DEST_DIR "" CACHE PATH "Directory of the CIL regularisation Python modules")
     if (PYTHON_DEST_DIR)
      set(PYTHON_DEST "${PYTHON_DEST_DIR}")
     else()
