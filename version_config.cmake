@@ -79,7 +79,7 @@ set(glog_TAG v035)
 
 ## ITK
 set(ITK_URL https://itk.org/ITK.git)
-set(ITK_TAG v4.13.0)
+set(ITK_TAG v4.13.1)
 
 ## NiftyReg
 set(NiftyReg_URL https://git.code.sf.net/p/niftyreg/git )
