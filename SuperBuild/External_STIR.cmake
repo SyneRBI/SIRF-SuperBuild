@@ -53,6 +53,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   option(BUILD_STIR_EXECUTABLES "Build all STIR executables" OFF)
   option(BUILD_STIR_SWIG_PYTHON "Build STIR Python interface" OFF)
+  option(STIR_DISABLE_CERN_ROOT_SUPPORT "DisableSTIR ROOT interface" ON)
+  mark_as_advanced(STIR_DISABLE_CERN_ROOT_SUPPORT)
 
   if(${BUILD_STIR_SWIG_PYTHON} AND NOT "${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
     message(FATAL_ERROR "STIR Python currently needs to have PYTHON_STRATEGY=PYTHONPATH")
@@ -74,7 +76,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DCMAKE_CXX_STANDARD=11
         -DSTIR_OPENMP=${BUILD_STIR_WITH_OPENMP}
         # Use 2 variables for ROOT to cover multiple STIR versions
-        -DDISABLE_CERN_ROOT_SUPPORT=ON -DDISABLE_CERN_ROOT=ON
+        -DDISABLE_CERN_ROOT_SUPPORT=${STIR_DISABLE_CERN_ROOT_SUPPORT} -DDISABLE_CERN_ROOT=${STIR_DISABLE_CERN_ROOT_SUPPORT}
    )
 
   # Append CMAKE_ARGS for ITK choices
