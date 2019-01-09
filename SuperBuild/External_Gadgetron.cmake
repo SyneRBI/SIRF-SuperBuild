@@ -64,7 +64,8 @@ endif ()
   set(BUILD_GADGETRON_NATIVE_PYTHON_SUPPORT OFF) # <-Disabled for v1.0
   option(BUILD_GADGETRON_NATIVE_MATLAB_SUPPORT
     "Build Gadgetron MATLAB gadgets (not required for SIRF)" OFF)
-
+  option(Gadgetron_USE_CUDA "Enable Gadgetron CUDA (if cuda libraries are present)" ON)
+  mark_as_advanced(Gadgetron_USE_CUDA)
   
 
   ExternalProject_Add(${proj}
@@ -95,6 +96,7 @@ endif ()
         -DHDF5_LIBRARIES=${HDF5_LIBRARIES}
         -DISMRMRD_DIR=${ISMRMRD_DIR}
         -DMKLROOT_PATH=${MKLROOT_PATH}
+        -DUSE_CUDA=${Gadgetron_USE_CUDA}
 	    INSTALL_DIR ${Gadgetron_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
