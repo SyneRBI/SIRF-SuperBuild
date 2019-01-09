@@ -51,11 +51,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ### --- Project specific additions here
   set(STIR_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
+  option(BUILD_TESTING_${proj} "Build tests for STIR" OFF)
   option(BUILD_STIR_EXECUTABLES "Build all STIR executables" OFF)
   option(BUILD_STIR_SWIG_PYTHON "Build STIR Python interface" OFF)
   option(STIR_DISABLE_CERN_ROOT "Disable STIR ROOT interface" ON)
   option(STIR_DISABLE_LLN_MATRIX "Disable STIR Louvain-la-Neuve Matrix library for ECAT7 support" ON)
   option(STIR_ENABLE_EXPERIMENTAL "Enable STIR experimental code" OFF)
+  
   mark_as_advanced(BUILD_STIR_EXECUTABLES BUILD_STIR_SWIG_PYTHON STIR_DISABLE_CERN_ROOT)
   mark_as_advanced(STIR_DISABLE_LLN_MATRIX STIR_ENABLE_EXPERIMENTAL)
 
@@ -79,7 +81,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DCMAKE_CXX_STANDARD=11
         -DSTIR_OPENMP=${BUILD_STIR_WITH_OPENMP}
         # Use 2 variables for ROOT to cover multiple STIR versions
-        -DDISABLE_CERN_ROOT_SUPPORT=${STIR_DISABLE_CERN_ROOT_SUPPORT} -DDISABLE_CERN_ROOT=${STIR_DISABLE_CERN_ROOT_SUPPORT}
+        -DDISABLE_CERN_ROOT_SUPPORT=${STIR_DISABLE_CERN_ROOT} -DDISABLE_CERN_ROOT=${STIR_DISABLE_CERN_ROOT}
         -DDISABLE_LLN_MATRIX=${STIR_DISABLE_LLN_MATRIX}
         -DSTIR_ENABLE_EXPERIMENTAL=${STIR_ENABLE_EXPERIMENTAL}
    )
