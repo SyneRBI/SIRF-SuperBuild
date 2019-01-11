@@ -140,6 +140,13 @@ if (DEVEL_BUILD)
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
   set(DEFAULT_ACE_TAG origin/master)
 
+  # For OSX, Gadgetron v3.17.0 doesn't work. So even in devel build, use same version 
+  # as for non-devel build
+  if (APPLE)
+    set(DEFAULT_Gadgetron_TAG e7eb430673eb3272e8a821b51750c0a2a96dafed)
+    set(DEFAULT_ISMRMRD_TAG 42d93137cc16c270c8ba065edd2496483161bd21)
+  endif(APPLE)
+
 else()
   set(DEFAULT_SIRF_TAG v1.1.1)
 
