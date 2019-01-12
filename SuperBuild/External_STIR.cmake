@@ -51,7 +51,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ### --- Project specific additions here
   set(STIR_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
-  option(BUILD_TESTING_${proj} "Build tests for STIR" OFF)
+  option(BUILD_TESTING_${proj} "Build tests for ${proj}" OFF)
   option(BUILD_STIR_EXECUTABLES "Build all STIR executables" OFF)
   option(BUILD_STIR_SWIG_PYTHON "Build STIR Python interface" OFF)
   option(STIR_DISABLE_CERN_ROOT "Disable STIR ROOT interface" ON)
@@ -72,7 +72,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DPYTHON_DEST=${PYTHON_DEST}
         -DMatlab_ROOT_DIR=${Matlab_ROOT_DIR}
         -DMATLAB_DEST=${MATLAB_DEST}
-        -DBUILD_TESTING=OFF
+        -DBUILD_TESTING=${BUILD_TESTING_${proj}}
         -DBUILD_DOCUMENTATION=OFF
         -DCMAKE_POSITION_INDEPENDENT_CODE=ON
         -DBOOST_ROOT=${BOOST_ROOT}
@@ -118,6 +118,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(STIR_DIR       ${SUPERBUILD_INSTALL_DIR}/lib/cmake)
   set(STIR_INCLUDE_DIRS ${STIR_ROOT}/stir)
 
+  if (BUILD_TESTING_${proj})
+    add_test(NAME ${proj}_TESTS
+         COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION>
+         WORKING_DIRECTORY ${${proj}_BINARY_DIR})
+  endif()
+     
    else()
       if(${USE_SYSTEM_${externalProjName}})
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)

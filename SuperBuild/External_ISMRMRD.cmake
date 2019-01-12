@@ -42,6 +42,24 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ### --- Project specific additions here
   set(ISMRMRD_Install_Dir ${SUPERBUILD_INSTALL_DIR})
+
+  if (NOT WIN32)
+    if (USE_SYSTEM_Boost)
+      find_package(Boost 1.43 COMPONENTS unit_test_framework)
+      if (NOT Boost_UNIT_TEST_FRAMEWORK_FOUND)
+        message("Boost Unit Test Framework not found. No ISMRMRD tests")
+        set(HAVE_ISMRMRD_TEST OFF)
+      else()
+        set(HAVE_ISMRMRD_TEST ON)
+      endif()
+    else()
+      set(HAVE_ISMRMRD_TEST ON)
+    endif()
+    if (HAVE_ISMRMRD_TEST)
+      # Default to on, as we cannot disable it, and they're quite fast
+      option(BUILD_TESTING_${proj} "Build tests for ${proj}" ON)
+    endif()
+  endif ()
   
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
@@ -67,7 +85,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
     set(ISMRMRD_DIR        ${ISMRMRD_Install_Dir}/lib/cmake/ISMRMRD)
 
-   else()
+  if (BUILD_TESTING_${proj})
+    add_test(NAME ${proj}_TESTS
+         COMMAND ${CMAKE_COMMAND} --build . --config $<CONFIGURATION> --target check
+         WORKING_DIRECTORY ${${proj}_BINARY_DIR})
+  endif()
+
+  else()
       if(${USE_SYSTEM_${externalProjName}})
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
         message("USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
