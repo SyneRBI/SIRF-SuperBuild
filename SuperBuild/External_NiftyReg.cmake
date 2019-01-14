@@ -71,6 +71,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
     set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
     set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
+    set(${proj}_Binary_DIR  ${${proj}_SOURCE_DIR})
 
    else()
       if(${USE_SYSTEM_${externalProjName}})
