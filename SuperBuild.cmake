@@ -165,7 +165,7 @@ option(BUILD_STIR "Build STIR" ON)
 option(BUILD_GADGETRON "Build Gadgetron" ${build_Gadgetron_default})
 option(BUILD_siemens_to_ismrmrd "Build siemens_to_ismrmrd" OFF)
 option(BUILD_petmr_rd_tools "Build petmr_rd_tools" OFF)
-option(BUILD_NiftyReg "Build NiftyReg" OFF)
+option(BUILD_NiftyReg "Build NiftyReg" ON)
 
 if (BUILD_petmr_rd_tools)
     set(USE_ITK ON CACHE BOOL "Use ITK" FORCE)
