@@ -23,7 +23,7 @@
 set(proj SIRF)
 
 # Set dependency list
-if (${USE_NiftyReg})
+if (${BUILD_NiftyReg})
   set(${proj}_DEPENDENCIES "STIR;Boost;HDF5;ISMRMRD;FFTW3;SWIG;NiftyReg")
 else()
   set(${proj}_DEPENDENCIES "STIR;Boost;HDF5;ISMRMRD;FFTW3;SWIG")
@@ -31,6 +31,7 @@ endif()
 
 message(STATUS "Matlab_ROOT_DIR=" ${Matlab_ROOT_DIR})
 message(STATUS "STIR_DIR=" ${STIR_DIR})
+message(STATUS "NiftyReg_BINARY_DIR=" ${NiftyReg_BINARY_DIR})
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
@@ -84,7 +85,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DPYTHON_LIBRARY=${PYTHON_LIBRARIES}
         -DPYTHON_DEST_DIR=${PYTHON_DEST_DIR}
         -DPYTHON_STRATEGY=${PYTHON_STRATEGY}
-        -DNiftyReg_Binary_DIR=${NiftyReg_Binary_DIR}
+        -DNiftyReg_Binary_DIR=${NiftyReg_BINARY_DIR}
 	INSTALL_DIR ${SIRF_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}

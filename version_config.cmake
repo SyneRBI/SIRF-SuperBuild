@@ -82,8 +82,8 @@ set(ITK_URL https://itk.org/ITK.git)
 set(ITK_TAG v4.13.1)
 
 ## NiftyReg
-set(NiftyReg_URL https://git.code.sf.net/p/niftyreg/git )
-set(NiftyReg_TAG 4e4525b84223c182b988afaa85e32ac027774c42 )
+set(NiftyReg_URL https://github.com/KCL-BMEIS/niftyreg.git )
+set(NiftyReg_TAG 731a565bd42ca97ff5968adb1c06133ea72f0856 )
 
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
