@@ -45,6 +45,11 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ### --- Project specific additions here
   set(Gadgetron_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
+  # Gadgetron only adds tests if (GTEST_FOUND AND ARMADILLO_FOUND)
+  # but that's currently always the case.
+  # Default to on, as we cannot disable it, and they're quite fast
+  option(BUILD_TESTING_${proj} "Build tests for ${proj}" ON)
+
   #message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
@@ -105,6 +110,13 @@ endif ()
     set(Gadgetron_ROOT        ${Gadgetron_SOURCE_DIR})
     set(Gadgetron_INCLUDE_DIR ${Gadgetron_SOURCE_DIR})
 
+  # Gadgetron only adds tests if (GTEST_FOUND AND ARMADILLO_FOUND)
+  if (BUILD_TESTING_${proj})
+    add_test(NAME ${proj}_TESTS
+         COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION>
+         WORKING_DIRECTORY ${${proj}_BINARY_DIR}/test)
+  endif()
+     
    else()
       if(${USE_SYSTEM_${externalProjName}})
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)

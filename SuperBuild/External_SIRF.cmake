@@ -52,6 +52,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ### --- Project specific additions here
   set(SIRF_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
+  option(BUILD_TESTING_${proj} "Build tests for ${proj}" ON)
+
   message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
 
@@ -93,6 +95,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
     set(SIRF_ROOT        ${SIRF_SOURCE_DIR})
     set(SIRF_INCLUDE_DIR ${SIRF_SOURCE_DIR})
+
+  #if (BUILD_TESTING_${proj})
+    add_test(NAME ${proj}_TESTS
+         COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION>
+         WORKING_DIRECTORY ${${proj}_BINARY_DIR})
+  #endif()
 
    else()
       if(${USE_SYSTEM_${externalProjName}})
