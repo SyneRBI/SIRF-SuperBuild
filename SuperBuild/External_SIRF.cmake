@@ -31,8 +31,7 @@ endif()
 
 message(STATUS "Matlab_ROOT_DIR=" ${Matlab_ROOT_DIR})
 message(STATUS "STIR_DIR=" ${STIR_DIR})
-set(NiftyReg_Binary_DIR ${NiftyReg_Binary_DIR})
-message(STATUS "NiftyReg_BINARY_DIR=" ${NiftyReg_BINARY_DIR})
+message(STATUS "NiftyReg_Binary_DIR=" ${NiftyReg_Binary_DIR})
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
