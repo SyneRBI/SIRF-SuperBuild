@@ -299,11 +299,12 @@ script:
       ./INSTALL/bin/gadgetron >& gadgetron.log&
       # print for debugging
       cat builds/SIRF/build/CMakeCache.txt
-      ctest -VV
+      ctest -VV; test_fail=$?
       # print for debugging
       cat builds/SIRF/build/Testing/Temporary/LastTest.log
       # may exceed 4MB travis log limit
       cat gadgetron.log
+      [[ $test_fail -ne 0 ]] || travis_terminate $test_fail
     fi
 
 # post to slack.com
