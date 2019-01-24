@@ -178,14 +178,6 @@ if (USE_ITK)
   option(USE_SYSTEM_ITK "Build using an external version of ITK" OFF)
 endif()
 
-# Boost
-if (NOT USE_SYSTEM_Boost)
-  set(NO_CONFIG ON)
-  set(NO_SYSTEM_PATHS ON)
-  mark_as_superbuild(NO_CONFIG)
-  mark_as_superbuild(NO_SYSTEM_PATHS)
-endif()
-
 ## build list of dependencies, based on options above
 # first set to empty
 set(${PRIMARY_PROJECT_NAME}_DEPENDENCIES)
