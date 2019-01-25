@@ -113,7 +113,7 @@ endif ()
   # Gadgetron only adds tests if (GTEST_FOUND AND ARMADILLO_FOUND)
   if (BUILD_TESTING_${proj})
     add_test(NAME ${proj}_TESTS
-         COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION>
+         COMMAND ${CMAKE_CTEST_COMMAND} -VV -C $<CONFIGURATION>
          WORKING_DIRECTORY ${${proj}_BINARY_DIR}/test)
   endif()
      
