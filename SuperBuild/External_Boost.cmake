@@ -82,7 +82,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
  else()
     if(${USE_SYSTEM_${externalProjName}})
       find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
-      message("USING the system ${externalProjName}, using BOOST_LIBRARY_DIR=${BOOST_LIBRARY_DIR}")
+      message(STATUS "USING the system ${externalProjName}, using BOOST_LIBRARY_DIR=${BOOST_LIBRARY_DIR}")
  endif()
    ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
     SOURCE_DIR ${${proj}_SOURCE_DIR}
