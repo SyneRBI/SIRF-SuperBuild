@@ -47,7 +47,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     if (USE_SYSTEM_Boost)
       find_package(Boost 1.43 COMPONENTS unit_test_framework)
       if (NOT Boost_UNIT_TEST_FRAMEWORK_FOUND)
-        message("Boost Unit Test Framework not found. No ISMRMRD tests")
+        message(STATUS "Boost Unit Test Framework not found. No ISMRMRD tests")
         set(HAVE_ISMRMRD_TEST OFF)
       else()
         set(HAVE_ISMRMRD_TEST ON)
@@ -94,7 +94,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   else()
       if(${USE_SYSTEM_${externalProjName}})
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
-        message("USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
+        message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
    endif()
    ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
     SOURCE_DIR ${${proj}_SOURCE_DIR}
