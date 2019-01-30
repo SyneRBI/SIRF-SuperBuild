@@ -42,17 +42,17 @@ cd $SRC_DIR/build
 #site-packages ${SP_DIR}/sirf
 cmake ../SIRF-SuperBuild \
     -DCMAKE_INSTALL_PREFIX=${PREFIX} \
-    -DPYTHON_DEST_DIR=${PREFIX}/python\
+    -DPYTHON_DEST_DIR=${SP_DIR}\
     -USIRF_URL \
     -USIRF_TAG \
-    -DSIRF_TAG=a9170557c0f883934033700c1dd312a3a74611d6\
+    -DSIRF_TAG=v1.1.1\
     -USTIR_URL \
     -USTIR_TAG \
     -UGadgetron_URL \
     -UGadgetron_TAG \
     -UISMRMRD_URL \
     -UISMRMRD_TAG \
-    -DBUILD_GADGETRON=On \
+    -DBUILD_GADGETRON=Off \
     -DUSE_SYSTEM_SWIG=On \
     -DUSE_SYSTEM_Boost=On \
     -DUSE_SYSTEM_Armadillo=On \
@@ -62,12 +62,13 @@ cmake ../SIRF-SuperBuild \
     -DUSE_SYSTEM_HDF5=ON \
     -DBUILD_siemens_to_ismrmrd=Off \
     -DUSE_SYSTEM_GTest=On\
-    -DUSE_SYSTEM_ACE=ON \
-    -DCONDA_BUILD=On
+    -DPYTHON_STRATEGY=SETUP_PY
+    #-DCONDA_BUILD=On
 
-make  -j3 Gadgetron VERBOSE=0
+make  -j3 STIR
+make  -j1 SIRF
 
-cp ${PREFIX}/share/gadgetron/config/gadgetron.xml.example ${PREFIX}/share/gadgetron/config/gadgetron.xml
+#cp ${PREFIX}/share/gadgetron/config/gadgetron.xml.example ${PREFIX}/share/gadgetron/config/gadgetron.xml
 
 #cd ${PREFIX}/python
 #${PYTHON} setup.py install
