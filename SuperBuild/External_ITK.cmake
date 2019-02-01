@@ -75,6 +75,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DITK_USE_SYSTEM_HDF5=ON
       -DBUILD_TESTING=${BUILD_TESTING_${proj}}
       -DBUILD_EXAMPLES=OFF
+      -DModule_ITKReview=ON
 	  INSTALL_DIR ${${proj}_Install_Dir}
     DEPENDS ${${proj}_DEPENDENCIES}
   )
