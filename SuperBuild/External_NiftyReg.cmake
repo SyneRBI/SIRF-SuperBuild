@@ -64,6 +64,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
         -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}
         -DCMAKE_INSTALL_PREFIX=${${proj}_Install_Dir}
+        -DUSE_THROW_EXCEP=ON
 	    INSTALL_DIR ${${proj}_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
