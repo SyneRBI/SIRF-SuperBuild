@@ -88,8 +88,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DPYTHON_DEST_DIR=${PYTHON_DEST_DIR}
         -DPYTHON_STRATEGY=${PYTHON_STRATEGY}
         -DNiftyReg_Binary_DIR=${NiftyReg_Binary_DIR}
-		-DFFTW3F_LIBRARY=${FFTW3F_LIBRARY}
-		-DFFTW3_INCLUDE_DIR=${FFTW3_INCLUDE_DIR}
 	INSTALL_DIR ${SIRF_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
