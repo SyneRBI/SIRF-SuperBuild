@@ -20,7 +20,8 @@ $SUDO apt-get install -y --no-install-recommends libhdf5-serial-dev git-core cma
       libarmadillo-dev libace-dev  \
       libgtest-dev \
       libopenblas-dev libatlas-base-dev \
-      libxml2-dev libxslt-dev # for siemens_to_ismrmrd
+      libxml2-dev libxslt-dev \ # for siemens_to_ismrmrd
+      cython
 #      g++-6 gcc-6 
 # Gadgetron dependencies, not required (yet) by SIRF
 # only plplot install once https://github.com/gadgetron/gadgetron/issues/608 fixed
