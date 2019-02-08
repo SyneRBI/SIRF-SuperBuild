@@ -90,11 +90,11 @@ set(glog_TAG v035)
 
 ## ITK
 set(ITK_URL https://itk.org/ITK.git)
-set(ITK_TAG v4.13.0)
+set(ITK_TAG v4.13.1)
 
 ## NiftyReg
-set(NiftyReg_URL https://git.code.sf.net/p/niftyreg/git )
-set(NiftyReg_TAG 4e4525b84223c182b988afaa85e32ac027774c42 )
+set(NiftyReg_URL https://github.com/KCL-BMEIS/niftyreg.git )
+set(NiftyReg_TAG 731a565bd42ca97ff5968adb1c06133ea72f0856 )
 
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
@@ -135,6 +135,13 @@ if (DEVEL_BUILD)
  
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
   set(DEFAULT_ACE_TAG origin/master)
+
+  # For OSX, Gadgetron v3.17.0 doesn't work. So even in devel build, use same version 
+  # as for non-devel build
+  if (APPLE)
+    set(DEFAULT_Gadgetron_TAG e7eb430673eb3272e8a821b51750c0a2a96dafed)
+    set(DEFAULT_ISMRMRD_TAG 42d93137cc16c270c8ba065edd2496483161bd21)
+  endif(APPLE)
 
 else()
   set(DEFAULT_SIRF_TAG v1.1.1)

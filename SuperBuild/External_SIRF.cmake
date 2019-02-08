@@ -23,7 +23,7 @@
 set(proj SIRF)
 
 # Set dependency list
-if (${USE_NiftyReg})
+if (${BUILD_NiftyReg})
   set(${proj}_DEPENDENCIES "STIR;Boost;HDF5;ISMRMRD;FFTW3;SWIG;NiftyReg")
 else()
   set(${proj}_DEPENDENCIES "STIR;Boost;HDF5;ISMRMRD;FFTW3;SWIG")
@@ -31,6 +31,7 @@ endif()
 
 message(STATUS "Matlab_ROOT_DIR=" ${Matlab_ROOT_DIR})
 message(STATUS "STIR_DIR=" ${STIR_DIR})
+message(STATUS "NiftyReg_Binary_DIR=" ${NiftyReg_Binary_DIR})
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
@@ -50,6 +51,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ### --- Project specific additions here
   set(SIRF_Install_Dir ${SUPERBUILD_INSTALL_DIR})
+
+  option(BUILD_TESTING_${proj} "Build tests for ${proj}" ON)
 
   message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
@@ -84,6 +87,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DPYTHON_LIBRARY=${PYTHON_LIBRARIES}
         -DPYTHON_DEST_DIR=${PYTHON_DEST_DIR}
         -DPYTHON_STRATEGY=${PYTHON_STRATEGY}
+        -DNiftyReg_Binary_DIR=${NiftyReg_Binary_DIR}
 	INSTALL_DIR ${SIRF_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
@@ -92,10 +96,16 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set(SIRF_ROOT        ${SIRF_SOURCE_DIR})
     set(SIRF_INCLUDE_DIR ${SIRF_SOURCE_DIR})
 
+  #if (BUILD_TESTING_${proj})
+    add_test(NAME ${proj}_TESTS
+         COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION>
+         WORKING_DIRECTORY ${${proj}_BINARY_DIR})
+  #endif()
+
    else()
       if(${USE_SYSTEM_${externalProjName}})
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
-        message("USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
+        message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
    endif()
     ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
       SOURCE_DIR ${${proj}_SOURCE_DIR}

@@ -54,7 +54,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set (HDF5_BUILD_HL_LIB "OFF")
   find_package(CUDA)
   if (CUDA_FOUND)
-     message("<<<<<<<<<<<<<<<<< CUDA FOUND >>>>>>>>>>>>>>>>>>>>>")
+     message(STATUS "<<<<<<<<<<<<<<<<< CUDA FOUND >>>>>>>>>>>>>>>>>>>>>")
      set(HDF5_BUILD_HL_LIB "ON")
   endif()
 

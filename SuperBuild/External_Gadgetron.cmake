@@ -45,6 +45,11 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ### --- Project specific additions here
   set(Gadgetron_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
+  # Gadgetron only adds tests if (GTEST_FOUND AND ARMADILLO_FOUND)
+  # but that's currently always the case.
+  # Default to on, as we cannot disable it, and they're quite fast
+  option(BUILD_TESTING_${proj} "Build tests for ${proj}" ON)
+
   #message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
@@ -64,7 +69,8 @@ endif ()
   set(BUILD_GADGETRON_NATIVE_PYTHON_SUPPORT OFF) # <-Disabled for v1.0
   option(BUILD_GADGETRON_NATIVE_MATLAB_SUPPORT
     "Build Gadgetron MATLAB gadgets (not required for SIRF)" OFF)
-
+  option(Gadgetron_USE_CUDA "Enable Gadgetron CUDA (if cuda libraries are present)" ON)
+  mark_as_advanced(Gadgetron_USE_CUDA)
   
 
   ExternalProject_Add(${proj}
@@ -95,6 +101,7 @@ endif ()
         -DHDF5_LIBRARIES=${HDF5_LIBRARIES}
         -DISMRMRD_DIR=${ISMRMRD_DIR}
         -DMKLROOT_PATH=${MKLROOT_PATH}
+        -DUSE_CUDA=${Gadgetron_USE_CUDA}
 	    INSTALL_DIR ${Gadgetron_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
@@ -103,10 +110,17 @@ endif ()
     set(Gadgetron_ROOT        ${Gadgetron_SOURCE_DIR})
     set(Gadgetron_INCLUDE_DIR ${Gadgetron_SOURCE_DIR})
 
+  # Gadgetron only adds tests if (GTEST_FOUND AND ARMADILLO_FOUND)
+  if (BUILD_TESTING_${proj})
+    add_test(NAME ${proj}_TESTS
+         COMMAND ${CMAKE_CTEST_COMMAND} -VV -C $<CONFIGURATION>
+         WORKING_DIRECTORY ${${proj}_BINARY_DIR}/test)
+  endif()
+     
    else()
       if(${USE_SYSTEM_${externalProjName}})
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
-        message("USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
+        message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
     endif()
   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
     SOURCE_DIR ${${proj}_SOURCE_DIR}

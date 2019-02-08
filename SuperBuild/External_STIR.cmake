@@ -51,8 +51,15 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ### --- Project specific additions here
   set(STIR_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
+  option(BUILD_TESTING_${proj} "Build tests for ${proj}" OFF)
   option(BUILD_STIR_EXECUTABLES "Build all STIR executables" OFF)
   option(BUILD_STIR_SWIG_PYTHON "Build STIR Python interface" OFF)
+  option(STIR_DISABLE_CERN_ROOT "Disable STIR ROOT interface" ON)
+  option(STIR_DISABLE_LLN_MATRIX "Disable STIR Louvain-la-Neuve Matrix library for ECAT7 support" ON)
+  option(STIR_ENABLE_EXPERIMENTAL "Enable STIR experimental code" OFF)
+  
+  mark_as_advanced(BUILD_STIR_EXECUTABLES BUILD_STIR_SWIG_PYTHON STIR_DISABLE_CERN_ROOT)
+  mark_as_advanced(STIR_DISABLE_LLN_MATRIX STIR_ENABLE_EXPERIMENTAL)
 
   if(${BUILD_STIR_SWIG_PYTHON} AND NOT "${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
     message(FATAL_ERROR "STIR Python currently needs to have PYTHON_STRATEGY=PYTHONPATH")
@@ -65,7 +72,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DPYTHON_DEST=${PYTHON_DEST}
         -DMatlab_ROOT_DIR=${Matlab_ROOT_DIR}
         -DMATLAB_DEST=${MATLAB_DEST}
-        -DBUILD_TESTING=OFF
+        -DBUILD_TESTING=${BUILD_TESTING_${proj}}
         -DBUILD_DOCUMENTATION=OFF
         -DCMAKE_POSITION_INDEPENDENT_CODE=ON
         -DBOOST_ROOT=${BOOST_ROOT}
@@ -74,7 +81,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DCMAKE_CXX_STANDARD=11
         -DSTIR_OPENMP=${BUILD_STIR_WITH_OPENMP}
         # Use 2 variables for ROOT to cover multiple STIR versions
-        -DDISABLE_CERN_ROOT_SUPPORT=ON -DDISABLE_CERN_ROOT=ON
+        -DDISABLE_CERN_ROOT_SUPPORT=${STIR_DISABLE_CERN_ROOT} -DDISABLE_CERN_ROOT=${STIR_DISABLE_CERN_ROOT}
+        -DDISABLE_LLN_MATRIX=${STIR_DISABLE_LLN_MATRIX}
+        -DSTIR_ENABLE_EXPERIMENTAL=${STIR_ENABLE_EXPERIMENTAL}
    )
 
   # Append CMAKE_ARGS for ITK choices
@@ -109,10 +118,16 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(STIR_DIR       ${SUPERBUILD_INSTALL_DIR}/lib/cmake)
   set(STIR_INCLUDE_DIRS ${STIR_ROOT}/stir)
 
+  if (BUILD_TESTING_${proj})
+    add_test(NAME ${proj}_TESTS
+         COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION>
+         WORKING_DIRECTORY ${${proj}_BINARY_DIR})
+  endif()
+     
    else()
       if(${USE_SYSTEM_${externalProjName}})
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
-        message("USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
+        message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
    endif()
     ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
     SOURCE_DIR ${${proj}_SOURCE_DIR}
