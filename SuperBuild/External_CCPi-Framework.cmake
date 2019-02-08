@@ -1,6 +1,4 @@
 #========================================================================
-# Author: Benjamin A Thomas
-# Author: Kris Thielemans
 # Author: Edoardo Pasca
 # Copyright 2018 University College London
 # Copyright 2018 STFC
