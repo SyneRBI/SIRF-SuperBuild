@@ -57,12 +57,18 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   
-  if (WIN32)
+  if (WIN32 AND DEFINED "USE_SYSTEM_FFTW3")
     set(extra_args1 "-DFFTW3F_LIBRARY=${FFTW3F_LIBRARY}")
     set(extra_args2 "-DFFTW3_INCLUDE_DIR=${FFTW3_INCLUDE_DIR}")
   else()
     set(extra_args1 "")
     set(extra_args2 "")
+  endif()
+
+  if (WIN32)
+    set(extra_args "-DSIRF_INSTALL_DEPENDENCIES=ON")
+  else()
+    set(extra_args "")
   endif()
 
   ExternalProject_Add(${proj}
@@ -98,6 +104,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DNiftyReg_Binary_DIR=${NiftyReg_Binary_DIR}
 		${extra_args1}
 		${extra_args2}
+		${extra_args}
 	INSTALL_DIR ${SIRF_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
