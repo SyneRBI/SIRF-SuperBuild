@@ -40,6 +40,12 @@ set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
+  # If building own version of boost, try to minimise looking for other versions
+  set(Boost_NO_BOOST_CMAKE ON)
+  set(Boost_NO_SYSTEM_PATHS ON)
+  mark_as_superbuild(Boost_NO_BOOST_CMAKE)
+  mark_as_superbuild(Boost_NO_SYSTEM_PATHS)
+
   ### --- Project specific additions here
   set(Boost_Install_Dir ${SUPERBUILD_INSTALL_DIR})
   set(Boost_Configure_Script ${CMAKE_CURRENT_LIST_DIR}/External_Boost_configureboost.cmake)
