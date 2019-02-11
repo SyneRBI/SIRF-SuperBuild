@@ -165,8 +165,8 @@ option(BUILD_STIR "Build STIR" ON)
 option(BUILD_GADGETRON "Build Gadgetron" ${build_Gadgetron_default})
 option(BUILD_siemens_to_ismrmrd "Build siemens_to_ismrmrd" OFF)
 option(BUILD_petmr_rd_tools "Build petmr_rd_tools" OFF)
-option(BUILD_NiftyReg "Build NiftyReg" OFF)
 option(BUILD_CIL "Build CCPi CIL Modules" OFF)
+option(BUILD_NiftyReg "Build NiftyReg" ON)
 
 if (BUILD_petmr_rd_tools)
     set(USE_ITK ON CACHE BOOL "Use ITK" FORCE)
@@ -255,7 +255,8 @@ if(PYTHONINTERP_FOUND)
     ${COMMENT_OUT_PREFIX}  setenv PYTHONPATH ${PYTHON_DEST}:$PYTHONPATH \n\
     ${COMMENT_OUT_PREFIX}else \n\
     ${COMMENT_OUT_PREFIX}  setenv PYTHONPATH ${PYTHON_DEST} \n\
-    setenv SIRF_PYTHON_EXECUTABLE ${PYTHON_EXECUTABLE}")
+    setenv SIRF_PYTHON_EXECUTABLE ${PYTHON_EXECUTABLE} \n\
+    ${COMMENT_OUT_PREFIX}endif")
 
   set (ENV_PYTHON_BASH "\
     ${COMMENT_OUT_PREFIX}export PYTHONPATH=\"${PYTHON_DEST}\${PYTHONPATH:+:\${PYTHONPATH}}\" \n\
@@ -293,6 +294,3 @@ configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
 
 # add tests
 enable_testing()
-add_test(NAME SIRF_TESTS
-         COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION>
-         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/builds/SIRF/build/)
