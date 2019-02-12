@@ -22,10 +22,10 @@
 #=========================================================================
 
 ## BOOST
-set(Boost_VERSION 1.64.0)
-set(Boost_REQUIRED_VERSION 1.64.0)
-set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/1.64.0/boost_1_64_0.zip)
-set(Boost_MD5 36093e4018aecd5b0e31e80457ac5fc1)
+set(Boost_VERSION 1.65.0)
+set(Boost_REQUIRED_VERSION 1.65.0)
+set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/1.65.0/boost_1_65_0.zip)
+set(Boost_MD5 eb1e11262e0cfc6949d054f6d8d25dc6)
 
 ## Armadillo
 set(Armadillo_URL   https://downloads.sourceforge.net/project/arma/armadillo-7.800.2.tar.xz)
