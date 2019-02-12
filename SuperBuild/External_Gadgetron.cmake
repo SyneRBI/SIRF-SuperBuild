@@ -64,13 +64,12 @@ if (MKL_FOUND)
   endif ()
 endif ()
 
-if (APPLE)
-  if (NOT (CBLAS_LIBRARY AND CBLAS_INCLUDE_DIR))
-    set(CBLAS_INCLUDE_DIR "" CACHE PATH "CBLAS include dir for Gadgetron")
-    set(CBLAS_LIBRARY "" CACHE FILEPATH "CBLAS library for Gadgetron")
-    message(FATAL_ERROR "Gadgetron needs CBLAS location (/usr/local/Cellar/openblas/ if installed with \"brew install openblas\")")
+  if (APPLE)
+    find_package(blas)
+    if (NOT (CBLAS_LIBRARY AND CBLAS_INCLUDE_DIR))
+      message(FATAL_ERROR "Gadgetron needs CBLAS_LIBRARY and CBLAS_INCLUDE_DIR (/usr/local/Cellar/openblas/ if installed with \"brew install openblas\")")
+    endif()
   endif()
-endif(APPLE)
 
   #option(BUILD_GADGETRON_NATIVE_PYTHON_SUPPORT
   #  "Build Gadgetron Python gadgets (not required for SIRF)" OFF)
