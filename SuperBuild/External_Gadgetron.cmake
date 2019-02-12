@@ -64,6 +64,14 @@ if (MKL_FOUND)
   endif ()
 endif ()
 
+if (APPLE)
+  if (NOT (CBLAS_LIBRARY AND CBLAS_INCLUDE_DIR))
+    set(CBLAS_INCLUDE_DIR "" CACHE PATH "CBLAS include dir for Gadgetron")
+    set(CBLAS_LIBRARY "" CACHE FILEPATH "CBLAS library for Gadgetron")
+    message(FATAL_ERROR "Gadgetron needs CBLAS location (/usr/local/Cellar/openblas/ if installed with \"brew install openblas\")")
+  endif()
+endif(APPLE)
+
   #option(BUILD_GADGETRON_NATIVE_PYTHON_SUPPORT
   #  "Build Gadgetron Python gadgets (not required for SIRF)" OFF)
   set(BUILD_GADGETRON_NATIVE_PYTHON_SUPPORT OFF) # <-Disabled for v1.0
@@ -102,6 +110,9 @@ endif ()
         -DISMRMRD_DIR=${ISMRMRD_DIR}
         -DMKLROOT_PATH=${MKLROOT_PATH}
         -DUSE_CUDA=${Gadgetron_USE_CUDA}
+        -DCBLAS_INCLUDE_DIR:PATH=${CBLAS_INCLUDE_DIR}
+        -DCBLAS_LIBRARY:FILEPATH=${CBLAS_LIBRARY}
+
 	    INSTALL_DIR ${Gadgetron_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
