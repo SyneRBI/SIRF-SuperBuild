@@ -64,11 +64,13 @@ if (MKL_FOUND)
   endif ()
 endif ()
 
-  if (APPLE)
-    find_package(blas)
-    if (NOT (CBLAS_LIBRARY AND CBLAS_INCLUDE_DIR))
-      message(FATAL_ERROR "Gadgetron needs CBLAS_LIBRARY and CBLAS_INCLUDE_DIR (/usr/local/Cellar/openblas/ if installed with \"brew install openblas\")")
-    endif()
+  # BLAS
+  find_package(blas)
+  if (APPLE AND NOT (CBLAS_LIBRARY AND CBLAS_INCLUDE_DIR))
+    message(FATAL_ERROR "Gadgetron needs CBLAS_LIBRARY and CBLAS_INCLUDE_DIR. If
+      these variables do not exist in your CMake, create them manually. CBLAS_LIBRARY
+      and CBLAS_INCLUDE_DIR should be FILEPATH and PATH, respectively, and live in
+      /usr/local/Cellar/openblas/ if installed with \"brew install openblas\".")
   endif()
 
   #option(BUILD_GADGETRON_NATIVE_PYTHON_SUPPORT
