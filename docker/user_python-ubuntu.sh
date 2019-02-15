@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -ev
 [ -f .bashrc ] && . .bashrc
 INSTALL_DIR="${1:-/opt/pyvenv}"
 PYTHON="${2:-miniconda}"

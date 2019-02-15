@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -ev
 # SIRF external dependencies
 apt-get update -qq
 apt-get install -yq --no-install-recommends \

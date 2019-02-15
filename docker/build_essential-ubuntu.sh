@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -ev
 # Essential
 apt-get update -qq
 apt-get install -yq curl
