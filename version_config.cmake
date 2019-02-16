@@ -91,7 +91,7 @@ set(DEFAULT_ISMRMRD_TAG v1.4.0)
 
 ## Gadgetron
 set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
-set(DEFAULT_Gadgetron_TAG e03b8a254eb25ff158175ac453500aa8b3c6199c)
+set(DEFAULT_Gadgetron_TAG b6191eaaa72ccca6c6a5fe4c0fa3319694f512ab)
 
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
