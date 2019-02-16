@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -ev
 [ -f .bashrc ] && . .bashrc
 # SIRF
 git clone https://github.com/CCPPETMR/SIRF-SuperBuild --recursive -b master /opt/SIRF-SuperBuild
