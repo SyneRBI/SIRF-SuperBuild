@@ -22,10 +22,19 @@
 #=========================================================================
 
 ## BOOST
-set(Boost_VERSION 1.65.0)
-set(Boost_REQUIRED_VERSION 1.65.0)
-set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/1.65.0/boost_1_65_0.zip)
-set(Boost_MD5 eb1e11262e0cfc6949d054f6d8d25dc6)
+if (APPLE) # really should be checking for CLang
+    # Boost 1.65 contains a bug for recent Clang https://github.com/CCPPETMR/SIRF-SuperBuild/issues/170
+    set(Boost_VERSION 1.68.0)
+    set(Boost_REQUIRED_VERSION 1.66.0)
+    set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_68_0.zip)
+    set(Boost_MD5 f4096c4583947b0eb103c8539f1623a3)
+else()
+     # Use version in Ubuntu 18.04
+     set(Boost_VERSION 1.65.1)
+     set(Boost_REQUIRED_VERSION 1.65.1)
+     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_65_1.zip)
+     set(Boost_MD5 9824a7a3e25c9d4fdf2def07bce8651c)
+endif()
 
 ## Armadillo
 set(Armadillo_URL   https://downloads.sourceforge.net/project/arma/armadillo-7.800.2.tar.xz)
@@ -102,21 +111,6 @@ mark_as_advanced(DEVEL_BUILD)
 
 set(DEFAULT_SIRF_URL https://github.com/CCPPETMR/SIRF )
 if (DEVEL_BUILD)
-
-  # Gadgetron needs 1.65
-  if (APPLE) # really should be checking for CLang
-      # Boost 1.65 contains a bug for recent Clang https://github.com/CCPPETMR/SIRF-SuperBuild/issues/170
-      set(Boost_VERSION 1.68.0)
-      set(Boost_REQUIRED_VERSION 1.66.0)
-      set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_68_0.zip)
-      set(Boost_MD5 f4096c4583947b0eb103c8539f1623a3)
-  else()
-       # Use version in Ubuntu 18.04
-       set(Boost_VERSION 1.65.1)
-       set(Boost_REQUIRED_VERSION 1.65.1)
-       set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_65_1.zip)
-       set(Boost_MD5 9824a7a3e25c9d4fdf2def07bce8651c)
-  endif()
 
   set (DEFAULT_SIRF_TAG origin/master)
   ## STIR
