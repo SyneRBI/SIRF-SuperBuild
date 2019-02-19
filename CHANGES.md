@@ -1,5 +1,11 @@
 # ChangeLog
 
+## v2.0
+- ISMRMRD: v1.4.0
+- Gadgetron: [b6191ea](https://github.com/gadgetron/gadgetron/commit/b6191eaaa72ccca6c6a5fe4c0fa3319694f512ab)
+- Boost: 1.65.1 (linux) 1.68.0 (OSX)
+- GCC: 6 (required for Gadgetron)
+
 ## v1.1.0
 
 - Added PYTHON_DEST_DIR variable, which allows the user to select the install destination of the SIRF python modules. PYTHON_DEST_DIR is a cached variable which can be updated on the GUI. If PYTHON_DEST_DIR is not set, we will install in ${CMAKE_INSTALL_PREFIX}/python. Likewise for MATLAB_DEST_DIR.
