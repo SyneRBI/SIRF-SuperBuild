@@ -33,7 +33,7 @@ matrix:
    python: 3
    # -boost -itk +fftw3 +hdf5 +ace
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
- # linux g{cc,++}-5 py{27,3}
+ # linux g{cc,++}-6 py{27,3}
  - os: linux
    python: 3
    # -boost +fftw3 +hdf5 +ace
@@ -106,8 +106,8 @@ addons:
   packages:
    - git-core
    - build-essential
-   - g++-5
    - g++-6
+   - g++-7
    - libboost-all-dev
    - libhdf5-serial-dev
    - libfftw3-dev
@@ -233,11 +233,11 @@ before_install:
  - $PY_EXE -m pip freeze
  # ccache compiler override
  - ln -s "$(which ccache)" g++
- - ln -s "$(which ccache)" g++-5
  - ln -s "$(which ccache)" g++-6
+ - ln -s "$(which ccache)" g++-7
  - ln -s "$(which ccache)" gcc
- - ln -s "$(which ccache)" gcc-5
  - ln -s "$(which ccache)" gcc-6
+ - ln -s "$(which ccache)" gcc-7
  - export PATH="$PWD:$PATH"
  - popd
  # N.B.: don't put into build matrix to allow caching.
