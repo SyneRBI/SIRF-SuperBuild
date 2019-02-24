@@ -292,7 +292,7 @@ script:
       ./INSTALL/bin/gadgetron >& gadgetron.log&
       # print for debugging
       cat builds/SIRF/build/CMakeCache.txt
-      ctest -VV; test_fail=$?
+      ctest --output-on-failure; test_fail=$?
       # print for debugging
       cat builds/SIRF/build/Testing/Temporary/LastTest.log
       # may exceed 4MB travis log limit
