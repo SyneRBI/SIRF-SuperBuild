@@ -21,18 +21,6 @@ language: cpp
 #       i.e. -boost == -DUSE_SYSTEM_Boost=OFF, which means that Boost will be built.
 matrix:
  include:
- - os: linux
-   python: 3
-   # -boost -itk +fftw3 +hdf5 +ace +niftyreg
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DUSE_NiftyReg=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
- - os: linux
-   python: 2.7
-   # -boost -itk +fftw3 +hdf5 +ace +niftyreg
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DUSE_NiftyReg=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
- - os: linux
-   python: 3
-   # -boost -itk +fftw3 +hdf5 +ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_ITK=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
  # linux g{cc,++}-6 py{27,3}
  - os: linux
    python: 3
