@@ -29,5 +29,5 @@ services:
    context: .
    target: core
    cache_from:
-    - ubuntu:16.04
+    - ubuntu:18.04
     - ccppetmr/sirf:core
