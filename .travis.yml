@@ -65,12 +65,12 @@ matrix:
    # +boost +itk -hdf5 +swig
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
  # docker
- #- os: linux
- #  # +armadillo +boost +fftw3 +hdf5 +siemens_to_ismrmrd +swig
- #  env: DOCKER_BUILD=1
- #- os: linux
- #  # +DEVEL +armadillo +boost +fftw3 +hdf5 +siemens_to_ismrmrd +swig
- #  env: DOCKER_BUILD=DEVEL
+ - os: linux
+   # +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
+   env: DOCKER_BUILD=1
+ - os: linux
+   # +DEVEL +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
+   env: DOCKER_BUILD=DEVEL
 
 env:
  global:
@@ -231,7 +231,7 @@ before_install:
  # N.B.: don't put into build matrix to allow caching.
  - BUILD_FLAGS="$BUILD_FLAGS -DPYVER=$PYMVER"
  - cmake --version
- 
+
 install:
  - |
     if [[ -n "$DOCKER_BUILD" ]]; then
@@ -268,7 +268,7 @@ install:
         $PY_EXE -m pip install --user --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
         cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
         # Job may timeout (>50min) if no ccache, otherwise should be <1min:
-        make 
+        make
         mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
       ) || travis_terminate 1
       source $PWD/INSTALL/bin/env_ccppetmr.sh

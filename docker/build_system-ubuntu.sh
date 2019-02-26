@@ -15,3 +15,13 @@ apt-get install -yq --no-install-recommends \
   libxslt-dev          \
   swig
 apt-get clean
+
+# Not required (yet) by SIRF
+# libxml2-dev
+# libxslt-dev
+# python-h5py
+# python-libxml2
+# python-psutil
+# libplplot-dev
+# libopenblas-dev
+# libatlas-base-dev
