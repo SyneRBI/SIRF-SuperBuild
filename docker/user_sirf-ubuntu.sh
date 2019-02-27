@@ -4,6 +4,7 @@ set -ev
 # SIRF
 git clone https://github.com/CCPPETMR/SIRF-SuperBuild --recursive -b master /opt/SIRF-SuperBuild
 pushd /opt/SIRF-SuperBuild
+echo $BUILD_FLAGS $EXTRA_BUILD_FLAGS
 cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
 make -j 2
 
