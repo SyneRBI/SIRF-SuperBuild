@@ -58,17 +58,15 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
     STAMP_DIR ${${proj}_STAMP_DIR}
     TMP_DIR ${${proj}_TMP_DIR}
-
     CMAKE_ARGS
-        -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
-        -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
-        -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}
-        -DCMAKE_INSTALL_PREFIX=${${proj}_Install_Dir}
-        -DUSE_THROW_EXCEP=ON
-	    INSTALL_DIR ${${proj}_Install_Dir}
-    DEPENDS
-        ${${proj}_DEPENDENCIES}
-  )
+      -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
+      -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
+      -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}
+      -DCMAKE_INSTALL_PREFIX=${${proj}_Install_Dir}
+      -DUSE_THROW_EXCEP=ON
+      -DUSE_OPENMP:BOOL=OFF
+    INSTALL_DIR ${${proj}_Install_Dir}
+    DEPENDS ${${proj}_DEPENDENCIES})
 
     set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
     set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
