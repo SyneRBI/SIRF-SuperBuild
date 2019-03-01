@@ -18,9 +18,12 @@ services:
     - ccppetmr/sirf:latest
   stdin_open: true
   tty: true
-  cap_add:
-   - NET_ADMIN
-  network_mode: "bridge"
+  # cap_add:
+  #  - NET_ADMIN
+  #TODO: uncomment for external gadgetron
+  # network_mode: "host"  # host only works on linux: https://docs.docker.com/network/host/
+  # depends_on:
+  #  - gadgetron
   volumes:
    - ./devel:/devel
  core:
@@ -34,9 +37,15 @@ services:
  gadgetron:
   container_name: gadgetron
   image: gadgetron/ubuntu_1804_no_cuda:latest
+  restart: unless-stopped
   environment:
-   GADGETRON_RELAY_HOST: sirf
+   GADGETRON_RELAY_HOST: 0.0.0.0
   ports:
-   - "9002:9002"  # supervisord web interface
+   - "9002:9002"  # gadgetron
    - "9080:9080"  # ReST API
    - "8002:8002"  # CloudBus relay
+   - "9888:8888"  # ? https://github.com/gadgetron/gadgetron/wiki/How-to-set-up-Gadgetron-cloud-in-the-LAN-environment
+   - "18002:18002"  # ReST API
+   - "9001:9001"  # supervisord web interface
+  volumes:
+   - ./devel/gadgetron_data:/tmp/gadgetron_data
