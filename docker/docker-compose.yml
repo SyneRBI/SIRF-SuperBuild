@@ -31,3 +31,12 @@ services:
    cache_from:
     - ubuntu:18.04
     - ccppetmr/sirf:core
+ gadgetron:
+  container_name: gadgetron
+  image: gadgetron/ubuntu_1804_no_cuda:latest
+  environment:
+   GADGETRON_RELAY_HOST: sirf
+  ports:
+   - "9002:9002"  # supervisord web interface
+   - "9080:9080"  # ReST API
+   - "8002:8002"  # CloudBus relay
