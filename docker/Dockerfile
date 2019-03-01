@@ -76,7 +76,6 @@ COPY user_sirf-ubuntu.sh .
 COPY devel/.ccache/ /opt/ccache/
 RUN ccache -o cache_dir=/opt/ccache
 ARG BUILD_FLAGS="\
- -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache\
  -DCMAKE_BUILD_TYPE=Release\
  -DBUILD_STIR_WITH_OPENMP=ON -DUSE_SYSTEM_ACE=ON\
  -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON\
