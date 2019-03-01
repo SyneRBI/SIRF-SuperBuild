@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -ev
+INSTALL_DIR="${1:-/opt}"
 # Essential
 apt-get update -qq
 apt-get install -yq curl
@@ -14,7 +15,7 @@ apt-get install -yq --no-install-recommends \
   sudo
 apt-get clean
 
-pushd /opt
+pushd $INSTALL_DIR
 
 # CMake
 curl -o cmake.tgz -L https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.tar.gz

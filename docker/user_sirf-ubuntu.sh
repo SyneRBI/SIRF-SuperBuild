@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 [ -f .bashrc ] && . .bashrc
 set -ev
+INSTALL_DIR="${1:-/opt}"
 # SIRF
-git clone https://github.com/CCPPETMR/SIRF-SuperBuild --recursive -b docker /opt/SIRF-SuperBuild
-pushd /opt/SIRF-SuperBuild
+git clone https://github.com/CCPPETMR/SIRF-SuperBuild --recursive -b docker $INSTALL_DIR/SIRF-SuperBuild
+pushd $INSTALL_DIR/SIRF-SuperBuild
 
 echo $BUILD_FLAGS $EXTRA_BUILD_FLAGS
 cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
