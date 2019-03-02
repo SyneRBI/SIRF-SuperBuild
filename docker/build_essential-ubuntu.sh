@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -ev
+INSTALL_DIR="${1:-/opt}"
 # Essential
 apt-get update -qq
 apt-get install -yq curl
@@ -14,9 +15,25 @@ apt-get install -yq --no-install-recommends \
   sudo
 apt-get clean
 
+pushd $INSTALL_DIR
+
 # CMake
-mkdir /opt/cmake
-curl https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.sh > cmake.sh
-echo y | bash cmake.sh --prefix=/opt/cmake --exclude-subdir
-export PATH="/opt/cmake/bin:$PATH"
-rm cmake.sh
+curl -o cmake.tgz -L https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.tar.gz
+tar xzf cmake.tgz && rm cmake.tgz
+ln -s cmake-*x86_64 cmake
+export PATH="$PWD/cmake/bin:$PATH"
+
+# ccache
+mkdir -p bin
+pushd bin
+# ccache compiler override
+ln -s "$(which ccache)" g++
+ln -s "$(which ccache)" g++-6
+ln -s "$(which ccache)" g++-7
+ln -s "$(which ccache)" gcc
+ln -s "$(which ccache)" gcc-6
+ln -s "$(which ccache)" gcc-7
+export PATH="$PWD:$PATH"
+popd
+
+popd
