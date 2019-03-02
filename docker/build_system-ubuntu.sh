@@ -7,4 +7,9 @@ apt-get install -yq --no-install-recommends \
   libfftw3-dev         \
   libhdf5-serial-dev   \
   swig
+
+# siemens_to_ismrmrd external dependencies
+apt-get install -yq --no-install-recommends \
+  libxml2-dev          \
+  libxslt-dev
 apt-get clean
