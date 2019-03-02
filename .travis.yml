@@ -251,7 +251,7 @@ install:
         else
           mv ~/.ccache devel/
         fi
-        $DCC build --pull core
+        $DCC build --pull core gadgetron
         # don't count the extra clone we're about to do
         # TODO: Do we need this? Is docker a distinct cloner from travis?
         # cloners_count_decrement
@@ -278,6 +278,7 @@ script:
     if [[ -n "$DOCKER_BUILD" ]]; then
       # push images - but only after tests pass within the container!
       echo "$DOCKER_PWD" | docker login -u $DOCKER_USR --password-stdin
+      $DCC up -d gadgetron
       $DCC run --rm sirf /bin/bash --login -c '/devel/test.sh 1' \
         && $DCC push \
         && if [[ -n "$TRAVIS_TAG" && "$DOCKER_BUILD" != DEVEL ]]; then ( set -ev
@@ -286,7 +287,14 @@ script:
              docker tag ccppetmr/sirf:latest ccppetmr/sirf:release
              docker push ccppetmr/sirf:"$TRAVIS_TAG"
              docker push ccppetmr/sirf:release
-           ); fi
+           ); fi \
+        && (
+          # print for debugging
+          echo "----------- Last 70 lines of gadgetron.log"
+          wget -t1 --timeout 5 http://localhost:9001/logtail/gadgetron -O - 2>/dev/null | tail -n 70
+          # the above is expected to exit non-zero after timeout
+          $DCC stop
+        )
     else
       ./INSTALL/bin/gadgetron >& gadgetron.log&
       # print for debugging

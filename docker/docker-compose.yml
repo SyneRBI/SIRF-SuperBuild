@@ -20,10 +20,9 @@ services:
   tty: true
   # cap_add:
   #  - NET_ADMIN
-  #TODO: uncomment for external gadgetron
-  # network_mode: "host"  # host only works on linux: https://docs.docker.com/network/host/
-  # depends_on:
-  #  - gadgetron
+  network_mode: "host"  # host only works on linux: https://docs.docker.com/network/host/
+  depends_on:
+   - gadgetron
   volumes:
    - ./devel:/devel
  core:

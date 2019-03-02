@@ -30,11 +30,6 @@ COPY build_python-ubuntu.sh .
 RUN bash build_python-ubuntu.sh
 RUN rm build_python-ubuntu.sh
 
-# Gadgetron
-COPY build_gadgetron-ubuntu.sh .
-RUN bash build_gadgetron-ubuntu.sh
-RUN rm build_gadgetron-ubuntu.sh
-
 # SIRF external deps
 COPY build_system-ubuntu.sh .
 RUN bash build_system-ubuntu.sh
@@ -77,6 +72,7 @@ COPY devel/.ccache/ /opt/ccache/
 RUN ccache -o cache_dir=/opt/ccache
 ARG BUILD_FLAGS="\
  -DCMAKE_BUILD_TYPE=Release\
+ -DBUILD_GADGETRON=OFF\
  -DBUILD_STIR_WITH_OPENMP=ON -DUSE_SYSTEM_ACE=ON\
  -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON\
  -DUSE_SYSTEM_HDF5=ON -DUSE_ITK=ON -DBUILD_siemens_to_ismrmrd=ON\
