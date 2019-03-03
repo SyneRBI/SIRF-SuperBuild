@@ -3,7 +3,8 @@
 
 # ccache
 [ -d /usr/lib/ccache ] && export PATH=/usr/lib/ccache:"$PATH"
-[ -d /devel/.ccache ] && ccache -o cache_dir=/devel/.ccache
+[ -d /opt/ccache ] && ccache -o cache_dir=/opt/ccache
+#[ -d /devel/.ccache ] && ccache -o cache_dir=/devel/.ccache
 
 # completion
 [ -f /etc/bash_completion ] && . /etc/bash_completion
