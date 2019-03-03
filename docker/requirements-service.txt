@@ -2,3 +2,4 @@ jupyterlab
 jupyter
 ipywidgets
 widgetsnbextension
+nodejs
