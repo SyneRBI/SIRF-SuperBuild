@@ -21,20 +21,6 @@ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' sir
 ```
 and use the resultant IP instead of `localhost` (e.g.: `172.18.0.2:8888`).
 
-## Usage
-
-- [SIRF docker source]
-    + See also: [SIRF SuperBuild on Docker wiki]
-- [Synergistic Image Reconstruction Framework (SIRF) project][SIRF]
-    + [SIRF wiki]
-- [Collaborative Computational Project in Positron Emission Tomography and Magnetic Resonance imaging (CCP PET-MR)][CCP PET-MR]
-
-[SIRF docker source]: https://github.com/CCPPETMR/SIRF-SuperBuild/tree/master/docker
-[SIRF SuperBuild on Docker wiki]: https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-on-Docker
-[SIRF]: https://github.com/CCPPETMR/SIRF
-[SIRF wiki]: https://github.com/CCPPETMR/SIRF/wiki
-[CCP PET-MR]: https://www.ccppetmr.ac.uk/
-
 ## Tags
 
 The repository is hosted at [hub.docker.com][dockerhub-SIRF].
@@ -72,3 +58,17 @@ Service images are intended to be run in the background, and expose:
     + on Windows: `docker-compose`
 
 Run any of the above commands without arguments for help.
+
+### Links
+
+- [SIRF docker source]
+    + See also: [SIRF SuperBuild on Docker wiki]
+- [Synergistic Image Reconstruction Framework (SIRF) project][SIRF]
+    + [SIRF wiki]
+- [Collaborative Computational Project in Positron Emission Tomography and Magnetic Resonance imaging (CCP PET-MR)][CCP PET-MR]
+
+[SIRF docker source]: https://github.com/CCPPETMR/SIRF-SuperBuild/tree/master/docker
+[SIRF SuperBuild on Docker wiki]: https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-on-Docker
+[SIRF]: https://github.com/CCPPETMR/SIRF
+[SIRF wiki]: https://github.com/CCPPETMR/SIRF/wiki
+[CCP PET-MR]: https://www.ccppetmr.ac.uk/
