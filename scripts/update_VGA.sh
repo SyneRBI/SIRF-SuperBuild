@@ -88,13 +88,5 @@ if [ -r /media/VGAiso/VBoxLinuxAdditions.run ]; then
   #echo "You could delete /tmp/VBoxGuestAdditions_${vboxver}.iso"
 fi
 
-# clean up
-if [ -r /media/cdrom/VBoxLinuxAdditions.run ]; then
-  umount /media/cdrom
-  # don't delete the iso in case we need to re-run
-  echo ""
-  #echo "You could delete /tmp/VBoxGuestAdditions_${vboxver}.iso"
-fi
-
 echo "Hopefully this all worked."
 echo "Best to reboot the VM now."
