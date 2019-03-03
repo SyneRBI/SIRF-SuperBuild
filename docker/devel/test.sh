@@ -18,6 +18,13 @@ pushd $SIRF_PATH/../..
 GCONFIG=./INSTALL/share/gadgetron/config/gadgetron.xml
 [ -f "$GCONFIG" ] || cp "$GCONFIG".example "$GCONFIG"
 [ -f ./INSTALL/bin/gadgetron ] && ./INSTALL/bin/gadgetron >& gadgetron.log&
+#sudo sysctl net.ipv4.ip_forward=1
+#sudo apt install -yqq iptables
+#sudo iptables -t nat -A PREROUTING -p tcp --dport 9002 -j DNAT --to-destination 172.18.0.2:9002
+#sudo iptables -t nat -A POSTROUTING -j MASQUERADE
+pushd $SIRF_PATH/src/xGadgetron/pGadgetron/tests
+python test_all.py
+popd
 
 ctest -VV
 ret=$?
