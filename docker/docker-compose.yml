@@ -11,8 +11,6 @@ services:
   build:
    context: .
    target: sirf
-   # depends_on:
-   #  - core
    cache_from:
     - ccppetmr/sirf:core
     - ccppetmr/sirf:latest
