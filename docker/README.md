@@ -5,7 +5,7 @@ Docker wrapper for CCP PET-MR SIRF.
 ## TL;DR, I want a (Jupyter notebook) service NOW
 
 1. Install [docker CE][docker-ce] and [`docker-compose`][docker-compose],
-2. Run `./SIRF-service.(sh|bat)` (in this folder)
+2. Run `./sirf-compose-service up -d sirf` (in this folder)
 3. Open a browser at <http://localhost:8888>. It may take a few seconds.
 The password is `virtual`.
 The directory is mounted at `/devel` in the docker container
@@ -60,3 +60,15 @@ Service images are intended to be run in the background, and expose:
 
 [dockerhub-SIRF]: https://hub.docker.com/r/ccppetmr/sirf/
 [SuperBuild]: https://github.com/CCPPETMR/SIRF-SuperBuild/
+
+## More Information
+
+`./sirf-compose*` are simple wrappers around `docker-compose`.
+
+- For a service (Jupyter) container:
+    + `./sirf-compose-service`
+- For a basic interactive container:
+    + on Linux: `./sirf-compose`
+    + on Windows: `docker-compose`
+
+Run any of the above commands without arguments for help.
