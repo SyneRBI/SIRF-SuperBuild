@@ -68,6 +68,10 @@ else
     fi
 fi
 
+if [ -z "$VGArun" ]; then
+    exit 1
+fi
+
 echo ""
 echo "I will now attempt to run $VGArun"
 echo "(even if things above failed)"
