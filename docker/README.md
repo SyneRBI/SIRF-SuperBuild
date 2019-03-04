@@ -59,6 +59,14 @@ Service images are intended to be run in the background, and expose:
 
 Run any of the above commands without arguments for help.
 
+For example, to host multiple servers on one machine, simply:
+```
+grep -n '# .*scaling' docker-compose*.yml  # follow these edit instructions
+./sirf-compose-server up -d --scale sirf=3 sirf  # start 3 servers
+./sirf-compose-server ps  # print out exposed ports
+./sirf-compose-server stop  # stop all servers
+```
+
 ### Links
 
 - [SIRF docker source]

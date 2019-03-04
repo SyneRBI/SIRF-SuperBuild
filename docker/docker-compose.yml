@@ -1,7 +1,7 @@
 version: '3.4'
 services:
  sirf:
-  container_name: sirf
+  container_name: sirf  # for scaling, comment this out https://github.com/docker/compose/issues/3729
   image: ccppetmr/sirf:latest
   environment:
    # mainUser: ${USER:-sirfuser}
