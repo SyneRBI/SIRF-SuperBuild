@@ -235,7 +235,7 @@ install:
  - |
     if [[ -n "$DOCKER_BUILD" ]]; then
       cd docker
-      export DCC="docker-compose -f $PWD/docker-compose.yml"
+      export DCC="docker-compose -p "travis_${TRAVIS_JOB_NUMBER/./_}" -f $PWD/docker-compose.yml"
       [[ "$DOCKER_BUILD" == DEVEL ]] && export DCC="$DCC -f $PWD/docker-compose.devel.yml"
       ( set -ev
         # pull previous base image for its layer cache
