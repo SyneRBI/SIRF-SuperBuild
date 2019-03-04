@@ -23,6 +23,7 @@
 
 ## BOOST
   # Gadgetron needs 1.65
+
 if (APPLE) # really should be checking for CLang
     # Boost 1.65 contains a bug for recent Clang https://github.com/CCPPETMR/SIRF-SuperBuild/issues/170
     set(Boost_VERSION 1.68.0)
@@ -96,6 +97,14 @@ set(ITK_TAG v4.13.1)
 set(NiftyReg_URL https://github.com/KCL-BMEIS/niftyreg.git )
 set(NiftyReg_TAG 731a565bd42ca97ff5968adb1c06133ea72f0856 )
 
+## ISMRMRD
+set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
+set(DEFAULT_ISMRMRD_TAG v1.4.0)
+
+## Gadgetron
+set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
+set(DEFAULT_Gadgetron_TAG b6191eaaa72ccca6c6a5fe4c0fa3319694f512ab)
+
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
 
@@ -111,19 +120,9 @@ if (DEVEL_BUILD)
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
   set(DEFAULT_STIR_TAG origin/master)
 
-  ## Gadgetron
-  set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
-  #set(DEFAULT_Gadgetron_TAG origin/master)
-  set (DEFAULT_Gadgetron_TAG v3.17.0)
-
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd )
   set(DEFAULT_siemens_to_ismrmrd_TAG origin/master)
-
-  ## ISMRMRD
-  set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
-  #set(DEFAULT_ISMRMRD_TAG origin/master)
-  set (DEFAULT_ISMRMRD_TAG v1.4.0)
 
   ## petmr-rd-tools
   set(DEFAULT_petmr_rd_tools_URL https://github.com/UCL/petmr-rd-tools )
@@ -135,13 +134,6 @@ if (DEVEL_BUILD)
  
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
   set(DEFAULT_ACE_TAG origin/master)
-
-  # For OSX, Gadgetron v3.17.0 doesn't work. So even in devel build, use same version 
-  # as for non-devel build
-  if (APPLE)
-    set(DEFAULT_Gadgetron_TAG e7eb430673eb3272e8a821b51750c0a2a96dafed)
-    set(DEFAULT_ISMRMRD_TAG 42d93137cc16c270c8ba065edd2496483161bd21)
-  endif(APPLE)
 
 else()
   set(DEFAULT_SIRF_TAG v1.1.1)
