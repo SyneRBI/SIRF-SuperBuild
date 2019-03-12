@@ -19,8 +19,8 @@ sudo apt-get purge cmake -y
 sudo bash scripts/INSTALL_CMake.sh
 
 cd ~/devel/CCPPETMR_VM
-bash scripts/UPDATE.sh -j `nproc` -t SIRFRegfromMaster
-bash scripts/update_VM.sh -j `nproc` -t SIRFRegfromMaster
+bash scripts/UPDATE.sh -j `nproc` 
+bash scripts/update_VM.sh -j `nproc` 
 
 cd ~
 sed -i -- "s/%%TARGETUSER%%/${USER}/g" jupyter.service
