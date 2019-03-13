@@ -283,54 +283,8 @@ install:
 script:
  - |
     if [[ -n "$DOCKER_BUILD" ]]; then
-      # push images - but only after tests pass within the container!
-      echo "$DOCKER_PWD" | docker login -u $DOCKER_USR --password-stdin
-      dpush() {
-        # create and push alias $1 -> $2
-        if [[ "$1" != "$2" ]]; then
-          docker tag ccppetmr/sirf:$1 ccppetmr/sirf:$2
-        fi
-        docker push ccppetmr/sirf:$2
-      }
-      $DCC run --rm sirf /bin/bash --login -c '/devel/test.sh 1' \
-        && $DCC push core \
-        && if [[ -n "$TRAVIS_TAG" ]]; then ( set -ev
-           # tag & push
-           case "$DOCKER_BUILD" in
-           1)
-             dpush latest latest
-             dpush latest "$TRAVIS_TAG"
-             dpush latest release
-             ;;
-           DEVEL)
-             ;;
-           DEVEL_SERVICE)
-             ;;
-           SERVICE)
-             dpush service service
-             dpush service "$TRAVIS_TAG"-service
-             dpush service release-service
-             ;;
-           *)
-             exit 1
-           esac
-        ); elif [[ "$TRAVIS_BRANCH" == master ]]; then ( set -ev
-           # tag & push
-           case "$DOCKER_BUILD" in
-           1)
-             ;;
-           DEVEL)
-             dpush devel devel
-             ;;
-           DEVEL_SERVICE)
-             dpush service devel-service
-             ;;
-           SERVICE)
-             ;;
-           *)
-             exit 1
-           esac
-        ); fi
+      # run tests within the container
+      $DCC run --rm sirf /bin/bash --login -c '/devel/test.sh 1'
     else
       ./INSTALL/bin/gadgetron >& gadgetron.log&
       # print for debugging
@@ -346,6 +300,58 @@ script:
         travis_terminate $test_fail
       fi
     fi
+
+after_success:
+- |
+   # push images
+   if [[ -n "$DOCKER_BUILD" ]]; then ( set -ev
+    echo "$DOCKER_PWD" | docker login -u $DOCKER_USR --password-stdin
+    dpush() {
+      # create and push alias $1 -> $2
+      if [[ "$1" != "$2" ]]; then
+        docker tag ccppetmr/sirf:$1 ccppetmr/sirf:$2
+      fi
+      docker push ccppetmr/sirf:$2
+    }
+    $DCC push core
+    if [[ -n "$TRAVIS_TAG" ]]; then ( set -ev
+     # tag & push
+     case "$DOCKER_BUILD" in
+     1)
+       dpush latest latest
+       dpush latest "$TRAVIS_TAG"
+       dpush latest release
+       ;;
+     DEVEL)
+       ;;
+     DEVEL_SERVICE)
+       ;;
+     SERVICE)
+       dpush service service
+       dpush service "$TRAVIS_TAG"-service
+       dpush service release-service
+       ;;
+     *)
+       exit 1
+     esac
+    ); elif [[ "$TRAVIS_BRANCH" == master ]]; then ( set -ev
+     # tag & push
+     case "$DOCKER_BUILD" in
+     1)
+       ;;
+     DEVEL)
+       dpush devel devel
+       ;;
+     DEVEL_SERVICE)
+       dpush service devel-service
+       ;;
+     SERVICE)
+       ;;
+     *)
+       exit 1
+     esac
+    ); fi
+   ); fi
 
 # post to slack.com
 notifications:
