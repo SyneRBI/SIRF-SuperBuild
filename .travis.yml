@@ -69,8 +69,14 @@ matrix:
    # +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
    env: DOCKER_BUILD=1
  - os: linux
+   # +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
+   env: DOCKER_BUILD=SERVICE
+ - os: linux
    # +DEVEL +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
    env: DOCKER_BUILD=DEVEL
+ - os: linux
+   # +DEVEL +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
+   env: DOCKER_BUILD=DEVEL_SERVICE
 
 env:
  global:
@@ -236,7 +242,8 @@ install:
     if [[ -n "$DOCKER_BUILD" ]]; then
       cd docker
       export DCC="docker-compose -p "travis_${TRAVIS_JOB_NUMBER/./_}" -f $PWD/docker-compose.yml"
-      [[ "$DOCKER_BUILD" == DEVEL ]] && export DCC="$DCC -f $PWD/docker-compose.devel.yml"
+      [[ "$DOCKER_BUILD" == *"DEVEL"* ]] && export DCC="$DCC -f $PWD/docker-compose.devel.yml"
+      [[ "$DOCKER_BUILD" == *"SERVICE"* ]] && export DCC="$DCC -f $PWD/docker-compose.srv.yml"
       ( set -ev
         # pull previous base image for its layer cache
         docker pull ccppetmr/sirf:core
@@ -278,15 +285,52 @@ script:
     if [[ -n "$DOCKER_BUILD" ]]; then
       # push images - but only after tests pass within the container!
       echo "$DOCKER_PWD" | docker login -u $DOCKER_USR --password-stdin
+      dpush() {
+        # create and push alias $1 -> $2
+        if [[ "$1" != "$2" ]]; then
+          docker tag ccppetmr/sirf:$1 ccppetmr/sirf:$2
+        fi
+        docker push ccppetmr/sirf:$2
+      }
       $DCC run --rm sirf /bin/bash --login -c '/devel/test.sh 1' \
-        && $DCC push \
-        && if [[ -n "$TRAVIS_TAG" && "$DOCKER_BUILD" != DEVEL ]]; then ( set -ev
-             # tag release
-             docker tag ccppetmr/sirf:latest ccppetmr/sirf:"$TRAVIS_TAG"
-             docker tag ccppetmr/sirf:latest ccppetmr/sirf:release
-             docker push ccppetmr/sirf:"$TRAVIS_TAG"
-             docker push ccppetmr/sirf:release
-           ); fi
+        && $DCC push core \
+        && if [[ -n "$TRAVIS_TAG" ]]; then ( set -ev
+           # tag & push
+           case "$DOCKER_BUILD" in
+           1)
+             dpush latest latest
+             dpush latest "$TRAVIS_TAG"
+             dpush latest release
+             ;;
+           DEVEL)
+             ;;
+           DEVEL_SERVICE)
+             ;;
+           SERVICE)
+             dpush service service
+             dpush service "$TRAVIS_TAG"-service
+             dpush service release-service
+             ;;
+           *)
+             exit 1
+           esac
+        ); elif [[ "$TRAVIS_BRANCH" == master ]]; then ( set -ev
+           # tag & push
+           case "$DOCKER_BUILD" in
+           1)
+             ;;
+           DEVEL)
+             dpush devel devel
+             ;;
+           DEVEL_SERVICE)
+             dpush service devel-service
+             ;;
+           SERVICE)
+             ;;
+           *)
+             exit 1
+           esac
+        ); fi
     else
       ./INSTALL/bin/gadgetron >& gadgetron.log&
       # print for debugging
