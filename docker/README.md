@@ -9,10 +9,12 @@ Docker wrapper for CCP PET-MR SIRF.
 3. Open a browser at <http://localhost:9999>. It may take a few seconds.
 The password is `virtual`.
 The directory is mounted at `/devel` in the docker container
-from `./devel` (in this folder) on the host
+from `./devel` (in this folder) on the host. The container will copy
+[SIRF-Exercises] into this folder if not present.
 
 [docker-ce]: https://docs.docker.com/install/
 [docker-compose]: https://github.com/docker/compose/releases
+[SIRF-Exercises]: https://github.com/CCPPETMR/SIRF-Exercises
 
 Note: If on Windows, `localhost` probably won't work.
 Find out the service IP address using:
@@ -35,7 +37,7 @@ docker pull ccppetmr/sirf:<DOCKER_TAG>
 | `release` | `release-service` | `<latest_tag>` |
 | `<tag>` | `<tag>-service` | `<tag>` |
 | `latest` | `service` | `master` |
-| `devel` | | `master` with `cmake -DDEVEL_BUILD=ON` |
+| `devel` | `devel-service` | `master` with `cmake -DDEVEL_BUILD=ON` |
 
 Service images are intended to be run in the background, and expose:
 
