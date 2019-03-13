@@ -42,6 +42,7 @@ if [ ! -f ~/.jupyter/jupyter_notebook_config.py ]; then
   >> ~/.jupyter/jupyter_notebook_config.py
 fi
 pushd /devel
+[ -d SIRF-Exercises ] || cp -a $SIRF_PATH/../../../SIRF-Exercises .
 jupyter notebook --ip 0.0.0.0 --port $JUPYTER_PORT --no-browser &
 popd
 

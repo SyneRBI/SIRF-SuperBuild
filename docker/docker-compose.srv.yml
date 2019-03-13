@@ -13,7 +13,7 @@ services:
     - ccppetmr/sirf:service
   ports:
    - "9002:9002"  # gadgetron
-   - "8888:8888"  # jupyter
+   - "9999:8888"  # jupyter
    # for scaling, use this instead for random port assignment
    # (https://github.com/docker/compose/issues/2260):
    #- "9002"

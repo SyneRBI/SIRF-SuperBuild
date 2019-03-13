@@ -6,7 +6,7 @@ Docker wrapper for CCP PET-MR SIRF.
 
 1. Install [docker CE][docker-ce] and [`docker-compose`][docker-compose],
 2. Run `./sirf-compose-service up -d sirf` (in this folder)
-3. Open a browser at <http://localhost:8888>. It may take a few seconds.
+3. Open a browser at <http://localhost:9999>. It may take a few seconds.
 The password is `virtual`.
 The directory is mounted at `/devel` in the docker container
 from `./devel` (in this folder) on the host
@@ -19,7 +19,7 @@ Find out the service IP address using:
 ```
 docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' sirf
 ```
-and use the resultant IP instead of `localhost` (e.g.: `172.18.0.2:8888`).
+and use the resultant IP instead of `localhost` (e.g.: `172.18.0.2:9999`).
 
 ## Tags
 
@@ -41,7 +41,7 @@ Service images are intended to be run in the background, and expose:
 
 | Port | Notes |
 | --- | --- |
-| 8888 | `Jupyter` (in folder `/devel`) |
+| 9999 | `Jupyter` (in folder `/devel`) |
 | 9002 | `Gadgetron` |
 
 [dockerhub-SIRF]: https://hub.docker.com/r/ccppetmr/sirf/
