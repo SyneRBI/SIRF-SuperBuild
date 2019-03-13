@@ -304,7 +304,7 @@ script:
 after_success:
 - |
    # push images
-   if [[ -n "$DOCKER_BUILD" ]]; then ( set -ev
+   if [[ -n "$DOCKER_BUILD" && "$TRAVIS_SECURE_ENV_VARS" == true ]]; then ( set -ev
     echo "$DOCKER_PWD" | docker login -u $DOCKER_USR --password-stdin
     dpush() {
       # create and push alias $1 -> $2
