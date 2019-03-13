@@ -11,7 +11,6 @@
 [ -f .bashrc ] && . .bashrc
 DEBUG="${1:-0}"
 JUPYTER_PORT="${2:-8888}"
-this=$(dirname "${BASH_SOURCE[0]}")
 
 stop_service()
 {
