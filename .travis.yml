@@ -313,7 +313,6 @@ after_success:
       fi
       docker push ccppetmr/sirf:$2
     }
-    $DCC push core
     if [[ -n "$TRAVIS_TAG" ]]; then ( set -ev
      # tag & push
      case "$DOCKER_BUILD" in
@@ -338,6 +337,7 @@ after_success:
      # tag & push
      case "$DOCKER_BUILD" in
      1)
+       dpush core core
        ;;
      DEVEL)
        dpush devel devel
