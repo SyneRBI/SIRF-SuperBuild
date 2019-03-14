@@ -2,11 +2,11 @@
 
 Docker wrapper for CCP PET-MR SIRF.
 
-- [SIRF docker source]: https://github.com/CCPPETMR/SIRF-SuperBuild/tree/master/docker
-    + See also: [SIRF SuperBuild on Docker wiki]: https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-on-Docker
-- [Synergistic Image Reconstruction Framework (SIRF) project][SIRF]: https://github.com/CCPPETMR/SIRF
-    + [SIRF wiki]: https://github.com/CCPPETMR/SIRF/wiki
-- [Collaborative Computational Project in Positron Emission Tomography and Magnetic Resonance imaging (CCP PET-MR)][CCP PET-MR]: https://www.ccppetmr.ac.uk/
+- [SIRF docker source]
+    + See also: [SIRF SuperBuild on Docker wiki]
+- [Synergistic Image Reconstruction Framework (SIRF) project][SIRF]
+    + [SIRF wiki]
+- [Collaborative Computational Project in Positron Emission Tomography and Magnetic Resonance imaging (CCP PET-MR)][CCP PET-MR]
 
 [SIRF docker source]: https://github.com/CCPPETMR/SIRF-SuperBuild/tree/master/docker
 [SIRF SuperBuild on Docker wiki]: https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-on-Docker

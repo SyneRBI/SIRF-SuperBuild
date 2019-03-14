@@ -64,6 +64,15 @@ if (MKL_FOUND)
   endif ()
 endif ()
 
+  # BLAS
+  find_package(blas)
+  if (APPLE AND NOT (CBLAS_LIBRARY AND CBLAS_INCLUDE_DIR))
+    message(FATAL_ERROR "Gadgetron needs CBLAS_LIBRARY and CBLAS_INCLUDE_DIR. If
+      these variables do not exist in your CMake, create them manually. CBLAS_LIBRARY
+      and CBLAS_INCLUDE_DIR should be FILEPATH and PATH, respectively, and live in
+      /usr/local/Cellar/openblas/ if installed with \"brew install openblas\".")
+  endif()
+
   #option(BUILD_GADGETRON_NATIVE_PYTHON_SUPPORT
   #  "Build Gadgetron Python gadgets (not required for SIRF)" OFF)
   set(BUILD_GADGETRON_NATIVE_PYTHON_SUPPORT OFF) # <-Disabled for v1.0
@@ -102,6 +111,9 @@ endif ()
         -DISMRMRD_DIR=${ISMRMRD_DIR}
         -DMKLROOT_PATH=${MKLROOT_PATH}
         -DUSE_CUDA=${Gadgetron_USE_CUDA}
+        -DCBLAS_INCLUDE_DIR:PATH=${CBLAS_INCLUDE_DIR}
+        -DCBLAS_LIBRARY:FILEPATH=${CBLAS_LIBRARY}
+
 	    INSTALL_DIR ${Gadgetron_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
