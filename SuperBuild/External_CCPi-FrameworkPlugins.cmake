@@ -1,6 +1,5 @@
 #========================================================================
 # Author: Edoardo Pasca
-# Copyright 2018 University College London
 # Copyright 2018 STFC
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.

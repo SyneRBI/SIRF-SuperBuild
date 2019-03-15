@@ -1,6 +1,5 @@
 #========================================================================
 # Author: Edoardo Pasca
-# Copyright 2017-2018 University College London
 # Copyright 2017-2018 STFC
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
@@ -99,7 +98,7 @@ message(STATUS "2 CIL_VERSION env " $ENV{CIL_VERSION})
         -DBUILD_CUDA=OFF -DCONDA_BUILD=OFF
         -DPYTHON_DEST=${PYTHON_DEST_DIR}
     BUILD_COMMAND make    
-    INSTALL_COMMAND ""
+    INSTALL_COMMAND make install
 
 #    CMAKE_ARGS
 #        -DCMAKE_INSTALL_PREFIX=${libcilreg_Install_Dir}
