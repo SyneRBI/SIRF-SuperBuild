@@ -49,21 +49,24 @@ can of course decide to put it elsewhere. Let's create it first.
 mkdir ~/devel
 ```
 
-### Install CMake >= 3.7  <a name="Install_CMake"></a>
+### Install CMake >= 3.10  <a name="Install_CMake"></a>
 
-If you do not have CMake >= 3.7 install it first ([download link](https://cmake.org/download/)). On Ubuntu Linux,
+If you do not have CMake >= 3.10 install it first ([download link](https://cmake.org/download/)). On Ubuntu Linux,
 you can issue the following commands
 
 ```bash
-wget https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.sh
+ver=3.10.3
 sudo mkdir /opt/cmake
-sudo bash cmake-3.7.2-Linux-x86_64.sh --prefix=/opt/cmake
+cd /opt/cmake
+wget -c https://github.com/Kitware/CMake/releases/download/v${ver}/cmake-${ver}-Linux-x86_64.tar.gz
+tar xzf /tmp/cmake-${ver}-Linux-x86_64.tar.gz --strip 1
+rm /tmp/cmake-${ver}-Linux-x86_64.tar.gz
 export PATH=/opt/cmake/bin:$PATH
 ```
 During installation you will be asked to read and accept CMake's license. If you answered the last question during the CMake installation with yes, then you should use
 
 ```
-export PATH=/opt/cmake/cmake-3.7.2-Linux-x86_64/bin:$PATH
+export PATH=/opt/cmake/cmake-${ver}-Linux-x86_64/bin:$PATH
 ```
 Note that the above `PATH` statements won't work if you are running csh. The equivalent would be for instance
 ```csh
