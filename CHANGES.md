@@ -5,6 +5,7 @@
 - Gadgetron: [b6191ea](https://github.com/gadgetron/gadgetron/commit/b6191eaaa72ccca6c6a5fe4c0fa3319694f512ab)
 - Boost: 1.65.1 (linux) 1.68.0 (OSX)
 - GCC: 6 (required for Gadgetron)
+- CMake: 3.10.3
 
 ## v1.1.0
 
