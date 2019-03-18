@@ -1,7 +1,7 @@
 version: '3.4'
 services:
  sirf:
-  container_name: sirf
+  container_name: sirf  # for scaling, comment this out https://github.com/docker/compose/issues/3729
   image: ccppetmr/sirf:latest
   environment:
    # mainUser: ${USER:-sirfuser}
@@ -11,8 +11,6 @@ services:
   build:
    context: .
    target: sirf
-   # depends_on:
-   #  - core
    cache_from:
     - ccppetmr/sirf:core
     - ccppetmr/sirf:latest
@@ -37,6 +35,9 @@ services:
  gadgetron:
   container_name: gadgetron
   image: gadgetron/ubuntu_1804_no_cuda:latest
+  # For GPU, use this instead:
+  #image: gadgetron/ubuntu_1804_cuda90_cudnn7:latest
+  #runtime: nvidia
   restart: unless-stopped
   environment:
    GADGETRON_RELAY_HOST: 0.0.0.0
