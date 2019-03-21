@@ -166,7 +166,7 @@ before_install:
      fi
      BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_EXECUTABLE=$PY_EXE"
      ( set -ev
-       # Brew's current boost version (1.69) so dont do reinstall (and hopefully use 1.67)
+       # Brew's current boost version (1.69) doesnt work so dont do reinstall (and hopefully use 1.67)
        # brew reinstall boost
        # we currently need boost-python
        # brew install boost-python
