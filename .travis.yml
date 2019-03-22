@@ -166,7 +166,7 @@ before_install:
      fi
      BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_EXECUTABLE=$PY_EXE"
      ( set -ev
-       # homebrew boost is currently 1.69, which causes problems. build our own.
+       # homebrew boost is currently 1.69, which causes problems. so build our own.
        original_dir=$(pwd)
        wget wget http://downloads.sourceforge.net/project/boost/boost/1.68.0/boost_1_68_0.zip
        echo "unzipping boost"
