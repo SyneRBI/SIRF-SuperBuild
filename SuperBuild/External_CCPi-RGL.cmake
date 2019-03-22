@@ -51,10 +51,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
-  set(ENV{CIL_VERSION} 19.02)
-  message(STATUS "1 CIL_VERSION env " $ENV{CIL_VERSION})
-  #set(CCPi-RGL_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
-  #set(CCPi-RGL_TAG origin/windows_fix)
   message("CIL URL " ${${proj}_URL}  ) 
   message("CIL TAG " ${${proj}_TAG}  ) 
 
@@ -79,7 +75,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       CONDA:      do nothing")
     set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
 
-message(STATUS "2 CIL_VERSION env " $ENV{CIL_VERSION})
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
@@ -93,7 +88,7 @@ message(STATUS "2 CIL_VERSION env " $ENV{CIL_VERSION})
     INSTALL_DIR ${libcilreg_Install_Dir}
    # apparently this is the only way to pass environment variables to 
    # external projects 
-    CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=$ENV{CIL_VERSION}         cmake ${${proj}_SOURCE_DIR}  -DCMAKE_INSTALL_PREFIX=${libcilreg_Install_Dir}
+    CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${CIL_VERSION}         cmake ${${proj}_SOURCE_DIR}  -DCMAKE_INSTALL_PREFIX=${libcilreg_Install_Dir}
         -DBUILD_PYTHON_WRAPPERS=ON -DCMAKE_BUILD_TYPE=Release 
         -DBUILD_CUDA=OFF -DCONDA_BUILD=OFF
         -DPYTHON_DEST=${PYTHON_DEST_DIR}
@@ -126,7 +121,7 @@ message(STATUS "2 CIL_VERSION env " $ENV{CIL_VERSION})
     
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
-    INSTALL_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=$ENV{CIL_VERSION} SRC_DIR=${${proj}_BINARY_DIR} RECIPE_DIR=${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe PYTHON=${PYTHON_EXECUTABLE} bash ${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe/build.sh
+    INSTALL_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${CIL_VERSION} SRC_DIR=${${proj}_BINARY_DIR} RECIPE_DIR=${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe PYTHON=${PYTHON_EXECUTABLE} bash ${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe/build.sh
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX=${libcilreg_Install_Dir}
     DEPENDS
