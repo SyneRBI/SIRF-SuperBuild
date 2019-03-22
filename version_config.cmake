@@ -138,11 +138,11 @@ if (DEVEL_BUILD)
   # CCPi CIL
   set(CIL_VERSION "19.02")
   set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
-  set(DEFAULT_CCPi-Framework_TAG d108cd7e9652992001a116347941eda7e75b3301)
+  set(DEFAULT_CCPi-Framework_TAG origin/master)
   set(DEFAULT_CCPi-RGL_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
-  set(DEFAULT_CCPi-RGL_TAG "v${CIL_VERSION}")
+  set(DEFAULT_CCPi-RGL_TAG origin/master)
   set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
-  set(DEFAULT_CCPi-FrameworkPlugins_TAG b19a37714dcf8288a55bcd41a2a78dd6f8164e7f)
+  set(DEFAULT_CCPi-FrameworkPlugins_TAG origin/master)
   # For OSX, Gadgetron v3.17.0 doesn't work. So even in devel build, use same version 
   # as for non-devel build
   if (APPLE)
@@ -185,12 +185,13 @@ else()
   set(DEFAULT_ACE_TAG origin/master)
   
   # CCPi CIL
+  set(CIL_VERSION "19.02")
   set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
-  set(DEFAULT_CCPi-Framework_TAG origin/master )
+  set(DEFAULT_CCPi-Framework_TAG d108cd7e9652992001a116347941eda7e75b3301)
   set(DEFAULT_CCPi-RGL_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
-  set(DEFAULT_CCPi-RGL_TAG origin/master )
+  set(DEFAULT_CCPi-RGL_TAG "v${CIL_VERSION}")
   set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
-  set(DEFAULT_CCPi-FrameworkPlugins_TAG origin/master )
+  set(DEFAULT_CCPi-FrameworkPlugins_TAG b19a37714dcf8288a55bcd41a2a78dd6f8164e7f)
 
 endif()
 
