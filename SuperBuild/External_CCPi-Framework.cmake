@@ -42,11 +42,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ### --- Project specific additions here
   set(libcilreg_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
-  #message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
-  set(ENV{CIL_VERSION} ${CIL_VERSION})
   message("CIL URL " ${${proj}_URL}  ) 
   message("CIL TAG " ${${proj}_TAG}  ) 
 
