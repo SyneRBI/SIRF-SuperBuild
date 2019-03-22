@@ -71,7 +71,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       set(PYTHON_DEST "${CMAKE_INSTALL_PREFIX}/python")
     endif()
     message(STATUS "Python libraries found")
-    message(STATUS "SIRF Python modules will be installed in " ${PYTHON_DEST})
+    message(STATUS "CIL Regularisation Python modules will be installed in " ${PYTHON_DEST})
   endif()
     set(PYTHON_STRATEGY "PYTHONPATH" CACHE STRING "\
       PYTHONPATH: prefix PYTHONPATH \n\
