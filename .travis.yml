@@ -169,7 +169,8 @@ before_install:
        # homebrew boost is currently 1.69, which causes problems. build our own.
        original_dir=$(pwd)
        wget wget http://downloads.sourceforge.net/project/boost/boost/1.68.0/boost_1_68_0.zip
-       tar -xvf boost_1_68_0.tar.gz 
+       echo "unzipping boost"
+       tar -xvf boost_1_68_0.tar.gz > /dev/null
        cd boost_1_68_0
        echo "bootstrap boost"
        ./bootstrap.sh > /dev/null 2> /dev/null
