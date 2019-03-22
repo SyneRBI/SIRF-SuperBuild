@@ -171,8 +171,11 @@ before_install:
        wget wget http://downloads.sourceforge.net/project/boost/boost/1.68.0/boost_1_68_0.zip
        tar -xvf boost_1_68_0.tar.gz 
        cd boost_1_68_0
+       echo "bootstrap boost"
        ./bootstrap.sh > /dev/null 2> /dev/null
+       echo "b2 boost"
        ./b2 install -j 4 --prefix=${original_dir}/Boost_install > /dev/null 2> /dev/null
+       echo "finished installing boost"
        cd $original_dir
        EXTRA_BUILD_FLAGS="${EXTRA_BUILD_FLAGS} -DBoost_INCLUDE_DIR=${original_dir}/Boost_install/include"
        # brew reinstall boost
