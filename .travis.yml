@@ -167,7 +167,7 @@ before_install:
      BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_EXECUTABLE=$PY_EXE"
      ( set -ev
        # Brew's current boost version (1.69) so uninstall (and tell Superbuild to build itself)
-       #brew uninstall boost
+       brew uninstall boost
        # we currently need boost-python
        # brew install boost-python
        brew install ace
