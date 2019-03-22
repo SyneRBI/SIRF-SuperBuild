@@ -89,3 +89,13 @@ RUN mv ~/.git-prompt.sh .
 
 ENV DEBIAN_FRONTEND ''
 CMD ["/bin/bash"]
+
+FROM sirf as service
+
+COPY requirements-service.txt .
+COPY user_service-ubuntu.sh .
+RUN bash user_service-ubuntu.sh
+RUN rm user_service-ubuntu.sh requirements-service.txt
+
+COPY service.sh /usr/local/bin/
+CMD ["/usr/local/bin/service.sh"]
