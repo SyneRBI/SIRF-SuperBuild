@@ -143,12 +143,6 @@ if (DEVEL_BUILD)
   set(DEFAULT_CCPi-RGL_TAG origin/master)
   set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
   set(DEFAULT_CCPi-FrameworkPlugins_TAG origin/master)
-  # For OSX, Gadgetron v3.17.0 doesn't work. So even in devel build, use same version 
-  # as for non-devel build
-  if (APPLE)
-    set(DEFAULT_Gadgetron_TAG e7eb430673eb3272e8a821b51750c0a2a96dafed)
-    set(DEFAULT_ISMRMRD_TAG 42d93137cc16c270c8ba065edd2496483161bd21)
-  endif(APPLE)
 
 else()
   set(DEFAULT_SIRF_TAG origin/add_to_sirf_classes)
@@ -157,21 +151,9 @@ else()
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
   set(DEFAULT_STIR_TAG fd3a7576a11930856d6af50d217f17d4848c2bff)
 
-  ## Gadgetron
-  set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
-  #https://github.com/CCPPETMR/gadgetron) 
-  set (DEFAULT_Gadgetron_TAG v3.17.0)
-  #set(DEFAULT_Gadgetron_TAG e7eb430673eb3272e8a821b51750c0a2a96dafed )
-  #set(DEFAULT_Gadgetron_TAG 00b96376568278a595e78879026bb3b0d5fbb98d )
-
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
   set(DEFAULT_siemens_to_ismrmrd_TAG ba4773f9cf4bba5f3ccd19930e3548d8273fee01)
-
-  ## ISMRMRD
-  set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
-  #set(DEFAULT_ISMRMRD_TAG 42d93137cc16c270c8ba065edd2496483161bd21)
-  set (DEFAULT_ISMRMRD_TAG v1.4.0)
 
   ## petmr-rd-tools
   set(DEFAULT_petmr_rd_tools_URL https://github.com/UCL/petmr-rd-tools )
