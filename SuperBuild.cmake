@@ -142,7 +142,6 @@ option(USE_SYSTEM_Armadillo "Build using an external version of Armadillo" OFF)
 option(USE_SYSTEM_SWIG "Build using an external version of SWIG" OFF)
 #option(USE_SYSTEM_Gadgetron "Build using an external version of Gadgetron" OFF)
 option(USE_SYSTEM_SIRF "Build using an external version of SIRF" OFF)
-option(USE_SYSTEM_NiftyReg "Build using an external version of NiftyReg" OFF)
 option(USE_SYSTEM_GTest "Build using an external version of GTest" OFF)
 option(USE_SYSTEM_ACE "Build using an external version of ACE" ON)
 
@@ -165,7 +164,6 @@ option(BUILD_STIR "Build STIR" ON)
 option(BUILD_GADGETRON "Build Gadgetron" ${build_Gadgetron_default})
 option(BUILD_siemens_to_ismrmrd "Build siemens_to_ismrmrd" OFF)
 option(BUILD_petmr_rd_tools "Build petmr_rd_tools" OFF)
-option(BUILD_NiftyReg "Build NiftyReg" ON)
 
 if (BUILD_petmr_rd_tools)
     set(USE_ITK ON CACHE BOOL "Use ITK" FORCE)
@@ -178,6 +176,16 @@ if (USE_ITK)
   option(USE_SYSTEM_ITK "Build using an external version of ITK" OFF)
 endif()
 
+# Registration and NiftyReg
+option(BUILD_SIRF_Registration "Build SIRF's registration functionality" ${BUILD_SIRF})
+if (BUILD_SIRF_Registration)
+  option(BUILD_NiftyReg "Build NiftyReg" ON)
+  option(USE_SYSTEM_NiftyReg "Build using an external version of NiftyReg" OFF)
+  if (NOT BUILD_NiftyReg)
+    message(WARNING "To use SIRF's registration functionality, NiftyReg is required. Switching BUILD_NiftyReg to ON. If you do not want registration functionality, set BUILD_SIRF_Registration to OFF.")
+    set(BUILD_NiftyReg ON CACHE BOOL "Build NiftyReg" FORCE)
+  endif()
+endif()
 ## build list of dependencies, based on options above
 # first set to empty
 set(${PRIMARY_PROJECT_NAME}_DEPENDENCIES)
@@ -203,7 +211,7 @@ if (BUILD_petmr_rd_tools)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES petmr_rd_tools)
 endif()
 
-if (BUILD_NiftyReg)
+if (BUILD_SIRF_Registration)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES NiftyReg)
 endif()
 
