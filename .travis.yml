@@ -170,8 +170,8 @@ before_install:
        wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
        chmod u+x Miniconda3-latest-MacOSX-x86_64.sh
        ./Miniconda3-latest-MacOSX-x86_64.sh -b
-       ~/miniconda3/bin/conda install -y -c anaconda boost 
-       EXTRA_BUILD_FLAGS="${EXTRA_BUILD_FLAGS} -DBoost_INCLUDE_DIR=~/miniconda3/include"
+       ~/miniconda3/bin/conda install -y -c anaconda boost
+       EXTRA_BUILD_FLAGS="${EXTRA_BUILD_FLAGS} -DBoost_INCLUDE_DIR=/Users/travis/miniconda3/include"
        # brew reinstall boost
        # we currently need boost-python
        # brew install boost-python
