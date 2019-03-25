@@ -211,7 +211,7 @@ if (BUILD_petmr_rd_tools)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES petmr_rd_tools)
 endif()
 
-if (BUILD_SIRF_Registration)
+if (BUILD_NiftyReg)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES NiftyReg)
 endif()
 
