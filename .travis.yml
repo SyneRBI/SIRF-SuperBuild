@@ -142,6 +142,8 @@ addons:
   # not in whitelist
   - libxslt-dev
   - libace-dev
+  # for building CIL
+  - cython
   # - root-system-bin
 
 before_install:
