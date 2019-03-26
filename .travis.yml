@@ -172,8 +172,6 @@ before_install:
        ./Miniconda3-latest-MacOSX-x86_64.sh -b
        ~/miniconda3/bin/conda install -y -c anaconda boost
        EXTRA_BUILD_FLAGS="${EXTRA_BUILD_FLAGS} -DBoost_INCLUDE_DIR:PATH=/Users/travis/miniconda3/include -DBOOST_ROOT:PATH=/Users/travis/miniconda3/"
-       echo $EXTRA_BUILD_FLAGS
-       exit 1
        # brew reinstall boost
        # we currently need boost-python
        # brew install boost-python
