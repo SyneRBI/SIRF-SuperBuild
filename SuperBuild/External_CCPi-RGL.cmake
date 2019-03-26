@@ -94,6 +94,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DPYTHON_DEST=${PYTHON_DEST_DIR}
     BUILD_COMMAND make    
     INSTALL_COMMAND make install
+    TEST_COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p ${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe/run_test*.py
 
 #    CMAKE_ARGS
 #        -DCMAKE_INSTALL_PREFIX=${libcilreg_Install_Dir}
