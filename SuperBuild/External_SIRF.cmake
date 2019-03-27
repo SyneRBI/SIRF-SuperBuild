@@ -93,7 +93,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DPYTHON_LIBRARY=${PYTHON_LIBRARIES}
         -DPYTHON_DEST_DIR=${PYTHON_DEST_DIR}
         -DPYTHON_STRATEGY=${PYTHON_STRATEGY}
-        -DNIFTYREG_DIR=${NIFTYREG_DIR}
+        -DNIFTYREG_DIR:PATH=${NIFTYREG_DIR}
         -DREG_ENABLE=${BUILD_SIRF_Registration}
 		${extra_args}
 	INSTALL_DIR ${SIRF_Install_Dir}
