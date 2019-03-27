@@ -90,9 +90,10 @@ set(glog_TAG v035)
 set(ITK_URL https://itk.org/ITK.git)
 set(ITK_TAG v4.13.1)
 
-## NiftyReg
-set(NiftyReg_URL https://github.com/KCL-BMEIS/niftyreg.git )
-set(NiftyReg_TAG 33434c963e35e69fe0b1a3c5bf9057ff53288bc4 )
+## NIFTYREG
+set(NIFTYREG_URL https://github.com/KCL-BMEIS/niftyreg.git )
+set(NIFTYREG_TAG 33434c963e35e69fe0b1a3c5bf9057ff53288bc4 )
+set(NIFTYREEG_REQUIRED_VERSION 1.5.61)
 
 ## ISMRMRD
 set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
