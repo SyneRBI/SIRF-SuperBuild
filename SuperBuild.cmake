@@ -167,6 +167,12 @@ option(BUILD_siemens_to_ismrmrd "Build siemens_to_ismrmrd" OFF)
 option(BUILD_petmr_rd_tools "Build petmr_rd_tools" OFF)
 option(BUILD_NIFTYREG "Build NIFTYREG" ON)
 
+option(BUILD_SIRF_Registration "Build SIRFS's registration functionality" ${BUILD_NIFTYREG})
+if (BUILD_SIRF_Registration AND NOT BUILD_NIFTYREG)
+  message(WARNING "Building SIRF registration is enabled, but BUILD_NIFTYREG=OFF. Reverting to BUILD_NIFTYREG=ON")
+  set(BUILD_NIFTYREG ON CACHE BOOL "Build NIFTYREG" FORCE)
+endif()
+
 if (BUILD_petmr_rd_tools)
     set(USE_ITK ON CACHE BOOL "Use ITK" FORCE)
     option(USE_SYSTEM_glog "Build using an external version of glog" OFF)
@@ -203,7 +209,7 @@ if (BUILD_petmr_rd_tools)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES petmr_rd_tools)
 endif()
 
-if (BUILD_NIFTYREG)
+if (BUILD_SIRF_Registration)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES NIFTYREG)
 endif()
 
