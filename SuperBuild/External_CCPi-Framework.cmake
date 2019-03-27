@@ -66,9 +66,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
     INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/Wrappers/Python/ccpi ${PYTHON_DEST}/ccpi
-    TEST_COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -s ${${proj}_SOURCE_DIR}/Wrappers/Python/test/ -p test_Data*.py &&
-    ${PYTHON_EXECUTABLE} -m unittest discover -s ${${proj}_SOURCE_DIR}/Wrappers/Python/test/ -p test_algor*.py &&
-    ${PYTHON_EXECUTABLE} -m unittest discover -s ${${proj}_SOURCE_DIR}/Wrappers/Python/test/ -p test_run_*.py
+    #TEST_COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -s ${${proj}_SOURCE_DIR}/Wrappers/Python/test/ -p test_Data*.py &&
+    #${PYTHON_EXECUTABLE} -m unittest discover -s ${${proj}_SOURCE_DIR}/Wrappers/Python/test/ -p test_algor*.py &&
+    #${PYTHON_EXECUTABLE} -m unittest discover -s ${${proj}_SOURCE_DIR}/Wrappers/Python/test/ -p test_run_*.py
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX=${libcilreg_Install_Dir}
     DEPENDS
@@ -103,6 +103,16 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
     set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
 
+    add_test(NAME CIL_FRAMEWORK_TESTS_1
+             COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_Data*.py 
+    WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
+    add_test(NAME CIL_FRAMEWORK_TESTS_2
+             COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_algor*.p 
+    WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
+    add_test(NAME CIL_FRAMEWORK_TESTS_3
+             COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_run_*.py
+    WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
+     
    else()
       if(${USE_SYSTEM_${externalProjName}})
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
