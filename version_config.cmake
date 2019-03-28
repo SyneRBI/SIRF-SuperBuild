@@ -116,7 +116,7 @@ if (DEVEL_BUILD)
   set (DEFAULT_SIRF_TAG origin/master)
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG origin/master)
+  set(DEFAULT_STIR_TAG f0c5df05fba86e51adcb573727175909e1c9c616)
 
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd )
