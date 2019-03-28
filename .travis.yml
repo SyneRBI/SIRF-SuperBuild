@@ -171,7 +171,7 @@ before_install:
        chmod u+x Miniconda3-latest-MacOSX-x86_64.sh
        ./Miniconda3-latest-MacOSX-x86_64.sh -b
        ~/miniconda3/bin/conda install -y -c anaconda boost
-       EXTRA_BUILD_FLAGS="${EXTRA_BUILD_FLAGS} -DBOOST_ROOT:PATH=/Users/travis/miniconda3/ -DBOOST_LIBRARYDIR:PATH=/Users/travis/miniconda3/lib/ -DBoost_NO_SYSTEM_PATHS=ON -DBoost_INCLUDE_DIR=/Users/travis/miniconda3/include"
+       EXTRA_BUILD_FLAGS="${EXTRA_BUILD_FLAGS} -DBOOST_ROOT:PATH=/Users/travis/miniconda3/ -DBOOST_LIBRARYDIR:PATH=/Users/travis/miniconda3/lib/ -DBoost_NO_SYSTEM_PATHS=ON -DBoost_INCLUDE_DIR=/Users/travis/miniconda3/include -DBOOST_INCLUDEDIR=/Users/travis/miniconda3/include"
        # brew reinstall boost
        # we currently need boost-python
        # brew install boost-python
@@ -192,6 +192,10 @@ before_install:
        #mv cmake-*/CMake.app/Contents/* cmake
        #export PATH="$PWD/cmake/bin:$PATH"
        brew uninstall boost --ignore-dependencies
+       echo "RB: im debugging here. boost includes"
+       ls /Users/travis/miniconda3/include/boost
+       echo "RB: im debugging here. boost libs"
+       ls /Users/travis/miniconda3/lib/libboost_*
      )
    elif [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
      PY_EXE=python$PYMVER
