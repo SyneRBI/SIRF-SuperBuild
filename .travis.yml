@@ -28,11 +28,22 @@ cache:  # shared between builds
 matrix:
  include:
  # linux g{cc,++}-6 py{27,3}
-   #CIL
  - os: linux
    python: 3
-   # -boost +fftw3 +hdf5 +ace +cil
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+   # -boost +fftw3 +hdf5 +ace
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+ - os: linux
+   python: 2.7
+   # -boost +fftw3 +hdf5 +siemens_to_ismrmrd +swig +ace
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_ACE=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=2
+ - os: linux
+   python: 3
+   # +DEVEL -boost -hdf5 -fftw3 +ace +siemens_to_ismrmrd
+   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_ACE=ON -DBUILD_siemens_to_ismrmrd=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+ - os: linux
+   python: 2.7
+   # +DEVEL -boost -fftw3 -hdf5 -swig +ace
+   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_SWIG=OFF" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=2
  # osx g{cc,++} py{27,36}
  # - os: osx
  #   python: 2.7
@@ -61,8 +72,17 @@ matrix:
  #   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
  # docker
  - os: linux
-   # +DEVEL +ace +armadillo +boost +cil +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
-   env: DOCKER_BUILD=DEVEL_SERVICE
+   # +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
+   env: DOCKER_BUILD=1
+ - os: linux
+   # +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
+   env: DOCKER_BUILD=SERVICE
+ - os: linux
+   # +DEVEL +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
+   env: DOCKER_BUILD=DEVEL
+ # - os: linux
+ #   # +DEVEL +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
+ #   env: DOCKER_BUILD=DEVEL_SERVICE
 
 env:
  global:
@@ -101,9 +121,6 @@ addons:
   - libxslt-dev
   - libace-dev
   # - root-system-bin
-  # CIL
-  - cython
-  - python-numpy
 
 before_install:
 # Set C and C++ compiler etc using trick from
@@ -247,11 +264,9 @@ install:
    else
      ( set -ev
        $PY_EXE -m pip install --user --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
-       # CIL requirements
-       #$PY_EXE -m pip install --user -U cython
        cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
        # Job may timeout (>50min) if no ccache, otherwise should be <1min:
-       make | grep -Eiv 'copy .*\/boost\/'
+       make
        mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
      ) || travis_terminate 1
      source $PWD/INSTALL/bin/env_ccppetmr.sh
