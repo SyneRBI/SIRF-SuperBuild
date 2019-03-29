@@ -101,6 +101,8 @@ addons:
   - libxslt-dev
   - libace-dev
   # - root-system-bin
+  # CIL
+  - cython
 
 before_install:
 # Set C and C++ compiler etc using trick from
