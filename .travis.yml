@@ -187,10 +187,10 @@ before_install:
        brew install curl
        #brew install cmake # already present
        # alternative: get our own
-       #curl -L -O https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Darwin-x86_64.tar.gz
-       #tar xzf cmake-*.tar.gz
-       #mv cmake-*/CMake.app/Contents/* cmake
-       #export PATH="$PWD/cmake/bin:$PATH"
+       curl -L -O https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Darwin-x86_64.tar.gz
+       tar xzf cmake-*.tar.gz
+       mv cmake-*/CMake.app/Contents/* cmake
+       export PATH="$PWD/cmake/bin:$PATH"
        brew uninstall boost --ignore-dependencies
        echo "RB: im debugging here. boost includes"
        ls /Users/travis/miniconda3/include/boost
