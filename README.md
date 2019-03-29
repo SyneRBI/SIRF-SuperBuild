@@ -93,9 +93,9 @@ cmake ../SIRF-SuperBuild
 ```
 Use your build environment to build and install the project. On Linux/OSX etc, you would normally use
 ```bash
-make -jN
+[sudo] make -jN
 ```
-where `N` are the number of cores you want to use for the compilation. For Eclipse/XCode/Visual Studio, you could open the project, or try something like
+where `N` are the number of cores you want to use for the compilation. You will only need the `sudo` command if you are building in a system folder (e.g., `/usr/local`). For Eclipse/XCode/Visual Studio, you could open the project, or try something like
 ```bash
 cmake --build . --config Release
 ```
