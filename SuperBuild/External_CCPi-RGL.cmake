@@ -89,8 +89,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
    # apparently this is the only way to pass environment variables to 
    # external projects 
     CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${CIL_VERSION}         cmake ${${proj}_SOURCE_DIR}  -DCMAKE_INSTALL_PREFIX=${libcilreg_Install_Dir}
-        -DBUILD_PYTHON_WRAPPERS=ON -DCMAKE_BUILD_TYPE=Release 
-        -DBUILD_CUDA=OFF -DCONDA_BUILD=OFF
+        -DBUILD_PYTHON_WRAPPER=ON -DCMAKE_BUILD_TYPE=Release 
+        -DBUILD_CUDA=ON -DCONDA_BUILD=OFF -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
         -DPYTHON_DEST=${PYTHON_DEST_DIR}
     BUILD_COMMAND make    
     INSTALL_COMMAND make install

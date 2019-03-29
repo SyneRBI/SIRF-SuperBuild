@@ -60,9 +60,9 @@ matrix:
  #   # +boost +itk -hdf5 +swig
  #   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
  # docker
- # - os: linux
- #   # +DEVEL +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
- #   env: DOCKER_BUILD=DEVEL_SERVICE
+ - os: linux
+   # +DEVEL +ace +armadillo +boost +cil +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
+   env: DOCKER_BUILD=DEVEL_SERVICE
 
 env:
  global:
@@ -101,6 +101,9 @@ addons:
   - libxslt-dev
   - libace-dev
   # - root-system-bin
+  # CIL
+  - cython
+  - python-numpy
 
 before_install:
 # Set C and C++ compiler etc using trick from
@@ -244,9 +247,11 @@ install:
    else
      ( set -ev
        $PY_EXE -m pip install --user --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
+       # CIL requirements
+       #$PY_EXE -m pip install --user -U cython
        cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
        # Job may timeout (>50min) if no ccache, otherwise should be <1min:
-       make
+       make | grep -Eiv 'copy .*\/boost\/'
        mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
      ) || travis_terminate 1
      source $PWD/INSTALL/bin/env_ccppetmr.sh
