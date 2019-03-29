@@ -103,6 +103,7 @@ addons:
   # - root-system-bin
   # CIL
   - cython
+  - numpy
 
 before_install:
 # Set C and C++ compiler etc using trick from
