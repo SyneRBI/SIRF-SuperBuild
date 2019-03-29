@@ -93,7 +93,7 @@ set(ITK_TAG v4.13.1)
 ## NIFTYREG
 set(NIFTYREG_URL https://github.com/KCL-BMEIS/niftyreg.git )
 set(NIFTYREG_TAG 33434c963e35e69fe0b1a3c5bf9057ff53288bc4 )
-set(NIFTYREEG_REQUIRED_VERSION 1.5.61)
+set(NIFTYREG_REQUIRED_VERSION 1.5.61)
 
 ## ISMRMRD
 set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
