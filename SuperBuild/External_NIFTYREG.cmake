@@ -71,7 +71,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
     set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
     set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
-    set(${proj}_DIR ${SUPERBUILD_INSTALL_DIR}/lib/cmake/NiftyReg CACHE PATH "${proj}_DIR")
+    set(${proj}_DIR "${SUPERBUILD_INSTALL_DIR}/lib/cmake/NiftyReg" CACHE PATH "${proj}_DIR" FORCE)
    else()
       if(${USE_SYSTEM_${externalProjName}})
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
