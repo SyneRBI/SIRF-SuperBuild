@@ -60,9 +60,9 @@ matrix:
  #   # +boost +itk -hdf5 +swig
  #   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
  # docker
- # - os: linux
- #   # +DEVEL +ace +armadillo +boost +cil +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
- #   env: DOCKER_BUILD=DEVEL_SERVICE
+ - os: linux
+   # +DEVEL +ace +armadillo +boost +cil +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
+   env: DOCKER_BUILD=DEVEL_SERVICE
 
 env:
  global:
