@@ -145,8 +145,8 @@ if (DEVEL_BUILD)
   set(DEFAULT_CCPi-FrameworkPlugins_TAG origin/master)
 
 else()
-  set(DEFAULT_SIRF_TAG v1.1.1)
-
+	#  set(DEFAULT_SIRF_TAG v1.1.1)
+	set (DEFAULT_SIRF_TAG origin/add_to_sirf_classes)
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
   set(DEFAULT_STIR_TAG fd3a7576a11930856d6af50d217f17d4848c2bff)
