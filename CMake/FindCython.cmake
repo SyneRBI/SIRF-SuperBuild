@@ -8,14 +8,14 @@
 
 # This finds the "cython" executable in your PATH, and then in some standard
 # paths:
-SET(CYTHON_BIN cython CACHE STRING "Cython executable name")
+SET(CYTHON_EXECUTABLE cython CACHE STRING "Cython executable name")
 SET(CYTHON_FLAGS --cplus --fast-fail)
 
 SET(Cython_FOUND FALSE)
-IF (CYTHON_BIN)
+IF (CYTHON_EXECUTABLE)
     # Try to run Cython, to make sure it works:
     execute_process(
-        COMMAND ${CYTHON_BIN} "--version"
+        COMMAND ${CYTHON_EXECUTABLE} "--version"
         RESULT_VARIABLE CYTHON_RESULT
         OUTPUT_QUIET
         ERROR_QUIET
@@ -27,17 +27,17 @@ IF (CYTHON_BIN)
     else (CYTHON_RESULT EQUAL 0)
         SET(Cython_Compilation_Failed TRUE)
     endif (CYTHON_RESULT EQUAL 0)
-ENDIF (CYTHON_BIN)
+ENDIF (CYTHON_EXECUTABLE)
 
 
 IF (Cython_FOUND)
 	IF (NOT Cython_FIND_QUIETLY)
-		MESSAGE(STATUS "Found CYTHON: ${CYTHON_BIN}")
+		MESSAGE(STATUS "Found CYTHON: ${CYTHON_EXECUTABLE}")
 	ENDIF (NOT Cython_FIND_QUIETLY)
 ELSE (Cython_FOUND)
 	IF (Cython_FIND_REQUIRED)
         if(Cython_Compilation_Failed)
-            MESSAGE(STATUS "Found CYTHON: ${CYTHON_BIN}")
+            MESSAGE(STATUS "Found CYTHON: ${CYTHON_EXECUTABLE}")
 			# On Win the testing of Cython does not return any accessible value, so the test is not carried out. Fresh Cython install was tested and works.
 			IF(NOT MSVC)
 				MESSAGE(FATAL_ERROR "Your Cython version is too old. Please upgrade Cython.")
