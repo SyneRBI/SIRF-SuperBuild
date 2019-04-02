@@ -269,6 +269,9 @@ install:
    else
      ( set -ev
        $PY_EXE -m pip install --user --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
+       echo "about to run cmake on superbuild with following command:"
+       echo "cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS ."
+       exit 1
        cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
        # Job may timeout (>50min) if no ccache, otherwise should be <1min:
        make
