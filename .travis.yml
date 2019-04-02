@@ -208,6 +208,7 @@ before_install:
 - $PY_EXE -m pip install --user -U pip setuptools wheel
 # ensure python bin dir exists (and coverage dependencies installed)
 - $PY_EXE -m pip install --user -U nose codecov coveralls
+- $PY_EXE -m pip install --user -U numpy cython
 # for counting clones, excluding ours
 - |
    if [[ -n "$GITHUB_API_TOKEN" ]]; then
