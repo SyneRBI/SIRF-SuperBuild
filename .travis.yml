@@ -164,6 +164,7 @@ before_install:
        #PY_INC=$PY_INST/Headers
        # BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_LIBRARY=$PY_LIB -DPYTHON_INCLUDE_DIR=$PY_INC"
      fi
+     EXTRA_BUILD_FLAGS="${EXTRA_BUILD_FLAGS} -DBOOST_ROOT:PATH=/Users/travis/miniconda3/ -BOOST_LIBRARY_DIR:PATH=/Users/travis/miniconda3/lib/ -DBOOST_LIBRARYDIR:PATH=/Users/travis/miniconda3/lib/ -DBoost_NO_SYSTEM_PATHS=ON -DBoost_INCLUDE_DIR:PATH=/Users/travis/miniconda3/include -DBOOST_INCLUDEDIR:PATH=/Users/travis/miniconda3/include"
      BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_EXECUTABLE=$PY_EXE"
      ( set -ev
        # homebrew boost is currently 1.69, which causes problems. so build our own.
@@ -171,7 +172,6 @@ before_install:
        chmod u+x Miniconda3-latest-MacOSX-x86_64.sh
        ./Miniconda3-latest-MacOSX-x86_64.sh -b
        ~/miniconda3/bin/conda install -y -c anaconda boost
-       EXTRA_BUILD_FLAGS="${EXTRA_BUILD_FLAGS} -DBOOST_ROOT:PATH=/Users/travis/miniconda3/ -BOOST_LIBRARY_DIR:PATH=/Users/travis/miniconda3/lib/ -DBOOST_LIBRARYDIR:PATH=/Users/travis/miniconda3/lib/ -DBoost_NO_SYSTEM_PATHS=ON -DBoost_INCLUDE_DIR:PATH=/Users/travis/miniconda3/include -DBOOST_INCLUDEDIR:PATH=/Users/travis/miniconda3/include"
        # brew reinstall boost
        # we currently need boost-python
        # brew install boost-python
