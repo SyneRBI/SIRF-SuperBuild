@@ -31,7 +31,12 @@ if (APPLE) # really should be checking for CLang
 else()
      # Use version in Ubuntu 18.04
      set(Boost_VERSION 1.65.1)
-     set(Boost_REQUIRED_VERSION 1.65.1)
+     if (BUILD_GADGETRON)
+       set(Boost_REQUIRED_VERSION 1.65.1)
+     else()
+       # Ubutnu 16.04 version should be fine
+       set(Boost_REQUIRED_VERSION 1.58.0)
+     endif()
      set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_65_1.zip)
      set(Boost_MD5 9824a7a3e25c9d4fdf2def07bce8651c)
 endif()
