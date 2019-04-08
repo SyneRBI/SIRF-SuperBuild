@@ -58,43 +58,44 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
     # in case of PYTHONPATH it is sufficient to copy the files to the 
     # $PYTHONPATH directory
-  set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
-  if (BUILD_PYTHON)
-    set(PYTHON_DEST_DIR "" CACHE PATH "Directory of the CIL regularisation Python modules")
-    if (PYTHON_DEST_DIR)
-     set(PYTHON_DEST "${PYTHON_DEST_DIR}")
-    else()
-      set(PYTHON_DEST "${CMAKE_INSTALL_PREFIX}/python")
+    set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
+    if (BUILD_PYTHON)
+      set(PYTHON_DEST_DIR "" CACHE PATH "Directory of the CIL regularisation Python modules")
+      if (PYTHON_DEST_DIR)
+        set(PYTHON_DEST "${PYTHON_DEST_DIR}")
+      else()
+        set(PYTHON_DEST "${CMAKE_INSTALL_PREFIX}/python")
+      endif()
+      message(STATUS "Python libraries found")
+      message(STATUS "CIL Regularisation Python modules will be installed in " ${PYTHON_DEST})
     endif()
-    message(STATUS "Python libraries found")
-    message(STATUS "CIL Regularisation Python modules will be installed in " ${PYTHON_DEST})
-  endif()
     set(PYTHON_STRATEGY "PYTHONPATH" CACHE STRING "\
       PYTHONPATH: prefix PYTHONPATH \n\
       SETUP_PY:   execute ${PYTHON_EXECUTABLE} setup.py install \n\
       CONDA:      do nothing")
     set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
 
-  ExternalProject_Add(${proj}
-    ${${proj}_EP_ARGS}
-    GIT_REPOSITORY ${${proj}_URL}
-    GIT_TAG ${${proj}_TAG}
-    #GIT_TAG origin/cmaking
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
-    INSTALL_DIR ${libcilreg_Install_Dir}
-   # apparently this is the only way to pass environment variables to 
-   # external projects 
-    CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${CIL_VERSION}         cmake ${${proj}_SOURCE_DIR}  -DCMAKE_INSTALL_PREFIX=${libcilreg_Install_Dir}
+    ExternalProject_Add(${proj}
+      ${${proj}_EP_ARGS}
+      GIT_REPOSITORY ${${proj}_URL}
+      GIT_TAG ${${proj}_TAG}
+      #GIT_TAG origin/cmaking
+      SOURCE_DIR ${${proj}_SOURCE_DIR}
+      BINARY_DIR ${${proj}_BINARY_DIR}
+      DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+      STAMP_DIR ${${proj}_STAMP_DIR}
+      TMP_DIR ${${proj}_TMP_DIR}
+      INSTALL_DIR ${libcilreg_Install_Dir}
+      # apparently this is the only way to pass environment variables to 
+      # external projects 
+      CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${CIL_VERSION}         ${CMAKE_COMMAND} ${${proj}_SOURCE_DIR}  -DCMAKE_INSTALL_PREFIX=${libcilreg_Install_Dir}
         -DBUILD_PYTHON_WRAPPER=ON -DCMAKE_BUILD_TYPE=Release 
         -DBUILD_CUDA=ON -DCONDA_BUILD=OFF -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
         -DPYTHON_DEST=${PYTHON_DEST_DIR}
-    BUILD_COMMAND make    
-    INSTALL_COMMAND make install
-    TEST_COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p ${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe/run_test*.py
+      # This build is Unix specific
+      BUILD_COMMAND ${CMAKE_COMMAND} --build .    
+      INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install
+      #TEST_COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -s ${${proj}_SOURCE_DIR}/test/ -p test*.py
 
 #    CMAKE_ARGS
 #        -DCMAKE_INSTALL_PREFIX=${libcilreg_Install_Dir}
@@ -102,55 +103,56 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 #        -DBUILD_CUDA=OFF -DCONDA_BUILD=OFF
 #        -DPYTHON_DEST=${PYTHON_DEST_DIR}
 
-    DEPENDS
+      DEPENDS
         ${${proj}_DEPENDENCIES}
-  )
+    )
 
-  else()
-    # if SETUP_PY one can launch the conda build.sh script setting 
-    # the appropriate variables.
-  ExternalProject_Add(${proj}
-    ${${proj}_EP_ARGS}
-    GIT_REPOSITORY ${${proj}_URL}
-    GIT_TAG ${${proj}_TAG}
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
-    INSTALL_DIR ${libcilreg_Install_Dir}
+    else()
+      # if SETUP_PY one can launch the conda build.sh script setting 
+      # the appropriate variables.
+      ExternalProject_Add(${proj}
+        ${${proj}_EP_ARGS}
+        GIT_REPOSITORY ${${proj}_URL}
+        GIT_TAG ${${proj}_TAG}
+        SOURCE_DIR ${${proj}_SOURCE_DIR}
+        BINARY_DIR ${${proj}_BINARY_DIR}
+        DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+        STAMP_DIR ${${proj}_STAMP_DIR}
+        TMP_DIR ${${proj}_TMP_DIR}
+        INSTALL_DIR ${libcilreg_Install_Dir}
     
-    CONFIGURE_COMMAND ""
-    BUILD_COMMAND ""
-    INSTALL_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${CIL_VERSION} SRC_DIR=${${proj}_BINARY_DIR} RECIPE_DIR=${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe PYTHON=${PYTHON_EXECUTABLE} bash ${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe/build.sh
-    CMAKE_ARGS
-        -DCMAKE_INSTALL_PREFIX=${libcilreg_Install_Dir}
-    DEPENDS
-        ${${proj}_DEPENDENCIES}
-  )
-  endif()
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND ""
+        INSTALL_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${CIL_VERSION} SRC_DIR=${${proj}_BINARY_DIR} RECIPE_DIR=${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe PYTHON=${PYTHON_EXECUTABLE} bash ${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe/build.sh
+        CMAKE_ARGS
+           -DCMAKE_INSTALL_PREFIX=${libcilreg_Install_Dir}
+        DEPENDS
+           ${${proj}_DEPENDENCIES}
+      )
+    endif()
 
 
     set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
     set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
+    add_test(NAME CIL_REGULARISATION_TEST_1
+             COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -s test -p test_*.py 
+    WORKING_DIRECTORY ${${proj}_SOURCE_DIR})
 
-   else()
-      if(${USE_SYSTEM_${externalProjName}})
-        find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
-        message("USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
+  else()
+    if(${USE_SYSTEM_${externalProjName}})
+      find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
+      message("USING the system ${externalProjName}")
     endif()
-  ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
-  )
+    ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
+      SOURCE_DIR ${${proj}_SOURCE_DIR}
+      BINARY_DIR ${${proj}_BINARY_DIR}
+      DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+      STAMP_DIR ${${proj}_STAMP_DIR}
+      TMP_DIR ${${proj}_TMP_DIR}
+    )
   endif()
 
   mark_as_superbuild(
-    VARS
-      ${externalProjName}_DIR:PATH
-    LABELS
-      "FIND_PACKAGE"
+    VARS ""
+    LABELS "FIND_PACKAGE"
   )
