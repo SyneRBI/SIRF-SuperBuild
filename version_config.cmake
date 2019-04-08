@@ -31,11 +31,16 @@ if (APPLE) # really should be checking for CLang
     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_68_0.zip)
     set(Boost_MD5 f4096c4583947b0eb103c8539f1623a3)
 else()
-    # Use version in Ubuntu 18.04
-    set(Boost_VERSION 1.65.1)
-    set(Boost_REQUIRED_VERSION 1.65.1)
-    set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_65_1.zip)
-    set(Boost_MD5 9824a7a3e25c9d4fdf2def07bce8651c)
+     # Use version in Ubuntu 18.04
+     set(Boost_VERSION 1.65.1)
+     if (BUILD_GADGETRON)
+       set(Boost_REQUIRED_VERSION 1.65.1)
+     else()
+       # Ubutnu 16.04 version should be fine
+       set(Boost_REQUIRED_VERSION 1.58.0)
+     endif()
+     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_65_1.zip)
+     set(Boost_MD5 9824a7a3e25c9d4fdf2def07bce8651c)
 endif()
 
 
@@ -95,7 +100,7 @@ set(ITK_TAG v4.13.1)
 
 ## NiftyReg
 set(NiftyReg_URL https://github.com/KCL-BMEIS/niftyreg.git )
-set(NiftyReg_TAG 731a565bd42ca97ff5968adb1c06133ea72f0856 )
+set(NiftyReg_TAG 33434c963e35e69fe0b1a3c5bf9057ff53288bc4 )
 
 ## ISMRMRD
 set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
@@ -118,7 +123,7 @@ if (DEVEL_BUILD)
   set (DEFAULT_SIRF_TAG origin/master)
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG origin/master)
+  set(DEFAULT_STIR_TAG f0c5df05fba86e51adcb573727175909e1c9c616)
 
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd )
