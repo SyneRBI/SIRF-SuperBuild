@@ -160,11 +160,9 @@ else()
   set(build_Gadgetron_default ON)
 endif()
 
-if (DEFINED BUILD_GADGETRON)
-  message(WARNING "Obsolete use of BUILD_GADGETRON. I have used its value to set the default for BUILD_Gadgetron (use that variable in future!)")
-  set(build_Gadgetron_default ${BUILD_GADGETRON})
-  unset(BUILD_GADGETRON CACHE)
-endif()
+include (RenameVariable)
+
+RenameVariable(BUILD_GADGETRON BUILD_Gadgetron build_Gadgetron_default)
 
 option(BUILD_SIRF "Build SIRF" ON)
 option(BUILD_STIR "Build STIR" ON)
