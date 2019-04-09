@@ -1,7 +1,7 @@
 #========================================================================
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
-# Copyright 2017 University College London
+# Copyright 2017-2019 University College London
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -52,6 +52,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(STIR_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
   option(BUILD_TESTING_${proj} "Build tests for ${proj}" OFF)
+  if (APPLE)
+    set (build_STIR_OPENMP_default OFF)
+  else()
+    set (build_STIR_OPENMP_default ON)
+  endif()  
+  option(BUILD_STIR_WITH_OPENMP "Build STIR with OpenMP acceleration" ${build_STIR_OPENMP_default})
   option(BUILD_STIR_EXECUTABLES "Build all STIR executables" OFF)
   option(BUILD_STIR_SWIG_PYTHON "Build STIR Python interface" OFF)
   option(STIR_DISABLE_CERN_ROOT "Disable STIR ROOT interface" ON)

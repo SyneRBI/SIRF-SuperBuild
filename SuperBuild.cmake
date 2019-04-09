@@ -146,14 +146,6 @@ option(USE_SYSTEM_NiftyReg "Build using an external version of NiftyReg" OFF)
 option(USE_SYSTEM_GTest "Build using an external version of GTest" OFF)
 option(USE_SYSTEM_ACE "Build using an external version of ACE" ON)
 
-if (APPLE)
-  set (build_STIR_OPENMP_default OFF)
-else()
-  set (build_STIR_OPENMP_default ON)
-endif()  
-option(BUILD_STIR_WITH_OPENMP "Build STIR with OpenMP acceleration" ${build_STIR_OPENMP_default})
-
-
 if (WIN32)
   set(build_Gadgetron_default OFF)
 else()
