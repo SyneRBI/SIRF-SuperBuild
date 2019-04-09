@@ -10,6 +10,8 @@
 - docker images updates
   - Ubuntu: 18.04
   - `:service` images with `Jupyter` and `SIRF-Exercises`
+- changed some names:
+   - BUILD_GADGETRON -> BUILD_Gadgetron
 
 ## v1.1.0
 
