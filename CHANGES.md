@@ -11,7 +11,8 @@
   - Ubuntu: 18.04
   - `:service` images with `Jupyter` and `SIRF-Exercises`
 - changed some names:
-   - BUILD_GADGETRON -> BUILD_Gadgetron
+   - `BUILD_GADGETRON` -> `BUILD_Gadgetron`
+   - `BUILD_GADGETRON_NATIVE_MATLAB_SUPPORT` -> `Gadgetron_BUILD_MATLAB_SUPPORT`
 
 ## v1.1.0
 
