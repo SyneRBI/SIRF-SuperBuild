@@ -95,9 +95,10 @@ set(glog_TAG v035)
 set(ITK_URL https://itk.org/ITK.git)
 set(ITK_TAG v4.13.1)
 
-## NiftyReg
-set(NiftyReg_URL https://github.com/KCL-BMEIS/niftyreg.git )
-set(NiftyReg_TAG 33434c963e35e69fe0b1a3c5bf9057ff53288bc4 )
+## NIFTYREG
+set(DEFAULT_NIFTYREG_URL https://github.com/rijobro/niftyreg.git )
+set(DEFAULT_NIFTYREG_TAG 22f24db1113973507689aeabbc3f17ddeca1d7f6 )
+set(DEFAULT_NIFTYREG_REQUIRED_VERSION 1.5.61)
 
 ## ISMRMRD
 set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
@@ -138,7 +139,7 @@ if (DEVEL_BUILD)
   set(DEFAULT_ACE_TAG origin/master)
 
 else()
-  set(DEFAULT_SIRF_TAG v1.1.1)
+  set(DEFAULT_SIRF_TAG v2.0.0-rc.1)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
@@ -187,9 +188,13 @@ SET(glog_TAG ${DEFAULT_glog_TAG} CACHE STRING ON)
 set(ACE_URL ${DEFAULT_ACE_URL} CACHE STRING ON)
 set(ACE_TAG ${DEFAULT_ACE_TAG} CACHE STRING ON)
 
+set(NIFTYREG_URL ${DEFAULT_NIFTYREG_URL} CACHE STRING ON)
+set(NIFTYREG_TAG ${DEFAULT_NIFTYREG_TAG} CACHE STRING ON)
+
 mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   Gadgetron_URL Gadgetron_TAG
   siemens_to_ismrmrd_URL siemens_to_ismrmrd_TAG
   ISMRMRD_URL ISMRMRD_TAG
   petmr_rd_tools_URL petmr_rd_tools_TAG
-  glog_URL glog_TAG)
+  glog_URL glog_TAG
+  NIFTYREG_URL NIFTYREG_TAG)
