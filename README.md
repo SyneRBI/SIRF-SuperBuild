@@ -230,19 +230,22 @@ There is a `DEVEL_BUILD` tag that allows to build the upstream/master versions o
 |`ISMRMRD_URL` | https://github.com/ismrmrd/ismrmrd | https://github.com/ismrmrd/ismrmrd |
 |`ISMRMRD_TAG` | `42d93137cc16c270c8ba065edd2496483161bd21` | `origin/master` |
 
-To use the `DEVEL_BUILD` option one may (on the terminal)
-
-```bash
-cd ~/devel/build
-cmake ../SIRF-SuperBuild -DDEVEL_BUILD=ON
-```
-
-Additionally one may want to use only a specific version of a package. This is achieved by adding the right tag to the command line (see the table above for available tags):
+One may want to use only a specific version of a package. This is achieved by adding the right tag to the command line (see the table above for some available tags):
 
 ```bash
 cd ~/devel/build
 cmake ../SIRF-SuperBuild -DSIRF_TAG=<a valid hash>
 ```
+
+To use the `DEVEL_BUILD` option one may (on the terminal)
+
+```bash
+cd ~/devel/build
+cmake ../SIRF-SuperBuild -DDEVEL_BUILD=ON -U*_TAG -U*_URL
+```
+The `-U` flags will make sure that cached CMake variables are removed such that `DEVEL_BUILD=ON` will
+set them to the desired versions.
+
 Note that the CMake options in the table are Advanced Options. When running the CMake GUI (or ccmake) they will therefore only be visible when you toggle those on.
 
 *Warning:* All these variables are cached. This means that once set, you have to change them one by one. Setting
@@ -262,7 +265,7 @@ cmake -DDEVEL_BUILD=ON -USIRF_URL -USIRF_TAG -USTIR_URL -USTIR_TAG -UGadgetron_U
 
 * By the way, when using `USE_SYSTEM_FFTW3=OFF`, CMake currently does find our own installation even if the `FFTW3_ROOT_DIR` env variable (as find_library etc give precedence to `MAKE_PREFIX_PATH` over `HINTS` ).
 
-* CMake does come with FindArmadillo.cmake but it currently (at least up to CMake 3.12) has no variable to specify its location at all. This implies that when using `USE_SYSTEM_ARMADILLO=On`, you have to install armadillo installed in a system location, unless some extra work is done. See [this post on stackoverflow](https://stackoverflow.com/questions/35304513/cmake-find-armadillo-library-installed-in-a-custom-location) for some suggestions, which we haven't tried.
+* CMake does come with FindArmadillo.cmake but it currently (at least up to CMake 3.12) has no variable to specify its location at all. This implies that when using `USE_SYSTEM_ARMADILLO=On`, you have to install armadillo in a system location, unless some extra work is done. See [this post on stackoverflow](https://stackoverflow.com/questions/35304513/cmake-find-armadillo-library-installed-in-a-custom-location) for some suggestions, which we haven't tried.
 
 [CI-badge]: https://travis-ci.org/CCPPETMR/SIRF-SuperBuild.svg?branch=master
 [CI-link]: https://travis-ci.org/CCPPETMR/SIRF-SuperBuild
