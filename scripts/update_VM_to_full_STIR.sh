@@ -17,7 +17,7 @@ if [ -z "$SIRF_PATH" -o ! -d $SIRF_PATH -o ! -d $SIRF_PATH/../STIR ]; then
 fi
 
 # change build files to also build the STIR executables
-cd $SIRF_PATH/..
+cd $SIRF_PATH/../..
 cmake -DBUILD_STIR_EXECUTABLES=ON -DBUILD_STIR_SWIG_PYTHON=ON .
 make -j2 
 
