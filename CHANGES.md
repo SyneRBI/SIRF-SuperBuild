@@ -16,6 +16,7 @@
    - `BUILD_STIR_WITH_OPENMP` -> `STIR_ENABLE_OPENMP`
    - `BUILD_STIR_EXECUTABLES` -> `STIR_BUILD_EXECUTABLES`
    - `BUILD_STIR_SWIG_PYTHON` -> `STIR_BUILD_SWIG_PYTHON`
+- NiftyReg: Now build NiftyReg by default. If built (or provided), SIRF will be built with registration capabilities.
 
 ## v1.1.0
 
