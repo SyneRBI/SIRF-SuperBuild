@@ -36,7 +36,8 @@ When building the official prebuilt VM with SIRF pre-installed, we follow the st
 Additionally we run the script `first_run.sh` which
 
 1. changes some settings of the gnome desktop environment
-2. compacts the size of the appliance. This step involves filling the virtual hard drive with an enourmous file followed by its removal.
+2. compacts the size of the appliance. This step involves filling the virtual hard drive with an enormous file followed by its removal.
 
-Users are **not required** to run the `first_run.sh` script.
+Users are **not required** to run the `first_run.sh` script. However, you then probably want to run the `configure_gnome.sh`script
+which does the gnome configuration.
 
