@@ -10,11 +10,12 @@ echo Using $NOCORES cores
 
 mkdir ~/devel
 cd ~/devel
+
 git clone https://github.com/CCPPETMR/CCPPETMR_VM.git
+
 cd CCPPETMR_VM
 sudo bash scripts/INSTALL_prerequisites_with_apt-get.sh
 sudo bash scripts/INSTALL_python_packages.sh
-sudo pip install -U matplotlib
 sudo apt-get purge cmake -y
 sudo bash scripts/INSTALL_CMake.sh
 
