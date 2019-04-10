@@ -146,23 +146,19 @@ option(USE_SYSTEM_NiftyReg "Build using an external version of NiftyReg" OFF)
 option(USE_SYSTEM_GTest "Build using an external version of GTest" OFF)
 option(USE_SYSTEM_ACE "Build using an external version of ACE" ON)
 
-if (APPLE)
-  set (build_STIR_OPENMP_default OFF)
-else()
-  set (build_STIR_OPENMP_default ON)
-endif()  
-option(BUILD_STIR_WITH_OPENMP "Build STIR with OpenMP acceleration" ${build_STIR_OPENMP_default})
-
-
 if (WIN32)
   set(build_Gadgetron_default OFF)
 else()
   set(build_Gadgetron_default ON)
 endif()
 
+include (RenameVariable)
+
+RenameVariable(BUILD_GADGETRON BUILD_Gadgetron build_Gadgetron_default)
+
 option(BUILD_SIRF "Build SIRF" ON)
 option(BUILD_STIR "Build STIR" ON)
-option(BUILD_GADGETRON "Build Gadgetron" ${build_Gadgetron_default})
+option(BUILD_Gadgetron "Build Gadgetron" ${build_Gadgetron_default})
 option(BUILD_siemens_to_ismrmrd "Build siemens_to_ismrmrd" OFF)
 option(BUILD_petmr_rd_tools "Build petmr_rd_tools" OFF)
 option(BUILD_NiftyReg "Build NiftyReg" ON)
@@ -190,7 +186,7 @@ if (BUILD_STIR)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES STIR)
 endif()
 
-if (BUILD_GADGETRON)
+if (BUILD_Gadgetron)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES Gadgetron)
   set(Armadillo_REQUIRED_VERSION 4.600)
 endif()
