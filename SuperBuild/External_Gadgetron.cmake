@@ -73,11 +73,14 @@ endif ()
       /usr/local/Cellar/openblas/ if installed with \"brew install openblas\".")
   endif()
 
-  #option(BUILD_GADGETRON_NATIVE_PYTHON_SUPPORT
+  #option(Gadgetron_BUILD_PYTHON_SUPPORT
   #  "Build Gadgetron Python gadgets (not required for SIRF)" OFF)
-  set(BUILD_GADGETRON_NATIVE_PYTHON_SUPPORT OFF) # <-Disabled for v1.0
-  option(BUILD_GADGETRON_NATIVE_MATLAB_SUPPORT
-    "Build Gadgetron MATLAB gadgets (not required for SIRF)" OFF)
+  set(Gadgetron_BUILD_PYTHON_SUPPORT OFF) # <-Disabled for v1.0
+  set(default_Gadgetron_BUILD_MATLAB_SUPPORT OFF)
+  RenameVariable(BUILD_GADGETRON_MATLAB_SUPPORT Gadgetron_BUILD_MATLAB_SUPPORT default_Gadgetron_BUILD_MATLAB_SUPPORT)
+  option(Gadgetron_BUILD_MATLAB_SUPPORT
+    "Build Gadgetron MATLAB gadgets (not required for SIRF)" ${default_Gadgetron_BUILD_MATLAB_SUPPORT})
+
   option(Gadgetron_USE_CUDA "Enable Gadgetron CUDA (if cuda libraries are present)" ON)
   mark_as_advanced(Gadgetron_USE_CUDA)
   
@@ -93,8 +96,8 @@ endif ()
     TMP_DIR ${${proj}_TMP_DIR}
 	
     CMAKE_ARGS
-        -DBUILD_PYTHON_SUPPORT=${BUILD_GADGETRON_NATIVE_PYTHON_SUPPORT}
-        -DBUILD_MATLAB_SUPPORT=${BUILD_GADGETRON_NATIVE_MATLAB_SUPPORT}
+        -DBUILD_PYTHON_SUPPORT=${Gadgetron_BUILD_PYTHON_SUPPORT}
+        -DBUILD_MATLAB_SUPPORT=${Gadgetron_BUILD_MATLAB_SUPPORT}
         -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
         -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
         -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}/include
@@ -125,7 +128,7 @@ endif ()
   # Gadgetron only adds tests if (GTEST_FOUND AND ARMADILLO_FOUND)
   if (BUILD_TESTING_${proj})
     add_test(NAME ${proj}_TESTS
-         COMMAND ${CMAKE_CTEST_COMMAND} -VV -C $<CONFIGURATION>
+         COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION> --output-on-failure
          WORKING_DIRECTORY ${${proj}_BINARY_DIR}/test)
   endif()
      
