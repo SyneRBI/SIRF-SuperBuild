@@ -27,4 +27,13 @@ location=`dirname $0`
 
 $location/configure_gnome.sh
 
+# configure jupyter notebook
+mkdir ~/.jupyter
+jupyter notebook --generate-config
+# requires to set the following variable manually by editing the file
+# jupyter_notebook_config.py
+# c.NotebookApp.ip = '0.0.0.0'
+jupyter notebook password
+
 $location/zero_fill.sh
+

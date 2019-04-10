@@ -36,4 +36,7 @@ gsettings set org.gnome.desktop.screensaver lock-enabled false
 gsettings set org.gnome.desktop.screensaver idle-activation-enabled false
 # enlarge pointer size
 gsettings set org.gnome.desktop.interface cursor-size 120
+# remove autosuspend notification
+gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout '0'
+gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-timeout '0'
 

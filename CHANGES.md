@@ -1,5 +1,15 @@
 # ChangeLog
 
+## 2.0.0-rc.1
+- upgraded to Ubuntu 18.04
+- installs more recent Gadgetron https://github.com/gadgetron/gadgetron/commit/b6191eaaa72ccca6c6a5fe4c0fa3319694f512ab
+- add port forwarding (8888 -> 8888 for jupyter)
+- install jupyter notebook, with default password
+- installs spyder v3.2
+- does not install a browser
+- add cython for CIL
+
+
 ## 1.1.1
 - added nbstripout (https://github.com/kynan/nbstripout) to handle conflicts in SIRF-Exercises
 
