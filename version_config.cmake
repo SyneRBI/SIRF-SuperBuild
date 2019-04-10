@@ -142,7 +142,7 @@ else()
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG fd3a7576a11930856d6af50d217f17d4848c2bff)
+  set(DEFAULT_STIR_TAG 3a277f7a819f35a553a8d6097402ea25cf55a240)
 
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
