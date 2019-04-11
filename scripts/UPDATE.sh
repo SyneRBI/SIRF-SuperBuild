@@ -1,9 +1,11 @@
 #!/bin/bash
 #
-# Script to install/update the CCP-PETMR VM. It could also be used for any other system
-# but will currently change your .sirfrc. This is to be avoided later on.
+# Script to install/update the CCP-PETMR VM. It could also be used for any
+# other system but will currently change your .sirfrc.
+# This is to be avoided later on.
 #
-# Authors: Kris Thielemans, Evgueni Ovtchinnikov and Edoardo Pasca
+# Authors: Kris Thielemans, Evgueni Ovtchinnikov, Edoardo Pasca,
+# Casper da Costa-Luis
 # Copyright 2016-2018 University College London
 # Copyright 2016-2018 Rutherford Appleton Laboratory STFC
 #
@@ -105,6 +107,13 @@ then
 fi
 
 SIRF_INSTALL_PATH=$SIRF_SRC_PATH/install
+
+# ignore notebook keys, https://github.com/CCPPETMR/SIRF-Exercises/issues/20
+git config --global filter.nbstripout.extrakeys || \
+git config --global filter.nbstripout.extrakeys '
+  metadata.celltoolbar metadata.kernel_spec.display_name
+  metadata.kernel_spec.name metadata.language_info.codemirror_mode.version
+  metadata.language_info.pygments_lexer metadata.language_info.version'
 
 # SuperBuild
 SuperBuild(){
