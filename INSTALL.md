@@ -21,7 +21,7 @@ Although other Virtual Machine software might work, we have not tried this and w
     - If the installation takes you directly to the `Security and Privacy` window, select `Allow` (the VB is labelled as from Oracle). When the installer asks if it should Move to Trash, say `Keep` because you need to re-run the instllation again with the revised security setting. Second time around, you can move it to trash.
 
 3. Download the preinstalled virtual machine from http://www.ccppetmr.ac.uk/downloads.
-Warning: this file is ~4.6GB. (You can of course download to a USB stick to save space on your hard-disk).
+Warning: this file can be ~4.9GB. Dpending upon where on your computer the .ova file was downloaded, you may wish to move it to another folder before opening it. (You can download to a USB stick or hard drive to save space on your hard-disk but performance might be reduced).
 
 4. Open the downloaded OVA file (double-click or whatever is appropriate for your system). This should start VirtualBox with the "Import" dialog box.
 
