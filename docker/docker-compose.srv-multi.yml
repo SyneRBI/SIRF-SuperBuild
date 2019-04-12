@@ -1,0 +1,13 @@
+version: '3.4'
+services:
+ sirf:
+  image: ccppetmr/sirf:service-multi
+  build:
+   target: multi
+   cache_from:
+    - ccppetmr/sirf:core
+    - ccppetmr/sirf:latest
+    - ccppetmr/sirf:service
+    - ccppetmr/sirf:service-multi
+  ports:
+   - "8890-8899:8890-8899"

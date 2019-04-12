@@ -55,6 +55,8 @@ Service images are intended to be run in the background, and expose:
 
 - For a service (Jupyter) container:
     + `./sirf-compose-service`
+- For a container hosting 10 Jupyter servers:
+    + `./sirf-compose-service-multi`
 - For a basic interactive container:
     + on Linux: `./sirf-compose`
     + on Windows: `docker-compose`
@@ -63,10 +65,9 @@ Run any of the above commands without arguments for help.
 
 For example, to host multiple servers on one machine, simply:
 ```
-grep -n '# .*scaling' docker-compose*.yml  # follow these edit instructions
-./sirf-compose-server up -d --scale sirf=3 sirf  # start 3 servers
-./sirf-compose-server ps  # print out exposed ports
-./sirf-compose-server stop  # stop all servers
+./sirf-compose-server-multi up -d sirf  # start 10 servers
+./sirf-compose-server-multi ps # print out exposed ports
+./sirf-compose-server-multi stop  # stop all servers
 ```
 
 ### Links

@@ -16,5 +16,5 @@ services:
    - "9999:8888"  # jupyter
    # for scaling, use this instead for random port assignment
    # (https://github.com/docker/compose/issues/2260):
-   #- "9002"
-   #- "8888"
+   #- "9000-9099:9002"
+   #- "8800-8899:8888"
