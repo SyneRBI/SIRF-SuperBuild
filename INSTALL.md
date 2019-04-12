@@ -1,4 +1,4 @@
-# CCPPETMR Virtual Machine installation and running instructions
+# CCPPETMR Virtual Machine: Installation and running of pre-built machine
 
 If you have any problems, please first re-check this web-page. If you cannot solve your issue, please email CCP-PETMR-USERS @ JISCMAIL.AC.UK
 
