@@ -41,9 +41,10 @@ docker pull ccppetmr/sirf:<DOCKER_TAG>
 
 Service images are intended to be run in the background, and expose:
 
-| Port | Notes |
+| Port(s) | Notes |
 | --- | --- |
 | 9999 | `Jupyter` (in folder `/devel`) |
+| 8890-9 | `Jupyter` (in folder `/devel/SIRF-Exercises-<0-9>`) |
 | 9002 | `Gadgetron` |
 
 [dockerhub-SIRF]: https://hub.docker.com/r/ccppetmr/sirf/
@@ -63,12 +64,15 @@ Service images are intended to be run in the background, and expose:
 
 Run any of the above commands without arguments for help.
 
-For example, to host multiple servers on one machine, simply:
+For example, to host multiple Jupyter servers in one container, simply:
 ```
-./sirf-compose-server-multi up -d sirf  # start 10 servers
+./sirf-compose-server-multi up -d sirf  # start 10 jupyter servers
 ./sirf-compose-server-multi ps # print out exposed ports
-./sirf-compose-server-multi stop  # stop all servers
+./sirf-compose-server-multi stop  # stop and remove the container
 ```
+
+Note that the `devel/SIRF-Exercises*` shared folders created in the above steps
+will persist across container (and indeed host) restarts.
 
 ### Links
 

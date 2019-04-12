@@ -43,15 +43,17 @@ if [ ! -f ~/.jupyter/jupyter_notebook_config.py ]; then
   >> ~/.jupyter/jupyter_notebook_config.py
 fi
 
-if [ -f $this/service.multi.sh ]; then
-  # serve 10 notebooks
-  $this/service.multi.sh 10 $[JUPYTER_PORT + 2] &
-else
-  pushd /devel
-  [ -d SIRF-Exercises ] || cp -a $SIRF_PATH/../../../SIRF-Exercises .
-  jupyter notebook --ip 0.0.0.0 --port $JUPYTER_PORT --no-browser &
-  popd
-fi
+pushd /devel
+[ -d SIRF-Exercises ] || cp -a $SIRF_PATH/../../../SIRF-Exercises .
+popd
+
+# serve a master notebook
+jupyter notebook --ip 0.0.0.0 --port $JUPYTER_PORT --no-browser \
+  --notebook-dir /devel/ &
+
+# serve 10 notebooks
+[ -f $this/service.multi.sh ] \
+  && $this/service.multi.sh 10 $[JUPYTER_PORT + 2] &
 
 popd
 

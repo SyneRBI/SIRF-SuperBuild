@@ -23,7 +23,7 @@ stop_service()
 
 for JUPYTER_PORT in `seq $MIN_PORT $[MIN_PORT + NUM_INST - 1]`; do
   [ -d $INSTALL_DIR/SIRF-Exercises-$JUPYTER_PORT ] \
-    || cp -r /opt/SIRF-Exercises $INSTALL_DIR/SIRF-Exercises-$JUPYTER_PORT
+    || cp -r $INSTALL_DIR/SIRF-Exercises $INSTALL_DIR/SIRF-Exercises-$JUPYTER_PORT
   jupyter notebook --ip 0.0.0.0 --port $JUPYTER_PORT \
     --no-browser --notebook-dir $INSTALL_DIR/SIRF-Exercises-$JUPYTER_PORT &
 done
