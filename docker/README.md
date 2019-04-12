@@ -7,6 +7,8 @@ Docker wrapper for CCP PET-MR SIRF.
 1. Install [docker CE][docker-ce] and [`docker-compose`][docker-compose],
 2. Run `./sirf-compose-service up -d sirf` (in this folder)
 3. Open a browser at <http://localhost:9999>. It may take a few seconds.
+(Run `docker logs -f sirf` to see the container's progress -
+eventually there should be a message stating the notebook has started.)
 The password is `virtual`.
 The directory is mounted at `/devel` in the docker container
 from `./devel` (in this folder) on the host. The container will copy
