@@ -17,7 +17,7 @@ Although other Virtual Machine software might work, we have not tried this and w
     - For Macs, the installation of Virtual Box might require you to alter your security settings. If you receive an error along the lines of `kernel driver not installed (rc=-1908)`, the following might help. Click on the Apple icon in the top-left of your screen and then `System Preferences->Security & Privacy->General`. Click the padlock in the bottom-left and enter your password to be able to make changes to this page. Click `Allow` next to the Virtual Box text. Hopefully the problem will have been sorted.
 
 3. Download the preinstalled virtual machine from http://www.ccppetmr.ac.uk/downloads.
-Warning: this file is ~1.8GB. (You can of course download to a USB stick to save space on your hard-disk).
+Warning: this file is ~4.6GB. (You can of course download to a USB stick to save space on your hard-disk).
 
 4. Open the downloaded OVA file (double-click or whatever is appropriate for your system). This should start VirtualBox with the "Import" dialog box.
 
