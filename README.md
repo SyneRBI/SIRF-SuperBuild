@@ -1,6 +1,6 @@
 # CCPPETMR Virtual Machine: Build your own VM 
 
-This project contains as series of files and scripts to create and install a virtual machine running [SIRF](https://github.com/CCPPETMR/SIRF) and its prerequisites. If you just want to download and use a pre-built VM, it can be downloaded from our [website](http://www.ccppetmr.ac.uk/downloads), just check the
+This project contains a series of files and scripts to create and install a virtual machine running [SIRF](https://github.com/CCPPETMR/SIRF) and its prerequisites. If you just want to download and use a pre-built VM, it can be downloaded from our [website](http://www.ccppetmr.ac.uk/downloads), just check the
 [installation  instructions](INSTALL.md) and our [wiki](https://github.com/CCPPETMR/CCPPETMR_VM/wiki)
 for basic usage.
 
