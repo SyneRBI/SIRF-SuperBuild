@@ -8,7 +8,7 @@ This section assumes you want to use our pre-configured VM (which is recommended
 
 1. Make sure you have enough free disk-space on your laptop (~10GB for installation).
 
-2. Install [VirtualBox](https://www.virtualbox.org), our [Download page](http://www.ccppetmr.ac.uk/downloads) specifies the recommended version. Please note that this will require administrator permissions on your computer. 
+2. Install VirtualBox, our [Download page](http://www.ccppetmr.ac.uk/downloads) specifies the recommended version. Please note that this will require administrator permissions on your computer. 
 You do not need to install the Oracle extensions to VirtualBox, although it might come in handy for USB support. 
 Although other Virtual Machine software might work, we have not tried this and will not be able to help to get this going.
   Some extra pointers if you experience problems with installing VirtualBox
