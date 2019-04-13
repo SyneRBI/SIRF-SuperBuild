@@ -16,6 +16,6 @@ echo "Identity=unix-user:*" >> 45-allow-colord.pkla
 echo "Action=org.freedesktop.color-manager.create-device;org.freedesktop.color-manager.create-profile;org.freedesktop.color-manager.delete-device;org.freedesktop.color-manager.delete-profile;org.freedesktop.color-manager.modify-device;org.freedesktop.color-manager.modify-profile" >> 45-allow-colord.pkla
 echo "ResultAny=no" >> 45-allow-colord.pkla
 echo "ResultInactive=no" >> 45-allow-colord.pkla
-echo "ResultActive=yes" >> >> 45-allow-colord.pkla
+echo "ResultActive=yes" >> 45-allow-colord.pkla
 sudo mv 45-allow-colord.pkla /etc/polkit-1/localauthority/50-local.d/
 chmod 755 /etc/polkit-1/localauthority/50-local.d/45-allow-colord.pkla
