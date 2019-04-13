@@ -30,7 +30,9 @@ resource "azurerm_subnet" "mytfsubnet" {
 
 # Create public IPs
 resource "azurerm_public_ip" "mytfpublicip" {
-    name                         = "${var.vm_prefix}PublicIP"
+    count                        = "${var.vm_total_no_machines}"
+    name                         = "${var.vm_prefix}${count.index}PublicIP"
+    domain_name_label            = "${var.vm_prefix}${count.index}"
     location                     = "${var.location}"
     resource_group_name          = "${azurerm_resource_group.mytfgroup.name}"
     public_ip_address_allocation = "dynamic"
@@ -89,16 +91,17 @@ resource "azurerm_network_security_group" "mytfsg" {
 
 # Create network interface
 resource "azurerm_network_interface" "mytfnic" {
-    name                      = "${var.vm_prefix}NIC"
+    count                     = "${var.vm_total_no_machines}"
+    name                      = "${var.vm_prefix}${count.index}NIC"
     location                  = "${var.location}"
     resource_group_name       = "${azurerm_resource_group.mytfgroup.name}"
     network_security_group_id = "${azurerm_network_security_group.mytfsg.id}"
 
     ip_configuration {
-        name                          = "${var.vm_prefix}NicConfiguration"
+        name                          = "${var.vm_prefix}${count.index}NicConfiguration"
         subnet_id                     = "${azurerm_subnet.mytfsubnet.id}"
         private_ip_address_allocation = "dynamic"
-        public_ip_address_id          = "${azurerm_public_ip.mytfpublicip.id}"
+        public_ip_address_id          = "${element(azurerm_public_ip.mytfpublicip.*.id, count.index)}"
     }
 
     tags {
@@ -130,14 +133,15 @@ resource "azurerm_storage_account" "mytfstorageaccount" {
 
 # Create virtual machine
 resource "azurerm_virtual_machine" "mytfvm" {
-    name                  = "${var.vm_prefix}VM"
+    count                 = "${var.vm_total_no_machines}"
+    name                  = "${var.vm_prefix}${count.index}"
     location              = "${var.location}"
     resource_group_name   = "${azurerm_resource_group.mytfgroup.name}"
-    network_interface_ids = ["${azurerm_network_interface.mytfnic.id}"]
+    network_interface_ids = ["${element(azurerm_network_interface.mytfnic.*.id, count.index)}"]
     vm_size               = "${var.vm_size}"
 
     storage_os_disk {
-        name              = "${var.vm_prefix}OsDisk"
+        name              = "${var.vm_prefix}${count.index}-OsDisk"
         caching           = "ReadWrite"
         create_option     = "FromImage"
         managed_disk_type = "Standard_LRS"
@@ -153,7 +157,7 @@ resource "azurerm_virtual_machine" "mytfvm" {
     }
 
     os_profile {
-        computer_name  = "${var.vm_prefix}vm"
+        computer_name  = "${var.vm_prefix}${count.index}vm"
         admin_username = "${var.vm_username}"
         admin_password = "${var.vm_password}"
     }
