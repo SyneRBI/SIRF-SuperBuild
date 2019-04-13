@@ -109,7 +109,6 @@ fi
 SIRF_INSTALL_PATH=$SIRF_SRC_PATH/install
 
 # ignore notebook keys, https://github.com/CCPPETMR/SIRF-Exercises/issues/20
-git config --global filter.nbstripout.extrakeys || \
 git config --global filter.nbstripout.extrakeys '
   metadata.celltoolbar metadata.kernelspec.display_name
   metadata.language_info.codemirror_mode.version
