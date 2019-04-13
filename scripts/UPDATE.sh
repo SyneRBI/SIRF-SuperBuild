@@ -112,7 +112,7 @@ SIRF_INSTALL_PATH=$SIRF_SRC_PATH/install
 git config --global filter.nbstripout.extrakeys || \
 git config --global filter.nbstripout.extrakeys '
   metadata.celltoolbar metadata.kernelspec.display_name
-  metadata.kernelspec.name metadata.language_info.codemirror_mode.version
+  metadata.language_info.codemirror_mode.version
   metadata.language_info.pygments_lexer metadata.language_info.version'
 
 # SuperBuild
