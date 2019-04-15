@@ -236,7 +236,7 @@ python setup.py install --user
 # install the SIRF-Exercises
 cd $SIRF_SRC_PATH
 clone_or_pull  https://github.com/CCPPETMR/SIRF-Exercises.git
-python -m pip install --user nbstripout
+python -m pip install -U --user nbstripout
 cd $SIRF_SRC_PATH/SIRF-Exercises
 PY_USER_BIN=`python -c 'import site; import os; print ( os.path.join(site.USER_BASE , "bin") )'`
 export PATH=${PY_USER_BIN}:${PATH}
