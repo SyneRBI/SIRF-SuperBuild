@@ -18,7 +18,7 @@ fi
 
 # change build files to also build the STIR executables
 cd $SIRF_PATH/../..
-cmake -DBUILD_STIR_EXECUTABLES=ON -DBUILD_STIR_SWIG_PYTHON=ON .
+cmake -DSTIR_BUILD_EXECUTABLES=ON -DSTIR_BUILD_SWIG_PYTHON=ON .
 make -j2 
 
 # update/get STIR exercises
