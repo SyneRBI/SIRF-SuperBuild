@@ -109,6 +109,7 @@ fi
 SIRF_INSTALL_PATH=$SIRF_SRC_PATH/install
 
 # ignore notebook keys, https://github.com/CCPPETMR/SIRF-Exercises/issues/20
+python -m pip install -U --user nbstripout
 git config --global filter.nbstripout.extrakeys '
   metadata.celltoolbar metadata.language_info.codemirror_mode.version
   metadata.language_info.pygments_lexer metadata.language_info.version'
@@ -225,6 +226,9 @@ update()
   build_and_install $*
 }
 
+# copy scripts into the path
+cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/scripts/update*sh $SIRF_INSTALL_PATH/bin
+
 # Launch the SuperBuild to update
 SuperBuild $SB_TAG
 
@@ -236,7 +240,6 @@ python setup.py install --user
 # install the SIRF-Exercises
 cd $SIRF_SRC_PATH
 clone_or_pull  https://github.com/CCPPETMR/SIRF-Exercises.git
-python -m pip install -U --user nbstripout
 cd $SIRF_SRC_PATH/SIRF-Exercises
 PY_USER_BIN=`python -c 'import site; import os; print ( os.path.join(site.USER_BASE , "bin") )'`
 export PATH=${PY_USER_BIN}:${PATH}
@@ -248,9 +251,6 @@ if [ -d STIR-exercises ]; then
   cd STIR-exercises
   git pull
 fi
-
-# copy scripts into the path
-cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/scripts/update*sh $SIRF_INSTALL_PATH/bin
 
 # copy help file to Desktop
 if [ ! -d ~/Desktop ]
@@ -274,9 +274,7 @@ if [ ! -z "$STIR_exercises_PATH" ]; then
     echo "export STIR_exercises_PATH=$SIRF_SRC_PATH/STIR-exercises" >> ~/.sirfrc
 fi
 
-# TODO get this from somewhere else
 version=`echo -n "export SIRF_VM_VERSION=" | cat - ${SIRF_SRC_PATH}/CCPPETMR_VM/VM_version.txt`
-#echo "export SIRF_VM_VERSION=0.9.2" > ~/.sirf_VM_version
 echo $version > ~/.sirf_VM_version
 
 echo ""
