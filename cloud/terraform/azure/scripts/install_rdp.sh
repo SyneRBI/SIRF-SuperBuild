@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo apt-get install -y gnome spyder xrdp
+sudo apt-get install -y xrdp
 
 mkdir ~/Downloads
 cd ~/Downloads
