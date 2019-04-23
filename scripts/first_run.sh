@@ -28,11 +28,11 @@ location=`dirname $0`
 $location/configure_gnome.sh
 
 # configure jupyter notebook
-mkdir ~/.jupyter
-jupyter notebook --generate-config
-# requires to set the following variable manually by editing the file
-# jupyter_notebook_config.py
-# c.NotebookApp.ip = '0.0.0.0'
+mkdir -p ~/.jupyter
+#jupyter notebook --generate-config
+echo "c.NotebookApp.ip = '0.0.0.0'" > ~/.jupyter/jupyter_notebook_config.py
+echo "c.NotebookApp.notebook_dir = u'/home/sirfuser/devel/SIRF-Exercises/notebooks'" >> ~/.jupyter/jupyter_notebook_config.py
+#set a default password "virtual"
 jupyter notebook password
 
 $location/zero_fill.sh
