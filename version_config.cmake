@@ -149,7 +149,7 @@ else()
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
   set(DEFAULT_siemens_to_ismrmrd_TAG ba4773f9cf4bba5f3ccd19930e3548d8273fee01)
 
-  ## petmr-rd-tools
+  ## pet-rd-tools
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
   set(DEFAULT_pet_rd_tools_TAG b88281f79e8c4a3781ebda7663f1ce7f5cab6e68)
 
