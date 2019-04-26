@@ -127,9 +127,9 @@ if (DEVEL_BUILD)
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd )
   set(DEFAULT_siemens_to_ismrmrd_TAG origin/master)
 
-  ## petmr-rd-tools
-  set(DEFAULT_petmr_rd_tools_URL https://github.com/UCL/petmr-rd-tools )
-  set(DEFAULT_petmr_rd_tools_TAG origin/master)
+  ## pet-rd-tools
+  set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
+  set(DEFAULT_pet_rd_tools_TAG origin/master)
 
   ## glog
   set(DEFAULT_glog_URL https://github.com/google/glog )
@@ -149,9 +149,9 @@ else()
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
   set(DEFAULT_siemens_to_ismrmrd_TAG ba4773f9cf4bba5f3ccd19930e3548d8273fee01)
 
-  ## petmr-rd-tools
-  set(DEFAULT_petmr_rd_tools_URL https://github.com/UCL/petmr-rd-tools )
-  set(DEFAULT_petmr_rd_tools_TAG b88281f79e8c4a3781ebda7663f1ce7f5cab6e68)
+  ## pet-rd-tools
+  set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
+  set(DEFAULT_pet_rd_tools_TAG b88281f79e8c4a3781ebda7663f1ce7f5cab6e68)
 
   ## glog
   set(DEFAULT_glog_URL https://github.com/google/glog )
@@ -179,8 +179,8 @@ SET(siemens_to_ismrmrd_URL ${DEFAULT_siemens_to_ismrmrd_URL} CACHE STRING ON)
 SET(ISMRMRD_TAG ${DEFAULT_ISMRMRD_TAG} CACHE STRING ON)
 SET(ISMRMRD_URL ${DEFAULT_ISMRMRD_URL} CACHE STRING ON)
 
-SET(petmr_rd_tools_TAG ${DEFAULT_petmr_rd_tools_TAG} CACHE STRING ON)
-SET(petmr_rd_tools_URL ${DEFAULT_petmr_rd_tools_URL} CACHE STRING ON)
+SET(pet_rd_tools_TAG ${DEFAULT_pet_rd_tools_TAG} CACHE STRING ON)
+SET(pet_rd_tools_URL ${DEFAULT_pet_rd_tools_URL} CACHE STRING ON)
 
 SET(glog_URL ${DEFAULT_glog_URL} CACHE STRING ON)
 SET(glog_TAG ${DEFAULT_glog_TAG} CACHE STRING ON)
@@ -195,6 +195,6 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   Gadgetron_URL Gadgetron_TAG
   siemens_to_ismrmrd_URL siemens_to_ismrmrd_TAG
   ISMRMRD_URL ISMRMRD_TAG
-  petmr_rd_tools_URL petmr_rd_tools_TAG
+  pet_rd_tools_URL pet_rd_tools_TAG
   glog_URL glog_TAG
   NIFTYREG_URL NIFTYREG_TAG)
