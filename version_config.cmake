@@ -141,7 +141,6 @@ if (DEVEL_BUILD)
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
   set(DEFAULT_ACE_TAG origin/master)
 
-<<<<<<< HEAD
   # CCPi CIL
   set(CIL_VERSION "19.02")
   set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
@@ -211,31 +210,23 @@ SET(glog_TAG ${DEFAULT_glog_TAG} CACHE STRING ON)
 set(ACE_URL ${DEFAULT_ACE_URL} CACHE STRING ON)
 set(ACE_TAG ${DEFAULT_ACE_TAG} CACHE STRING ON)
 
-<<<<<<< HEAD
 set(CCPi-RGL_URL ${DEFAULT_CCPi-RGL_URL} CACHE STRING ON)
 set(CCPi-RGL_TAG ${DEFAULT_CCPi-RGL_TAG} CACHE STRING ON)
 set(CCPi-Framework_URL ${DEFAULT_CCPi-Framework_URL} CACHE STRING ON)
 set(CCPi-Framework_TAG ${DEFAULT_CCPi-Framework_TAG} CACHE STRING ON)
 set(CCPi-FrameworkPlugins_URL ${DEFAULT_CCPi-FrameworkPlugins_URL} CACHE STRING ON)
 set(CCPi-FrameworkPlugins_TAG ${DEFAULT_CCPi-FrameworkPlugins_TAG} CACHE STRING ON)
-=======
 set(NIFTYREG_URL ${DEFAULT_NIFTYREG_URL} CACHE STRING ON)
 set(NIFTYREG_TAG ${DEFAULT_NIFTYREG_TAG} CACHE STRING ON)
->>>>>>> origin
 
 mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   Gadgetron_URL Gadgetron_TAG
   siemens_to_ismrmrd_URL siemens_to_ismrmrd_TAG
   ISMRMRD_URL ISMRMRD_TAG
-<<<<<<< HEAD
-  petmr_rd_tools_URL petmr_rd_tools_TAG
+  pet_rd_tools_URL pet_rd_tools_TAG
   glog_URL glog_TAG
+  NIFTYREG_URL NIFTYREG_TAG)
   CCPi-Framework_URL CCPi-Framework_TAG
   CCPi-FrameworkPlugins_URL CCPi-FrameworkPlugins_TAG
   CCPi-RGL_URL CCPi-RGL_TAG
 )
-=======
-  pet_rd_tools_URL pet_rd_tools_TAG
-  glog_URL glog_TAG
-  NIFTYREG_URL NIFTYREG_TAG)
->>>>>>> origin
