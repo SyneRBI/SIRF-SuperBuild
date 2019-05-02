@@ -225,7 +225,7 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   ISMRMRD_URL ISMRMRD_TAG
   pet_rd_tools_URL pet_rd_tools_TAG
   glog_URL glog_TAG
-  NIFTYREG_URL NIFTYREG_TAG)
+  NIFTYREG_URL NIFTYREG_TAG
   CCPi-Framework_URL CCPi-Framework_TAG
   CCPi-FrameworkPlugins_URL CCPi-FrameworkPlugins_TAG
   CCPi-RGL_URL CCPi-RGL_TAG
