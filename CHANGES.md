@@ -1,15 +1,26 @@
 # ChangeLog
 
 
-## v2.0 (in progress)
-- ISMRMRD: v1.4.0
-- Gadgetron: [b6191ea](https://github.com/gadgetron/gadgetron/commit/b6191eaaa72ccca6c6a5fe4c0fa3319694f512ab)
-- Boost: 1.65.1 (linux) 1.68.0 (OSX)
-- GCC: 6 (required for Gadgetron)
-- CMake: 3.10.3
+## v2.0.0 (in progress)
+- Added NiftyReg and ACE
+- Added tests for various packages, not just SIRF (CMake variables `BUILD_TESTING_*`)
+- Updated various versions
+    - ISMRMRD: v1.4.0
+    - Gadgetron: [b6191ea](https://github.com/gadgetron/gadgetron/commit/b6191eaaa72ccca6c6a5fe4c0fa3319694f512ab)
+    - Boost: 1.65.1 (linux) 1.68.0 (OSX)
+    - STIR to version of 9 Apr 2019
+    - SIRF v2.0.0. If NiftyReg is built (or provided), SIRF will be built with registration capabilities.
 - docker images updates
   - Ubuntu: 18.04
   - `:service` images with `Jupyter` and `SIRF-Exercises`
+- addition of Azure scripts
+- require CMake: 3.10.0
+- changed some CMake variable names:
+   - `BUILD_GADGETRON` -> `BUILD_Gadgetron`
+   - `BUILD_GADGETRON_NATIVE_MATLAB_SUPPORT` -> `Gadgetron_BUILD_MATLAB_SUPPORT`
+   - `BUILD_STIR_WITH_OPENMP` -> `STIR_ENABLE_OPENMP`
+   - `BUILD_STIR_EXECUTABLES` -> `STIR_BUILD_EXECUTABLES`
+   - `BUILD_STIR_SWIG_PYTHON` -> `STIR_BUILD_SWIG_PYTHON`
 
 ## v1.1.0
 

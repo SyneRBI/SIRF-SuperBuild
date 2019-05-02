@@ -98,9 +98,10 @@ set(glog_TAG v035)
 set(ITK_URL https://itk.org/ITK.git)
 set(ITK_TAG v4.13.1)
 
-## NiftyReg
-set(NiftyReg_URL https://github.com/KCL-BMEIS/niftyreg.git )
-set(NiftyReg_TAG 33434c963e35e69fe0b1a3c5bf9057ff53288bc4 )
+## NIFTYREG
+set(DEFAULT_NIFTYREG_URL https://github.com/rijobro/niftyreg.git )
+set(DEFAULT_NIFTYREG_TAG 22f24db1113973507689aeabbc3f17ddeca1d7f6 )
+set(DEFAULT_NIFTYREG_REQUIRED_VERSION 1.5.61)
 
 ## ISMRMRD
 set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
@@ -123,15 +124,15 @@ if (DEVEL_BUILD)
   set (DEFAULT_SIRF_TAG origin/master)
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG f0c5df05fba86e51adcb573727175909e1c9c616)
+  set(DEFAULT_STIR_TAG origin/master)
 
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd )
   set(DEFAULT_siemens_to_ismrmrd_TAG origin/master)
 
-  ## petmr-rd-tools
-  set(DEFAULT_petmr_rd_tools_URL https://github.com/UCL/petmr-rd-tools )
-  set(DEFAULT_petmr_rd_tools_TAG origin/master)
+  ## pet-rd-tools
+  set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
+  set(DEFAULT_pet_rd_tools_TAG origin/master)
 
   ## glog
   set(DEFAULT_glog_URL https://github.com/google/glog )
@@ -140,6 +141,7 @@ if (DEVEL_BUILD)
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
   set(DEFAULT_ACE_TAG origin/master)
 
+<<<<<<< HEAD
   # CCPi CIL
   set(CIL_VERSION "19.02")
   set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
@@ -148,21 +150,20 @@ if (DEVEL_BUILD)
   set(DEFAULT_CCPi-RGL_TAG origin/master)
   set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
   set(DEFAULT_CCPi-FrameworkPlugins_TAG origin/master)
-
 else()
-	#  set(DEFAULT_SIRF_TAG v1.1.1)
-	set (DEFAULT_SIRF_TAG origin/add_to_sirf_classes)
+  # set(DEFAULT_SIRF_TAG v2.0.0-rc.1)
+  set (DEFAULT_SIRF_TAG origin/add_to_sirf_classes)
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG fd3a7576a11930856d6af50d217f17d4848c2bff)
+  set(DEFAULT_STIR_TAG 3a277f7a819f35a553a8d6097402ea25cf55a240)
 
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
   set(DEFAULT_siemens_to_ismrmrd_TAG ba4773f9cf4bba5f3ccd19930e3548d8273fee01)
 
-  ## petmr-rd-tools
-  set(DEFAULT_petmr_rd_tools_URL https://github.com/UCL/petmr-rd-tools )
-  set(DEFAULT_petmr_rd_tools_TAG b88281f79e8c4a3781ebda7663f1ce7f5cab6e68)
+  ## pet-rd-tools
+  set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
+  set(DEFAULT_pet_rd_tools_TAG b88281f79e8c4a3781ebda7663f1ce7f5cab6e68)
 
   ## glog
   set(DEFAULT_glog_URL https://github.com/google/glog )
@@ -201,8 +202,8 @@ SET(siemens_to_ismrmrd_URL ${DEFAULT_siemens_to_ismrmrd_URL} CACHE STRING ON)
 SET(ISMRMRD_TAG ${DEFAULT_ISMRMRD_TAG} CACHE STRING ON)
 SET(ISMRMRD_URL ${DEFAULT_ISMRMRD_URL} CACHE STRING ON)
 
-SET(petmr_rd_tools_TAG ${DEFAULT_petmr_rd_tools_TAG} CACHE STRING ON)
-SET(petmr_rd_tools_URL ${DEFAULT_petmr_rd_tools_URL} CACHE STRING ON)
+SET(pet_rd_tools_TAG ${DEFAULT_pet_rd_tools_TAG} CACHE STRING ON)
+SET(pet_rd_tools_URL ${DEFAULT_pet_rd_tools_URL} CACHE STRING ON)
 
 SET(glog_URL ${DEFAULT_glog_URL} CACHE STRING ON)
 SET(glog_TAG ${DEFAULT_glog_TAG} CACHE STRING ON)
@@ -210,20 +211,31 @@ SET(glog_TAG ${DEFAULT_glog_TAG} CACHE STRING ON)
 set(ACE_URL ${DEFAULT_ACE_URL} CACHE STRING ON)
 set(ACE_TAG ${DEFAULT_ACE_TAG} CACHE STRING ON)
 
+<<<<<<< HEAD
 set(CCPi-RGL_URL ${DEFAULT_CCPi-RGL_URL} CACHE STRING ON)
 set(CCPi-RGL_TAG ${DEFAULT_CCPi-RGL_TAG} CACHE STRING ON)
 set(CCPi-Framework_URL ${DEFAULT_CCPi-Framework_URL} CACHE STRING ON)
 set(CCPi-Framework_TAG ${DEFAULT_CCPi-Framework_TAG} CACHE STRING ON)
 set(CCPi-FrameworkPlugins_URL ${DEFAULT_CCPi-FrameworkPlugins_URL} CACHE STRING ON)
 set(CCPi-FrameworkPlugins_TAG ${DEFAULT_CCPi-FrameworkPlugins_TAG} CACHE STRING ON)
+=======
+set(NIFTYREG_URL ${DEFAULT_NIFTYREG_URL} CACHE STRING ON)
+set(NIFTYREG_TAG ${DEFAULT_NIFTYREG_TAG} CACHE STRING ON)
+>>>>>>> origin
 
 mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   Gadgetron_URL Gadgetron_TAG
   siemens_to_ismrmrd_URL siemens_to_ismrmrd_TAG
   ISMRMRD_URL ISMRMRD_TAG
+<<<<<<< HEAD
   petmr_rd_tools_URL petmr_rd_tools_TAG
   glog_URL glog_TAG
   CCPi-Framework_URL CCPi-Framework_TAG
   CCPi-FrameworkPlugins_URL CCPi-FrameworkPlugins_TAG
   CCPi-RGL_URL CCPi-RGL_TAG
 )
+=======
+  pet_rd_tools_URL pet_rd_tools_TAG
+  glog_URL glog_TAG
+  NIFTYREG_URL NIFTYREG_TAG)
+>>>>>>> origin
