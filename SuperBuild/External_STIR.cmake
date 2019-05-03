@@ -59,7 +59,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   endif()
   RenameVariable(BUILD_STIR_WITH_OPENMP STIR_ENABLE_OPENMP build_STIR_OPENMP_default)
   option(STIR_ENABLE_OPENMP "Build STIR with OpenMP acceleration" ${build_STIR_OPENMP_default})
-  set(default_BUILD_STIR_EXECUTABLES OFF)
+  set(default_STIR_BUILD_EXECUTABLES OFF)
   RenameVariable(BUILD_STIR_EXECUTABLES STIR_BUILD_EXECUTABLES default_STIR_BUILD_EXECUTABLES)
   option(STIR_BUILD_EXECUTABLES "Build all STIR executables" ${default_STIR_BUILD_EXECUTABLES})
   set(default_STIR_BUILD_SWIG_PYTHON OFF)
