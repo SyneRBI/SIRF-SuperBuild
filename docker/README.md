@@ -7,6 +7,8 @@ Docker wrapper for CCP PET-MR SIRF.
 1. Install [docker CE][docker-ce] and [`docker-compose`][docker-compose],
 2. Run `./sirf-compose-service up -d sirf` (in this folder)
 3. Open a browser at <http://localhost:9999>. It may take a few seconds.
+(Run `docker logs -f sirf` to see the container's progress -
+eventually there should be a message stating the notebook has started.)
 The password is `virtual`.
 The directory is mounted at `/devel` in the docker container
 from `./devel` (in this folder) on the host. The container will copy
@@ -41,9 +43,10 @@ docker pull ccppetmr/sirf:<DOCKER_TAG>
 
 Service images are intended to be run in the background, and expose:
 
-| Port | Notes |
+| Port(s) | Notes |
 | --- | --- |
 | 9999 | `Jupyter` (in folder `/devel`) |
+| 8890-9 | `Jupyter` (in folder `/devel/SIRF-Exercises-<0-9>`) |
 | 9002 | `Gadgetron` |
 
 [dockerhub-SIRF]: https://hub.docker.com/r/ccppetmr/sirf/
@@ -55,19 +58,23 @@ Service images are intended to be run in the background, and expose:
 
 - For a service (Jupyter) container:
     + `./sirf-compose-service`
+- For a container hosting 10 Jupyter servers:
+    + `./sirf-compose-service-multi`
 - For a basic interactive container:
     + on Linux: `./sirf-compose`
     + on Windows: `docker-compose`
 
 Run any of the above commands without arguments for help.
 
-For example, to host multiple servers on one machine, simply:
+For example, to host multiple Jupyter servers in one container, simply:
 ```
-grep -n '# .*scaling' docker-compose*.yml  # follow these edit instructions
-./sirf-compose-server up -d --scale sirf=3 sirf  # start 3 servers
-./sirf-compose-server ps  # print out exposed ports
-./sirf-compose-server stop  # stop all servers
+./sirf-compose-server-multi up -d sirf  # start 10 jupyter servers
+./sirf-compose-server-multi ps # print out exposed ports
+./sirf-compose-server-multi stop  # stop and remove the container
 ```
+
+Note that the `devel/SIRF-Exercises*` shared folders created in the above steps
+will persist across container (and indeed host) restarts.
 
 ### Links
 

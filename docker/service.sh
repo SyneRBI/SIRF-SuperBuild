@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ## Usage:
-# test.sh [<DEBUG_LEVEL> [<JUPYTER_PORT>]]
+# service.sh [<DEBUG_LEVEL> [<JUPYTER_PORT>]]
 #
 # Arguments:
 #   <DEBUG_LEVEL>  : [default: 0]
@@ -9,6 +9,7 @@
 ##
 
 [ -f .bashrc ] && . .bashrc
+this=$(dirname "${BASH_SOURCE[0]}")
 DEBUG="${1:-0}"
 JUPYTER_PORT="${2:-8888}"
 
@@ -32,7 +33,8 @@ pushd $SIRF_PATH/../..
 # start gadgetron
 GCONFIG=./INSTALL/share/gadgetron/config/gadgetron.xml
 [ -f "$GCONFIG" ] || cp "$GCONFIG".example "$GCONFIG"
-[ -f ./INSTALL/bin/gadgetron ] && ./INSTALL/bin/gadgetron >& gadgetron.log&
+[ -f ./INSTALL/bin/gadgetron ] \
+  && ./INSTALL/bin/gadgetron >& gadgetron.log&
 
 # start jupyter
 if [ ! -f ~/.jupyter/jupyter_notebook_config.py ]; then
@@ -40,10 +42,20 @@ if [ ! -f ~/.jupyter/jupyter_notebook_config.py ]; then
   echo "c.NotebookApp.password = u'sha1:cbf03843d2bb:8729d2fbec60cacf6485758752789cd9989e756c'" \
   >> ~/.jupyter/jupyter_notebook_config.py
 fi
+
 pushd /devel
 [ -d SIRF-Exercises ] || cp -a $SIRF_PATH/../../../SIRF-Exercises .
-jupyter notebook --ip 0.0.0.0 --port $JUPYTER_PORT --no-browser &
+which unzip || sudo apt-get install -yqq unzip
+for i in SIRF-Exercises/scripts/download_*.sh; do ./$i $PWD; done
 popd
+
+# serve a master notebook
+jupyter notebook --ip 0.0.0.0 --port $JUPYTER_PORT --no-browser \
+  --notebook-dir /devel/ &
+
+# serve 10 notebooks
+[ -f $this/service.multi.sh ] \
+  && $this/service.multi.sh 10 $[JUPYTER_PORT + 2] &
 
 popd
 

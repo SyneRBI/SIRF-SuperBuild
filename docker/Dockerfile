@@ -99,3 +99,6 @@ RUN rm user_service-ubuntu.sh requirements-service.txt
 
 COPY service.sh /usr/local/bin/
 CMD ["/usr/local/bin/service.sh"]
+
+FROM service as multi
+COPY service.multi.sh /usr/local/bin/
