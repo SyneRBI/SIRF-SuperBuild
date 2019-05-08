@@ -226,11 +226,11 @@ update()
   build_and_install $*
 }
 
-# copy scripts into the path
-cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/scripts/update*sh $SIRF_INSTALL_PATH/bin
-
 # Launch the SuperBuild to update
 SuperBuild $SB_TAG
+
+# copy scripts into the path
+cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/scripts/update*sh $SIRF_INSTALL_PATH/bin
 
 # Get extra python tools
 clone_or_pull  https://github.com/CCPPETMR/ismrmrd-python-tools.git
