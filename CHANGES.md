@@ -1,9 +1,9 @@
 # ChangeLog
 
 
-## v2.0.0 (in progress)
+## v2.0.0
 - Added CMake Variable `Gadgetron_USE_MKL` to allow Gadgetron build with MKL if available
-- Added NiftyReg and ACE
+- Added build of NiftyReg and ACE (optional)
 - Added tests for various packages, not just SIRF (CMake variables `BUILD_TESTING_*`)
 - Updated various versions
     - ISMRMRD: v1.4.0
