@@ -1,13 +1,10 @@
 # ChangeLog
 
-## 2.0.0-rc.2
-- bugfix in the creation of VM
-
-## 2.0.0-rc.1
+## 2.0.0
 - upgraded to Ubuntu 18.04
 - installs more recent Gadgetron https://github.com/gadgetron/gadgetron/commit/b6191eaaa72ccca6c6a5fe4c0fa3319694f512ab
-- add port forwarding (8888 -> 8888 for jupyter)
-- install jupyter notebook, with default password
+- add port forwarding (8888 -> 8888 for jupyter and 9001 and 9002 for Gadgetron)
+- install jupyter notebook, with default password 'virtual'
 - installs spyder v3.2
 - does not install a browser
 - add cython for CIL
