@@ -1,5 +1,8 @@
 # ChangeLog
 
+## v2.0.1
+- Switch NiftyReg remote from `rijobro` to `KCL-BMEIS` (following the acceptance of one of our PRs to their code).
+
 
 ## v2.0.0
 - Added CMake Variable `Gadgetron_USE_MKL` to allow Gadgetron build with MKL if available
