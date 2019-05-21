@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 2.0.1
+- remove spyder-kernels
+
 ## 2.0.0
 - upgraded to Ubuntu 18.04
 - installs more recent Gadgetron https://github.com/gadgetron/gadgetron/commit/b6191eaaa72ccca6c6a5fe4c0fa3319694f512ab
