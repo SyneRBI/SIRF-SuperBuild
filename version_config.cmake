@@ -96,9 +96,9 @@ set(ITK_URL https://itk.org/ITK.git)
 set(ITK_TAG v4.13.1)
 
 ## NIFTYREG
-set(DEFAULT_NIFTYREG_URL https://github.com/rijobro/niftyreg.git )
-set(DEFAULT_NIFTYREG_TAG 22f24db1113973507689aeabbc3f17ddeca1d7f6 )
-set(DEFAULT_NIFTYREG_REQUIRED_VERSION 1.5.61)
+set(DEFAULT_NIFTYREG_URL https://github.com/KCL-BMEIS/niftyreg.git )
+set(DEFAULT_NIFTYREG_TAG 99d584e2b8ea0bffe7e65e40c8dc818751782d92 )
+set(DEFAULT_NIFTYREG_REQUIRED_VERSION 1.5.68)
 
 ## ISMRMRD
 set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
