@@ -5,7 +5,8 @@ Docker wrapper for CCP PET-MR SIRF.
 ## TL;DR, I want a (Jupyter notebook) service NOW
 
 1. Install [docker CE][docker-ce] and [`docker-compose`][docker-compose],
-2. Run `./sirf-compose-server up -d sirf` (in this folder)
+2. Run `./sirf-compose-server up -d sirf` (in this folder,
+   `SIRF-SuperBuild/docker`)
 3. Open a browser at <http://localhost:9999>. It may take a few seconds.
 (Run `docker logs -f sirf` to see the container's progress -
 eventually there should be a message stating the notebook has started.)
@@ -61,11 +62,20 @@ This works best on a linux system due to:
 1. Possibility to get CUDA support within the container
 2. `X11` windows displayed natively without needing e.g. a `vnc` server or desktop in the container
 
-This is probably the easiest way to use `SIRF` due to really short installation instructions essentially consisting of:
+This is probably the easiest way to directly use `SIRF` due to really short
+installation instructions essentially consisting of:
 
 ```sh
 docker-compose up --no-start sirf
 docker start -ai sirf
+```
+
+This becomes even simpler if `SIRF` is only going to be used inside a
+Jupyter notebook:
+
+```sh
+sirf-compose-server up -d sirf
+firefox localhost:9999
 ```
 
 ## Summary
@@ -129,7 +139,7 @@ every time you want to play with `SIRF`.
 A wonderfully tiny list of everything important to know for a basic working knowledge of docker.
 
 - *Base image*: the starting point for building a Docker image
-    + analogous to a clean OS (in this case `ubuntu:16.04`)
+    + analogous to a clean OS (in this case `ubuntu:18.04`)
 - *Layer*: a single build step
     + usually represented by a single line in a `Dockerfile` (e.g. `apt-get install cmake`)
 - *Image*: a sequence of *layers* (applied on top of a *base image*)
@@ -254,6 +264,10 @@ will persist across container (and indeed host) restarts.
 ## Usage
 
 Well, that was easy. The container can be run interactively for daily use.
+Note that the `devel` folder in the host's `SIRF-SuperBuild/docker` directory
+is mounted to `/devel` in the container.
+
+### CLI
 
 ```bash
 SIRF-SuperBuild/docker$ docker start -ai sirf
@@ -265,8 +279,18 @@ The first line starts the `sirf` docker container.
 The second line starts `gadgetron` within the container as a background process.
 Finally, we can then run an example.
 
-Note that the `devel` folder in the host's `SIRF-SuperBuild/docker` directory
-is mounted to `/devel` in the container.
+### Jupyter
+
+```bash
+SIRF-SuperBuild/docker$ ./sirf-compose-server up -d sirf
+SIRF-SuperBuild/docker$ firefox localhost:9999
+SIRF-SuperBuild/docker$ ./sirf-compose-server down
+```
+
+The first line starts the `sirf` docker container, including `gadgetron` and
+`jupyter` within the container as background processes.
+The second line open the notebook in a browser.
+Finally, after finishing our work, we can stop the container.
 
 # Notes
 
@@ -276,7 +300,10 @@ is mounted to `/devel` in the container.
 ```
 - "Cannot connect to display" errors are usually fixed by running `xhost +local:""` on the host linux system
 - Non-linux users (e.g. Windows) will need to set up a desktop and vnc server in order to have a GUI (docker files coming soon)
-- On host systems with less than 16GB RAM, before `docker-compose up ...` you may want to edit `SIRF-SuperBuild/docker/user_sirf-ubuntu.sh`, changing the line `make -j...` to simply `make`. This increases build time and reduces build memory requirements.
+- On host systems with less than 16GB RAM, before `docker-compose up ...` you may want to edit `SIRF-SuperBuild/docker/user_sirf-ubuntu.sh`, changing the line `make -j...` to simply `make`. This increases build time and reduces build memory requirements
+- `localhost` probably won't work on Windows. The service IP address is instead:
+`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' sirf`
+- `docker logs -f sirf` and `docker ps -a` are useful commands for debugging
 
 ### Links
 
