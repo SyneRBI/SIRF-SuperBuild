@@ -5,7 +5,6 @@ else()
 endif()
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMake" ${CMAKE_MODULE_PATH})
-include(version_config.cmake)
 include(ExternalProject)
 include(ExternalProjectDependency)
 
