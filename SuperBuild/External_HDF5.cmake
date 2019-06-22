@@ -62,21 +62,21 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   if (WIN32 AND (${HDF5_DOWNLOAD_VERSION} STREQUAL 1.8.12))
     find_program(GIT "git")
     set(PATCHFILE "${CMAKE_SOURCE_DIR}/patches/hdf5-${HDF5_DOWNLOAD_VERSION}.patch")
-    set(PATCH_COMMAND "git apply -v --ignore-space-change --ignore-whitespace ${PATCHFILE}")
+    set(PATCH_COMMAND git apply -v --ignore-space-change --ignore-whitespace ${PATCHFILE})
+  else()
+    #make it empty, just to be sure
+    set(PATCH_COMMAND )
   endif()
 
   if (PATCH_COMMAND)
     message(STATUS "HDF5 PATCH_COMMAND=${PATCH_COMMAND}")
   endif()
 
-  # sadly, cannot use    "PATCH_COMMAND ${PATCH_COMMAND}" below. with weird error
-  if (PATCHFILE)
-   ExternalProject_Add(${proj}
+  ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
-    PATCH_COMMAND ${GIT} apply -v --ignore-space-change --ignore-whitespace ${PATCHFILE}
-    #PATCH_COMMAND ${PATCH_COMMAND}
+    PATCH_COMMAND ${PATCH_COMMAND}
     SOURCE_DIR ${${proj}_SOURCE_DIR}
     BINARY_DIR ${${proj}_BINARY_DIR}
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
@@ -90,27 +90,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DHDF5_BUILD_HL_LIB:BOOL=${HDF5_BUILD_HL_LIB}
         -DBUILD_TESTING:BOOL=OFF
     INSTALL_DIR ${HDF5_Install_Dir}
-   )
-  else()
-   ExternalProject_Add(${proj}
-    ${${proj}_EP_ARGS}
-    URL ${${proj}_URL}
-    URL_HASH MD5=${${proj}_MD5}
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
-
-    CMAKE_ARGS
-        ${CLANG_ARG}
-        -DHDF5_BUILD_EXAMPLES:BOOL=OFF
-        -DHDF5_BUILD_TOOLS:BOOL=OFF
-        -DHDF5_BUILD_HL_LIB:BOOL=${HDF5_BUILD_HL_LIB}
-        -DBUILD_TESTING:BOOL=OFF
-    INSTALL_DIR ${HDF5_Install_Dir}
-   )
-  endif()
+  )
 
   set( HDF5_ROOT ${HDF5_Install_Dir} )
   set( HDF5_INCLUDE_DIRS ${HDF5_ROOT}/include )
