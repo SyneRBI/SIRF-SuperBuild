@@ -115,9 +115,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set( HDF5_ROOT ${HDF5_Install_Dir} )
   set( HDF5_INCLUDE_DIRS ${HDF5_ROOT}/include )
   set(HDF5_CMAKE_ARGS
-    "-DHDF5_ROOT:PATH=${HDF5_ROOT}
+     -DHDF5_ROOT:PATH=${HDF5_ROOT}
      -DHDF5_INCLUDE_DIRS:PATH=${HDF5_INCLUDE_DIRS}
-     -DHDF5_FIND_DEBUG:BOOL=ON"
+     -DHDF5_FIND_DEBUG:BOOL=ON
   )
 
  else()
@@ -125,9 +125,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
       message(STATUS "USING the system ${externalProjName}, found HDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}, HDF5_C_LIBRARY_hdf5=${HDF5_C_LIBRARY_hdf5},HDF5_LIBRARIES=${HDF5_LIBRARIES}")
       set(HDF5_CMAKE_ARGS
-        "-DHDF5_INCLUDE_DIRS:PATH=${HDF5_INCLUDE_DIRS}
+         -DHDF5_INCLUDE_DIRS:PATH=${HDF5_INCLUDE_DIRS}
          -DHDF5_LIBRARIES:STRING=${HDF5_LIBRARIES}
-         -DHDF5_FIND_DEBUG:BOOL=ON"
+         -DHDF5_FIND_DEBUG:BOOL=ON
       )
   endif()
   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"

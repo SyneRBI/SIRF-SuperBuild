@@ -86,8 +86,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DMATLAB_ROOT=${Matlab_ROOT_DIR} # pass this for compatibility with old SIRF
         -DMATLAB_DEST_DIR=${MATLAB_DEST_DIR}
         -DSTIR_DIR=${STIR_DIR}
-        -DHDF5_ROOT=${HDF5_ROOT}
-        -DHDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}
+        ${HDF5_CMAKE_ARGS}
         -DISMRMRD_DIR=${ISMRMRD_DIR}
         -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
         -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
