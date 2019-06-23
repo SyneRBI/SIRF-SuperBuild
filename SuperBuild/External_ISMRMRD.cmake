@@ -60,7 +60,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       option(BUILD_TESTING_${proj} "Build tests for ${proj}" ON)
     endif()
   endif ()
-  
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
@@ -74,9 +74,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${ISMRMRD_Install_Dir}
             -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
             -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
-            -DHDF5_ROOT=${HDF5_ROOT}
-	    -DHDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}
-	    -DHDF5_LIBRARIES=${HDF5_LIBRARIES}
+            ${HDF5_CMAKE_ARGS}
             -DBOOST_ROOT=${BOOST_ROOT}
     INSTALL_DIR ${ISMRMRD_Install_Dir}
     DEPENDS

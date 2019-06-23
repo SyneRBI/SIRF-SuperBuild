@@ -22,7 +22,7 @@
 #=========================================================================
 
 #This needs to be unique globally
-set(proj NiftyReg)
+set(proj NIFTYREG)
 
 # Set dependency list
 set(${proj}_DEPENDENCIES "")
@@ -44,7 +44,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
   set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
-  set(${proj}_Binary_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
+  set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
   set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
   set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
   set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
@@ -54,24 +54,24 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     GIT_REPOSITORY ${${proj}_URL}
     GIT_TAG ${${proj}_TAG}
     SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_Binary_DIR}
+    BINARY_DIR ${${proj}_BINARY_DIR}
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
     STAMP_DIR ${${proj}_STAMP_DIR}
     TMP_DIR ${${proj}_TMP_DIR}
-
     CMAKE_ARGS
-        -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
-        -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
-        -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}
-        -DCMAKE_INSTALL_PREFIX=${${proj}_Install_Dir}
-	    INSTALL_DIR ${${proj}_Install_Dir}
-    DEPENDS
-        ${${proj}_DEPENDENCIES}
-  )
+      -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
+      -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
+      -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}
+      -DCMAKE_INSTALL_PREFIX=${${proj}_Install_Dir}
+      -DUSE_THROW_EXCEP=ON
+      # fixes lib_reg_maths.a `GOMP_parallel' undefined reference linker errors
+      -DUSE_OPENMP:BOOL=OFF
+    INSTALL_DIR ${${proj}_Install_Dir}
+    DEPENDS ${${proj}_DEPENDENCIES})
 
     set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
     set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
-
+    set(${proj}_DIR "${SUPERBUILD_INSTALL_DIR}/lib/cmake/NiftyReg")
    else()
       if(${USE_SYSTEM_${externalProjName}})
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
@@ -79,7 +79,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     endif()
     ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
       SOURCE_DIR ${${proj}_SOURCE_DIR}
-      BINARY_DIR ${${proj}_Binary_DIR}
+      BINARY_DIR ${${proj}_BINARY_DIR}
       DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
       STAMP_DIR ${${proj}_STAMP_DIR}
       TMP_DIR ${${proj}_TMP_DIR}

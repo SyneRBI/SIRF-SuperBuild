@@ -1,4 +1,4 @@
-FROM ubuntu:16.04 as base
+FROM ubuntu:18.04 as base
 LABEL \
   author.name="Casper da Costa-Luis"          \
   author.email=imaging@caspersci.uk.to        \
@@ -76,9 +76,11 @@ COPY user_sirf-ubuntu.sh .
 COPY devel/.ccache/ /opt/ccache/
 RUN ccache -o cache_dir=/opt/ccache
 ARG BUILD_FLAGS="\
-  -DCMAKE_BUILD_TYPE=Release -DBUILD_STIR_WITH_OPENMP=ON \
-  -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON \
-  -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
+ -DCMAKE_BUILD_TYPE=Release\
+ -DBUILD_STIR_WITH_OPENMP=ON -DUSE_SYSTEM_ACE=ON\
+ -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON\
+ -DUSE_SYSTEM_HDF5=ON -DUSE_ITK=ON -DBUILD_siemens_to_ismrmrd=ON\
+ -DUSE_SYSTEM_SWIG=ON"
 ARG EXTRA_BUILD_FLAGS=""
 RUN bash user_sirf-ubuntu.sh
 RUN rm user_sirf-ubuntu.sh
@@ -87,3 +89,16 @@ RUN mv ~/.git-prompt.sh .
 
 ENV DEBIAN_FRONTEND ''
 CMD ["/bin/bash"]
+
+FROM sirf as service
+
+COPY requirements-service.txt .
+COPY user_service-ubuntu.sh .
+RUN bash user_service-ubuntu.sh
+RUN rm user_service-ubuntu.sh requirements-service.txt
+
+COPY service.sh /usr/local/bin/
+CMD ["/usr/local/bin/service.sh"]
+
+FROM service as multi
+COPY service.multi.sh /usr/local/bin/

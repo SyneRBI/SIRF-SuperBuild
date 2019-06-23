@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 [ -f .bashrc ] && . .bashrc
+set -ev
 INSTALL_DIR="${1:-/opt/pyvenv}"
 PYTHON="${2:-miniconda}"
 
@@ -12,8 +13,8 @@ miniconda)
   rm miniconda.sh
   source "$INSTALL_DIR"/bin/activate
   conda config --add channels conda-forge
-  conda update -c conda-forge -y conda
-  conda update -c conda-forge -y --all
+  # https://github.com/conda/conda/issues/6030
+  #conda update -c conda-forge -y conda
   ;;
 *python*)
   # virtualenv

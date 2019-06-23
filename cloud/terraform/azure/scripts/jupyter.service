@@ -1,0 +1,16 @@
+[Unit]
+Description=Jupyter Notebook
+
+[Service]
+Type=simple
+PIDFile=/run/jupyter.pid
+ExecStart=/srv/jupyter/launch.sh
+User=%%TARGETUSER%%
+Group=%%TARGETUSER%%
+WorkingDirectory=/home/%%TARGETUSER%%/devel/SIRF-Exercises
+Restart=always
+RestartSec=10
+#KillMode=mixed
+
+[Install]
+WantedBy=multi-user.target

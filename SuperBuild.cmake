@@ -142,17 +142,9 @@ option(USE_SYSTEM_Armadillo "Build using an external version of Armadillo" OFF)
 option(USE_SYSTEM_SWIG "Build using an external version of SWIG" OFF)
 #option(USE_SYSTEM_Gadgetron "Build using an external version of Gadgetron" OFF)
 option(USE_SYSTEM_SIRF "Build using an external version of SIRF" OFF)
-option(USE_SYSTEM_NiftyReg "Build using an external version of NiftyReg" OFF)
+option(USE_SYSTEM_NIFTYREG "Build using an external version of NIFTYREG" OFF)
 option(USE_SYSTEM_GTest "Build using an external version of GTest" OFF)
 option(USE_SYSTEM_ACE "Build using an external version of ACE" ON)
-
-if (APPLE)
-  set (build_STIR_OPENMP_default OFF)
-else()
-  set (build_STIR_OPENMP_default ON)
-endif()  
-option(BUILD_STIR_WITH_OPENMP "Build STIR with OpenMP acceleration" ${build_STIR_OPENMP_default})
-
 
 if (WIN32)
   set(build_Gadgetron_default OFF)
@@ -160,12 +152,22 @@ else()
   set(build_Gadgetron_default ON)
 endif()
 
+include (RenameVariable)
+
+RenameVariable(BUILD_GADGETRON BUILD_Gadgetron build_Gadgetron_default)
+
 option(BUILD_SIRF "Build SIRF" ON)
 option(BUILD_STIR "Build STIR" ON)
-option(BUILD_GADGETRON "Build Gadgetron" ${build_Gadgetron_default})
+option(BUILD_Gadgetron "Build Gadgetron" ${build_Gadgetron_default})
 option(BUILD_siemens_to_ismrmrd "Build siemens_to_ismrmrd" OFF)
 option(BUILD_petmr_rd_tools "Build petmr_rd_tools" OFF)
-option(BUILD_NiftyReg "Build NiftyReg" ON)
+option(BUILD_NIFTYREG "Build NIFTYREG" ON)
+
+option(BUILD_SIRF_Registration "Build SIRFS's registration functionality" ${BUILD_NIFTYREG})
+if (BUILD_SIRF_Registration AND NOT BUILD_NIFTYREG)
+  message(WARNING "Building SIRF registration is enabled, but BUILD_NIFTYREG=OFF. Reverting to BUILD_NIFTYREG=ON")
+  set(BUILD_NIFTYREG ON CACHE BOOL "Build NIFTYREG" FORCE)
+endif()
 
 if (BUILD_petmr_rd_tools)
     set(USE_ITK ON CACHE BOOL "Use ITK" FORCE)
@@ -177,6 +179,9 @@ option(USE_ITK "Use ITK" OFF)
 if (USE_ITK)
   option(USE_SYSTEM_ITK "Build using an external version of ITK" OFF)
 endif()
+
+## set versions
+include(version_config.cmake)
 
 ## build list of dependencies, based on options above
 # first set to empty
@@ -190,7 +195,7 @@ if (BUILD_STIR)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES STIR)
 endif()
 
-if (BUILD_GADGETRON)
+if (BUILD_Gadgetron)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES Gadgetron)
   set(Armadillo_REQUIRED_VERSION 4.600)
 endif()
@@ -203,8 +208,8 @@ if (BUILD_petmr_rd_tools)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES petmr_rd_tools)
 endif()
 
-if (BUILD_NiftyReg)
-  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES NiftyReg)
+if (BUILD_SIRF_Registration)
+  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES NIFTYREG)
 endif()
 
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${PRIMARY_PROJECT_NAME}_DEPENDENCIES)

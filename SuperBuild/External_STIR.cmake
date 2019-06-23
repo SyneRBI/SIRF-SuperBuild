@@ -1,7 +1,7 @@
 #========================================================================
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
-# Copyright 2017 University College London
+# Copyright 2017-2019 University College London
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -52,8 +52,19 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(STIR_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
   option(BUILD_TESTING_${proj} "Build tests for ${proj}" OFF)
-  option(BUILD_STIR_EXECUTABLES "Build all STIR executables" OFF)
-  option(BUILD_STIR_SWIG_PYTHON "Build STIR Python interface" OFF)
+  if (APPLE)
+    set (build_STIR_OPENMP_default OFF)
+  else()
+    set (build_STIR_OPENMP_default ON)
+  endif()
+  RenameVariable(BUILD_STIR_WITH_OPENMP STIR_ENABLE_OPENMP build_STIR_OPENMP_default)
+  option(STIR_ENABLE_OPENMP "Build STIR with OpenMP acceleration" ${build_STIR_OPENMP_default})
+  set(default_STIR_BUILD_EXECUTABLES OFF)
+  RenameVariable(BUILD_STIR_EXECUTABLES STIR_BUILD_EXECUTABLES default_STIR_BUILD_EXECUTABLES)
+  option(STIR_BUILD_EXECUTABLES "Build all STIR executables" ${default_STIR_BUILD_EXECUTABLES})
+  set(default_STIR_BUILD_SWIG_PYTHON OFF)
+  RenameVariable(BUILD_STIR_SWIG_PYTHON STIR_BUILD_SWIG_PYTHON default_STIR_BUILD_SWIG_PYTHON)
+  option(STIR_BUILD_SWIG_PYTHON "Build STIR Python interface" ${default_STIR_BUILD_SWIG_PYTHON})
   option(STIR_DISABLE_CERN_ROOT "Disable STIR ROOT interface" ON)
   option(STIR_DISABLE_LLN_MATRIX "Disable STIR Louvain-la-Neuve Matrix library for ECAT7 support" ON)
   option(STIR_ENABLE_EXPERIMENTAL "Enable STIR experimental code" OFF)
@@ -61,14 +72,14 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   mark_as_advanced(BUILD_STIR_EXECUTABLES BUILD_STIR_SWIG_PYTHON STIR_DISABLE_CERN_ROOT)
   mark_as_advanced(STIR_DISABLE_LLN_MATRIX STIR_ENABLE_EXPERIMENTAL)
 
-  if(${BUILD_STIR_SWIG_PYTHON} AND NOT "${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
+  if(${STIR_BUILD_SWIG_PYTHON} AND NOT "${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
     message(FATAL_ERROR "STIR Python currently needs to have PYTHON_STRATEGY=PYTHONPATH")
   endif()
 
   set(STIR_CMAKE_ARGS
         -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
-        -DBUILD_EXECUTABLES=${BUILD_STIR_EXECUTABLES}
-        -DBUILD_SWIG_PYTHON=${BUILD_STIR_SWIG_PYTHON}
+        -DBUILD_EXECUTABLES=${STIR_BUILD_EXECUTABLES}
+        -DBUILD_SWIG_PYTHON=${STIR_BUILD_SWIG_PYTHON}
         -DPYTHON_DEST=${PYTHON_DEST}
         -DMatlab_ROOT_DIR=${Matlab_ROOT_DIR}
         -DMATLAB_DEST=${MATLAB_DEST}
@@ -79,7 +90,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DCMAKE_INSTALL_PREFIX=${STIR_Install_Dir}
         -DGRAPHICS=None
         -DCMAKE_CXX_STANDARD=11
-        -DSTIR_OPENMP=${BUILD_STIR_WITH_OPENMP}
+        -DSTIR_OPENMP=${STIR_ENABLE_OPENMP}
         # Use 2 variables for ROOT to cover multiple STIR versions
         -DDISABLE_CERN_ROOT_SUPPORT=${STIR_DISABLE_CERN_ROOT} -DDISABLE_CERN_ROOT=${STIR_DISABLE_CERN_ROOT}
         -DDISABLE_LLN_MATRIX=${STIR_DISABLE_LLN_MATRIX}
@@ -120,7 +131,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   if (BUILD_TESTING_${proj})
     add_test(NAME ${proj}_TESTS
-         COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION>
+         COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION> --output-on-failure
          WORKING_DIRECTORY ${${proj}_BINARY_DIR})
   endif()
      
