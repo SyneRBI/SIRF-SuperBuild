@@ -70,63 +70,79 @@ mark_as_superbuild(
         CMAKE_INSTALL_PREFIX:PATH
 )
 
-# Attempt to make Python settings consistent
-set(PYVER 0 CACHE STRING "Python version")
-if(PYVER EQUAL 0)
-  find_package(PythonInterp)
-else()
-  find_package(PythonInterp ${PYVER})
-endif()
-if (PYTHONINTERP_FOUND)
-  set(Python_ADDITIONAL_VERSIONS ${PYTHON_VERSION_STRING})
-  message(STATUS "Found PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}")
-  message(STATUS "Python version ${PYTHON_VERSION_STRING}")
-endif()
-# find_package(PythonLibs ${PYTHON_VERSION_STRING})
-if(PYVER EQUAL 0)
-  find_package(PythonLibs)
-else()
-  find_package(PythonLibs ${PYVER})
-endif()
-if (PYTHONLIBS_FOUND)
-  message(STATUS "Found PYTHON_INCLUDE_DIRS=${PYTHON_INCLUDE_DIRS}")
-  message(STATUS "Found PYTHON_LIBRARIES=${PYTHON_LIBRARIES}")
-endif()
+#### Python support
 
-# Find Matlab
-set(Matlab_ROOT_DIR $ENV{Matlab_ROOT_DIR} CACHE PATH "Path to Matlab root directory" )
-# Note that we need the main program for the configuration files and the tests)
-find_package(Matlab COMPONENTS MAIN_PROGRAM)
+option(DISABLE_PYTHON "Disable building SIRF python support" OFF)
+if (DISABLE_PYTHON)
+  message(STATUS "Python support disabled")
+else(DISABLE_PYTHON)
 
-# Set destinations for Python/MATLAB files
-set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
-if (BUILD_PYTHON)
-  set(PYTHON_DEST_DIR "" CACHE PATH "Directory of the SIRF and/or STIR Python modules")
-  if (PYTHON_DEST_DIR)
-   set(PYTHON_DEST "${PYTHON_DEST_DIR}")
+  # Attempt to make Python settings consistent
+  set(PYVER 0 CACHE STRING "Python version")
+  if(PYVER EQUAL 0)
+    find_package(PythonInterp)
   else()
-    set(PYTHON_DEST "${CMAKE_INSTALL_PREFIX}/python")
+    find_package(PythonInterp ${PYVER})
   endif()
-  message(STATUS "Python libraries found")
-  message(STATUS "SIRF and/or STIR Python modules will be installed in " ${PYTHON_DEST})
-
-  set(PYTHON_STRATEGY "PYTHONPATH" CACHE STRING "\
-    PYTHONPATH: prefix PYTHONPATH \n\
-    SETUP_PY:   execute ${PYTHON_EXECUTABLE} setup.py install \n\
-    CONDA:      do nothing")
-  set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
-endif()
-set (BUILD_MATLAB ${Matlab_FOUND})
-if (BUILD_MATLAB)
-  set(MATLAB_DEST_DIR "" CACHE PATH "Directory of the SIRF and/or STIR Matlab libraries")
-  if (MATLAB_DEST_DIR)
-    set(MATLAB_DEST "${MATLAB_DEST_DIR}")
+  if (PYTHONINTERP_FOUND)
+    set(Python_ADDITIONAL_VERSIONS ${PYTHON_VERSION_STRING})
+    message(STATUS "Found PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}")
+    message(STATUS "Python version ${PYTHON_VERSION_STRING}")
+  endif()
+  # find_package(PythonLibs ${PYTHON_VERSION_STRING})
+  if(PYVER EQUAL 0)
+    find_package(PythonLibs)
   else()
-    set(MATLAB_DEST "${CMAKE_INSTALL_PREFIX}/matlab")
+    find_package(PythonLibs ${PYVER})
   endif()
-  message(STATUS "Matlab libraries found")
-  message(STATUS "SIRF and/or STIR Matlab libraries will be installed in " ${MATLAB_DEST})
-endif()
+  if (PYTHONLIBS_FOUND)
+    message(STATUS "Found PYTHON_INCLUDE_DIRS=${PYTHON_INCLUDE_DIRS}")
+    message(STATUS "Found PYTHON_LIBRARIES=${PYTHON_LIBRARIES}")
+  endif()
+
+  # Set destinations for Python files
+  set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
+  if (BUILD_PYTHON)
+    set(PYTHON_DEST_DIR "" CACHE PATH "Directory of the SIRF and/or STIR Python modules")
+    if (PYTHON_DEST_DIR)
+     set(PYTHON_DEST "${PYTHON_DEST_DIR}")
+    else()
+      set(PYTHON_DEST "${CMAKE_INSTALL_PREFIX}/python")
+    endif()
+    message(STATUS "Python libraries found")
+    message(STATUS "SIRF and/or STIR Python modules will be installed in " ${PYTHON_DEST})
+
+    set(PYTHON_STRATEGY "PYTHONPATH" CACHE STRING "\
+      PYTHONPATH: prefix PYTHONPATH \n\
+      SETUP_PY:   execute ${PYTHON_EXECUTABLE} setup.py install \n\
+      CONDA:      do nothing")
+    set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
+  endif()
+endif(DISABLE_PYTHON)
+
+#### MATLAB support
+option(DISABLE_Matlab "Disable building MATLAB support" OFF)
+if (DISABLE_Matlab)
+  message(STATUS "Matlab support disabled")
+else(DISABLE_Matlab)
+  # Find Matlab
+  set(Matlab_ROOT_DIR $ENV{Matlab_ROOT_DIR} CACHE PATH "Path to Matlab root directory" )
+  # Note that we need the main program for the configuration files and the tests)
+  find_package(Matlab COMPONENTS MAIN_PROGRAM)
+
+
+  set (BUILD_MATLAB ${Matlab_FOUND})
+  if (BUILD_MATLAB)
+    set(MATLAB_DEST_DIR "" CACHE PATH "Directory of the SIRF and/or STIR Matlab libraries")
+    if (MATLAB_DEST_DIR)
+      set(MATLAB_DEST "${MATLAB_DEST_DIR}")
+    else()
+      set(MATLAB_DEST "${CMAKE_INSTALL_PREFIX}/matlab")
+    endif()
+    message(STATUS "Matlab libraries found")
+    message(STATUS "SIRF and/or STIR Matlab libraries will be installed in " ${MATLAB_DEST})
+  endif()
+endif(DISABLE_Matlab)
 
 if (UNIX AND NOT APPLE)
   option(USE_SYSTEM_Boost "Build using an external version of Boost" OFF)

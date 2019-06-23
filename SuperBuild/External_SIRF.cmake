@@ -82,6 +82,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DBOOST_INCLUDEDIR=${BOOST_ROOT}/include/
         -DBOOST_LIBRARYDIR=${BOOST_LIBRARY_DIR}
         -DBOOST_ROOT=${BOOST_ROOT}
+        -DDISABLE_Matlab=${DISABLE_Matlab}
         -DMatlab_ROOT_DIR=${Matlab_ROOT_DIR}
         -DMATLAB_ROOT=${Matlab_ROOT_DIR} # pass this for compatibility with old SIRF
         -DMATLAB_DEST_DIR=${MATLAB_DEST_DIR}
@@ -89,6 +90,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         ${HDF5_CMAKE_ARGS}
         -DISMRMRD_DIR=${ISMRMRD_DIR}
         -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
+        -DDISABLE_PYTHON=${DISABLE_PYTHON}
         -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
         -DPYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIRS}
         -DPYTHON_LIBRARY=${PYTHON_LIBRARIES}
