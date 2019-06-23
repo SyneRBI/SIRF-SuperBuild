@@ -59,14 +59,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   
-  if (WIN32 AND DEFINED "USE_SYSTEM_FFTW3")
-    set(extra_args1 "-DFFTW3F_LIBRARY=${FFTW3F_LIBRARY}")
-    set(extra_args2 "-DFFTW3_INCLUDE_DIR=${FFTW3_INCLUDE_DIR}")
-  else()
-    set(extra_args1 "")
-    set(extra_args2 "")
-  endif()
-
   if (WIN32)
     set(extra_args "-DSIRF_INSTALL_DEPENDENCIES=ON")
   else()
@@ -95,6 +87,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DMATLAB_DEST_DIR=${MATLAB_DEST_DIR}
         -DSTIR_DIR=${STIR_DIR}
         ${HDF5_CMAKE_ARGS}
+        ${FFTW3_CMAKE_ARGS}
         -DISMRMRD_DIR=${ISMRMRD_DIR}
         -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
         -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
@@ -102,8 +95,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DPYTHON_LIBRARY=${PYTHON_LIBRARIES}
         -DPYTHON_DEST_DIR=${PYTHON_DEST_DIR}
         -DPYTHON_STRATEGY=${PYTHON_STRATEGY}
-		${extra_args1}
-		${extra_args2}
         -DNIFTYREG_DIR:PATH=${NIFTYREG_DIR}
         -DREG_ENABLE=${BUILD_SIRF_Registration}
 		${extra_args}

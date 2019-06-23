@@ -100,6 +100,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DPYTHON_LIBRARY=${PYTHON_LIBRARIES}
         -DGTEST_ROOT=${GTEST_ROOT}
         ${HDF5_CMAKE_ARGS}
+        ${FFTW3_CMAKE_ARGS}
         -DISMRMRD_DIR=${ISMRMRD_DIR}
 	-DUSE_MKL:BOOL=${Gadgetron_USE_MKL}
         -DUSE_CUDA=${Gadgetron_USE_CUDA}

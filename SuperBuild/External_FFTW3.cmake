@@ -78,7 +78,16 @@ else()
     CONFIGURE_COMMAND ${${proj}_SOURCE_DIR}/configure --enable-float --with-pic --prefix ${FFTW_Install_Dir}
     INSTALL_DIR ${FFTW_Install_Dir}
   )
+
   set( FFTW3_ROOT_DIR ${FFTW_Install_Dir} )
+
+  # current FindFFTW3.cmake ignores FFTW3_ROOT_DIR https://github.com/CCPPETMR/SIRF-SuperBuild/issues/147
+  # let's hope for the best
+  # ideally we would also set DFFTW3_LIBRARIES but that's hard and system dependent
+  set(FFTW3_CMAKE_ARGS
+      -DFFTW3_INCLUDE_DIR:PATH=${FFTW_Install_Dir}/include
+  )
+
 endif()
 
 
@@ -86,6 +95,10 @@ endif()
     if(${USE_SYSTEM_${externalProjName}})
       find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} ${${externalProjName}_COMPONENTS} REQUIRED)
       message(STATUS "USING the system ${externalProjName}, found FFTW3_INCLUDE_DIR=${FFTW3_INCLUDE_DIR}, FFTW3_LIBRARY=${FFTW3_LIBRARY}")
+      set(FFTW3_CMAKE_ARGS
+         -DFFTW3_INCLUDE_DIR:PATH=${FFTW3_INCLUDE_DIR}
+         -DFFTW3_LIBRARIES:FILEPATH=${FFTW3_LIBRARIES}
+      )
   endif()
   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
     SOURCE_DIR ${${proj}_SOURCE_DIR}
@@ -104,3 +117,5 @@ endif()
 #  LABELS
 #    "FIND_PACKAGE"
 #)
+
+message(STATUS "FFTW3_CMAKE_ARGS=${FFTW3_CMAKE_ARGS}")

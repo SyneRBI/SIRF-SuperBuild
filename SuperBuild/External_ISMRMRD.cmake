@@ -75,6 +75,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
             -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
             -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
             ${HDF5_CMAKE_ARGS}
+            ${FFTW3_CMAKE_ARGS}
             -DBOOST_ROOT=${BOOST_ROOT}
     INSTALL_DIR ${ISMRMRD_Install_Dir}
     DEPENDS
