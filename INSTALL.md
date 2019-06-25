@@ -21,13 +21,13 @@ Although other Virtual Machine software might work, we have not tried this and w
     - If the installation takes you directly to the `Security and Privacy` window, select `Allow` (the VB is labelled as from Oracle). When the installer asks if it should Move to Trash, say `Keep` because you need to re-run the installation again with this revised security setting. Second time around, you can move it to trash.
 
 3. Download the preinstalled virtual machine from http://www.ccppetmr.ac.uk/downloads.
-Warning: this file can be ~4.9GB. Dpending upon where on your computer the .ova file was downloaded, you may wish to move it to another folder before opening it. (You can download to a USB stick or hard drive to save space on your hard-disk but performance might be reduced).
+Warning: this file can be ~4.9GB. (You can download to a USB stick or hard drive to save space on your hard-disk).
 
 4. Open the downloaded OVA file (double-click or whatever is appropriate for your system). This should start VirtualBox with the "Import" dialog box.
 
 5. Change settings of the virtual machine (you can still change this afterwards by using the Settings menu of VirtualBox). The only things that need your attention:
 	- CPU: use the same number of CPUs (i.e. cores) as your laptop (or 1 less)
-	- RAM: use about half the RAM of your laptop (assigning too much RAM will slow down your laptop dramatically, using not enough will slow down the virtual machine. 1.5GB seems to be enough though.)
+	- RAM: use about half the RAM of your laptop (assigning too much RAM will slow down your laptop dramatically, using not enough will slow down the virtual machine. 1.5GB seems to be enough for most things though.)
 	- Virtual Disk Image: normally this filename is fine but you can save it somewhere else if you like
 
 6. Tick the box "Reinitialise the MAC address of all network cards"
@@ -86,7 +86,7 @@ and use "Send the shutdown signal".
  
 This section is optional.
  
-Warning: we strongly recommend to copy data from a shared folder to a “local” folder (in your VM) to avoid a problem with a VB bug.
+Warning: in VB versions before 6.0.6, we strongly recommend to copy data from a shared folder to a “local” folder (in your VM) to avoid a problem with [a VB bug](https://www.virtualbox.org/ticket/9485).
  
 After installing the VGA, you might want to configure a shared directory between the host and the guest machine such that your virtual machine can "see" your "normal" files. Please read [the Virtualbox documentation on Folder Sharing](http://www.virtualbox.org/manual/ch04.html#sharedfolders). 
 Summary of steps (courtesy Nikos Efthimiou):
