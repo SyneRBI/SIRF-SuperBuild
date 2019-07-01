@@ -1,4 +1,4 @@
---# SIRF-SuperBuild
+# SIRF-SuperBuild
 
 [![CI-badge]][CI-link] [![style-badge]][style-link] [![docker-badge]][docker-link]
 ![install-badge]
@@ -29,6 +29,7 @@ by the SuperBuild, [see below for more info for your operating system](#os-speci
    1. [Compiling against your own packages](#Compiling-packages)
    2. [Python and MATLAB installation locations](#Python-and-MATLAB-installation-locations)
    3. [Building with specific versions of dependencies](#Building-with-specific-versions-of-dependencies)
+   4. [Building with Intel Math Kernel Library](#Building-with-Intel-Math-Kernel-Library)
 
 ## Dependencies
 
@@ -254,6 +255,16 @@ You could do
 ```sh
 cmake -DDEVEL_BUILD=ON -USIRF_URL -USIRF_TAG -USTIR_URL -USTIR_TAG -UGadgetron_URL -UGadgetron_TAG -UISMRMRD_URL -UISMRMRD_TAG .
 ```
+
+### Building with Intel Math Kernel Library
+
+[Gadgetron](https://github.com/CCPPETMR/SIRF/wiki/SIRF,-Gadgetron-and-MKL) and Armadillo can make use of Intel's Math Kernel Library. 
+
+1. Install Intel MKL following the instructions at [their](https://software.intel.com/en-us/mkl) website. For debian based linux follow [this link](https://software.intel.com/en-us/articles/installing-intel-free-libs-and-python-apt-repo). The latter will install MKL in `opt/intel`
+2. Gadgetron's [FindMKL.cmake](https://github.com/gadgetron/gadgetron/blob/master/cmake/FindMKL.cmake#L23) will try to look for MKL libraries in `/opt/intel` on Unix/Apple and in `C:/Program Files (x86)/Intel/Composer XE` in Windows. Make sure that this is the location of the library or pass the vatiable `MKLROOT_PATH` (Unix/Apple) or set the environment variable `MKLROOT_PATH` on Windows.
+3. Configure the SuperBuild to pass `Gadgetron_USE_MKL=ON`. To disable/enable after you've run `cmake` use `-UGadgetron_USE_MKL -DGadgetron_USE_MKL=ON` or `OFF` accordingly. 
+
+Notice that other packages may look for a blas implementation issuing CMake's [`find_package(BLAS)`](https://github.com/Kitware/CMake/blob/master/Modules/FindBLAS.cmake#L142L148). This will look for MKL taking hint directories from the environment variable `LD_LIBRARY_PATH`, `DYLD_LIBRARY_PATH` and `LIB`, on Unix, Apple and Windows respectively. 
 
 ## Notes
 

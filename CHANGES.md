@@ -1,8 +1,12 @@
 # ChangeLog
 
+## v2.0.1
+- Switch NiftyReg remote from `rijobro` to `KCL-BMEIS` (following the acceptance of one of our PRs to their code).
 
-## v2.0.0 (in progress)
-- Added NiftyReg and ACE
+
+## v2.0.0
+- Added CMake Variable `Gadgetron_USE_MKL` to allow Gadgetron build with MKL if available
+- Added build of NiftyReg and ACE (optional)
 - Added tests for various packages, not just SIRF (CMake variables `BUILD_TESTING_*`)
 - Updated various versions
     - ISMRMRD: v1.4.0
@@ -21,6 +25,7 @@
    - `BUILD_STIR_WITH_OPENMP` -> `STIR_ENABLE_OPENMP`
    - `BUILD_STIR_EXECUTABLES` -> `STIR_BUILD_EXECUTABLES`
    - `BUILD_STIR_SWIG_PYTHON` -> `STIR_BUILD_SWIG_PYTHON`
+- petmr-rd-tools -> pet-rd-tools
 
 ## v1.1.0
 

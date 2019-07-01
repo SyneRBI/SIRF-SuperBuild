@@ -30,4 +30,7 @@ CMakeFiles/
 .VS/
 WIN32/
 *.db
-*.opendb
+*.opend
+
+# Terraform
+*.tfvars

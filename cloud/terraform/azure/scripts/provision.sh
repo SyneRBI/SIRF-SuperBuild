@@ -8,19 +8,27 @@ echo User = $USER
 NOCORES=`nproc`
 echo Using $NOCORES cores
 
+sudo apt-get update
+sudo apt-get -y upgrade
+
 mkdir ~/devel
 cd ~/devel
+
 git clone https://github.com/CCPPETMR/CCPPETMR_VM.git
+
 cd CCPPETMR_VM
 sudo bash scripts/INSTALL_prerequisites_with_apt-get.sh
 sudo bash scripts/INSTALL_python_packages.sh
-sudo pip install -U matplotlib
 sudo apt-get purge cmake -y
 sudo bash scripts/INSTALL_CMake.sh
 
 cd ~/devel/CCPPETMR_VM
 bash scripts/UPDATE.sh -j `nproc` 
 bash scripts/update_VM.sh -j `nproc` 
+
+cd ~/devel/SIRF-Exercises/scripts
+bash download_PET_data.sh
+bash download_MR_data.sh
 
 cd ~
 sed -i -- "s/%%TARGETUSER%%/${USER}/g" jupyter.service

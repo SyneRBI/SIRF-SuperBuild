@@ -48,3 +48,7 @@ variable "location" {
 variable "vm_size" {
   description = "The default VM size"
 }
+
+variable "vm_total_no_machines" {
+  description = "Total number of VMs to create"
+}
