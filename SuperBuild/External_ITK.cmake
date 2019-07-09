@@ -25,7 +25,7 @@
 set(proj ITK)
 
 # Set dependency list
-set(${proj}_DEPENDENCIES "")
+set(${proj}_DEPENDENCIES "HDF5")
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
@@ -44,6 +44,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ### --- Project specific additions here
   set(${proj}_Install_Dir ${SUPERBUILD_INSTALL_DIR})
+
+  option(BUILD_TESTING_${proj} "Build tests for ${proj}" OFF)
 
   #message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
@@ -67,7 +69,11 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DCMAKE_INSTALL_PREFIX=${${proj}_Install_Dir}
 	    -DBUILD_SHARED_LIBS=ON
       -DCMAKE_BUILD_TYPE=${EXTERNAL_PROJECT_BUILD_TYPE}
-      -DBUILD_TESTING=OFF
+      -DHDF5_ROOT=${HDF5_ROOT}
+      -DHDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}
+      -DHDF5_LIBRARIES=${HDF5_LIBRARIES}
+      -DITK_USE_SYSTEM_HDF5=ON
+      -DBUILD_TESTING=${BUILD_TESTING_${proj}}
       -DBUILD_EXAMPLES=OFF
 	  INSTALL_DIR ${${proj}_Install_Dir}
     DEPENDS ${${proj}_DEPENDENCIES}
@@ -75,10 +81,16 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
 
+  if (BUILD_TESTING_${proj})
+    add_test(NAME ${proj}_TESTS
+         COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION> --output-on-failure
+         WORKING_DIRECTORY ${${proj}_BINARY_DIR})
+  endif()
+  
 else()
   if(${USE_SYSTEM_${externalProjName}})
     find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
-    message("USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
+    message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
   endif()
   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
     SOURCE_DIR ${${proj}_SOURCE_DIR}

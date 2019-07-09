@@ -51,7 +51,7 @@ if (APPLE)
     # Set install_name_dir as the absolute path to install_prefix/lib
     GET_FILENAME_COMPONENT(CMAKE_INSTALL_NAME_DIR ${CMAKE_INSTALL_PREFIX}/lib REALPATH)
     # Mark it as superbuild so that it gets passed to all dependencies
-    mark_as_superbuild( PROJECTS ALL_PROJECTS VARS CMAKE_INSTALL_NAME_DIR:PATH )
+    mark_as_superbuild( ALL_PROJECTS VARS CMAKE_INSTALL_NAME_DIR:PATH )
   endif(SHARED_LIBS_ABS_PATH)
 endif(APPLE)
 
@@ -64,7 +64,7 @@ message(STATUS "EXTERNAL_PROJECT_BUILD_TYPE: ${EXTERNAL_PROJECT_BUILD_TYPE}")
 
 # Make sure that some CMake variables are passed to all dependencies
 mark_as_superbuild(
-   PROJECTS ALL_PROJECTS
+   ALL_PROJECTS
    VARS CMAKE_GENERATOR:STRING CMAKE_GENERATOR_PLATFORM:STRING CMAKE_GENERATOR_TOOLSET:STRING
         CMAKE_C_COMPILER:FILEPATH CMAKE_CXX_COMPILER:FILEPATH
         CMAKE_INSTALL_PREFIX:PATH
@@ -98,6 +98,36 @@ set(Matlab_ROOT_DIR $ENV{Matlab_ROOT_DIR} CACHE PATH "Path to Matlab root direct
 # Note that we need the main program for the configuration files and the tests)
 find_package(Matlab COMPONENTS MAIN_PROGRAM)
 
+# Set destinations for Python/MATLAB files
+set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
+if (BUILD_PYTHON)
+  set(PYTHON_DEST_DIR "" CACHE PATH "Directory of the SIRF and/or STIR Python modules")
+  if (PYTHON_DEST_DIR)
+   set(PYTHON_DEST "${PYTHON_DEST_DIR}")
+  else()
+    set(PYTHON_DEST "${CMAKE_INSTALL_PREFIX}/python")
+  endif()
+  message(STATUS "Python libraries found")
+  message(STATUS "SIRF and/or STIR Python modules will be installed in " ${PYTHON_DEST})
+
+  set(PYTHON_STRATEGY "PYTHONPATH" CACHE STRING "\
+    PYTHONPATH: prefix PYTHONPATH \n\
+    SETUP_PY:   execute ${PYTHON_EXECUTABLE} setup.py install \n\
+    CONDA:      do nothing")
+  set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
+endif()
+set (BUILD_MATLAB ${Matlab_FOUND})
+if (BUILD_MATLAB)
+  set(MATLAB_DEST_DIR "" CACHE PATH "Directory of the SIRF and/or STIR Matlab libraries")
+  if (MATLAB_DEST_DIR)
+    set(MATLAB_DEST "${MATLAB_DEST_DIR}")
+  else()
+    set(MATLAB_DEST "${CMAKE_INSTALL_PREFIX}/matlab")
+  endif()
+  message(STATUS "Matlab libraries found")
+  message(STATUS "SIRF and/or STIR Matlab libraries will be installed in " ${MATLAB_DEST})
+endif()
+
 if (UNIX AND NOT APPLE)
   option(USE_SYSTEM_Boost "Build using an external version of Boost" OFF)
 else()
@@ -112,8 +142,9 @@ option(USE_SYSTEM_Armadillo "Build using an external version of Armadillo" OFF)
 option(USE_SYSTEM_SWIG "Build using an external version of SWIG" OFF)
 #option(USE_SYSTEM_Gadgetron "Build using an external version of Gadgetron" OFF)
 option(USE_SYSTEM_SIRF "Build using an external version of SIRF" OFF)
+option(USE_SYSTEM_NIFTYREG "Build using an external version of NIFTYREG" OFF)
 option(USE_SYSTEM_GTest "Build using an external version of GTest" OFF)
-option(BUILD_STIR_WITH_OPENMP "Build STIR with OpenMP acceleration" OFF)
+option(USE_SYSTEM_ACE "Build using an external version of ACE" ON)
 
 if (WIN32)
   set(build_Gadgetron_default OFF)
@@ -121,9 +152,22 @@ else()
   set(build_Gadgetron_default ON)
 endif()
 
-option(BUILD_GADGETRON "Build Gadgetron" ${build_Gadgetron_default})
+include (RenameVariable)
+
+RenameVariable(BUILD_GADGETRON BUILD_Gadgetron build_Gadgetron_default)
+
+option(BUILD_SIRF "Build SIRF" ON)
+option(BUILD_STIR "Build STIR" ON)
+option(BUILD_Gadgetron "Build Gadgetron" ${build_Gadgetron_default})
 option(BUILD_siemens_to_ismrmrd "Build siemens_to_ismrmrd" OFF)
 option(BUILD_petmr_rd_tools "Build petmr_rd_tools" OFF)
+option(BUILD_NIFTYREG "Build NIFTYREG" ON)
+
+option(BUILD_SIRF_Registration "Build SIRFS's registration functionality" ${BUILD_NIFTYREG})
+if (BUILD_SIRF_Registration AND NOT BUILD_NIFTYREG)
+  message(WARNING "Building SIRF registration is enabled, but BUILD_NIFTYREG=OFF. Reverting to BUILD_NIFTYREG=ON")
+  set(BUILD_NIFTYREG ON CACHE BOOL "Build NIFTYREG" FORCE)
+endif()
 
 if (BUILD_petmr_rd_tools)
     set(USE_ITK ON CACHE BOOL "Use ITK" FORCE)
@@ -136,10 +180,22 @@ if (USE_ITK)
   option(USE_SYSTEM_ITK "Build using an external version of ITK" OFF)
 endif()
 
-set(${PRIMARY_PROJECT_NAME}_DEPENDENCIES
-    SIRF
-)
-if (BUILD_GADGETRON)
+## set versions
+include(version_config.cmake)
+
+## build list of dependencies, based on options above
+# first set to empty
+set(${PRIMARY_PROJECT_NAME}_DEPENDENCIES)
+
+if (BUILD_SIRF)
+  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES SIRF)
+endif()
+
+if (BUILD_STIR)
+  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES STIR)
+endif()
+
+if (BUILD_Gadgetron)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES Gadgetron)
   set(Armadillo_REQUIRED_VERSION 4.600)
 endif()
@@ -152,12 +208,15 @@ if (BUILD_petmr_rd_tools)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES petmr_rd_tools)
 endif()
 
+if (BUILD_SIRF_Registration)
+  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES NIFTYREG)
+endif()
+
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${PRIMARY_PROJECT_NAME}_DEPENDENCIES)
 
 message(STATUS "")
 message(STATUS "BOOST_ROOT = " ${BOOST_ROOT})
 message(STATUS "ISMRMRD_DIR = " ${ISMRMRD_DIR})
-message(STATUS "FFTW3_ROOT_DIR = " ${FFTW3_ROOT_DIR})
 message(STATUS "STIR_DIR = " ${STIR_DIR})
 message(STATUS "HDF5_ROOT = " ${HDF5_ROOT})
 message(STATUS "GTEST_ROOT = " ${GTEST_ROOT})
@@ -179,8 +238,6 @@ set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
 ## in the env_ccppetmr scripts we perform a substitution of the whole block
 ## during the configure_file() command call below.
 
-## Note that the (MATLAB|PYTHON)_DEST and PYTHON_STRATEGY variables are
-## currently set in External_SIRF.cmake. That's a bit confusing of course (TODO).
 set(ENV_PYTHON_BASH "#####    Python not found    #####")
 set(ENV_PYTHON_CSH  "#####    Python not found    #####")
 if(PYTHONINTERP_FOUND)
@@ -195,7 +252,8 @@ if(PYTHONINTERP_FOUND)
     ${COMMENT_OUT_PREFIX}  setenv PYTHONPATH ${PYTHON_DEST}:$PYTHONPATH \n\
     ${COMMENT_OUT_PREFIX}else \n\
     ${COMMENT_OUT_PREFIX}  setenv PYTHONPATH ${PYTHON_DEST} \n\
-    setenv SIRF_PYTHON_EXECUTABLE ${PYTHON_EXECUTABLE}")
+    setenv SIRF_PYTHON_EXECUTABLE ${PYTHON_EXECUTABLE} \n\
+    ${COMMENT_OUT_PREFIX}endif")
 
   set (ENV_PYTHON_BASH "\
     ${COMMENT_OUT_PREFIX}export PYTHONPATH=\"${PYTHON_DEST}\${PYTHONPATH:+:\${PYTHONPATH}}\" \n\
@@ -217,6 +275,15 @@ export SIRF_MATLAB_EXECUTABLE")
      setenv MATLABPATH ${MATLAB_DEST}\n\
    endif\n\
    setenv SIRF_MATLAB_EXECUTABLE ${Matlab_MAIN_PROGRAM}")
+endif()
+
+# set GADGETRON_HOME if Gadgetron is built
+if (BUILD_GADGETRON)
+
+  set(ENV_GADGETRON_HOME_SH "\
+GADGETRON_HOME=${CCPPETMR_INSTALL}\n\
+export GADGETRON_HOME\n")
+  set(ENV_GADGETRON_HOME_CSH "setenv GADGETRON_HOME ${CCPPETMR_INSTALL}\n")
 endif()
 
 configure_file(env_ccppetmr.sh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.sh)
@@ -275,6 +342,3 @@ endif(PYTHONINTERP_FOUND)
 
 # add tests
 enable_testing()
-add_test(NAME SIRF_TESTS
-         COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION>
-         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/builds/SIRF/build/)

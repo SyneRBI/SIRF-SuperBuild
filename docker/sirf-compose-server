@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+./sirf-compose -f docker-compose.srv.yml "$@"

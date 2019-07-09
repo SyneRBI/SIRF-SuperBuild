@@ -71,7 +71,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   else()
       if(${USE_SYSTEM_${externalProjName}})
-        message("USING the system ${externalProjName}, set GTEST_ROOT if needed.")
+        message(STATUS "USING the system ${externalProjName}, set GTEST_ROOT if needed.")
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
         get_filename_component(GTEST_ROOT ${GTEST_LIBRARIES} DIRECTORY)
     endif()

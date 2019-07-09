@@ -1,11 +1,10 @@
 if (WIN32)
   cmake_minimum_required( VERSION 3.10.0 FATAL_ERROR)
 else()
-  cmake_minimum_required( VERSION 3.7.0 FATAL_ERROR)
+  cmake_minimum_required( VERSION 3.10.0 FATAL_ERROR)
 endif()
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMake" ${CMAKE_MODULE_PATH})
-include(version_config.cmake)
 include(ExternalProject)
 include(ExternalProjectDependency)
 

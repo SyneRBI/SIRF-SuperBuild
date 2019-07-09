@@ -1,8 +1,39 @@
 # ChangeLog
 
-## master
+## v2.0.1
+- Switch NiftyReg remote from `rijobro` to `KCL-BMEIS` (following the acceptance of one of our PRs to their code).
 
-* Added PYTHON_DEST_DIR variable, which allows the user to select the install destination of the SIRF python modules. PYTHON_DEST_DIR is a cached variable which can be updated on the GUI. If PYTHON_DEST_DIR is not set, we will install in ${CMAKE_INSTALL_PREFIX}/python. Likewise for MATLAB_DEST_DIR.
+
+## v2.0.0
+- Added CMake Variable `Gadgetron_USE_MKL` to allow Gadgetron build with MKL if available
+- Added build of NiftyReg and ACE (optional)
+- Added tests for various packages, not just SIRF (CMake variables `BUILD_TESTING_*`)
+- Updated various versions
+    - ISMRMRD: v1.4.0
+    - Gadgetron: [b6191ea](https://github.com/gadgetron/gadgetron/commit/b6191eaaa72ccca6c6a5fe4c0fa3319694f512ab)
+    - Boost: 1.65.1 (linux) 1.68.0 (OSX)
+    - STIR to version of 9 Apr 2019
+    - SIRF v2.0.0. If NiftyReg is built (or provided), SIRF will be built with registration capabilities.
+- docker images updates
+  - Ubuntu: 18.04
+  - `:service` images with `Jupyter` and `SIRF-Exercises`
+- addition of Azure scripts
+- require CMake: 3.10.0
+- changed some CMake variable names:
+   - `BUILD_GADGETRON` -> `BUILD_Gadgetron`
+   - `BUILD_GADGETRON_NATIVE_MATLAB_SUPPORT` -> `Gadgetron_BUILD_MATLAB_SUPPORT`
+   - `BUILD_STIR_WITH_OPENMP` -> `STIR_ENABLE_OPENMP`
+   - `BUILD_STIR_EXECUTABLES` -> `STIR_BUILD_EXECUTABLES`
+   - `BUILD_STIR_SWIG_PYTHON` -> `STIR_BUILD_SWIG_PYTHON`
+- petmr-rd-tools -> pet-rd-tools
+
+## v1.1.0
+
+- Added PYTHON_DEST_DIR variable, which allows the user to select the install destination of the SIRF python modules. PYTHON_DEST_DIR is a cached variable which can be updated on the GUI. If PYTHON_DEST_DIR is not set, we will install in ${CMAKE_INSTALL_PREFIX}/python. Likewise for MATLAB_DEST_DIR.
+- Export `GADGETRON_HOME` environment variable (necessary for recent versions of Gadgetron)
+- Updates to Docker builds
+- On OSX, use the system boost by default to avoid run-time problems with boost dynamic libraries
+- Build STIR with OPENMP
 
 ## v1.0.0
 

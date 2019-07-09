@@ -42,6 +42,7 @@ set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
+  message(STATUS "HDF5_DOWNLOAD_VERSION=${HDF5_DOWNLOAD_VERSION}")
 
   ### --- Project specific additions here
   set(HDF5_Install_Dir ${SUPERBUILD_INSTALL_DIR})
@@ -51,35 +52,63 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   endif()
 
   #set(HDF5_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}-prefix/src/HDF5/hdf5-1.10.0-patch1 )
-  
+  set (HDF5_BUILD_HL_LIB "OFF")
+  find_package(CUDA)
+  if (CUDA_FOUND)
+     message(STATUS "<<<<<<<<<<<<<<<<< CUDA FOUND >>>>>>>>>>>>>>>>>>>>>")
+     set(HDF5_BUILD_HL_LIB "ON")
+  endif()
+
+  if (WIN32 AND (${HDF5_DOWNLOAD_VERSION} STREQUAL 1.8.12))
+    find_program(GIT "git")
+    set(PATCHFILE "${CMAKE_SOURCE_DIR}/patches/hdf5-${HDF5_DOWNLOAD_VERSION}.patch")
+    set(PATCH_COMMAND git apply -v --ignore-space-change --ignore-whitespace ${PATCHFILE})
+  else()
+    #make it empty, just to be sure
+    set(PATCH_COMMAND )
+  endif()
+
+  if (PATCH_COMMAND)
+    message(STATUS "HDF5 PATCH_COMMAND=${PATCH_COMMAND}")
+  endif()
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
-
+    PATCH_COMMAND ${PATCH_COMMAND}
     SOURCE_DIR ${${proj}_SOURCE_DIR}
     BINARY_DIR ${${proj}_BINARY_DIR}
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
     STAMP_DIR ${${proj}_STAMP_DIR}
     TMP_DIR ${${proj}_TMP_DIR}
 
-	
     CMAKE_ARGS
         ${CLANG_ARG}
-        -DHDF5_BUILD_EXAMPLES=OFF 
-        -DHDF5_BUILD_TOOLS=OFF 
-        -DHDF5_BUILD_HL_LIB=OFF 
-        -DBUILD_TESTING=OFF
+        -DHDF5_BUILD_EXAMPLES:BOOL=OFF
+        -DHDF5_BUILD_TOOLS:BOOL=OFF
+        -DHDF5_BUILD_HL_LIB:BOOL=${HDF5_BUILD_HL_LIB}
+        -DBUILD_TESTING:BOOL=OFF
     INSTALL_DIR ${HDF5_Install_Dir}
   )
 
   set( HDF5_ROOT ${HDF5_Install_Dir} )
   set( HDF5_INCLUDE_DIRS ${HDF5_ROOT}/include )
+  set(HDF5_CMAKE_ARGS
+     -DHDF5_ROOT:PATH=${HDF5_ROOT}
+     -DHDF5_INCLUDE_DIRS:PATH=${HDF5_INCLUDE_DIRS}
+     -DHDF5_FIND_DEBUG:BOOL=ON
+  )
 
  else()
     if(${USE_SYSTEM_${externalProjName}})
       find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
       message(STATUS "USING the system ${externalProjName}, found HDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}, HDF5_C_LIBRARY_hdf5=${HDF5_C_LIBRARY_hdf5},HDF5_LIBRARIES=${HDF5_LIBRARIES}")
+      set(HDF5_CMAKE_ARGS
+         -DHDF5_INCLUDE_DIRS:PATH=${HDF5_INCLUDE_DIRS}
+         -DHDF5_LIBRARIES:STRING=${HDF5_LIBRARIES}
+         -DHDF5_FIND_DEBUG:BOOL=ON
+      )
   endif()
   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
     SOURCE_DIR ${${proj}_SOURCE_DIR}
@@ -90,9 +119,4 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   )
 endif()
 
-mark_as_superbuild(
-  VARS
-    ${externalProjName}_DIR:PATH
-  LABELS
-    "FIND_PACKAGE"
-)
+message(STATUS "HDF5_CMAKE_ARGS=${HDF5_CMAKE_ARGS}")

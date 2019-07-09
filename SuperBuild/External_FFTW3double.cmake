@@ -2,7 +2,7 @@
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
 # Author: Edoardo Pasca
-# Copyright 2017 University College London
+# Copyright 2017, 2018 University College London
 # Copyright 2017 STFC
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
@@ -77,7 +77,7 @@ if(NOT ( DEFINED "USE_SYSTEM_FFTW3" AND "${USE_SYSTEM_FFTW3}" ) )
     INSTALL_DIR ${FFTWdouble_Install_Dir}
   )
 
-  set( FFTW3_ROOT_DIR ${FFTWdouble_Install_Dir} )
+  #set( FFTW3_ROOT_DIR:PATH ${FFTWdouble_Install_Dir} )
 
 
  else()
@@ -94,9 +94,11 @@ if(NOT ( DEFINED "USE_SYSTEM_FFTW3" AND "${USE_SYSTEM_FFTW3}" ) )
 )
 endif()
 
-mark_as_superbuild(
-  VARS
-    ${externalProjName}_DIR:PATH
-  LABELS
-    "FIND_PACKAGE"
-)
+# Currently, setting FFTW3_ROOT_DIR has no effect, see https://github.com/CCPPETMR/SIRF-SuperBuild/issues/147
+#mark_as_superbuild(
+#  ALL_PROJECTS
+#  VARS
+#    FFTW3_ROOT_DIR:PATH
+#  LABELS
+#    "FIND_PACKAGE"
+#)

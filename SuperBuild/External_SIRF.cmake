@@ -23,10 +23,17 @@
 set(proj SIRF)
 
 # Set dependency list
-set(${proj}_DEPENDENCIES "STIR;Boost;HDF5;ISMRMRD;FFTW3;SWIG")
+set(${proj}_DEPENDENCIES "Boost;HDF5;ISMRMRD;FFTW3;SWIG")
+if (${BUILD_NIFTYREG})
+  set(${proj}_DEPENDENCIES "${${proj}_DEPENDENCIES};NIFTYREG")
+endif()
+if (${BUILD_STIR})
+  set(${proj}_DEPENDENCIES "${${proj}_DEPENDENCIES};STIR")
+endif()
 
 message(STATUS "Matlab_ROOT_DIR=" ${Matlab_ROOT_DIR})
 message(STATUS "STIR_DIR=" ${STIR_DIR})
+message(STATUS "NIFTYREG_DIR=" ${NIFTYREG_DIR})
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
@@ -47,37 +54,16 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ### --- Project specific additions here
   set(SIRF_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
-  set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
-  if (BUILD_PYTHON)
-    set(PYTHON_DEST_DIR "" CACHE PATH "Directory of the SIRF Python modules")
-    if (PYTHON_DEST_DIR)
-     set(PYTHON_DEST "${PYTHON_DEST_DIR}")
-    else()
-      set(PYTHON_DEST "${CMAKE_INSTALL_PREFIX}/python")
-    endif()
-    message(STATUS "Python libraries found")
-    message(STATUS "SIRF Python modules will be installed in " ${PYTHON_DEST})
-
-    set(PYTHON_STRATEGY "PYTHONPATH" CACHE STRING "\
-      PYTHONPATH: prefix PYTHONPATH \n\
-      SETUP_PY:   execute ${PYTHON_EXECUTABLE} setup.py install \n\
-      CONDA:      do nothing")
-    set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
-  endif()
-  set (BUILD_MATLAB ${Matlab_FOUND})
-  if (BUILD_MATLAB)
-    set(MATLAB_DEST_DIR "" CACHE PATH "Directory of the SIRF Matlab libraries")
-    if (MATLAB_DEST_DIR)
-      set(MATLAB_DEST "${MATLAB_DEST_DIR}")
-    else()
-      set(MATLAB_DEST "${CMAKE_INSTALL_PREFIX}/matlab")
-    endif()
-    message(STATUS "Matlab libraries found")
-    message(STATUS "SIRF Matlab libraries will be installed in " ${MATLAB_DEST})
-  endif()
+  option(BUILD_TESTING_${proj} "Build tests for ${proj}" ON)
 
   message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
+  
+  if (WIN32)
+    set(extra_args "-DSIRF_INSTALL_DEPENDENCIES=ON")
+  else()
+    set(extra_args "")
+  endif()
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
@@ -100,19 +86,18 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DMATLAB_ROOT=${Matlab_ROOT_DIR} # pass this for compatibility with old SIRF
         -DMATLAB_DEST_DIR=${MATLAB_DEST_DIR}
         -DSTIR_DIR=${STIR_DIR}
-        -DHDF5_ROOT=${HDF5_ROOT}
-        -DHDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}
+        ${HDF5_CMAKE_ARGS}
         -DISMRMRD_DIR=${ISMRMRD_DIR}
         -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
         -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
         -DPYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIRS}
         -DPYTHON_LIBRARY=${PYTHON_LIBRARIES}
-<<<<<<< HEAD
-        -DPYTHON_DEST_DIR=${PYTHON_DEST}/sirf
-=======
+	#-DPYTHON_DEST_DIR=${PYTHON_DEST}/sirf
         -DPYTHON_DEST_DIR=${PYTHON_DEST_DIR}
         -DPYTHON_STRATEGY=${PYTHON_STRATEGY}
->>>>>>> 5acdcf35184508edc7552dda2d17231303c20d1e
+        -DNIFTYREG_DIR:PATH=${NIFTYREG_DIR}
+        -DREG_ENABLE=${BUILD_SIRF_Registration}
+		${extra_args}
 	INSTALL_DIR ${SIRF_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
@@ -121,10 +106,16 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set(SIRF_ROOT        ${SIRF_SOURCE_DIR})
     set(SIRF_INCLUDE_DIR ${SIRF_SOURCE_DIR})
 
+  #if (BUILD_TESTING_${proj})
+    add_test(NAME ${proj}_TESTS
+         COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION> --output-on-failure
+         WORKING_DIRECTORY ${${proj}_BINARY_DIR})
+  #endif()
+
    else()
       if(${USE_SYSTEM_${externalProjName}})
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
-        message("USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
+        message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
    endif()
     ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
       SOURCE_DIR ${${proj}_SOURCE_DIR}
