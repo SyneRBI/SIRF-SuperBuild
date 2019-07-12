@@ -43,7 +43,7 @@ cmake ../SIRF-SuperBuild \
     -DPYTHON_DEST_DIR=${PREFIX}/python\
     -USIRF_URL \
     -USIRF_TAG \
-    -DSIRF_TAG=a9170557c0f883934033700c1dd312a3a74611d6\
+    -DSIRF_TAG=v2.0.0\
     -USTIR_URL \
     -USTIR_TAG \
     -UGadgetron_URL \

@@ -45,19 +45,19 @@ cmake ../SIRF-SuperBuild \
     -DPYTHON_DEST_DIR=${PREFIX}/python\
     -USIRF_URL \
     -USIRF_TAG \
-    -DSIRF_TAG=a9170557c0f883934033700c1dd312a3a74611d6\
+    -DSIRF_TAG=v2.0.0\
     -USTIR_URL \
     -USTIR_TAG \
     -UGadgetron_URL \
     -UGadgetron_TAG \
     -UISMRMRD_URL \
     -UISMRMRD_TAG \
-    -DBUILD_GADGETRON=On \
+    -DBUILD_GADGETRON=Off \
     -DUSE_SYSTEM_SWIG=On \
     -DUSE_SYSTEM_Boost=On \
     -DUSE_SYSTEM_Armadillo=On \
     -DUSE_SYSTEM_ISMRMRD=ON\
-    -DUSE_SYSTEM_STIR=Off\
+    -DUSE_SYSTEM_STIR=On\
     -DUSE_SYSTEM_FFTW3=On \
     -DUSE_SYSTEM_HDF5=ON \
     -DBUILD_siemens_to_ismrmrd=Off \

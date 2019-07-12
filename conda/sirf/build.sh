@@ -45,7 +45,7 @@ cmake ../SIRF-SuperBuild \
     -DPYTHON_DEST_DIR=${SP_DIR}\
     -USIRF_URL \
     -USIRF_TAG \
-    -DSIRF_TAG=v1.1.1\
+    -DSIRF_TAG=v2.0.0\
     -USTIR_URL \
     -USTIR_TAG \
     -UGadgetron_URL \
@@ -62,8 +62,10 @@ cmake ../SIRF-SuperBuild \
     -DUSE_SYSTEM_HDF5=ON \
     -DBUILD_siemens_to_ismrmrd=Off \
     -DUSE_SYSTEM_GTest=On\
-    -DPYTHON_STRATEGY=SETUP_PY
-    #-DCONDA_BUILD=On
+    -DUSE_ITK=ON\
+    -DUSE_SYSTEM_ITK=ON\
+    #-DPYTHON_STRATEGY=SETUP_PY
+    -DCONDA_BUILD=On
 
 make  -j3 STIR
 make  -j1 SIRF
