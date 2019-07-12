@@ -13,6 +13,7 @@ requirements:
     #- boost ==1.64.0	
     #- boost-cpp ==1.64.0 
     - boost >=1.63
+    - boost-cpp >=1.63
 #    - boost-cpp
 #    - python 3.6 # [py36]
 #    - python 2.7 # [py27]
@@ -45,6 +46,7 @@ requirements:
 #    - matplotlib
 #    - docopt
     - boost >=1.63
+    - boost-cpp >=1.63
     - h5py
     - psutil
     - fftw
