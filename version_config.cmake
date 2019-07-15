@@ -162,16 +162,15 @@ if (DEVEL_BUILD)
  
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
   set(DEFAULT_ACE_TAG origin/master)
-
   # CCPi CIL
-  set(CIL_VERSION "v19.07")
-  set(RGL_VERSION "19.06")
+  #set(CIL_VERSION "19.06")
   set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
-  set(DEFAULT_CCPi-Framework_TAG ${CIL_VERSION})
-  set(DEFAULT_CCPi-RGL_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git )
-  set(DEFAULT_CCPi-RGL_TAG "${RGL_VERSION}")
+  set(DEFAULT_CCPi-Framework_TAG origin/master)
+  set(DEFAULT_CCPi-RGL_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
+  set(DEFAULT_CCPi-RGL_TAG origin/master)
   set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
-  set(DEFAULT_CCPi-FrameworkPlugins_TAG "${CIL_VERSION}")
+  set(DEFAULT_CCPi-FrameworkPlugins_TAG origin/master)
+
 else()
   # set(DEFAULT_SIRF_TAG v2.0.0)
   set (DEFAULT_SIRF_TAG origin/add_to_sirf_classes)
@@ -195,13 +194,14 @@ else()
   set(DEFAULT_ACE_TAG origin/master)
   
   # CCPi CIL
-  set(CIL_VERSION "19.06")
+  set(CIL_VERSION "v19.07")
+  set(RGL_VERSION "19.06")
   set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
-  set(DEFAULT_CCPi-Framework_TAG origin/master)
-  set(DEFAULT_CCPi-RGL_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
-  set(DEFAULT_CCPi-RGL_TAG "${CIL_VERSION}")
+  set(DEFAULT_CCPi-Framework_TAG ${CIL_VERSION})
+  set(DEFAULT_CCPi-RGL_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git )
+  set(DEFAULT_CCPi-RGL_TAG "${RGL_VERSION}")
   set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
-  set(DEFAULT_CCPi-FrameworkPlugins_TAG origin/master)
+  set(DEFAULT_CCPi-FrameworkPlugins_TAG "${CIL_VERSION}")
 
 endif()
 
