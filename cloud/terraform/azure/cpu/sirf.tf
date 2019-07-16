@@ -176,7 +176,7 @@ resource "azurerm_virtual_machine" "mytfvm" {
             user     = "${var.vm_username}"
             password = "${var.vm_password}"
         }
-        source      = "scripts/provision.sh"
+        source      = "../scripts/provision.sh"
         destination = "/home/${var.vm_username}/provision.sh"
     }
 
@@ -185,7 +185,7 @@ resource "azurerm_virtual_machine" "mytfvm" {
             user     = "${var.vm_username}"
             password = "${var.vm_password}"
         }
-        source      = "scripts/launch.sh"
+        source      = "../scripts/launch.sh"
         destination = "/home/${var.vm_username}/launch.sh"
     }
 
@@ -194,7 +194,7 @@ resource "azurerm_virtual_machine" "mytfvm" {
             user     = "${var.vm_username}"
             password = "${var.vm_password}"
         }
-        source      = "scripts/install_prerequisites.sh"
+        source      = "../scripts/install_prerequisites.sh"
         destination = "/home/${var.vm_username}/install_prerequisites.sh"
     }
 
@@ -203,7 +203,7 @@ resource "azurerm_virtual_machine" "mytfvm" {
             user     = "${var.vm_username}"
             password = "${var.vm_password}"
         }
-        source      = "scripts/jupyter_set_pwd.sh"
+        source      = "../scripts/jupyter_set_pwd.sh"
         destination = "/home/${var.vm_username}/jupyter_set_pwd.sh"
     }
 
@@ -212,7 +212,7 @@ resource "azurerm_virtual_machine" "mytfvm" {
             user     = "${var.vm_username}"
             password = "${var.vm_password}"
         }
-        source      = "scripts/jupyter.service"
+        source      = "../scripts/jupyter.service"
         destination = "/home/${var.vm_username}/jupyter.service"
     }
 
@@ -221,7 +221,7 @@ resource "azurerm_virtual_machine" "mytfvm" {
             user     = "${var.vm_username}"
             password = "${var.vm_password}"
         }
-        source      = "scripts/install_rdp.sh"
+        source      = "../scripts/install_rdp.sh"
         destination = "/home/${var.vm_username}/install_rdp.sh"
     }
 
