@@ -22,7 +22,13 @@ sudo ./cuda_10.0.130_410.48_linux --silent
 # Add to path
 touch ~/.bashrc
 echo "export PATH=/usr/local/cuda-10.0/bin:$PATH" >> ~/.bashrc
-echo "export LD_LIBRARY_PATH=/usr/local/cuda-10.0/lib64:/usr/local/cuda-10.0/extras/CUPTI/lib64:$LD_LIBRARY_PATH" >> ~/.bashrc
+if [[ -z "$LD_LIBRARY_PATH" ]]
+then
+    echo "export LD_LIBRARY_PATH=/usr/local/cuda-10.0/lib64:/usr/local/cuda-10.0/extras/CUPTI/lib64" >> ~/.bashrc
+else
+    echo "export LD_LIBRARY_PATH=/usr/local/cuda-10.0/lib64:/usr/local/cuda-10.0/extras/CUPTI/lib64:$LD_LIBRARY_PATH" >> ~/.bashrc
+fi
+
 source ~/.bashrc
 
 ## cuDNN
@@ -35,6 +41,10 @@ cd cuda
 sudo cp -P lib64/* /usr/local/cuda/lib64/
 sudo cp -P include/* /usr/local/cuda/include/
 
-# Tensorflow and Keras
+# File clean up
+rm cuda_10.0.130_410.48_linux
+rm cudnn-10.0-linux-x64-v7.6.1.34.tgz
+
+# Install tensorflow and Keras
 pip install tensorflow-gpu==1.14
 pip install keras

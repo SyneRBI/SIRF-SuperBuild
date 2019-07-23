@@ -211,6 +211,11 @@ resource "azurerm_virtual_machine" "mytfvm" {
         destination = "/home/${var.vm_username}/install_rdp.sh"
     }
 
+    provisioner "file" {
+        source      = "install_gpu_prerequisites.sh"
+        destination = "/home/${var.vm_username}/install_gpu_prerequisites.sh"
+    }
+
     provisioner "remote-exec" {
         inline = [
             "sudo bash ~/install_prerequisites.sh",
@@ -218,8 +223,9 @@ resource "azurerm_virtual_machine" "mytfvm" {
             "sudo systemctl enable jupyter.service",
             "sudo systemctl start jupyter.service",
             "sudo bash ~/install_rdp.sh",
+            "sudo bash ~/install_gpu_prerequisites.sh",
             "sudo chown -R ${var.vm_username}:${var.vm_username} /home/${var.vm_username}",
-            "rm ~/install_prerequisites.sh ~/provision.sh ~/jupyter_set_pwd.sh ~/install_rdp.sh"
+            "rm ~/install_prerequisites.sh ~/provision.sh ~/jupyter_set_pwd.sh ~/install_rdp.sh ~/install_gpu_prerequisites.sh"
         ]
     }
 
