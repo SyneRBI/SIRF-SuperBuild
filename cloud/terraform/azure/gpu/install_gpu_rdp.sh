@@ -27,3 +27,4 @@ sudo mv 45-allow-colord.pkla /etc/polkit-1/localauthority/50-local.d/
 chmod 755 /etc/polkit-1/localauthority/50-local.d/45-allow-colord.pkla
 
 sudo systemctl enable xrdp
+sudo systemctl start xrdp

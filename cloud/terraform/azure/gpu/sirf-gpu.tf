@@ -150,6 +150,14 @@ resource "azurerm_virtual_machine" "mytfvm" {
         create_option     = "FromImage"
         managed_disk_type = "Standard_LRS"
     }
+
+    storage_data_disk {
+        name              = "${var.vm_prefix}-${count.index}-DataDisk"
+        managed_disk_type = "Standard_LRS"
+        create_option     = "Empty"
+        lun               = 0
+        disk_size_gb      = "1023"
+    }
     
     delete_os_disk_on_termination = true
 
