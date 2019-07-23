@@ -42,8 +42,12 @@ sudo cp -P lib64/* /usr/local/cuda/lib64/
 sudo cp -P include/* /usr/local/cuda/include/
 
 # File clean up
+cd ~/
 rm cuda_10.0.130_410.48_linux
 rm cudnn-10.0-linux-x64-v7.6.1.34.tgz
+
+# Config. xorg
+sudo nvidia-xconfig
 
 # Install tensorflow and Keras
 pip install tensorflow-gpu==1.14
