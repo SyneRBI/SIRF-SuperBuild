@@ -1,7 +1,7 @@
 package:
   name: gadgetron
 #  version: {{ environ['SIRF_VERSION'] }}
-  version: e7eb430673eb3272e8a821b51750c0a2a96dafed
+  version: b6191eaaa72ccca6c6a5fe4c0fa3319694f512ab
 
 
 build:
@@ -13,6 +13,7 @@ requirements:
     #- boost ==1.64.0	
     #- boost-cpp ==1.64.0 
     - boost >=1.63
+    - boost-cpp >=1.63
 #    - boost-cpp
 #    - python 3.6 # [py36]
 #    - python 2.7 # [py27]
