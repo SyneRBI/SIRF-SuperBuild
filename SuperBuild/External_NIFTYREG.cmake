@@ -66,6 +66,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DUSE_THROW_EXCEP=ON
       # fixes lib_reg_maths.a `GOMP_parallel' undefined reference linker errors
       -DUSE_OPENMP:BOOL=OFF
+      -DBUILD_ALL_DEP=ON
     INSTALL_DIR ${${proj}_Install_Dir}
     DEPENDS ${${proj}_DEPENDENCIES})
 
