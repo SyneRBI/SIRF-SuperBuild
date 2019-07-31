@@ -10,7 +10,7 @@ build:
 requirements:
   build:
     #- boost ==1.64.0	
-    #- boost-cpp ==1.64.0 
+    - boost-cpp >=1.63.0 
     - boost >=1.63
 #    - boost-cpp
 #    - python 3.6 # [py36]

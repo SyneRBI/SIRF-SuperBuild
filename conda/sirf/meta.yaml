@@ -1,5 +1,5 @@
 package:
-  name: sirf-stir
+  name: sirf
 #  version: {{ environ['SIRF_VERSION'] }}
   version: 2.0.0
 
@@ -14,12 +14,12 @@ requirements:
     #- boost-cpp ==1.64.0 
     - boost >=1.63
 #    - boost-cpp
-    - python {{ python }}
+    - python 
+    - {{ pin_compatible('numpy', max_pin='x.x') }}
 #    - python 2.7 # [py27]
     - cmake >=3.1
     - vc 14 # [win and py36] 
     - vc 9  # [win and py27]
-    - numpy {{ numpy }}
 #    - scipy
 #    - matplotlib
 #    - docopt
@@ -34,14 +34,13 @@ requirements:
 #    - armadillo
     - gtest
 #    - ismrmrd
-   -  itk
 
 
   run:
     - vc 14 # [win and py35]
     - vc 9  # [win and py27]
-    - python {{ python }}
-    - numpy {{ numpy }}
+    - python
+    - {{ pin_compatible('numpy', max_pin='x.x') }}
     - scipy
     - matplotlib
     - docopt
@@ -57,7 +56,6 @@ requirements:
 #    - ismrmrd
     - gadgetron
     - h5py
-    - itk
 	
 about:
   home: http://www.ccppetmr.ac.uk
