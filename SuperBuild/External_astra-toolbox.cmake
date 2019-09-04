@@ -101,15 +101,15 @@ list(APPEND cmd "NVCCFLAGS=-I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_IN
       # apparently this is the only way to pass environment variables to 
       # external projects 
       CONFIGURE_COMMAND 
-        ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux 
-        ${CMAKE_COMMAND} -E env ./autogen.sh 
-        ${CMAKE_COMMAND} -E env ${cmd} --with-cuda=${CUDA_TOOLKIT_ROOT_DIR} --prefix=${libastra_Install_Dir} --with-install-type=prefix
+        ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ./autogen.sh 
+        #${CMAKE_COMMAND} -E env ./autogen.sh 
 
       # This build is Unix specific
       BUILD_COMMAND 
-        ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux make install-libraries 
+        ${CMAKE_COMMAND} -E env ${cmd} --with-cuda=${CUDA_TOOLKIT_ROOT_DIR} --prefix=${libastra_Install_Dir} --with-install-type=prefix
       INSTALL_COMMAND 
-        ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ls -h
+        ${CMAKE_COMMAND} -E chdir ${${proj}_BINARY_DIR}/ make -j install-libraries 
+        #${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ls -h
       DEPENDS
         ${${proj}_DEPENDENCIES}
     )
@@ -122,7 +122,7 @@ list(APPEND cmd "NVCCFLAGS=-I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_IN
 #! /bin/bash
 set -ex
 
-CPPFLAGS="-DASTRA_CUDA -DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib -I${${proj}_SOURCE_DIR}/include" CC=${CMAKE_C_COMPILER} ${PYTHON_EXECUTABLE} builder.py build
+CPPFLAGS=\"-DASTRA_CUDA -DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib -I${${proj}_SOURCE_DIR}/include\" CC=${CMAKE_C_COMPILER} ${PYTHON_EXECUTABLE} builder.py build
 ")
 
 
