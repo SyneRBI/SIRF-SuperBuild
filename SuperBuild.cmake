@@ -217,7 +217,7 @@ if (APPLE)
   set(BUILD_CIL OFF)
 endif()
 if (BUILD_CIL)
-  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES CCPi-RGL astra-toolbox CCPi-Framework CCPi-FrameworkPlugins)
+  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES CCPi-RGL CCPi-Astra CCPi-Framework CCPi-FrameworkPlugins)
 endif()
 
 if (BUILD_SIRF_Registration)

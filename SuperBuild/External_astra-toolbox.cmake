@@ -130,9 +130,20 @@ CPPFLAGS=\"-DASTRA_CUDA -DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${S
      DESTINATION ${${proj}_SOURCE_DIR}/python
      FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
 
-    set(cppflags "-DASTRA_CUDA -DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib -I${${proj}_SOURCE_DIR}/include")
-    set(build_python "")
-    list (APPEND build_python "CC=${CMAKE_C_COMPILER}")
+    #create an install script
+    file(WRITE ${${proj}_SOURCE_DIR}/python_install
+"
+#! /bin/bash
+set -ex
+build_dir=`ls ${${proj}_SOURCE_DIR}/python/build/ | grep lib`
+cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir ${libastra_Install_Dir}/python/
+
+")
+
+   file(COPY ${${proj}_SOURCE_DIR}/python_install
+     DESTINATION ${${proj}_SOURCE_DIR}/python
+     FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
+
     ExternalProject_Add(${python_wrapper}
       ${${proj}_EP_ARGS}
       SOURCE_DIR ${${proj}_SOURCE_DIR}
@@ -149,7 +160,7 @@ CPPFLAGS=\"-DASTRA_CUDA -DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${S
       BUILD_COMMAND 
         ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/python ./python_build
       INSTALL_COMMAND 
-        ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ls -h
+        ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/python ./python_install
       DEPENDS
         ${proj}
     )
@@ -181,9 +192,9 @@ CPPFLAGS=\"-DASTRA_CUDA -DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${S
 
     set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
     set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
-    #add_test(NAME CIL_REGULARISATION_TEST_1
-    #         COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -s test -p test_*.py 
-    #WORKING_DIRECTORY ${${proj}_SOURCE_DIR})
+    add_test(NAME ASTRA_BASIC_TEST
+             COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -s test -p test_*.py 
+    WORKING_DIRECTORY ${${proj}_SOURCE_DIR})
 
   else()
     if(${USE_SYSTEM_${externalProjName}})
