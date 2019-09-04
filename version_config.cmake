@@ -133,6 +133,10 @@ set(DEFAULT_ISMRMRD_TAG v1.4.0)
 set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
 set(DEFAULT_Gadgetron_TAG b6191eaaa72ccca6c6a5fe4c0fa3319694f512ab)
 
+## ASTRA
+set(DEFAULT_astra-toolbox_URL https://github.com/astra-toolbox/astra-toolbox )
+set(DEFAULT_astra-toolbox_TAG v1.8.3)
+
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
 
@@ -238,6 +242,9 @@ set(CCPi-Framework_URL ${DEFAULT_CCPi-Framework_URL} CACHE STRING ON)
 set(CCPi-Framework_TAG ${DEFAULT_CCPi-Framework_TAG} CACHE STRING ON)
 set(CCPi-FrameworkPlugins_URL ${DEFAULT_CCPi-FrameworkPlugins_URL} CACHE STRING ON)
 set(CCPi-FrameworkPlugins_TAG ${DEFAULT_CCPi-FrameworkPlugins_TAG} CACHE STRING ON)
+set(astra-toolbox_URL ${DEFAULT_astra-toolbox_URL} CACHE STRING ON)
+set(astra-toolbox_TAG ${DEFAULT_astra-toolbox_TAG} CACHE STRING ON)
+
 set(NIFTYREG_URL ${DEFAULT_NIFTYREG_URL} CACHE STRING ON)
 set(NIFTYREG_TAG ${DEFAULT_NIFTYREG_TAG} CACHE STRING ON)
 
