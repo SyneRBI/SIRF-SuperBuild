@@ -83,29 +83,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
 
    
-#create a configure script
-file(WRITE ${${proj}_SOURCE_DIR}/configure-launch
-"
-#! /bin/bash
-
-echo $0 received $# parameters
-
-for arg 
-do echo $arg
-done
-
-${${proj}_SOURCE_DIR}/build/linux/configure $@ --with-cuda=${CUDA_TOOLKIT_ROOT_DIR} --prefix=${libastra_Install_Dir} --with-install-type=prefix
-
-")
-
 set(cmd "${${proj}_SOURCE_DIR}/build/linux/configure")
 list(APPEND cmd "CPPFLAGS=-I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib")
 list(APPEND cmd "NVCCFLAGS=-I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib")
-
-
-file(COPY ${${proj}_SOURCE_DIR}/configure-launch
-     DESTINATION ${${proj}_BINARY_DIR}
-     FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
 
     ExternalProject_Add(${proj}
       ${${proj}_EP_ARGS}
@@ -127,13 +107,51 @@ file(COPY ${${proj}_SOURCE_DIR}/configure-launch
 
       # This build is Unix specific
       BUILD_COMMAND 
-        ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux 
-        ${CMAKE_COMMAND} -E env make clean
-        ${CMAKE_COMMAND} -E env make install-libraries
+        ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux make install-libraries 
       INSTALL_COMMAND 
-        ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux 
+        ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ls -h
       DEPENDS
         ${${proj}_DEPENDENCIES}
+    )
+
+    set(python_wrapper "astra-python-wrapper")
+    
+    #create a configure script
+    file(WRITE ${${proj}_SOURCE_DIR}/python_build
+"
+#! /bin/bash
+set -ex
+
+CPPFLAGS="-DASTRA_CUDA -DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib -I${${proj}_SOURCE_DIR}/include" CC=${CMAKE_C_COMPILER} ${PYTHON_EXECUTABLE} builder.py build
+")
+
+
+   file(COPY ${${proj}_SOURCE_DIR}/python_build
+     DESTINATION ${${proj}_SOURCE_DIR}/python
+     FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
+
+    set(cppflags "-DASTRA_CUDA -DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib -I${${proj}_SOURCE_DIR}/include")
+    set(build_python "")
+    list (APPEND build_python "CC=${CMAKE_C_COMPILER}")
+    ExternalProject_Add(${python_wrapper}
+      ${${proj}_EP_ARGS}
+      SOURCE_DIR ${${proj}_SOURCE_DIR}
+      BINARY_DIR ${${proj}_BINARY_DIR}
+      DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+      STAMP_DIR ${${proj}_STAMP_DIR}
+      TMP_DIR ${${proj}_TMP_DIR}
+      INSTALL_DIR ${libastra_Install_Dir}
+      # apparently this is the only way to pass environment variables to 
+      # external projects 
+      CONFIGURE_COMMAND ""
+
+      # This build is Unix specific
+      BUILD_COMMAND 
+        ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/python ./python_build
+      INSTALL_COMMAND 
+        ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ls -h
+      DEPENDS
+        ${proj}
     )
 
     else()
