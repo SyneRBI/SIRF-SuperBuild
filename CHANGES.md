@@ -2,7 +2,9 @@
 
 ## v2.0.1
 - Switch NiftyReg remote from `rijobro` to `KCL-BMEIS` (following the acceptance of one of our PRs to their code).
-
+- Azure:
+    - Added NVIDIA GPU support
+    - Now using Terraform HCL v0.12
 
 ## v2.0.0
 - Added CMake Variable `Gadgetron_USE_MKL` to allow Gadgetron build with MKL if available
