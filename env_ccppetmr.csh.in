@@ -4,6 +4,8 @@
 # Preferably add this line to your .cshrc
 
 setenv SIRF_PATH @SIRF_SRC_DIR@
+# Where all binaries are installed
+setenv SIRF_INSTALL_PATH @CCPPETMR_INSTALL@
 # Where to find shared libraries
 # Setting for Linux but doesn't harm elsewhere
 if $?LD_LIBRARY_PATH then
