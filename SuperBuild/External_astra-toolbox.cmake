@@ -106,7 +106,7 @@ list(APPEND cmd "NVCCFLAGS=-I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_IN
 
       # This build is Unix specific
       BUILD_COMMAND 
-        ${CMAKE_COMMAND} -E env ${cmd} --with-cuda=${CUDA_TOOLKIT_ROOT_DIR} --prefix=${libastra_Install_Dir} --with-install-type=prefix
+        ${CMAKE_COMMAND} -E env ${cmd} --with-cuda=${CUDA_TOOLKIT_ROOT_DIR} --prefix=${libastra_Install_Dir} --with-install-type=prefix --with-python
       INSTALL_COMMAND 
         ${CMAKE_COMMAND} -E chdir ${${proj}_BINARY_DIR}/ make -j install-libraries 
         #${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ls -h
@@ -136,7 +136,7 @@ CPPFLAGS=\"-DASTRA_CUDA -DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${S
 #! /bin/bash
 set -ex
 build_dir=`ls ${${proj}_SOURCE_DIR}/python/build/ | grep lib`
-cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir ${libastra_Install_Dir}/python/
+cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir/astra ${libastra_Install_Dir}/python/
 
 ")
 
