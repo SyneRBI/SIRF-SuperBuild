@@ -32,7 +32,8 @@ if(NOT ${Cython_FOUND})
     message(FATAL_ERROR "CCPi-Regularisation-Toolkit depends on Cython")
 endif()
 
-find_package(CUDA)
+set (CUDA_TOOLKIT_ROOT_DIR $ENV{CUDA_BIN_DIR})
+find_package(CUDA REQUIRED)
 # as in CCPi RGL
 if (CUDA_FOUND)
    set(CUDA_NVCC_FLAGS "-Xcompiler -fPIC -shared -D_FORCE_INLINES")
@@ -193,7 +194,8 @@ cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir/astra ${libastra_Install_Di
     set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
     set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
     add_test(NAME ASTRA_BASIC_TEST
-             COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -s test -p test_*.py 
+             #COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -s test -p test_*.py 
+             COMMAND ${PYTHON_EXECUTABLE} -c "import astra; astra.test_CUDA()" 
     WORKING_DIRECTORY ${${proj}_SOURCE_DIR})
 
   else()
