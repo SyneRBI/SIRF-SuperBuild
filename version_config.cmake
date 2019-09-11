@@ -137,6 +137,10 @@ set(DEFAULT_Gadgetron_TAG b6191eaaa72ccca6c6a5fe4c0fa3319694f512ab)
 set(DEFAULT_astra-toolbox_URL https://github.com/astra-toolbox/astra-toolbox )
 set(DEFAULT_astra-toolbox_TAG v1.8.3)
 
+## TomoPhantom
+set(DEFAULT_TomoPhantom_URL https://github.com/dkazanc/TomoPhantom )
+set(DEFAULT_TomoPhantom_TAG v1.4)
+
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
 
@@ -209,7 +213,7 @@ else()
   set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
   set(DEFAULT_CCPi-FrameworkPlugins_TAG "${CIL_VERSION}")
   set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
-  set(DEFAULT_CCPi-Astra_TAG "${CIL_VERSION}")
+  set(DEFAULT_CCPi-Astra_TAG origin/cpu_projector)
 
 endif()
 
@@ -250,6 +254,8 @@ set(CCPi-Astra_URL ${DEFAULT_CCPi-Astra_URL} CACHE STRING ON)
 set(CCPi-Astra_TAG ${DEFAULT_CCPi-Astra_TAG} CACHE STRING ON)
 set(astra-toolbox_URL ${DEFAULT_astra-toolbox_URL} CACHE STRING ON)
 set(astra-toolbox_TAG ${DEFAULT_astra-toolbox_TAG} CACHE STRING ON)
+set(TomoPhantom_URL ${DEFAULT_TomoPhantom_URL} CACHE STRING ON)
+set(TomoPhantom_TAG ${DEFAULT_TomoPhantom_TAG} CACHE STRING ON)
 
 set(NIFTYREG_URL ${DEFAULT_NIFTYREG_URL} CACHE STRING ON)
 set(NIFTYREG_TAG ${DEFAULT_NIFTYREG_TAG} CACHE STRING ON)
