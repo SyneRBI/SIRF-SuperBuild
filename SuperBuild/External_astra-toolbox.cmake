@@ -33,7 +33,7 @@ if(NOT ${Cython_FOUND})
 endif()
 
 set (CUDA_TOOLKIT_ROOT_DIR $ENV{CUDA_BIN_DIR})
-find_package(CUDA REQUIRED)
+find_package(CUDA)
 # as in CCPi RGL
 if (CUDA_FOUND)
    set(CUDA_NVCC_FLAGS "-Xcompiler -fPIC -shared -D_FORCE_INLINES")
@@ -86,7 +86,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
    
 set(cmd "${${proj}_SOURCE_DIR}/build/linux/configure")
 list(APPEND cmd "CPPFLAGS=-I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib")
-list(APPEND cmd "NVCCFLAGS=-I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib")
+if (CUDA_FOUND)
+    list(APPEND cmd "NVCCFLAGS=-I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib")
 
     ExternalProject_Add(${proj}
       ${${proj}_EP_ARGS}
@@ -126,6 +127,49 @@ set -ex
 CPPFLAGS=\"-DASTRA_CUDA -DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib -I${${proj}_SOURCE_DIR}/include\" CC=${CMAKE_C_COMPILER} ${PYTHON_EXECUTABLE} builder.py build
 ")
 
+else()
+# No CUDA
+    message (WARNING "No CUDA found on host, skipping GPU")
+    ExternalProject_Add(${proj}
+      ${${proj}_EP_ARGS}
+      GIT_REPOSITORY ${${proj}_URL}
+      GIT_TAG ${${proj}_TAG}
+      #GIT_TAG origin/cmaking
+      SOURCE_DIR ${${proj}_SOURCE_DIR}
+      BINARY_DIR ${${proj}_BINARY_DIR}
+      DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+      STAMP_DIR ${${proj}_STAMP_DIR}
+      TMP_DIR ${${proj}_TMP_DIR}
+      INSTALL_DIR ${libastra_Install_Dir}
+      # apparently this is the only way to pass environment variables to 
+      # external projects 
+      CONFIGURE_COMMAND 
+        ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ./autogen.sh 
+        #${CMAKE_COMMAND} -E env ./autogen.sh 
+
+      # This build is Unix specific
+      BUILD_COMMAND 
+        ${CMAKE_COMMAND} -E env ${cmd} --prefix=${libastra_Install_Dir} --with-install-type=prefix --with-python
+      INSTALL_COMMAND 
+        ${CMAKE_COMMAND} -E chdir ${${proj}_BINARY_DIR}/ make -j install-libraries 
+        #${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ls -h
+      DEPENDS
+        ${${proj}_DEPENDENCIES}
+    )
+
+    set(python_wrapper "astra-python-wrapper")
+    
+    #create a configure script
+    file(WRITE ${${proj}_SOURCE_DIR}/python_build
+"
+#! /bin/bash
+set -ex
+
+CPPFLAGS=\"-DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib -I${${proj}_SOURCE_DIR}/include\" CC=${CMAKE_C_COMPILER} ${PYTHON_EXECUTABLE} builder.py build
+")
+
+
+endif()
 
    file(COPY ${${proj}_SOURCE_DIR}/python_build
      DESTINATION ${${proj}_SOURCE_DIR}/python
@@ -195,8 +239,14 @@ cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir/astra ${libastra_Install_Di
     set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
     add_test(NAME ASTRA_BASIC_TEST
              #COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -s test -p test_*.py 
-             COMMAND ${PYTHON_EXECUTABLE} -c "import astra; astra.test_CUDA()" 
+             COMMAND ${PYTHON_EXECUTABLE} -c "import astra; astra.test_noCUDA()" 
     WORKING_DIRECTORY ${${proj}_SOURCE_DIR})
+    if (CUDA_FOUND)
+      add_test(NAME ASTRA_BASIC_GPU_TEST
+             #COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -s test -p test_*.py 
+             COMMAND ${PYTHON_EXECUTABLE} -c "import astra; astra.test_CUDA()" 
+             WORKING_DIRECTORY ${${proj}_SOURCE_DIR})
+     endif()
 
   else()
     if(${USE_SYSTEM_${externalProjName}})
