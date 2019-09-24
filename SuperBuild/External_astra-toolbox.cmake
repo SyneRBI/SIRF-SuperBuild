@@ -172,7 +172,7 @@ CPPFLAGS=\"-DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INS
 endif()
 
    file(COPY ${${proj}_SOURCE_DIR}/python_build
-     DESTINATION ${${proj}_SOURCE_DIR}/python
+	   DESTINATION ${${proj}_BINARY_DIR}/python
      FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
 
     #create an install script
@@ -186,7 +186,7 @@ cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir/astra ${libastra_Install_Di
 ")
 
    file(COPY ${${proj}_SOURCE_DIR}/python_install
-     DESTINATION ${${proj}_SOURCE_DIR}/python
+	   DESTINATION ${${proj}_BINARY_DIR}/python
      FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
 
     ExternalProject_Add(${python_wrapper}
@@ -199,7 +199,7 @@ cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir/astra ${libastra_Install_Di
       INSTALL_DIR ${libastra_Install_Dir}
       # apparently this is the only way to pass environment variables to 
       # external projects 
-      CONFIGURE_COMMAND ""
+      CONFIGURE_COMMAND ${CMAKE_COMMAND} -E copy ${${proj}_BINARY_DIR}/python/python_build ${${proj}_SOURCE_DIR}/python/ && ${CMAKE_COMMAND} -E copy ${${proj}_BINARY_DIR}/python/python_install ${${proj}_SOURCE_DIR}/python/ 
 
       # This build is Unix specific
       BUILD_COMMAND 
