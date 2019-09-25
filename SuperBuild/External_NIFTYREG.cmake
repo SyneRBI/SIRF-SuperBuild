@@ -65,7 +65,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DCMAKE_INSTALL_PREFIX=${${proj}_Install_Dir}
       -DUSE_THROW_EXCEP=ON
       # fixes lib_reg_maths.a `GOMP_parallel' undefined reference linker errors
-      -DUSE_OPENMP:BOOL=OFF
+      -DUSE_OPENMP:BOOL=ON
+      -DBUILD_ALL_DEP:BOOL=ON
     INSTALL_DIR ${${proj}_Install_Dir}
     DEPENDS ${${proj}_DEPENDENCIES})
 
