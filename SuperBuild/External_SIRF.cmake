@@ -65,10 +65,22 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set(extra_args "")
   endif()
 
+  # If the source already exists
+  if (EXISTS "${${proj}_SOURCE_DIR}")
+    option(DISABLE_GIT_CHECKOUT_${proj} "Disable git checkout of ${proj}." OFF)
+    if (NOT DISABLE_GIT_CHECKOUT_${proj})
+      SET(GIT_REPOSITORY "${${proj}_URL}")
+      SET(GIT_TAG "${${proj}_URL}")
+    else()
+      SET(GIT_REPOSITORY "")
+      SET(GIT_TAG "")
+    endif()
+  endif()
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
-    GIT_REPOSITORY ${${proj}_URL}
-    GIT_TAG ${${proj}_TAG}
+    GIT_REPOSITORY "${GIT_REPOSITORY}"
+    GIT_TAG "${GIT_TAG}"
     SOURCE_DIR ${${proj}_SOURCE_DIR}
     BINARY_DIR ${${proj}_BINARY_DIR}
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
