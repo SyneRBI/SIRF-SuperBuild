@@ -1,6 +1,6 @@
 #========================================================================
 # Author: Edoardo Pasca
-# Copyright 2017-2018 STFC
+# Copyright 2017-2019 STFC
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -19,7 +19,7 @@
 #=========================================================================
 
 #This needs to be unique globally
-set(proj CCPi-RGL)
+set(proj CCPi-Regularisation-Toolkit)
 
 # Set dependency list
 set(${proj}_DEPENDENCIES "")
@@ -51,9 +51,10 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
-  message("CIL URL " ${${proj}_URL}  ) 
-  message("CIL TAG " ${${proj}_TAG}  ) 
-
+  message(WARNING "${proj} URL " ${${proj}_URL}  ) 
+  message(WARNING "${proj} TAG " ${${proj}_TAG}  ) 
+  set (CIL_VERSION ${${prog}_TAG})
+  message(WARNING "CIL_VERSION ${CIL_VERSION}" ) 
   # conda build should never get here
   if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
     # in case of PYTHONPATH it is sufficient to copy the files to the 
@@ -88,7 +89,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       INSTALL_DIR ${libcilreg_Install_Dir}
       # apparently this is the only way to pass environment variables to 
       # external projects 
-      CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${CIL_VERSION}         ${CMAKE_COMMAND} ${${proj}_SOURCE_DIR}  -DCMAKE_INSTALL_PREFIX=${libcilreg_Install_Dir}
+      CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG}         ${CMAKE_COMMAND} ${${proj}_SOURCE_DIR}  -DCMAKE_INSTALL_PREFIX=${libcilreg_Install_Dir}
         -DBUILD_PYTHON_WRAPPER=ON -DCMAKE_BUILD_TYPE=Release 
         -DBUILD_CUDA=ON -DCONDA_BUILD=OFF -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
         -DPYTHON_DEST=${PYTHON_DEST_DIR}
@@ -123,7 +124,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     
         CONFIGURE_COMMAND ""
         BUILD_COMMAND ""
-        INSTALL_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${CIL_VERSION} SRC_DIR=${${proj}_BINARY_DIR} RECIPE_DIR=${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe PYTHON=${PYTHON_EXECUTABLE} bash ${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe/build.sh
+        INSTALL_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} SRC_DIR=${${proj}_BINARY_DIR} RECIPE_DIR=${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe PYTHON=${PYTHON_EXECUTABLE} bash ${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe/build.sh
         CMAKE_ARGS
            -DCMAKE_INSTALL_PREFIX=${libcilreg_Install_Dir}
         DEPENDS
