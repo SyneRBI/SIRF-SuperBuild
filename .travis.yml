@@ -124,6 +124,18 @@ addons:
   - libxslt-dev
   - libace-dev
   # - root-system-bin
+  # dependencies for CIL
+  - cython
+  - scipy
+  - python-h5py
+  # CIL dependency for test
+  - python-wget
+  # dependencies for ASTRA toolbox
+  - autotools-dev
+  - automake
+  - autogen
+  - autoconf
+  - libtool
 
 before_install:
 # Set C and C++ compiler etc using trick from
