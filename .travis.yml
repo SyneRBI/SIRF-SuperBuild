@@ -216,10 +216,14 @@ before_install:
 # setuptools may be out of date on osx
 - $PY_EXE -m pip install --user -U pip setuptools wheel
 # ensure python bin dir exists (and coverage dependencies installed)
-- $PY_EXE -m pip install --user -U nose codecov coveralls Cython
+- $PY_EXE -m pip install --user -U nose codecov coveralls
+# additional python deps
+- $PY_EXE -m pip install --user -U Cython  # first install Cython separately
 - $PY_EXE -m pip install --user -U numpy
-# dependencies for CIL (TODO: only install if necessary?)
-- $PY_EXE -m pip install --user -U scipy h5py Pillow
+- |
+   if [[ "$EXTRA_BUILD_FLAGS" == *"-DBUILD_CIL=ON"* ]]; then
+     $PY_EXE -m pip install --user -U scipy h5py Pillow
+   fi
 # for counting clones, excluding ours
 - |
    if [[ -n "$GITHUB_API_TOKEN" ]]; then
