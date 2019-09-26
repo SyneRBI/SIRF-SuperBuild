@@ -126,10 +126,8 @@ addons:
   # - root-system-bin
   # dependencies for CIL
   - cython
-  - scipy
+  - python-scipy
   - python-h5py
-  # CIL dependency for test
-  - python-wget
   # dependencies for ASTRA toolbox
   - autotools-dev
   - automake
