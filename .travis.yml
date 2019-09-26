@@ -124,11 +124,6 @@ addons:
   - libxslt-dev
   - libace-dev
   # - root-system-bin
-  # dependencies for CIL
-  - cython
-  - python-scipy
-  - python-h5py
-  - python-pil
   # dependencies for ASTRA toolbox
   - autotools-dev
   - automake
@@ -221,8 +216,10 @@ before_install:
 # setuptools may be out of date on osx
 - $PY_EXE -m pip install --user -U pip setuptools wheel
 # ensure python bin dir exists (and coverage dependencies installed)
-- $PY_EXE -m pip install --user -U nose codecov coveralls
-- $PY_EXE -m pip install --user -U numpy cython
+- $PY_EXE -m pip install --user -U nose codecov coveralls Cython
+- $PY_EXE -m pip install --user -U numpy
+# dependencies for CIL (TODO: only install if necessary?)
+- $PY_EXE -m pip install --user -U scipy h5py Pillow
 # for counting clones, excluding ours
 - |
    if [[ -n "$GITHUB_API_TOKEN" ]]; then
