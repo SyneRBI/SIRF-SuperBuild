@@ -183,7 +183,7 @@ if (DEVEL_BUILD)
 
 else()
   # set(DEFAULT_SIRF_TAG v2.0.0)
-  set (DEFAULT_SIRF_TAG origin/add_to_sirf_classes_merge_master)
+  set (DEFAULT_SIRF_TAG origin/add_to_sirf_classes)
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
   set(DEFAULT_STIR_TAG 3a277f7a819f35a553a8d6097402ea25cf55a240)
