@@ -66,12 +66,11 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   endif()
 
   # If the source already exists
+  SET(GIT_REPOSITORY "${${proj}_URL}")
+  SET(GIT_TAG "${${proj}_TAG}")
   if (EXISTS "${${proj}_SOURCE_DIR}")
     option(DISABLE_GIT_CHECKOUT_${proj} "Disable git checkout of ${proj}." OFF)
-    if (NOT DISABLE_GIT_CHECKOUT_${proj})
-      SET(GIT_REPOSITORY "${${proj}_URL}")
-      SET(GIT_TAG "${${proj}_URL}")
-    else()
+    if (DISABLE_GIT_CHECKOUT_${proj})
       SET(GIT_REPOSITORY "")
       SET(GIT_TAG "")
     endif()
