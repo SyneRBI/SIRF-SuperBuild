@@ -29,11 +29,11 @@ matrix:
  include:
  # linux g{cc,++}-6 py{27,3}
  - os: linux
-   python: 3
+   python: 3.6
    # -boost +fftw3 +hdf5 +ace +cil
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
  - os: linux
-   python: 3
+   python: 3.6
    # -boost +fftw3 +hdf5 +ace
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
  - os: linux
@@ -41,7 +41,7 @@ matrix:
    # -boost +fftw3 +hdf5 +siemens_to_ismrmrd +swig +ace
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_ACE=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=2
  - os: linux
-   python: 3
+   python: 3.6
    # +DEVEL -boost -hdf5 -fftw3 +ace +siemens_to_ismrmrd
    env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_ACE=ON -DBUILD_siemens_to_ismrmrd=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
  - os: linux
@@ -54,7 +54,7 @@ matrix:
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
  - os: osx
    # +boost +fftw3 -hdf5 -swig
-   python: 3
+   python: 3.6
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=3
  - os: osx
    python: 2.7
@@ -66,7 +66,7 @@ matrix:
    env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
  # itk
  - os: linux
-   python: 3
+   python: 3.6
    # -boost +itk +fftw3 +hdf5
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_ITK=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
  - os: osx
@@ -124,6 +124,12 @@ addons:
   - libxslt-dev
   - libace-dev
   # - root-system-bin
+  # dependencies for ASTRA toolbox
+  - autotools-dev
+  - automake
+  - autogen
+  - autoconf
+  - libtool
 
 before_install:
 # Set C and C++ compiler etc using trick from
@@ -211,7 +217,13 @@ before_install:
 - $PY_EXE -m pip install --user -U pip setuptools wheel
 # ensure python bin dir exists (and coverage dependencies installed)
 - $PY_EXE -m pip install --user -U nose codecov coveralls
-- $PY_EXE -m pip install --user -U numpy cython
+# additional python deps
+- $PY_EXE -m pip install --user -U Cython  # first install Cython separately
+- $PY_EXE -m pip install --user -U numpy
+- |
+   if [[ "$EXTRA_BUILD_FLAGS" == *"-DBUILD_CIL=ON"* ]]; then
+     $PY_EXE -m pip install --user -U scipy h5py Pillow
+   fi
 # for counting clones, excluding ours
 - |
    if [[ -n "$GITHUB_API_TOKEN" ]]; then
