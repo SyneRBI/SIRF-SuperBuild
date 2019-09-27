@@ -2,8 +2,10 @@
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
 # Author: Edoardo Pasca
+# Author: Casper da Costa-Luis
 # Copyright 2017, 2018 University College London
 # Copyright 2017, 2018 STFC
+# Copyright 2019 King's College London
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -59,7 +61,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
     STAMP_DIR ${${proj}_STAMP_DIR}
     TMP_DIR ${${proj}_TMP_DIR}
-	
+
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX=${TomoPhantom_Install_Dir}
 	-DLIBRARY_DIR=${TomoPhantom_Install_Dir}/lib
@@ -67,6 +69,11 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 	-DCONDA_BUILD=OFF
 	-DBUILD_PYTHON_WRAPPER=ON
 	-DCMAKE_BUILD_TYPE=Release
+	-DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
+	-DPYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIRS}
+	-DPYTHON_LIBRARY=${PYTHON_LIBRARIES}
+	-DPYTHON_DEST_DIR=${PYTHON_DEST_DIR}
+	-DPYTHON_STRATEGY=${PYTHON_STRATEGY}
 
     # TODO this relies on using "make", but we could be build with something else
     #INSTALL_COMMAND make TomoPhantom
