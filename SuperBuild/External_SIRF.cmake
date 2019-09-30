@@ -65,21 +65,17 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set(extra_args "")
   endif()
 
-  # If the source already exists
-  SET(GIT_REPOSITORY "${${proj}_URL}")
-  SET(GIT_TAG "${${proj}_TAG}")
-  if (EXISTS "${${proj}_SOURCE_DIR}")
-    option(DISABLE_GIT_CHECKOUT_${proj} "Disable git checkout of ${proj}." OFF)
-    if (DISABLE_GIT_CHECKOUT_${proj})
-      SET(GIT_REPOSITORY "")
-      SET(GIT_TAG "")
-    endif()
-  endif()
+  # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
+  # If the user doesn't want git checkout to be performed, 
+  # these will be set to blank strings. Else, they'll be set to 
+  # ${${proj}_URL} and ${${proj}_TAG}, respectively.
+  include(${CMAKE_SOURCE_DIR}/cmake/SetGitTagAndRepo.cmake)
+  SetGitTagAndRepo("${proj}")
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
-    GIT_REPOSITORY "${GIT_REPOSITORY}"
-    GIT_TAG "${GIT_TAG}"
+    GIT_REPOSITORY "${${proj}_URL_MODIFIED}"
+    GIT_TAG "${${proj}_TAG_MODIFIED}"
     SOURCE_DIR ${${proj}_SOURCE_DIR}
     BINARY_DIR ${${proj}_BINARY_DIR}
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
