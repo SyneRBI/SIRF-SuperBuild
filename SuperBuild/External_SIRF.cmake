@@ -65,10 +65,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set(extra_args "")
   endif()
 
+  # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
+  SetGitTagAndRepo("${proj}")
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
-    GIT_REPOSITORY ${${proj}_URL}
-    GIT_TAG ${${proj}_TAG}
+    GIT_REPOSITORY "${${proj}_URL_MODIFIED}"
+    GIT_TAG "${${proj}_TAG_MODIFIED}"
     SOURCE_DIR ${${proj}_SOURCE_DIR}
     BINARY_DIR ${${proj}_BINARY_DIR}
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
