@@ -66,10 +66,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   endif()
 
   # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
-  # If the user doesn't want git checkout to be performed, 
-  # these will be set to blank strings. Else, they'll be set to 
-  # ${${proj}_URL} and ${${proj}_TAG}, respectively.
-  include(${CMAKE_SOURCE_DIR}/cmake/SetGitTagAndRepo.cmake)
   SetGitTagAndRepo("${proj}")
 
   ExternalProject_Add(${proj}

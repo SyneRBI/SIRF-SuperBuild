@@ -18,7 +18,7 @@
 #
 #=========================================================================
 
-# Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
+# This file defines a macro that sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED.
 # If the user doesn't want git checkout to be performed, 
 # these will be set to blank strings. Else, they'll be set to 
 # ${${proj}_URL} and ${${proj}_TAG}, respectively.
@@ -27,7 +27,7 @@
 #   cmake . -DDISABLE_GIT_CHECKOUT_STIR=ON
 #
 # This will call SetGitTagAndRepo(STIR), setting 
-# STIR_TAG_MODIFIED and STIR_TAG_MODIFIED accordingly.
+# STIR_TAG_MODIFIED and STIR_URL_MODIFIED accordingly.
 
 macro(SetGitTagAndRepo proj)
 	
