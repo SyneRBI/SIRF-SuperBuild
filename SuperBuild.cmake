@@ -132,7 +132,7 @@ endif()
 # If the user doesn't want git checkout to be performed, 
 # these will be set to blank strings. Else, they'll be set to 
 # ${${proj}_URL} and ${${proj}_TAG}, respectively.
-include(${CMAKE_SOURCE_DIR}/cmake/SetGitTagAndRepo.cmake)
+include(${CMAKE_SOURCE_DIR}/CMake/SetGitTagAndRepo.cmake)
 
 if (UNIX AND NOT APPLE)
   option(USE_SYSTEM_Boost "Build using an external version of Boost" OFF)
