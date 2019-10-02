@@ -277,6 +277,7 @@ install:
          sudo chown -R $USER:$(id -g) ~/.ccache
          mv ~/.ccache devel/
        fi
+       rm .dockerignore  # TODO: remove this line
        $DCC build --pull core
        # don't count the extra clone we're about to do
        # TODO: Do we need this? Is docker a distinct cloner from travis?
