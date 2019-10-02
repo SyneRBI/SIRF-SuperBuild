@@ -57,6 +57,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   # BLAS
   find_package(BLAS)
   if (APPLE AND NOT (CBLAS_LIBRARY AND CBLAS_INCLUDE_DIR))
+	# if the variables don't exist, let the user set them.
+	SET(CBLAS_LIBRARY "" CACHE FILEPATH "CBAS library")
+	SET(CBLAS_INCLUDE_DIR "" CACHE PATH "CBAS include directory")
     message(FATAL_ERROR "Gadgetron needs CBLAS_LIBRARY and CBLAS_INCLUDE_DIR. If
       these variables do not exist in your CMake, create them manually. CBLAS_LIBRARY
       and CBLAS_INCLUDE_DIR should be FILEPATH and PATH, respectively, and live in

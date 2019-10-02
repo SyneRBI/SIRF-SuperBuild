@@ -1,5 +1,5 @@
 
-Demonstrates how to build and install [SIRF](https://github.com/CCPPETMR/SIRF) on an [Azure](https://azure.microsoft.com) VM using [Terraform](https://www.terraform.io/). The VM is described in Terraform files (`.tf`). Terraform deploys a VM in the cloud and then copies and executes a bash script to perform the actual building of SIRF. 
+Demonstrates how to build and install [SIRF](https://github.com/CCPPETMR/SIRF) on an [Azure](https://azure.microsoft.com) VM using [Terraform](https://www.terraform.io/). The VM is described in Terraform files (`.tf`). Terraform deploys a VM in the cloud and then copies and executes a bash script to perform the actual building of SIRF. There are terraform files to build either for CPU or with GPU support (NVIDIA).
 
 An Azure account is required for deployment.
 
@@ -28,6 +28,7 @@ az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/${SUBSCRI
 - Edit `var_values.tfvars` such that `YOUR_SUBSCRIPTION_ID_HERE`, `YOUR_APPLICATION_ID_HERE`,`YOUR_SECRET_KEY_HERE` and `YOUR_TENANT_ID_HERE` are replaced by your `subscriptionId`, `appId`, `password` and `tenantId` respectively.
 
 ## Running the Terraform script
+- Change into the `cpu` or `gpu` directory depending on whether you wish to build with GPU support.
 - Initialise Terraform:
 ```shell
 terraform init
