@@ -12,7 +12,12 @@ apt-get install -yq --no-install-recommends \
   man                  \
   make                 \
   ccache               \
-  sudo
+  sudo                 \
+  autotools-dev        \
+  automake             \
+  autogen              \
+  autoconf             \
+  libtool              
 apt-get clean
 
 pushd $INSTALL_DIR
