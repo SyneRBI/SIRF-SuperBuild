@@ -268,7 +268,7 @@ install:
        # rebuild base image (using above docker cache)
        # and sirf image (with travis' ccache)
        rm -rf devel/.ccache
-       if [[ -n "$DOCKER_RECREATE_CCACHE" ]]; then
+       if [[ -n "$DOCKER_RECREATE_CCACHE" || ! -d ~/.ccache ]]; then
          mkdir devel/.ccache
          sudo rm -rf ~/.ccache
        else
@@ -280,8 +280,8 @@ install:
        # cloners_count_decrement
        $DCC build sirf
        # extract updated ccache
-       sudo rm -rf devel/.ccache/*
-       $DCC run --rm sirf /bin/bash -c 'sudo cp -a /opt/ccache/* /devel/.ccache/'
+       # sudo rm -rf devel/.ccache/*
+       $DCC run --rm sirf /bin/bash -c 'sudo rm -rf /devel/.ccache/* cp -a /opt/ccache/* /devel/.ccache/'
        # replace travis' ccache with the built images's
        mv devel/.ccache ~
      )
