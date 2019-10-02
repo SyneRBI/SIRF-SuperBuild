@@ -12,4 +12,13 @@ apt-get install -yq --no-install-recommends \
 apt-get install -yq --no-install-recommends \
   libxml2-dev          \
   libxslt-dev
+
+# ASTRA toolbox external dependencies
+apt-get install -yq --no-install-recommends \
+  autotools-dev        \
+  automake             \
+  autogen              \
+  autoconf             \
+  libtool
+
 apt-get clean
