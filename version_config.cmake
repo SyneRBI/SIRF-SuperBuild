@@ -182,8 +182,11 @@ if (DEVEL_BUILD)
   set(DEFAULT_CCPi-Astra_TAG origin/master)
 
 else()
-  # set(DEFAULT_SIRF_TAG v2.0.0)
-  set (DEFAULT_SIRF_TAG origin/add_to_sirf_classes)
+  if (BUILD_CIL OR BUILD_CIL_LITE)
+    set(DEFAULT_SIRF_TAG v2.0.0)
+  else()
+    set (DEFAULT_SIRF_TAG origin/add_to_sirf_classes)
+  endif()
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
   set(DEFAULT_STIR_TAG 3a277f7a819f35a553a8d6097402ea25cf55a240)
