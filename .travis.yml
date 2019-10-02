@@ -257,6 +257,8 @@ install:
 - |
    if [[ -n "$DOCKER_BUILD" ]]; then
      cd docker
+     [[ -n "$GROUPS" ]] || export GROUPS=$(id -g)
+     [[ -n "$UID" ]] || export UID=$(id -u)
      export DCC="docker-compose -p "travis_${TRAVIS_JOB_NUMBER/./_}" -f $PWD/docker-compose.yml"
      [[ "$DOCKER_BUILD" == *"DEVEL"* ]] && export DCC="$DCC -f $PWD/docker-compose.devel.yml"
      [[ "$DOCKER_BUILD" == *"SERVICE"* ]] && export DCC="$DCC -f $PWD/docker-compose.srv.yml"
@@ -272,6 +274,7 @@ install:
          mkdir devel/.ccache
          sudo rm -rf ~/.ccache
        else
+         sudo chown -R $USER:$(id -g) ~/.ccache
          mv ~/.ccache devel/
        fi
        $DCC build --pull core
