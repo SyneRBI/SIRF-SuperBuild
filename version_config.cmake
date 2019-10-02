@@ -182,11 +182,7 @@ if (DEVEL_BUILD)
   set(DEFAULT_CCPi-Astra_TAG origin/master)
 
 else()
-  if (BUILD_CIL OR BUILD_CIL_LITE)
-    set(DEFAULT_SIRF_TAG v2.0.0)
-  else()
-    set (DEFAULT_SIRF_TAG origin/add_to_sirf_classes)
-  endif()
+  set(DEFAULT_SIRF_TAG v2.0.0)
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
   set(DEFAULT_STIR_TAG 3a277f7a819f35a553a8d6097402ea25cf55a240)
@@ -216,7 +212,7 @@ else()
   set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
   set(DEFAULT_CCPi-FrameworkPlugins_TAG "${CIL_VERSION}")
   set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
-  set(DEFAULT_CCPi-Astra_TAG origin/cpu_projector)
+  set(DEFAULT_CCPi-Astra_TAG "${CIL_VERSION}")
 
 endif()
 
