@@ -22,7 +22,7 @@
 #=========================================================================
 
 ## BOOST
-  # Gadgetron needs 1.65
+  # Gadgetron needs at least 1.65
 
 if (APPLE) # really should be checking for CLang
     # Boost 1.65 contains a bug for recent Clang https://github.com/CCPPETMR/SIRF-SuperBuild/issues/170
