@@ -84,42 +84,39 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
 
    
-set(cmd "${${proj}_SOURCE_DIR}/build/linux/configure")
-list(APPEND cmd "CPPFLAGS=-I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib")
-if (CUDA_FOUND)
-    list(APPEND cmd "NVCCFLAGS=-I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib")
+    set(cmd "${${proj}_SOURCE_DIR}/build/linux/configure")
+    list(APPEND cmd "CPPFLAGS=-I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib")
+    if (CUDA_FOUND)
+      list(APPEND cmd "NVCCFLAGS=-I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib")
 
-    ExternalProject_Add(${proj}
-      ${${proj}_EP_ARGS}
-      GIT_REPOSITORY ${${proj}_URL}
-      GIT_TAG ${${proj}_TAG}
-      #GIT_TAG origin/cmaking
-      SOURCE_DIR ${${proj}_SOURCE_DIR}
-      BINARY_DIR ${${proj}_BINARY_DIR}
-      DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-      STAMP_DIR ${${proj}_STAMP_DIR}
-      TMP_DIR ${${proj}_TMP_DIR}
-      INSTALL_DIR ${libastra_Install_Dir}
-      # apparently this is the only way to pass environment variables to 
-      # external projects 
-      CONFIGURE_COMMAND 
-        ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ./autogen.sh 
-        #${CMAKE_COMMAND} -E env ./autogen.sh 
+      ExternalProject_Add(${proj}
+        ${${proj}_EP_ARGS}
+        GIT_REPOSITORY ${${proj}_URL}
+        GIT_TAG ${${proj}_TAG}
+        SOURCE_DIR ${${proj}_SOURCE_DIR}
+        BINARY_DIR ${${proj}_BINARY_DIR}
+        DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+        STAMP_DIR ${${proj}_STAMP_DIR}
+        TMP_DIR ${${proj}_TMP_DIR}
+        INSTALL_DIR ${libastra_Install_Dir}
+        # apparently this is the only way to pass environment variables to 
+        # external projects 
+        CONFIGURE_COMMAND 
+          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ./autogen.sh 
 
-      # This build is Unix specific
-      BUILD_COMMAND 
-      ${CMAKE_COMMAND} -E env ${cmd} --with-cuda=${CUDA_TOOLKIT_ROOT_DIR} --prefix=${libastra_Install_Dir} --with-python=${PYTHON_EXECUTABLE} --with-install-type=prefix       
-      INSTALL_COMMAND 
-        ${CMAKE_COMMAND} -E chdir ${${proj}_BINARY_DIR}/ make -j2 install-libraries 
-        #${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ls -h
-      DEPENDS
-        ${${proj}_DEPENDENCIES}
-    )
+        # This build is Unix specific
+        BUILD_COMMAND 
+        ${CMAKE_COMMAND} -E env ${cmd} --with-cuda=${CUDA_TOOLKIT_ROOT_DIR} --prefix=${libastra_Install_Dir} --with-python=${PYTHON_EXECUTABLE} --with-install-type=prefix       
+        INSTALL_COMMAND 
+          ${CMAKE_COMMAND} -E chdir ${${proj}_BINARY_DIR}/ make -j2 install-libraries 
+        DEPENDS
+          ${${proj}_DEPENDENCIES}
+      )
 
-    set(python_wrapper "astra-python-wrapper")
+      set(python_wrapper "astra-python-wrapper")
     
-    #create a configure script
-    file(WRITE ${${proj}_SOURCE_DIR}/python_build
+      #create a configure script
+      file(WRITE ${${proj}_SOURCE_DIR}/python_build
 "
 #! /bin/bash
 set -ex
@@ -127,40 +124,36 @@ set -ex
 CPPFLAGS=\"-DASTRA_CUDA -DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib -I${${proj}_SOURCE_DIR}/include\" CC=${CMAKE_C_COMPILER} ${PYTHON_EXECUTABLE} builder.py build
 ")
 
-else()
-# No CUDA
-    message (WARNING "No CUDA found on host, skipping GPU")
-    ExternalProject_Add(${proj}
-      ${${proj}_EP_ARGS}
-      GIT_REPOSITORY ${${proj}_URL}
-      GIT_TAG ${${proj}_TAG}
-      #GIT_TAG origin/cmaking
-      SOURCE_DIR ${${proj}_SOURCE_DIR}
-      BINARY_DIR ${${proj}_BINARY_DIR}
-      DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-      STAMP_DIR ${${proj}_STAMP_DIR}
-      TMP_DIR ${${proj}_TMP_DIR}
-      INSTALL_DIR ${libastra_Install_Dir}
-      # apparently this is the only way to pass environment variables to 
-      # external projects 
-      CONFIGURE_COMMAND 
-        ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ./autogen.sh 
-        #${CMAKE_COMMAND} -E env ./autogen.sh 
+    else()
+      # No CUDA
+      message (WARNING "No CUDA found on host, skipping GPU")
+      ExternalProject_Add(${proj}
+        ${${proj}_EP_ARGS}
+        GIT_REPOSITORY ${${proj}_URL}
+        GIT_TAG ${${proj}_TAG}
+        SOURCE_DIR ${${proj}_SOURCE_DIR}
+        BINARY_DIR ${${proj}_BINARY_DIR}
+        DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+        STAMP_DIR ${${proj}_STAMP_DIR}
+        TMP_DIR ${${proj}_TMP_DIR}
+        INSTALL_DIR ${libastra_Install_Dir}
+        # apparently this is the only way to pass environment variables to 
+        # external projects 
+        CONFIGURE_COMMAND 
+          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ./autogen.sh 
+        # This build is Unix specific
+        BUILD_COMMAND 
+        ${CMAKE_COMMAND} -E env ${cmd} --prefix=${libastra_Install_Dir} --with-install-type=prefix --with-python=${PYTHON_EXECUTABLE}
+        INSTALL_COMMAND 
+          ${CMAKE_COMMAND} -E chdir ${${proj}_BINARY_DIR}/ make -j install-libraries 
+        DEPENDS
+          ${${proj}_DEPENDENCIES}
+      )
 
-      # This build is Unix specific
-      BUILD_COMMAND 
-      ${CMAKE_COMMAND} -E env ${cmd} --prefix=${libastra_Install_Dir} --with-install-type=prefix --with-python=${PYTHON_EXECUTABLE}
-      INSTALL_COMMAND 
-        ${CMAKE_COMMAND} -E chdir ${${proj}_BINARY_DIR}/ make -j install-libraries 
-        #${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ls -h
-      DEPENDS
-        ${${proj}_DEPENDENCIES}
-    )
-
-    set(python_wrapper "astra-python-wrapper")
+      set(python_wrapper "astra-python-wrapper")
     
-    #create a configure script
-    file(WRITE ${${proj}_SOURCE_DIR}/python_build
+      #create a configure script
+      file(WRITE ${${proj}_SOURCE_DIR}/python_build
 "
 #! /bin/bash
 set -ex
@@ -169,11 +162,11 @@ CPPFLAGS=\"-DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INS
 ")
 
 
-endif()
+    endif()
 
-   file(COPY ${${proj}_SOURCE_DIR}/python_build
-	   DESTINATION ${${proj}_BINARY_DIR}/python
-     FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
+    file(COPY ${${proj}_SOURCE_DIR}/python_build
+         DESTINATION ${${proj}_BINARY_DIR}/python
+         FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
 
     #create an install script
     file(WRITE ${${proj}_SOURCE_DIR}/python_install
@@ -185,57 +178,55 @@ cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir/astra ${libastra_Install_Di
 
 ")
 
-   file(COPY ${${proj}_SOURCE_DIR}/python_install
-	   DESTINATION ${${proj}_BINARY_DIR}/python
-     FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
+    file(COPY ${${proj}_SOURCE_DIR}/python_install
+ 	   DESTINATION ${${proj}_BINARY_DIR}/python
+           FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
 
     ExternalProject_Add(${python_wrapper}
-      ${${proj}_EP_ARGS}
-      SOURCE_DIR ${${proj}_SOURCE_DIR}
-      BINARY_DIR ${${proj}_BINARY_DIR}
-      DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-      STAMP_DIR ${${proj}_STAMP_DIR}
-      TMP_DIR ${${proj}_TMP_DIR}
-      INSTALL_DIR ${libastra_Install_Dir}
-      # apparently this is the only way to pass environment variables to 
-      # external projects 
-      CONFIGURE_COMMAND ${CMAKE_COMMAND} -E copy ${${proj}_BINARY_DIR}/python/python_build ${${proj}_SOURCE_DIR}/python/ && ${CMAKE_COMMAND} -E copy ${${proj}_BINARY_DIR}/python/python_install ${${proj}_SOURCE_DIR}/python/ 
+        ${${proj}_EP_ARGS}
+        SOURCE_DIR ${${proj}_SOURCE_DIR}
+        BINARY_DIR ${${proj}_BINARY_DIR}
+        DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+        STAMP_DIR ${${proj}_STAMP_DIR}
+        TMP_DIR ${${proj}_TMP_DIR}
+        INSTALL_DIR ${libastra_Install_Dir}
+        # apparently this is the only way to pass environment variables to 
+        # external projects 
+        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E copy ${${proj}_BINARY_DIR}/python/python_build ${${proj}_SOURCE_DIR}/python/ && ${CMAKE_COMMAND} -E copy ${${proj}_BINARY_DIR}/python/python_install ${${proj}_SOURCE_DIR}/python/ 
 
-      # This build is Unix specific
-      BUILD_COMMAND 
-        ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/python ./python_build
-      INSTALL_COMMAND 
-        ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/python ./python_install
-      DEPENDS
-        ${proj}
-    )
-
-    else()
-      # if SETUP_PY one can launch the conda build.sh script setting 
-      # the appropriate variables.
-      message(FATAL_ERROR "Only PYTHONPATH install method is currently supported")
-    endif()
-
-
-    set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
-    set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
-    add_test(NAME ASTRA_BASIC_TEST
-             #COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -s test -p test_*.py 
-             COMMAND ${PYTHON_EXECUTABLE} -c "import astra; astra.test_noCUDA()" 
-    WORKING_DIRECTORY ${${proj}_SOURCE_DIR})
-    if (CUDA_FOUND)
-      add_test(NAME ASTRA_BASIC_GPU_TEST
-             #COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -s test -p test_*.py 
-             COMMAND ${PYTHON_EXECUTABLE} -c "import astra; astra.test_CUDA()" 
-             WORKING_DIRECTORY ${${proj}_SOURCE_DIR})
-     endif()
+        # This build is Unix specific
+        BUILD_COMMAND 
+          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/python ./python_build
+        INSTALL_COMMAND 
+          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/python ./python_install
+        DEPENDS
+          ${proj}
+      )
 
   else()
-    ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
+    # if SETUP_PY one can launch the conda build.sh script setting 
+    # the appropriate variables.
+    message(FATAL_ERROR "Only PYTHONPATH install method is currently supported")
+  endif()
+
+
+  set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
+  set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
+  add_test(NAME ASTRA_BASIC_TEST
+           COMMAND ${PYTHON_EXECUTABLE} -c "import astra; astra.test_noCUDA()" 
+           WORKING_DIRECTORY ${${proj}_SOURCE_DIR})
+  if (CUDA_FOUND)
+    add_test(NAME ASTRA_BASIC_GPU_TEST
+             COMMAND ${PYTHON_EXECUTABLE} -c "import astra; astra.test_CUDA()" 
+             WORKING_DIRECTORY ${${proj}_SOURCE_DIR})
+  endif()
+
+else()
+  ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
       SOURCE_DIR ${${proj}_SOURCE_DIR}
       BINARY_DIR ${${proj}_BINARY_DIR}
       DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
       STAMP_DIR ${${proj}_STAMP_DIR}
       TMP_DIR ${${proj}_TMP_DIR}
     )
-  endif()
+endif()
