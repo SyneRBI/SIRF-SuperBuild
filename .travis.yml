@@ -232,6 +232,10 @@ before_install:
    if [[ "$EXTRA_BUILD_FLAGS" == *"-DBUILD_CIL=ON"* ]]; then
      $PY_EXE -m pip install --user -U scipy h5py Pillow wget
    fi
+- |
+   if [[ "$EXTRA_BUILD_FLAGS" == *"-DBUILD_CIL_LITE=ON"* ]]; then
+     $PY_EXE -m pip install --user -U scipy h5py Pillow wget
+   fi
 # for counting clones, excluding ours
 - |
    if [[ -n "$GITHUB_API_TOKEN" ]]; then
