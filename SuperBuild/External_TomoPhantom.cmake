@@ -3,8 +3,8 @@
 # Author: Kris Thielemans
 # Author: Edoardo Pasca
 # Author: Casper da Costa-Luis
-# Copyright 2017, 2018 University College London
-# Copyright 2017, 2018 STFC
+# Copyright 2017, 2019 University College London
+# Copyright 2017, 2019 STFC
 # Copyright 2019 King's College London
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
