@@ -21,9 +21,7 @@
 #
 #=========================================================================
 
-## BOOST
-  # Gadgetron needs at least 1.65
-
+## BOOST  # Gadgetron needs at least 1.65
 if (APPLE) # really should be checking for CLang
     # Boost 1.65 contains a bug for recent Clang https://github.com/CCPPETMR/SIRF-SuperBuild/issues/170
     set(Boost_VERSION 1.68.0)
@@ -42,7 +40,6 @@ else()
      set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_65_1.zip)
      set(Boost_MD5 9824a7a3e25c9d4fdf2def07bce8651c)
 endif()
-
 
 ## Armadillo
 set(Armadillo_URL   https://downloads.sourceforge.net/project/arma/armadillo-7.800.2.tar.xz)
@@ -183,6 +180,7 @@ if (DEVEL_BUILD)
 
 else()
   set(DEFAULT_SIRF_TAG v2.0.0)
+
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
   set(DEFAULT_STIR_TAG 3a277f7a819f35a553a8d6097402ea25cf55a240)
@@ -213,7 +211,6 @@ else()
   set(DEFAULT_CCPi-FrameworkPlugins_TAG "${CIL_VERSION}")
   set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
   set(DEFAULT_CCPi-Astra_TAG "${CIL_VERSION}")
-
 endif()
 
 

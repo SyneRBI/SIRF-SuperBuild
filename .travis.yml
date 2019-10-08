@@ -229,11 +229,7 @@ before_install:
 - $PY_EXE -m pip install --user -U Cython  # first install Cython separately
 - $PY_EXE -m pip install --user -U numpy
 - |
-   if [[ "$EXTRA_BUILD_FLAGS" == *"-DBUILD_CIL=ON"* ]]; then
-     $PY_EXE -m pip install --user -U scipy h5py Pillow wget
-   fi
-- |
-   if [[ "$EXTRA_BUILD_FLAGS" == *"-DBUILD_CIL_LITE=ON"* ]]; then
+   if [[ "$EXTRA_BUILD_FLAGS" == *"-DBUILD_CIL=ON"* || "$EXTRA_BUILD_FLAGS" == *"-DBUILD_CIL_LITE=ON"* ]]; then
      $PY_EXE -m pip install --user -U scipy h5py Pillow wget
    fi
 # for counting clones, excluding ours
