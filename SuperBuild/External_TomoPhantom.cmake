@@ -1,9 +1,11 @@
 #========================================================================
-# Author: Richard Brown
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
-# Copyright 2017 University College London
-# Copyright 2017 STFC
+# Author: Edoardo Pasca
+# Author: Casper da Costa-Luis
+# Copyright 2017, 2019 University College London
+# Copyright 2017, 2019 STFC
+# Copyright 2019 King's College London
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -22,7 +24,7 @@
 #=========================================================================
 
 #This needs to be unique globally
-set(proj NIFTYREG)
+set(proj TomoPhantom)
 
 # Set dependency list
 set(${proj}_DEPENDENCIES "")
@@ -33,21 +35,22 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
+set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
+set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
+set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
+set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
+set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
+
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(${proj}_Install_Dir ${SUPERBUILD_INSTALL_DIR})
+  set(TomoPhantom_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
-  #message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
-  set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
-  set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
-  set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
-  set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
-  set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
+  
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
@@ -58,38 +61,48 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
     STAMP_DIR ${${proj}_STAMP_DIR}
     TMP_DIR ${${proj}_TMP_DIR}
-    CMAKE_ARGS
-      -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
-      -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
-      -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}
-      -DCMAKE_INSTALL_PREFIX=${${proj}_Install_Dir}
-      -DUSE_THROW_EXCEP=ON
-      # fixes lib_reg_maths.a `GOMP_parallel' undefined reference linker errors
-      -DUSE_OPENMP:BOOL=ON
-      -DBUILD_ALL_DEP:BOOL=ON
-    INSTALL_DIR ${${proj}_Install_Dir}
-    DEPENDS ${${proj}_DEPENDENCIES})
 
-    set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
-    set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
-    set(${proj}_DIR "${SUPERBUILD_INSTALL_DIR}/lib/cmake/NiftyReg")
+    CMAKE_ARGS
+        -DCMAKE_INSTALL_PREFIX=${TomoPhantom_Install_Dir}
+	-DLIBRARY_DIR=${TomoPhantom_Install_Dir}/lib
+	-DINCLUDE_DIR=${TomoPhantom_Install_Dir}/include
+	-DCONDA_BUILD=OFF
+	-DBUILD_PYTHON_WRAPPER=ON
+	-DCMAKE_BUILD_TYPE=Release
+	-DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
+	-DPYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIRS}
+	-DPYTHON_LIBRARY=${PYTHON_LIBRARIES}
+	-DPYTHON_DEST_DIR=${PYTHON_DEST_DIR}
+	-DPYTHON_STRATEGY=${PYTHON_STRATEGY}
+
+    # TODO this relies on using "make", but we could be build with something else
+    #INSTALL_COMMAND make TomoPhantom
+    DEPENDS
+        ${${proj}_DEPENDENCIES}
+  )
+
+   # not used
+   # set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
+   # set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
+
    else()
       if(${USE_SYSTEM_${externalProjName}})
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
-        message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
+        message(STATUS "USING the system ${externalProjName}, found ACE_LIBRARIES=${ACE_LIBRARIES}")
     endif()
-    ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-      SOURCE_DIR ${${proj}_SOURCE_DIR}
-      BINARY_DIR ${${proj}_BINARY_DIR}
-      DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-      STAMP_DIR ${${proj}_STAMP_DIR}
-      TMP_DIR ${${proj}_TMP_DIR}
-    )
+  ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
+    SOURCE_DIR ${${proj}_SOURCE_DIR}
+    BINARY_DIR ${${proj}_BINARY_DIR}
+    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+    STAMP_DIR ${${proj}_STAMP_DIR}
+    TMP_DIR ${${proj}_TMP_DIR}
+  )
   endif()
 
-  mark_as_superbuild(
-    VARS
-      ${externalProjName}_DIR:PATH
-    LABELS
-      "FIND_PACKAGE"
-  )
+# Currently, setting ACE_ROOT has no effect, see https://github.com/CCPPETMR/SIRF-SuperBuild/issues/147
+#  mark_as_superbuild(
+#    VARS
+#      ${externalProjName}_ROOT:PATH
+#    LABELS
+#      "FIND_PACKAGE"
+#  )
