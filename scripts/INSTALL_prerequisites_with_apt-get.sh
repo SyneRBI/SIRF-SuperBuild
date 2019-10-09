@@ -72,8 +72,14 @@ ${APT_GET_INSTALL} --no-install-recommends doxygen graphviz
 #echo "Installing python libraries etc"
 #$SUDO apt-get install -y --no-install-recommends  python-scipy python-docopt  python-numpy python-h5py python-matplotlib python-libxml2 python-psutil python-tk python-nose
 
-echo "installing glog"
+echo "Installing glog"
 ${APT_GET_INSTALL} libgoogle-glog-dev
+
+echo "Installing unzip"
+${APT_GET_INSTALL} unzip
+
+echo "Installing expect"
+${APT_GET_INSTALL} expect
 
 echo "Installing python APT packages"
 # we will use pip for most
