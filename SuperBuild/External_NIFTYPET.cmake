@@ -44,7 +44,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(SIRF_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
   IF(NOT ${PYTHON_VERSION_MAJOR} EQUAL 2)
-    MESSAGE(FATAL_ERROR "NiftyPET currently only works with python version 2.")
+    MESSAGE(FATAL_ERROR "${proj} currently only works with python version 2.")
   endif()
 
   ExternalProject_Add(${proj}
@@ -68,22 +68,25 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     DEPENDS
         ${${proj}_DEPENDENCIES}
 
-    INSTALL_COMMAND cmake -E echo "NiftyPET: No install step."
+    INSTALL_COMMAND cmake -E echo "${proj}: No install step."
   )
+
+    set(${proj}_PETPRJ_LIB "${${proj}_BINARY_DIR}/nipet/prj/petprj.so")
+    set(${proj}_MMR_AUXE_LIB "${${proj}_BINARY_DIR}/nipet/mmr_auxe.so")
 
    else()
       if(${USE_SYSTEM_${externalProjName}})
         FIND_LIBRARY(${proj}_PETPRJ_LIB mmr_auxe)
         FIND_LIBRARY(${proj}_MMR_AUXE_LIB petprj)
-        set(${proj}_SOURCE_DIR "" CACHE PATH "Path to NiftyPET source.")
+        set(${proj}_SOURCE_DIR "" CACHE PATH "Path to ${proj} source.")
         if (NOT ${proj}_PETPRJ_LIB)
-          MESSAGE(FATAL_ERROR "NiftyPET projector library (libpetprj) not found.")
+          MESSAGE(FATAL_ERROR "${proj} projector library (libpetprj) not found.")
         endif()
         if (NOT ${proj}_MMR_AUXE_LIB)
-          MESSAGE(FATAL_ERROR "NiftyPET projector library (libmmr_auxe) not found.")
+          MESSAGE(FATAL_ERROR "${proj} projector library (libmmr_auxe) not found.")
         endif()
         if (NOT EXISTS "${${proj}_SOURCE_DIR}/niftypet/nipet/prj/src/prjf.h")
-          MESSAGE(FATAL_ERROR "NiftyPET source directory incorrect 
+          MESSAGE(FATAL_ERROR "${proj} source directory incorrect 
             (${${proj}_SOURCE_DIR}/niftypet/nipet/prj/src/prjf.h doesn't exist).")
         endif()
 

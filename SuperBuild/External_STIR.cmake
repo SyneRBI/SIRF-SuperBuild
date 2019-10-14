@@ -79,19 +79,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     message(FATAL_ERROR "STIR Python currently needs to have PYTHON_STRATEGY=PYTHONPATH")
   endif()
 
-  ## If building with NiftyPET projector
-  if (${USE_NIFTYPET})
-    if (${USE_SYSTEM_NIFTYPET})
-      set(extra_args "${extra_args} -DNIFTYPET_PETPRJ_LIB=${NIFTYPET_PETPRJ_LIB}")
-      set(extra_args "${extra_args} -DNIFTYPET_MMR_AUXE_LIB=${NIFTYPET_MMR_AUXE_LIB}")
-      set(extra_args "${extra_args} -DNIFTYPET_SOURCE_DIR=${NIFTYPET_SOURCE_DIR}")
-    else()
-      set(extra_args "${extra_args} -DNIFTYPET_PETPRJ_LIB=${NIFTYPET_BINARY_DIR}/nipet/prj/petprj.so")
-      set(extra_args "${extra_args} -DNIFTYPET_MMR_AUXE_LIB=${NIFTYPET_MMR_AUXE_LIB}/nipet/mmr_auxe.so")
-      set(extra_args "${extra_args} -DNIFTYPET_SOURCE_DIR=${NIFTYPET_SOURCE_DIR}")
-    endif()
-  endif()
-
   set(STIR_CMAKE_ARGS
         -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
         -DBUILD_EXECUTABLES=${STIR_BUILD_EXECUTABLES}
@@ -111,7 +98,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DDISABLE_CERN_ROOT_SUPPORT=${STIR_DISABLE_CERN_ROOT} -DDISABLE_CERN_ROOT=${STIR_DISABLE_CERN_ROOT}
         -DDISABLE_LLN_MATRIX=${STIR_DISABLE_LLN_MATRIX}
         -DSTIR_ENABLE_EXPERIMENTAL=${STIR_ENABLE_EXPERIMENTAL}
-        ${extra_args}
    )
 
   # Append CMAKE_ARGS for ITK choices
@@ -124,6 +110,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DDISABLE_ITK=ON)
   elseif (USE_ITK AND USE_SYSTEM_ITK)
     set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DITK_DIR=${ITK_DIR})
+  endif()
+
+  ## If building with NiftyPET projector
+  if (${USE_NIFTYPET})
+    set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DNIFTYPET_PETPRJ_LIB:FILEPATH=${NIFTYPET_PETPRJ_LIB})
+    set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DNIFTYPET_MMR_AUXE_LIB:FILEPATH=${NIFTYPET_MMR_AUXE_LIB})
+    set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DNIFTYPET_SOURCE_DIR:PATH=${NIFTYPET_SOURCE_DIR})
   endif()
 
   # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
