@@ -43,6 +43,13 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/INSTALL" CACHE PATH "Prefix for path for installation" FORCE)
 endif()
 
+# Find CUDA
+find_package(CUDA)
+if (CUDA_FOUND)
+   message(STATUS "<<<<<<<<<<<<<<<<< CUDA FOUND >>>>>>>>>>>>>>>>>>>>>")
+   message(STATUS "Will enable CUDA dependencies where possible.")
+endif()
+
 # If OSX give the advanced option to use absolute paths for shared libraries
 if (APPLE)
   option(SHARED_LIBS_ABS_PATH "Force shared libraries to be installed with absolute paths (as opposed to rpaths)" ON)
