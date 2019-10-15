@@ -47,6 +47,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     MESSAGE(FATAL_ERROR "${proj} currently only works with python version 2.")
   endif()
 
+  set(NIFTYPET_INSTALL_COMMAND ${CMAKE_SOURCE_DIR}/CMake/install_niftypet.cmake)
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY "${${proj}_URL}"
@@ -68,26 +70,32 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     DEPENDS
         ${${proj}_DEPENDENCIES}
 
-    INSTALL_COMMAND cmake -E echo "${proj}: No install step."
+    INSTALL_COMMAND ${CMAKE_COMMAND} 
+      -D${proj}_SOURCE_DIR=${${proj}_SOURCE_DIR} 
+      -D${proj}_BINARY_DIR=${${proj}_BINARY_DIR} 
+      -DSUPERBUILD_INSTALL_DIR=${SUPERBUILD_INSTALL_DIR} 
+      -P ${NIFTYPET_INSTALL_COMMAND}
   )
 
-    set(${proj}_PETPRJ_LIB "${${proj}_BINARY_DIR}/nipet/prj/petprj.so")
-    set(${proj}_MMR_AUXE_LIB "${${proj}_BINARY_DIR}/nipet/mmr_auxe.so")
+    set(${proj}_PETPRJ_LIB "${SUPERBUILD_INSTALL_DIR}/lib/petprj.so")
+    set(${proj}_MMR_AUXE_LIB "${SUPERBUILD_INSTALL_DIR}/lib/mmr_auxe.so")
+    set(${proj}_INCLUDE_DIR "${SUPERBUILD_INSTALL_DIR}/include")
+
 
    else()
       if(${USE_SYSTEM_${externalProjName}})
         FIND_LIBRARY(${proj}_PETPRJ_LIB mmr_auxe)
         FIND_LIBRARY(${proj}_MMR_AUXE_LIB petprj)
-        set(${proj}_SOURCE_DIR "" CACHE PATH "Path to ${proj} source.")
+        set(${proj}_INCLUDE_DIR "" CACHE PATH "Path to NiftyPET include dir. Set this to top level of source code if unsure.")
         if (NOT ${proj}_PETPRJ_LIB)
           MESSAGE(FATAL_ERROR "${proj} projector library (libpetprj) not found.")
         endif()
         if (NOT ${proj}_MMR_AUXE_LIB)
           MESSAGE(FATAL_ERROR "${proj} projector library (libmmr_auxe) not found.")
         endif()
-        if (NOT EXISTS "${${proj}_SOURCE_DIR}/niftypet/nipet/prj/src/prjf.h")
+        if (NOT EXISTS "${${proj}_INCLUDE_DIR}/niftypet/nipet/prj/src/prjf.h")
           MESSAGE(FATAL_ERROR "${proj} source directory incorrect 
-            (${${proj}_SOURCE_DIR}/niftypet/nipet/prj/src/prjf.h doesn't exist).")
+            (${${proj}_INCLUDE_DIR}/niftypet/nipet/prj/src/prjf.h doesn't exist).")
         endif()
 
         message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
