@@ -201,10 +201,10 @@ else()
   set(DEFAULT_ACE_TAG origin/master)
   
   # CCPi CIL
-  set(CIL_VERSION "v19.07")
-  set(Regularisation-Toolkit_VERSION "19.06")
+  set(CIL_VERSION "origin/master")
+  set(Regularisation-Toolkit_VERSION "19.10")
   set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
-  set(DEFAULT_CCPi-Framework_TAG origin/finite_diff_for_sirf)
+  set(DEFAULT_CCPi-Framework_TAG ${CIL_VERSION})
   set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git )
   set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "${Regularisation-Toolkit_VERSION}")
   set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
