@@ -31,6 +31,9 @@ endif()
 if (BUILD_STIR_SWIG_PYTHON)
   list(APPEND ${proj}_DEPENDENCIES "SWIG")
 endif()
+if (USE_NIFTYPET)
+  list(APPEND ${proj}_DEPENDENCIES "NIFTYPET")
+endif()
   
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
@@ -76,6 +79,19 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     message(FATAL_ERROR "STIR Python currently needs to have PYTHON_STRATEGY=PYTHONPATH")
   endif()
 
+  ## If building with NiftyPET projector
+  if (${USE_NIFTYPET})
+    if (${USE_SYSTEM_NIFTYPET})
+      set(extra_args "${extra_args} -DNIFTYPET_PETPRJ_LIB=${NIFTYPET_PETPRJ_LIB}")
+      set(extra_args "${extra_args} -DNIFTYPET_MMR_AUXE_LIB=${NIFTYPET_MMR_AUXE_LIB}")
+      set(extra_args "${extra_args} -DNIFTYPET_SOURCE_DIR=${NIFTYPET_SOURCE_DIR}")
+    else()
+      set(extra_args "${extra_args} -DNIFTYPET_PETPRJ_LIB=${NIFTYPET_BINARY_DIR}/nipet/prj/petprj.so")
+      set(extra_args "${extra_args} -DNIFTYPET_MMR_AUXE_LIB=${NIFTYPET_MMR_AUXE_LIB}/nipet/mmr_auxe.so")
+      set(extra_args "${extra_args} -DNIFTYPET_SOURCE_DIR=${NIFTYPET_SOURCE_DIR}")
+    endif()
+  endif()
+
   set(STIR_CMAKE_ARGS
         -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
         -DBUILD_EXECUTABLES=${STIR_BUILD_EXECUTABLES}
@@ -95,6 +111,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DDISABLE_CERN_ROOT_SUPPORT=${STIR_DISABLE_CERN_ROOT} -DDISABLE_CERN_ROOT=${STIR_DISABLE_CERN_ROOT}
         -DDISABLE_LLN_MATRIX=${STIR_DISABLE_LLN_MATRIX}
         -DSTIR_ENABLE_EXPERIMENTAL=${STIR_ENABLE_EXPERIMENTAL}
+        ${extra_args}
    )
 
   # Append CMAKE_ARGS for ITK choices
