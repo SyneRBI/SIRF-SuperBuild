@@ -29,7 +29,19 @@ matrix:
  include:
  # linux g{cc,++}-6 py{27,3}
  - os: linux
-   python: 3
+   python: 3.6
+   # -boost +fftw3 +hdf5 +ace +cil
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+ - os: linux
+   python: 2.7
+   # -boost +fftw3 +hdf5 +ace +cil
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=2
+ - os: linux
+   python: 2.7
+   # -boost +fftw3 +hdf5 +ace +cil_lite
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL_LITE=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=2
+ - os: linux
+   python: 3.6
    # -boost +fftw3 +hdf5 +ace
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
  - os: linux
@@ -37,7 +49,7 @@ matrix:
    # -boost +fftw3 +hdf5 +siemens_to_ismrmrd +swig +ace
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_ACE=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=2
  - os: linux
-   python: 3
+   python: 3.6
    # +DEVEL -boost -hdf5 -fftw3 +ace +siemens_to_ismrmrd
    env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_ACE=ON -DBUILD_siemens_to_ismrmrd=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
  - os: linux
@@ -50,7 +62,7 @@ matrix:
  #   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
  # - os: osx
  #   # +boost +fftw3 -hdf5 -swig
- #   python: 3
+ #   python: 3.6
  #   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=3
  # - os: osx
  #   python: 2.7
@@ -62,7 +74,7 @@ matrix:
  #   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
  # itk
  - os: linux
-   python: 3
+   python: 3.6
    # -boost +itk +fftw3 +hdf5
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_ITK=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
  # - os: osx
@@ -120,6 +132,12 @@ addons:
   - libxslt-dev
   - libace-dev
   # - root-system-bin
+  # dependencies for ASTRA toolbox
+  - autotools-dev
+  - automake
+  - autogen
+  - autoconf
+  - libtool
 
 before_install:
 # Set C and C++ compiler etc using trick from
@@ -207,6 +225,13 @@ before_install:
 - $PY_EXE -m pip install --user -U pip setuptools wheel
 # ensure python bin dir exists (and coverage dependencies installed)
 - $PY_EXE -m pip install --user -U nose codecov coveralls
+# additional python deps
+- $PY_EXE -m pip install --user -U Cython  # first install Cython separately
+- $PY_EXE -m pip install --user -U numpy
+- |
+   if [[ "$EXTRA_BUILD_FLAGS" == *"-DBUILD_CIL=ON"* || "$EXTRA_BUILD_FLAGS" == *"-DBUILD_CIL_LITE=ON"* ]]; then
+     $PY_EXE -m pip install --user -U scipy h5py Pillow wget
+   fi
 # for counting clones, excluding ours
 - |
    if [[ -n "$GITHUB_API_TOKEN" ]]; then
@@ -236,6 +261,8 @@ install:
 - |
    if [[ -n "$DOCKER_BUILD" ]]; then
      cd docker
+     [[ -n "$GROUPS" ]] || export GROUPS=$(id -g)
+     [[ -n "$UID" ]] || export UID=$(id -u)
      export DCC="docker-compose -p "travis_${TRAVIS_JOB_NUMBER/./_}" -f $PWD/docker-compose.yml"
      [[ "$DOCKER_BUILD" == *"DEVEL"* ]] && export DCC="$DCC -f $PWD/docker-compose.devel.yml"
      [[ "$DOCKER_BUILD" == *"SERVICE"* ]] && export DCC="$DCC -f $PWD/docker-compose.srv.yml"
@@ -247,20 +274,22 @@ install:
        # rebuild base image (using above docker cache)
        # and sirf image (with travis' ccache)
        rm -rf devel/.ccache
-       if [[ -n "$DOCKER_RECREATE_CCACHE" ]]; then
+       if [[ -n "$DOCKER_RECREATE_CCACHE" || ! -d ~/.ccache ]]; then
          mkdir devel/.ccache
          sudo rm -rf ~/.ccache
        else
+         sudo chown -R $USER:$(id -g) ~/.ccache
          mv ~/.ccache devel/
        fi
+       rm .dockerignore  # TODO: remove this line
        $DCC build --pull core
        # don't count the extra clone we're about to do
        # TODO: Do we need this? Is docker a distinct cloner from travis?
        # cloners_count_decrement
        $DCC build sirf
        # extract updated ccache
-       sudo rm -rf devel/.ccache/*
-       $DCC run --rm sirf /bin/bash -c 'sudo cp -a /opt/ccache/* /devel/.ccache/'
+       # sudo rm -rf devel/.ccache/*
+       $DCC run --rm sirf /bin/bash -c 'sudo rm -rf /devel/.ccache/* && sudo cp -a /opt/ccache/* /devel/.ccache/'
        # replace travis' ccache with the built images's
        mv devel/.ccache ~
      )

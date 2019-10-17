@@ -75,8 +75,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     "Build Gadgetron MATLAB gadgets (not required for SIRF)" ${default_Gadgetron_BUILD_MATLAB_SUPPORT})
   option(Gadgetron_USE_MKL "Instruct Gadgetron to build linking to the MKL. The user must be able to install MKL on his own." OFF)
 
-  option(Gadgetron_USE_CUDA "Enable Gadgetron CUDA (if cuda libraries are present)" ON)
-  mark_as_advanced(Gadgetron_USE_CUDA)
+  option(${proj}_USE_CUDA "Enable ${proj} CUDA (if cuda libraries are present)" ${CUDA_FOUND})
+  mark_as_advanced(${proj}_USE_CUDA)
   
 
   ExternalProject_Add(${proj}
@@ -105,7 +105,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         ${HDF5_CMAKE_ARGS}
         -DISMRMRD_DIR=${ISMRMRD_DIR}
 	-DUSE_MKL:BOOL=${Gadgetron_USE_MKL}
-        -DUSE_CUDA=${Gadgetron_USE_CUDA}
+        -DUSE_CUDA=${${proj}_USE_CUDA}
         -DCBLAS_INCLUDE_DIR:PATH=${CBLAS_INCLUDE_DIR}
         -DCBLAS_LIBRARY:FILEPATH=${CBLAS_LIBRARY}
 
