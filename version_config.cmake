@@ -138,6 +138,10 @@ set(DEFAULT_astra-toolbox_TAG v1.8.3)
 set(DEFAULT_TomoPhantom_URL https://github.com/dkazanc/TomoPhantom )
 set(DEFAULT_TomoPhantom_TAG v1.4)
 
+## NiftyPET
+set(DEFAULT_NIFTYPET_URL https://github.com/pjmark/NIPET )
+set(DEFAULT_NIFTYPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
+
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
 
@@ -256,6 +260,9 @@ set(TomoPhantom_TAG ${DEFAULT_TomoPhantom_TAG} CACHE STRING ON)
 set(NIFTYREG_URL ${DEFAULT_NIFTYREG_URL} CACHE STRING ON)
 set(NIFTYREG_TAG ${DEFAULT_NIFTYREG_TAG} CACHE STRING ON)
 
+set(NIFTYPET_URL ${DEFAULT_NIFTYPET_URL} CACHE STRING ON)
+set(NIFTYPET_TAG ${DEFAULT_NIFTYPET_TAG} CACHE STRING ON)
+
 mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   Gadgetron_URL Gadgetron_TAG
   siemens_to_ismrmrd_URL siemens_to_ismrmrd_TAG
@@ -266,4 +273,5 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   CCPi-Framework_URL CCPi-Framework_TAG
   CCPi-FrameworkPlugins_URL CCPi-FrameworkPlugins_TAG
   CCPi-Regularisation-Toolkit_URL CCPi-Regularisation-Toolkit_TAG
+  NIFTYPET_URL NIFTYPET_TAG
 )

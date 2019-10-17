@@ -27,3 +27,8 @@ PATH=@CCPPETMR_INSTALL@/bin:$PATH
 
 # Export Gadgetron Home
 @ENV_GADGETRON_HOME_SH@
+
+if [ ! -n "$STIR_PATH" ]
+then
+	export STIR_PATH=@STIR_SOURCE_DIR@
+fi

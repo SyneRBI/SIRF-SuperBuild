@@ -31,6 +31,9 @@ endif()
 if (BUILD_STIR_SWIG_PYTHON)
   list(APPEND ${proj}_DEPENDENCIES "SWIG")
 endif()
+if (USE_NIFTYPET)
+  list(APPEND ${proj}_DEPENDENCIES "NIFTYPET")
+endif()
   
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
@@ -107,6 +110,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DDISABLE_ITK=ON)
   elseif (USE_ITK AND USE_SYSTEM_ITK)
     set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DITK_DIR=${ITK_DIR})
+  endif()
+
+  ## If building with NiftyPET projector
+  if (${USE_NIFTYPET})
+    set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DNIFTYPET_PETPRJ_LIB:FILEPATH=${NIFTYPET_PETPRJ_LIB})
+    set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DNIFTYPET_MMR_AUXE_LIB:FILEPATH=${NIFTYPET_MMR_AUXE_LIB})
+    set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DNIFTYPET_INCLUDE_DIR:PATH=${NIFTYPET_INCLUDE_DIR})
   endif()
 
   # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
