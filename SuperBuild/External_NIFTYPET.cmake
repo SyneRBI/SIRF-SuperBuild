@@ -53,7 +53,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY "${${proj}_URL}"
     GIT_TAG "${${proj}_TAG}"
-    SOURCE_DIR ${${proj}_SOURCE_DIR}/niftypet
+    SOURCE_DIR ${${proj}_SOURCE_DIR}/niftypet/niftypet
     BINARY_DIR ${${proj}_BINARY_DIR}
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
     STAMP_DIR ${${proj}_STAMP_DIR}
@@ -79,7 +79,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
     set(${proj}_PETPRJ_LIB "${SUPERBUILD_INSTALL_DIR}/lib/petprj.so")
     set(${proj}_MMR_AUXE_LIB "${SUPERBUILD_INSTALL_DIR}/lib/mmr_auxe.so")
-    set(${proj}_INCLUDE_DIR "${SUPERBUILD_INSTALL_DIR}/include")
+    set(${proj}_INCLUDE_DIR "${SUPERBUILD_INSTALL_DIR}/include/niftypet")
 
 
    else()
