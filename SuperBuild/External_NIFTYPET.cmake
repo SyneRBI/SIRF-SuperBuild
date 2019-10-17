@@ -53,11 +53,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY "${${proj}_URL}"
     GIT_TAG "${${proj}_TAG}"
-    SOURCE_DIR ${${proj}_SOURCE_DIR}/niftypet/niftypet
+    SOURCE_DIR ${${proj}_SOURCE_DIR}
     BINARY_DIR ${${proj}_BINARY_DIR}
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
     STAMP_DIR ${${proj}_STAMP_DIR}
     TMP_DIR ${${proj}_TMP_DIR}
+    SOURCE_SUBDIR niftypet
 
     CMAKE_ARGS
         -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
