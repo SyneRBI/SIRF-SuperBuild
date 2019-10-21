@@ -124,7 +124,7 @@ set(DEFAULT_NIFTYREG_REQUIRED_VERSION 1.5.68)
 
 ## ISMRMRD
 set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
-set(DEFAULT_ISMRMRD_TAG v1.4.0)
+set(DEFAULT_ISMRMRD_TAG v1.4.1)
 
 ## Gadgetron
 set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
@@ -165,7 +165,8 @@ else()
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG 3a277f7a819f35a553a8d6097402ea25cf55a240)
+  set(DEFAULT_STIR_TAG 74676768610b7d8be9792e1192ac6dd68bff2424)
+  #set(DEFAULT_STIR_TAG 3a277f7a819f35a553a8d6097402ea25cf55a240)
 
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
