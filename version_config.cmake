@@ -21,7 +21,7 @@
 #
 #=========================================================================
 
-## BOOST
+## BOOST  # Gadgetron needs at least 1.65
 if (APPLE) # really should be checking for CLang
     # Boost 1.65 contains a bug for recent Clang https://github.com/CCPPETMR/SIRF-SuperBuild/issues/170
     set(Boost_VERSION 1.68.0)
@@ -130,6 +130,18 @@ set(DEFAULT_ISMRMRD_TAG v1.4.1)
 set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
 set(DEFAULT_Gadgetron_TAG b6191eaaa72ccca6c6a5fe4c0fa3319694f512ab)
 
+## ASTRA
+set(DEFAULT_astra-toolbox_URL https://github.com/astra-toolbox/astra-toolbox )
+set(DEFAULT_astra-toolbox_TAG v1.8.3)
+
+## TomoPhantom
+set(DEFAULT_TomoPhantom_URL https://github.com/dkazanc/TomoPhantom )
+set(DEFAULT_TomoPhantom_TAG v1.4)
+
+## NiftyPET
+set(DEFAULT_NIFTYPET_URL https://github.com/pjmark/NIPET )
+set(DEFAULT_NIFTYPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
+
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
 
@@ -159,6 +171,16 @@ if (DEVEL_BUILD)
  
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
   set(DEFAULT_ACE_TAG origin/master)
+  # CCPi CIL
+  #set(CIL_VERSION "19.06")
+  set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
+  set(DEFAULT_CCPi-Framework_TAG origin/master)
+  set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
+  set(DEFAULT_CCPi-Regularisation-Toolkit_TAG origin/master)
+  set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
+  set(DEFAULT_CCPi-FrameworkPlugins_TAG origin/master)
+  set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
+  set(DEFAULT_CCPi-Astra_TAG origin/master)
 
 else()
   set(DEFAULT_SIRF_TAG v2.0.0)
@@ -182,6 +204,18 @@ else()
 
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
   set(DEFAULT_ACE_TAG origin/master)
+  
+  # CCPi CIL
+  set(CIL_VERSION "origin/master")
+  set(Regularisation-Toolkit_VERSION "19.10")
+  set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
+  set(DEFAULT_CCPi-Framework_TAG ${CIL_VERSION})
+  set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git )
+  set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "${Regularisation-Toolkit_VERSION}")
+  set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
+  set(DEFAULT_CCPi-FrameworkPlugins_TAG "${CIL_VERSION}")
+  set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
+  set(DEFAULT_CCPi-Astra_TAG "${CIL_VERSION}")
 endif()
 
 
@@ -211,8 +245,24 @@ SET(glog_TAG ${DEFAULT_glog_TAG} CACHE STRING ON)
 set(ACE_URL ${DEFAULT_ACE_URL} CACHE STRING ON)
 set(ACE_TAG ${DEFAULT_ACE_TAG} CACHE STRING ON)
 
+set(CCPi-Regularisation-Toolkit_URL ${DEFAULT_CCPi-Regularisation-Toolkit_URL} CACHE STRING ON)
+set(CCPi-Regularisation-Toolkit_TAG ${DEFAULT_CCPi-Regularisation-Toolkit_TAG} CACHE STRING ON)
+set(CCPi-Framework_URL ${DEFAULT_CCPi-Framework_URL} CACHE STRING ON)
+set(CCPi-Framework_TAG ${DEFAULT_CCPi-Framework_TAG} CACHE STRING ON)
+set(CCPi-FrameworkPlugins_URL ${DEFAULT_CCPi-FrameworkPlugins_URL} CACHE STRING ON)
+set(CCPi-FrameworkPlugins_TAG ${DEFAULT_CCPi-FrameworkPlugins_TAG} CACHE STRING ON)
+set(CCPi-Astra_URL ${DEFAULT_CCPi-Astra_URL} CACHE STRING ON)
+set(CCPi-Astra_TAG ${DEFAULT_CCPi-Astra_TAG} CACHE STRING ON)
+set(astra-toolbox_URL ${DEFAULT_astra-toolbox_URL} CACHE STRING ON)
+set(astra-toolbox_TAG ${DEFAULT_astra-toolbox_TAG} CACHE STRING ON)
+set(TomoPhantom_URL ${DEFAULT_TomoPhantom_URL} CACHE STRING ON)
+set(TomoPhantom_TAG ${DEFAULT_TomoPhantom_TAG} CACHE STRING ON)
+
 set(NIFTYREG_URL ${DEFAULT_NIFTYREG_URL} CACHE STRING ON)
 set(NIFTYREG_TAG ${DEFAULT_NIFTYREG_TAG} CACHE STRING ON)
+
+set(NIFTYPET_URL ${DEFAULT_NIFTYPET_URL} CACHE STRING ON)
+set(NIFTYPET_TAG ${DEFAULT_NIFTYPET_TAG} CACHE STRING ON)
 
 mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   Gadgetron_URL Gadgetron_TAG
@@ -220,4 +270,9 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   ISMRMRD_URL ISMRMRD_TAG
   pet_rd_tools_URL pet_rd_tools_TAG
   glog_URL glog_TAG
-  NIFTYREG_URL NIFTYREG_TAG)
+  NIFTYREG_URL NIFTYREG_TAG
+  CCPi-Framework_URL CCPi-Framework_TAG
+  CCPi-FrameworkPlugins_URL CCPi-FrameworkPlugins_TAG
+  CCPi-Regularisation-Toolkit_URL CCPi-Regularisation-Toolkit_TAG
+  NIFTYPET_URL NIFTYPET_TAG
+)

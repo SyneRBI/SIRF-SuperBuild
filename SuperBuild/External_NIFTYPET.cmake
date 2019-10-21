@@ -1,7 +1,6 @@
 #========================================================================
-# Author: Benjamin A Thomas
-# Author: Kris Thielemans
-# Copyright 2017 University College London
+# Author: Richard Brown
+# Copyright 2019 University College London
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -20,20 +19,10 @@
 #=========================================================================
 
 #This needs to be unique globally
-set(proj SIRF)
+set(proj NIFTYPET)
 
 # Set dependency list
-set(${proj}_DEPENDENCIES "Boost;HDF5;ISMRMRD;FFTW3;SWIG")
-if (${BUILD_NIFTYREG})
-  set(${proj}_DEPENDENCIES "${${proj}_DEPENDENCIES};NIFTYREG")
-endif()
-if (${BUILD_STIR})
-  set(${proj}_DEPENDENCIES "${${proj}_DEPENDENCIES};STIR")
-endif()
-
-message(STATUS "Matlab_ROOT_DIR=" ${Matlab_ROOT_DIR})
-message(STATUS "STIR_DIR=" ${STIR_DIR})
-message(STATUS "NIFTYREG_DIR=" ${NIFTYREG_DIR})
+set(${proj}_DEPENDENCIES "")
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
@@ -54,69 +43,62 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ### --- Project specific additions here
   set(SIRF_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
-  option(BUILD_TESTING_${proj} "Build tests for ${proj}" ON)
-
-  message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
-  set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
-
-  if (WIN32)
-    set(extra_args "-DSIRF_INSTALL_DEPENDENCIES=ON")
-  else()
-    set(extra_args "")
+  IF(NOT ${PYTHON_VERSION_MAJOR} EQUAL 2)
+    MESSAGE(FATAL_ERROR "${proj} currently only works with python version 2.")
   endif()
 
-  # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
-  SetGitTagAndRepo("${proj}")
+  set(NIFTYPET_INSTALL_COMMAND ${CMAKE_SOURCE_DIR}/CMake/install_niftypet.cmake)
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
-    GIT_REPOSITORY "${${proj}_URL_MODIFIED}"
-    GIT_TAG "${${proj}_TAG_MODIFIED}"
+    GIT_REPOSITORY "${${proj}_URL}"
+    GIT_TAG "${${proj}_TAG}"
     SOURCE_DIR ${${proj}_SOURCE_DIR}
     BINARY_DIR ${${proj}_BINARY_DIR}
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
     STAMP_DIR ${${proj}_STAMP_DIR}
     TMP_DIR ${${proj}_TMP_DIR}
+    SOURCE_SUBDIR niftypet
 
     CMAKE_ARGS
         -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
         -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
         -DCMAKE_INSTALL_PREFIX=${SIRF_Install_Dir}
-        -DBOOST_INCLUDEDIR=${BOOST_ROOT}/include/
-        -DBOOST_LIBRARYDIR=${BOOST_LIBRARY_DIR}
-        -DBOOST_ROOT=${BOOST_ROOT}
-        -DMatlab_ROOT_DIR=${Matlab_ROOT_DIR}
-        -DMATLAB_ROOT=${Matlab_ROOT_DIR} # pass this for compatibility with old SIRF
-        -DMATLAB_DEST_DIR=${MATLAB_DEST_DIR}
-        -DSTIR_DIR=${STIR_DIR}
-        ${HDF5_CMAKE_ARGS}
-        -DISMRMRD_DIR=${ISMRMRD_DIR}
-        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
         -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
-        -DPYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIRS}
-        -DPYTHON_LIBRARY=${PYTHON_LIBRARIES}
-        -DPYTHON_DEST_DIR=${PYTHON_DEST_DIR}
-        -DPYTHON_STRATEGY=${PYTHON_STRATEGY}
-        -DNIFTYREG_DIR:PATH=${NIFTYREG_DIR}
-        -DREG_ENABLE=${BUILD_SIRF_Registration}
-		${extra_args}
-	INSTALL_DIR ${SIRF_Install_Dir}
+        -DPYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR}
+        -DPYTHON_LIBRARY=${PYTHON_LIBRARY}
+
     DEPENDS
         ${${proj}_DEPENDENCIES}
+
+    INSTALL_COMMAND ${CMAKE_COMMAND} 
+      -D${proj}_SOURCE_DIR=${${proj}_SOURCE_DIR} 
+      -D${proj}_BINARY_DIR=${${proj}_BINARY_DIR} 
+      -DSUPERBUILD_INSTALL_DIR=${SUPERBUILD_INSTALL_DIR} 
+      -P ${NIFTYPET_INSTALL_COMMAND}
   )
 
-    set(SIRF_ROOT        ${SIRF_SOURCE_DIR})
-    set(SIRF_INCLUDE_DIR ${SIRF_SOURCE_DIR})
+    set(${proj}_PETPRJ_LIB "${SUPERBUILD_INSTALL_DIR}/lib/petprj.so")
+    set(${proj}_MMR_AUXE_LIB "${SUPERBUILD_INSTALL_DIR}/lib/mmr_auxe.so")
+    set(${proj}_INCLUDE_DIR "${SUPERBUILD_INSTALL_DIR}/include")
 
-  #if (BUILD_TESTING_${proj})
-    add_test(NAME ${proj}_TESTS
-         COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION> --output-on-failure
-         WORKING_DIRECTORY ${${proj}_BINARY_DIR})
-  #endif()
 
    else()
       if(${USE_SYSTEM_${externalProjName}})
-        find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
+        FIND_LIBRARY(${proj}_PETPRJ_LIB mmr_auxe)
+        FIND_LIBRARY(${proj}_MMR_AUXE_LIB petprj)
+        set(${proj}_INCLUDE_DIR "" CACHE PATH "Path to NiftyPET include dir. Set this to top level of source code if unsure.")
+        if (NOT ${proj}_PETPRJ_LIB)
+          MESSAGE(FATAL_ERROR "${proj} projector library (libpetprj) not found.")
+        endif()
+        if (NOT ${proj}_MMR_AUXE_LIB)
+          MESSAGE(FATAL_ERROR "${proj} projector library (libmmr_auxe) not found.")
+        endif()
+        if (NOT EXISTS "${${proj}_INCLUDE_DIR}/niftypet/nipet/prj/src/prjf.h")
+          MESSAGE(FATAL_ERROR "${proj} source directory incorrect 
+            (${${proj}_INCLUDE_DIR}/niftypet/nipet/prj/src/prjf.h doesn't exist).")
+        endif()
+
         message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
    endif()
     ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"

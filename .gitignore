@@ -34,3 +34,11 @@ WIN32/
 
 # Terraform
 *.tfvars
+*.tfstate
+*.tfstate.backup
+*.tfstate.lock.info
+*.log
+.terraform/
+
+# macOS
+.DS_Store
