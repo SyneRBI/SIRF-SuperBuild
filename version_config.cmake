@@ -183,11 +183,11 @@ if (DEVEL_BUILD)
   set(DEFAULT_CCPi-Astra_TAG origin/master)
 
 else()
-  set(DEFAULT_SIRF_TAG v2.0.0)
+  set(DEFAULT_SIRF_TAG b9b8bcd0589ea64737a186ab2fdc79cc37d42d34)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG 74676768610b7d8be9792e1192ac6dd68bff2424)
+  set(DEFAULT_STIR_TAG stir_rel_4_00_alpha)
   #set(DEFAULT_STIR_TAG 3a277f7a819f35a553a8d6097402ea25cf55a240)
 
   ## siemens_to_ismrmrd
