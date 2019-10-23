@@ -1,10 +1,18 @@
 # ChangeLog
-
-## v2.0.1
+## v2.1-rc.1
 - Switch NiftyReg remote from `rijobro` to `KCL-BMEIS` (following the acceptance of one of our PRs to their code).
 - Azure:
     - Added NVIDIA GPU support
     - Now using Terraform HCL v0.12
+- Added CCPi CIL support and various packages for that
+- Added preliminary install option for NiftyPET
+- Added CUDA and OpenMP support for some packages
+- Improved documentation for docker
+- Updated various versions
+    - NiftyReg: 1.5.68
+    - ISMRMRD: v1.4.1
+    - STIR: stir_rel_4_00_alpha
+    - SIRF: v2.1.0-rc.1
 
 ## v2.0.0
 - Added CMake Variable `Gadgetron_USE_MKL` to allow Gadgetron build with MKL if available
