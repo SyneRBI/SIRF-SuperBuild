@@ -177,6 +177,7 @@ option(BUILD_petmr_rd_tools "Build petmr_rd_tools" OFF)
 option(BUILD_CIL "Build CCPi CIL Modules and ASTRA engine" OFF)
 option(BUILD_CIL_LITE "Build CCPi CIL Modules" OFF)
 option(BUILD_NIFTYREG "Build NIFTYREG" ON)
+option(BUILD_SIRF_Contribs "Build SIRF-Contribs" ON)
 
 option(BUILD_SIRF_Registration "Build SIRFS's registration functionality" ${BUILD_NIFTYREG})
 if (BUILD_SIRF_Registration AND NOT BUILD_NIFTYREG)
@@ -252,6 +253,10 @@ endif()
 
 if (BUILD_SIRF_Registration)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES NIFTYREG)
+endif()
+
+if (BUILD_SIRF_Contribs)
+  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES SIRF-Contribs)
 endif()
 
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${PRIMARY_PROJECT_NAME}_DEPENDENCIES)
