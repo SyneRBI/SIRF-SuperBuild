@@ -66,7 +66,7 @@ if (WIN32)
   # 1.8.15 hdf5-targets.cmake refers to non-existent zlib files
   # (or at least this was the case for older Anaconda installations)
   if (USE_SYSTEM_HDF5)
-    set(HDF5_REQUIRED_VERSION 1.8.17)
+    set(HDF5_REQUIRED_VERSION 1.8.12)
     #set(HDF5_REQUIRED_VERSION 1.8)
   endif()
   if (BUILD_MATLAB)
