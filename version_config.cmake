@@ -1,3 +1,4 @@
+
 #========================================================================
 # Author: Edoardo Pasca
 # Author: Benjamin A Thomas
@@ -187,7 +188,7 @@ if (DEVEL_BUILD)
   set(DEFAULT_CCPi-Astra_TAG origin/master)
 
 else()
-  set(DEFAULT_SIRF_TAG v2.1.0-rc.1)
+  set(DEFAULT_SIRF_TAG v2.1.0-rc.2)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
