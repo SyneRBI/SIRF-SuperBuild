@@ -1,12 +1,13 @@
 # Note: with `language: cpp`, `cache: ccache` works
 # but `cache: pip` and `python:` is ignored
 language: cpp
-dist: xenial  # Ubuntu 16.04 LTS
+dist: bionic  # Ubuntu 18.04 LTS
 cache:  # shared between builds
 - ccache
 - pip
 stages:
 #- test  # TODO: uncomment before merge
+- dist  # TODO: remove before merge
 - docker
 
 # Currently commented out as set with environment flags
@@ -27,12 +28,26 @@ stages:
 #       i.e. -boost == -DUSE_SYSTEM_Boost=OFF, which means that Boost will be built.
 jobs:
  include:
- # linux g{cc,++}-6 py{27,3}
+ # linux g{cc,++}-6 py{2,3}
  - os: linux
+   stage: dist  # TODO: remove before merge
+   dist: xenial  # Ubuntu 16.04 LTS
+   python: 3.6
+   name: +xenial -boost +fftw3 +hdf5 +ace +cil
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+ - os: linux
+   stage: dist  # TODO: remove before merge
+   dist: trusty  # Ubuntu 14.04 LTS
+   python: 3.6
+   name: +trusty -boost +fftw3 +hdf5 +ace +cil
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+ - os: linux
+   stage: dist  # TODO: remove before merge
    python: 3.6
    name: -boost +fftw3 +hdf5 +ace +cil
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
  - os: linux
+   stage: test
    python: 2.7
    name: -boost +fftw3 +hdf5 +ace +cil
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=2
