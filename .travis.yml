@@ -157,7 +157,6 @@ jobs:
    stage: docker-core
    name: docker +CORE +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
    env: DOCKER_BUILD=CORE
-   sudo: required
    services:
    - docker
    addons: &docker_addons
@@ -174,28 +173,24 @@ jobs:
    stage: docker
    name: docker +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
    env: DOCKER_BUILD=1
-   sudo: required
    services:
    - docker
    addons: *docker_addons
  - os: linux
    name: docker +SERVICE +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
    env: DOCKER_BUILD=SERVICE
-   sudo: required
    services:
    - docker
    addons: *docker_addons
  - os: linux
    name: docker +DEVEL +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
    env: DOCKER_BUILD=DEVEL
-   sudo: required
    services:
    - docker
    addons: *docker_addons
  # - os: linux
  #   name: docker +DEVEL +SERVICE +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
  #   env: DOCKER_BUILD=DEVEL_SERVICE
- #   sudo: required
  #   services:
  #   - docker
  #   addons: *docker_addons
