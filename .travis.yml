@@ -1,5 +1,8 @@
 # Note: with `language: cpp`, `cache: ccache` works
 # but `cache: pip` and `python:` is ignored
+os:
+- linux
+- osx
 language: cpp
 dist: bionic  # Ubuntu 18.04 LTS
 cache:  # shared between builds
@@ -120,6 +123,7 @@ jobs:
    python: 2.7
    name: +DEVEL -boost -fftw3 -hdf5 -swig +ace
    env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_SWIG=OFF" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=2
+ # osx
  - os: osx
    python: 2.7
    name: +osx +boost -hdf5 -swig
