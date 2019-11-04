@@ -63,8 +63,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     TMP_DIR ${${proj}_TMP_DIR}
 
     CMAKE_ARGS
-      -DCMAKE_C_COMPILER="${CMAKE_C_COMPILER}"
-      -DCMAKE_CXX_COMPILER="${CMAKE_CXX_COMPILER}"
+      -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+      -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
       -DCMAKE_INSTALL_PREFIX=${TomoPhantom_Install_Dir}
     	-DLIBRARY_DIR=${TomoPhantom_Install_Dir}/lib
     	-DINCLUDE_DIR=${TomoPhantom_Install_Dir}/include

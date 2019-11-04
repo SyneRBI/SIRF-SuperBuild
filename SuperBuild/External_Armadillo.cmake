@@ -79,8 +79,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     #                         ${CLANG_ARG}
     #                         -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_Install_Dir} "${${proj}_SOURCE_DIR}"
     CMAKE_ARGS
-      -DCMAKE_C_COMPILER="${CMAKE_C_COMPILER}"
-      -DCMAKE_CXX_COMPILER="${CMAKE_CXX_COMPILER}"
+      -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+      -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
       -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
       -DCMAKE_INSTALL_PREFIX=${${proj}_Install_Dir}
       ${CLANG_ARG}
