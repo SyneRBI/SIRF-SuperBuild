@@ -350,7 +350,9 @@ install:
        cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
        # Job may timeout (>50min) if no ccache, otherwise should be <1min:
        make
-       mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
+       if [[ -f INSTALL/share/gadgetron/config/gadgetron.xml.example ]]; then
+         mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
+       fi
      ) || travis_terminate 1
      source $PWD/INSTALL/bin/env_ccppetmr.sh
    fi
@@ -360,7 +362,9 @@ script:
    if [[ -n "$DOCKER_BUILD" ]]; then
      # run tests within the container
      # TODO: also add CORE tests!
-     [[ "$DOCKER_BUILD" != "CORE" ]] && $DCC run --rm sirf /bin/bash --login -c '/devel/test.sh 1'
+     if [[ "$DOCKER_BUILD" != "CORE" ]]; then
+       $DCC run --rm sirf /bin/bash --login -c '/devel/test.sh 1'
+     fi
    else
      ./INSTALL/bin/gadgetron >& gadgetron.log&
      # print for debugging
