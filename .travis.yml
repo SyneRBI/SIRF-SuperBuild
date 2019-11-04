@@ -335,8 +335,7 @@ install:
      if [[ "$DOCKER_BUILD" == "CORE" ]]; then ( set -ev
        # rm .dockerignore  # TODO: remove this line
        $DCC build --pull core
-     )
-     else ( set -ev
+     ); else ( set -ev
        # rebuild sirf image (with travis' ccache)
        rm -rf devel/.ccache
        if [[ -n "$DOCKER_RECREATE_CCACHE" || ! -d ~/.ccache ]]; then
@@ -356,7 +355,7 @@ install:
        $DCC run --rm sirf /bin/bash -c 'sudo rm -rf /devel/.ccache/* && sudo cp -a /opt/ccache/* /devel/.ccache/'
        # replace travis' ccache with the built images's
        mv devel/.ccache ~
-     )
+     ); fi
    else
      ( set -ev
        $PY_EXE -m pip install --user --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
