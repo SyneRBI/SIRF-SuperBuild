@@ -8,7 +8,7 @@ cache:  # shared between builds
 stages:
 # - test  # TODO: uncomment before merge
 - name: test  # TODO: remove before merge
-  if: branch = master
+  if: os = osx
 - dist  # TODO: remove before merge
 - docker
 
