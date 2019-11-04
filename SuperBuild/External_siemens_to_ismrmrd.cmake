@@ -48,13 +48,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
-  
-  
+
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
     GIT_TAG ${${proj}_TAG}
-	
+
     SOURCE_DIR ${${proj}_SOURCE_DIR}
     BINARY_DIR ${${proj}_BINARY_DIR}
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
@@ -62,14 +62,16 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     TMP_DIR ${${proj}_TMP_DIR}
 
     CMAKE_ARGS
-        -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
-        -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
-        -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}
-        -DCMAKE_INSTALL_PREFIX=${siemens_to_ismrmrd_Install_Dir}
-        -DBOOST_INCLUDEDIR=${BOOST_ROOT}/include/
-        -DBOOST_LIBRARYDIR=${BOOST_LIBRARY_DIR}
-        -DISMRMRD_DIR=${ISMRMRD_DIR}
-	    INSTALL_DIR ${siemens_to_ismrmrd_Install_Dir}
+      -DCMAKE_C_COMPILER="${CMAKE_C_COMPILER}"
+      -DCMAKE_CXX_COMPILER="${CMAKE_CXX_COMPILER}"
+      -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
+      -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
+      -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}
+      -DCMAKE_INSTALL_PREFIX=${siemens_to_ismrmrd_Install_Dir}
+      -DBOOST_INCLUDEDIR=${BOOST_ROOT}/include/
+      -DBOOST_LIBRARYDIR=${BOOST_LIBRARY_DIR}
+      -DISMRMRD_DIR=${ISMRMRD_DIR}
+    INSTALL_DIR ${siemens_to_ismrmrd_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )

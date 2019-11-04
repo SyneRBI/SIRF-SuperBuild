@@ -38,7 +38,7 @@ set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
 set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
 set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
 
-  
+
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
@@ -79,11 +79,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     TMP_DIR ${${proj}_TMP_DIR}
 
     CMAKE_ARGS
-        ${CLANG_ARG}
-        -DHDF5_BUILD_EXAMPLES:BOOL=OFF
-        -DHDF5_BUILD_TOOLS:BOOL=OFF
-        -DHDF5_BUILD_HL_LIB:BOOL=${HDF5_BUILD_HL_LIB}
-        -DBUILD_TESTING:BOOL=OFF
+      -DCMAKE_C_COMPILER="${CMAKE_C_COMPILER}"
+      -DCMAKE_CXX_COMPILER="${CMAKE_CXX_COMPILER}"
+      ${CLANG_ARG}
+      -DHDF5_BUILD_EXAMPLES:BOOL=OFF
+      -DHDF5_BUILD_TOOLS:BOOL=OFF
+      -DHDF5_BUILD_HL_LIB:BOOL=${HDF5_BUILD_HL_LIB}
+      -DBUILD_TESTING:BOOL=OFF
     INSTALL_DIR ${HDF5_Install_Dir}
   )
 

@@ -77,7 +77,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   option(${proj}_USE_CUDA "Enable ${proj} CUDA (if cuda libraries are present)" ${CUDA_FOUND})
   mark_as_advanced(${proj}_USE_CUDA)
-  
+
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
@@ -88,28 +88,29 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
     STAMP_DIR ${${proj}_STAMP_DIR}
     TMP_DIR ${${proj}_TMP_DIR}
-	
-    CMAKE_ARGS
-        -DBUILD_PYTHON_SUPPORT=${Gadgetron_BUILD_PYTHON_SUPPORT}
-        -DBUILD_MATLAB_SUPPORT=${Gadgetron_BUILD_MATLAB_SUPPORT}
-        -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
-        -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
-        -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}/include
-        -DCMAKE_INSTALL_PREFIX=${Gadgetron_Install_Dir}
-        -DBOOST_INCLUDEDIR=${BOOST_ROOT}/include/
-        -DBOOST_LIBRARYDIR=${BOOST_LIBRARY_DIR}
-        -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
-        -DPYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIRS}
-        -DPYTHON_LIBRARY=${PYTHON_LIBRARIES}
-        -DGTEST_ROOT=${GTEST_ROOT}
-        ${HDF5_CMAKE_ARGS}
-        -DISMRMRD_DIR=${ISMRMRD_DIR}
-	-DUSE_MKL:BOOL=${Gadgetron_USE_MKL}
-        -DUSE_CUDA=${${proj}_USE_CUDA}
-        -DCBLAS_INCLUDE_DIR:PATH=${CBLAS_INCLUDE_DIR}
-        -DCBLAS_LIBRARY:FILEPATH=${CBLAS_LIBRARY}
 
-	    INSTALL_DIR ${Gadgetron_Install_Dir}
+    CMAKE_ARGS
+      -DCMAKE_C_COMPILER="${CMAKE_C_COMPILER}"
+      -DCMAKE_CXX_COMPILER="${CMAKE_CXX_COMPILER}"
+      -DBUILD_PYTHON_SUPPORT=${Gadgetron_BUILD_PYTHON_SUPPORT}
+      -DBUILD_MATLAB_SUPPORT=${Gadgetron_BUILD_MATLAB_SUPPORT}
+      -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
+      -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
+      -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}/include
+      -DCMAKE_INSTALL_PREFIX=${Gadgetron_Install_Dir}
+      -DBOOST_INCLUDEDIR=${BOOST_ROOT}/include/
+      -DBOOST_LIBRARYDIR=${BOOST_LIBRARY_DIR}
+      -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
+      -DPYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIRS}
+      -DPYTHON_LIBRARY=${PYTHON_LIBRARIES}
+      -DGTEST_ROOT=${GTEST_ROOT}
+      ${HDF5_CMAKE_ARGS}
+      -DISMRMRD_DIR=${ISMRMRD_DIR}
+      -DUSE_MKL:BOOL=${Gadgetron_USE_MKL}
+      -DUSE_CUDA=${${proj}_USE_CUDA}
+      -DCBLAS_INCLUDE_DIR:PATH=${CBLAS_INCLUDE_DIR}
+      -DCBLAS_LIBRARY:FILEPATH=${CBLAS_LIBRARY}
+	  INSTALL_DIR ${Gadgetron_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
@@ -123,7 +124,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
          COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION> --output-on-failure
          WORKING_DIRECTORY ${${proj}_BINARY_DIR}/test)
   endif()
-     
+
    else()
       if(${USE_SYSTEM_${externalProjName}})
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
