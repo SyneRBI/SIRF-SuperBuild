@@ -59,12 +59,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
-  message("astra-toolkit URL " ${${proj}_URL}  ) 
-  message("astra-toolkit TAG " ${${proj}_TAG}  ) 
+  message("astra-toolkit URL " ${${proj}_URL}  )
+  message("astra-toolkit TAG " ${${proj}_TAG}  )
 
   # conda build should never get here
   if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
-    # in case of PYTHONPATH it is sufficient to copy the files to the 
+    # in case of PYTHONPATH it is sufficient to copy the files to the
     # $PYTHONPATH directory
     set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
     if (BUILD_PYTHON)
@@ -83,7 +83,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       CONDA:      do nothing")
     set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
 
-   
+
     set(cmd "${${proj}_SOURCE_DIR}/build/linux/configure")
     list(APPEND cmd "CPPFLAGS=-I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib")
     if (CUDA_FOUND)
@@ -99,22 +99,21 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         STAMP_DIR ${${proj}_STAMP_DIR}
         TMP_DIR ${${proj}_TMP_DIR}
         INSTALL_DIR ${libastra_Install_Dir}
-        # apparently this is the only way to pass environment variables to 
-        # external projects 
-        CONFIGURE_COMMAND 
-          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ./autogen.sh 
+
+        CONFIGURE_COMMAND
+          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ./autogen.sh
 
         # This build is Unix specific
-        BUILD_COMMAND 
-        ${CMAKE_COMMAND} -E env ${cmd} --with-cuda=${CUDA_TOOLKIT_ROOT_DIR} --prefix=${libastra_Install_Dir} --with-python=${PYTHON_EXECUTABLE} --with-install-type=prefix       
-        INSTALL_COMMAND 
-          ${CMAKE_COMMAND} -E chdir ${${proj}_BINARY_DIR}/ make -j2 install-libraries 
+        BUILD_COMMAND
+        ${CMAKE_COMMAND} -E env ${cmd} --with-cuda=${CUDA_TOOLKIT_ROOT_DIR} --prefix=${libastra_Install_Dir} --with-python=${PYTHON_EXECUTABLE} --with-install-type=prefix
+        INSTALL_COMMAND
+          ${CMAKE_COMMAND} -E chdir ${${proj}_BINARY_DIR}/ make -j2 install-libraries
         DEPENDS
           ${${proj}_DEPENDENCIES}
       )
 
       set(python_wrapper "astra-python-wrapper")
-    
+
       #create a configure script
       file(WRITE ${${proj}_SOURCE_DIR}/python_build
 "
@@ -137,21 +136,20 @@ CPPFLAGS=\"-DASTRA_CUDA -DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${S
         STAMP_DIR ${${proj}_STAMP_DIR}
         TMP_DIR ${${proj}_TMP_DIR}
         INSTALL_DIR ${libastra_Install_Dir}
-        # apparently this is the only way to pass environment variables to 
-        # external projects 
-        CONFIGURE_COMMAND 
-          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ./autogen.sh 
+
+        CONFIGURE_COMMAND
+          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ./autogen.sh
         # This build is Unix specific
-        BUILD_COMMAND 
+        BUILD_COMMAND
         ${CMAKE_COMMAND} -E env ${cmd} --prefix=${libastra_Install_Dir} --with-install-type=prefix --with-python=${PYTHON_EXECUTABLE}
-        INSTALL_COMMAND 
-          ${CMAKE_COMMAND} -E chdir ${${proj}_BINARY_DIR}/ make -j install-libraries 
+        INSTALL_COMMAND
+          ${CMAKE_COMMAND} -E chdir ${${proj}_BINARY_DIR}/ make -j install-libraries
         DEPENDS
           ${${proj}_DEPENDENCIES}
       )
 
       set(python_wrapper "astra-python-wrapper")
-    
+
       #create a configure script
       file(WRITE ${${proj}_SOURCE_DIR}/python_build
 "
@@ -190,21 +188,20 @@ cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir/astra ${libastra_Install_Di
         STAMP_DIR ${${proj}_STAMP_DIR}
         TMP_DIR ${${proj}_TMP_DIR}
         INSTALL_DIR ${libastra_Install_Dir}
-        # apparently this is the only way to pass environment variables to 
-        # external projects 
-        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E copy ${${proj}_BINARY_DIR}/python/python_build ${${proj}_SOURCE_DIR}/python/ && ${CMAKE_COMMAND} -E copy ${${proj}_BINARY_DIR}/python/python_install ${${proj}_SOURCE_DIR}/python/ 
+
+        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E copy ${${proj}_BINARY_DIR}/python/python_build ${${proj}_SOURCE_DIR}/python/ && ${CMAKE_COMMAND} -E copy ${${proj}_BINARY_DIR}/python/python_install ${${proj}_SOURCE_DIR}/python/
 
         # This build is Unix specific
-        BUILD_COMMAND 
+        BUILD_COMMAND
           ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/python ./python_build
-        INSTALL_COMMAND 
+        INSTALL_COMMAND
           ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/python ./python_install
         DEPENDS
           ${proj}
       )
 
   else()
-    # if SETUP_PY one can launch the conda build.sh script setting 
+    # if SETUP_PY one can launch the conda build.sh script setting
     # the appropriate variables.
     message(FATAL_ERROR "Only PYTHONPATH install method is currently supported")
   endif()
@@ -213,11 +210,11 @@ cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir/astra ${libastra_Install_Di
   set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
   set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
   add_test(NAME ASTRA_BASIC_TEST
-           COMMAND ${PYTHON_EXECUTABLE} -c "import astra; astra.test_noCUDA()" 
+           COMMAND ${PYTHON_EXECUTABLE} -c "import astra; astra.test_noCUDA()"
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR})
   if (CUDA_FOUND)
     add_test(NAME ASTRA_BASIC_GPU_TEST
-             COMMAND ${PYTHON_EXECUTABLE} -c "import astra; astra.test_CUDA()" 
+             COMMAND ${PYTHON_EXECUTABLE} -c "import astra; astra.test_CUDA()"
              WORKING_DIRECTORY ${${proj}_SOURCE_DIR})
   endif()
 

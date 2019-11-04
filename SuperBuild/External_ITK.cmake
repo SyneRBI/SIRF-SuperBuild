@@ -50,8 +50,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   #message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
-  
-  
+
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
@@ -61,8 +61,10 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
     STAMP_DIR ${${proj}_STAMP_DIR}
     TMP_DIR ${${proj}_TMP_DIR}
-	
+
     CMAKE_ARGS
+      -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+      -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
       -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
       -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
       -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}
@@ -86,7 +88,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
          COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION> --output-on-failure
          WORKING_DIRECTORY ${${proj}_BINARY_DIR})
   endif()
-  
+
 else()
   if(${USE_SYSTEM_${externalProjName}})
     find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)

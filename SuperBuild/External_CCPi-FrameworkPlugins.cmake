@@ -46,12 +46,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
-  message("${proj} URL " ${${proj}_URL}  ) 
-  message("${proj} TAG " ${${proj}_TAG}  ) 
+  message("${proj} URL " ${${proj}_URL}  )
+  message("${proj} TAG " ${${proj}_TAG}  )
 
   # conda build should never get here
   if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
-    # in case of PYTHONPATH it is sufficient to copy the files to the 
+    # in case of PYTHONPATH it is sufficient to copy the files to the
     # $PYTHONPATH directory
     ExternalProject_Add(${proj}
       ${${proj}_EP_ARGS}
@@ -63,7 +63,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       STAMP_DIR ${${proj}_STAMP_DIR}
       TMP_DIR ${${proj}_TMP_DIR}
       INSTALL_DIR ${libcilreg_Install_Dir}
-    
+
       CONFIGURE_COMMAND ""
       BUILD_COMMAND ""
       INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/Wrappers/Python/ccpi ${PYTHON_DEST}/ccpi
@@ -72,7 +72,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     )
 
   else()
-    # if SETUP_PY one can launch the conda build.sh script setting 
+    # if SETUP_PY one can launch the conda build.sh script setting
     # the appropriate variables.
     message(FATAL_ERROR "Only PYTHONPATH install method is currently supported")
   endif()

@@ -61,20 +61,22 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     SOURCE_SUBDIR niftypet
 
     CMAKE_ARGS
-        -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
-        -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
-        -DCMAKE_INSTALL_PREFIX=${SIRF_Install_Dir}
-        -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
-        -DPYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR}
-        -DPYTHON_LIBRARY=${PYTHON_LIBRARY}
+      -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+      -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+      -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
+      -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
+      -DCMAKE_INSTALL_PREFIX=${SIRF_Install_Dir}
+      -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
+      -DPYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR}
+      -DPYTHON_LIBRARY=${PYTHON_LIBRARY}
 
     DEPENDS
         ${${proj}_DEPENDENCIES}
 
-    INSTALL_COMMAND ${CMAKE_COMMAND} 
-      -D${proj}_SOURCE_DIR=${${proj}_SOURCE_DIR} 
-      -D${proj}_BINARY_DIR=${${proj}_BINARY_DIR} 
-      -DSUPERBUILD_INSTALL_DIR=${SUPERBUILD_INSTALL_DIR} 
+    INSTALL_COMMAND ${CMAKE_COMMAND}
+      -D${proj}_SOURCE_DIR=${${proj}_SOURCE_DIR}
+      -D${proj}_BINARY_DIR=${${proj}_BINARY_DIR}
+      -DSUPERBUILD_INSTALL_DIR=${SUPERBUILD_INSTALL_DIR}
       -P ${NIFTYPET_INSTALL_COMMAND}
   )
 
@@ -95,7 +97,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
           MESSAGE(FATAL_ERROR "${proj} projector library (libmmr_auxe) not found.")
         endif()
         if (NOT EXISTS "${${proj}_INCLUDE_DIR}/niftypet/nipet/prj/src/prjf.h")
-          MESSAGE(FATAL_ERROR "${proj} source directory incorrect 
+          MESSAGE(FATAL_ERROR "${proj} source directory incorrect
             (${${proj}_INCLUDE_DIR}/niftypet/nipet/prj/src/prjf.h doesn't exist).")
         endif()
 

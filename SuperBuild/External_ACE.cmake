@@ -48,7 +48,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
-  
+
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
@@ -59,12 +59,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
     STAMP_DIR ${${proj}_STAMP_DIR}
     TMP_DIR ${${proj}_TMP_DIR}
-	
     CMAKE_ARGS
-        -DCMAKE_INSTALL_PREFIX=${libACE_Install_Dir}
-	-DLIBRARY_DIR=${libACE_Install_Dir}/lib
-	-DINCLUDE_DIR=${libACE_Install_Dir}/include
-
+      -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+      -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+      -DCMAKE_INSTALL_PREFIX=${libACE_Install_Dir}
+      -DLIBRARY_DIR=${libACE_Install_Dir}/lib
+      -DINCLUDE_DIR=${libACE_Install_Dir}/include
     # TODO this relies on using "make", but we could be build with something else
     INSTALL_COMMAND make ACE
     DEPENDS
