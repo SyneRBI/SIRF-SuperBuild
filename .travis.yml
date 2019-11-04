@@ -174,11 +174,11 @@ jobs:
       fi
    install: &docker_install
    - cd docker
-   - [[ -n "$GROUPS" ]] || export GROUPS=$(id -g)
-   - [[ -n "$UID" ]] || export UID=$(id -u)
+   - if [[ -z "$GROUPS" ]]; then export GROUPS=$(id -g); fi
+   - if [[ -z "$UID" ]]; then export UID=$(id -u); fi
    - export DCC="docker-compose -p "travis_${TRAVIS_JOB_NUMBER/./_}" -f $PWD/docker-compose.yml"
-   - [[ "$DOCKER_BUILD" == *"DEVEL"* ]] && export DCC="$DCC -f $PWD/docker-compose.devel.yml"
-   - [[ "$DOCKER_BUILD" == *"SERVICE"* ]] && export DCC="$DCC -f $PWD/docker-compose.srv.yml"
+   - if [[ "$DOCKER_BUILD" == *"DEVEL"* ]]; then export DCC="$DCC -f $PWD/docker-compose.devel.yml"; fi
+   - if [[ "$DOCKER_BUILD" == *"SERVICE"* ]]; then export DCC="$DCC -f $PWD/docker-compose.srv.yml"; fi
    # pull previous base image for its layer cache
    - docker pull ccppetmr/sirf:core
    # count the docker pull (prefix `d`)
