@@ -18,6 +18,43 @@ stages:
 # - clang
 # - gcc
 
+# Compilation dependencies
+addons:
+ apt:
+  sources:
+  - ubuntu-toolchain-r-test
+  packages: &addons_apt_packages
+  - git-core
+  - build-essential
+  - g++-6
+  - g++-7
+  - libboost-all-dev
+  - libhdf5-serial-dev
+  - libfftw3-dev
+  - python-dev
+  - python3-dev
+  - python-tk
+  - python3-tk
+  - libopenblas-dev
+  - libatlas-base-dev
+  - liblapack-dev
+  - libxml2-dev
+  - libarmadillo-dev
+  - libgtest-dev
+  - libplplot-dev
+  - swig
+  - ccache
+  # not in whitelist
+  - libxslt-dev
+  - libace-dev
+  # - root-system-bin
+  # dependencies for ASTRA toolbox
+  - autotools-dev
+  - automake
+  - autogen
+  - autoconf
+  - libtool
+
 # Environment variables
 # Note: On trusty we need to build Armadillo and boost ourselves (the system versions are too old)
 # Note: On OSX we can't test SYSTEM_Boost=OFF due to excessive log size (https://github.com/CCPPETMR/SIRF-SuperBuild/issues/167)
@@ -28,6 +65,10 @@ stages:
 # Note: the line above each `env` contains a resume of the parameters passed to cmake.
 #       + or - refer to the value of the parameter affecting the specific package is passed to cmake:
 #       i.e. -boost == -DUSE_SYSTEM_Boost=OFF, which means that Boost will be built.
+env:
+ global:
+ - BUILD_FLAGS="-DCMAKE_BUILD_TYPE=Release"
+ - MAKEFLAGS="-j 2"  # too many threads may crash
 jobs:
  include:
  # linux g{cc,++}-6 py{2,3}
@@ -39,6 +80,11 @@ jobs:
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
  - os: linux
    dist: trusty  # Ubuntu 14.04 LTS
+   addons:
+    apt:
+     packages:
+      - *addons_apt_packages
+      - realpath  # building ACE
    python: 3.6
    name: +trusty -boost +fftw3 +hdf5 +ace +cil
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
@@ -122,50 +168,6 @@ jobs:
  #   sudo: required
  #   services:
  #   - docker
-
-env:
- global:
- - BUILD_FLAGS="-DCMAKE_BUILD_TYPE=Release"
- - MAKEFLAGS="-j 2"  # too many threads may crash
-
-# Compilation dependencies
-addons:
- apt:
-  sources:
-  - ubuntu-toolchain-r-test
-  packages:
-  - git-core
-  - build-essential
-  - g++-6
-  - g++-7
-  - libboost-all-dev
-  - libhdf5-serial-dev
-  - libfftw3-dev
-  - python-dev
-  - python3-dev
-  - python-tk
-  - python3-tk
-  - libopenblas-dev
-  - libatlas-base-dev
-  - liblapack-dev
-  - libxml2-dev
-  - libarmadillo-dev
-  - libgtest-dev
-  - libplplot-dev
-  - swig
-  - ccache
-  # for building ACE (note: Trusty only)
-  - realpath
-  # not in whitelist
-  - libxslt-dev
-  - libace-dev
-  # - root-system-bin
-  # dependencies for ASTRA toolbox
-  - autotools-dev
-  - automake
-  - autogen
-  - autoconf
-  - libtool
 
 before_install:
 # Set C and C++ compiler etc using trick from
