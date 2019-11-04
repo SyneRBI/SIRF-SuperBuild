@@ -2,9 +2,6 @@
 # but `cache: pip` and `python:` is ignored
 language: cpp
 dist: xenial  # Ubuntu 16.04 LTS
-sudo: required  # for docker
-services:
-- docker
 cache:  # shared between builds
 - ccache
 - pip
@@ -89,18 +86,30 @@ jobs:
    stage: docker
    name: docker +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
    env: DOCKER_BUILD=1
+   sudo: required
+   services:
+   - docker
  - os: linux
    stage: docker
    name: docker +SERVICE +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
    env: DOCKER_BUILD=SERVICE
+   sudo: required
+   services:
+   - docker
  - os: linux
    stage: docker
    name: docker +DEVEL +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
    env: DOCKER_BUILD=DEVEL
+   sudo: required
+   services:
+   - docker
  # - os: linux
  #   stage: docker
  #   name: docker +DEVEL +SERVICE +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
  #   env: DOCKER_BUILD=DEVEL_SERVICE
+ #   sudo: required
+ #   services:
+ #   - docker
 
 env:
  global:
