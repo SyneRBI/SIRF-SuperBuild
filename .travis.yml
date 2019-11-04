@@ -162,13 +162,6 @@ jobs:
    addons: &docker_addons
     apt:
      packages:
-     - git-core
-     - build-essential
-     - python-dev
-     - python
-     - python3-dev
-     - python3
-     - ccache
  - os: linux
    stage: docker
    name: docker +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
