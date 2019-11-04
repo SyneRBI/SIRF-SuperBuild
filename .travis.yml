@@ -1,7 +1,7 @@
 # Note: with `language: cpp`, `cache: ccache` works
 # but `cache: pip` and `python:` is ignored
 language: cpp
-dist: trusty  # Ubuntu 14.04 LTS
+dist: xenial  # Ubuntu 16.04 LTS
 sudo: required  # for docker
 services:
 - docker
