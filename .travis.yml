@@ -21,7 +21,7 @@ stages:
 # Compilation dependencies
 addons:
  apt:
-  sources:
+  sources: &addons_apt_sources
   - ubuntu-toolchain-r-test
   packages: &addons_apt_packages
   - git-core
@@ -82,6 +82,7 @@ jobs:
    dist: trusty  # Ubuntu 14.04 LTS
    addons:
     apt:
+     sources: *addons_apt_sources
      packages:
       - *addons_apt_packages
       - realpath  # building ACE
