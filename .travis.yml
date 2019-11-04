@@ -12,8 +12,9 @@ stages:
 # - test  # TODO: uncomment before merge
 - name: test  # TODO: remove before merge
   if: os = osx
-- dist  # TODO: remove before merge
+- docker-core
 - docker
+- dist  # TODO: remove before merge
 
 # Currently commented out as set with environment flags
 # Both clang and gcc can be tested. More is the better.
@@ -77,6 +78,7 @@ jobs:
  - os: osx
  include:
  # linux g{cc,++}-6 py{2,3}
+ # legacy linux
  - os: linux
    stage: dist  # TODO: remove before merge
    dist: xenial  # Ubuntu 16.04 LTS
@@ -94,6 +96,7 @@ jobs:
    python: 3.6
    name: +trusty -boost +fftw3 +hdf5 +ace +cil
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+ # current linux
  - os: linux
    python: 3.6
    name: -boost +fftw3 +hdf5 +ace +cil
@@ -150,6 +153,13 @@ jobs:
    name: +osx +boost +itk -hdf5 +swig
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
  # docker
+ - os: linux
+   stage: docker-core
+   name: docker +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
+   env: DOCKER_BUILD=CORE
+   sudo: required
+   services:
+   - docker
  - os: linux
    stage: docker
    name: docker +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
@@ -303,13 +313,17 @@ install:
      export DCC="docker-compose -p "travis_${TRAVIS_JOB_NUMBER/./_}" -f $PWD/docker-compose.yml"
      [[ "$DOCKER_BUILD" == *"DEVEL"* ]] && export DCC="$DCC -f $PWD/docker-compose.devel.yml"
      [[ "$DOCKER_BUILD" == *"SERVICE"* ]] && export DCC="$DCC -f $PWD/docker-compose.srv.yml"
-     ( set -ev
-       # pull previous base image for its layer cache
-       docker pull ccppetmr/sirf:core
-       # count the docker pull (prefix `d`)
-       [[ -n "$GITHUB_API_TOKEN" ]] && gh_stats_count -k uniques --decrement -pd
-       # rebuild base image (using above docker cache)
-       # and sirf image (with travis' ccache)
+     # pull previous base image for its layer cache
+     docker pull ccppetmr/sirf:core
+     # count the docker pull (prefix `d`)
+     [[ -n "$GITHUB_API_TOKEN" ]] && gh_stats_count -k uniques --decrement -pd
+     # rebuild base image (using above docker cache)
+     if [[ "$DOCKER_BUILD" == "CORE" ]]; then ( set -ev
+       # rm .dockerignore  # TODO: remove this line
+       $DCC build --pull core
+     )
+     else ( set -ev
+       # rebuild sirf image (with travis' ccache)
        rm -rf devel/.ccache
        if [[ -n "$DOCKER_RECREATE_CCACHE" || ! -d ~/.ccache ]]; then
          mkdir devel/.ccache
@@ -319,7 +333,6 @@ install:
          mv ~/.ccache devel/
        fi
        rm .dockerignore  # TODO: remove this line
-       $DCC build --pull core
        # don't count the extra clone we're about to do
        # TODO: Do we need this? Is docker a distinct cloner from travis?
        # cloners_count_decrement
@@ -345,7 +358,8 @@ script:
 - |
    if [[ -n "$DOCKER_BUILD" ]]; then
      # run tests within the container
-     $DCC run --rm sirf /bin/bash --login -c '/devel/test.sh 1'
+     # TODO: also add CORE tests!
+     [[ "$DOCKER_BUILD" != "CORE" ]] && $DCC run --rm sirf /bin/bash --login -c '/devel/test.sh 1'
    else
      ./INSTALL/bin/gadgetron >& gadgetron.log&
      # print for debugging
@@ -374,6 +388,7 @@ after_success:
       fi
       docker push ccppetmr/sirf:$2
     }
+    [[ "$DOCKER_BUILD" == "CORE" ]] && dpush core core  # TODO: remove before merge
     if [[ -n "$TRAVIS_TAG" ]]; then ( set -ev
      # tag & push
      case "$DOCKER_BUILD" in
@@ -397,8 +412,10 @@ after_success:
     ); elif [[ "$TRAVIS_BRANCH" == master ]]; then ( set -ev
      # tag & push
      case "$DOCKER_BUILD" in
-     1)
+     CORE)
        dpush core core
+       ;;
+     1)
        ;;
      DEVEL)
        dpush devel devel
