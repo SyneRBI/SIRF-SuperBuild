@@ -44,9 +44,10 @@ listofhosts=$1
 password=$2
 command=$3
 while read -r h; do
-  echo "============== host $h ========================"
-  sshpass -p "$password" ssh -n -o "StrictHostKeyChecking no" $h $command
-  echo $?
-  echo "============== done host $h ==================="
+    echo "============== host $h ========================"
+    ssh-keygen -R $h
+    sshpass -p "$password" ssh -n -o "StrictHostKeyChecking no" $h $command
+    echo Exit status $?
+    echo "============== done host $h ==================="
 done < $listofhosts
 
