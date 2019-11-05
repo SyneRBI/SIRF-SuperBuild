@@ -72,8 +72,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
     CONFIGURE_COMMAND ${CMAKE_COMMAND}
       ${CLANG_ARG}
-      -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
-      -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
       -DBUILD_DIR:PATH=${${proj}_SOURCE_DIR}
       -DBOOST_INSTALL_DIR:PATH=${Boost_Install_Dir}
       -P ${Boost_Configure_Script}
