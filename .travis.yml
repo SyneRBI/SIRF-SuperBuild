@@ -74,11 +74,17 @@ jobs:
  allow_failures:
  - os: osx
  include:
- # linux g{cc,++}-6 py{2,3}
+ # linux g{cc,++}-{6,7} py{2,3}
  # legacy linux
  - os: linux
    stage: test
    dist: xenial  # Ubuntu 16.04 LTS
+   addons:
+    apt:
+     sources: *addons_apt_sources
+     packages:
+      - *addons_apt_packages
+      - g++-6
    python: 3.6
    name: +xenial -boost +fftw3 +hdf5 +ace +cil
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
@@ -89,7 +95,8 @@ jobs:
      sources: *addons_apt_sources
      packages:
       - *addons_apt_packages
-      - realpath  # building ACE
+      - g++-6
+      - realpath  # building ACE on trusty
    python: 3.6
    name: +trusty -boost +fftw3 +hdf5 +ace +cil
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
@@ -316,6 +323,8 @@ before_install:
 # Set C and C++ compiler etc using trick from
 # https://docs.travis-ci.com/user/languages/cpp/#c11c11-and-beyond-and-toolchain-versioning
 - eval "${MATRIX_EVAL}"
+- export CC="${CC:-gcc}"
+- export CXX="${CXX:-g++}"
 - $CC --version
 - $CXX --version
 - mkdir -p ~/.local/bin
@@ -428,7 +437,7 @@ before_install:
 - popd
 # N.B.: don't put into build matrix to allow caching.
 - BUILD_FLAGS="$BUILD_FLAGS -DPYVER=$PYMVER"
-- BUILD_FLAGS="$BUILD_FLAGS -DCMAKE_C_COMPILER='$(which gcc)' -DCMAKE_CXX_COMPILER='$(which g++)'"
+- BUILD_FLAGS="$BUILD_FLAGS -DCMAKE_C_COMPILER='$(which $CC)' -DCMAKE_CXX_COMPILER='$(which $CXX)'"
 - cmake --version
 
 install:
