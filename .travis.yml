@@ -74,13 +74,19 @@ jobs:
  allow_failures:
  - os: osx
  include:
- # linux g{cc,++}-6 py{2,3}
+ # linux g{cc,++}-{6,7} py{2,3}
  # legacy linux
  - os: linux
    stage: test
    dist: xenial  # Ubuntu 16.04 LTS
+   addons:
+    apt:
+     sources: *addons_apt_sources
+     packages:
+      - *addons_apt_packages
+      - g++-6
    python: 3.6
-   name: +xenial -boost +fftw3 +hdf5 +ace +cil
+   name: py36 gcc6 +xenial -boost +fftw3 +hdf5 +ace +cil
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
  - os: linux
    dist: trusty  # Ubuntu 14.04 LTS
@@ -89,65 +95,66 @@ jobs:
      sources: *addons_apt_sources
      packages:
       - *addons_apt_packages
-      - realpath  # building ACE
+      - g++-6
+      - realpath  # building ACE on trusty
    python: 3.6
-   name: +trusty -boost +fftw3 +hdf5 +ace +cil
+   name: py36 gcc6 +trusty -boost +fftw3 +hdf5 +ace +cil
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
  # current linux
  - os: linux
    python: 3.6
-   name: -boost +fftw3 +hdf5 +ace +cil
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+   name: py36 -boost +fftw3 +hdf5 +ace +cil
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" PYMVER=3
  - os: linux
    python: 2.7
-   name: -boost +fftw3 +hdf5 +ace +cil
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=2
+   name: py27 -boost +fftw3 +hdf5 +ace +cil
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" PYMVER=2
  - os: linux
    python: 2.7
-   name: -boost +fftw3 +hdf5 +ace +cil_lite
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL_LITE=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=2
+   name: py27 -boost +fftw3 +hdf5 +ace +cil_lite
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL_LITE=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" PYMVER=2
  - os: linux
    python: 3.6
-   name: -boost +fftw3 +hdf5 +ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+   name: py36 -boost +fftw3 +hdf5 +ace
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON" PYMVER=3
  - os: linux
    python: 2.7
-   name: -boost +fftw3 +hdf5 +siemens_to_ismrmrd +swig +ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_ACE=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=2
+   name: py27 -boost +fftw3 +hdf5 +siemens_to_ismrmrd +swig +ace
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_ACE=ON" PYMVER=2
  - os: linux
    python: 3.6
-   name: +DEVEL -boost -hdf5 -fftw3 +ace +siemens_to_ismrmrd
-   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_ACE=ON -DBUILD_siemens_to_ismrmrd=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+   name: py36 +DEVEL -boost -hdf5 -fftw3 +ace +siemens_to_ismrmrd
+   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_ACE=ON -DBUILD_siemens_to_ismrmrd=ON" PYMVER=3
  - os: linux
    python: 2.7
-   name: +DEVEL -boost -fftw3 -hdf5 -swig +ace
-   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_SWIG=OFF" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=2
+   name: py27 +DEVEL -boost -fftw3 -hdf5 -swig +ace
+   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_SWIG=OFF" PYMVER=2
  # osx
  - os: osx
    python: 2.7
-   name: +osx +boost -hdf5 -swig
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
+   name: py27 +osx +boost -hdf5 -swig
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" PYMVER=2
  - os: osx
-   name: +osx +boost +fftw3 -hdf5 -swig
    python: 3.6
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=3
+   name: py36 +osx +boost +fftw3 -hdf5 -swig
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" PYMVER=3
  - os: osx
    python: 2.7
-   name: +osx +DEVEL +boost -hdf5 +swig
-   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
+   name: py27 +osx +DEVEL +boost -hdf5 +swig
+   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=2
  - os: osx
    python: 2.7
-   name: +osx +DEVEL +boost -fftw3 -hdf5 +swig
-   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
+   name: py27 +osx +DEVEL +boost -fftw3 -hdf5 +swig
+   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=2
  # itk
  - os: linux
    python: 3.6
-   name: -boost +itk +fftw3 +hdf5
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_ITK=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+   name: py36 -boost +itk +fftw3 +hdf5
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_ITK=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON" PYMVER=3
  - os: osx
    python: 2.7
-   name: +osx +boost +itk -hdf5 +swig
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
+   name: py27 +osx +boost +itk -hdf5 +swig
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=2
  # docker
  - os: linux
    stage: docker-core
@@ -316,6 +323,8 @@ before_install:
 # Set C and C++ compiler etc using trick from
 # https://docs.travis-ci.com/user/languages/cpp/#c11c11-and-beyond-and-toolchain-versioning
 - eval "${MATRIX_EVAL}"
+- export CC="${CC:-gcc}"
+- export CXX="${CXX:-g++}"
 - $CC --version
 - $CXX --version
 - mkdir -p ~/.local/bin
@@ -428,6 +437,7 @@ before_install:
 - popd
 # N.B.: don't put into build matrix to allow caching.
 - BUILD_FLAGS="$BUILD_FLAGS -DPYVER=$PYMVER"
+- BUILD_FLAGS="$BUILD_FLAGS -DCMAKE_C_COMPILER='$(which $CC)' -DCMAKE_CXX_COMPILER='$(which $CXX)'"
 - cmake --version
 
 install:
