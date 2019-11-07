@@ -59,9 +59,9 @@ addons:
 # Environment variables
 # Note: altering the matrix here will cause re-building of caches,
 #       so try to keep this concise to avoid need to update
-# Note: the line above each `env` contains a resume of the parameters passed to cmake.
+# Note: the `name:` key contains a resume of the parameters passed to cmake/docker
 #       + or - refer to the value of the parameter affecting the specific package is passed to cmake:
-#       i.e. -boost == -DUSE_SYSTEM_Boost=OFF, which means that Boost will be built.
+#       i.e. -boost => -DUSE_SYSTEM_Boost=OFF, which means that Boost will be built.
 # Note: On trusty, we need to build Armadillo and boost ourselves (the system versions are too old)
 # Note: On trusty, g++-7 causes errors with the system ACE, so cannot use g++-7 or later https://github.com/CCPPETMR/SIRF-SuperBuild/issues/169
 # Note: On osx, we can't test SYSTEM_Boost=OFF due to excessive log size (https://github.com/CCPPETMR/SIRF-SuperBuild/issues/167)
@@ -182,8 +182,9 @@ jobs:
    - export DCC="docker-compose -p "travis_${TRAVIS_JOB_NUMBER/./_}" -f $PWD/docker-compose.yml"
    - if [[ "$DOCKER_BUILD" == *"DEVEL"* ]]; then export DCC="$DCC -f $PWD/docker-compose.devel.yml"; fi
    - if [[ "$DOCKER_BUILD" == *"SERVICE"* ]]; then export DCC="$DCC -f $PWD/docker-compose.srv.yml"; fi
+   - if [[ "$DOCKER_BUILD" == *"GPU"* ]]; then export DCC="$DCC -f $PWD/docker-compose.srv-gpu.yml"; fi
    # pull previous base image for its layer cache
-   - docker pull ccppetmr/sirf:core
+   - $DCC pull core
    # count the docker pull (prefix `d`)
    - |
       if [[ -n "$GITHUB_API_TOKEN" ]]; then
@@ -191,7 +192,7 @@ jobs:
       fi
    # rebuild base image (using above docker cache)
    - |
-      if [[ "$DOCKER_BUILD" == "CORE" ]]; then ( set -ev
+      if [[ "$DOCKER_BUILD" == *"CORE"* ]]; then ( set -ev
         # rm .dockerignore  # TODO: remove this line
         $DCC build --pull core
       ); else ( set -ev
@@ -219,7 +220,7 @@ jobs:
    - |
       # run tests within the container
       # TODO: also add CORE tests!
-      if [[ "$DOCKER_BUILD" != "CORE" ]]; then
+      if [[ "$DOCKER_BUILD" != *"CORE"* ]]; then
         $DCC run --rm sirf /bin/bash --login -c '/devel/test.sh 1'
       fi
    after_success: &docker_after_success
@@ -237,9 +238,9 @@ jobs:
        if [[ -n "$TRAVIS_TAG" ]]; then ( set -ev
         # tag & push
         case "$DOCKER_BUILD" in
-        CORE)
+        CORE*)
           ;;
-        1)
+        LATEST)
           dpush latest latest
           dpush latest "$TRAVIS_TAG"
           dpush latest release
@@ -253,6 +254,11 @@ jobs:
           dpush service "$TRAVIS_TAG"-service
           dpush service release-service
           ;;
+        SERVICE_GPU)
+          dpush service-gpu service-gpu
+          dpush service-gpu "$TRAVIS_TAG"-service-gpu
+          dpush service-gpu release-service-gpu
+          ;;
         *)
           exit 1
         esac
@@ -262,7 +268,10 @@ jobs:
         CORE)
           dpush core core
           ;;
-        1)
+        CORE_GPU)
+          dpush core-gpu core-gpu
+          ;;
+        LATEST)
           ;;
         DEVEL)
           dpush devel devel
@@ -272,15 +281,25 @@ jobs:
           ;;
         SERVICE)
           ;;
+        SERVICE_GPU)
+          ;;
         *)
           exit 1
         esac
        ); fi
       ); fi
  - os: linux
+   name: docker +GPU +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
+   env: DOCKER_BUILD=CORE_GPU
+   addons: *docker_addons
+   before_install: *docker_before_install
+   install: *docker_install
+   script: *docker_script
+   after_success: *docker_after_success
+ - os: linux
    stage: docker
    name: docker +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
-   env: DOCKER_BUILD=1
+   env: DOCKER_BUILD=LATEST
    services:
    - docker
    addons: *docker_addons
@@ -318,6 +337,16 @@ jobs:
  #   install: *docker_install
  #   script: *docker_script
  #   after_success: *docker_after_success
+ - os: linux
+   name: docker +SERVICE +GPU +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
+   env: DOCKER_BUILD=SERVICE_GPU
+   services:
+   - docker
+   addons: *docker_addons
+   before_install: *docker_before_install
+   install: *docker_install
+   script: *docker_script
+   after_success: *docker_after_success
 
 before_install:
 # Set C and C++ compiler etc using trick from
