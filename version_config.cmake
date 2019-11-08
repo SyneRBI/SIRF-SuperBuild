@@ -145,7 +145,7 @@ set(DEFAULT_NIFTYPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
 
 ## SIRF-Contribs
 set(DEFAULT_SIRF-Contribs_URL https://github.com/CCPPETMR/SIRF-Contribs )
-set(DEFAULT_SIRF-Contribs_TAG 29ab88bb5a0032daa464c2617a49ba6881813902 )
+set(DEFAULT_SIRF-Contribs_TAG origin/master )
 
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
