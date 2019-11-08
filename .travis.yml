@@ -175,6 +175,8 @@ jobs:
         # count unique clones, excluding travis, and print total
         gh_stats_count -k uniques
       fi
+   # custom runtime not supported on travis
+   - sed -i '/runtime/d' docker/docker-compose.srv-gpu.yml
    install: &docker_install
    - cd docker
    - if [[ -z "$GROUPS" ]]; then export GROUPS=$(id -g); fi
@@ -219,8 +221,8 @@ jobs:
    script: &docker_script
    - |
       # run tests within the container
-      # TODO: also add CORE and GPU tests!
-      if [[ "$DOCKER_BUILD" != *"CORE"* && "$DOCKER_BUILD" != *"GPU"* ]]; then
+      # TODO: also add CORE tests!
+      if [[ "$DOCKER_BUILD" != *"CORE"* ]]; then
         $DCC run --rm sirf /bin/bash --login -c '/devel/test.sh 1'
       fi
    after_success: &docker_after_success
