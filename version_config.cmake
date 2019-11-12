@@ -112,7 +112,7 @@ set(GTest_TAG release-1.8.0)
 
 ## glog
 set(glog_URL https://github.com/google/glog )
-set(glog_TAG v035)
+set(glog_TAG v0.3.5)
 
 ## ITK
 set(ITK_URL https://itk.org/ITK.git)
