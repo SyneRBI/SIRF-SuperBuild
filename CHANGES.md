@@ -13,6 +13,7 @@
     - ISMRMRD: v1.4.1
     - STIR: stir_rel_4_00_alpha
     - SIRF: v2.1.0-rc.1
+    - PET RD Tools: v1.1.0
 - petmr-rd-tools -> pet-rd-tools fixes
 
 ## v2.0.0
