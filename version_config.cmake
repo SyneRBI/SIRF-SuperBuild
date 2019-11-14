@@ -112,7 +112,7 @@ set(GTest_TAG release-1.8.0)
 
 ## glog
 set(glog_URL https://github.com/google/glog )
-set(glog_TAG v035)
+set(glog_TAG v0.3.5)
 
 ## ITK
 set(ITK_URL https://itk.org/ITK.git)
@@ -200,7 +200,7 @@ else()
 
   ## pet-rd-tools
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
-  set(DEFAULT_pet_rd_tools_TAG b88281f79e8c4a3781ebda7663f1ce7f5cab6e68)
+  set(DEFAULT_pet_rd_tools_TAG v1.1.0)
 
   ## glog
   set(DEFAULT_glog_URL https://github.com/google/glog )
