@@ -42,7 +42,7 @@ else()
 endif()
 
 ## Armadillo
-set(Armadillo_URL   https://downloads.sourceforge.net/project/arma/armadillo-7.800.2.tar.xz)
+set(Armadillo_URL   https://downloads.sourceforge.net/project/arma/armadillo-9.800.2.tar.xz)
 set(Armadillo_MD5 c601f3a5ec6d50666aa3a539fa20e6ca )
 
 ## FFTW3
