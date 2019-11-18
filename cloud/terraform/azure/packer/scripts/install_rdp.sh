@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo apt-get install -y xrdp
+sudo apt-get install -y ubuntu-desktop xrdp
 
 mkdir ~/Downloads
 cd ~/Downloads
