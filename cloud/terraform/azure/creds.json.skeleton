@@ -1,0 +1,22 @@
+{
+    "azure_client_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "azure_client_secret": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "azure_tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "azure_subscription": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "azure_rg_name": "sirf-rg",
+    "azure_storage_acc": "sirfsa",
+
+    "managed_image_name": "sirf-",
+    "managed_image_resource_group_name": "sirfrg",
+
+    "azure_os_type": "Linux",
+    "azure_image_publisher": "Canonical",
+    "azure_image_offer": "UbuntuServer",
+    "azure_image_sku": "18.04-LTS",
+
+    "azure_cpu_location": "westeurope",
+    "azure_cpu_vm_size": "Standard_D4"
+
+    "azure_gpu_location": "westeurope",
+    "azure_gpu_vm_size": "Standard_NC6"
+}
