@@ -34,7 +34,7 @@ endif()
 if (USE_NIFTYPET)
   list(APPEND ${proj}_DEPENDENCIES "NIFTYPET")
 endif()
-  
+
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 
@@ -71,7 +71,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   option(STIR_DISABLE_CERN_ROOT "Disable STIR ROOT interface" ON)
   option(STIR_DISABLE_LLN_MATRIX "Disable STIR Louvain-la-Neuve Matrix library for ECAT7 support" ON)
   option(STIR_ENABLE_EXPERIMENTAL "Enable STIR experimental code" OFF)
-  
+
   mark_as_advanced(BUILD_STIR_EXECUTABLES BUILD_STIR_SWIG_PYTHON STIR_DISABLE_CERN_ROOT)
   mark_as_advanced(STIR_DISABLE_LLN_MATRIX STIR_ENABLE_EXPERIMENTAL)
 
@@ -80,33 +80,33 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   endif()
 
   set(STIR_CMAKE_ARGS
-        -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
-        -DBUILD_EXECUTABLES=${STIR_BUILD_EXECUTABLES}
-        -DBUILD_SWIG_PYTHON=${STIR_BUILD_SWIG_PYTHON}
-        -DPYTHON_DEST=${PYTHON_DEST}
-        -DMatlab_ROOT_DIR=${Matlab_ROOT_DIR}
-        -DMATLAB_DEST=${MATLAB_DEST}
-        -DBUILD_TESTING=${BUILD_TESTING_${proj}}
-        -DBUILD_DOCUMENTATION=OFF
-        -DCMAKE_POSITION_INDEPENDENT_CODE=ON
-        -DBOOST_ROOT=${BOOST_ROOT}
-        -DCMAKE_INSTALL_PREFIX=${STIR_Install_Dir}
-        -DGRAPHICS=None
-        -DCMAKE_CXX_STANDARD=11
-        -DSTIR_OPENMP=${STIR_ENABLE_OPENMP}
-        # Use 2 variables for ROOT to cover multiple STIR versions
-        -DDISABLE_CERN_ROOT_SUPPORT=${STIR_DISABLE_CERN_ROOT} -DDISABLE_CERN_ROOT=${STIR_DISABLE_CERN_ROOT}
-        -DDISABLE_LLN_MATRIX=${STIR_DISABLE_LLN_MATRIX}
-        -DSTIR_ENABLE_EXPERIMENTAL=${STIR_ENABLE_EXPERIMENTAL}
+    -DSWIG_EXECUTABLE=${SWIG_EXECUTABLE}
+    -DBUILD_EXECUTABLES=${STIR_BUILD_EXECUTABLES}
+    -DBUILD_SWIG_PYTHON=${STIR_BUILD_SWIG_PYTHON}
+    -DPYTHON_DEST=${PYTHON_DEST}
+    -DMatlab_ROOT_DIR=${Matlab_ROOT_DIR}
+    -DMATLAB_DEST=${MATLAB_DEST}
+    -DBUILD_TESTING=${BUILD_TESTING_${proj}}
+    -DBUILD_DOCUMENTATION=OFF
+    -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+    -DBOOST_ROOT=${BOOST_ROOT}
+    -DCMAKE_INSTALL_PREFIX=${STIR_Install_Dir}
+    -DGRAPHICS=None
+    -DCMAKE_CXX_STANDARD=11
+    -DSTIR_OPENMP=${STIR_ENABLE_OPENMP}
+    # Use 2 variables for ROOT to cover multiple STIR versions
+    -DDISABLE_CERN_ROOT_SUPPORT=${STIR_DISABLE_CERN_ROOT} -DDISABLE_CERN_ROOT=${STIR_DISABLE_CERN_ROOT}
+    -DDISABLE_LLN_MATRIX=${STIR_DISABLE_LLN_MATRIX}
+    -DSTIR_ENABLE_EXPERIMENTAL=${STIR_ENABLE_EXPERIMENTAL}
    )
 
   # Append CMAKE_ARGS for ITK choices
-  # 3 choices: 
-  #     1. !USE_ITK                     <- Disable ITK
+  # 3 choices:
+  #     1.  NOT USE_ITK                 <- Disable ITK
   #     2.  USE_ITK &&  USE_SYSTEM_ITK  <- Need to set ITK_DIR, set with find_package in External_ITK.cmake
   #     3.  USE_ITK && !USE_SYSTEM_ITK  <- No need to do anything (ITK_DIR will get set during the installation of ITK)
   # STIR enables ITK by default (If it is found, so no need to set -DDISABLE_ITK=OFF for cases 2 and 3)
-  if (!USE_ITK)
+  if (NOT USE_ITK)
     set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DDISABLE_ITK=ON)
   elseif (USE_ITK AND USE_SYSTEM_ITK)
     set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DITK_DIR=${ITK_DIR})
@@ -121,7 +121,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
   SetGitTagAndRepo("${proj}")
-  
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY "${${proj}_URL_MODIFIED}"
@@ -131,7 +131,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
     STAMP_DIR ${${proj}_STAMP_DIR}
     TMP_DIR ${${proj}_TMP_DIR}
-	
+
     CMAKE_ARGS ${STIR_CMAKE_ARGS}
     INSTALL_DIR ${STIR_Install_Dir}
     DEPENDS
@@ -147,7 +147,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
          COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION> --output-on-failure
          WORKING_DIRECTORY ${${proj}_BINARY_DIR})
   endif()
-     
+
    else()
       if(${USE_SYSTEM_${externalProjName}})
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)

@@ -22,7 +22,7 @@
 #=========================================================================
 
 #This needs to be unique globally
-set(proj petmr_rd_tools)
+set(proj pet_rd_tools)
 
 # Set dependency list
 set(${proj}_DEPENDENCIES "Boost;ITK;glog")
@@ -43,23 +43,23 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(petmr_rd_tools_Install_Dir ${SUPERBUILD_INSTALL_DIR})
+  set(pet_rd_tools_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
-  set(petmr_rd_tools_CMAKE_ARGS
-      -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
-      -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
-      -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}
-      -DCMAKE_INSTALL_PREFIX=${petmr_rd_tools_Install_Dir}
-      -DBOOST_INCLUDEDIR=${BOOST_ROOT}/include/
-      -DBOOST_LIBRARYDIR=${BOOST_LIBRARY_DIR}
-      -Dglog_DIR=${glog_DIR}
-      )
+  set(pet_rd_tools_CMAKE_ARGS
+    -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
+    -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
+    -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}
+    -DCMAKE_INSTALL_PREFIX=${pet_rd_tools_Install_Dir}
+    -DBOOST_INCLUDEDIR=${BOOST_ROOT}/include/
+    -DBOOST_LIBRARYDIR=${BOOST_LIBRARY_DIR}
+    -Dglog_DIR=${glog_DIR}
+  )
 
   if (USE_SYSTEM_ITK)
-    set(petmr_rd_tools_CMAKE_ARGS ${petmr_rd_tools_CMAKE_ARGS} 
+    set(pet_rd_tools_CMAKE_ARGS ${pet_rd_tools_CMAKE_ARGS}
       -DITK_DIR=${ITK_DIR}
       )
   endif()
@@ -74,14 +74,14 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
     STAMP_DIR ${${proj}_STAMP_DIR}
     TMP_DIR ${${proj}_TMP_DIR}
-    CMAKE_ARGS ${petmr_rd_tools_CMAKE_ARGS}
-    INSTALL_DIR ${petmr_rd_tools_Install_Dir}
+    CMAKE_ARGS ${pet_rd_tools_CMAKE_ARGS}
+    INSTALL_DIR ${pet_rd_tools_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
 
-    set(petmr_rd_tools_ROOT        ${petmr_rd_tools_SOURCE_DIR})
-    set(petmr_rd_tools_INCLUDE_DIR ${petmr_rd_tools_SOURCE_DIR})
+    set(pet_rd_tools_ROOT        ${pet_rd_tools_SOURCE_DIR})
+    set(pet_rd_tools_INCLUDE_DIR ${pet_rd_tools_SOURCE_DIR})
 
    else()
       if(${USE_SYSTEM_${externalProjName}})

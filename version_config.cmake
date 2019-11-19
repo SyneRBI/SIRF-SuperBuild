@@ -1,3 +1,4 @@
+
 #========================================================================
 # Author: Edoardo Pasca
 # Author: Benjamin A Thomas
@@ -111,7 +112,7 @@ set(GTest_TAG release-1.8.0)
 
 ## glog
 set(glog_URL https://github.com/google/glog )
-set(glog_TAG v035)
+set(glog_TAG v0.3.5)
 
 ## ITK
 set(ITK_URL https://itk.org/ITK.git)
@@ -144,7 +145,7 @@ set(DEFAULT_NIFTYPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
 
 ## SIRF-Contribs
 set(DEFAULT_SIRF-Contribs_URL https://github.com/CCPPETMR/SIRF-Contribs )
-set(DEFAULT_SIRF-Contribs_TAG 29ab88bb5a0032daa464c2617a49ba6881813902 )
+set(DEFAULT_SIRF-Contribs_TAG origin/master )
 
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
@@ -176,7 +177,6 @@ if (DEVEL_BUILD)
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
   set(DEFAULT_ACE_TAG origin/master)
   # CCPi CIL
-  #set(CIL_VERSION "19.06")
   set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
   set(DEFAULT_CCPi-Framework_TAG origin/master)
   set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
@@ -187,7 +187,7 @@ if (DEVEL_BUILD)
   set(DEFAULT_CCPi-Astra_TAG origin/master)
 
 else()
-  set(DEFAULT_SIRF_TAG v2.1.0-rc.1)
+  set(DEFAULT_SIRF_TAG v2.1.0-rc.3)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
@@ -200,7 +200,7 @@ else()
 
   ## pet-rd-tools
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
-  set(DEFAULT_pet_rd_tools_TAG b88281f79e8c4a3781ebda7663f1ce7f5cab6e68)
+  set(DEFAULT_pet_rd_tools_TAG v1.1.0)
 
   ## glog
   set(DEFAULT_glog_URL https://github.com/google/glog )
@@ -210,12 +210,11 @@ else()
   set(DEFAULT_ACE_TAG origin/master)
   
   # CCPi CIL
-  set(CIL_VERSION "origin/master")
-  set(Regularisation-Toolkit_VERSION "19.10")
+  set(CIL_VERSION "v19.10")
   set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
   set(DEFAULT_CCPi-Framework_TAG ${CIL_VERSION})
   set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git )
-  set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "${Regularisation-Toolkit_VERSION}")
+  set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "${CIL_VERSION}")
   set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
   set(DEFAULT_CCPi-FrameworkPlugins_TAG "${CIL_VERSION}")
   set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)

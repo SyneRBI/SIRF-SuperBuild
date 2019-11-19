@@ -8,4 +8,4 @@
 #python2 -m pip install setuptools
 #python2 -m pip install ipykernel jupyter 
 
-sudo apt-get install -y swig expect
+sudo apt-get install -y swig expect unzip

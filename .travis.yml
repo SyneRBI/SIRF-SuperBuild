@@ -1,13 +1,17 @@
 # Note: with `language: cpp`, `cache: ccache` works
 # but `cache: pip` and `python:` is ignored
+os:
+- linux
+- osx
 language: cpp
-dist: trusty  # Ubuntu 14.04 LTS
-sudo: required  # for docker
-services:
-- docker
+dist: bionic  # Ubuntu 18.04 LTS
 cache:  # shared between builds
 - ccache
 - pip
+stages:
+- test
+- docker-core
+- docker
 
 # Currently commented out as set with environment flags
 # Both clang and gcc can be tested. More is the better.
@@ -15,97 +19,12 @@ cache:  # shared between builds
 # - clang
 # - gcc
 
-# Environment variables
-# Note: On trusty we need to build Armadillo and boost ourselves (the system versions are too old)
-# Note: On OSX we can't test SYSTEM_Boost=OFF due to excessive log size (https://github.com/CCPPETMR/SIRF-SuperBuild/issues/167)
-# Note: currently ACE is not building correctly, so ACE is not built on any configuration https://github.com/CCPPETMR/SIRF-SuperBuild/issues/#174
-# Note: on Trusty, g++-7 causes errors with the system ACE, so cannot use g++-7 or later https://github.com/CCPPETMR/SIRF-SuperBuild/issues/169
-# Note: altering the matrix here will cause re-building of caches,
-# so try to keep this concise to avoid need to update
-# Note: the line above each `env` contains a resume of the parameters passed to cmake.
-#       + or - refer to the value of the parameter affecting the specific package is passed to cmake:
-#       i.e. -boost == -DUSE_SYSTEM_Boost=OFF, which means that Boost will be built.
-matrix:
- include:
- # linux g{cc,++}-6 py{27,3}
- - os: linux
-   python: 3.6
-   # -boost +fftw3 +hdf5 +ace +cil
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
- - os: linux
-   python: 2.7
-   # -boost +fftw3 +hdf5 +ace +cil
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=2
- - os: linux
-   python: 2.7
-   # -boost +fftw3 +hdf5 +ace +cil_lite
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL_LITE=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=2
- - os: linux
-   python: 3.6
-   # -boost +fftw3 +hdf5 +ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
- - os: linux
-   python: 2.7
-   # -boost +fftw3 +hdf5 +siemens_to_ismrmrd +swig +ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_ACE=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=2
- - os: linux
-   python: 3.6
-   # +DEVEL -boost -hdf5 -fftw3 +ace +siemens_to_ismrmrd
-   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_ACE=ON -DBUILD_siemens_to_ismrmrd=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
- - os: linux
-   python: 2.7
-   # +DEVEL -boost -fftw3 -hdf5 -swig +ace
-   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_SWIG=OFF" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=2
- # - os: osx
- #   python: 2.7
- #   # +boost -hdf5 -swig
- #   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
- # - os: osx
- #   # +boost +fftw3 -hdf5 -swig
- #   python: 3.6
- #   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=3
- # - os: osx
- #   python: 2.7
- #   # +DEVEL +boost -hdf5 +swig
- #   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
- # - os: osx
- #   python: 2.7
- #   # +DEVEL +boost -fftw3 -hdf5 +swig
- #   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
- # itk
- - os: linux
-   python: 3.6
-   # -boost +itk +fftw3 +hdf5
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_ITK=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
- # - os: osx
- #   python: 2.7
- #   # +boost +itk -hdf5 +swig
- #   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" MATRIX_EVAL="CC=gcc CXX=g++" PYMVER=2
- # docker
- - os: linux
-   # +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
-   env: DOCKER_BUILD=1
- - os: linux
-   # +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
-   env: DOCKER_BUILD=SERVICE
- - os: linux
-   # +DEVEL +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
-   env: DOCKER_BUILD=DEVEL
- # - os: linux
- #   # +DEVEL +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
- #   env: DOCKER_BUILD=DEVEL_SERVICE
-
-env:
- global:
- - BUILD_FLAGS="-DCMAKE_BUILD_TYPE=Release"
- - MAKEFLAGS="-j 2"  # too many threads may crash
-
 # Compilation dependencies
 addons:
  apt:
-  sources:
+  sources: &addons_apt_sources
   - ubuntu-toolchain-r-test
-  packages:
+  packages: &addons_apt_packages
   - git-core
   - build-essential
   - g++-6
@@ -126,8 +45,6 @@ addons:
   - libplplot-dev
   - swig
   - ccache
-  # for building ACE (note: Trusty only)
-  - realpath
   # not in whitelist
   - libxslt-dev
   - libace-dev
@@ -139,10 +56,275 @@ addons:
   - autoconf
   - libtool
 
+# Environment variables
+# Note: altering the matrix here will cause re-building of caches,
+#       so try to keep this concise to avoid need to update
+# Note: the line above each `env` contains a resume of the parameters passed to cmake.
+#       + or - refer to the value of the parameter affecting the specific package is passed to cmake:
+#       i.e. -boost == -DUSE_SYSTEM_Boost=OFF, which means that Boost will be built.
+# Note: On trusty, we need to build Armadillo and boost ourselves (the system versions are too old)
+# Note: On trusty, g++-7 causes errors with the system ACE, so cannot use g++-7 or later https://github.com/CCPPETMR/SIRF-SuperBuild/issues/169
+# Note: On osx, we can't test SYSTEM_Boost=OFF due to excessive log size (https://github.com/CCPPETMR/SIRF-SuperBuild/issues/167)
+# Note: currently ACE is not building correctly, so ACE is not built on any configuration https://github.com/CCPPETMR/SIRF-SuperBuild/issues/#174
+env:
+ global:
+ - BUILD_FLAGS="-DCMAKE_BUILD_TYPE=Release"
+ - MAKEFLAGS="-j 2"  # too many threads may crash
+jobs:
+ allow_failures:
+ - os: osx
+ include:
+ # linux g{cc,++}-{6,7} py{2,3}
+ # legacy linux
+ - os: linux
+   stage: test
+   dist: xenial  # Ubuntu 16.04 LTS
+   addons:
+    apt:
+     sources: *addons_apt_sources
+     packages:
+      - *addons_apt_packages
+      - g++-6
+   python: 3.6
+   name: py36 gcc6 +xenial -boost +fftw3 +hdf5 +ace +cil
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+ - os: linux
+   dist: trusty  # Ubuntu 14.04 LTS
+   addons:
+    apt:
+     sources: *addons_apt_sources
+     packages:
+      - *addons_apt_packages
+      - g++-6
+      - realpath  # building ACE on trusty
+   python: 3.6
+   name: py36 gcc6 +trusty -boost +fftw3 +hdf5 +ace +cil
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+ # current linux
+ - os: linux
+   python: 3.6
+   name: py36 -boost +fftw3 +hdf5 +ace +cil
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" PYMVER=3
+ - os: linux
+   python: 2.7
+   name: py27 -boost +fftw3 +hdf5 +ace +cil
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" PYMVER=2
+ - os: linux
+   python: 2.7
+   name: py27 -boost +fftw3 +hdf5 +ace +cil_lite
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL_LITE=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" PYMVER=2
+ - os: linux
+   python: 3.6
+   name: py36 -boost +fftw3 +hdf5 +ace
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON" PYMVER=3
+ - os: linux
+   python: 2.7
+   name: py27 -boost +fftw3 +hdf5 +siemens_to_ismrmrd +swig +ace
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_ACE=ON" PYMVER=2
+ - os: linux
+   python: 3.6
+   name: py36 +DEVEL -boost -hdf5 -fftw3 +ace +siemens_to_ismrmrd
+   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_ACE=ON -DBUILD_siemens_to_ismrmrd=ON" PYMVER=3
+ - os: linux
+   python: 2.7
+   name: py27 +DEVEL -boost -fftw3 -hdf5 -swig +ace
+   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_SWIG=OFF" PYMVER=2
+ # osx
+ - os: osx
+   python: 2.7
+   name: py27 +osx +boost -hdf5 -swig
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" PYMVER=2
+ - os: osx
+   python: 3.6
+   name: py36 +osx +boost +fftw3 -hdf5 -swig
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" PYMVER=3
+ - os: osx
+   python: 2.7
+   name: py27 +osx +DEVEL +boost -hdf5 +swig
+   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=2
+ - os: osx
+   python: 2.7
+   name: py27 +osx +DEVEL +boost -fftw3 -hdf5 +swig
+   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=2
+ # itk
+ - os: linux
+   python: 3.6
+   name: py36 -boost +itk +fftw3 +hdf5
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_ITK=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON" PYMVER=3
+ - os: osx
+   python: 2.7
+   name: py27 +osx +boost +itk -hdf5 +swig
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=2
+ # docker
+ - os: linux
+   stage: docker-core
+   name: docker +CORE +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
+   env: DOCKER_BUILD=CORE
+   services:
+   - docker
+   addons: &docker_addons
+    apt:
+     packages:
+   before_install: &docker_before_install
+   # for counting clones, excluding ours
+   - |
+      if [[ -n "$GITHUB_API_TOKEN" ]]; then
+        git clone https://$GITHUB_API_TOKEN@github.com/ccp-petmr-codebot/github-stats --branch $TRAVIS_REPO_SLUG
+        # update with last fortnight's clones from GitHub API
+        source github-stats/setup.sh
+        # count unique clones, excluding travis, and print total
+        gh_stats_count -k uniques
+      fi
+   install: &docker_install
+   - cd docker
+   - if [[ -z "$GROUPS" ]]; then export GROUPS=$(id -g); fi
+   - if [[ -z "$UID" ]]; then export UID=$(id -u); fi
+   - export DCC="docker-compose -p "travis_${TRAVIS_JOB_NUMBER/./_}" -f $PWD/docker-compose.yml"
+   - if [[ "$DOCKER_BUILD" == *"DEVEL"* ]]; then export DCC="$DCC -f $PWD/docker-compose.devel.yml"; fi
+   - if [[ "$DOCKER_BUILD" == *"SERVICE"* ]]; then export DCC="$DCC -f $PWD/docker-compose.srv.yml"; fi
+   # pull previous base image for its layer cache
+   - docker pull ccppetmr/sirf:core
+   # count the docker pull (prefix `d`)
+   - |
+      if [[ -n "$GITHUB_API_TOKEN" ]]; then
+        gh_stats_count -k uniques --decrement -pd
+      fi
+   # rebuild base image (using above docker cache)
+   - |
+      if [[ "$DOCKER_BUILD" == "CORE" ]]; then ( set -ev
+        # rm .dockerignore  # TODO: remove this line
+        $DCC build --pull core
+      ); else ( set -ev
+        # rebuild sirf image (with travis' ccache)
+        rm -rf devel/.ccache
+        if [[ -n "$DOCKER_RECREATE_CCACHE" || ! -d ~/.ccache ]]; then
+          mkdir devel/.ccache
+          sudo rm -rf ~/.ccache
+        else
+          sudo chown -R $USER:$(id -g) ~/.ccache
+          mv ~/.ccache devel/
+        fi
+        rm .dockerignore  # TODO: remove this line
+        # don't count the extra clone we're about to do
+        # TODO: Do we need this? Is docker a distinct cloner from travis?
+        # cloners_count_decrement
+        $DCC build sirf
+        # extract updated ccache
+        # sudo rm -rf devel/.ccache/*
+        $DCC run --rm sirf /bin/bash -c 'sudo rm -rf /devel/.ccache/* && sudo cp -a /opt/ccache/* /devel/.ccache/'
+        # replace travis' ccache with the built images's
+        mv devel/.ccache ~
+      ); fi
+   script: &docker_script
+   - |
+      # run tests within the container
+      # TODO: also add CORE tests!
+      if [[ "$DOCKER_BUILD" != "CORE" ]]; then
+        $DCC run --rm sirf /bin/bash --login -c '/devel/test.sh 1'
+      fi
+   after_success: &docker_after_success
+   - |
+      # push images
+      if [[ "$TRAVIS_SECURE_ENV_VARS" == true ]]; then ( set -ev
+       echo "$DOCKER_PWD" | docker login -u $DOCKER_USR --password-stdin
+       dpush() {
+         # create and push alias $1 -> $2
+         if [[ "$1" != "$2" ]]; then
+           docker tag ccppetmr/sirf:$1 ccppetmr/sirf:$2
+         fi
+         docker push ccppetmr/sirf:$2
+       }
+       if [[ -n "$TRAVIS_TAG" ]]; then ( set -ev
+        # tag & push
+        case "$DOCKER_BUILD" in
+        CORE)
+          ;;
+        1)
+          dpush latest latest
+          dpush latest "$TRAVIS_TAG"
+          dpush latest release
+          ;;
+        DEVEL)
+          ;;
+        DEVEL_SERVICE)
+          ;;
+        SERVICE)
+          dpush service service
+          dpush service "$TRAVIS_TAG"-service
+          dpush service release-service
+          ;;
+        *)
+          exit 1
+        esac
+       ); elif [[ "$TRAVIS_BRANCH" == master ]]; then ( set -ev
+        # tag & push
+        case "$DOCKER_BUILD" in
+        CORE)
+          dpush core core
+          ;;
+        1)
+          ;;
+        DEVEL)
+          dpush devel devel
+          ;;
+        DEVEL_SERVICE)
+          dpush service devel-service
+          ;;
+        SERVICE)
+          ;;
+        *)
+          exit 1
+        esac
+       ); fi
+      ); fi
+ - os: linux
+   stage: docker
+   name: docker +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
+   env: DOCKER_BUILD=1
+   services:
+   - docker
+   addons: *docker_addons
+   before_install: *docker_before_install
+   install: *docker_install
+   script: *docker_script
+   after_success: *docker_after_success
+ - os: linux
+   name: docker +SERVICE +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
+   env: DOCKER_BUILD=SERVICE
+   services:
+   - docker
+   addons: *docker_addons
+   before_install: *docker_before_install
+   install: *docker_install
+   script: *docker_script
+   after_success: *docker_after_success
+ - os: linux
+   name: docker +DEVEL +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
+   env: DOCKER_BUILD=DEVEL
+   services:
+   - docker
+   addons: *docker_addons
+   before_install: *docker_before_install
+   install: *docker_install
+   script: *docker_script
+   after_success: *docker_after_success
+ # - os: linux
+ #   name: docker +DEVEL +SERVICE +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
+ #   env: DOCKER_BUILD=DEVEL_SERVICE
+ #   services:
+ #   - docker
+ #   addons: *docker_addons
+ #   before_install: *docker_before_install
+ #   install: *docker_install
+ #   script: *docker_script
+ #   after_success: *docker_after_success
+
 before_install:
 # Set C and C++ compiler etc using trick from
 # https://docs.travis-ci.com/user/languages/cpp/#c11c11-and-beyond-and-toolchain-versioning
 - eval "${MATRIX_EVAL}"
+- export CC="${CC:-gcc}"
+- export CXX="${CXX:-g++}"
 - $CC --version
 - $CXX --version
 - mkdir -p ~/.local/bin
@@ -255,127 +437,35 @@ before_install:
 - popd
 # N.B.: don't put into build matrix to allow caching.
 - BUILD_FLAGS="$BUILD_FLAGS -DPYVER=$PYMVER"
+- BUILD_FLAGS="$BUILD_FLAGS -DCMAKE_C_COMPILER='$(which $CC)' -DCMAKE_CXX_COMPILER='$(which $CXX)'"
 - cmake --version
 
 install:
+- $PY_EXE -m pip install --user --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
+- cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
+# Job may timeout (>50min) if no ccache, otherwise should be <1min:
+- make
 - |
-   if [[ -n "$DOCKER_BUILD" ]]; then
-     cd docker
-     [[ -n "$GROUPS" ]] || export GROUPS=$(id -g)
-     [[ -n "$UID" ]] || export UID=$(id -u)
-     export DCC="docker-compose -p "travis_${TRAVIS_JOB_NUMBER/./_}" -f $PWD/docker-compose.yml"
-     [[ "$DOCKER_BUILD" == *"DEVEL"* ]] && export DCC="$DCC -f $PWD/docker-compose.devel.yml"
-     [[ "$DOCKER_BUILD" == *"SERVICE"* ]] && export DCC="$DCC -f $PWD/docker-compose.srv.yml"
-     ( set -ev
-       # pull previous base image for its layer cache
-       docker pull ccppetmr/sirf:core
-       # count the docker pull (prefix `d`)
-       [[ -n "$GITHUB_API_TOKEN" ]] && gh_stats_count -k uniques --decrement -pd
-       # rebuild base image (using above docker cache)
-       # and sirf image (with travis' ccache)
-       rm -rf devel/.ccache
-       if [[ -n "$DOCKER_RECREATE_CCACHE" || ! -d ~/.ccache ]]; then
-         mkdir devel/.ccache
-         sudo rm -rf ~/.ccache
-       else
-         sudo chown -R $USER:$(id -g) ~/.ccache
-         mv ~/.ccache devel/
-       fi
-       rm .dockerignore  # TODO: remove this line
-       $DCC build --pull core
-       # don't count the extra clone we're about to do
-       # TODO: Do we need this? Is docker a distinct cloner from travis?
-       # cloners_count_decrement
-       $DCC build sirf
-       # extract updated ccache
-       # sudo rm -rf devel/.ccache/*
-       $DCC run --rm sirf /bin/bash -c 'sudo rm -rf /devel/.ccache/* && sudo cp -a /opt/ccache/* /devel/.ccache/'
-       # replace travis' ccache with the built images's
-       mv devel/.ccache ~
-     )
-   else
-     ( set -ev
-       $PY_EXE -m pip install --user --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
-       cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
-       # Job may timeout (>50min) if no ccache, otherwise should be <1min:
-       make
-       mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
-     ) || travis_terminate 1
-     source $PWD/INSTALL/bin/env_ccppetmr.sh
+   if [[ -f INSTALL/share/gadgetron/config/gadgetron.xml.example ]]; then
+     mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
    fi
+- source $PWD/INSTALL/bin/env_ccppetmr.sh
 
 script:
+- ./INSTALL/bin/gadgetron >& gadgetron.log&
+# print for debugging
+- cat builds/SIRF/build/CMakeCache.txt
 - |
-   if [[ -n "$DOCKER_BUILD" ]]; then
-     # run tests within the container
-     $DCC run --rm sirf /bin/bash --login -c '/devel/test.sh 1'
-   else
-     ./INSTALL/bin/gadgetron >& gadgetron.log&
-     # print for debugging
-     cat builds/SIRF/build/CMakeCache.txt
-     ctest --output-on-failure; test_fail=$?
-     # echo "----------- Killing gadgetron server"
-     # killall gadgetron
-     if [[ $test_fail -ne 0 ]]; then
-       #echo "----------- Test output"
-       # cat builds/SIRF/build/Testing/Temporary/LastTest.log
-       echo "----------- Last 70 lines of gadgetron.log"
-       tail -n 70 gadgetron.log
-       travis_terminate $test_fail
-     fi
+   ctest --output-on-failure; test_fail=$?
+   # echo "----------- Killing gadgetron server"
+   # killall gadgetron
+   if [[ $test_fail -ne 0 ]]; then
+     #echo "----------- Test output"
+     # cat builds/SIRF/build/Testing/Temporary/LastTest.log
+     echo "----------- Last 70 lines of gadgetron.log"
+     tail -n 70 gadgetron.log
+     travis_terminate $test_fail
    fi
-
-after_success:
-- |
-   # push images
-   if [[ -n "$DOCKER_BUILD" && "$TRAVIS_SECURE_ENV_VARS" == true ]]; then ( set -ev
-    echo "$DOCKER_PWD" | docker login -u $DOCKER_USR --password-stdin
-    dpush() {
-      # create and push alias $1 -> $2
-      if [[ "$1" != "$2" ]]; then
-        docker tag ccppetmr/sirf:$1 ccppetmr/sirf:$2
-      fi
-      docker push ccppetmr/sirf:$2
-    }
-    if [[ -n "$TRAVIS_TAG" ]]; then ( set -ev
-     # tag & push
-     case "$DOCKER_BUILD" in
-     1)
-       dpush latest latest
-       dpush latest "$TRAVIS_TAG"
-       dpush latest release
-       ;;
-     DEVEL)
-       ;;
-     DEVEL_SERVICE)
-       ;;
-     SERVICE)
-       dpush service service
-       dpush service "$TRAVIS_TAG"-service
-       dpush service release-service
-       ;;
-     *)
-       exit 1
-     esac
-    ); elif [[ "$TRAVIS_BRANCH" == master ]]; then ( set -ev
-     # tag & push
-     case "$DOCKER_BUILD" in
-     1)
-       dpush core core
-       ;;
-     DEVEL)
-       dpush devel devel
-       ;;
-     DEVEL_SERVICE)
-       dpush service devel-service
-       ;;
-     SERVICE)
-       ;;
-     *)
-       exit 1
-     esac
-    ); fi
-   ); fi
 
 # post to slack.com
 notifications:

@@ -56,8 +56,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   endif()
 
   #set(BOOST_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj})
-  
-  
+
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
@@ -71,14 +71,14 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     BUILD_IN_SOURCE 0
 
     CONFIGURE_COMMAND ${CMAKE_COMMAND}
-                             ${CLANG_ARG}
-                             -DBUILD_DIR:PATH=${${proj}_SOURCE_DIR}
-                             -DBOOST_INSTALL_DIR:PATH=${Boost_Install_Dir}
-                             -P ${Boost_Configure_Script}
+      ${CLANG_ARG}
+      -DBUILD_DIR:PATH=${${proj}_SOURCE_DIR}
+      -DBOOST_INSTALL_DIR:PATH=${Boost_Install_Dir}
+      -P ${Boost_Configure_Script}
     INSTALL_COMMAND ""
     BUILD_COMMAND ${CMAKE_COMMAND}
-                             -DBUILD_DIR:PATH=${${proj}_SOURCE_DIR}
-                             -DBOOST_INSTALL_DIR:PATH=${Boost_Install_Dir} -P ${Boost_Build_Script}
+      -DBUILD_DIR:PATH=${${proj}_SOURCE_DIR}
+      -DBOOST_INSTALL_DIR:PATH=${Boost_Install_Dir} -P ${Boost_Build_Script}
   )
 
   set(BOOST_ROOT        ${Boost_Install_Dir})

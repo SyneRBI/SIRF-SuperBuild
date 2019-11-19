@@ -91,6 +91,7 @@ ENV DEBIAN_FRONTEND ''
 CMD ["/bin/bash"]
 
 FROM sirf as service
+ENV DEBIAN_FRONTEND noninteractive
 
 COPY requirements-service.txt .
 COPY user_service-ubuntu.sh .
@@ -98,6 +99,7 @@ RUN bash user_service-ubuntu.sh
 RUN rm user_service-ubuntu.sh requirements-service.txt
 
 COPY service.sh /usr/local/bin/
+ENV DEBIAN_FRONTEND ''
 CMD ["/usr/local/bin/service.sh"]
 
 FROM service as multi

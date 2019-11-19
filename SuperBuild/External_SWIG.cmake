@@ -43,7 +43,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  
+
   if (WIN32)
   set(SWIG_Install_Dir ${SUPERBUILD_INSTALL_DIR}/SWIG-3.0.12)
 
@@ -57,11 +57,11 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${SWIG_Install_Dir}
   )
   set( SWIG_EXECUTABLE ${SWIG_Install_Dir}/swig.exe CACHE FILEPATH "SWIG executable" FORCE)
-  
+
   else(WIN32)
 
   set(SWIG_Install_Dir ${SUPERBUILD_INSTALL_DIR})
-  
+
   set(SWIG_Configure_Script ${CMAKE_CURRENT_LIST_DIR}/External_SWIG_configure.cmake)
   set(SWIG_Build_Script ${CMAKE_CURRENT_LIST_DIR}/External_SWIG_build.cmake)
 
@@ -70,7 +70,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   endif()
 
   set(SWIG_SOURCE_DIR ${${proj}_SOURCE_DIR} )
-  
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
