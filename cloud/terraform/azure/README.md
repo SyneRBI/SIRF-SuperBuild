@@ -55,8 +55,6 @@ export TF_VAR_vm_password="virtual%1"
 ```bash
 cp creds.json.skeleton creds.json
 ```
-- Edit `creds.json` and populate `azure_subscription` `azure_tenant_id`, `azure_client_id` and `azure_client_secret` with the values for `subscriptionId`, `tenantId`, `appId` and `password` respectively.
-- *NEVER commit and push `creds.json` to a public (or a private) repository. If this happens, it is vital that the service prinicpal created in the earlier step be deleted immediately, the file removed from the repository and history and this process started again.*
 - Create a resource group:
 ```bash
 az group create -n sirf-rg -l uksouth
