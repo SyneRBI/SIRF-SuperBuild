@@ -1,8 +1,6 @@
 #========================================================================
-# Author: Benjamin A Thomas
 # Author: Edoardo Pasca
-# Copyright 2017 University College London
-# Copyright 2017 STFC
+# Copyright 2018-2019 STFC
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -21,11 +19,7 @@
 #=========================================================================
 
 #This needs to be unique globally
-set(proj GTest)
-
-# Set dependency list
-set(${proj}_DEPENDENCIES "")
-
+set(proj SIRF-Contribs)
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
@@ -42,49 +36,42 @@ set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
-  ### --- Project specific additions here
-  set(GTest_Install_Dir ${SUPERBUILD_INSTALL_DIR})
-
-  set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
-  set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
-
-  ExternalProject_Add(${proj}
-    ${${proj}_EP_ARGS}
-    GIT_REPOSITORY ${${proj}_URL}
-    GIT_TAG ${${proj}_TAG}
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
-
-    CMAKE_ARGS
-      -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
-      -DCMAKE_INSTALL_PREFIX=${GTest_Install_Dir}
-    INSTALL_DIR ${GTest_Install_Dir}
-    DEPENDS
-        ${${proj}_DEPENDENCIES}
-  )
-
-    set(GTEST_ROOT        ${GTest_Install_Dir})
+  # conda build should never get here
+  if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
+    # in case of PYTHONPATH it is sufficient to copy the files to the 
+    # $PYTHONPATH directory
+    ExternalProject_Add(${proj}
+      ${${proj}_EP_ARGS}
+      GIT_REPOSITORY ${${proj}_URL}
+      GIT_TAG ${${proj}_TAG}
+      SOURCE_DIR ${${proj}_SOURCE_DIR}
+      BINARY_DIR ${${proj}_BINARY_DIR}
+      DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+      STAMP_DIR ${${proj}_STAMP_DIR}
+      TMP_DIR ${${proj}_TMP_DIR}
+      INSTALL_DIR ${libcilreg_Install_Dir}
+    
+      CONFIGURE_COMMAND ""
+      BUILD_COMMAND ""
+      INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/src/Python/sirf/ ${PYTHON_DEST}/sirf
+    )
 
   else()
-      if(${USE_SYSTEM_${externalProjName}})
-        message(STATUS "USING the system ${externalProjName}, set GTEST_ROOT if needed.")
-        find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
-    endif()
-    ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
+    # if SETUP_PY one can launch the conda build.sh script setting 
+    # the appropriate variables.
+    message(FATAL_ERROR "Only PYTHONPATH install method is currently supported")
+  endif()
+
+
+  set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
+  set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
+
+else()
+  ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
     SOURCE_DIR ${${proj}_SOURCE_DIR}
     BINARY_DIR ${${proj}_BINARY_DIR}
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
     STAMP_DIR ${${proj}_STAMP_DIR}
     TMP_DIR ${${proj}_TMP_DIR}
-)
-  endif()
-
-  mark_as_superbuild(
-    VARS
-      GTEST_ROOT:PATH
-    LABELS
-      "FIND_PACKAGE"
   )
+endif()

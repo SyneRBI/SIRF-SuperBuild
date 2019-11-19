@@ -1,0 +1,75 @@
+{
+  "variables": {
+      "ssh_user": "sirfuser",
+      "ssh_pass": "virtual",
+      "jupyter_password": "virtual%1",
+      "jupyter_port": "9999"
+},
+"builders": [{
+    "type": "azure-arm",
+
+    "client_id": "{{ user `azure_client_id` }}",
+    "client_secret": "{{ user `azure_client_secret` }}",
+    "tenant_id": "{{ user `azure_tenant_id` }}",
+    "subscription_id": "{{ user `azure_subscription` }}",
+
+    "managed_image_name": "sirf-cpu-{{ user `azure_image_offer` }}-{{ user `azure_image_sku` }}",
+    "managed_image_resource_group_name": "{{ user `azure_rg_name` }}",
+
+    "os_type": "{{ user `azure_os_type` }}",
+    "image_publisher": "{{ user `azure_image_publisher` }}",
+    "image_offer": "{{ user `azure_image_offer` }}",
+    "image_sku": "{{ user `azure_image_sku` }}",
+
+    "location": "{{ user `azure_cpu_location` }}",
+    "vm_size": "{{ user `azure_cpu_vm_size` }}",
+
+    "ssh_username": "{{user `ssh_user`}}",
+    "ssh_password": "{{user `ssh_pass`}}"
+  }],
+  "provisioners": [
+      {
+          "type": "file",
+          "source": "./scripts/provision.sh",
+          "destination": "/tmp/provision.sh"
+      },
+      {
+        "type": "file",
+        "source": "./scripts/jupyter_config.sh",
+        "destination": "/tmp/jupyter_config.sh"
+      },
+      {
+        "type": "file",
+        "source": "./scripts/jupyter.service",
+        "destination": "/tmp/jupyter.service"
+      },
+      {
+        "type": "file",
+        "source": "./scripts/launch.sh",
+        "destination": "/tmp/launch.sh"
+      },
+      {
+        "type": "file",
+        "source": "./scripts/install_prerequisites.sh",
+        "destination": "/tmp/install_prerequisites.sh"
+      },
+      {
+        "type": "file",
+        "source": "./scripts/jupyter_set_pwd.sh",
+        "destination": "/tmp/jupyter_set_pwd.sh"
+      },    
+      {
+        "execute_command": "echo '{{user `ssh_pass`}}' ; chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'",
+        "inline": [
+          "sudo bash /tmp/install_prerequisites.sh",
+          "bash /tmp/provision.sh",
+          "bash /tmp/jupyter_config.sh {{user `jupyter_password`}} {{user `jupyter_port`}} {{user `ssh_user`}}",
+          "sudo chown -R {{user `ssh_user`}}:{{user `ssh_user`}} /home/{{user `ssh_user`}}",
+          "sudo systemctl enable jupyter.service",
+          "/usr/sbin/waagent -force -deprovision && export HISTSIZE=0 && sync"
+        ],
+        "inline_shebang": "/bin/sh -x",
+        "type": "shell"
+      }
+]
+}

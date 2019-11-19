@@ -51,13 +51,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
-  message(WARNING "${proj} URL " ${${proj}_URL}  ) 
-  message(WARNING "${proj} TAG " ${${proj}_TAG}  ) 
+  message(WARNING "${proj} URL " ${${proj}_URL}  )
+  message(WARNING "${proj} TAG " ${${proj}_TAG}  )
   set (CIL_VERSION ${${prog}_TAG})
-  message(WARNING "CIL_VERSION ${CIL_VERSION}" ) 
+  message(WARNING "CIL_VERSION ${CIL_VERSION}" )
   # conda build should never get here
   if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
-    # in case of PYTHONPATH it is sufficient to copy the files to the 
+    # in case of PYTHONPATH it is sufficient to copy the files to the
     # $PYTHONPATH directory
     set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
     if (BUILD_PYTHON)
@@ -87,29 +87,24 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       STAMP_DIR ${${proj}_STAMP_DIR}
       TMP_DIR ${${proj}_TMP_DIR}
       INSTALL_DIR ${libcilreg_Install_Dir}
-      # apparently this is the only way to pass environment variables to 
-      # external projects 
-      CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG}         ${CMAKE_COMMAND} ${${proj}_SOURCE_DIR}  -DCMAKE_INSTALL_PREFIX=${libcilreg_Install_Dir}
-        -DBUILD_PYTHON_WRAPPER=ON -DCMAKE_BUILD_TYPE=Release 
+      # apparently this is the only way to pass environment variables to
+      # external projects
+      CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} ${CMAKE_COMMAND} ${${proj}_SOURCE_DIR}
+        -DCMAKE_INSTALL_PREFIX=${libcilreg_Install_Dir}
+        -DBUILD_PYTHON_WRAPPER=ON -DCMAKE_BUILD_TYPE=Release
         -DBUILD_CUDA=ON -DCONDA_BUILD=OFF -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
         -DPYTHON_DEST=${PYTHON_DEST_DIR}
+
       # This build is Unix specific
-      BUILD_COMMAND ${CMAKE_COMMAND} --build .    
+      BUILD_COMMAND ${CMAKE_COMMAND} --build .
       INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install
       #TEST_COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -s ${${proj}_SOURCE_DIR}/test/ -p test*.py
-
-#    CMAKE_ARGS
-#        -DCMAKE_INSTALL_PREFIX=${libcilreg_Install_Dir}
-#        -DBUILD_PYTHON_WRAPPERS=ON -DCMAKE_BUILD_TYPE=Release 
-#        -DBUILD_CUDA=OFF -DCONDA_BUILD=OFF
-#        -DPYTHON_DEST=${PYTHON_DEST_DIR}
-
       DEPENDS
         ${${proj}_DEPENDENCIES}
     )
 
     else()
-      # if SETUP_PY one can launch the conda build.sh script setting 
+      # if SETUP_PY one can launch the conda build.sh script setting
       # the appropriate variables.
       ExternalProject_Add(${proj}
         ${${proj}_EP_ARGS}
@@ -121,7 +116,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         STAMP_DIR ${${proj}_STAMP_DIR}
         TMP_DIR ${${proj}_TMP_DIR}
         INSTALL_DIR ${libcilreg_Install_Dir}
-    
         CONFIGURE_COMMAND ""
         BUILD_COMMAND ""
         INSTALL_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} SRC_DIR=${${proj}_BINARY_DIR} RECIPE_DIR=${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe PYTHON=${PYTHON_EXECUTABLE} bash ${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe/build.sh
@@ -136,7 +130,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
     set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
     add_test(NAME CIL_REGULARISATION_TEST_1
-             COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -s test -p test_*.py 
+             COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -s test -p test_*.py
     WORKING_DIRECTORY ${${proj}_SOURCE_DIR})
 
   else()

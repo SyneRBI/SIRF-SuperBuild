@@ -15,7 +15,8 @@ if [ -d $HOME ]; then
 fi
 
 cd /
-mv $OLD_HOME $HOME
+# allow docker exec into already started container
+[ -d $OLD_HOME ] && mv $OLD_HOME $HOME
 cd $HOME
 
 echo "$UID:$GID Creating and switching to: $mainUser:$USER_ID:$GROUP_ID"

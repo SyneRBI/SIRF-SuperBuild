@@ -1,3 +1,4 @@
+
 #========================================================================
 # Author: Edoardo Pasca
 # Author: Benjamin A Thomas
@@ -42,8 +43,8 @@ else()
 endif()
 
 ## Armadillo
-set(Armadillo_URL   https://downloads.sourceforge.net/project/arma/armadillo-7.800.2.tar.xz)
-set(Armadillo_MD5 c601f3a5ec6d50666aa3a539fa20e6ca )
+set(Armadillo_URL   https://downloads.sourceforge.net/project/arma/armadillo-9.800.2.tar.xz)
+set(Armadillo_MD5 c2fa488ea069b9972363ebad16e51ab5 )
 
 ## FFTW3
 if(WIN32)
@@ -66,7 +67,7 @@ if (WIN32)
   # 1.8.15 hdf5-targets.cmake refers to non-existent zlib files
   # (or at least this was the case for older Anaconda installations)
   if (USE_SYSTEM_HDF5)
-    set(HDF5_REQUIRED_VERSION 1.8.17)
+    set(HDF5_REQUIRED_VERSION 1.8.12)
     #set(HDF5_REQUIRED_VERSION 1.8)
   endif()
   if (BUILD_MATLAB)
@@ -111,7 +112,7 @@ set(GTest_TAG release-1.8.0)
 
 ## glog
 set(glog_URL https://github.com/google/glog )
-set(glog_TAG v035)
+set(glog_TAG v0.3.5)
 
 ## ITK
 set(ITK_URL https://itk.org/ITK.git)
@@ -141,6 +142,10 @@ set(DEFAULT_TomoPhantom_TAG v1.4)
 ## NiftyPET
 set(DEFAULT_NIFTYPET_URL https://github.com/pjmark/NIPET )
 set(DEFAULT_NIFTYPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
+
+## SIRF-Contribs
+set(DEFAULT_SIRF-Contribs_URL https://github.com/CCPPETMR/SIRF-Contribs )
+set(DEFAULT_SIRF-Contribs_TAG origin/master )
 
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
@@ -172,7 +177,6 @@ if (DEVEL_BUILD)
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
   set(DEFAULT_ACE_TAG origin/master)
   # CCPi CIL
-  #set(CIL_VERSION "19.06")
   set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
   set(DEFAULT_CCPi-Framework_TAG origin/master)
   set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
@@ -183,11 +187,11 @@ if (DEVEL_BUILD)
   set(DEFAULT_CCPi-Astra_TAG origin/master)
 
 else()
-  set(DEFAULT_SIRF_TAG v2.0.0)
+  set(DEFAULT_SIRF_TAG v2.1.0-rc.3)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG 74676768610b7d8be9792e1192ac6dd68bff2424)
+  set(DEFAULT_STIR_TAG stir_rel_4_00_alpha)
   #set(DEFAULT_STIR_TAG 3a277f7a819f35a553a8d6097402ea25cf55a240)
 
   ## siemens_to_ismrmrd
@@ -196,7 +200,7 @@ else()
 
   ## pet-rd-tools
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
-  set(DEFAULT_pet_rd_tools_TAG b88281f79e8c4a3781ebda7663f1ce7f5cab6e68)
+  set(DEFAULT_pet_rd_tools_TAG v1.1.0)
 
   ## glog
   set(DEFAULT_glog_URL https://github.com/google/glog )
@@ -206,12 +210,11 @@ else()
   set(DEFAULT_ACE_TAG origin/master)
   
   # CCPi CIL
-  set(CIL_VERSION "origin/master")
-  set(Regularisation-Toolkit_VERSION "19.10")
+  set(CIL_VERSION "v19.10")
   set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
   set(DEFAULT_CCPi-Framework_TAG ${CIL_VERSION})
   set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git )
-  set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "${Regularisation-Toolkit_VERSION}")
+  set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "${CIL_VERSION}")
   set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
   set(DEFAULT_CCPi-FrameworkPlugins_TAG "${CIL_VERSION}")
   set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
@@ -264,6 +267,9 @@ set(NIFTYREG_TAG ${DEFAULT_NIFTYREG_TAG} CACHE STRING ON)
 set(NIFTYPET_URL ${DEFAULT_NIFTYPET_URL} CACHE STRING ON)
 set(NIFTYPET_TAG ${DEFAULT_NIFTYPET_TAG} CACHE STRING ON)
 
+set(SIRF-Contribs_URL ${DEFAULT_SIRF-Contribs_URL} CACHE STRING ON)
+set(SIRF-Contribs_TAG ${DEFAULT_SIRF-Contribs_TAG} CACHE STRING ON)
+
 mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   Gadgetron_URL Gadgetron_TAG
   siemens_to_ismrmrd_URL siemens_to_ismrmrd_TAG
@@ -275,4 +281,5 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   CCPi-FrameworkPlugins_URL CCPi-FrameworkPlugins_TAG
   CCPi-Regularisation-Toolkit_URL CCPi-Regularisation-Toolkit_TAG
   NIFTYPET_URL NIFTYPET_TAG
+  SIRF-Contribs_URL SIRF-Contribs_TAG
 )

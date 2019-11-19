@@ -44,8 +44,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ### --- Project specific additions here
   set(glog_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
-  set(glog_CMAKE_ARGS 
-        -DCMAKE_INSTALL_PREFIX=${glog_Install_Dir}
+  set(glog_CMAKE_ARGS
+    -DCMAKE_INSTALL_PREFIX=${glog_Install_Dir}
    )
 
   ExternalProject_Add(${proj}
@@ -57,7 +57,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
     STAMP_DIR ${${proj}_STAMP_DIR}
     TMP_DIR ${${proj}_TMP_DIR}
-	
+
     CMAKE_ARGS ${glog_CMAKE_ARGS}
     INSTALL_DIR ${glog_Install_Dir}
     DEPENDS
