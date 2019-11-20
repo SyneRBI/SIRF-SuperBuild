@@ -1,8 +1,8 @@
 {
-    "azure_client_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-    "azure_client_secret": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-    "azure_tenant_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-    "azure_subscription": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "azure_client_id": "{{env `ARM_CLIENT_ID`}}",
+    "azure_client_secret": "{{env `ARM_CLIENT_SECRET`}}",
+    "azure_tenant_id": "{{env `ARM_TENANT_ID`}}",
+    "azure_subscription": {{env `ARM_SUBSCRIPTION_ID`}}",
     "azure_rg_name": "sirf-rg",
     "azure_storage_acc": "sirfsa",
 
@@ -14,9 +14,9 @@
     "azure_image_offer": "UbuntuServer",
     "azure_image_sku": "18.04-LTS",
 
-    "azure_cpu_location": "westeurope",
+    "azure_cpu_location": "uksouth",
     "azure_cpu_vm_size": "Standard_D4"
 
-    "azure_gpu_location": "westeurope",
+    "azure_gpu_location": "uksouth",
     "azure_gpu_vm_size": "Standard_NC6"
 }
