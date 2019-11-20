@@ -29,7 +29,7 @@ az account show --query "{subscriptionId:id, tenantId:tenantId}"
 ```bash
 export SUBSCRIPTION_ID=your_subscription_id
 ```
-- Create an Azure service prinicpal to use:
+- Create an Azure service principal to use:
 ```bash
 az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/${SUBSCRIPTION_ID}"
 ```
