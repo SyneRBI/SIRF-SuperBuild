@@ -1,4 +1,4 @@
-version: '3.4'
+version: '2.3'
 services:
  sirf:
   container_name: sirf  # for scaling, comment this out https://github.com/docker/compose/issues/3729
@@ -35,9 +35,6 @@ services:
  gadgetron:
   container_name: gadgetron
   image: gadgetron/ubuntu_1804_no_cuda:latest
-  # For GPU, use this instead:
-  #image: gadgetron/ubuntu_1804_cuda90_cudnn7:latest
-  #runtime: nvidia
   restart: unless-stopped
   environment:
    GADGETRON_RELAY_HOST: 0.0.0.0
