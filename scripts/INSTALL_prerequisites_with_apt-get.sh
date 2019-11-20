@@ -17,7 +17,7 @@ echo "Installing Gadgetron pre-requisites..."
 APT_GET_INSTALL="$SUDO apt-get install -y --no-install-recommends"
 ${APT_GET_INSTALL} libhdf5-serial-dev git build-essential libfftw3-dev h5utils hdf5-tools \
 	liblapack-dev libarmadillo-dev libace-dev libgtest-dev libopenblas-dev \
-	libatlas-base-dev libatlas-base-dev libxml2-dev libxslt1-dev cython
+	libatlas-base-dev libatlas-base-dev libxml2-dev libxslt1-dev unzip
 
 echo "Installing boost 1.65 or later"
 # first find current boost version (if any)
@@ -34,16 +34,11 @@ echo "Found Boost major version ${boost_major}, minor ${boost_minor}"
 if [ $boost_major -gt 1 -o $boost_minor -gt 64 ]
 then
     echo "installing Boost ${boost_major}.${boost_minor} from system apt"
-    $SUDO apt install -y libboost-dev
-    $SUDO apt install -y libboost-chrono-dev
-    $SUDO apt install -y libboost-filesystem-dev
-    $SUDO apt install -y libboost-thread-dev
-    $SUDO apt install -y libboost-date-time-dev
-    $SUDO apt install -y libboost-regex-dev
-    $SUDO apt install -y libboost-program-options-dev
-    $SUDO apt install -y libboost-atomic-dev
-    $SUDO apt install -y libboost-test-dev
-    $SUDO apt install -y libboost-timer-dev
+    $SUDO apt install -y libboost-dev libboost-chrono-dev \
+        libboost-filesystem-dev libboost-thread-dev \
+        libboost-date-time-dev libboost-regex-dev \
+        libboost-program-options-dev libboost-atomic-dev \
+        libboost-test-dev libboost-timer-dev
 else    
     # packaged boost is too old
     # we need to find a ppa that has it. This is unsafe and likely prone to falling over
@@ -86,4 +81,9 @@ echo "Installing python APT packages"
 # some extra package needed for jupyter
 qt=pyqt5
 ${APT_GET_INSTALL} python-dev python-pip python-tk python-${qt} python-${qt}.qtsvg python-${qt}.qtwebkit
+
+echo "Installing CIL pre-requisites..."
+${APT_GET_INSTALL} cython python-h5py python-wget
+# dependency for ASTRA-toolbox autotools-dev automake autogen autoconf libtool
+
 echo "Run INSTALL_python_packages.sh after this."

@@ -150,7 +150,9 @@ SuperBuild(){
         -DUSE_SYSTEM_HDF5=ON \
         -DBUILD_siemens_to_ismrmrd=On \
         -DUSE_ITK=ON \
-        -DDEVEL_BUILD=OFF
+        -DDEVEL_BUILD=OFF\
+        -DBUILD_CIL_LITE=ON\
+        -DNIFTYREG_USE_CUDA=OFF
   make -j${num_parallel}
 
   if [ ! -f ${SIRF_INSTALL_PATH}/share/gadgetron/config/gadgetron.xml ]
