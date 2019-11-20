@@ -1,32 +1,32 @@
-terraform {
-    required_version = ">= 0.12.4"
-}
-
 # Create a resource group if it doesn’t exist
 resource "azurerm_resource_group" "mytfgroup" {
-    name     = "${var.vm_prefix}-Group"
-    location = "${var.location}"
+    name     = "${var.prefix}-${var.vm_location}-Group"
+    location = "${var.vm_location}"
 
     tags = {
-        environment = "${var.vm_prefix} env"
+        environment = "${var.prefix} env"
+    }
+
+    lifecycle {
+        prevent_destroy = true
     }
 }
 
 # Create virtual network
 resource "azurerm_virtual_network" "mytfnetwork" {
-    name                = "${var.vm_prefix}-Vnet"
+    name                = "${var.prefix}-Vnet"
     address_space       = ["10.0.0.0/16"]
-    location            = "${var.location}"
+    location            = "${var.vm_location}"
     resource_group_name = "${azurerm_resource_group.mytfgroup.name}"
 
     tags = {
-        environment = "${var.vm_prefix} env"
+        environment = "${var.prefix} env"
     }
 }
 
 # Create subnet
 resource "azurerm_subnet" "mytfsubnet" {
-    name                 = "${var.vm_prefix}-Subnet"
+    name                 = "${var.prefix}-Subnet"
     resource_group_name  = "${azurerm_resource_group.mytfgroup.name}"
     virtual_network_name = "${azurerm_virtual_network.mytfnetwork.name}"
     address_prefix       = "10.0.1.0/24"
@@ -35,21 +35,22 @@ resource "azurerm_subnet" "mytfsubnet" {
 # Create public IPs
 resource "azurerm_public_ip" "mytfpublicip" {
     count                        = "${var.vm_total_no_machines}"
-    name                         = "${var.vm_prefix}-${count.index}-PublicIP"
-    domain_name_label            = "${var.vm_prefix}-${count.index}"
-    location                     = "${var.location}"
+    name                         = "${var.prefix}-${count.index + var.vm_id_offset}-PublicIP"
+    domain_name_label            = "${var.prefix}-${count.index + var.vm_id_offset}"
+    location                     = "${var.vm_location}"
     resource_group_name          = "${azurerm_resource_group.mytfgroup.name}"
     allocation_method            = "Dynamic"
 
     tags = {
-        environment = "${var.vm_prefix} env"
+        environment = "${var.prefix} env"
     }
 }
 
+
 # Create Network Security Group and rule
 resource "azurerm_network_security_group" "mytfsg" {
-    name                = "${var.vm_prefix}-NetworkSecurityGroup"
-    location            = "${var.location}"
+    name                = "${var.prefix}-NetworkSecurityGroup"
+    location            = "${var.vm_location}"
     resource_group_name = "${azurerm_resource_group.mytfgroup.name}"
 
     security_rule {
@@ -88,28 +89,44 @@ resource "azurerm_network_security_group" "mytfsg" {
         destination_address_prefix = "*"
     }
 
+    security_rule {
+        name                       = "Jupyter_8888"
+        priority                   = 1004
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "8888"
+        source_address_prefix      = "*"
+        destination_address_prefix = "*"
+    }
+
     tags = {
-        environment = "${var.vm_prefix} env"
+        environment = "${var.prefix} env"
+    }
+
+    lifecycle {
+        prevent_destroy = true
     }
 }
 
 # Create network interface
 resource "azurerm_network_interface" "mytfnic" {
     count                     = "${var.vm_total_no_machines}"
-    name                      = "${var.vm_prefix}-${count.index}-NIC"
-    location                  = "${var.location}"
+    name                      = "${var.prefix}-${count.index + var.vm_id_offset}-NIC"
+    location                  = "${var.vm_location}"
     resource_group_name       = "${azurerm_resource_group.mytfgroup.name}"
     network_security_group_id = "${azurerm_network_security_group.mytfsg.id}"
 
     ip_configuration {
-        name                          = "${var.vm_prefix}-${count.index}-NicConfiguration"
+        name                          = "${var.prefix}-${count.index + var.vm_id_offset}-NicConfiguration"
         subnet_id                     = "${azurerm_subnet.mytfsubnet.id}"
         private_ip_address_allocation = "dynamic"
         public_ip_address_id          = "${element(azurerm_public_ip.mytfpublicip.*.id, count.index)}"
     }
 
     tags = {
-        environment = "${var.vm_prefix} env"
+        environment = "${var.prefix} env"
     }
 }
 
@@ -126,42 +143,57 @@ resource "random_id" "randomId" {
 resource "azurerm_storage_account" "mytfstorageaccount" {
     name                        = "diag${random_id.randomId.hex}"
     resource_group_name         = "${azurerm_resource_group.mytfgroup.name}"
-    location                    = "${var.location}"
+    location                    = "${var.vm_location}"
     account_tier                = "Standard"
     account_replication_type    = "LRS"
 
     tags = {
-        environment = "${var.vm_prefix} env"
+        environment = "${var.prefix} env"
+    }
+
+    lifecycle {
+        prevent_destroy = true
     }
 }
 
+data "azurerm_shared_image" "prebuilt" {
+    name                = "${var.prebuilt_image_name}"
+    resource_group_name = "${var.prebuilt_image_resource_group_name}"
+    gallery_name        = "${var.prebuilt_image_gallery_name}"
+}
 # Create virtual machine
 resource "azurerm_virtual_machine" "mytfvm" {
     count                 = "${var.vm_total_no_machines}"
-    name                  = "${var.vm_prefix}-${count.index}"
-    location              = "${var.location}"
+    name                  = "${var.prefix}-${count.index + var.vm_id_offset}"
+    location              = "${var.vm_location}"
     resource_group_name   = "${azurerm_resource_group.mytfgroup.name}"
     network_interface_ids = ["${element(azurerm_network_interface.mytfnic.*.id, count.index)}"]
     vm_size               = "${var.vm_size}"
 
     storage_os_disk {
-        name              = "${var.vm_prefix}-${count.index}-OsDisk"
+        name              = "${var.prefix}-${count.index + var.vm_id_offset}-OsDisk"
         caching           = "ReadWrite"
         create_option     = "FromImage"
         managed_disk_type = "Standard_LRS"
     }
+
+    #storage_data_disk {
+    #    name              = "${var.prefix}-${count.index}-DataDisk"
+    #    managed_disk_type = "Standard_LRS"
+    #    create_option     = "Empty"
+    #    lun               = 0
+    #    disk_size_gb      = "50"
+    #}
     
     delete_os_disk_on_termination = true
+    delete_data_disks_on_termination = true
 
     storage_image_reference {
-        publisher = "Canonical"
-        offer     = "UbuntuServer"
-        sku       = "18.04-LTS"
-        version   = "latest"
+        id = "${data.azurerm_shared_image.prebuilt.id}"
     }
 
     os_profile {
-        computer_name  = "${var.vm_prefix}-${count.index}"
+        computer_name  = "${var.prefix}-${count.index + var.vm_id_offset}"
         admin_username = "${var.vm_username}"
         admin_password = "${var.vm_password}"
     }
@@ -178,53 +210,24 @@ resource "azurerm_virtual_machine" "mytfvm" {
     connection {
         user     = "${var.vm_username}"
         password = "${var.vm_password}"
-        host = "${var.vm_prefix}-${count.index}.${var.location}.cloudapp.azure.com"
+        host = "${var.prefix}-${count.index + var.vm_id_offset}.${var.vm_location}.cloudapp.azure.com"
         timeout = "10m"
     }
-    provisioner "file" {
-        source      = "../scripts/provision.sh"
-        destination = "/home/${var.vm_username}/provision.sh"
-    }
 
     provisioner "file" {
-        source      = "../scripts/launch.sh"
-        destination = "/home/${var.vm_username}/launch.sh"
-    }
-
-    provisioner "file" {
-        source      = "../scripts/install_prerequisites.sh"
-        destination = "/home/${var.vm_username}/install_prerequisites.sh"
-    }
-
-    provisioner "file" {
-        source      = "../scripts/jupyter_set_pwd.sh"
-        destination = "/home/${var.vm_username}/jupyter_set_pwd.sh"
-    }
-
-    provisioner "file" {
-        source      = "../scripts/jupyter.service"
-        destination = "/home/${var.vm_username}/jupyter.service"
-    }
-
-    provisioner "file" {
-        source      = "../scripts/install_rdp.sh"
-        destination = "/home/${var.vm_username}/install_rdp.sh"
+        source      = "./modules/sirf-gpu-offset/install_gpu_rdp.sh"
+        destination = "/tmp/install_rdp.sh"
     }
 
     provisioner "remote-exec" {
         inline = [
-            "sudo bash ~/install_prerequisites.sh",
-            "bash ~/provision.sh ${var.vm_jupyter_pwd} ${var.vm_jupyter_port}",
-            "sudo systemctl enable jupyter.service",
-            "sudo systemctl start jupyter.service",
-            "sudo bash ~/install_rdp.sh",
-            "sudo chown -R ${var.vm_username}:${var.vm_username} /home/${var.vm_username}",
-            "rm ~/install_prerequisites.sh ~/provision.sh ~/jupyter_set_pwd.sh ~/install_rdp.sh"
+            "sudo bash /tmp/install_rdp.sh",
+            "sudo cp /tmp/install_rdp.sh /root/install_rdp.sh"
         ]
     }
 
     tags = {
-        environment = "${var.vm_prefix} env"
+        environment = "${var.prefix} env"
     }
 
 }
