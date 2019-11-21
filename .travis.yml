@@ -2,7 +2,6 @@
 # but `cache: pip` and `python:` is ignored
 os:
 - linux
-- osx
 language: cpp
 dist: bionic  # Ubuntu 18.04 LTS
 cache:  # shared between builds
