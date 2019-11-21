@@ -1,4 +1,7 @@
 # ChangeLog
+## 2.1.0
+
+- added CIL prerequisites. 
 
 ## 2.0.1
 - remove spyder-kernels
