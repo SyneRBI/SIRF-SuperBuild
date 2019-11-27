@@ -78,6 +78,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   option(${proj}_USE_CUDA "Enable ${proj} CUDA (if cuda libraries are present)" ${CUDA_FOUND})
   mark_as_advanced(${proj}_USE_CUDA)
 
+  if (NOT DISABLE_OpenMP)
+    option(${proj}_ENABLE_OPENMP "Build ${proj} with OpenMP acceleration" ON)
+  else()
+    option(${proj}_ENABLE_OPENMP "Build ${proj} with OpenMP acceleration" OFF)
+  endif()
+
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
@@ -108,6 +114,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DUSE_CUDA=${${proj}_USE_CUDA}
       -DCBLAS_INCLUDE_DIR:PATH=${CBLAS_INCLUDE_DIR}
       -DCBLAS_LIBRARY:FILEPATH=${CBLAS_LIBRARY}
+      -DUSE_OPENMP:BOOL=${proj}_ENABLE_OPENMP
 	  INSTALL_DIR ${Gadgetron_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}

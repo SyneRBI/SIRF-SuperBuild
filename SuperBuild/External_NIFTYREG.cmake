@@ -52,6 +52,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
   set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
 
+  if (NOT DISABLE_OpenMP)
+    option(${proj}_ENABLE_OPENMP "Build ${proj} with OpenMP acceleration" ON)
+  else()
+    option(${proj}_ENABLE_OPENMP "Build ${proj} with OpenMP acceleration" OFF)
+  endif()
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
@@ -68,7 +74,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DCMAKE_INSTALL_PREFIX=${${proj}_Install_Dir}
       -DUSE_THROW_EXCEP=ON
       # fixes lib_reg_maths.a `GOMP_parallel' undefined reference linker errors
-      -DUSE_OPENMP:BOOL=ON
+      -DUSE_OPENMP:BOOL=${proj}_ENABLE_OPENMP
       -DBUILD_ALL_DEP:BOOL=ON
       -DUSE_CUDA=${${proj}_USE_CUDA}
     INSTALL_DIR ${${proj}_Install_Dir}

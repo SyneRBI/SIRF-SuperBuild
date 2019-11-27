@@ -55,7 +55,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(STIR_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
   option(BUILD_TESTING_${proj} "Build tests for ${proj}" OFF)
-  if (APPLE)
+  if (NOT DISABLE_OpenMP)
     set (build_STIR_OPENMP_default OFF)
   else()
     set (build_STIR_OPENMP_default ON)
