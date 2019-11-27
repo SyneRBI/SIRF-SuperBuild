@@ -43,6 +43,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
+  option(${proj}_USE_CUDA "Enable ${proj} CUDA (if cuda libraries are present)" ${CUDA_FOUND})
+  mark_as_advanced(${proj}_USE_CUDA)
+
   set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
   set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
   set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
@@ -65,8 +68,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DCMAKE_INSTALL_PREFIX=${${proj}_Install_Dir}
       -DUSE_THROW_EXCEP=ON
       # fixes lib_reg_maths.a `GOMP_parallel' undefined reference linker errors
-      -DUSE_OPENMP:BOOL=OFF
-      -DBUILD_ALL_DEP=ON
+      -DUSE_OPENMP:BOOL=ON
+      -DBUILD_ALL_DEP:BOOL=ON
+      -DUSE_CUDA=${${proj}_USE_CUDA}
     INSTALL_DIR ${${proj}_Install_Dir}
     DEPENDS ${${proj}_DEPENDENCIES})
 

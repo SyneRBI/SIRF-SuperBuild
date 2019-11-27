@@ -38,7 +38,7 @@ set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
 set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
 set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
 
-  
+
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
@@ -52,12 +52,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   endif()
 
   #set(HDF5_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}-prefix/src/HDF5/hdf5-1.10.0-patch1 )
-  set (HDF5_BUILD_HL_LIB "OFF")
-  find_package(CUDA)
-  if (CUDA_FOUND)
-     message(STATUS "<<<<<<<<<<<<<<<<< CUDA FOUND >>>>>>>>>>>>>>>>>>>>>")
-     set(HDF5_BUILD_HL_LIB "ON")
-  endif()
+  set(HDF5_BUILD_HL_LIB ${CUDA_FOUND})
 
   if (WIN32 AND (${HDF5_DOWNLOAD_VERSION} STREQUAL 1.8.12))
     find_program(GIT "git")
@@ -84,11 +79,11 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     TMP_DIR ${${proj}_TMP_DIR}
 
     CMAKE_ARGS
-        ${CLANG_ARG}
-        -DHDF5_BUILD_EXAMPLES:BOOL=OFF
-        -DHDF5_BUILD_TOOLS:BOOL=OFF
-        -DHDF5_BUILD_HL_LIB:BOOL=${HDF5_BUILD_HL_LIB}
-        -DBUILD_TESTING:BOOL=OFF
+      ${CLANG_ARG}
+      -DHDF5_BUILD_EXAMPLES:BOOL=OFF
+      -DHDF5_BUILD_TOOLS:BOOL=OFF
+      -DHDF5_BUILD_HL_LIB:BOOL=${HDF5_BUILD_HL_LIB}
+      -DBUILD_TESTING:BOOL=OFF
     INSTALL_DIR ${HDF5_Install_Dir}
   )
 

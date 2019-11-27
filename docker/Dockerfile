@@ -1,4 +1,6 @@
-FROM ubuntu:18.04 as base
+ARG BASE_IMAGE=ubuntu:18.04
+FROM ${BASE_IMAGE} as base
+
 LABEL \
   author.name="Casper da Costa-Luis"          \
   author.email=imaging@caspersci.uk.to        \
@@ -78,9 +80,9 @@ RUN ccache -o cache_dir=/opt/ccache
 ARG BUILD_FLAGS="\
  -DCMAKE_BUILD_TYPE=Release\
  -DBUILD_STIR_WITH_OPENMP=ON -DUSE_SYSTEM_ACE=ON\
- -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON\
- -DUSE_SYSTEM_HDF5=ON -DUSE_ITK=ON -DBUILD_siemens_to_ismrmrd=ON\
- -DUSE_SYSTEM_SWIG=ON"
+ -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DBUILD_CIL=ON\
+ -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_ITK=ON\
+ -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
 ARG EXTRA_BUILD_FLAGS=""
 RUN bash user_sirf-ubuntu.sh
 RUN rm user_sirf-ubuntu.sh
@@ -91,6 +93,7 @@ ENV DEBIAN_FRONTEND ''
 CMD ["/bin/bash"]
 
 FROM sirf as service
+ENV DEBIAN_FRONTEND noninteractive
 
 COPY requirements-service.txt .
 COPY user_service-ubuntu.sh .
@@ -98,6 +101,7 @@ RUN bash user_service-ubuntu.sh
 RUN rm user_service-ubuntu.sh requirements-service.txt
 
 COPY service.sh /usr/local/bin/
+ENV DEBIAN_FRONTEND ''
 CMD ["/usr/local/bin/service.sh"]
 
 FROM service as multi
