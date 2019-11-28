@@ -45,7 +45,7 @@ cmake ../SIRF-SuperBuild \
     -DPYTHON_DEST_DIR=${PREFIX}/python\
     -USIRF_URL \
     -USIRF_TAG \
-    -DSIRF_TAG=a9170557c0f883934033700c1dd312a3a74611d6\
+    -DSIRF_TAG=v2.1.0\
     -USTIR_URL \
     -USTIR_TAG \
     -UGadgetron_URL \
@@ -62,9 +62,11 @@ cmake ../SIRF-SuperBuild \
     -DUSE_SYSTEM_HDF5=ON \
     -DBUILD_siemens_to_ismrmrd=Off \
     -DUSE_SYSTEM_GTest=On\
+    -DUSE_ITK=ON\
+    -DUSE_SYSTEM_ITK=ON\
     -DCONDA_BUILD=On
 
-make  -j1 Gadgetron
+make -j2 STIR
 
 #cp ${PREFIX}/share/gadgetron/config/gadgetron.xml.example ${PREFIX}/share/gadgetron/config/gadgetron.xml
 

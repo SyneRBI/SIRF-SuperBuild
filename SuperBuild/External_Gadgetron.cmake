@@ -43,7 +43,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(Gadgetron_Install_Dir ${SUPERBUILD_INSTALL_DIR})
+  set(${proj}_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
   # Gadgetron only adds tests if (GTEST_FOUND AND ARMADILLO_FOUND)
   # but that's currently always the case.

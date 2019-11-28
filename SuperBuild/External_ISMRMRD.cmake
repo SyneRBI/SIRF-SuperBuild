@@ -41,11 +41,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  if (CONDA_BUILD)
-    set(ISMRMRD_Install_Dir ${SUPERBUILD_INSTALL_DIR})
-  else()
-    set(ISMRMRD_Install_Dir $ENV{PREFIX})
-  endif()
+  set(ISMRMRD_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
   if (NOT WIN32)
     if (USE_SYSTEM_Boost)

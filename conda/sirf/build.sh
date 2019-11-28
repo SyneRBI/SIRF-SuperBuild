@@ -45,7 +45,7 @@ cmake ../SIRF-SuperBuild \
     -DPYTHON_DEST_DIR=${SP_DIR}\
     -USIRF_URL \
     -USIRF_TAG \
-    -DSIRF_TAG=v2.0.0\
+    -DSIRF_TAG=v2.1.0\
     -USTIR_URL \
     -USTIR_TAG \
     -UGadgetron_URL \
@@ -63,14 +63,46 @@ cmake ../SIRF-SuperBuild \
     -DBUILD_siemens_to_ismrmrd=Off \
     -DUSE_SYSTEM_GTest=On\
     -DUSE_ITK=ON\
-    -DUSE_SYSTEM_ITK=OFF\
-    -DUSE_SYSTEM_NIFTYREG=OFF\
+    -DUSE_SYSTEM_ITK=ON\
+    -DUSE_SYSTEM_NIFTYREG=ON\
     -DCONDA_BUILD=On
 
-make -j2 ITK
-make -j2 NIFTYREG
+#make -j2 NIFTYREG
 make -j2 STIR
 make -j1 SIRF
+
+# remove stuff installed by STIR
+rm ${PREFIX}/lib/libdata_buildblock.a
+rm ${PREFIX}/lib/libeval_buildblock.a
+rm ${PREFIX}/lib/libnumerics_buildblock.a
+rm ${PREFIX}/lib/libdisplay.a
+rm ${PREFIX}/lib/libmodelling_buildblock.a
+rm ${PREFIX}/lib/libanalytic_FBP2D.a
+rm ${PREFIX}/lib/libiterative_KOSMAPOSL.a
+rm ${PREFIX}/lib/libiterative_OSMAPOSL.a
+rm ${PREFIX}/lib/libanalytic_FBP3DRP.a
+rm ${PREFIX}/lib/libiterative_OSSPS.a
+rm ${PREFIX}/lib/libShape_buildblock.a
+rm ${PREFIX}/lib/libspatial_transformation_buildblock.a
+rm ${PREFIX}/lib/libscatter_buildblock.a
+rm ${PREFIX}/lib/liblistmode_buildblock.a
+rm ${PREFIX}/lib/libIO.a
+rm ${PREFIX}/lib/librecon_buildblock.a
+rm ${PREFIX}/lib/libbuildblock.a
+rm ${PREFIX}/lib/cmake/FindRDF.cmake
+rm ${PREFIX}/lib/cmake/FindAVW.cmake
+rm ${PREFIX}/lib/cmake/FindLLN.cmake
+rm ${PREFIX}/lib/cmake/FindNumpy.cmake
+rm ${PREFIX}/lib/cmake/STIRConfigVersion.cmake
+rm ${PREFIX}/lib/cmake/FindAllHeaderFiles.cmake
+rm ${PREFIX}/lib/cmake/FindCERN_ROOT.cmake
+rm ${PREFIX}/lib/cmake/STIRConfig.cmake
+rm ${PREFIX}/lib/cmake/STIRTargets.cmake
+rm ${PREFIX}/lib/cmake/STIRTargets-release.cmake
+rm -rf ${PREFIX}/include/stir
+rm -rf ${PREFIX}/share/stir
+rm -rf ${PREFIX}/include/stir_experimental
+
 
 #cp ${PREFIX}/share/gadgetron/config/gadgetron.xml.example ${PREFIX}/share/gadgetron/config/gadgetron.xml
 

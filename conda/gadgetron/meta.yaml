@@ -39,7 +39,7 @@ requirements:
 
 
   run:
-    - vc 14 # [win and py35]
+    - vc 14 # [win and py36]
     - vc 9  # [win and py27]
 #    - python 3.6 # [py36]
 #    - python 2.7 # [py27]
