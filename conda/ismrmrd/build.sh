@@ -43,7 +43,7 @@ cmake ../SIRF-SuperBuild \
     -DPYTHON_DEST_DIR=${PREFIX}/python\
     -USIRF_URL \
     -USIRF_TAG \
-    -DSIRF_TAG=v2.0.0\
+    -DSIRF_TAG=v2.1.0\
     -USTIR_URL \
     -USTIR_TAG \
     -UGadgetron_URL \
@@ -60,7 +60,7 @@ cmake ../SIRF-SuperBuild \
     -DUSE_SYSTEM_GTest=On\
     -DCONDA_BUILD=On
 
-make  -j1 ISMRMRD
+make  -j1 ISMRMRD VERBOSE=1
 
 #cp ${PREFIX}/share/gadgetron/config/gadgetron.xml.example ${PREFIX}/share/gadgetron/config/gadgetron.xml
 
