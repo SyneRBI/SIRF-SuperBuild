@@ -55,7 +55,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   if (NOT DISABLE_OpenMP)
     option(${proj}_ENABLE_OPENMP "Build ${proj} with OpenMP acceleration" ON)
   else()
-    option(${proj}_ENABLE_OPENMP "Build ${proj} with OpenMP acceleration" OFF)
+    SET(${proj}_ENABLE_OPENMP OFF)
   endif()
 
   ExternalProject_Add(${proj}
