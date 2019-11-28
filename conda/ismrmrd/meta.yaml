@@ -44,7 +44,7 @@ requirements:
 #    - scipy
 #    - matplotlib
 #    - docopt
-    - boost >=1.63
+    - boost ==1.68
     - h5py
     - psutil
     - fftw
