@@ -45,7 +45,7 @@ requirements:
     - scipy
     - matplotlib
     - docopt
-    - gadgetron
+    - gadgetron ==b6191eaaa72ccca6c6a5fe4c0fa3319694f512ab
     - h5py
     - stir
     - niftyreg
