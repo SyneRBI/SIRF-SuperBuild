@@ -74,7 +74,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DCMAKE_INSTALL_PREFIX=${${proj}_Install_Dir}
       -DUSE_THROW_EXCEP=ON
       # fixes lib_reg_maths.a `GOMP_parallel' undefined reference linker errors
-      -DUSE_OPENMP:BOOL=${proj}_ENABLE_OPENMP
+      -DUSE_OPENMP:BOOL=${${proj}_ENABLE_OPENMP}
       -DBUILD_ALL_DEP:BOOL=ON
       -DUSE_CUDA=${${proj}_USE_CUDA}
     INSTALL_DIR ${${proj}_Install_Dir}
