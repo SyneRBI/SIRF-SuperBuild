@@ -111,8 +111,8 @@ set(GTest_URL https://github.com/google/googletest )
 set(GTest_TAG release-1.8.0)
 
 ## glog
-set(glog_URL https://github.com/google/glog )
-set(glog_TAG v0.3.5)
+set(DEFAULT_glog_URL https://github.com/google/glog )
+set(DEFAULT_glog_TAG v0.3.5)
 
 ## ITK
 set(ITK_URL https://itk.org/ITK.git)
@@ -170,10 +170,6 @@ if (DEVEL_BUILD)
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
   set(DEFAULT_pet_rd_tools_TAG origin/master)
 
-  ## glog
-  set(DEFAULT_glog_URL https://github.com/google/glog )
-  set(DEFAULT_glog_TAG v035)
- 
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
   set(DEFAULT_ACE_TAG origin/master)
   # CCPi CIL
@@ -201,10 +197,6 @@ else()
   ## pet-rd-tools
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
   set(DEFAULT_pet_rd_tools_TAG v1.1.0)
-
-  ## glog
-  set(DEFAULT_glog_URL https://github.com/google/glog )
-  set(DEFAULT_glog_TAG v035)
 
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
   set(DEFAULT_ACE_TAG origin/master)
