@@ -115,8 +115,8 @@ set(glog_URL https://github.com/google/glog )
 set(glog_TAG v0.3.5)
 
 ## ITK
-set(ITK_URL https://itk.org/ITK.git)
-set(ITK_TAG v4.13.1)
+set(DEFAULT_ITK_URL https://itk.org/ITK.git)
+set(DEFAULT_ITK_TAG v4.13.2)
 
 ## NIFTYREG
 set(DEFAULT_NIFTYREG_URL https://github.com/KCL-BMEIS/niftyreg.git )
@@ -245,6 +245,9 @@ SET(pet_rd_tools_URL ${DEFAULT_pet_rd_tools_URL} CACHE STRING ON)
 SET(glog_URL ${DEFAULT_glog_URL} CACHE STRING ON)
 SET(glog_TAG ${DEFAULT_glog_TAG} CACHE STRING ON)
 
+SET(ITK_URL ${DEFAULT_ITK_URL} CACHE STRING ON)
+SET(ITK_TAG ${DEFAULT_ITK_TAG} CACHE STRING ON)
+
 set(ACE_URL ${DEFAULT_ACE_URL} CACHE STRING ON)
 set(ACE_TAG ${DEFAULT_ACE_TAG} CACHE STRING ON)
 
@@ -276,6 +279,7 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   ISMRMRD_URL ISMRMRD_TAG
   pet_rd_tools_URL pet_rd_tools_TAG
   glog_URL glog_TAG
+  ITK_TAG ITK_URL
   NIFTYREG_URL NIFTYREG_TAG
   CCPi-Framework_URL CCPi-Framework_TAG
   CCPi-FrameworkPlugins_URL CCPi-FrameworkPlugins_TAG
