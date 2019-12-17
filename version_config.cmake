@@ -115,8 +115,8 @@ set(glog_URL https://github.com/google/glog )
 set(glog_TAG v0.3.5)
 
 ## ITK
-set(ITK_URL https://itk.org/ITK.git)
-set(ITK_TAG v4.13.1)
+set(DEFAULT_ITK_URL https://github.com/InsightSoftwareConsortium/ITK.git)
+set(DEFAULT_ITK_TAG v4.13.1)
 
 ## NIFTYREG
 set(DEFAULT_NIFTYREG_URL https://github.com/KCL-BMEIS/niftyreg.git )
@@ -187,7 +187,7 @@ if (DEVEL_BUILD)
   set(DEFAULT_CCPi-Astra_TAG origin/master)
 
 else()
-  set(DEFAULT_SIRF_TAG v2.1.0-rc.3)
+  set(DEFAULT_SIRF_TAG v2.1.0)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
@@ -270,6 +270,9 @@ set(NIFTYPET_TAG ${DEFAULT_NIFTYPET_TAG} CACHE STRING ON)
 set(SIRF-Contribs_URL ${DEFAULT_SIRF-Contribs_URL} CACHE STRING ON)
 set(SIRF-Contribs_TAG ${DEFAULT_SIRF-Contribs_TAG} CACHE STRING ON)
 
+set(ITK_URL ${DEFAULT_ITK_URL} CACHE STRING ON)
+set(ITK_TAG ${DEFAULT_ITK_TAG} CACHE STRING ON)
+
 mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   Gadgetron_URL Gadgetron_TAG
   siemens_to_ismrmrd_URL siemens_to_ismrmrd_TAG
@@ -282,4 +285,5 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   CCPi-Regularisation-Toolkit_URL CCPi-Regularisation-Toolkit_TAG
   NIFTYPET_URL NIFTYPET_TAG
   SIRF-Contribs_URL SIRF-Contribs_TAG
+  ITK_URL ITK_TAG
 )

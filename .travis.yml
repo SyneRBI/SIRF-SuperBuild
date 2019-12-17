@@ -2,7 +2,6 @@
 # but `cache: pip` and `python:` is ignored
 os:
 - linux
-- osx
 language: cpp
 dist: bionic  # Ubuntu 18.04 LTS
 cache:  # shared between builds
@@ -59,9 +58,9 @@ addons:
 # Environment variables
 # Note: altering the matrix here will cause re-building of caches,
 #       so try to keep this concise to avoid need to update
-# Note: the line above each `env` contains a resume of the parameters passed to cmake.
+# Note: the `name:` key contains a resume of the parameters passed to cmake/docker
 #       + or - refer to the value of the parameter affecting the specific package is passed to cmake:
-#       i.e. -boost == -DUSE_SYSTEM_Boost=OFF, which means that Boost will be built.
+#       i.e. -boost => -DUSE_SYSTEM_Boost=OFF, which means that Boost will be built.
 # Note: On trusty, we need to build Armadillo and boost ourselves (the system versions are too old)
 # Note: On trusty, g++-7 causes errors with the system ACE, so cannot use g++-7 or later https://github.com/CCPPETMR/SIRF-SuperBuild/issues/169
 # Note: On osx, we can't test SYSTEM_Boost=OFF due to excessive log size (https://github.com/CCPPETMR/SIRF-SuperBuild/issues/167)
@@ -71,8 +70,6 @@ env:
  - BUILD_FLAGS="-DCMAKE_BUILD_TYPE=Release"
  - MAKEFLAGS="-j 2"  # too many threads may crash
 jobs:
- allow_failures:
- - os: osx
  include:
  # linux g{cc,++}-{6,7} py{2,3}
  # legacy linux
@@ -86,8 +83,8 @@ jobs:
       - *addons_apt_packages
       - g++-6
    python: 3.6
-   name: py36 gcc6 +xenial -boost +fftw3 +hdf5 +ace +cil
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+   name: py36 gcc6 +xenial -boost +fftw3 +hdf5 +ace
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=OFF -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
  - os: linux
    dist: trusty  # Ubuntu 14.04 LTS
    addons:
@@ -98,21 +95,21 @@ jobs:
       - g++-6
       - realpath  # building ACE on trusty
    python: 3.6
-   name: py36 gcc6 +trusty -boost +fftw3 +hdf5 +ace +cil
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+   name: py36 gcc6 +trusty -boost +fftw3 +hdf5 +ace
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=OFF -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
  # current linux
  - os: linux
    python: 3.6
-   name: py36 -boost +fftw3 +hdf5 +ace +cil
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" PYMVER=3
+   name: py36 -boost +fftw3 +hdf5 +ace
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=OFF -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" PYMVER=3
  - os: linux
    python: 2.7
-   name: py27 -boost +fftw3 +hdf5 +ace +cil
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" PYMVER=2
+   name: py27 -boost +fftw3 +hdf5 +ace
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=OFF -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" PYMVER=2
  - os: linux
    python: 2.7
-   name: py27 -boost +fftw3 +hdf5 +ace +cil_lite
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL_LITE=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" PYMVER=2
+   name: py27 -boost +fftw3 +hdf5 +ace
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" PYMVER=2
  - os: linux
    python: 3.6
    name: py36 -boost +fftw3 +hdf5 +ace
@@ -131,34 +128,39 @@ jobs:
    env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_SWIG=OFF" PYMVER=2
  # osx
  - os: osx
+   osx_image: xcode11.2
    python: 2.7
    name: py27 +osx +boost -hdf5 -swig
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" PYMVER=2
  - os: osx
+   osx_image: xcode11.2
    python: 3.6
    name: py36 +osx +boost +fftw3 -hdf5 -swig
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" PYMVER=3
  - os: osx
+   osx_image: xcode11.2
    python: 2.7
    name: py27 +osx +DEVEL +boost -hdf5 +swig
    env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=2
  - os: osx
+   osx_image: xcode11.2
    python: 2.7
    name: py27 +osx +DEVEL +boost -fftw3 -hdf5 +swig
    env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=2
  # itk
- - os: linux
-   python: 3.6
-   name: py36 -boost +itk +fftw3 +hdf5
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_ITK=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON" PYMVER=3
+ # - os: linux <-- not working due to SB build of boost
+ #   python: 3.6
+ #   name: py36 -boost +itk +fftw3 +hdf5
+ #   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_ITK=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON" PYMVER=3
  - os: osx
+   osx_image: xcode11.2
    python: 2.7
    name: py27 +osx +boost +itk -hdf5 +swig
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=2
  # docker
  - os: linux
    stage: docker-core
-   name: docker +CORE +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
+   name: docker +CORE
    env: DOCKER_BUILD=CORE
    services:
    - docker
@@ -175,6 +177,8 @@ jobs:
         # count unique clones, excluding travis, and print total
         gh_stats_count -k uniques
       fi
+   # custom runtime not supported on travis
+   - sed -i '/runtime/d' docker/docker-compose.srv-gpu.yml
    install: &docker_install
    - cd docker
    - if [[ -z "$GROUPS" ]]; then export GROUPS=$(id -g); fi
@@ -182,8 +186,9 @@ jobs:
    - export DCC="docker-compose -p "travis_${TRAVIS_JOB_NUMBER/./_}" -f $PWD/docker-compose.yml"
    - if [[ "$DOCKER_BUILD" == *"DEVEL"* ]]; then export DCC="$DCC -f $PWD/docker-compose.devel.yml"; fi
    - if [[ "$DOCKER_BUILD" == *"SERVICE"* ]]; then export DCC="$DCC -f $PWD/docker-compose.srv.yml"; fi
+   - if [[ "$DOCKER_BUILD" == *"GPU"* ]]; then export DCC="$DCC -f $PWD/docker-compose.srv-gpu.yml"; fi
    # pull previous base image for its layer cache
-   - docker pull ccppetmr/sirf:core
+   - $DCC pull core
    # count the docker pull (prefix `d`)
    - |
       if [[ -n "$GITHUB_API_TOKEN" ]]; then
@@ -191,7 +196,7 @@ jobs:
       fi
    # rebuild base image (using above docker cache)
    - |
-      if [[ "$DOCKER_BUILD" == "CORE" ]]; then ( set -ev
+      if [[ "$DOCKER_BUILD" == *"CORE"* ]]; then ( set -ev
         # rm .dockerignore  # TODO: remove this line
         $DCC build --pull core
       ); else ( set -ev
@@ -219,7 +224,7 @@ jobs:
    - |
       # run tests within the container
       # TODO: also add CORE tests!
-      if [[ "$DOCKER_BUILD" != "CORE" ]]; then
+      if [[ "$DOCKER_BUILD" != *"CORE"* ]]; then
         $DCC run --rm sirf /bin/bash --login -c '/devel/test.sh 1'
       fi
    after_success: &docker_after_success
@@ -237,9 +242,9 @@ jobs:
        if [[ -n "$TRAVIS_TAG" ]]; then ( set -ev
         # tag & push
         case "$DOCKER_BUILD" in
-        CORE)
+        CORE*)
           ;;
-        1)
+        LATEST)
           dpush latest latest
           dpush latest "$TRAVIS_TAG"
           dpush latest release
@@ -253,6 +258,11 @@ jobs:
           dpush service "$TRAVIS_TAG"-service
           dpush service release-service
           ;;
+        SERVICE_GPU)
+          dpush service-gpu service-gpu
+          dpush service-gpu "$TRAVIS_TAG"-service-gpu
+          dpush service-gpu release-service-gpu
+          ;;
         *)
           exit 1
         esac
@@ -262,7 +272,10 @@ jobs:
         CORE)
           dpush core core
           ;;
-        1)
+        CORE_GPU)
+          dpush core-gpu core-gpu
+          ;;
+        LATEST)
           ;;
         DEVEL)
           dpush devel devel
@@ -272,15 +285,25 @@ jobs:
           ;;
         SERVICE)
           ;;
+        SERVICE_GPU)
+          ;;
         *)
           exit 1
         esac
        ); fi
       ); fi
  - os: linux
+   name: docker +CORE +GPU
+   env: DOCKER_BUILD=CORE_GPU
+   addons: *docker_addons
+   before_install: *docker_before_install
+   install: *docker_install
+   script: *docker_script
+   after_success: *docker_after_success
+ - os: linux
    stage: docker
-   name: docker +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
-   env: DOCKER_BUILD=1
+   name: docker +LATEST
+   env: DOCKER_BUILD=LATEST
    services:
    - docker
    addons: *docker_addons
@@ -289,7 +312,7 @@ jobs:
    script: *docker_script
    after_success: *docker_after_success
  - os: linux
-   name: docker +SERVICE +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
+   name: docker +SERVICE
    env: DOCKER_BUILD=SERVICE
    services:
    - docker
@@ -299,7 +322,7 @@ jobs:
    script: *docker_script
    after_success: *docker_after_success
  - os: linux
-   name: docker +DEVEL +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
+   name: docker +DEVEL
    env: DOCKER_BUILD=DEVEL
    services:
    - docker
@@ -309,7 +332,7 @@ jobs:
    script: *docker_script
    after_success: *docker_after_success
  # - os: linux
- #   name: docker +DEVEL +SERVICE +ace +armadillo +boost +fftw3 +hdf5 +itk +siemens_to_ismrmrd +swig
+ #   name: docker +DEVEL +SERVICE
  #   env: DOCKER_BUILD=DEVEL_SERVICE
  #   services:
  #   - docker
@@ -318,6 +341,16 @@ jobs:
  #   install: *docker_install
  #   script: *docker_script
  #   after_success: *docker_after_success
+ - os: linux
+   name: docker +SERVICE +GPU
+   env: DOCKER_BUILD=SERVICE_GPU
+   services:
+   - docker
+   addons: *docker_addons
+   before_install: *docker_before_install
+   install: *docker_install
+   script: *docker_script
+   after_success: *docker_after_success
 
 before_install:
 # Set C and C++ compiler etc using trick from
@@ -367,10 +400,6 @@ before_install:
      ( set -ev
        # boost is already installed but 1.65 doesn't work so update
        brew reinstall boost
-       # As of boost 1.69, boost.Process is broken. https://stackoverflow.com/a/54912043
-       # To fix, remove :: from all occurences of ::sigtimedwait, ::sigaddset and ::sigemptyset
-       # Hopefully will be able to remove this at some point...
-       find /usr/local/include/boost/ -name '*.hpp' -exec sed -i -e "s/::sigtimedwait/sigtimedwait/g; s/::sigaddset/sigaddset/g; s/::sigemptyset/sigemptyset/g; " {} \;
        # we currently need boost-python
        # brew install boost-python
        brew install ace
@@ -404,7 +433,7 @@ before_install:
 - curl -0 https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 - $PY_EXE get-pip.py --user
 # setuptools may be out of date on osx
-- $PY_EXE -m pip install --user -U pip setuptools wheel
+- $PY_EXE -m pip install --user -U pip setuptools wheel nibabel
 # ensure python bin dir exists (and coverage dependencies installed)
 - $PY_EXE -m pip install --user -U nose codecov coveralls
 # additional python deps

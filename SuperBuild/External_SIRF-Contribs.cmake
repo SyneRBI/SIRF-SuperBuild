@@ -49,7 +49,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
       STAMP_DIR ${${proj}_STAMP_DIR}
       TMP_DIR ${${proj}_TMP_DIR}
-      INSTALL_DIR ${libcilreg_Install_Dir}
+      INSTALL_DIR ${SUPERBUILD_INSTALL_DIR}
     
       CONFIGURE_COMMAND ""
       BUILD_COMMAND ""
