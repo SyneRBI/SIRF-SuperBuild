@@ -115,7 +115,8 @@ set(glog_URL https://github.com/google/glog )
 set(glog_TAG v0.3.5)
 
 ## ITK
-set(ITK_URL https://itk.org/ITK.git)
+#set(ITK_URL https://itk.org/ITK.git)
+set(ITK_URL https://github.com/InsightSoftwareConsortium/ITK.git)
 set(ITK_TAG v4.13.1)
 
 ## NIFTYREG
@@ -187,7 +188,8 @@ if (DEVEL_BUILD)
   set(DEFAULT_CCPi-Astra_TAG origin/master)
 
 else()
-  set(DEFAULT_SIRF_TAG v2.1.0)
+  #set(DEFAULT_SIRF_TAG v2.1.0)
+  set(DEFAULT_SIRF_TAG origin/master)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
@@ -210,7 +212,8 @@ else()
   set(DEFAULT_ACE_TAG origin/master)
   
   # CCPi CIL
-  set(CIL_VERSION "v19.10")
+  # set(CIL_VERSION "v19.10")
+  set (CIL_VERSION "origin/master")
   set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
   set(DEFAULT_CCPi-Framework_TAG ${CIL_VERSION})
   set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git )
