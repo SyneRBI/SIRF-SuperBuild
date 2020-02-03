@@ -184,7 +184,7 @@ if (DEVEL_BUILD)
 
 else()
   #set(DEFAULT_SIRF_TAG v2.1.0)
-  set(DEFAULT_SIRF_TAG origin/master)
+  set(DEFAULT_SIRF_TAG origin/CIL_reg_hackathon)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
@@ -214,7 +214,6 @@ else()
   set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
   set(DEFAULT_CCPi-Astra_TAG "${CIL_VERSION}")
 endif()
-
 
 # Set the tags for SIRF, STIR, Gadgetron and ISMRMRD
 # these can be overridden by the user
