@@ -246,9 +246,14 @@ if (APPLE)
 endif()
 if (BUILD_CIL)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES CCPi-Regularisation-Toolkit CCPi-Astra CCPi-Framework CCPi-FrameworkPlugins TomoPhantom)
+  message("Current CIL version ${CIL_VERSION}!!")
+  mark_as_superbuild(VARS CIL_VERSION:STRING PROJECTS CCPi-Framework 
+    CCPi-Astra CCPi-FrameworkPlugins CCPi-Regularisation-Toolkit)
 endif()
 if (BUILD_CIL_LITE)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES CCPi-Regularisation-Toolkit CCPi-Framework CCPi-FrameworkPlugins)
+  mark_as_superbuild(VARS CIL_VERSION:STRING PROJECTS CCPi-Framework 
+    CCPi-Astra CCPi-FrameworkPlugins CCPi-Regularisation-Toolkit)
 endif()
 
 if (BUILD_SIRF_Registration)
