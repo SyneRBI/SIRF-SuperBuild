@@ -90,8 +90,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
       # This build is Unix specific
       BUILD_COMMAND ${CMAKE_COMMAND} --build .
-      INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install
+      INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install && ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/patches/cil-patch.py ${${proj}_SOURCE_DIR}/Wrappers/Python/ccpi/framework/TestData.py ${PYTHON_DEST}/ccpi/framework/TestData.py
       DEPENDS ${${proj}_DEPENDENCIES}
+      
     )
 
   else()
