@@ -47,8 +47,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   message("${proj} URL " ${${proj}_URL}  ) 
   message("${proj} TAG " ${${proj}_TAG}  ) 
-
-
+  message("Current CIL version ${CIL_VERSION}!")
   # conda build should never get here
   if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
     set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
@@ -66,8 +65,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     # $PYTHONPATH directory
     ExternalProject_Add(${proj}
       ${${proj}_EP_ARGS}
-      GIT_REPOSITORY ${${proj}_URL}
-      GIT_TAG ${${proj}_TAG}
+      #GIT_REPOSITORY ${${proj}_URL}
+      #GIT_TAG ${${proj}_TAG}
       SOURCE_DIR ${${proj}_SOURCE_DIR}
       BINARY_DIR ${${proj}_BINARY_DIR}
       DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
@@ -80,16 +79,18 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       #INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/Wrappers/Python/ccpi ${PYTHON_DEST}/ccpi && ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/Wrappers/Python/data ${SUPERBUILD_INSTALL_DIR}/share/ccpi/ && ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/patches/cil-patch.py ${${proj}_SOURCE_DIR}/Wrappers/Python/ccpi/framework/TestData.py ${PYTHON_DEST}/ccpi/framework/TestData.py
       #CMAKE_ARGS
       #  -DCMAKE_INSTALL_PREFIX=${${proj}_Install_Dir}
+
       # apparently this is the only way to pass environment variables to
       # external projects
-      CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=20.01 ${CMAKE_COMMAND} ${${proj}_SOURCE_DIR}
+      CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} ${CMAKE_COMMAND} ${${proj}_SOURCE_DIR}
         -DCMAKE_INSTALL_PREFIX=${${proj}_Install_Dir}
         -DCMAKE_BUILD_TYPE=Release
         -DCONDA_BUILD=OFF -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
+	-DBUILD_PYTHON_WRAPPER=ON
         -DPYTHON_DEST_DIR:PATH=${PYTHON_DEST}
 
       # This build is Unix specific
-      BUILD_COMMAND ${CMAKE_COMMAND} --build .
+      BUILD_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} ${CMAKE_COMMAND} --build .
       INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install && ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/patches/cil-patch.py ${${proj}_SOURCE_DIR}/Wrappers/Python/ccpi/framework/TestData.py ${PYTHON_DEST}/ccpi/framework/TestData.py
       DEPENDS ${${proj}_DEPENDENCIES}
       

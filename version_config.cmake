@@ -213,6 +213,8 @@ else()
   set(DEFAULT_CCPi-FrameworkPlugins_TAG "${CIL_VERSION}")
   set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
   set(DEFAULT_CCPi-Astra_TAG "${CIL_VERSION}")
+  set (CIL_VERSION "20.02")
+  
 endif()
 
 # Set the tags for SIRF, STIR, Gadgetron and ISMRMRD
