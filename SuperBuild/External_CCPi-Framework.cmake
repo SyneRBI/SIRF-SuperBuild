@@ -65,8 +65,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     # $PYTHONPATH directory
     ExternalProject_Add(${proj}
       ${${proj}_EP_ARGS}
-      #GIT_REPOSITORY ${${proj}_URL}
-      #GIT_TAG ${${proj}_TAG}
+      GIT_REPOSITORY ${${proj}_URL}
+      GIT_TAG ${${proj}_TAG}
       SOURCE_DIR ${${proj}_SOURCE_DIR}
       BINARY_DIR ${${proj}_BINARY_DIR}
       DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
@@ -88,7 +88,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DCONDA_BUILD=OFF -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
 	-DBUILD_PYTHON_WRAPPER=ON
         -DPYTHON_DEST_DIR:PATH=${PYTHON_DEST}
-
+      
+      PATCH_COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/patches/cil-patch.py ${${proj}_SOURCE_DIR}/Wrappers/Python/ccpi/framework/TestData.py ${PYTHON_DEST}/ccpi/framework/TestData.py
       # This build is Unix specific
       BUILD_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} ${CMAKE_COMMAND} --build .
       INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install && ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/patches/cil-patch.py ${${proj}_SOURCE_DIR}/Wrappers/Python/ccpi/framework/TestData.py ${PYTHON_DEST}/ccpi/framework/TestData.py
