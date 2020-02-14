@@ -265,10 +265,6 @@ if (BUILD_SIRF_Contribs)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES SIRF-Contribs)
 endif()
 
-if (BUILD_SPM12)
-  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES SPM12)
-endif()
-
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${PRIMARY_PROJECT_NAME}_DEPENDENCIES)
 
 message(STATUS "")
