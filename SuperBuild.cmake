@@ -159,6 +159,12 @@ option(USE_SYSTEM_NIFTYREG "Build using an external version of NIFTYREG" OFF)
 option(USE_SYSTEM_GTest "Build using an external version of GTest" OFF)
 option(USE_SYSTEM_ACE "Build using an external version of ACE" ON)
 
+# SPM12 requires matlab
+if (BUILD_MATLAB)
+  option(USE_SYSTEM_SPM12 "Build using an external version of SPM12" OFF)
+  option(BUILD_SPM12 "Build SPM12" ON)
+ENDIF()
+
 if (WIN32)
   set(build_Gadgetron_default OFF)
 else()
@@ -257,6 +263,10 @@ endif()
 
 if (BUILD_SIRF_Contribs)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES SIRF-Contribs)
+endif()
+
+if (BUILD_SPM12)
+  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES SPM12)
 endif()
 
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${PRIMARY_PROJECT_NAME}_DEPENDENCIES)

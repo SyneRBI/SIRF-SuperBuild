@@ -65,6 +65,10 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set(extra_args "")
   endif()
 
+  if (BUILD_SPM12)
+    set(extra_args "-DSPM12_DIR:PATH=${SPM12_DIR}")
+  endif()
+
   # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
   SetGitTagAndRepo("${proj}")
 
