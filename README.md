@@ -50,28 +50,20 @@ mkdir ~/devel
 ```
 
 ### Install CMake
-If you do not have CMake >= 3.10 install it first ([download link](https://cmake.org/download/)). On Ubuntu Linux,
-you can issue the following commands
+If you do not have CMake >= 3.10 install it first. You can do that either by following the official instructions([download link](https://cmake.org/download/)) or running your own shell sript to do so (see an example [here](https://github.com/CCPPETMR/CCPPETMR_VM/blob/master/scripts/INSTALL_CMake.sh). 
 
-```bash
-ver=3.10.3
-sudo mkdir /opt/cmake
-cd /opt/cmake
-wget -c https://github.com/Kitware/CMake/releases/download/v${ver}/cmake-${ver}-Linux-x86_64.tar.gz
-tar xzf /tmp/cmake-${ver}-Linux-x86_64.tar.gz --strip 1
-rm /tmp/cmake-${ver}-Linux-x86_64.tar.gz
-export PATH=/opt/cmake/bin:$PATH
-```
 During installation you will be asked to read and accept CMake's license. If you answered the last question during the CMake installation with yes, then you should use
 
 ```
-export PATH=/opt/cmake/cmake-${ver}-Linux-x86_64/bin:$PATH
+export PATH=/usr/local/cmake/bin:$PATH
 ```
 Note that the above `PATH` statements won't work if you are running csh. The equivalent would be for instance
 ```csh
-set path = ( /opt/cmake/bin $path )
+set path = ( /usr/local/cmake/bin $path )
 ```
-You might want to add the `PATH` line to your start-up file (e.g. `.profile` or `.cshrc`).
+NOTE: change `/usr/local/` to your chosen installation path, if different. 
+
+You might want to add the `PATH` line to your start-up file e.g. `.profile`, `.bashrc` or `.cshrc`.
 
 ### Clone the SIRF-SuperBuild project
 ```bash
