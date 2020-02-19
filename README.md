@@ -55,23 +55,24 @@ you can issue the following commands
 
 ```bash
 ver=3.10.3
-sudo mkdir /opt/cmake
+location=/opt
+sudo mkdir ${location}/cmake
 cd /opt/cmake
 wget -c https://github.com/Kitware/CMake/releases/download/v${ver}/cmake-${ver}-Linux-x86_64.tar.gz
-tar xzf /tmp/cmake-${ver}-Linux-x86_64.tar.gz --strip 1
-rm /tmp/cmake-${ver}-Linux-x86_64.tar.gz
-export PATH=/opt/cmake/bin:$PATH
+tar xzf ${location}/cmake/cmake-${ver}-Linux-x86_64.tar.gz --strip 1
+rm ${location}/cmake/cmake-${ver}-Linux-x86_64.tar.gz
+export PATH=${location}/cmake/bin:$PATH
 ```
 During installation you will be asked to read and accept CMake's license. If you answered the last question during the CMake installation with yes, then you should use
 
 ```
-export PATH=/opt/cmake/cmake-${ver}-Linux-x86_64/bin:$PATH
+export PATH=${location}/cmake/bin:$PATH
 ```
 Note that the above `PATH` statements won't work if you are running csh. The equivalent would be for instance
 ```csh
-set path = ( /opt/cmake/bin $path )
+set path = ( ${location}/cmake/bin $path )
 ```
-You might want to add the `PATH` line to your start-up file (e.g. `.profile` or `.cshrc`).
+You might want to add the `PATH` line to your start-up file e.g. `.profile` or `.cshrc` (but explicitly type the path you chosen, instead of `${location}`, e.g. `/opt` in the example here) .
 
 ### Clone the SIRF-SuperBuild project
 ```bash
