@@ -50,9 +50,9 @@ mkdir ~/devel
 ```
 
 ### Install CMake
-If you do not have CMake >= 3.10 install it first. You can do that either by following the official instructions([download link](https://cmake.org/download/)) or running your own shell sript to do so (see an example [here](https://github.com/CCPPETMR/CCPPETMR_VM/blob/master/scripts/INSTALL_CMake.sh). 
+If you do not have CMake >= 3.10, install it first. You can probably use a package manager on your OS. Alternatively, you can do that either by following the official instructions ([download link](https://cmake.org/download/)) or running your own shell sript to do so (see an example [here](https://github.com/CCPPETMR/CCPPETMR_VM/blob/master/scripts/INSTALL_CMake.sh)). 
 
-During installation you will be asked to read and accept CMake's license. If you answered the last question during the CMake installation with yes, then you should use
+If you use a CMake installer, you will be asked to read and accept CMake's license. If you answered the last question during the CMake installation with yes, then you should use
 
 ```
 export PATH=/usr/local/cmake/bin:$PATH
@@ -89,7 +89,9 @@ Use your build environment to build and install the project. On Linux/OSX etc, y
 ```bash
 [sudo] make -jN
 ```
-where `N` are the number of cores you want to use for the compilation. You will only need the `sudo` command if you are building in a system folder (e.g., `/usr/local`). For Eclipse/XCode/Visual Studio, you could open the project, or try something like
+where `N` are the number of cores you want to use for the compilation. You will only need the `sudo` command if you set `CMAKE_INSTALL_PREFIX` to a system folder (e.g., `/usr/local`).
+
+For Eclipse/XCode/Visual Studio, you could open the project, or try something like
 ```bash
 cmake --build . --config Release
 ```
@@ -101,23 +103,22 @@ Gadgetron requires a configuration file. An example is supplied and, as a starti
 ```
 mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
 ```
+replacing `INSTALL` with the directory you used for `CMAKE_INSTALL_PREFIX`.
 
 ### Set Environment variables
 Source a script with the environment variables appropriate for your shell
 
-For instance, for sh/bash/ksh etc
+For instance, assuming that you set `CMAKE_INSTALL_PREFIX=~/devel/INSTALL`,for sh/bash/ksh etc
 ```bash
-cd ~/devel/build
-source INSTALL/bin/env_ccppetmr.sh
+source ~/devel/INSTALL/bin/env_ccppetmr.sh
 ```
-You probably want to add a similar line (with absolute path) to your .bashrc/.profile.
+You probably want to add a similar line to your .bashrc/.profile.
 
 Or for csh
 ```csh
-cd ~/devel/build
-source INSTALL/bin/env_ccppetmr.csh
+source ~/devel/INSTALL/bin/env_ccppetmr.csh
 ```
-You probably want to add a similar line (with absolute path) to your .cshrc.
+You probably want to add a similar line to your .cshrc.
 
 ### Open a terminal and start Gadgetron
 To be able to use Gadgetron, a Gadgetron client must already be open in another terminal window. To do this, open a new terminal window and enter:
