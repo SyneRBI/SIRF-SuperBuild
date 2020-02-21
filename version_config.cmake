@@ -268,6 +268,8 @@ set(SIRF-Contribs_TAG ${DEFAULT_SIRF-Contribs_TAG} CACHE STRING ON)
 set(ITK_URL ${DEFAULT_ITK_URL} CACHE STRING ON)
 set(ITK_TAG ${DEFAULT_ITK_TAG} CACHE STRING ON)
 
+set(CIL_VERSION ${CIL_VERSION} CACHE STRING ON)
+
 mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   Gadgetron_URL Gadgetron_TAG
   siemens_to_ismrmrd_URL siemens_to_ismrmrd_TAG
