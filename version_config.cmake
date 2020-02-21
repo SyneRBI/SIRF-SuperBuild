@@ -55,7 +55,7 @@ if(WIN32)
   #set(FFTW3_URL https://s3.amazonaws.com/install-gadgetron-vs2013/Dependencies/FFTW/zip/FFTW3.zip )
   #set(FFTW3_MD5 a42eac92d9ad06d7c53fb82b09df2b6e )
 else(WIN32)
-  set(FFTW3_URL http://www.fftw.org/fftw-3.3.5.tar.gz ) 
+  set(FFTW3_URL ftp://ftp.fftw.org/pub/fftw/fftw-3.3.5.tar.gz ) 
   set(FFTW3_MD5 6cc08a3b9c7ee06fdd5b9eb02e06f569 )
 endif(WIN32)
 
