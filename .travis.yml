@@ -433,7 +433,7 @@ before_install:
 - curl -0 https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 - $PY_EXE get-pip.py --user
 # setuptools may be out of date on osx
-- $PY_EXE -m pip install --user -U pip setuptools wheel nibabel
+- $PY_EXE -m pip install --user -U pip setuptools wheel nibabel deprecation
 # ensure python bin dir exists (and coverage dependencies installed)
 - $PY_EXE -m pip install --user -U nose codecov coveralls
 # additional python deps
