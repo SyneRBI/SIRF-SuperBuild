@@ -148,7 +148,7 @@ set(DEFAULT_SIRF-Contribs_URL https://github.com/CCPPETMR/SIRF-Contribs )
 set(DEFAULT_SIRF-Contribs_TAG origin/master )
 
 ## SPM
-set(DEFAULT_SPM_URL https://github.com/spm/SPM.git )
+set(DEFAULT_SPM_URL https://github.com/spm/SPM12.git )
 set(DEFAULT_SPM_TAG r7771)
 
 option (DEVEL_BUILD "Developer Build" OFF)
