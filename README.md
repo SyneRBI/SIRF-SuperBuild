@@ -50,28 +50,20 @@ mkdir ~/devel
 ```
 
 ### Install CMake
-If you do not have CMake >= 3.10 install it first ([download link](https://cmake.org/download/)). On Ubuntu Linux,
-you can issue the following commands
+If you do not have CMake >= 3.10, install it first. You can probably use a package manager on your OS. Alternatively, you can do that either by following the official instructions ([download link](https://cmake.org/download/)) or running your own shell sript to do so (see an example [here](https://github.com/CCPPETMR/CCPPETMR_VM/blob/master/scripts/INSTALL_CMake.sh)). 
 
-```bash
-ver=3.10.3
-sudo mkdir /opt/cmake
-cd /opt/cmake
-wget -c https://github.com/Kitware/CMake/releases/download/v${ver}/cmake-${ver}-Linux-x86_64.tar.gz
-tar xzf /tmp/cmake-${ver}-Linux-x86_64.tar.gz --strip 1
-rm /tmp/cmake-${ver}-Linux-x86_64.tar.gz
-export PATH=/opt/cmake/bin:$PATH
-```
-During installation you will be asked to read and accept CMake's license. If you answered the last question during the CMake installation with yes, then you should use
+If you use a CMake installer, you will be asked to read and accept CMake's license. If you answered the last question during the CMake installation with yes, then you should use
 
 ```
-export PATH=/opt/cmake/cmake-${ver}-Linux-x86_64/bin:$PATH
+export PATH=/usr/local/cmake/bin:$PATH
 ```
 Note that the above `PATH` statements won't work if you are running csh. The equivalent would be for instance
 ```csh
-set path = ( /opt/cmake/bin $path )
+set path = ( /usr/local/cmake/bin $path )
 ```
-You might want to add the `PATH` line to your start-up file (e.g. `.profile` or `.cshrc`).
+NOTE: change `/usr/local/` to your chosen installation path, if different. 
+
+You might want to add the `PATH` line to your start-up file e.g. `.profile`, `.bashrc` or `.cshrc`.
 
 ### Clone the SIRF-SuperBuild project
 ```bash
@@ -97,7 +89,9 @@ Use your build environment to build and install the project. On Linux/OSX etc, y
 ```bash
 [sudo] make -jN
 ```
-where `N` are the number of cores you want to use for the compilation. You will only need the `sudo` command if you are building in a system folder (e.g., `/usr/local`). For Eclipse/XCode/Visual Studio, you could open the project, or try something like
+where `N` are the number of cores you want to use for the compilation. You will only need the `sudo` command if you set `CMAKE_INSTALL_PREFIX` to a system folder (e.g., `/usr/local`).
+
+For Eclipse/XCode/Visual Studio, you could open the project, or try something like
 ```bash
 cmake --build . --config Release
 ```
@@ -109,23 +103,22 @@ Gadgetron requires a configuration file. An example is supplied and, as a starti
 ```
 mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
 ```
+replacing `INSTALL` with the directory you used for `CMAKE_INSTALL_PREFIX`.
 
 ### Set Environment variables
 Source a script with the environment variables appropriate for your shell
 
-For instance, for sh/bash/ksh etc
+For instance, assuming that you set `CMAKE_INSTALL_PREFIX=~/devel/INSTALL`,for sh/bash/ksh etc
 ```bash
-cd ~/devel/build
-source INSTALL/bin/env_ccppetmr.sh
+source ~/devel/INSTALL/bin/env_ccppetmr.sh
 ```
-You probably want to add a similar line (with absolute path) to your .bashrc/.profile.
+You probably want to add a similar line to your .bashrc/.profile.
 
 Or for csh
 ```csh
-cd ~/devel/build
-source INSTALL/bin/env_ccppetmr.csh
+source ~/devel/INSTALL/bin/env_ccppetmr.csh
 ```
-You probably want to add a similar line (with absolute path) to your .cshrc.
+You probably want to add a similar line to your .cshrc.
 
 ### Open a terminal and start Gadgetron
 To be able to use Gadgetron, a Gadgetron client must already be open in another terminal window. To do this, open a new terminal window and enter:
