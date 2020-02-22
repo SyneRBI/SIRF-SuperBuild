@@ -19,7 +19,7 @@
 #=========================================================================
 
 #This needs to be unique globally
-set(proj SPM12)
+set(proj SPM)
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
@@ -52,7 +52,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     INSTALL_COMMAND ""
   )
 
-  set(${proj}_DIR ${${proj}_SOURCE_DIR} CACHE PATH "SPM12 DIR")
+  set(${proj}_DIR ${${proj}_SOURCE_DIR} CACHE PATH "SPM DIR")
 
 else()
   if(${USE_SYSTEM_${externalProjName}})

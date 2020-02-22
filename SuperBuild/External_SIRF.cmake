@@ -30,8 +30,8 @@ endif()
 if (${BUILD_STIR})
   set(${proj}_DEPENDENCIES "${${proj}_DEPENDENCIES};STIR")
 endif()
-if (${BUILD_SPM12})
-  set(${proj}_DEPENDENCIES "${${proj}_DEPENDENCIES};SPM12")
+if (${BUILD_SPM})
+  set(${proj}_DEPENDENCIES "${${proj}_DEPENDENCIES};SPM")
 endif()
 
 message(STATUS "Matlab_ROOT_DIR=" ${Matlab_ROOT_DIR})
@@ -68,8 +68,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set(extra_args "")
   endif()
 
-  if (BUILD_SPM12)
-    set(extra_args "-DSPM12_DIR:PATH=${SPM12_DIR}")
+  if (BUILD_SPM)
+    set(extra_args "-DSPM_DIR:PATH=${SPM_DIR}")
   endif()
 
   # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED

@@ -159,10 +159,10 @@ option(USE_SYSTEM_NIFTYREG "Build using an external version of NIFTYREG" OFF)
 option(USE_SYSTEM_GTest "Build using an external version of GTest" OFF)
 option(USE_SYSTEM_ACE "Build using an external version of ACE" ON)
 
-# SPM12 requires matlab
+# SPM requires matlab
 if (BUILD_MATLAB)
-  option(USE_SYSTEM_SPM12 "Build using an external version of SPM12" OFF)
-  option(BUILD_SPM12 "Build SPM12" ON)
+  option(USE_SYSTEM_SPM "Build using an external version of SPM. Only SPM12 tested." OFF)
+  option(BUILD_SPM "Build SPM. Only SPM12 tested" ON)
 ENDIF()
 
 if (WIN32)
