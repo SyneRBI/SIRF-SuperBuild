@@ -30,18 +30,12 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
-set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
-set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
-set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
-set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
-set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
-
+SetCanonicalDirectoryNames(${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(SIRF_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
   IF(NOT ${PYTHON_VERSION_MAJOR} EQUAL 2)
     MESSAGE(FATAL_ERROR "${proj} currently only works with python version 2.")
@@ -53,17 +47,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY "${${proj}_URL}"
     GIT_TAG "${${proj}_TAG}"
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_DIRS}
     SOURCE_SUBDIR niftypet
 
     CMAKE_ARGS
       -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
       -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
-      -DCMAKE_INSTALL_PREFIX=${SIRF_Install_Dir}
+      -DCMAKE_INSTALL_PREFIX=${${proj}_INSTALL_DIR}
       -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
       -DPYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR}
       -DPYTHON_LIBRARY=${PYTHON_LIBRARY}
@@ -102,11 +92,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
    endif()
     ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-      SOURCE_DIR ${${proj}_SOURCE_DIR}
-      BINARY_DIR ${${proj}_BINARY_DIR}
-      DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-      STAMP_DIR ${${proj}_STAMP_DIR}
-      TMP_DIR ${${proj}_TMP_DIR}
+        ${${proj}_EP_ARGS_DIRS}
     )
   endif()
 

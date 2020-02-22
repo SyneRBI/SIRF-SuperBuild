@@ -41,18 +41,12 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
-set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
-set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
-set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
-set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
-set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
-
+SetCanonicalDirectoryNames(${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(SIRF_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
   option(BUILD_TESTING_${proj} "Build tests for ${proj}" ON)
 
@@ -72,16 +66,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY "${${proj}_URL_MODIFIED}"
     GIT_TAG "${${proj}_TAG_MODIFIED}"
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_DIRS}
 
     CMAKE_ARGS
       -DCMAKE_PREFIX_PATH:PATH=${SUPERBUILD_INSTALL_DIR}
       -DCMAKE_LIBRARY_PATH:PATH=${SUPERBUILD_INSTALL_DIR}/lib
-      -DCMAKE_INSTALL_PREFIX:PATH=${SIRF_Install_Dir}
+      -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
       -DBOOST_INCLUDEDIR:PATH=${BOOST_ROOT}/include/
       -DBOOST_LIBRARYDIR:PATH=${BOOST_LIBRARY_DIR}
       -DBOOST_ROOT:PATH=${BOOST_ROOT}
@@ -102,13 +92,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DOPENMP_INCLUDES:PATH=${OPENMP_INCLUDES}
       -DOPENMP_LIBRARIES:PATH=${OPENMP_LIBRARIES}
 		${extra_args}
-	INSTALL_DIR ${SIRF_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
-
-    set(SIRF_ROOT        ${SIRF_SOURCE_DIR})
-    set(SIRF_INCLUDE_DIR ${SIRF_SOURCE_DIR})
 
   #if (BUILD_TESTING_${proj})
     add_test(NAME ${proj}_TESTS
@@ -122,11 +108,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
    endif()
     ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-      SOURCE_DIR ${${proj}_SOURCE_DIR}
-      BINARY_DIR ${${proj}_BINARY_DIR}
-      DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-      STAMP_DIR ${${proj}_STAMP_DIR}
-      TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_DIRS}
     )
   endif()
 

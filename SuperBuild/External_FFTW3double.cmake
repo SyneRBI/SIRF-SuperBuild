@@ -36,11 +36,7 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
-set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
-set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
-set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
-set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
-set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
+SetCanonicalDirectoryNames(${proj})
 
 # use FFTW variable
 if(NOT ( DEFINED "USE_SYSTEM_FFTW3" AND "${USE_SYSTEM_FFTW3}" ) )
@@ -53,7 +49,7 @@ if(NOT ( DEFINED "USE_SYSTEM_FFTW3" AND "${USE_SYSTEM_FFTW3}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(FFTWdouble_Install_Dir ${SUPERBUILD_INSTALL_DIR})
+
   set(FFTWdouble_Configure_Script ${CMAKE_CURRENT_LIST_DIR}/External_FFTWdouble_configure.cmake)
   set(FFTWdouble_Build_Script ${CMAKE_CURRENT_LIST_DIR}/External_FFTWdouble_build.cmake)
 
@@ -68,16 +64,12 @@ if(NOT ( DEFINED "USE_SYSTEM_FFTW3" AND "${USE_SYSTEM_FFTW3}" ) )
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
     URL_MD5 ${${proj}_MD5}
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
-    CONFIGURE_COMMAND ${${proj}_SOURCE_DIR}/configure --with-pic --prefix ${FFTWdouble_Install_Dir}
-    INSTALL_DIR ${FFTWdouble_Install_Dir}
+    ${${proj}_EP_ARGS_DIRS}
+    CONFIGURE_COMMAND ${${proj}_SOURCE_DIR}/configure --with-pic --prefix ${FFTWdouble_INSTALL_DIR}
+    INSTALL_DIR ${FFTWdouble_INSTALL_DIR}
   )
 
-  #set( FFTW3_ROOT_DIR:PATH ${FFTWdouble_Install_Dir} )
+  #set( FFTW3_ROOT_DIR:PATH ${FFTWdouble_INSTALL_DIR} )
 
 
  else()
@@ -86,11 +78,7 @@ if(NOT ( DEFINED "USE_SYSTEM_FFTW3" AND "${USE_SYSTEM_FFTW3}" ) )
       message(STATUS "USING the system ${externalProjName}, found FFTW3double_INCLUDE_DIR=${FFTW3double_INCLUDE_DIR}, FFTW3double_LIBRARY=${FFTW3double_LIBRARY}")
   endif()
   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_DIRS}
 )
 endif()
 
