@@ -84,32 +84,36 @@ jobs:
       - g++-6
    python: 3.6
    name: py36 gcc6 +xenial -boost +fftw3 +hdf5 +ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=OFF -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
- - os: linux
-   dist: trusty  # Ubuntu 14.04 LTS
-   addons:
-    apt:
-     sources: *addons_apt_sources
-     packages:
-      - *addons_apt_packages
-      - g++-6
-      - realpath  # building ACE on trusty
-   python: 3.6
-   name: py36 gcc6 +trusty -boost +fftw3 +hdf5 +ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=OFF -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
- # current linux
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=OFF" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+
+ # trusty disabled
+ # This fails since Feb 2020 due to Python3 being 3.4.3, even though we ask for more recent.
+ #- os: linux
+ #  dist: trusty  # Ubuntu 14.04 LTS
+ #  addons:
+ #   apt:
+ #    sources: *addons_apt_sources
+ #    packages:
+ #     - *addons_apt_packages
+ #     - g++-6
+ #     - realpath  # building ACE on trusty
+ #  python: 3.6
+ #  name: py36 gcc6 +trusty -boost +fftw3 +hdf5 +ace
+ #  env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=OFF" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+
+# current linux
  - os: linux
    python: 3.6
    name: py36 -boost +fftw3 +hdf5 +ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=OFF -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" PYMVER=3
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=OFF" PYMVER=3
  - os: linux
    python: 2.7
    name: py27 -boost +fftw3 +hdf5 +ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=OFF -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" PYMVER=2
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=OFF" PYMVER=2
  - os: linux
    python: 2.7
    name: py27 -boost +fftw3 +hdf5 +ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" PYMVER=2
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON" PYMVER=2
  - os: linux
    python: 3.6
    name: py36 -boost +fftw3 +hdf5 +ace
@@ -429,16 +433,18 @@ before_install:
      fi
    fi
 - echo "Using Python executable $PY_EXE"
+- $PY_EXE --version
 # get pip
 - curl -0 https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 - $PY_EXE get-pip.py --user
 # setuptools may be out of date on osx
-- $PY_EXE -m pip install --user -U pip setuptools wheel nibabel
+- $PY_EXE -m pip install --user -U pip setuptools wheel
+- $PY_EXE -m pip --version
 # ensure python bin dir exists (and coverage dependencies installed)
 - $PY_EXE -m pip install --user -U nose codecov coveralls
 # additional python deps
 - $PY_EXE -m pip install --user -U Cython  # first install Cython separately
-- $PY_EXE -m pip install --user -U numpy
+- $PY_EXE -m pip install --user -U numpy deprecation nibabel
 - |
    if [[ "$EXTRA_BUILD_FLAGS" == *"-DBUILD_CIL=ON"* || "$EXTRA_BUILD_FLAGS" == *"-DBUILD_CIL_LITE=ON"* ]]; then
      $PY_EXE -m pip install --user -U scipy h5py Pillow wget
@@ -452,8 +458,6 @@ before_install:
      # count unique clones, excluding travis, and print total
      gh_stats_count -k uniques
    fi
-- $PY_EXE --version
-- $PY_EXE -m pip --version
 - $PY_EXE -m pip freeze
 # ccache compiler override
 - ln -s "$(which ccache)" g++
