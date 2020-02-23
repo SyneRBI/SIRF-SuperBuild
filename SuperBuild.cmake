@@ -135,11 +135,13 @@ if (BUILD_MATLAB)
   message(STATUS "SIRF and/or STIR Matlab libraries will be installed in " ${MATLAB_DEST})
 endif()
 
-# Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
+# Include macro to sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
 # If the user doesn't want git checkout to be performed, 
 # these will be set to blank strings. Else, they'll be set to 
 # ${${proj}_URL} and ${${proj}_TAG}, respectively.
 include(${CMAKE_SOURCE_DIR}/CMake/SetGitTagAndRepo.cmake)
+# Include macro to set SOURCE_DIR etc
+include(${CMAKE_SOURCE_DIR}/CMake/SetCanonicalDirectoryNames.cmake)
 
 if (UNIX AND NOT APPLE)
   option(USE_SYSTEM_Boost "Build using an external version of Boost" OFF)
@@ -276,7 +278,6 @@ message(STATUS "PYTHON_INCLUDE_DIRS=${PYTHON_INCLUDE_DIRS}")
 #set(proj ${PRIMARY_PROJECT_NAME})
 
 # Make environment files
-set(SIRF_SRC_DIR ${SOURCE_ROOT_DIR}/SIRF)
 set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
 
 ## configure the environment files env_ccppetmr.sh/csh

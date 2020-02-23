@@ -32,12 +32,7 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
-set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
-set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
-set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
-set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
-set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
-
+SetCanonicalDirectoryNames(${proj})
 
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
@@ -45,7 +40,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message(STATUS "HDF5_DOWNLOAD_VERSION=${HDF5_DOWNLOAD_VERSION}")
 
   ### --- Project specific additions here
-  set(HDF5_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
   if(CMAKE_COMPILER_IS_CLANGXX)
     set(CLANG_ARG -DCMAKE_COMPILER_IS_CLANGXX:BOOL=ON)
@@ -72,11 +66,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
     PATCH_COMMAND ${PATCH_COMMAND}
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_DIRS}
 
     CMAKE_ARGS
       ${CLANG_ARG}
@@ -84,10 +74,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DHDF5_BUILD_TOOLS:BOOL=OFF
       -DHDF5_BUILD_HL_LIB:BOOL=${HDF5_BUILD_HL_LIB}
       -DBUILD_TESTING:BOOL=OFF
-    INSTALL_DIR ${HDF5_Install_Dir}
   )
 
-  set( HDF5_ROOT ${HDF5_Install_Dir} )
+  set( HDF5_ROOT ${HDF5_INSTALL_DIR} )
   set( HDF5_INCLUDE_DIRS ${HDF5_ROOT}/include )
   set(HDF5_CMAKE_ARGS
      -DHDF5_ROOT:PATH=${HDF5_ROOT}
@@ -106,11 +95,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       )
   endif()
   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_DIRS}
   )
 endif()
 
