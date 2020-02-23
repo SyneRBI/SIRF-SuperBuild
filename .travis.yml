@@ -438,7 +438,7 @@ before_install:
 - $PY_EXE -m pip install --user -U nose codecov coveralls
 # additional python deps
 - $PY_EXE -m pip install --user -U Cython  # first install Cython separately
-- $PY_EXE -m pip install --user -U numpy
+- $PY_EXE -m pip install --user -U numpy deprecation
 - |
    if [[ "$EXTRA_BUILD_FLAGS" == *"-DBUILD_CIL=ON"* || "$EXTRA_BUILD_FLAGS" == *"-DBUILD_CIL_LITE=ON"* ]]; then
      $PY_EXE -m pip install --user -U scipy h5py Pillow wget
