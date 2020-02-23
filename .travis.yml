@@ -429,16 +429,18 @@ before_install:
      fi
    fi
 - echo "Using Python executable $PY_EXE"
+- $PY_EXE --version
 # get pip
 - curl -0 https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 - $PY_EXE get-pip.py --user
 # setuptools may be out of date on osx
-- $PY_EXE -m pip install --user -U pip setuptools wheel nibabel
+- $PY_EXE -m pip install --user -U pip setuptools wheel
+- $PY_EXE -m pip --version
 # ensure python bin dir exists (and coverage dependencies installed)
 - $PY_EXE -m pip install --user -U nose codecov coveralls
 # additional python deps
 - $PY_EXE -m pip install --user -U Cython  # first install Cython separately
-- $PY_EXE -m pip install --user -U numpy deprecation
+- $PY_EXE -m pip install --user -U numpy deprecation nibabel
 - |
    if [[ "$EXTRA_BUILD_FLAGS" == *"-DBUILD_CIL=ON"* || "$EXTRA_BUILD_FLAGS" == *"-DBUILD_CIL_LITE=ON"* ]]; then
      $PY_EXE -m pip install --user -U scipy h5py Pillow wget
@@ -452,8 +454,6 @@ before_install:
      # count unique clones, excluding travis, and print total
      gh_stats_count -k uniques
    fi
-- $PY_EXE --version
-- $PY_EXE -m pip --version
 - $PY_EXE -m pip freeze
 # ccache compiler override
 - ln -s "$(which ccache)" g++
