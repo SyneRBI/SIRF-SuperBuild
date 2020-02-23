@@ -55,10 +55,10 @@ if (WIN32)
     URL_HASH MD5=${${proj}_MD5}
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
-    INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory ${FFTW_INSTALL_DIR}
-        COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${FFTW_INSTALL_DIR}/FFTW
+    INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory ${${proj}_INSTALL_DIR}
+        COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${${proj}_INSTALL_DIR}/FFTW
   )
-  set( FFTW3_ROOT_DIR ${FFTW_INSTALL_DIR}/FFTW )
+  set( FFTW3_ROOT_DIR ${${proj}_INSTALL_DIR}/FFTW )
 else()
   #set(FFTW_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj} )
   
@@ -67,9 +67,9 @@ else()
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
     ${${proj}_EP_ARGS_DIRS}
-    CONFIGURE_COMMAND ${${proj}_SOURCE_DIR}/configure --enable-float --with-pic --prefix ${FFTW_INSTALL_DIR}
+    CONFIGURE_COMMAND ${${proj}_SOURCE_DIR}/configure --enable-float --with-pic --prefix ${${proj}_INSTALL_DIR}
   )
-  set( FFTW3_ROOT_DIR ${FFTW_INSTALL_DIR} )
+  set( FFTW3_ROOT_DIR ${${proj}_INSTALL_DIR} )
 endif()
 
 

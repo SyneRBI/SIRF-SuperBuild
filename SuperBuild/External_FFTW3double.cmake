@@ -65,11 +65,11 @@ if(NOT ( DEFINED "USE_SYSTEM_FFTW3" AND "${USE_SYSTEM_FFTW3}" ) )
     URL ${${proj}_URL}
     URL_MD5 ${${proj}_MD5}
     ${${proj}_EP_ARGS_DIRS}
-    CONFIGURE_COMMAND ${${proj}_SOURCE_DIR}/configure --with-pic --prefix ${FFTWdouble_INSTALL_DIR}
-    INSTALL_DIR ${FFTWdouble_INSTALL_DIR}
+    CONFIGURE_COMMAND ${${proj}_SOURCE_DIR}/configure --with-pic --prefix ${${proj}_INSTALL_DIR}
+    INSTALL_DIR ${${proj}_INSTALL_DIR}
   )
 
-  #set( FFTW3_ROOT_DIR:PATH ${FFTWdouble_INSTALL_DIR} )
+  #set( FFTW3_ROOT_DIR:PATH ${${proj}_INSTALL_DIR} )
 
 
  else()
