@@ -29,8 +29,9 @@ by the SuperBuild, [see below for more info for your operating system](#os-speci
    1. [Compiling against your own packages](#Compiling-packages)
    2. [Python and MATLAB installation locations](#Python-and-MATLAB-installation-locations)
    3. [Building with specific versions of dependencies](#Building-with-specific-versions-of-dependencies)
-   4. [Building with Intel Math Kernel Library](#Building-with-Intel-Math-Kernel-Library)
-   5. [Building CCPi CIL](#Building-CCPi-CIL)
+   4. [Building from your own source](#Building-from-your-own-source)
+   5. [Building with Intel Math Kernel Library](#Building-with-Intel-Math-Kernel-Library)
+   6. [Building CCPi CIL](#Building-CCPi-CIL)
 
 ## Dependencies
 
@@ -249,6 +250,14 @@ Note that the CMake options in the table are Advanced Options. When running the 
 You could do
 ```sh
 cmake -DDEVEL_BUILD=ON -USIRF_URL -USIRF_TAG -USTIR_URL -USTIR_TAG -UGadgetron_URL -UGadgetron_TAG -UISMRMRD_URL -UISMRMRD_TAG .
+```
+
+### Building from your own source
+
+When developing, you might have a project already checked-out and let the SuperBuild use that. In this case,
+you probably also want to disable any `git` processing. You can achieve this by (using SIRF as an example)
+```sh
+cmake ../SIRF-SuperBuild -DDISABLE_GIT_CHECKOUT_SIRF=ON -DSIRF_SOURCE_DIR=~/wherever/SIRF
 ```
 
 ### Building with Intel Math Kernel Library

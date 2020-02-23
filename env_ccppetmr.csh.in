@@ -3,7 +3,7 @@
 #    source /path/to/whereever/env_ccppetmr.csh
 # Preferably add this line to your .cshrc
 
-setenv SIRF_PATH @SIRF_SRC_DIR@
+setenv SIRF_PATH @SIRF_SOURCE_DIR@
 # Where all binaries are installed
 setenv SIRF_INSTALL_PATH @CCPPETMR_INSTALL@
 # Where to find shared libraries
