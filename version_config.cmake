@@ -147,6 +147,10 @@ set(DEFAULT_NIFTYPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
 set(DEFAULT_SIRF-Contribs_URL https://github.com/CCPPETMR/SIRF-Contribs )
 set(DEFAULT_SIRF-Contribs_TAG origin/master )
 
+## SPM
+set(DEFAULT_SPM_URL https://github.com/spm/SPM12.git )
+set(DEFAULT_SPM_TAG r7771)
+
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
 
@@ -265,6 +269,9 @@ set(SIRF-Contribs_TAG ${DEFAULT_SIRF-Contribs_TAG} CACHE STRING ON)
 set(ITK_URL ${DEFAULT_ITK_URL} CACHE STRING ON)
 set(ITK_TAG ${DEFAULT_ITK_TAG} CACHE STRING ON)
 
+set(SPM_URL ${DEFAULT_SPM_URL} CACHE STRING ON)
+set(SPM_TAG ${DEFAULT_SPM_TAG} CACHE STRING ON)
+
 mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   Gadgetron_URL Gadgetron_TAG
   siemens_to_ismrmrd_URL siemens_to_ismrmrd_TAG
@@ -278,4 +285,5 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   NIFTYPET_URL NIFTYPET_TAG
   SIRF-Contribs_URL SIRF-Contribs_TAG
   ITK_URL ITK_TAG
+  SPM_URL SPM_TAG
 )
