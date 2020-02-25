@@ -41,18 +41,12 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
-set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
-set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
-set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
-set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
-set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
-
+SetCanonicalDirectoryNames(${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(STIR_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
   option(BUILD_TESTING_${proj} "Build tests for ${proj}" OFF)
   if (NOT DISABLE_OpenMP)
@@ -91,7 +85,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     -DBUILD_DOCUMENTATION:BOOL=OFF
     -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
     -DBOOST_ROOT:PATH=${BOOST_ROOT}
-    -DCMAKE_INSTALL_PREFIX:PATH=${STIR_Install_Dir}
+    -DCMAKE_INSTALL_PREFIX:PATH=${STIR_INSTALL_DIR}
     -DGRAPHICS:STRING=None
     -DCMAKE_CXX_STANDARD:STRING=11
     -DSTIR_OPENMP:BOOL=${STIR_ENABLE_OPENMP}
@@ -130,21 +124,15 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY "${${proj}_URL_MODIFIED}"
     GIT_TAG "${${proj}_TAG_MODIFIED}"
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_DIRS}
 
     CMAKE_ARGS ${STIR_CMAKE_ARGS}
-    INSTALL_DIR ${STIR_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
 
-  set(STIR_ROOT       ${STIR_Install_Dir})
   set(STIR_DIR       ${SUPERBUILD_INSTALL_DIR}/lib/cmake)
-  set(STIR_INCLUDE_DIRS ${STIR_ROOT}/stir)
+
 
   if (BUILD_TESTING_${proj})
     add_test(NAME ${proj}_TESTS
@@ -158,11 +146,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
    endif()
     ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_DIRS}
    )
   endif()
 

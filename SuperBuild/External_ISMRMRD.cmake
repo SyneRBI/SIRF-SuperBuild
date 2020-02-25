@@ -31,18 +31,12 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
-set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
-set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
-set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
-set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
-set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
+SetCanonicalDirectoryNames(${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(ISMRMRD_Install_Dir ${SUPERBUILD_INSTALL_DIR})
-
   if (NOT WIN32)
     if (USE_SYSTEM_Boost)
       find_package(Boost 1.43 COMPONENTS unit_test_framework)
@@ -65,24 +59,19 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
     GIT_TAG ${${proj}_TAG}
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_DIRS}
 
     CMAKE_ARGS
-      -DCMAKE_INSTALL_PREFIX=${ISMRMRD_Install_Dir}
+      -DCMAKE_INSTALL_PREFIX=${ISMRMRD_INSTALL_DIR}
       -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
       -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
       ${HDF5_CMAKE_ARGS}
       -DBOOST_ROOT=${BOOST_ROOT}
-    INSTALL_DIR ${ISMRMRD_Install_Dir}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
 
-    set(ISMRMRD_DIR        ${ISMRMRD_Install_Dir}/lib/cmake/ISMRMRD)
+    set(ISMRMRD_DIR        ${ISMRMRD_INSTALL_DIR}/lib/cmake/ISMRMRD)
 
   if (BUILD_TESTING_${proj})
     add_test(NAME ${proj}_TESTS
@@ -96,11 +85,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
    endif()
    ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_DIRS}
    )
   endif()
 
