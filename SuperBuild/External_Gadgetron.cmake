@@ -80,10 +80,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   endif()
 
 
+  # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
+  SetGitTagAndRepo("${proj}")
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
-    GIT_REPOSITORY ${${proj}_URL}
-    GIT_TAG ${${proj}_TAG}
+    GIT_REPOSITORY "${${proj}_URL_MODIFIED}"
+    GIT_TAG "${${proj}_TAG_MODIFIED}"
     ${${proj}_EP_ARGS_DIRS}
 
     CMAKE_ARGS
