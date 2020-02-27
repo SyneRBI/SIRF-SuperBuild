@@ -52,16 +52,20 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
   set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
 
+  # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
+  SetGitTagAndRepo("${proj}")
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
-    GIT_REPOSITORY ${${proj}_URL}
-    GIT_TAG ${${proj}_TAG}
+    GIT_REPOSITORY "${${proj}_URL_MODIFIED}"
+    GIT_TAG "${${proj}_TAG_MODIFIED}"
     SOURCE_DIR ${${proj}_SOURCE_DIR}
     BINARY_DIR ${${proj}_BINARY_DIR}
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
     STAMP_DIR ${${proj}_STAMP_DIR}
     TMP_DIR ${${proj}_TMP_DIR}
     CMAKE_ARGS
+      -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=${CMAKE_POSITION_INDEPENDENT_CODE}
       -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
       -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
       -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}
