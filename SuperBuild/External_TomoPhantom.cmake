@@ -35,6 +35,10 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
+# Get any flag from the superbuild call that may be particular to this projects CMAKE_ARGS
+SetExternalProjectFlags(${proj})
+
+
 set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
 set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
 set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
@@ -74,7 +78,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     	-DPYTHON_LIBRARY=${PYTHON_LIBRARIES}
     	-DPYTHON_DEST_DIR=${PYTHON_DEST_DIR}
     	-DPYTHON_STRATEGY=${PYTHON_STRATEGY}
-
+      ${${proj}_EXTRA_CMAKE_ARGS_LIST}
     # TODO this relies on using "make", but we could be build with something else
     #INSTALL_COMMAND make TomoPhantom
     DEPENDS

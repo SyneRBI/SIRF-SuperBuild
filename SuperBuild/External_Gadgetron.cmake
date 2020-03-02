@@ -35,6 +35,10 @@ set(externalProjName ${proj})
 
 SetCanonicalDirectoryNames(${proj})
 
+# Get any flag from the superbuild call that may be particular to this projects CMAKE_ARGS
+SetExternalProjectFlags(${proj})
+
+#message(FATAL_ERROR "${proj}_EXTRA_CMAKE_ARGS = \"${${proj}_EXTRA_CMAKE_ARGS}\"")
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
@@ -73,7 +77,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   option(${proj}_USE_CUDA "Enable ${proj} CUDA (if cuda libraries are present)" ${CUDA_FOUND})
   mark_as_advanced(${proj}_USE_CUDA)
 
-
   # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
   SetGitTagAndRepo("${proj}")
 
@@ -102,6 +105,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DUSE_CUDA:BOOL=${${proj}_USE_CUDA}
       -DCBLAS_INCLUDE_DIR:PATH=${CBLAS_INCLUDE_DIR}
       -DCBLAS_LIBRARY:FILEPATH=${CBLAS_LIBRARY}
+      ${${proj}_EXTRA_CMAKE_ARGS_LIST}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
