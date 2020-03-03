@@ -318,7 +318,7 @@ set(ENV_MATLAB_BASH "#####     Matlab not found     #####")
 set(ENV_MATLAB_CSH  "#####     Matlab not found     #####")
 if (Matlab_FOUND)
   set(ENV_MATLAB_BASH "\
-  MATLABPATH=${MATLAB_DEST}\n\
+  MATLABPATH=${MATLAB_DEST}:${SPM_DIR}\n\
 export MATLABPATH\n\
 SIRF_MATLAB_EXECUTABLE=${Matlab_MAIN_PROGRAM}\n\
 export SIRF_MATLAB_EXECUTABLE")
