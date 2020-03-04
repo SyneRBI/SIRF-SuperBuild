@@ -33,11 +33,12 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
+SetCanonicalDirectoryNames(${proj})
+
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(${proj}_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
   #message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
@@ -46,21 +47,10 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   option(${proj}_USE_CUDA "Enable ${proj} CUDA (if cuda libraries are present)" ${CUDA_FOUND})
   mark_as_advanced(${proj}_USE_CUDA)
 
-  set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
-  set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
-  set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
-  set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
-  set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
-
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
     GIT_TAG ${${proj}_TAG}
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
     CMAKE_ARGS
       -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=${CMAKE_POSITION_INDEPENDENT_CODE}
       -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
@@ -72,7 +62,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DUSE_OPENMP:BOOL=ON
       -DBUILD_ALL_DEP:BOOL=ON
       -DUSE_CUDA=${${proj}_USE_CUDA}
-    INSTALL_DIR ${${proj}_Install_Dir}
     DEPENDS ${${proj}_DEPENDENCIES})
 
     set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
