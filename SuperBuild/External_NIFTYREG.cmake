@@ -47,10 +47,11 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   option(${proj}_USE_CUDA "Enable ${proj} CUDA (if cuda libraries are present)" ${CUDA_FOUND})
   mark_as_advanced(${proj}_USE_CUDA)
 
+  SetGitTagAndRepo("${proj}")
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
-    GIT_REPOSITORY ${${proj}_URL}
-    GIT_TAG ${${proj}_TAG}
+    GIT_REPOSITORY "${${proj}_URL_MODIFIED}"
+    GIT_TAG "${${proj}_TAG_MODIFIED}"
     CMAKE_ARGS
       -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=${CMAKE_POSITION_INDEPENDENT_CODE}
       -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
