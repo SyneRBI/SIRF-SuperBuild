@@ -1,0 +1,22 @@
+{
+    "azure_client_id": "{{env `ARM_CLIENT_ID`}}",
+    "azure_client_secret": "{{env `ARM_CLIENT_SECRET`}}",
+    "azure_tenant_id": "{{env `ARM_TENANT_ID`}}",
+    "azure_subscription": {{env `ARM_SUBSCRIPTION_ID`}}",
+    "azure_rg_name": "sirf-rg",
+    "azure_storage_acc": "sirfsa",
+
+    "managed_image_name": "sirf-",
+    "managed_image_resource_group_name": "sirfrg",
+
+    "azure_os_type": "Linux",
+    "azure_image_publisher": "Canonical",
+    "azure_image_offer": "UbuntuServer",
+    "azure_image_sku": "18.04-LTS",
+
+    "azure_cpu_location": "uksouth",
+    "azure_cpu_vm_size": "Standard_D4"
+
+    "azure_gpu_location": "uksouth",
+    "azure_gpu_vm_size": "Standard_NC6"
+}

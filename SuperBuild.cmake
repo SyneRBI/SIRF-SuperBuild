@@ -43,6 +43,13 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/INSTALL" CACHE PATH "Prefix for path for installation" FORCE)
 endif()
 
+# Find CUDA
+find_package(CUDA)
+if (CUDA_FOUND)
+   message(STATUS "<<<<<<<<<<<<<<<<< CUDA FOUND >>>>>>>>>>>>>>>>>>>>>")
+   message(STATUS "Will enable CUDA dependencies where possible.")
+endif()
+
 # If OSX give the advanced option to use absolute paths for shared libraries
 if (APPLE)
   option(SHARED_LIBS_ABS_PATH "Force shared libraries to be installed with absolute paths (as opposed to rpaths)" ON)
@@ -144,6 +151,16 @@ else(DISABLE_Matlab)
   endif()
 endif(DISABLE_Matlab)
 
+# Include macro to sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
+# If the user doesn't want git checkout to be performed, 
+# these will be set to blank strings. Else, they'll be set to 
+# ${${proj}_URL} and ${${proj}_TAG}, respectively.
+include(${CMAKE_SOURCE_DIR}/CMake/SetGitTagAndRepo.cmake)
+# Include macro to set SOURCE_DIR etc
+include(${CMAKE_SOURCE_DIR}/CMake/SetCanonicalDirectoryNames.cmake)
+# Include macro to be able to pass flags to project CMAKEs
+include(${CMAKE_SOURCE_DIR}/CMake/SetExternalProjectFlags.cmake)
+
 if (UNIX AND NOT APPLE)
   option(USE_SYSTEM_Boost "Build using an external version of Boost" OFF)
 else()
@@ -162,6 +179,12 @@ option(USE_SYSTEM_NIFTYREG "Build using an external version of NIFTYREG" OFF)
 option(USE_SYSTEM_GTest "Build using an external version of GTest" OFF)
 option(USE_SYSTEM_ACE "Build using an external version of ACE" ON)
 
+# SPM requires matlab
+if (BUILD_MATLAB)
+  option(USE_SYSTEM_SPM "Build using an external version of SPM. Only SPM12 tested." OFF)
+  option(BUILD_SPM "Build SPM. Only SPM12 tested" ON)
+ENDIF()
+
 if (WIN32)
   set(build_Gadgetron_default OFF)
 else()
@@ -176,8 +199,11 @@ option(BUILD_SIRF "Build SIRF" ON)
 option(BUILD_STIR "Build STIR" ON)
 option(BUILD_Gadgetron "Build Gadgetron" ${build_Gadgetron_default})
 option(BUILD_siemens_to_ismrmrd "Build siemens_to_ismrmrd" OFF)
-option(BUILD_petmr_rd_tools "Build petmr_rd_tools" OFF)
+option(BUILD_pet_rd_tools "Build pet_rd_tools" OFF)
+option(BUILD_CIL "Build CCPi CIL Modules and ASTRA engine" OFF)
+option(BUILD_CIL_LITE "Build CCPi CIL Modules" OFF)
 option(BUILD_NIFTYREG "Build NIFTYREG" ON)
+option(BUILD_SIRF_Contribs "Build SIRF-Contribs" ON)
 
 option(BUILD_SIRF_Registration "Build SIRFS's registration functionality" ${BUILD_NIFTYREG})
 if (BUILD_SIRF_Registration AND NOT BUILD_NIFTYREG)
@@ -185,7 +211,7 @@ if (BUILD_SIRF_Registration AND NOT BUILD_NIFTYREG)
   set(BUILD_NIFTYREG ON CACHE BOOL "Build NIFTYREG" FORCE)
 endif()
 
-if (BUILD_petmr_rd_tools)
+if (BUILD_pet_rd_tools)
     set(USE_ITK ON CACHE BOOL "Use ITK" FORCE)
     option(USE_SYSTEM_glog "Build using an external version of glog" OFF)
 endif()
@@ -194,6 +220,14 @@ endif()
 option(USE_ITK "Use ITK" OFF)
 if (USE_ITK)
   option(USE_SYSTEM_ITK "Build using an external version of ITK" OFF)
+endif()
+
+# If building STIR and CUDA present, offer to build NiftyPET
+if (CUDA_FOUND AND NOT USE_SYSTEM_STIR)
+  set(USE_NIFTYPET ON CACHE BOOL "Build STIR with NiftyPET's projectors") # FORCE)
+  if (USE_NIFTYPET)
+    option(USE_SYSTEM_NIFTYPET "Build using an external version of NiftyPET" OFF)
+  endif()
 endif()
 
 ## set versions
@@ -220,12 +254,35 @@ if (BUILD_siemens_to_ismrmrd)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES siemens_to_ismrmrd)
 endif()
 
-if (BUILD_petmr_rd_tools)
-  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES petmr_rd_tools)
+if (BUILD_pet_rd_tools)
+  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES pet_rd_tools)
+endif()
+
+if ("${PYTHON_STRATEGY}" STREQUAL "CONDA")
+  set (BUILD_CIL OFF)
+endif()
+if (APPLE)
+  if (BUILD_CIL OR BUILD_CIL_LITE)
+    message(FATAL_ERROR "CIL Modules are not tested on OSX and will be disabled")
+  else()
+    message(WARNING "CIL Modules are not tested on OSX and will be disabled")
+  endif()
+  set(BUILD_CIL OFF)
+  set(BUILD_CIL_LITE OFF)
+endif()
+if (BUILD_CIL)
+  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES CCPi-Regularisation-Toolkit CCPi-Astra CCPi-Framework CCPi-FrameworkPlugins TomoPhantom)
+endif()
+if (BUILD_CIL_LITE)
+  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES CCPi-Regularisation-Toolkit CCPi-Framework CCPi-FrameworkPlugins)
 endif()
 
 if (BUILD_SIRF_Registration)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES NIFTYREG)
+endif()
+
+if (BUILD_SIRF_Contribs)
+  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES SIRF-Contribs)
 endif()
 
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${PRIMARY_PROJECT_NAME}_DEPENDENCIES)
@@ -245,7 +302,6 @@ message(STATUS "PYTHON_INCLUDE_DIRS=${PYTHON_INCLUDE_DIRS}")
 #set(proj ${PRIMARY_PROJECT_NAME})
 
 # Make environment files
-set(SIRF_SRC_DIR ${SOURCE_ROOT_DIR}/SIRF)
 set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
 
 ## configure the environment files env_ccppetmr.sh/csh
@@ -280,7 +336,7 @@ set(ENV_MATLAB_BASH "#####     Matlab not found     #####")
 set(ENV_MATLAB_CSH  "#####     Matlab not found     #####")
 if (Matlab_FOUND)
   set(ENV_MATLAB_BASH "\
-  MATLABPATH=${MATLAB_DEST}\n\
+  MATLABPATH=${MATLAB_DEST}:${SPM_DIR}\n\
 export MATLABPATH\n\
 SIRF_MATLAB_EXECUTABLE=${Matlab_MAIN_PROGRAM}\n\
 export SIRF_MATLAB_EXECUTABLE")

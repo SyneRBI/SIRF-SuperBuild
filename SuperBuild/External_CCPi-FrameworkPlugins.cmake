@@ -1,9 +1,6 @@
 #========================================================================
-# Author: Benjamin A Thomas
-# Author: Kris Thielemans
 # Author: Edoardo Pasca
-# Copyright 2017, 2018 University College London
-# Copyright 2017 STFC
+# Copyright 2018-2019 STFC
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -22,10 +19,10 @@
 #=========================================================================
 
 #This needs to be unique globally
-set(proj petmr_rd_tools)
+set(proj CCPi-FrameworkPlugins)
 
 # Set dependency list
-set(${proj}_DEPENDENCIES "Boost;ITK;glog")
+set(${proj}_DEPENDENCIES "CCPi-Framework")
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
@@ -43,63 +40,53 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(petmr_rd_tools_Install_Dir ${SUPERBUILD_INSTALL_DIR})
+  set(libcilreg_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
+  #message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
-  set(petmr_rd_tools_CMAKE_ARGS
-      -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
-      -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
-      -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}
-      -DCMAKE_INSTALL_PREFIX=${petmr_rd_tools_Install_Dir}
-      -DBOOST_INCLUDEDIR=${BOOST_ROOT}/include/
-      -DBOOST_LIBRARYDIR=${BOOST_LIBRARY_DIR}
-      -Dglog_DIR=${glog_DIR}
-      )
+  message("${proj} URL " ${${proj}_URL}  )
+  message("${proj} TAG " ${${proj}_TAG}  )
 
-  if (USE_SYSTEM_ITK)
-    set(petmr_rd_tools_CMAKE_ARGS ${petmr_rd_tools_CMAKE_ARGS} 
-      -DITK_DIR=${ITK_DIR}
-      )
+  # conda build should never get here
+  if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
+    # in case of PYTHONPATH it is sufficient to copy the files to the
+    # $PYTHONPATH directory
+    ExternalProject_Add(${proj}
+      ${${proj}_EP_ARGS}
+      GIT_REPOSITORY ${${proj}_URL}
+      GIT_TAG ${${proj}_TAG}
+      SOURCE_DIR ${${proj}_SOURCE_DIR}
+      BINARY_DIR ${${proj}_BINARY_DIR}
+      DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+      STAMP_DIR ${${proj}_STAMP_DIR}
+      TMP_DIR ${${proj}_TMP_DIR}
+      INSTALL_DIR ${libcilreg_Install_Dir}
+
+      CONFIGURE_COMMAND ""
+      BUILD_COMMAND ""
+      INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/Wrappers/Python/ccpi ${PYTHON_DEST}/ccpi
+      CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${libcilreg_Install_Dir}
+      DEPENDS ${${proj}_DEPENDENCIES}
+    )
+
+  else()
+    # if SETUP_PY one can launch the conda build.sh script setting
+    # the appropriate variables.
+    message(FATAL_ERROR "Only PYTHONPATH install method is currently supported")
   endif()
 
-  ExternalProject_Add(${proj}
-    ${${proj}_EP_ARGS}
-    GIT_REPOSITORY ${${proj}_URL}
-    GIT_TAG ${${proj}_TAG}
 
+  set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
+  set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
+
+else()
+  ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
     SOURCE_DIR ${${proj}_SOURCE_DIR}
     BINARY_DIR ${${proj}_BINARY_DIR}
     DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
     STAMP_DIR ${${proj}_STAMP_DIR}
     TMP_DIR ${${proj}_TMP_DIR}
-    CMAKE_ARGS ${petmr_rd_tools_CMAKE_ARGS}
-    INSTALL_DIR ${petmr_rd_tools_Install_Dir}
-    DEPENDS
-        ${${proj}_DEPENDENCIES}
   )
-
-    set(petmr_rd_tools_ROOT        ${petmr_rd_tools_SOURCE_DIR})
-    set(petmr_rd_tools_INCLUDE_DIR ${petmr_rd_tools_SOURCE_DIR})
-
-   else()
-      if(${USE_SYSTEM_${externalProjName}})
-        find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
-        message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
-   endif()
-    ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
-   )
-  endif()
-
-  mark_as_superbuild(
-    VARS
-      ${externalProjName}_DIR:PATH
-    LABELS
-      "FIND_PACKAGE"
-  )
+endif()

@@ -3,9 +3,12 @@
 #    source /path/to/whereever/env_ccppetmr.sh		
 # Preferably add this line to your .basrhc, .profile or whatever file is appropriate for your shell		
   		  
-SIRF_PATH=@SIRF_SRC_DIR@
+SIRF_PATH=@SIRF_SOURCE_DIR@
 export SIRF_PATH
 
+# Where all binaries are installed
+SIRF_INSTALL_PATH=@CCPPETMR_INSTALL@
+export SIRF_INSTALL_PATH
 # Where to find shared libraries
 # Setting for Linux but doesn't harm elsewhere
 LD_LIBRARY_PATH=@CCPPETMR_INSTALL@/lib:$LD_LIBRARY_PATH
@@ -24,3 +27,8 @@ PATH=@CCPPETMR_INSTALL@/bin:$PATH
 
 # Export Gadgetron Home
 @ENV_GADGETRON_HOME_SH@
+
+if [ ! -n "$STIR_PATH" ]
+then
+	export STIR_PATH=@STIR_SOURCE_DIR@
+fi

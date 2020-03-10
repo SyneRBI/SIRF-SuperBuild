@@ -29,7 +29,6 @@ else()
     #--without-libraries=atomic...
 
     WORKING_DIRECTORY ${BUILD_DIR} RESULT_VARIABLE bootstrap_result)
-
 endif(WIN32)
 
 return(${bootstrap_result})

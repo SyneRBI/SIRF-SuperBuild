@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+./sirf-compose-server -f docker-compose.srv-gpu.yml "$@"

@@ -32,32 +32,21 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
-set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
-set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
-set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
-set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
-set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
+SetCanonicalDirectoryNames(${proj})
 
-  
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
   message(STATUS "HDF5_DOWNLOAD_VERSION=${HDF5_DOWNLOAD_VERSION}")
 
   ### --- Project specific additions here
-  set(HDF5_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
   if(CMAKE_COMPILER_IS_CLANGXX)
     set(CLANG_ARG -DCMAKE_COMPILER_IS_CLANGXX:BOOL=ON)
   endif()
 
   #set(HDF5_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}-prefix/src/HDF5/hdf5-1.10.0-patch1 )
-  set (HDF5_BUILD_HL_LIB "OFF")
-  find_package(CUDA)
-  if (CUDA_FOUND)
-     message(STATUS "<<<<<<<<<<<<<<<<< CUDA FOUND >>>>>>>>>>>>>>>>>>>>>")
-     set(HDF5_BUILD_HL_LIB "ON")
-  endif()
+  set(HDF5_BUILD_HL_LIB ${CUDA_FOUND})
 
   if (WIN32 AND (${HDF5_DOWNLOAD_VERSION} STREQUAL 1.8.12))
     find_program(GIT "git")
@@ -77,22 +66,17 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
     PATCH_COMMAND ${PATCH_COMMAND}
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_DIRS}
 
     CMAKE_ARGS
-        ${CLANG_ARG}
-        -DHDF5_BUILD_EXAMPLES:BOOL=OFF
-        -DHDF5_BUILD_TOOLS:BOOL=OFF
-        -DHDF5_BUILD_HL_LIB:BOOL=${HDF5_BUILD_HL_LIB}
-        -DBUILD_TESTING:BOOL=OFF
-    INSTALL_DIR ${HDF5_Install_Dir}
+      ${CLANG_ARG}
+      -DHDF5_BUILD_EXAMPLES:BOOL=OFF
+      -DHDF5_BUILD_TOOLS:BOOL=OFF
+      -DHDF5_BUILD_HL_LIB:BOOL=${HDF5_BUILD_HL_LIB}
+      -DBUILD_TESTING:BOOL=OFF
   )
 
-  set( HDF5_ROOT ${HDF5_Install_Dir} )
+  set( HDF5_ROOT ${HDF5_INSTALL_DIR} )
   set( HDF5_INCLUDE_DIRS ${HDF5_ROOT}/include )
   set(HDF5_CMAKE_ARGS
      -DHDF5_ROOT:PATH=${HDF5_ROOT}
@@ -111,11 +95,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       )
   endif()
   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_DIRS}
   )
 endif()
 

@@ -33,19 +33,15 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
-set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
-set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
-set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
-set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
-set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
+SetCanonicalDirectoryNames(${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  
+
   if (WIN32)
-  set(SWIG_Install_Dir ${SUPERBUILD_INSTALL_DIR}/SWIG-3.0.12)
+  set(SWIG_INSTALL_DIR ${SUPERBUILD_INSTALL_DIR}/SWIG-3.0.12)
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
@@ -53,15 +49,15 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     URL_HASH MD5=${${proj}_MD5}
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
-    INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory ${SWIG_Install_Dir}
-        COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${SWIG_Install_Dir}
+    INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory ${SWIG_INSTALL_DIR}
+        COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${SWIG_INSTALL_DIR}
   )
-  set( SWIG_EXECUTABLE ${SWIG_Install_Dir}/swig.exe CACHE FILEPATH "SWIG executable" FORCE)
-  
+  set( SWIG_EXECUTABLE ${SWIG_INSTALL_DIR}/swig.exe CACHE FILEPATH "SWIG executable" FORCE)
+
   else(WIN32)
 
-  set(SWIG_Install_Dir ${SUPERBUILD_INSTALL_DIR})
-  
+  set(SWIG_INSTALL_DIR ${SUPERBUILD_INSTALL_DIR})
+
   set(SWIG_Configure_Script ${CMAKE_CURRENT_LIST_DIR}/External_SWIG_configure.cmake)
   set(SWIG_Build_Script ${CMAKE_CURRENT_LIST_DIR}/External_SWIG_build.cmake)
 
@@ -70,22 +66,18 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   endif()
 
   set(SWIG_SOURCE_DIR ${${proj}_SOURCE_DIR} )
-  
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_DIRS}
 
-    CONFIGURE_COMMAND ${${proj}_SOURCE_DIR}/configure --without-pcre --prefix ${SWIG_Install_Dir}
-    INSTALL_DIR ${${proj}_Install_Dir}
+    CONFIGURE_COMMAND ${${proj}_SOURCE_DIR}/configure --without-pcre --prefix ${SWIG_INSTALL_DIR}
+    INSTALL_DIR ${${proj}_INSTALL_DIR}
   )
 
-  set( SWIG_EXECUTABLE ${SWIG_Install_Dir}/bin/swig  CACHE FILEPATH "SWIG executable" FORCE)
+  set( SWIG_EXECUTABLE ${SWIG_INSTALL_DIR}/bin/swig  CACHE FILEPATH "SWIG executable" FORCE)
 
   endif(WIN32)
 
@@ -95,11 +87,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       message(STATUS "USING the system ${externalProjName}, found SWIG_EXECUTABLE=${SWIG_EXECUTABLE}, SWIG_VERSION=${SWIG_VERSION}")
   endif()
   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_DIRS}
   )
 endif()
 
