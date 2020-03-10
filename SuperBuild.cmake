@@ -2,8 +2,8 @@
 # Author: Benjamin A Thomas
 # Author: Edoardo Pasca
 # Author: Casper da Costa-Luis
-# Copyright 2017 University College London
-# Copyright 2017 Science Technology Facilities Council
+# Copyright 2017-2020 University College London
+# Copyright 2017-2020 Science Technology Facilities Council
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -82,7 +82,7 @@ mark_as_superbuild(
 option(DISABLE_PYTHON "Disable building SIRF python support" OFF)
 if (DISABLE_PYTHON)
   message(STATUS "Python support disabled")
-else(DISABLE_PYTHON)
+else()
 
   # Attempt to make Python settings consistent
   set(PYVER 0 CACHE STRING "Python version")
@@ -125,13 +125,13 @@ else(DISABLE_PYTHON)
       CONDA:      do nothing")
     set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
   endif()
-endif(DISABLE_PYTHON)
+endif()
 
 #### MATLAB support
 option(DISABLE_Matlab "Disable building MATLAB support" OFF)
 if (DISABLE_Matlab)
   message(STATUS "Matlab support disabled")
-else(DISABLE_Matlab)
+else()
   # Find Matlab
   set(Matlab_ROOT_DIR $ENV{Matlab_ROOT_DIR} CACHE PATH "Path to Matlab root directory" )
   # Note that we need the main program for the configuration files and the tests)
@@ -149,7 +149,7 @@ else(DISABLE_Matlab)
     message(STATUS "Matlab libraries found")
     message(STATUS "SIRF and/or STIR Matlab libraries will be installed in " ${MATLAB_DEST})
   endif()
-endif(DISABLE_Matlab)
+endif()
 
 # Include macro to sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
 # If the user doesn't want git checkout to be performed, 
