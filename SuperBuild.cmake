@@ -142,6 +142,8 @@ endif()
 include(${CMAKE_SOURCE_DIR}/CMake/SetGitTagAndRepo.cmake)
 # Include macro to set SOURCE_DIR etc
 include(${CMAKE_SOURCE_DIR}/CMake/SetCanonicalDirectoryNames.cmake)
+# Include macro to be able to pass flags to project CMAKEs
+include(${CMAKE_SOURCE_DIR}/CMake/SetExternalProjectFlags.cmake)
 
 if (UNIX AND NOT APPLE)
   option(USE_SYSTEM_Boost "Build using an external version of Boost" OFF)

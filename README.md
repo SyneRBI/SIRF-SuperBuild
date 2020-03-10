@@ -32,6 +32,8 @@ by the SuperBuild, [see below for more info for your operating system](#os-speci
    4. [Building from your own source](#Building-from-your-own-source)
    5. [Building with Intel Math Kernel Library](#Building-with-Intel-Math-Kernel-Library)
    6. [Building CCPi CIL](#Building-CCPi-CIL)
+   7. [Passing CMAKE arguments to specific projects](#Passing-CMAKE-arguments-to-specific-projects)
+
 
 ## Dependencies
 
@@ -276,6 +278,30 @@ It is possible to build the [CCPi Core Imaging Library CIL](https://www.ccpi.ac.
 
 1. `BUILD_CIL` will build CIL and [ASTRA-toolbox](https://github.com/astra-toolbox/astra-toolbox) and [TomoPhantom](https://github.com/dkazanc/TomoPhantom)
 2. `BUILD_CIL_LITE` will build only CIL (and leave out `CCPi-Astra`)
+
+### Passing CMAKE arguments to specific projects
+
+You may want to change the CMAKE arguments used to build some of the projects. You can pass those flags directly to the SuperBuild CMAKE with a semicolon-separated list, using the following notation:
+
+```sh
+cmake ../SIRF-SuperBuild -D${proj}_EXTRA_CMAKE_ARGS:STRING="-Dflag1:BOOL=ON;-Dflag2:STRING=\"your_string\""
+``` 
+
+All the flags from the following projects can be set using this technique:
+
+- STIR
+- Gadgetron
+- SIRF
+- NIFTYREG
+- NIFTYPET
+- CCPi-Regularisation-Toolkit
+- TomoPhantom  
+
+As an example, the following changes some Gadgetron and NiftyReg flags
+
+```sh
+cmake ../SIRF-SuperBuild -DGadgetron_EXTRA_CMAKE_ARGS:STRING="-DBUILD_PYTHON_SUPPORT:BOOL=ON;" -DNIFTYREG_EXTRA_CMAKE_ARGS:STRING="-DCUDA_FAST_MATH:BOOL=OFF;-DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF"
+``` 
 
 ## Notes
 

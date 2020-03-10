@@ -42,6 +42,8 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 set(externalProjName ${proj})
 
 SetCanonicalDirectoryNames(${proj})
+# Get any flag from the superbuild call that may be particular to this projects CMAKE_ARGS
+SetExternalProjectFlags(${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
@@ -75,6 +77,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   endif()
 
   set(STIR_CMAKE_ARGS
+    
     -DSWIG_EXECUTABLE:FILEPATH=${SWIG_EXECUTABLE}
     -DBUILD_EXECUTABLES:BOOL=${STIR_BUILD_EXECUTABLES}
     -DBUILD_SWIG_PYTHON:BOOL=${STIR_BUILD_SWIG_PYTHON}
@@ -96,6 +99,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     -DDISABLE_HDF5_SUPPORT:BOOL=${STIR_DISABLE_HDF5_SUPPORT}
     -DDISABLE_LLN_MATRIX:BOOL=${STIR_DISABLE_LLN_MATRIX}
     -DSTIR_ENABLE_EXPERIMENTAL:BOOL=${STIR_ENABLE_EXPERIMENTAL}
+
    )
 
   # Append CMAKE_ARGS for ITK choices
@@ -125,7 +129,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     ${${proj}_EP_ARGS_GIT}
     ${${proj}_EP_ARGS_DIRS}
 
-    CMAKE_ARGS ${STIR_CMAKE_ARGS}
+    CMAKE_ARGS ${STIR_CMAKE_ARGS}  ${${proj}_EXTRA_CMAKE_ARGS_LIST}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )

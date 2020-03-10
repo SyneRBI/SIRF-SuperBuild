@@ -31,6 +31,8 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 set(externalProjName ${proj})
 
 SetCanonicalDirectoryNames(${proj})
+# Get any flag from the superbuild call that may be particular to this projects CMAKE_ARGS
+SetExternalProjectFlags(${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
@@ -57,7 +59,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
       -DPYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR}
       -DPYTHON_LIBRARY=${PYTHON_LIBRARY}
-
+      ${${proj}_EXTRA_CMAKE_ARGS_LIST}
     DEPENDS
         ${${proj}_DEPENDENCIES}
 

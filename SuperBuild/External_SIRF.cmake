@@ -46,6 +46,10 @@ set(externalProjName ${proj})
 
 SetCanonicalDirectoryNames(${proj})
 
+# Get any flag from the superbuild call that may be particular to this projects CMAKE_ARGS
+SetExternalProjectFlags(${proj})
+
+
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
@@ -97,7 +101,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DREG_ENABLE:BOOL=${BUILD_SIRF_Registration}
       -DOPENMP_INCLUDES:PATH=${OPENMP_INCLUDES}
       -DOPENMP_LIBRARIES:PATH=${OPENMP_LIBRARIES}
-		${extra_args}
+		  ${extra_args}
+      ${${proj}_EXTRA_CMAKE_ARGS_LIST}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
