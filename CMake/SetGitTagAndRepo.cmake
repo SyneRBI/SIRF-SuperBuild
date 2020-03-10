@@ -38,12 +38,13 @@ macro(SetGitTagAndRepo proj)
 	# If disable git desired (and source directory exists), set tag and repo to blank
 	if (EXISTS "${${proj}_SOURCE_DIR}" AND DISABLE_GIT_CHECKOUT_${proj})
 		message(STATUS "Not going to perform git checkout for ${proj}...")
-		SET(${proj}_TAG_MODIFIED "")
-		SET(${proj}_URL_MODIFIED "")
+		set(${proj}_EP_ARGS_GIT "")
 	# Else, 
 	else()
 		message(STATUS "Will perform git checkout for ${proj}...")
-		SET(${proj}_TAG_MODIFIED "${${proj}_TAG}")
-		SET(${proj}_URL_MODIFIED "${${proj}_URL}")
+		set(${proj}_EP_ARGS_GIT
+                    GIT_REPOSITORY ${${proj}_URL}
+                    GIT_TAG ${${proj}_TAG}
+                 )
 	endif()
 endmacro()

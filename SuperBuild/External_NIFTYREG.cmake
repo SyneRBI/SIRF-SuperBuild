@@ -52,8 +52,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
-    GIT_REPOSITORY "${${proj}_URL_MODIFIED}"
-    GIT_TAG "${${proj}_TAG_MODIFIED}"
+    ${${proj}_EP_ARGS_GIT}
     ${${proj}_EP_ARGS_DIRS}
     CMAKE_ARGS
       -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=${CMAKE_POSITION_INDEPENDENT_CODE}
