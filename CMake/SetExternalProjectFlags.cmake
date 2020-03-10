@@ -23,8 +23,8 @@
 
 macro(SetExternalProjectFlags proj)
 
-	set(${proj}_EXTRA_CMAKE_ARGS "" CACHE STRING "Optional extra CMake arguments to be appended to the flags set by the SuperBuild")
+	set(${proj}_EXTRA_CMAKE_ARGS "" CACHE STRING "Optional extra CMake arguments to be appended to the flags set by the SuperBuild(use semi-colons for multiple arguments)")
 	mark_as_advanced(${proj}_EXTRA_CMAKE_ARGS)
-	string(REPLACE " " ";" ${proj}_EXTRA_CMAKE_ARGS_LIST "${${proj}_EXTRA_CMAKE_ARGS}")
-	message(STATUS ${proj}_EXTRA_CMAKE_ARGS_LIST= "${${proj}_EXTRA_CMAKE_ARGS_LIST}")
+	# string(REPLACE " " ";" ${proj}_EXTRA_CMAKE_ARGS_LIST "${${proj}_EXTRA_CMAKE_ARGS}")
+	message(STATUS ${proj}_EXTRA_CMAKE_ARGS= "${${proj}_EXTRA_CMAKE_ARGS}")
 endmacro()
