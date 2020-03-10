@@ -1,6 +1,6 @@
 #========================================================================
 # Author: Ander Biguri
-# Copyright 2019 University College London
+# Copyright 2020 University College London
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #

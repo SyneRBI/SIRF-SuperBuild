@@ -38,7 +38,6 @@ SetCanonicalDirectoryNames(${proj})
 # Get any flag from the superbuild call that may be particular to this projects CMAKE_ARGS
 SetExternalProjectFlags(${proj})
 
-#message(FATAL_ERROR "${proj}_EXTRA_CMAKE_ARGS = \"${${proj}_EXTRA_CMAKE_ARGS}\"")
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
