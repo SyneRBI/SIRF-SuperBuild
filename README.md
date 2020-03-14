@@ -29,8 +29,11 @@ by the SuperBuild, [see below for more info for your operating system](#os-speci
    1. [Compiling against your own packages](#Compiling-packages)
    2. [Python and MATLAB installation locations](#Python-and-MATLAB-installation-locations)
    3. [Building with specific versions of dependencies](#Building-with-specific-versions-of-dependencies)
-   4. [Building with Intel Math Kernel Library](#Building-with-Intel-Math-Kernel-Library)
-   5. [Building CCPi CIL](#Building-CCPi-CIL)
+   4. [Building from your own source](#Building-from-your-own-source)
+   5. [Building with Intel Math Kernel Library](#Building-with-Intel-Math-Kernel-Library)
+   6. [Building CCPi CIL](#Building-CCPi-CIL)
+   7. [Passing CMAKE arguments to specific projects](#Passing-CMAKE-arguments-to-specific-projects)
+
 
 ## Dependencies
 
@@ -50,28 +53,20 @@ mkdir ~/devel
 ```
 
 ### Install CMake
-If you do not have CMake >= 3.10 install it first ([download link](https://cmake.org/download/)). On Ubuntu Linux,
-you can issue the following commands
+If you do not have CMake >= 3.10, install it first. You can probably use a package manager on your OS. Alternatively, you can do that either by following the official instructions ([download link](https://cmake.org/download/)) or running your own shell sript to do so (see an example [here](https://github.com/CCPPETMR/CCPPETMR_VM/blob/master/scripts/INSTALL_CMake.sh)). 
 
-```bash
-ver=3.10.3
-sudo mkdir /opt/cmake
-cd /opt/cmake
-wget -c https://github.com/Kitware/CMake/releases/download/v${ver}/cmake-${ver}-Linux-x86_64.tar.gz
-tar xzf /tmp/cmake-${ver}-Linux-x86_64.tar.gz --strip 1
-rm /tmp/cmake-${ver}-Linux-x86_64.tar.gz
-export PATH=/opt/cmake/bin:$PATH
-```
-During installation you will be asked to read and accept CMake's license. If you answered the last question during the CMake installation with yes, then you should use
+If you use a CMake installer, you will be asked to read and accept CMake's license. If you answered the last question during the CMake installation with yes, then you should use
 
 ```
-export PATH=/opt/cmake/cmake-${ver}-Linux-x86_64/bin:$PATH
+export PATH=/usr/local/cmake/bin:$PATH
 ```
 Note that the above `PATH` statements won't work if you are running csh. The equivalent would be for instance
 ```csh
-set path = ( /opt/cmake/bin $path )
+set path = ( /usr/local/cmake/bin $path )
 ```
-You might want to add the `PATH` line to your start-up file (e.g. `.profile` or `.cshrc`).
+NOTE: change `/usr/local/` to your chosen installation path, if different. 
+
+You might want to add the `PATH` line to your start-up file e.g. `.profile`, `.bashrc` or `.cshrc`.
 
 ### Clone the SIRF-SuperBuild project
 ```bash
@@ -97,7 +92,9 @@ Use your build environment to build and install the project. On Linux/OSX etc, y
 ```bash
 [sudo] make -jN
 ```
-where `N` are the number of cores you want to use for the compilation. You will only need the `sudo` command if you are building in a system folder (e.g., `/usr/local`). For Eclipse/XCode/Visual Studio, you could open the project, or try something like
+where `N` are the number of cores you want to use for the compilation. You will only need the `sudo` command if you set `CMAKE_INSTALL_PREFIX` to a system folder (e.g., `/usr/local`).
+
+For Eclipse/XCode/Visual Studio, you could open the project, or try something like
 ```bash
 cmake --build . --config Release
 ```
@@ -109,23 +106,22 @@ Gadgetron requires a configuration file. An example is supplied and, as a starti
 ```
 mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
 ```
+replacing `INSTALL` with the directory you used for `CMAKE_INSTALL_PREFIX`.
 
 ### Set Environment variables
 Source a script with the environment variables appropriate for your shell
 
-For instance, for sh/bash/ksh etc
+For instance, assuming that you set `CMAKE_INSTALL_PREFIX=~/devel/INSTALL`,for sh/bash/ksh etc
 ```bash
-cd ~/devel/build
-source INSTALL/bin/env_ccppetmr.sh
+source ~/devel/INSTALL/bin/env_ccppetmr.sh
 ```
-You probably want to add a similar line (with absolute path) to your .bashrc/.profile.
+You probably want to add a similar line to your .bashrc/.profile.
 
 Or for csh
 ```csh
-cd ~/devel/build
-source INSTALL/bin/env_ccppetmr.csh
+source ~/devel/INSTALL/bin/env_ccppetmr.csh
 ```
-You probably want to add a similar line (with absolute path) to your .cshrc.
+You probably want to add a similar line to your .cshrc.
 
 ### Open a terminal and start Gadgetron
 To be able to use Gadgetron, a Gadgetron client must already be open in another terminal window. To do this, open a new terminal window and enter:
@@ -258,6 +254,14 @@ You could do
 cmake -DDEVEL_BUILD=ON -USIRF_URL -USIRF_TAG -USTIR_URL -USTIR_TAG -UGadgetron_URL -UGadgetron_TAG -UISMRMRD_URL -UISMRMRD_TAG .
 ```
 
+### Building from your own source
+
+When developing, you might have a project already checked-out and let the SuperBuild use that. In this case,
+you probably also want to disable any `git` processing. You can achieve this by (using SIRF as an example)
+```sh
+cmake ../SIRF-SuperBuild -DDISABLE_GIT_CHECKOUT_SIRF=ON -DSIRF_SOURCE_DIR=~/wherever/SIRF
+```
+
 ### Building with Intel Math Kernel Library
 
 [Gadgetron](https://github.com/CCPPETMR/SIRF/wiki/SIRF,-Gadgetron-and-MKL) and Armadillo can make use of Intel's Math Kernel Library. 
@@ -274,6 +278,30 @@ It is possible to build the [CCPi Core Imaging Library CIL](https://www.ccpi.ac.
 
 1. `BUILD_CIL` will build CIL and [ASTRA-toolbox](https://github.com/astra-toolbox/astra-toolbox) and [TomoPhantom](https://github.com/dkazanc/TomoPhantom)
 2. `BUILD_CIL_LITE` will build only CIL (and leave out `CCPi-Astra`)
+
+### Passing CMAKE arguments to specific projects
+
+You may want to change the CMAKE arguments used to build some of the projects. You can pass those flags directly to the SuperBuild CMAKE with a semicolon-separated list, using the following notation:
+
+```sh
+cmake ../SIRF-SuperBuild -D${proj}_EXTRA_CMAKE_ARGS:STRING="-Dflag1:BOOL=ON;-Dflag2:STRING=\"your_string\""
+``` 
+
+All the flags from the following projects can be set using this technique:
+
+- STIR
+- Gadgetron
+- SIRF
+- NIFTYREG
+- NIFTYPET
+- CCPi-Regularisation-Toolkit
+- TomoPhantom  
+
+As an example, the following changes some Gadgetron and NiftyReg flags
+
+```sh
+cmake ../SIRF-SuperBuild -DGadgetron_EXTRA_CMAKE_ARGS:STRING="-DBUILD_PYTHON_SUPPORT:BOOL=ON;" -DNIFTYREG_EXTRA_CMAKE_ARGS:STRING="-DCUDA_FAST_MATH:BOOL=OFF;-DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF"
+``` 
 
 ## Notes
 

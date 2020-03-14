@@ -1,4 +1,9 @@
 # ChangeLog
+
+## x.x.x
+- make ${proj}_SOURCE_DIR a cached variables such that the user can point to an existing directory
+- Added support for passing CMAKE args to projects from the SuperBuild call. 
+
 ## v2.1.0
 - Switch NiftyReg remote from `rijobro` to `KCL-BMEIS` (following the acceptance of one of our PRs to their code).
 - Azure:

@@ -30,6 +30,9 @@ endif()
 if (${BUILD_STIR})
   set(${proj}_DEPENDENCIES "${${proj}_DEPENDENCIES};STIR")
 endif()
+if (${BUILD_SPM})
+  set(${proj}_DEPENDENCIES "${${proj}_DEPENDENCIES};SPM")
+endif()
 
 message(STATUS "Matlab_ROOT_DIR=" ${Matlab_ROOT_DIR})
 message(STATUS "STIR_DIR=" ${STIR_DIR})
@@ -41,18 +44,16 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
-set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
-set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
-set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
-set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
-set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
+SetCanonicalDirectoryNames(${proj})
+
+# Get any flag from the superbuild call that may be particular to this projects CMAKE_ARGS
+SetExternalProjectFlags(${proj})
 
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(SIRF_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
   option(BUILD_TESTING_${proj} "Build tests for ${proj}" ON)
 
@@ -65,26 +66,26 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set(extra_args "")
   endif()
 
+  if (BUILD_SPM)
+    set(extra_args "-DSPM_DIR:PATH=${SPM_DIR}")
+  endif()
+
   # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
   SetGitTagAndRepo("${proj}")
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
-    GIT_REPOSITORY "${${proj}_URL_MODIFIED}"
-    GIT_TAG "${${proj}_TAG_MODIFIED}"
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_GIT}
+    ${${proj}_EP_ARGS_DIRS}
 
     CMAKE_ARGS
       -DCMAKE_PREFIX_PATH:PATH=${SUPERBUILD_INSTALL_DIR}
       -DCMAKE_LIBRARY_PATH:PATH=${SUPERBUILD_INSTALL_DIR}/lib
-      -DCMAKE_INSTALL_PREFIX:PATH=${SIRF_Install_Dir}
+      -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
       -DBOOST_INCLUDEDIR:PATH=${BOOST_ROOT}/include/
       -DBOOST_LIBRARYDIR:PATH=${BOOST_LIBRARY_DIR}
       -DBOOST_ROOT:PATH=${BOOST_ROOT}
+      -DDISABLE_Matlab:BOOL=${DISABLE_Matlab}
       -DMatlab_ROOT_DIR:PATH=${Matlab_ROOT_DIR}
       -DMATLAB_ROOT:PATH=${Matlab_ROOT_DIR} # pass this for compatibility with old SIRF
       -DMATLAB_DEST_DIR:PATH=${MATLAB_DEST_DIR}
@@ -92,6 +93,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       ${HDF5_CMAKE_ARGS}
       -DISMRMRD_DIR:PATH=${ISMRMRD_DIR}
       -DSWIG_EXECUTABLE:FILEPATH=${SWIG_EXECUTABLE}
+      -DDISABLE_PYTHON:BOOL=${DISABLE_PYTHON}
       -DPYTHON_EXECUTABLE:FILEPATH=${PYTHON_EXECUTABLE}
       -DPYTHON_INCLUDE_DIR:PATH=${PYTHON_INCLUDE_DIRS}
       -DPYTHON_LIBRARY:FILEPATH=${PYTHON_LIBRARIES}
@@ -101,14 +103,11 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DREG_ENABLE:BOOL=${BUILD_SIRF_Registration}
       -DOPENMP_INCLUDES:PATH=${OPENMP_INCLUDES}
       -DOPENMP_LIBRARIES:PATH=${OPENMP_LIBRARIES}
-		${extra_args}
-	INSTALL_DIR ${SIRF_Install_Dir}
+		  ${extra_args}
+      ${${proj}_EXTRA_CMAKE_ARGS_LIST}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
-
-    set(SIRF_ROOT        ${SIRF_SOURCE_DIR})
-    set(SIRF_INCLUDE_DIR ${SIRF_SOURCE_DIR})
 
   #if (BUILD_TESTING_${proj})
     add_test(NAME ${proj}_TESTS
@@ -122,11 +121,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
    endif()
     ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-      SOURCE_DIR ${${proj}_SOURCE_DIR}
-      BINARY_DIR ${${proj}_BINARY_DIR}
-      DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-      STAMP_DIR ${${proj}_STAMP_DIR}
-      TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_DIRS}
     )
   endif()
 

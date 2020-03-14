@@ -111,12 +111,12 @@ set(GTest_URL https://github.com/google/googletest )
 set(GTest_TAG release-1.8.0)
 
 ## glog
-set(glog_URL https://github.com/google/glog )
-set(glog_TAG v0.3.5)
+set(DEFAULT_glog_URL https://github.com/google/glog )
+set(DEFAULT_glog_TAG v0.3.5)
 
 ## ITK
-set(ITK_URL https://itk.org/ITK.git)
-set(ITK_TAG v4.13.1)
+set(DEFAULT_ITK_URL https://github.com/InsightSoftwareConsortium/ITK.git)
+set(DEFAULT_ITK_TAG v4.13.1)
 
 ## NIFTYREG
 set(DEFAULT_NIFTYREG_URL https://github.com/KCL-BMEIS/niftyreg.git )
@@ -147,6 +147,10 @@ set(DEFAULT_NIFTYPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
 set(DEFAULT_SIRF-Contribs_URL https://github.com/CCPPETMR/SIRF-Contribs )
 set(DEFAULT_SIRF-Contribs_TAG origin/master )
 
+## SPM
+set(DEFAULT_SPM_URL https://github.com/spm/SPM12.git )
+set(DEFAULT_SPM_TAG r7771)
+
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
 
@@ -170,10 +174,6 @@ if (DEVEL_BUILD)
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
   set(DEFAULT_pet_rd_tools_TAG origin/master)
 
-  ## glog
-  set(DEFAULT_glog_URL https://github.com/google/glog )
-  set(DEFAULT_glog_TAG v035)
- 
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
   set(DEFAULT_ACE_TAG origin/master)
   # CCPi CIL
@@ -201,10 +201,6 @@ else()
   ## pet-rd-tools
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
   set(DEFAULT_pet_rd_tools_TAG v1.1.0)
-
-  ## glog
-  set(DEFAULT_glog_URL https://github.com/google/glog )
-  set(DEFAULT_glog_TAG v035)
 
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
   set(DEFAULT_ACE_TAG origin/master)
@@ -270,6 +266,12 @@ set(NIFTYPET_TAG ${DEFAULT_NIFTYPET_TAG} CACHE STRING ON)
 set(SIRF-Contribs_URL ${DEFAULT_SIRF-Contribs_URL} CACHE STRING ON)
 set(SIRF-Contribs_TAG ${DEFAULT_SIRF-Contribs_TAG} CACHE STRING ON)
 
+set(ITK_URL ${DEFAULT_ITK_URL} CACHE STRING ON)
+set(ITK_TAG ${DEFAULT_ITK_TAG} CACHE STRING ON)
+
+set(SPM_URL ${DEFAULT_SPM_URL} CACHE STRING ON)
+set(SPM_TAG ${DEFAULT_SPM_TAG} CACHE STRING ON)
+
 mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   Gadgetron_URL Gadgetron_TAG
   siemens_to_ismrmrd_URL siemens_to_ismrmrd_TAG
@@ -282,4 +284,6 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   CCPi-Regularisation-Toolkit_URL CCPi-Regularisation-Toolkit_TAG
   NIFTYPET_URL NIFTYPET_TAG
   SIRF-Contribs_URL SIRF-Contribs_TAG
+  ITK_URL ITK_TAG
+  SPM_URL SPM_TAG
 )

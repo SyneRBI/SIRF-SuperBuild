@@ -2,8 +2,8 @@
 # Author: Benjamin A Thomas
 # Author: Edoardo Pasca
 # Author: Casper da Costa-Luis
-# Copyright 2017 University College London
-# Copyright 2017 Science Technology Facilities Council
+# Copyright 2017-2020 University College London
+# Copyright 2017-2020 Science Technology Facilities Council
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -77,69 +77,89 @@ mark_as_superbuild(
         CMAKE_INSTALL_PREFIX:PATH
 )
 
-# Attempt to make Python settings consistent
-set(PYVER 0 CACHE STRING "Python version")
-if(PYVER EQUAL 0)
-  find_package(PythonInterp)
+#### Python support
+
+option(DISABLE_PYTHON "Disable building SIRF python support" OFF)
+if (DISABLE_PYTHON)
+  message(STATUS "Python support disabled")
 else()
-  find_package(PythonInterp ${PYVER})
+
+  # Attempt to make Python settings consistent
+  set(PYVER 0 CACHE STRING "Python version")
+  if(PYVER EQUAL 0)
+    find_package(PythonInterp)
+  else()
+    find_package(PythonInterp ${PYVER})
+  endif()
+  if (PYTHONINTERP_FOUND)
+    set(Python_ADDITIONAL_VERSIONS ${PYTHON_VERSION_STRING})
+    message(STATUS "Found PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}")
+    message(STATUS "Python version ${PYTHON_VERSION_STRING}")
+  endif()
+  # find_package(PythonLibs ${PYTHON_VERSION_STRING})
+  if(PYVER EQUAL 0)
+    find_package(PythonLibs)
+  else()
+    find_package(PythonLibs ${PYVER})
+  endif()
+  if (PYTHONLIBS_FOUND)
+    message(STATUS "Found PYTHON_INCLUDE_DIRS=${PYTHON_INCLUDE_DIRS}")
+    message(STATUS "Found PYTHON_LIBRARIES=${PYTHON_LIBRARIES}")
+  endif()
+
+  # Set destinations for Python files
+  set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
+  if (BUILD_PYTHON)
+    set(PYTHON_DEST_DIR "" CACHE PATH "Directory of the SIRF and/or STIR Python modules")
+    if (PYTHON_DEST_DIR)
+     set(PYTHON_DEST "${PYTHON_DEST_DIR}")
+    else()
+      set(PYTHON_DEST "${CMAKE_INSTALL_PREFIX}/python")
+    endif()
+    message(STATUS "Python libraries found")
+    message(STATUS "SIRF and/or STIR Python modules will be installed in " ${PYTHON_DEST})
+
+    set(PYTHON_STRATEGY "PYTHONPATH" CACHE STRING "\
+      PYTHONPATH: prefix PYTHONPATH \n\
+      SETUP_PY:   execute ${PYTHON_EXECUTABLE} setup.py install \n\
+      CONDA:      do nothing")
+    set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
+  endif()
 endif()
-if (PYTHONINTERP_FOUND)
-  set(Python_ADDITIONAL_VERSIONS ${PYTHON_VERSION_STRING})
-  message(STATUS "Found PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}")
-  message(STATUS "Python version ${PYTHON_VERSION_STRING}")
-endif()
-# find_package(PythonLibs ${PYTHON_VERSION_STRING})
-if(PYVER EQUAL 0)
-  find_package(PythonLibs)
+
+#### MATLAB support
+option(DISABLE_Matlab "Disable building MATLAB support" OFF)
+if (DISABLE_Matlab)
+  message(STATUS "Matlab support disabled")
 else()
-  find_package(PythonLibs ${PYVER})
-endif()
-if (PYTHONLIBS_FOUND)
-  message(STATUS "Found PYTHON_INCLUDE_DIRS=${PYTHON_INCLUDE_DIRS}")
-  message(STATUS "Found PYTHON_LIBRARIES=${PYTHON_LIBRARIES}")
-endif()
+  # Find Matlab
+  set(Matlab_ROOT_DIR $ENV{Matlab_ROOT_DIR} CACHE PATH "Path to Matlab root directory" )
+  # Note that we need the main program for the configuration files and the tests)
+  find_package(Matlab COMPONENTS MAIN_PROGRAM)
 
-# Find Matlab
-set(Matlab_ROOT_DIR $ENV{Matlab_ROOT_DIR} CACHE PATH "Path to Matlab root directory" )
-# Note that we need the main program for the configuration files and the tests)
-find_package(Matlab COMPONENTS MAIN_PROGRAM)
 
-# Set destinations for Python/MATLAB files
-set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
-if (BUILD_PYTHON)
-  set(PYTHON_DEST_DIR "" CACHE PATH "Directory of the SIRF and/or STIR Python modules")
-  if (PYTHON_DEST_DIR)
-   set(PYTHON_DEST "${PYTHON_DEST_DIR}")
-  else()
-    set(PYTHON_DEST "${CMAKE_INSTALL_PREFIX}/python")
+  set (BUILD_MATLAB ${Matlab_FOUND})
+  if (BUILD_MATLAB)
+    set(MATLAB_DEST_DIR "" CACHE PATH "Directory of the SIRF and/or STIR Matlab libraries")
+    if (MATLAB_DEST_DIR)
+      set(MATLAB_DEST "${MATLAB_DEST_DIR}")
+    else()
+      set(MATLAB_DEST "${CMAKE_INSTALL_PREFIX}/matlab")
+    endif()
+    message(STATUS "Matlab libraries found")
+    message(STATUS "SIRF and/or STIR Matlab libraries will be installed in " ${MATLAB_DEST})
   endif()
-  message(STATUS "Python libraries found")
-  message(STATUS "SIRF and/or STIR Python modules will be installed in " ${PYTHON_DEST})
-
-  set(PYTHON_STRATEGY "PYTHONPATH" CACHE STRING "\
-    PYTHONPATH: prefix PYTHONPATH \n\
-    SETUP_PY:   execute ${PYTHON_EXECUTABLE} setup.py install \n\
-    CONDA:      do nothing")
-  set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
-endif()
-set (BUILD_MATLAB ${Matlab_FOUND})
-if (BUILD_MATLAB)
-  set(MATLAB_DEST_DIR "" CACHE PATH "Directory of the SIRF and/or STIR Matlab libraries")
-  if (MATLAB_DEST_DIR)
-    set(MATLAB_DEST "${MATLAB_DEST_DIR}")
-  else()
-    set(MATLAB_DEST "${CMAKE_INSTALL_PREFIX}/matlab")
-  endif()
-  message(STATUS "Matlab libraries found")
-  message(STATUS "SIRF and/or STIR Matlab libraries will be installed in " ${MATLAB_DEST})
 endif()
 
-# Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
+# Include macro to sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
 # If the user doesn't want git checkout to be performed, 
 # these will be set to blank strings. Else, they'll be set to 
 # ${${proj}_URL} and ${${proj}_TAG}, respectively.
 include(${CMAKE_SOURCE_DIR}/CMake/SetGitTagAndRepo.cmake)
+# Include macro to set SOURCE_DIR etc
+include(${CMAKE_SOURCE_DIR}/CMake/SetCanonicalDirectoryNames.cmake)
+# Include macro to be able to pass flags to project CMAKEs
+include(${CMAKE_SOURCE_DIR}/CMake/SetExternalProjectFlags.cmake)
 
 if (UNIX AND NOT APPLE)
   option(USE_SYSTEM_Boost "Build using an external version of Boost" OFF)
@@ -158,6 +178,12 @@ option(USE_SYSTEM_SIRF "Build using an external version of SIRF" OFF)
 option(USE_SYSTEM_NIFTYREG "Build using an external version of NIFTYREG" OFF)
 option(USE_SYSTEM_GTest "Build using an external version of GTest" OFF)
 option(USE_SYSTEM_ACE "Build using an external version of ACE" ON)
+
+# SPM requires matlab
+if (BUILD_MATLAB)
+  option(USE_SYSTEM_SPM "Build using an external version of SPM. Only SPM12 tested." OFF)
+  option(BUILD_SPM "Build SPM. Only SPM12 tested" ON)
+ENDIF()
 
 if (WIN32)
   set(build_Gadgetron_default OFF)
@@ -276,7 +302,6 @@ message(STATUS "PYTHON_INCLUDE_DIRS=${PYTHON_INCLUDE_DIRS}")
 #set(proj ${PRIMARY_PROJECT_NAME})
 
 # Make environment files
-set(SIRF_SRC_DIR ${SOURCE_ROOT_DIR}/SIRF)
 set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
 
 ## configure the environment files env_ccppetmr.sh/csh
@@ -311,7 +336,7 @@ set(ENV_MATLAB_BASH "#####     Matlab not found     #####")
 set(ENV_MATLAB_CSH  "#####     Matlab not found     #####")
 if (Matlab_FOUND)
   set(ENV_MATLAB_BASH "\
-  MATLABPATH=${MATLAB_DEST}\n\
+  MATLABPATH=${MATLAB_DEST}:${SPM_DIR}\n\
 export MATLABPATH\n\
 SIRF_MATLAB_EXECUTABLE=${Matlab_MAIN_PROGRAM}\n\
 export SIRF_MATLAB_EXECUTABLE")

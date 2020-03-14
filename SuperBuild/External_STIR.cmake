@@ -41,18 +41,14 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
-set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
-set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
-set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
-set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
-set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
-
+SetCanonicalDirectoryNames(${proj})
+# Get any flag from the superbuild call that may be particular to this projects CMAKE_ARGS
+SetExternalProjectFlags(${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(STIR_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
   option(BUILD_TESTING_${proj} "Build tests for ${proj}" OFF)
   if (APPLE)
@@ -70,6 +66,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   option(STIR_BUILD_SWIG_PYTHON "Build STIR Python interface" ${default_STIR_BUILD_SWIG_PYTHON})
   option(STIR_DISABLE_CERN_ROOT "Disable STIR ROOT interface" ON)
   option(STIR_DISABLE_LLN_MATRIX "Disable STIR Louvain-la-Neuve Matrix library for ECAT7 support" ON)
+  option(STIR_DISABLE_HDF5_SUPPORT "Disable STIR use of HDF5 libraries" OFF)
   option(STIR_ENABLE_EXPERIMENTAL "Enable STIR experimental code" OFF)
 
   mark_as_advanced(BUILD_STIR_EXECUTABLES BUILD_STIR_SWIG_PYTHON STIR_DISABLE_CERN_ROOT)
@@ -80,6 +77,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   endif()
 
   set(STIR_CMAKE_ARGS
+    
     -DSWIG_EXECUTABLE:FILEPATH=${SWIG_EXECUTABLE}
     -DBUILD_EXECUTABLES:BOOL=${STIR_BUILD_EXECUTABLES}
     -DBUILD_SWIG_PYTHON:BOOL=${STIR_BUILD_SWIG_PYTHON}
@@ -90,7 +88,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     -DBUILD_DOCUMENTATION:BOOL=OFF
     -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
     -DBOOST_ROOT:PATH=${BOOST_ROOT}
-    -DCMAKE_INSTALL_PREFIX:PATH=${STIR_Install_Dir}
+    -DCMAKE_INSTALL_PREFIX:PATH=${STIR_INSTALL_DIR}
     -DGRAPHICS:STRING=None
     -DCMAKE_CXX_STANDARD:STRING=11
     -DSTIR_OPENMP:BOOL=${STIR_ENABLE_OPENMP}
@@ -98,8 +96,10 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     -DOPENMP_LIBRARIES:PATH=${OPENMP_LIBRARIES}
     # Use 2 variables for ROOT to cover multiple STIR versions
     -DDISABLE_CERN_ROOT_SUPPORT:BOOL=${STIR_DISABLE_CERN_ROOT} -DDISABLE_CERN_ROOT:BOOL=${STIR_DISABLE_CERN_ROOT}
+    -DDISABLE_HDF5_SUPPORT:BOOL=${STIR_DISABLE_HDF5_SUPPORT}
     -DDISABLE_LLN_MATRIX:BOOL=${STIR_DISABLE_LLN_MATRIX}
     -DSTIR_ENABLE_EXPERIMENTAL:BOOL=${STIR_ENABLE_EXPERIMENTAL}
+
    )
 
   # Append CMAKE_ARGS for ITK choices
@@ -126,23 +126,16 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
-    GIT_REPOSITORY "${${proj}_URL_MODIFIED}"
-    GIT_TAG "${${proj}_TAG_MODIFIED}"
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_GIT}
+    ${${proj}_EP_ARGS_DIRS}
 
-    CMAKE_ARGS ${STIR_CMAKE_ARGS}
-    INSTALL_DIR ${STIR_Install_Dir}
+    CMAKE_ARGS ${STIR_CMAKE_ARGS}  ${${proj}_EXTRA_CMAKE_ARGS_LIST}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
 
-  set(STIR_ROOT       ${STIR_Install_Dir})
   set(STIR_DIR       ${SUPERBUILD_INSTALL_DIR}/lib/cmake)
-  set(STIR_INCLUDE_DIRS ${STIR_ROOT}/stir)
+
 
   if (BUILD_TESTING_${proj})
     add_test(NAME ${proj}_TESTS
@@ -156,11 +149,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
    endif()
     ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_DIRS}
    )
   endif()
 

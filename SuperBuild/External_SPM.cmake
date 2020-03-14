@@ -1,6 +1,6 @@
 #========================================================================
-# Author: Edoardo Pasca
-# Copyright 2018-2019 STFC
+# Author: Richard Brown
+# Copyright 2020 UCL
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -19,7 +19,7 @@
 #=========================================================================
 
 #This needs to be unique globally
-set(proj SIRF-Contribs)
+set(proj SPM)
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
@@ -36,37 +36,27 @@ set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
-  # conda build should never get here
-  if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
-    # in case of PYTHONPATH it is sufficient to copy the files to the 
-    # $PYTHONPATH directory
-    ExternalProject_Add(${proj}
-      ${${proj}_EP_ARGS}
-      GIT_REPOSITORY ${${proj}_URL}
-      GIT_TAG ${${proj}_TAG}
-      SOURCE_DIR ${${proj}_SOURCE_DIR}
-      BINARY_DIR ${${proj}_BINARY_DIR}
-      DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-      STAMP_DIR ${${proj}_STAMP_DIR}
-      TMP_DIR ${${proj}_TMP_DIR}
-      INSTALL_DIR ${SUPERBUILD_INSTALL_DIR}
-    
-      CONFIGURE_COMMAND ""
-      BUILD_COMMAND ""
-      INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/src/Python/sirf/ ${PYTHON_DEST}/sirf
-    )
+  ExternalProject_Add(${proj}
+    ${${proj}_EP_ARGS}
+    GIT_REPOSITORY ${${proj}_URL}
+    GIT_TAG ${${proj}_TAG}
+    SOURCE_DIR ${${proj}_SOURCE_DIR}
+    BINARY_DIR ${${proj}_BINARY_DIR}
+    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+    STAMP_DIR ${${proj}_STAMP_DIR}
+    TMP_DIR ${${proj}_TMP_DIR}
+    INSTALL_DIR ${SUPERBUILD_INSTALL_DIR}
+  
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND ""
+    INSTALL_COMMAND ""
+  )
 
-  else()
-    # if SETUP_PY one can launch the conda build.sh script setting 
-    # the appropriate variables.
-    message(FATAL_ERROR "Only PYTHONPATH install method is currently supported")
-  endif()
-
-
-  set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
-  set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
+  set(${proj}_DIR ${${proj}_SOURCE_DIR} CACHE PATH "SPM DIR")
 
 else()
+  find_package(${proj} REQUIRED)
+  message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
     SOURCE_DIR ${${proj}_SOURCE_DIR}
     BINARY_DIR ${${proj}_BINARY_DIR}

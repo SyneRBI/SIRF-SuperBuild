@@ -33,17 +33,15 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
-set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
-set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
-set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
-set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
-set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
+SetCanonicalDirectoryNames(${proj})
+
+# Get any flag from the superbuild call that may be particular to this projects CMAKE_ARGS
+SetExternalProjectFlags(${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(Gadgetron_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
   # Gadgetron only adds tests if (GTEST_FOUND AND ARMADILLO_FOUND)
   # but that's currently always the case.
@@ -78,37 +76,34 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   option(${proj}_USE_CUDA "Enable ${proj} CUDA (if cuda libraries are present)" ${CUDA_FOUND})
   mark_as_advanced(${proj}_USE_CUDA)
 
+  # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
+  SetGitTagAndRepo("${proj}")
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
-    GIT_REPOSITORY ${${proj}_URL}
-    GIT_TAG ${${proj}_TAG}
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_GIT}
+    ${${proj}_EP_ARGS_DIRS}
 
     CMAKE_ARGS
-      -DBUILD_PYTHON_SUPPORT=${Gadgetron_BUILD_PYTHON_SUPPORT}
-      -DBUILD_MATLAB_SUPPORT=${Gadgetron_BUILD_MATLAB_SUPPORT}
-      -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
-      -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
-      -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}/include
-      -DCMAKE_INSTALL_PREFIX=${Gadgetron_Install_Dir}
-      -DBOOST_INCLUDEDIR=${BOOST_ROOT}/include/
-      -DBOOST_LIBRARYDIR=${BOOST_LIBRARY_DIR}
-      -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
-      -DPYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIRS}
-      -DPYTHON_LIBRARY=${PYTHON_LIBRARIES}
-      -DGTEST_ROOT=${GTEST_ROOT}
+      -DBUILD_PYTHON_SUPPORT:BOOL=${Gadgetron_BUILD_PYTHON_SUPPORT}
+      -DBUILD_MATLAB_SUPPORT:BOOL=${Gadgetron_BUILD_MATLAB_SUPPORT}
+      -DCMAKE_PREFIX_PATH:PATH=${SUPERBUILD_INSTALL_DIR}
+      -DCMAKE_LIBRARY_PATH:PATH=${SUPERBUILD_INSTALL_DIR}/lib
+      -DCMAKE_INCLUDE_PATH:PATH=${SUPERBUILD_INSTALL_DIR}/include
+      -DCMAKE_INSTALL_PREFIX:PATH=${Gadgetron_INSTALL_DIR}
+      -DBOOST_INCLUDEDIR:PATH=${BOOST_ROOT}/include/
+      -DBOOST_LIBRARYDIR:PATH=${BOOST_LIBRARY_DIR}
+      -DPYTHON_EXECUTABLE:FILEPATH=${PYTHON_EXECUTABLE}
+      -DPYTHON_INCLUDE_DIR:PATH=${PYTHON_INCLUDE_DIRS}
+      -DPYTHON_LIBRARY:FILEPATH=${PYTHON_LIBRARIES}
+      -DGTEST_ROOT:PATH=${GTEST_ROOT}
       ${HDF5_CMAKE_ARGS}
-      -DISMRMRD_DIR=${ISMRMRD_DIR}
+      -DISMRMRD_DIR:PATH=${ISMRMRD_DIR}
       -DUSE_MKL:BOOL=${Gadgetron_USE_MKL}
-      -DUSE_CUDA=${${proj}_USE_CUDA}
+      -DUSE_CUDA:BOOL=${${proj}_USE_CUDA}
       -DCBLAS_INCLUDE_DIR:PATH=${CBLAS_INCLUDE_DIR}
       -DCBLAS_LIBRARY:FILEPATH=${CBLAS_LIBRARY}
-	  INSTALL_DIR ${Gadgetron_Install_Dir}
+      ${${proj}_EXTRA_CMAKE_ARGS_LIST}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
@@ -129,11 +124,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
     endif()
   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_DIRS}
   )
   endif()
 
