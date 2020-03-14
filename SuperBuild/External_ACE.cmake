@@ -52,8 +52,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     ${${proj}_EP_ARGS_DIRS}
     CMAKE_ARGS
       -DCMAKE_INSTALL_PREFIX=${${proj}_INSTALL_DIR}
-      -DLIBRARY_DIR=${${proj}_INSTALL_DIR}/lib
-      -DINCLUDE_DIR=${${proj}_INSTALL_DIR}/include
+      -DLIBRARY_DIR:PATH=${${proj}_INSTALL_DIR}/lib
+      -DINCLUDE_DIR:PATH=${${proj}_INSTALL_DIR}/include
     # TODO this relies on using "make", but we could be build with something else
     INSTALL_COMMAND make ACE
     DEPENDS
