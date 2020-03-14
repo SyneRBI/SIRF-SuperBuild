@@ -71,6 +71,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     CMAKE_ARGS
       -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
       -DCMAKE_INSTALL_PREFIX=${${proj}_INSTALL_DIR}
+      -DDETECT_HDF5=OFF
       ${CLANG_ARG}
   )
 
