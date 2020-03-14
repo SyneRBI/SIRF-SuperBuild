@@ -41,6 +41,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ### --- Project specific additions here
 
   option(BUILD_TESTING_${proj} "Build tests for ${proj}" OFF)
+  option(ITK_SKIP_PATH_LENGTH_CHECKS "Tell ITK to not check lengths of paths" ON)
 
   #message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
@@ -66,6 +67,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DITK_USE_SYSTEM_HDF5=ON
       -DBUILD_TESTING=${BUILD_TESTING_${proj}}
       -DBUILD_EXAMPLES=OFF
+      -DITK_SKIP_PATH_LENGTH_CHECKS:BOOL=${ITK_SKIP_PATH_LENGTH_CHECKS}
     DEPENDS ${${proj}_DEPENDENCIES}
   )
 
