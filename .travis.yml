@@ -373,6 +373,8 @@ before_install:
      brew update
      BUILD_FLAGS="$BUILD_FLAGS -DSHARED_LIBS_ABS_PATH=ON"
      brew install openblas
+     # Let CMake find this openblas version (note: we use /usr/local/opt/openblas symlink to get the most recent brew version)
+     EXTRA_BUILD_FLAGS="$EXTRA_BUILD_FLAGS -DCBLAS_INCLUDE_DIR=/usr/local/opt/openblas/include -DCBLAS_LIBRARY=/usr/local/opt/openblas/lib/libblas.dylib"
      if [ $PYMVER == 2 ]; then
        PYINST=/System/Library/Frameworks/Python.framework/Versions/$PYMVER.7
        PY_EXE=$PYINST/bin/python2.7
@@ -419,16 +421,6 @@ before_install:
        #mv cmake-*/CMake.app/Contents/* cmake
        #export PATH="$PWD/cmake/bin:$PATH"
      )
-     # Get openblas version (note: do this after all brew operations in case one of them updates blas)
-     ls -l /usr/local/opt/
-     ls -l /usr/local/opt/python
-     ls -R /usr/local/opt/openblas
-     
-     #blas_ver=$(brew list --versions openblas)
-     #blas_ver=${blas_ver#"openblas "}
-     #ls -R /usr/local/Cellar/openblas/${blas_ver}/
-     EXTRA_BUILD_FLAGS="$EXTRA_BUILD_FLAGS -DCBLAS_INCLUDE_DIR=/usr/local/opt/openblas/include -DCBLAS_LIBRARY=/usr/local/opt/openblas/lib/libblas.dylib"
-
    elif [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
      exit 1 # KTTRAVIS
      PY_EXE=python$PYMVER
@@ -482,7 +474,7 @@ before_install:
 
 install:
 - $PY_EXE -m pip install --user --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
-- echo cmake flags: $BUILD_FLAGS $EXTRA_BUILD_FLAGS
+- echo "cmake flags: $BUILD_FLAGS $EXTRA_BUILD_FLAGS"
 - cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
 # Job may timeout (>50min) if no ccache, otherwise should be <1min:
 - make
