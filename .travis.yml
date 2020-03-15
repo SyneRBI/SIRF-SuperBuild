@@ -420,10 +420,14 @@ before_install:
        #export PATH="$PWD/cmake/bin:$PATH"
      )
      # Get openblas version (note: do this after all brew operations in case one of them updates blas)
-     blas_ver=$(brew list --versions openblas)
-     blas_ver=${blas_ver#"openblas "}
-     ls -R /usr/local/Cellar/openblas/${blas_ver}/
-     EXTRA_BUILD_FLAGS="$EXTRA_BUILD_FLAGS -DCBLAS_INCLUDE_DIR=/usr/local/Cellar/openblas/${blas_ver}/include -DCBLAS_LIBRARY=/usr/local/Cellar/openblas/${blas_ver}/lib/libblas.dylib"
+     ls -l /usr/local/opt/
+     ls -l /usr/local/opt/python
+     ls -R /usr/local/opt/openblas
+     
+     #blas_ver=$(brew list --versions openblas)
+     #blas_ver=${blas_ver#"openblas "}
+     #ls -R /usr/local/Cellar/openblas/${blas_ver}/
+     EXTRA_BUILD_FLAGS="$EXTRA_BUILD_FLAGS -DCBLAS_INCLUDE_DIR=/usr/local/opt/openblas/include -DCBLAS_LIBRARY=/usr/local/opt/openblas/lib/libblas.dylib"
 
    elif [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
      exit 1 # KTTRAVIS
