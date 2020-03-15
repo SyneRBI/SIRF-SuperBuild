@@ -422,10 +422,12 @@ before_install:
      # Get openblas version (note: do this after all brew operations in case one of them updates blas)
      blas_ver=$(brew list --versions openblas)
      blas_ver=${blas_ver#"openblas "}
+     ls -R /usr/local/Cellar/openblas/${blas_ver}/
      EXTRA_BUILD_FLAGS="$EXTRA_BUILD_FLAGS -DCBLAS_INCLUDE_DIR=/usr/local/Cellar/openblas/${blas_ver}/include -DCBLAS_LIBRARY=/usr/local/Cellar/openblas/${blas_ver}/lib/libblas.dylib"
 
    elif [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-     PY_EXE=python$PYMVER
+exit 1# KTTRAVIS
+PY_EXE=python$PYMVER
      if [[ -z "$DOCKER_BUILD" ]]; then
        curl -o cmake.tgz -L https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.tar.gz
        tar xzf cmake.tgz && rm cmake.tgz
@@ -476,6 +478,7 @@ before_install:
 
 install:
 - $PY_EXE -m pip install --user --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
+- echo cmake flags: $BUILD_FLAGS $EXTRA_BUILD_FLAGS
 - cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
 # Job may timeout (>50min) if no ccache, otherwise should be <1min:
 - make
