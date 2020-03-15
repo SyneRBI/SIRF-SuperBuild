@@ -373,7 +373,7 @@ before_install:
      brew update
      BUILD_FLAGS="$BUILD_FLAGS -DSHARED_LIBS_ABS_PATH=ON"
      brew install openblas
-     # Let CMake find this openblas version (note: we use /usr/local/opt/openblas symlink to get the most recent brew version)
+     # Let CMake find this blas version (note: we use /usr/local/opt/openblas symlink to get the most recent brew version)
      EXTRA_BUILD_FLAGS="$EXTRA_BUILD_FLAGS -DCBLAS_INCLUDE_DIR=/usr/local/opt/openblas/include -DCBLAS_LIBRARY=/usr/local/opt/openblas/lib/libblas.dylib"
      if [ $PYMVER == 2 ]; then
        PYINST=/System/Library/Frameworks/Python.framework/Versions/$PYMVER.7
@@ -422,7 +422,6 @@ before_install:
        #export PATH="$PWD/cmake/bin:$PATH"
      )
    elif [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-     exit 1 # KTTRAVIS
      PY_EXE=python$PYMVER
      if [[ -z "$DOCKER_BUILD" ]]; then
        curl -o cmake.tgz -L https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.tar.gz
