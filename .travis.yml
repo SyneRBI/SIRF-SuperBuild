@@ -471,10 +471,10 @@ before_install:
 - BUILD_FLAGS="$BUILD_FLAGS -DPYVER=$PYMVER"
 - BUILD_FLAGS="$BUILD_FLAGS -DCMAKE_C_COMPILER='$(which $CC)' -DCMAKE_CXX_COMPILER='$(which $CXX)'"
 - cmake --version
+- echo "cmake flags $BUILD_FLAGS $EXTRA_BUILD_FLAGS"
 
 install:
 - $PY_EXE -m pip install --user --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
-- echo "cmake flags: $BUILD_FLAGS $EXTRA_BUILD_FLAGS"
 - cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
 # Job may timeout (>50min) if no ccache, otherwise should be <1min:
 - make
