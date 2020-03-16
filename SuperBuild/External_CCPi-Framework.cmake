@@ -62,11 +62,14 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       STAMP_DIR ${${proj}_STAMP_DIR}
       TMP_DIR ${${proj}_TMP_DIR}
       INSTALL_DIR ${libcilreg_Install_Dir}
+      # apparently this is the only way to pass environment variables to
+      # external projects
+      CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG}
+        ${CMAKE_COMMAND} ${${proj}_SOURCE_DIR}
+          -DCMAKE_INSTALL_PREFIX:STRING=${libcilreg_Install_Dir}
+          -DCMAKE_BUILD_TYPE:STRING=Release
+          -DPYTHON_DEST_DIR:PATH=${PYTHON_DEST}
       INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install && ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/Wrappers/Python/data ${SUPERBUILD_INSTALL_DIR}/share/ccpi/ && ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/patches/cil-patch.py ${${proj}_SOURCE_DIR}/Wrappers/Python/ccpi/framework/TestData.py ${PYTHON_DEST}/ccpi/framework/TestData.py
-      CMAKE_ARGS
-        -DCMAKE_INSTALL_PREFIX=${libcilreg_Install_Dir}
-        -DCMAKE_BUILD_TYPE:STRING=Release
-        -DPYTHON_DEST_DIR:PATH=${PYTHON_DEST}
       DEPENDS ${${proj}_DEPENDENCIES}
     )
 
