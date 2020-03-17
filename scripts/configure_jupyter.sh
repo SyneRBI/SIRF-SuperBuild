@@ -1,7 +1,7 @@
 #! /bin/bash
 
 #========================================================================
-# Author: Kris Thielemans
+# Author: Edoardo Pasca
 # Copyright 2018 University College London
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) virtual machine.
@@ -20,16 +20,10 @@
 #
 #=========================================================================
 
-
-location=`dirname $0`
-
-# script to adjust gnome settings and other bits to be run only once 
-# after VM is created
-$location/configure_gnome.sh
-
-#configure jupyter notebook
-$location/configure_jupyter.sh
-
-# free space on the virtual disk
-$location/zero_fill.sh
-
+# configure jupyter notebook
+mkdir -p ~/.jupyter
+#jupyter notebook --generate-config
+echo "c.NotebookApp.ip = '0.0.0.0'" > ~/.jupyter/jupyter_notebook_config.py
+echo "c.NotebookApp.notebook_dir = u'/home/sirfuser/devel/SIRF-Exercises/notebooks'" >> ~/.jupyter/jupyter_notebook_config.py
+#set a default password "virtual"
+jupyter notebook password
