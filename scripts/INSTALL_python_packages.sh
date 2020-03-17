@@ -66,7 +66,7 @@ while (( "$#" )); do
 done
 
 $PYTHON -m pip install $PIPOPTIONS --upgrade pip wheel setuptools
-$PYTHON -m pip install $PIPOPTIONS --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib nose coverage docopt
+$PYTHON -m pip install $PIPOPTIONS --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib nose coverage docopt deprecation nibabel
 $PYTHON -m pip install $PIPOPTIONS jupyter spyder==3.2
 $PYTHON -m pip uninstall $PIPOPTIONS -y spyder-kernels
 # CIL
