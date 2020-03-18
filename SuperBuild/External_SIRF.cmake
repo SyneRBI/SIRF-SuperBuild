@@ -46,6 +46,10 @@ set(externalProjName ${proj})
 
 SetCanonicalDirectoryNames(${proj})
 
+# Get any flag from the superbuild call that may be particular to this projects CMAKE_ARGS
+SetExternalProjectFlags(${proj})
+
+
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
@@ -71,8 +75,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
-    GIT_REPOSITORY "${${proj}_URL_MODIFIED}"
-    GIT_TAG "${${proj}_TAG_MODIFIED}"
+    ${${proj}_EP_ARGS_GIT}
     ${${proj}_EP_ARGS_DIRS}
 
     CMAKE_ARGS
@@ -82,6 +85,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DBOOST_INCLUDEDIR:PATH=${BOOST_ROOT}/include/
       -DBOOST_LIBRARYDIR:PATH=${BOOST_LIBRARY_DIR}
       -DBOOST_ROOT:PATH=${BOOST_ROOT}
+      -DDISABLE_Matlab:BOOL=${DISABLE_Matlab}
       -DMatlab_ROOT_DIR:PATH=${Matlab_ROOT_DIR}
       -DMATLAB_ROOT:PATH=${Matlab_ROOT_DIR} # pass this for compatibility with old SIRF
       -DMATLAB_DEST_DIR:PATH=${MATLAB_DEST_DIR}
@@ -89,6 +93,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       ${HDF5_CMAKE_ARGS}
       -DISMRMRD_DIR:PATH=${ISMRMRD_DIR}
       -DSWIG_EXECUTABLE:FILEPATH=${SWIG_EXECUTABLE}
+      -DDISABLE_PYTHON:BOOL=${DISABLE_PYTHON}
       -DPYTHON_EXECUTABLE:FILEPATH=${PYTHON_EXECUTABLE}
       -DPYTHON_INCLUDE_DIR:PATH=${PYTHON_INCLUDE_DIRS}
       -DPYTHON_LIBRARY:FILEPATH=${PYTHON_LIBRARIES}
@@ -98,7 +103,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DREG_ENABLE:BOOL=${BUILD_SIRF_Registration}
       -DOPENMP_INCLUDES:PATH=${OPENMP_INCLUDES}
       -DOPENMP_LIBRARIES:PATH=${OPENMP_LIBRARIES}
-		${extra_args}
+		  ${extra_args}
+      ${${proj}_EXTRA_CMAKE_ARGS_LIST}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )

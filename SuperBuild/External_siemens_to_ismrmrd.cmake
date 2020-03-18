@@ -58,7 +58,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DCMAKE_INSTALL_PREFIX=${siemens_to_ismrmrd_INSTALL_DIR}
       -DBOOST_INCLUDEDIR=${BOOST_ROOT}/include/
       -DBOOST_LIBRARYDIR=${BOOST_LIBRARY_DIR}
-      -DISMRMRD_DIR=${ISMRMRD_DIR}
+      -DISMRMRD_DIR:PATH=${ISMRMRD_DIR}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )

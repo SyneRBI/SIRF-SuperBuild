@@ -50,12 +50,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     -DCMAKE_INSTALL_PREFIX=${pet_rd_tools_INSTALL_DIR}
     -DBOOST_INCLUDEDIR=${BOOST_ROOT}/include/
     -DBOOST_LIBRARYDIR=${BOOST_LIBRARY_DIR}
-    -Dglog_DIR=${glog_DIR}
+    -Dglog_DIR:PATH=${glog_DIR}
   )
 
   if (USE_SYSTEM_ITK)
     set(pet_rd_tools_CMAKE_ARGS ${pet_rd_tools_CMAKE_ARGS}
-      -DITK_DIR=${ITK_DIR}
+      -DITK_DIR:PATH=${ITK_DIR}
       )
   endif()
 

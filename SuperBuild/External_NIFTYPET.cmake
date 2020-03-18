@@ -31,6 +31,8 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 set(externalProjName ${proj})
 
 SetCanonicalDirectoryNames(${proj})
+# Get any flag from the superbuild call that may be particular to this projects CMAKE_ARGS
+SetExternalProjectFlags(${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
@@ -55,16 +57,16 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
       -DCMAKE_INSTALL_PREFIX=${${proj}_INSTALL_DIR}
       -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
-      -DPYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR}
+      -DPYTHON_INCLUDE_DIR:PATH=${PYTHON_INCLUDE_DIR}
       -DPYTHON_LIBRARY=${PYTHON_LIBRARY}
-
+      ${${proj}_EXTRA_CMAKE_ARGS_LIST}
     DEPENDS
         ${${proj}_DEPENDENCIES}
 
     INSTALL_COMMAND ${CMAKE_COMMAND}
-      -D${proj}_SOURCE_DIR=${${proj}_SOURCE_DIR}
-      -D${proj}_BINARY_DIR=${${proj}_BINARY_DIR}
-      -DSUPERBUILD_INSTALL_DIR=${SUPERBUILD_INSTALL_DIR}
+      -D${proj}_SOURCE_DIR:PATH=${${proj}_SOURCE_DIR}
+      -D${proj}_BINARY_DIR:PATH=${${proj}_BINARY_DIR}
+      -DSUPERBUILD_INSTALL_DIR:PATH=${SUPERBUILD_INSTALL_DIR}
       -P ${NIFTYPET_INSTALL_COMMAND}
   )
 
