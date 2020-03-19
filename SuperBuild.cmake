@@ -204,7 +204,8 @@ if (NOT DISABLE_OpenMP)
     mark_as_superbuild(ALL_PROJECTS VARS 
       OpenMP_CXX_FLAGS:STRING OpenMP_CXX_LIB_NAMES:STRING OpenMP_C_FLAGS:STRING 
       OpenMP_C_LIB_NAMES:STRING OpenMP_CXX_FLAGS:STRING OpenMP_CXX_LIB_NAMES:STRING 
-      OpenMP_libomp_LIBRARY:FILEPATH OpenMP_omp_LIBRARY:FILEPATH)
+      OpenMP_libomp_LIBRARY:FILEPATH OpenMP_omp_LIBRARY:FILEPATH
+      OpenMP_gomp_LIBRARY:FILEPATH OpenMP_pthread_LIBRARY:FILEPATH)
   else()
     MESSAGE(STATUS "OpenMP not found, support disabled")
     SET(DISABLE_OpenMP ON CACHE BOOL "Disable OpenMP support for dependencies" FORCE)
