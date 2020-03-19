@@ -205,7 +205,9 @@ if (NOT DISABLE_OpenMP)
       OpenMP_CXX_FLAGS:STRING OpenMP_CXX_LIB_NAMES:STRING OpenMP_C_FLAGS:STRING 
       OpenMP_C_LIB_NAMES:STRING OpenMP_CXX_FLAGS:STRING OpenMP_CXX_LIB_NAMES:STRING 
       OpenMP_libomp_LIBRARY:FILEPATH OpenMP_omp_LIBRARY:FILEPATH
-      OpenMP_gomp_LIBRARY:FILEPATH OpenMP_pthread_LIBRARY:FILEPATH)
+      OpenMP_gomp_LIBRARY:FILEPATH OpenMP_pthread_LIBRARY:FILEPATH
+      OPENMP_INCLUDES:PATH OPENMP_LIBRARIES:PATH
+      )
   else()
     MESSAGE(STATUS "OpenMP not found, support disabled")
     SET(DISABLE_OpenMP ON CACHE BOOL "Disable OpenMP support for dependencies" FORCE)
@@ -277,15 +279,6 @@ endif()
 
 if ("${PYTHON_STRATEGY}" STREQUAL "CONDA")
   set (BUILD_CIL OFF)
-endif()
-if (APPLE)
-  if (BUILD_CIL OR BUILD_CIL_LITE)
-    message(FATAL_ERROR "CIL Modules are not tested on OSX and will be disabled")
-  else()
-    message(WARNING "CIL Modules are not tested on OSX and will be disabled")
-  endif()
-  set(BUILD_CIL OFF)
-  set(BUILD_CIL_LITE OFF)
 endif()
 if (BUILD_CIL)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES CCPi-Regularisation-Toolkit CCPi-Astra CCPi-Framework CCPi-FrameworkPlugins TomoPhantom)
