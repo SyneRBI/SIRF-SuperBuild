@@ -133,7 +133,7 @@ set(DEFAULT_Gadgetron_TAG b6191eaaa72ccca6c6a5fe4c0fa3319694f512ab)
 
 ## ASTRA
 set(DEFAULT_astra-toolbox_URL https://github.com/astra-toolbox/astra-toolbox )
-set(DEFAULT_astra-toolbox_TAG v1.8.3)
+set(DEFAULT_astra-toolbox_TAG 8c2493710f5eac1316945585fe6333ab56f9a2a1)
 
 ## TomoPhantom
 set(DEFAULT_TomoPhantom_URL https://github.com/dkazanc/TomoPhantom )
