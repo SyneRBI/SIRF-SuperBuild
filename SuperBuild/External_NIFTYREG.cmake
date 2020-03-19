@@ -53,6 +53,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
   SetGitTagAndRepo("${proj}")
 
+  if (NOT DISABLE_OpenMP)
+    option(${proj}_ENABLE_OPENMP "Build ${proj} with OpenMP acceleration" ON)
+  else()
+    SET(${proj}_ENABLE_OPENMP OFF)
+  endif()
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     ${${proj}_EP_ARGS_GIT}
@@ -65,7 +71,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DCMAKE_INSTALL_PREFIX=${${proj}_Install_Dir}
       -DUSE_THROW_EXCEP=ON
       # fixes lib_reg_maths.a `GOMP_parallel' undefined reference linker errors
-      -DUSE_OPENMP:BOOL=ON
+      -DUSE_OPENMP:BOOL=${${proj}_ENABLE_OPENMP}
       -DBUILD_ALL_DEP:BOOL=ON
       -DUSE_CUDA=${${proj}_USE_CUDA}
        ${${proj}_EXTRA_CMAKE_ARGS_LIST}

@@ -51,10 +51,10 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ### --- Project specific additions here
 
   option(BUILD_TESTING_${proj} "Build tests for ${proj}" OFF)
-  if (APPLE)
-    set (build_STIR_OPENMP_default OFF)
-  else()
+  if (NOT DISABLE_OpenMP)
     set (build_STIR_OPENMP_default ON)
+  else()
+    set (build_STIR_OPENMP_default OFF)
   endif()
   RenameVariable(BUILD_STIR_WITH_OPENMP STIR_ENABLE_OPENMP build_STIR_OPENMP_default)
   option(STIR_ENABLE_OPENMP "Build STIR with OpenMP acceleration" ${build_STIR_OPENMP_default})

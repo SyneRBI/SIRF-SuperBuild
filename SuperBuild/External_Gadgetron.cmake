@@ -76,6 +76,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   option(${proj}_USE_CUDA "Enable ${proj} CUDA (if cuda libraries are present)" ${CUDA_FOUND})
   mark_as_advanced(${proj}_USE_CUDA)
 
+  if (NOT DISABLE_OpenMP)
+    option(${proj}_ENABLE_OPENMP "Build ${proj} with OpenMP acceleration" ON)
+  else()
+    set(${proj}_ENABLE_OPENMP OFF)
+  endif()
+
+
   # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
   SetGitTagAndRepo("${proj}")
 
@@ -103,7 +110,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DUSE_CUDA:BOOL=${${proj}_USE_CUDA}
       -DCBLAS_INCLUDE_DIR:PATH=${CBLAS_INCLUDE_DIR}
       -DCBLAS_LIBRARY:FILEPATH=${CBLAS_LIBRARY}
-      ${${proj}_EXTRA_CMAKE_ARGS_LIST}
+      -DUSE_OPENMP:BOOL=${${proj}_ENABLE_OPENMP}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )

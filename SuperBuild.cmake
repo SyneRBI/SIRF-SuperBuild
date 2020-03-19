@@ -195,6 +195,23 @@ include (RenameVariable)
 
 RenameVariable(BUILD_GADGETRON BUILD_Gadgetron build_Gadgetron_default)
 
+# OpenMP support
+option(DISABLE_OpenMP "Disable OpenMP support for dependencies" OFF)
+if (NOT DISABLE_OpenMP)
+  find_package(OpenMP)
+  if (OPENMP_FOUND)
+    MESSAGE(STATUS "OpenMP found, support enabled")
+    mark_as_superbuild(ALL_PROJECTS VARS 
+      OpenMP_CXX_FLAGS:STRING OpenMP_CXX_LIB_NAMES:STRING OpenMP_C_FLAGS:STRING 
+      OpenMP_C_LIB_NAMES:STRING OpenMP_CXX_FLAGS:STRING OpenMP_CXX_LIB_NAMES:STRING 
+      OpenMP_libomp_LIBRARY:FILEPATH OpenMP_omp_LIBRARY:FILEPATH
+      OpenMP_gomp_LIBRARY:FILEPATH OpenMP_pthread_LIBRARY:FILEPATH)
+  else()
+    MESSAGE(STATUS "OpenMP not found, support disabled")
+    SET(DISABLE_OpenMP ON CACHE BOOL "Disable OpenMP support for dependencies" FORCE)
+  endif()
+endif()
+
 option(BUILD_SIRF "Build SIRF" ON)
 option(BUILD_STIR "Build STIR" ON)
 option(BUILD_Gadgetron "Build Gadgetron" ${build_Gadgetron_default})
