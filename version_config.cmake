@@ -133,7 +133,7 @@ set(DEFAULT_Gadgetron_TAG b6191eaaa72ccca6c6a5fe4c0fa3319694f512ab)
 
 ## ASTRA
 set(DEFAULT_astra-toolbox_URL https://github.com/astra-toolbox/astra-toolbox )
-set(DEFAULT_astra-toolbox_TAG v1.8.3)
+set(DEFAULT_astra-toolbox_TAG 8c2493710f5eac1316945585fe6333ab56f9a2a1)
 
 ## TomoPhantom
 set(DEFAULT_TomoPhantom_URL https://github.com/dkazanc/TomoPhantom )
@@ -178,7 +178,7 @@ if (DEVEL_BUILD)
   set(DEFAULT_ACE_TAG origin/master)
   # CCPi CIL
   set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
-  set(DEFAULT_CCPi-Framework_TAG origin/master)
+  set(DEFAULT_CCPi-Framework_TAG adf4163c145e6ddc16899a92a06c3282f144d88c)
   set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
   set(DEFAULT_CCPi-Regularisation-Toolkit_TAG origin/master)
   set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
@@ -208,7 +208,7 @@ else()
   # CCPi CIL
   set(CIL_VERSION "v19.10")
   set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
-  set(DEFAULT_CCPi-Framework_TAG ${CIL_VERSION})
+  set(DEFAULT_CCPi-Framework_TAG adf4163c145e6ddc16899a92a06c3282f144d88c)
   set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git )
   set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "${CIL_VERSION}")
   set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
