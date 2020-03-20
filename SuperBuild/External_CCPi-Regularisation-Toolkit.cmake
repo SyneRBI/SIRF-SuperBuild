@@ -76,11 +76,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       CONDA:      do nothing")
     set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
 
+    # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
+    SetGitTagAndRepo("${proj}")
+
     ExternalProject_Add(${proj}
       ${${proj}_EP_ARGS}
-      GIT_REPOSITORY ${${proj}_URL}
-      GIT_TAG ${${proj}_TAG}
-      #GIT_TAG origin/cmaking
+      ${${proj}_EP_ARGS_GIT}
       SOURCE_DIR ${${proj}_SOURCE_DIR}
       BINARY_DIR ${${proj}_BINARY_DIR}
       DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
@@ -93,10 +94,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DCMAKE_INSTALL_PREFIX=${libcilreg_Install_Dir}
         -DBUILD_PYTHON_WRAPPER=ON -DCMAKE_BUILD_TYPE=Release
         -DBUILD_CUDA=ON -DCONDA_BUILD=OFF -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
-        -DPYTHON_DEST=${PYTHON_DEST_DIR}
+        -DPYTHON_EXECUTABLE:FILEPATH=${PYTHON_EXECUTABLE}
+        -DPYTHON_INCLUDE_DIR:PATH=${PYTHON_INCLUDE_DIRS}
+        -DPYTHON_LIBRARY:FILEPATH=${PYTHON_LIBRARIES}
+        -DPYTHON_DEST_DIR:PATH=${PYTHON_DEST}
 
       # This build is Unix specific
-      BUILD_COMMAND ${CMAKE_COMMAND} --build .
+      BUILD_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} ${CMAKE_COMMAND} --build .
       INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install
       #TEST_COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -s ${${proj}_SOURCE_DIR}/test/ -p test*.py
       DEPENDS
