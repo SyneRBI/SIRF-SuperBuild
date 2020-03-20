@@ -133,7 +133,7 @@ set(DEFAULT_Gadgetron_TAG b6191eaaa72ccca6c6a5fe4c0fa3319694f512ab)
 
 ## ASTRA
 set(DEFAULT_astra-toolbox_URL https://github.com/astra-toolbox/astra-toolbox )
-set(DEFAULT_astra-toolbox_TAG 8c2493710f5eac1316945585fe6333ab56f9a2a1)
+set(DEFAULT_astra-toolbox_TAG origin/master)
 
 ## TomoPhantom
 set(DEFAULT_TomoPhantom_URL https://github.com/dkazanc/TomoPhantom )
@@ -184,7 +184,7 @@ if (DEVEL_BUILD)
   set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
   set(DEFAULT_CCPi-FrameworkPlugins_TAG origin/master)
   set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
-  set(DEFAULT_CCPi-Astra_TAG origin/master)
+  set(DEFAULT_CCPi-Astra_TAG 8c2493710f5eac1316945585fe6333ab56f9a2a1)
 
 else()
   set(DEFAULT_SIRF_TAG v2.1.0)
@@ -214,7 +214,7 @@ else()
   set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
   set(DEFAULT_CCPi-FrameworkPlugins_TAG "${CIL_VERSION}")
   set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
-  set(DEFAULT_CCPi-Astra_TAG "${CIL_VERSION}")
+  set(DEFAULT_CCPi-Astra_TAG 8c2493710f5eac1316945585fe6333ab56f9a2a1)
 endif()
 
 
