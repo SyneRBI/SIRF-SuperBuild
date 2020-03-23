@@ -48,14 +48,20 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message("${proj} URL " ${${proj}_URL}  ) 
   message("${proj} TAG " ${${proj}_TAG}  ) 
 
+  if (DISABLE_OpenMP)
+    message(FATAL_ERROR "CCPi-Framework requries OpenMP")
+  endif()
+
+  # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
+  SetGitTagAndRepo("${proj}")
+
   # conda build should never get here
   if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
     # in case of PYTHONPATH it is sufficient to copy the files to the 
     # $PYTHONPATH directory
     ExternalProject_Add(${proj}
       ${${proj}_EP_ARGS}
-      GIT_REPOSITORY ${${proj}_URL}
-      GIT_TAG ${${proj}_TAG}
+      ${${proj}_EP_ARGS_GIT}
       SOURCE_DIR ${${proj}_SOURCE_DIR}
       BINARY_DIR ${${proj}_BINARY_DIR}
       DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
@@ -68,7 +74,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         ${CMAKE_COMMAND} ${${proj}_SOURCE_DIR}
           -DCMAKE_INSTALL_PREFIX:STRING=${libcilreg_Install_Dir}
           -DCMAKE_BUILD_TYPE:STRING=Release
+          -DPYTHON_EXECUTABLE:FILEPATH=${PYTHON_EXECUTABLE}
+          -DPYTHON_INCLUDE_DIR:PATH=${PYTHON_INCLUDE_DIRS}
+          -DPYTHON_LIBRARY:FILEPATH=${PYTHON_LIBRARIES}      
           -DPYTHON_DEST_DIR:PATH=${PYTHON_DEST}
+          -DOPENMP_INCLUDES:PATH=${OPENMP_INCLUDES}
+          -DCIL_VERSION:STRING=${${proj}_TAG}
+      # INSTALL_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} ${CMAKE_COMMAND} --build . --target install && ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/Wrappers/Python/data ${SUPERBUILD_INSTALL_DIR}/share/ccpi/ && ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/patches/cil-patch.py ${${proj}_SOURCE_DIR}/Wrappers/Python/ccpi/framework/TestData.py ${PYTHON_DEST}/ccpi/framework/TestData.py
       INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install && ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/Wrappers/Python/data ${SUPERBUILD_INSTALL_DIR}/share/ccpi/ && ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/patches/cil-patch.py ${${proj}_SOURCE_DIR}/Wrappers/Python/ccpi/framework/TestData.py ${PYTHON_DEST}/ccpi/framework/TestData.py
       DEPENDS ${${proj}_DEPENDENCIES}
     )
