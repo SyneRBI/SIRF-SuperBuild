@@ -51,10 +51,10 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
-  message(WARNING "${proj} URL " ${${proj}_URL}  )
-  message(WARNING "${proj} TAG " ${${proj}_TAG}  )
+  message(STATUS "${proj} URL " ${${proj}_URL}  )
+  message(STATUS "${proj} TAG " ${${proj}_TAG}  )
   set (CIL_VERSION ${${prog}_TAG})
-  message(WARNING "CIL_VERSION ${CIL_VERSION}" )
+  message(STATUS "CIL_VERSION ${CIL_VERSION}" )
   # conda build should never get here
   if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
     # in case of PYTHONPATH it is sufficient to copy the files to the

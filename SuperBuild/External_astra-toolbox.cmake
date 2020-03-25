@@ -37,8 +37,8 @@ find_package(CUDA)
 # as in CCPi RGL
 if (CUDA_FOUND)
    set(CUDA_NVCC_FLAGS "-Xcompiler -fPIC -shared -D_FORCE_INLINES")
-   message(WARNING "CUDA_SDK_ROOT_DIR ${CUDA_SDK_ROOT_DIR}")
-   message(WARNING "CUDA_TOOLKIT_ROOT_DIR ${CUDA_TOOLKIT_ROOT_DIR}")
+   message(STATUS "CUDA_SDK_ROOT_DIR ${CUDA_SDK_ROOT_DIR}")
+   message(STATUS "CUDA_TOOLKIT_ROOT_DIR ${CUDA_TOOLKIT_ROOT_DIR}")
 endif()
 
 # Set external name (same as internal for now)
@@ -125,7 +125,7 @@ CPPFLAGS=\"-DASTRA_CUDA -DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${S
 
     else()
       # No CUDA
-      message (WARNING "No CUDA found on host, skipping GPU")
+      message (STATUS "No CUDA found on host, skipping GPU")
       ExternalProject_Add(${proj}
         ${${proj}_EP_ARGS}
         GIT_REPOSITORY ${${proj}_URL}
