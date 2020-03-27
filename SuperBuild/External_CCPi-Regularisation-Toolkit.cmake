@@ -79,6 +79,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
     SetGitTagAndRepo("${proj}")
 
+    if (CUDA_FOUND AND NOT DISABLE_CUDA)
+      set(CCPi_CUDA ON)
+    else()
+      set(CCPi_CUDA OFF)
+    endif()
+
     ExternalProject_Add(${proj}
       ${${proj}_EP_ARGS}
       ${${proj}_EP_ARGS_GIT}
@@ -93,7 +99,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} ${CMAKE_COMMAND} ${${proj}_SOURCE_DIR}
         -DCMAKE_INSTALL_PREFIX=${libcilreg_Install_Dir}
         -DBUILD_PYTHON_WRAPPER=ON -DCMAKE_BUILD_TYPE=Release
-        -DBUILD_CUDA=ON -DCONDA_BUILD=OFF -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
+        -DBUILD_CUDA:BOOL=${CCPi_CUDA} -DCONDA_BUILD=OFF -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
         -DPYTHON_EXECUTABLE:FILEPATH=${PYTHON_EXECUTABLE}
         -DPYTHON_INCLUDE_DIR:PATH=${PYTHON_INCLUDE_DIRS}
         -DPYTHON_LIBRARY:FILEPATH=${PYTHON_LIBRARIES}
