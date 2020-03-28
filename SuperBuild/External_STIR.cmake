@@ -34,6 +34,7 @@ endif()
 if (USE_NIFTYPET)
   list(APPEND ${proj}_DEPENDENCIES "NIFTYPET")
 endif()
+list(APPEND ${proj}_DEPENDENCIES "JSON")
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
