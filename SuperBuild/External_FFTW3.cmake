@@ -53,6 +53,7 @@ if (WIN32)
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
+    ${${proj}_EP_ARGS_DIRS}
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
     INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory ${${proj}_INSTALL_DIR}
