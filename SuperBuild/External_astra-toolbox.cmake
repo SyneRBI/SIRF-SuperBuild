@@ -29,7 +29,7 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 
 find_package(Cython)
 if(NOT ${Cython_FOUND})
-    message(FATAL_ERROR "CCPi-Regularisation-Toolkit depends on Cython")
+    message(FATAL_ERROR "astra-toolkit binding to Python depends on Cython")
 endif()
 
 set (CUDA_TOOLKIT_ROOT_DIR $ENV{CUDA_BIN_DIR})
@@ -43,21 +43,16 @@ endif()
 
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
-
-set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
-set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
-set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
-set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
-set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
+SetCanonicalDirectoryNames(${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
-
+  SetGitTagAndRepo("${proj}")
   ### --- Project specific additions here
   set(libastra_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
-  set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
-  set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
+  # set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
+  # set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
   message("astra-toolkit URL " ${${proj}_URL}  )
   message("astra-toolkit TAG " ${${proj}_TAG}  )
@@ -91,19 +86,15 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
       ExternalProject_Add(${proj}
         ${${proj}_EP_ARGS}
-        GIT_REPOSITORY ${${proj}_URL}
-        GIT_TAG ${${proj}_TAG}
-        SOURCE_DIR ${${proj}_SOURCE_DIR}
-        BINARY_DIR ${${proj}_BINARY_DIR}
-        DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-        STAMP_DIR ${${proj}_STAMP_DIR}
-        TMP_DIR ${${proj}_TMP_DIR}
+        ${${proj}_EP_ARGS_GIT}
+        ${${proj}_EP_ARGS_DIRS}
         INSTALL_DIR ${libastra_Install_Dir}
-
+        
+        # This build is Unix specific
         CONFIGURE_COMMAND
           ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ./autogen.sh
 
-        # This build is Unix specific
+        
         BUILD_COMMAND
         ${CMAKE_COMMAND} -E env ${cmd} --with-cuda=${CUDA_TOOLKIT_ROOT_DIR} --prefix=${libastra_Install_Dir} --with-python=${PYTHON_EXECUTABLE} --with-install-type=prefix
         INSTALL_COMMAND
@@ -127,15 +118,10 @@ CPPFLAGS=\"-DASTRA_CUDA -DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${S
       # No CUDA
       message (STATUS "No CUDA found on host, skipping GPU")
       ExternalProject_Add(${proj}
-        ${${proj}_EP_ARGS}
-        GIT_REPOSITORY ${${proj}_URL}
-        GIT_TAG ${${proj}_TAG}
-        SOURCE_DIR ${${proj}_SOURCE_DIR}
-        BINARY_DIR ${${proj}_BINARY_DIR}
-        DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-        STAMP_DIR ${${proj}_STAMP_DIR}
-        TMP_DIR ${${proj}_TMP_DIR}
-        INSTALL_DIR ${libastra_Install_Dir}
+      ${${proj}_EP_ARGS}
+      ${${proj}_EP_ARGS_GIT}
+      ${${proj}_EP_ARGS_DIRS}
+      INSTALL_DIR ${libastra_Install_Dir}
 
         CONFIGURE_COMMAND
           ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ./autogen.sh
@@ -182,11 +168,7 @@ cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir/astra ${libastra_Install_Di
 
     ExternalProject_Add(${python_wrapper}
         ${${proj}_EP_ARGS}
-        SOURCE_DIR ${${proj}_SOURCE_DIR}
-        BINARY_DIR ${${proj}_BINARY_DIR}
-        DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-        STAMP_DIR ${${proj}_STAMP_DIR}
-        TMP_DIR ${${proj}_TMP_DIR}
+        ${${proj}_EP_ARGS_DIRS}
         INSTALL_DIR ${libastra_Install_Dir}
 
         CONFIGURE_COMMAND ${CMAKE_COMMAND} -E copy ${${proj}_BINARY_DIR}/python/python_build ${${proj}_SOURCE_DIR}/python/ && ${CMAKE_COMMAND} -E copy ${${proj}_BINARY_DIR}/python/python_install ${${proj}_SOURCE_DIR}/python/
@@ -220,10 +202,6 @@ cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir/astra ${libastra_Install_Di
 
 else()
   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-      SOURCE_DIR ${${proj}_SOURCE_DIR}
-      BINARY_DIR ${${proj}_BINARY_DIR}
-      DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-      STAMP_DIR ${${proj}_STAMP_DIR}
-      TMP_DIR ${${proj}_TMP_DIR}
-    )
+                            ${${proj}_EP_ARGS_DIRS}
+                            )
 endif()
