@@ -49,7 +49,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message(STATUS "${__indent}Adding project ${proj}")
   SetGitTagAndRepo("${proj}")
   ### --- Project specific additions here
-  set(libastra_Install_Dir ${SUPERBUILD_INSTALL_DIR})
+  # set(libastra_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
   # set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   # set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
@@ -83,27 +83,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     list(APPEND cmd "CPPFLAGS=-I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib")
     if (CUDA_FOUND)
       list(APPEND cmd "NVCCFLAGS=-I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib")
-
-      ExternalProject_Add(${proj}
-        ${${proj}_EP_ARGS}
-        ${${proj}_EP_ARGS_GIT}
-        ${${proj}_EP_ARGS_DIRS}
-        INSTALL_DIR ${libastra_Install_Dir}
-        
-        # This build is Unix specific
-        CONFIGURE_COMMAND
-          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ./autogen.sh
-
-        
-        BUILD_COMMAND
-        ${CMAKE_COMMAND} -E env ${cmd} --with-cuda=${CUDA_TOOLKIT_ROOT_DIR} --prefix=${libastra_Install_Dir} --with-python=${PYTHON_EXECUTABLE} --with-install-type=prefix
-        INSTALL_COMMAND
-          ${CMAKE_COMMAND} -E chdir ${${proj}_BINARY_DIR}/ make -j2 install-libraries
-        DEPENDS
-          ${${proj}_DEPENDENCIES}
-      )
-
-      set(python_wrapper "astra-python-wrapper")
+      set(ASTRA_BUILD_OPTIONS "--with-cuda=${CUDA_TOOLKIT_ROOT_DIR} --prefix=${${proj}_INSTALL_DIR}")
 
       #create a configure script
       file(WRITE ${${proj}_SOURCE_DIR}/python_build
@@ -117,24 +97,7 @@ CPPFLAGS=\"-DASTRA_CUDA -DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${S
     else()
       # No CUDA
       message (STATUS "No CUDA found on host, skipping GPU")
-      ExternalProject_Add(${proj}
-      ${${proj}_EP_ARGS}
-      ${${proj}_EP_ARGS_GIT}
-      ${${proj}_EP_ARGS_DIRS}
-      INSTALL_DIR ${libastra_Install_Dir}
-
-        CONFIGURE_COMMAND
-          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ./autogen.sh
-        # This build is Unix specific
-        BUILD_COMMAND
-        ${CMAKE_COMMAND} -E env ${cmd} --prefix=${libastra_Install_Dir} --with-install-type=prefix --with-python=${PYTHON_EXECUTABLE}
-        INSTALL_COMMAND
-          ${CMAKE_COMMAND} -E chdir ${${proj}_BINARY_DIR}/ make -j install-libraries
-        DEPENDS
-          ${${proj}_DEPENDENCIES}
-      )
-
-      set(python_wrapper "astra-python-wrapper")
+      set(ASTRA_BUILD_OPTIONS "--prefix=${${proj}_INSTALL_DIR}")
 
       #create a configure script
       file(WRITE ${${proj}_SOURCE_DIR}/python_build
@@ -147,7 +110,25 @@ CPPFLAGS=\"-DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INS
 
 
     endif()
+    ExternalProject_Add(${proj}
+        ${${proj}_EP_ARGS}
+        ${${proj}_EP_ARGS_GIT}
+        ${${proj}_EP_ARGS_DIRS}
+        
+        # This build is Unix specific
+        CONFIGURE_COMMAND
+          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ./autogen.sh
 
+        
+        BUILD_COMMAND
+        ${CMAKE_COMMAND} -E env ${cmd} ${ASTRA_BUILD_OPTIONS}  --with-install-type=prefix --with-python=${PYTHON_EXECUTABLE}
+        INSTALL_COMMAND
+          ${CMAKE_COMMAND} -E chdir ${${proj}_BINARY_DIR}/ make -j2 install-libraries
+        DEPENDS
+          ${${proj}_DEPENDENCIES}
+      )
+
+    set(python_wrapper "astra-python-wrapper")
     file(COPY ${${proj}_SOURCE_DIR}/python_build
          DESTINATION ${${proj}_BINARY_DIR}/python
          FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
@@ -158,7 +139,7 @@ CPPFLAGS=\"-DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INS
 #! /bin/bash
 set -ex
 build_dir=`ls ${${proj}_SOURCE_DIR}/python/build/ | grep lib`
-cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir/astra ${libastra_Install_Dir}/python/
+cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir/astra ${${proj}_INSTALL_DIR}/python/
 
 ")
 
@@ -169,7 +150,7 @@ cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir/astra ${libastra_Install_Di
     ExternalProject_Add(${python_wrapper}
         ${${proj}_EP_ARGS}
         ${${proj}_EP_ARGS_DIRS}
-        INSTALL_DIR ${libastra_Install_Dir}
+        # INSTALL_DIR ${libastra_Install_Dir}
 
         CONFIGURE_COMMAND ${CMAKE_COMMAND} -E copy ${${proj}_BINARY_DIR}/python/python_build ${${proj}_SOURCE_DIR}/python/ && ${CMAKE_COMMAND} -E copy ${${proj}_BINARY_DIR}/python/python_install ${${proj}_SOURCE_DIR}/python/
 
