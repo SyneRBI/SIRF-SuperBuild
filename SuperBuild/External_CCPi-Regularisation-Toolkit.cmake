@@ -44,8 +44,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   SetGitTagAndRepo("${proj}")
 
   ### --- Project specific additions here
-  # set(libcilreg_Install_Dir ${SUPERBUILD_INSTALL_DIR})
-
+  
   message(STATUS "${proj} URL " ${${proj}_URL}  )
   message(STATUS "${proj} TAG " ${${proj}_TAG}  )
   
@@ -80,7 +79,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       # apparently this is the only way to pass environment variables to
       # external projects
       CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} ${CMAKE_COMMAND} ${${proj}_SOURCE_DIR}
-        -DCMAKE_INSTALL_PREFIX:PATH=${SUPERBUILD_INSTALL_DIR}
+        -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
         -DBUILD_PYTHON_WRAPPER:BOOL=ON -DCMAKE_BUILD_TYPE:STRING=Release
         -DBUILD_CUDA:BOOL=ON -DCONDA_BUILD:BOOL=OFF 
         -DPYTHON_EXECUTABLE:FILEPATH=${PYTHON_EXECUTABLE}
@@ -106,7 +105,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         BUILD_COMMAND ""
         INSTALL_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} SRC_DIR=${${proj}_BINARY_DIR} RECIPE_DIR=${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe PYTHON=${PYTHON_EXECUTABLE} bash ${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe/build.sh
         CMAKE_ARGS
-           -DCMAKE_INSTALL_PREFIX=${SUPERBUILD_INSTALL_DIR}
+           -DCMAKE_INSTALL_PREFIX=${${proj}_INSTALL_DIR}
         DEPENDS
            ${${proj}_DEPENDENCIES}
       )

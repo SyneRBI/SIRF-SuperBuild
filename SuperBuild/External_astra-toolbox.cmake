@@ -49,11 +49,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message(STATUS "${__indent}Adding project ${proj}")
   SetGitTagAndRepo("${proj}")
   ### --- Project specific additions here
-  # set(libastra_Install_Dir ${SUPERBUILD_INSTALL_DIR})
-
-  # set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
-  # set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
-
+  
   message("astra-toolkit URL " ${${proj}_URL}  )
   message("astra-toolkit TAG " ${${proj}_TAG}  )
 

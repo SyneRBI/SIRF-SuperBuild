@@ -43,9 +43,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   SetGitTagAndRepo("${proj}")
 
   ### --- Project specific additions here
- 
-  # set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
-  # set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
@@ -54,9 +51,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     
 
     CMAKE_ARGS
-      -DCMAKE_INSTALL_PREFIX=${SUPERBUILD_INSTALL_DIR}
-    	-DLIBRARY_DIR:PATH=${SUPERBUILD_INSTALL_DIR}/lib
-    	-DINCLUDE_DIR:PATH=${SUPERBUILD_INSTALL_DIR}/include
+      -DCMAKE_INSTALL_PREFIX=${${proj}_INSTALL_DIR}
+    	-DLIBRARY_DIR:PATH=${${proj}_INSTALL_DIR}/lib
+    	-DINCLUDE_DIR:PATH=${${proj}_INSTALL_DIR}/include
     	-DCONDA_BUILD=OFF
     	-DBUILD_PYTHON_WRAPPER=ON
     	-DCMAKE_BUILD_TYPE=Release
@@ -71,10 +68,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
-
-   # not used
-   # set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
-   # set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
 
    else()
       if(${USE_SYSTEM_${externalProjName}})

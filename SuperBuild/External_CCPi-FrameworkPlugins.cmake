@@ -37,11 +37,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message(STATUS "${__indent}Adding project ${proj}")
   SetGitTagAndRepo("${proj}")
   ### --- Project specific additions here
-  # set(libcilreg_Install_Dir ${SUPERBUILD_INSTALL_DIR})
-
-  #message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
-  set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
-  set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
   message("${proj} URL " ${${proj}_URL}  )
   message("${proj} TAG " ${${proj}_TAG}  )
@@ -58,7 +53,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       CONFIGURE_COMMAND ""
       BUILD_COMMAND ""
       INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/Wrappers/Python/ccpi ${PYTHON_DEST}/ccpi
-      CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${SUPERBUILD_INSTALL_DIR}
+      CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${${proj}_INSTALL_DIR}
       DEPENDS ${${proj}_DEPENDENCIES}
     )
 
