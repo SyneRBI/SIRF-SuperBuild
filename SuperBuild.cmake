@@ -44,10 +44,16 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 endif()
 
 # Find CUDA
-find_package(CUDA)
-if (CUDA_FOUND)
-   message(STATUS "<<<<<<<<<<<<<<<<< CUDA FOUND >>>>>>>>>>>>>>>>>>>>>")
-   message(STATUS "Will enable CUDA dependencies where possible.")
+option(DISABLE_CUDA "Disable CUDA" OFF)
+if (NOT DISABLE_CUDA)
+  find_package(CUDA)
+endif()
+if (NOT DISABLE_CUDA AND CUDA_FOUND)
+  message(STATUS "<<<<<<<<<<<<<<<<< CUDA FOUND >>>>>>>>>>>>>>>>>>>>>")
+  message(STATUS "Will enable CUDA dependencies where possible.")
+  set(USE_CUDA ON CACHE INTERNAL "Use CUDA")
+else()
+  set(USE_CUDA OFF CACHE INTERNAL "Use CUDA" FORCE)
 endif()
 
 # If OSX give the advanced option to use absolute paths for shared libraries
@@ -242,11 +248,13 @@ if (USE_ITK)
 endif()
 
 # If building STIR and CUDA present, offer to build NiftyPET
-if (CUDA_FOUND AND NOT USE_SYSTEM_STIR)
+if (USE_CUDA AND NOT USE_SYSTEM_STIR)
   set(USE_NIFTYPET ON CACHE BOOL "Build STIR with NiftyPET's projectors") # FORCE)
   if (USE_NIFTYPET)
     option(USE_SYSTEM_NIFTYPET "Build using an external version of NiftyPET" OFF)
   endif()
+else()
+  set(USE_NIFTYPET OFF CACHE BOOL "Build STIR with NiftyPET's projectors" FORCE)
 endif()
 
 ## set versions

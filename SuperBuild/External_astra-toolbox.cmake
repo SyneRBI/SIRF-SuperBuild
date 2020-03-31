@@ -32,10 +32,10 @@ if(NOT ${Cython_FOUND})
     message(FATAL_ERROR "astra-toolkit binding to Python depends on Cython")
 endif()
 
-set (CUDA_TOOLKIT_ROOT_DIR $ENV{CUDA_BIN_DIR})
-find_package(CUDA)
 # as in CCPi RGL
-if (CUDA_FOUND)
+option(${proj}_USE_CUDA "Enable ${proj} CUDA (if cuda libraries are present)" ${USE_CUDA})
+if (${${proj}_USE_CUDA})
+   set (CUDA_TOOLKIT_ROOT_DIR $ENV{CUDA_BIN_DIR})
    set(CUDA_NVCC_FLAGS "-Xcompiler -fPIC -shared -D_FORCE_INLINES")
    message(STATUS "CUDA_SDK_ROOT_DIR ${CUDA_SDK_ROOT_DIR}")
    message(STATUS "CUDA_TOOLKIT_ROOT_DIR ${CUDA_TOOLKIT_ROOT_DIR}")
@@ -77,7 +77,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
     set(cmd "${${proj}_SOURCE_DIR}/build/linux/configure")
     list(APPEND cmd "CPPFLAGS=-I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib")
-    if (CUDA_FOUND)
+    if (${${proj}_USE_CUDA})
       list(APPEND cmd "NVCCFLAGS=-I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib")
       set(ASTRA_BUILD_OPTIONS "--with-cuda=${CUDA_TOOLKIT_ROOT_DIR}")
 
@@ -171,7 +171,7 @@ cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir/astra ${${proj}_INSTALL_DIR
   add_test(NAME ASTRA_BASIC_TEST
            COMMAND ${PYTHON_EXECUTABLE} -c "import astra; astra.test_noCUDA()"
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR})
-  if (CUDA_FOUND)
+  if (${${proj}_USE_CUDA})
     add_test(NAME ASTRA_BASIC_GPU_TEST
              COMMAND ${PYTHON_EXECUTABLE} -c "import astra; astra.test_CUDA()"
              WORKING_DIRECTORY ${${proj}_SOURCE_DIR})

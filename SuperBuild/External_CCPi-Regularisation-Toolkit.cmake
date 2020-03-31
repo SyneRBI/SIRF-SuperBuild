@@ -44,7 +44,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   SetGitTagAndRepo("${proj}")
 
   ### --- Project specific additions here
-  
+  option(${proj}_USE_CUDA "Enable ${proj} CUDA (if cuda libraries are present)" ${USE_CUDA})
+
   message(STATUS "${proj} URL " ${${proj}_URL}  )
   message(STATUS "${proj} TAG " ${${proj}_TAG}  )
   

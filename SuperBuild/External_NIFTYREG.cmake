@@ -47,7 +47,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
   set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
-  option(${proj}_USE_CUDA "Enable ${proj} CUDA (if cuda libraries are present)" ${CUDA_FOUND})
+  option(${proj}_USE_CUDA "Enable ${proj} CUDA (if cuda libraries are present)" ${${proj}_USE_CUDA})
   mark_as_advanced(${proj}_USE_CUDA)
 
   # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
