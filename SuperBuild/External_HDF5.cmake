@@ -46,7 +46,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   endif()
 
   #set(HDF5_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}-prefix/src/HDF5/hdf5-1.10.0-patch1 )
-  set(HDF5_BUILD_HL_LIB ${CUDA_FOUND})
+  option(${proj}_USE_CUDA "Enable ${proj} CUDA (if cuda libraries are present)" ${USE_CUDA})
+  set(HDF5_BUILD_HL_LIB ${${proj}_USE_CUDA})
 
   if (WIN32 AND (${HDF5_DOWNLOAD_VERSION} STREQUAL 1.8.12))
     find_program(GIT "git")
