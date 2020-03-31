@@ -58,7 +58,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       CONFIGURE_COMMAND ""
       BUILD_COMMAND ""
       INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/Wrappers/Python/ccpi ${PYTHON_DEST}/ccpi
-      CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${${proj}_INSTALL_DIR}
+      CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
       DEPENDS ${${proj}_DEPENDENCIES}
     )
 

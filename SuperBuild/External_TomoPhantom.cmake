@@ -51,7 +51,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     
 
     CMAKE_ARGS
-      -DCMAKE_INSTALL_PREFIX=${${proj}_INSTALL_DIR}
+      -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
     	-DLIBRARY_DIR:PATH=${${proj}_INSTALL_DIR}/lib
     	-DINCLUDE_DIR:PATH=${${proj}_INSTALL_DIR}/include
     	-DCONDA_BUILD=OFF

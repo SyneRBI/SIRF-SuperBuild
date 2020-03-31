@@ -106,7 +106,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         BUILD_COMMAND ""
         INSTALL_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} SRC_DIR=${${proj}_BINARY_DIR} RECIPE_DIR=${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe PYTHON=${PYTHON_EXECUTABLE} bash ${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe/build.sh
         CMAKE_ARGS
-           -DCMAKE_INSTALL_PREFIX=${${proj}_INSTALL_DIR}
+           -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
         DEPENDS
            ${${proj}_DEPENDENCIES}
       )
