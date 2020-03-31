@@ -1,6 +1,6 @@
 #========================================================================
 # Author: Edoardo Pasca
-# Copyright 2019 STFC
+# Copyright 2019-2020 STFC
 #
 # This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -83,7 +83,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     list(APPEND cmd "CPPFLAGS=-I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib")
     if (CUDA_FOUND)
       list(APPEND cmd "NVCCFLAGS=-I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib")
-      set(ASTRA_BUILD_OPTIONS "--with-cuda=${CUDA_TOOLKIT_ROOT_DIR} --prefix=${${proj}_INSTALL_DIR}")
+      set(ASTRA_BUILD_OPTIONS "--with-cuda=${CUDA_TOOLKIT_ROOT_DIR}")
 
       #create a configure script
       file(WRITE ${${proj}_SOURCE_DIR}/python_build
@@ -97,7 +97,7 @@ CPPFLAGS=\"-DASTRA_CUDA -DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${S
     else()
       # No CUDA
       message (STATUS "No CUDA found on host, skipping GPU")
-      set(ASTRA_BUILD_OPTIONS "--prefix=${${proj}_INSTALL_DIR}")
+      set(ASTRA_BUILD_OPTIONS "")
 
       #create a configure script
       file(WRITE ${${proj}_SOURCE_DIR}/python_build
@@ -121,7 +121,7 @@ CPPFLAGS=\"-DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INS
 
         
         BUILD_COMMAND
-        ${CMAKE_COMMAND} -E env ${cmd} ${ASTRA_BUILD_OPTIONS}  --with-install-type=prefix --with-python=${PYTHON_EXECUTABLE}
+        ${CMAKE_COMMAND} -E env ${cmd} ${ASTRA_BUILD_OPTIONS} --prefix=${${proj}_INSTALL_DIR} --with-install-type=prefix --with-python=${PYTHON_EXECUTABLE}
         INSTALL_COMMAND
           ${CMAKE_COMMAND} -E chdir ${${proj}_BINARY_DIR}/ make -j2 install-libraries
         DEPENDS
