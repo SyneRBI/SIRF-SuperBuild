@@ -8,7 +8,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMake" ${CMAKE_MODULE_PATH})
 include(ExternalProject)
 include(ExternalProjectDependency)
 
-set(PRIMARY_PROJECT_NAME CCPPETMR)
+set(PRIMARY_PROJECT_NAME SynerBI)
 option(${PRIMARY_PROJECT_NAME}_SUPERBUILD "Build ${PRIMARY_PROJECT_NAME} and the projects it depends on via SuperBuild.cmake." ON)
 
 if(${PRIMARY_PROJECT_NAME}_SUPERBUILD)

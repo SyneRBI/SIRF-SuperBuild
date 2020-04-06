@@ -5,7 +5,7 @@
 # Copyright 2017, 2018 University College London
 # Copyright 2017 STFC
 #
-# This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
+# This file is part of the CCP SynerBI Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -82,7 +82,7 @@ if(NOT ( DEFINED "USE_SYSTEM_FFTW3" AND "${USE_SYSTEM_FFTW3}" ) )
 )
 endif()
 
-# Currently, setting FFTW3_ROOT_DIR has no effect, see https://github.com/CCPPETMR/SIRF-SuperBuild/issues/147
+# Currently, setting FFTW3_ROOT_DIR has no effect, see https://github.com/SynerBI/SIRF-SuperBuild/issues/147
 #mark_as_superbuild(
 #  ALL_PROJECTS
 #  VARS

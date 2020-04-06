@@ -62,9 +62,9 @@ addons:
 #       + or - refer to the value of the parameter affecting the specific package is passed to cmake:
 #       i.e. -boost => -DUSE_SYSTEM_Boost=OFF, which means that Boost will be built.
 # Note: On trusty, we need to build Armadillo and boost ourselves (the system versions are too old)
-# Note: On trusty, g++-7 causes errors with the system ACE, so cannot use g++-7 or later https://github.com/CCPPETMR/SIRF-SuperBuild/issues/169
-# Note: On osx, we can't test SYSTEM_Boost=OFF due to excessive log size (https://github.com/CCPPETMR/SIRF-SuperBuild/issues/167)
-# Note: currently ACE is not building correctly, so ACE is not built on any configuration https://github.com/CCPPETMR/SIRF-SuperBuild/issues/#174
+# Note: On trusty, g++-7 causes errors with the system ACE, so cannot use g++-7 or later https://github.com/SynerBI/SIRF-SuperBuild/issues/169
+# Note: On osx, we can't test SYSTEM_Boost=OFF due to excessive log size (https://github.com/SynerBI/SIRF-SuperBuild/issues/167)
+# Note: currently ACE is not building correctly, so ACE is not built on any configuration https://github.com/SynerBI/SIRF-SuperBuild/issues/#174
 env:
  global:
  - BUILD_FLAGS="-DCMAKE_BUILD_TYPE=Release"

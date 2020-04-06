@@ -6,9 +6,9 @@ LABEL \
   author.email=imaging@caspersci.uk.to        \
   maintainer.email=ccppetmr@stfc.ac.uk        \
   maintainer.url=https://www.ccppetmr.ac.uk/  \
-  source.url=https://github.com/CCPPETMR/SIRF-SuperBuild/  \
+  source.url=https://github.com/SynerBI/SIRF-SuperBuild/  \
   licence="MPLv2.0 (https://www.mozilla.org/en-GB/MPL/2.0/)"  \
-  description="CCP PET-MR Ubuntu"
+  description="CCP SynerBI Ubuntu"
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -59,7 +59,7 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/bin/bash"]
 
 FROM core as sirf
-LABEL description="CCP PET-MR SIRF"
+LABEL description="CCP SynerBI SIRF"
 
 ENV DEBIAN_FRONTEND noninteractive
 

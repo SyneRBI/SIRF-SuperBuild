@@ -5,7 +5,7 @@
 # Copyright 2017-2020 University College London
 # Copyright 2017-2020 Science Technology Facilities Council
 #
-# This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
+# This file is part of the CCP SynerBI Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -320,7 +320,7 @@ message(STATUS "PYTHON_INCLUDE_DIRS=${PYTHON_INCLUDE_DIRS}")
 #set(proj ${PRIMARY_PROJECT_NAME})
 
 # Make environment files
-set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
+set(SynerBI_INSTALL ${SUPERBUILD_INSTALL_DIR})
 
 ## configure the environment files env_ccppetmr.sh/csh
 ## We create a whole bash/csh block script which does set the appropriate
@@ -371,13 +371,13 @@ endif()
 if (BUILD_GADGETRON)
 
   set(ENV_GADGETRON_HOME_SH "\
-GADGETRON_HOME=${CCPPETMR_INSTALL}\n\
+GADGETRON_HOME=${SynerBI_INSTALL}\n\
 export GADGETRON_HOME\n")
-  set(ENV_GADGETRON_HOME_CSH "setenv GADGETRON_HOME ${CCPPETMR_INSTALL}\n")
+  set(ENV_GADGETRON_HOME_CSH "setenv GADGETRON_HOME ${SynerBI_INSTALL}\n")
 endif()
 
-configure_file(env_ccppetmr.sh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.sh)
-configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
+configure_file(env_ccppetmr.sh.in ${SynerBI_INSTALL}/bin/env_ccppetmr.sh)
+configure_file(env_ccppetmr.csh.in ${SynerBI_INSTALL}/bin/env_ccppetmr.csh)
 
 # add tests
 enable_testing()
