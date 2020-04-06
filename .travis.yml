@@ -239,9 +239,9 @@ jobs:
        dpush() {
          # create and push alias $1 -> $2
          if [[ "$1" != "$2" ]]; then
-           docker tag ccppetmr/sirf:$1 ccppetmr/sirf:$2
+           docker tag ccpsynerbi/sirf:$1 ccpsynerbi/sirf:$2
          fi
-         docker push ccppetmr/sirf:$2
+         docker push ccpsynerbi/sirf:$2
        }
        if [[ -n "$TRAVIS_TAG" ]]; then ( set -ev
         # tag & push

@@ -1,16 +1,16 @@
 version: '2.3'
 services:
  sirf:
-  image: ccppetmr/sirf:service
+  image: ccpsynerbi/sirf:service
   restart: unless-stopped
   environment:
    GADGETRON_RELAY_HOST: 0.0.0.0
   build:
    target: service
    cache_from:
-    - ccppetmr/sirf:core
-    - ccppetmr/sirf:latest
-    - ccppetmr/sirf:service
+    - ccpsynerbi/sirf:core
+    - ccpsynerbi/sirf:latest
+    - ccpsynerbi/sirf:service
   ports:
    - "9002:9002"  # gadgetron
    - "9999:8888"  # jupyter

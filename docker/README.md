@@ -32,7 +32,7 @@ The repository is hosted at [hub.docker.com][dockerhub-SIRF].
 To pull directly, use:
 
 ```sh
-docker pull ccppetmr/sirf:<DOCKER_TAG>
+docker pull ccpsynerbi/sirf:<DOCKER_TAG>
 ```
 
 | `<DOCKER_TAG>` | Service `<DOCKER_TAG>` | [SuperBuild] branch/tag |
@@ -50,7 +50,7 @@ Service images are intended to be run in the background, and expose:
 | 8890-9 | `Jupyter` (in folder `/devel/SIRF-Exercises-<0-9>`) |
 | 9002 | `Gadgetron` |
 
-[dockerhub-SIRF]: https://hub.docker.com/r/ccppetmr/sirf/
+[dockerhub-SIRF]: https://hub.docker.com/r/ccpsynerbi/sirf/
 [SuperBuild]: https://github.com/SynerBI/SIRF-SuperBuild/
 
 # Introduction
@@ -143,7 +143,7 @@ A wonderfully tiny list of everything important to know for a basic working know
 - *Layer*: a single build step
     + usually represented by a single line in a `Dockerfile` (e.g. `apt-get install cmake`)
 - *Image*: a sequence of *layers* (applied on top of a *base image*)
-    + analogous to a clean OS with `SIRF` installed (in this case *tagged* `ccppetmr/sirf`)
+    + analogous to a clean OS with `SIRF` installed (in this case *tagged* `ccpsynerbi/sirf`)
 - *Container*: a sandboxed workspace derived from an *image*
     + analogous to a running virtual machine (in this case named `sirf`)
     + easily stoppable, restartable, disposable
@@ -161,7 +161,7 @@ A wonderfully tiny list of everything important to know for a basic working know
 
 ## SIRF Image Building and Container Creation
 
-The docker image can be built from source using `SynerBI/SIRF-SuperBuild` by following the steps below. Alternatively, simply run `docker pull ccppetmr/sirf` to download a pre-built image.
+The docker image can be built from source using `SynerBI/SIRF-SuperBuild` by following the steps below. Alternatively, simply run `docker pull ccpsynerbi/sirf` to download a pre-built image.
 
 `docker-compose` is used to help with creating containers (and even building images). It should be added to your `PATH` or at least have the executable copied to `SIRF-SuperBuild/docker`.
 
@@ -169,7 +169,7 @@ The docker image can be built from source using `SynerBI/SIRF-SuperBuild` by fol
 
 ```bash
 # Either:
-SIRF-SuperBuild/docker$ docker pull ccppetmr/sirf
+SIRF-SuperBuild/docker$ docker pull ccpsynerbi/sirf
 # Or:
 SIRF-SuperBuild/docker$ docker-compose build core sirf
 ```
@@ -185,7 +185,7 @@ SIRF-SuperBuild/docker$ ./sirf-compose up --no-start sirf
 
 ```
 Either:
-SIRF-SuperBuild/docker> docker pull ccppetmr/sirf
+SIRF-SuperBuild/docker> docker pull ccpsynerbi/sirf
 Or:
 SIRF-SuperBuild/docker> docker-compose build core sirf
 ```
