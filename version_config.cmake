@@ -24,7 +24,7 @@
 
 ## BOOST  # Gadgetron needs at least 1.65
 if (APPLE) # really should be checking for CLang
-    # Boost 1.65 contains a bug for recent Clang https://github.com/CCPPETMR/SIRF-SuperBuild/issues/170
+	# Boost 1.65 contains a bug for recent Clang https://github.com/SynerBI/SIRF-SuperBuild/issues/170
     set(Boost_VERSION 1.68.0)
     set(Boost_REQUIRED_VERSION 1.66.0)
     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_68_0.zip)
@@ -144,7 +144,7 @@ set(DEFAULT_NIFTYPET_URL https://github.com/pjmark/NIPET )
 set(DEFAULT_NIFTYPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
 
 ## SIRF-Contribs
-set(DEFAULT_SIRF-Contribs_URL https://github.com/CCPPETMR/SIRF-Contribs )
+set(DEFAULT_SIRF-Contribs_URL https://github.com/SynerBI/SIRF-Contribs )
 set(DEFAULT_SIRF-Contribs_TAG origin/master )
 
 ## SPM
@@ -172,7 +172,7 @@ mark_as_advanced(DEVEL_BUILD)
 # with devel build it uses latest version of upstream packages
 # otherwise uses the versions for current SIRF
 
-set(DEFAULT_SIRF_URL https://github.com/CCPPETMR/SIRF )
+set(DEFAULT_SIRF_URL https://github.com/SynerBI/SIRF )
 if (DEVEL_BUILD)
 
   set (DEFAULT_SIRF_TAG origin/master)
