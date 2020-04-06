@@ -5,7 +5,7 @@ LABEL \
   author.name="Casper da Costa-Luis"          \
   author.email=imaging@caspersci.uk.to        \
   maintainer.email=ccppetmr@stfc.ac.uk        \
-  maintainer.url=https://www.ccppetmr.ac.uk/  \
+  maintainer.url=https://www.ccpsynerbi.ac.uk/  \
   source.url=https://github.com/SynerBI/SIRF-SuperBuild/  \
   licence="MPLv2.0 (https://www.mozilla.org/en-GB/MPL/2.0/)"  \
   description="CCP SynerBI Ubuntu"

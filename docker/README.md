@@ -317,4 +317,4 @@ Finally, after finishing our work, we can stop the container.
 [SIRF SuperBuild on Docker wiki]: https://github.com/SynerBI/SIRF/wiki/SIRF-SuperBuild-on-Docker
 [SIRF]: https://github.com/SynerBI/SIRF
 [SIRF wiki]: https://github.com/SynerBI/SIRF/wiki
-[CCP SynerBI]: https://www.ccppetmr.ac.uk/
+[CCP SynerBI]: https://www.ccpsynerbi.ac.uk/
