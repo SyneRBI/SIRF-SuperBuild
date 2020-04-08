@@ -1,10 +1,10 @@
 version: '2.3'
 services:
  sirf:
-  image: ccpsynerbi/sirf:devel
+  image: synerbi/sirf:devel
   build:
    args:
     EXTRA_BUILD_FLAGS: "-DDEVEL_BUILD=ON"
    cache_from:
-    - ccpsynerbi/sirf:core
-    - ccpsynerbi/sirf:devel
+    - synerbi/sirf:core
+    - synerbi/sirf:devel

@@ -2,7 +2,7 @@ version: '2.3'
 services:
  sirf:
   container_name: sirf  # for scaling, comment this out https://github.com/docker/compose/issues/3729
-  image: ccpsynerbi/sirf:latest
+  image: synerbi/sirf:latest
   environment:
    # mainUser: ${USER:-sirfuser}
    mainUser: sirfuser
@@ -12,8 +12,8 @@ services:
    context: .
    target: sirf
    cache_from:
-    - ccpsynerbi/sirf:core
-    - ccpsynerbi/sirf:latest
+    - synerbi/sirf:core
+    - synerbi/sirf:latest
   stdin_open: true
   tty: true
   # cap_add:
@@ -25,13 +25,13 @@ services:
   volumes:
    - ./devel:/devel
  core:
-  image: ccpsynerbi/sirf:core
+  image: synerbi/sirf:core
   build:
    context: .
    target: core
    cache_from:
     - ubuntu:18.04
-    - ccpsynerbi/sirf:core
+    - synerbi/sirf:core
  gadgetron:
   container_name: gadgetron
   image: gadgetron/ubuntu_1804_no_cuda:latest
