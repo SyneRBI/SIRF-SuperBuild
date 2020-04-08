@@ -84,7 +84,7 @@ else()
   set(HDF5_DOWNLOAD_MAJOR_MINOR_VERSION "1.10")
   set(HDF5_DOWNLOAD_PATCH_VERSION "1")
   set(HDF5_DOWNLOAD_VERSION "${HDF5_DOWNLOAD_MAJOR_MINOR_VERSION}.${HDF5_DOWNLOAD_PATCH_VERSION}")
-  set(HDF5_URL https://www.ccpsynerbi.ac.uk/sites/www.ccpsynerbi.ac.uk/files/downloads/hdf5-${HDF5_DOWNLOAD_VERSION}.tar.gz)
+  set(HDF5_URL https://github.com/SynerBI/assets/releases/download/latest/hdf5-${HDF5_DOWNLOAD_VERSION}.tar.gz)
 endif()
 
 if (${HDF5_DOWNLOAD_VERSION} STREQUAL 1.8.12)
