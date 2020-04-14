@@ -1,9 +1,9 @@
 
-Demonstrates how to build and install [SIRF](https://github.com/SynerBI/SIRF) on an [Azure](https://azure.microsoft.com) VM using [Packer](https://www.packer.io/) and [Terraform](https://www.terraform.io/). The VM is described in Packer files. Packer is used to build an image of the VM. Terraform deploys VMs, and their associated infrastructure in the cloud and then performs further configuration. There is currently GPU support (NVIDIA).
+Demonstrates how to build and install [SIRF](https://github.com/SyneRBI/SIRF) on an [Azure](https://azure.microsoft.com) VM using [Packer](https://www.packer.io/) and [Terraform](https://www.terraform.io/). The VM is described in Packer files. Packer is used to build an image of the VM. Terraform deploys VMs, and their associated infrastructure in the cloud and then performs further configuration. There is currently GPU support (NVIDIA).
 
 An Azure account is required for deployment. [Terraform Cloud](https://app.terraform.io) is used to store the [infrastructure state remotely](https://www.terraform.io/docs/state/remote.html). This is optional, but recommended.
 
-*This configuration will currently deploy the `symposium2019` branch of the [SynerBI VM](https://github.com/SynerBI/SynerBI_VM).*
+*This configuration will currently deploy the `symposium2019` branch of the [SyneRBI VM](https://github.com/SyneRBI/SyneRBI_VM).*
 
 # Prerequisites
 

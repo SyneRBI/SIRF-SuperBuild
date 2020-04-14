@@ -1,12 +1,11 @@
-
 #========================================================================
 # Author: Edoardo Pasca
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
-# Copyright 2017-2018 University College London
-# Copyright 2017-2018 Science Technology Facilities Council
+# Copyright 2017-2020 University College London
+# Copyright 2017-2020 Science Technology Facilities Council
 #
-# This file is part of the CCP SynerBI Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
+# This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,7 +23,7 @@
 
 ## BOOST  # Gadgetron needs at least 1.65
 if (APPLE) # really should be checking for CLang
-	# Boost 1.65 contains a bug for recent Clang https://github.com/SynerBI/SIRF-SuperBuild/issues/170
+	# Boost 1.65 contains a bug for recent Clang https://github.com/SyneRBI/SIRF-SuperBuild/issues/170
     set(Boost_VERSION 1.68.0)
     set(Boost_REQUIRED_VERSION 1.66.0)
     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_68_0.zip)
@@ -84,7 +83,7 @@ else()
   set(HDF5_DOWNLOAD_MAJOR_MINOR_VERSION "1.10")
   set(HDF5_DOWNLOAD_PATCH_VERSION "1")
   set(HDF5_DOWNLOAD_VERSION "${HDF5_DOWNLOAD_MAJOR_MINOR_VERSION}.${HDF5_DOWNLOAD_PATCH_VERSION}")
-  set(HDF5_URL https://github.com/SynerBI/assets/releases/download/latest/hdf5-${HDF5_DOWNLOAD_VERSION}.tar.gz)
+  set(HDF5_URL https://github.com/SyneRBI/assets/releases/download/latest/hdf5-${HDF5_DOWNLOAD_VERSION}.tar.gz)
 endif()
 
 if (${HDF5_DOWNLOAD_VERSION} STREQUAL 1.8.12)
@@ -144,7 +143,7 @@ set(DEFAULT_NIFTYPET_URL https://github.com/pjmark/NIPET )
 set(DEFAULT_NIFTYPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
 
 ## SIRF-Contribs
-set(DEFAULT_SIRF-Contribs_URL https://github.com/SynerBI/SIRF-Contribs )
+set(DEFAULT_SIRF-Contribs_URL https://github.com/SyneRBI/SIRF-Contribs )
 set(DEFAULT_SIRF-Contribs_TAG origin/master )
 
 ## SPM
@@ -172,7 +171,7 @@ mark_as_advanced(DEVEL_BUILD)
 # with devel build it uses latest version of upstream packages
 # otherwise uses the versions for current SIRF
 
-set(DEFAULT_SIRF_URL https://github.com/SynerBI/SIRF )
+set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF )
 if (DEVEL_BUILD)
 
   set (DEFAULT_SIRF_TAG origin/master)

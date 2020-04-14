@@ -1,7 +1,7 @@
-CCP SynerBI Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
-Copyright 2017-2019 University College London (UCL)
-Copyright 2017-2019 Rutherford Appleton Laboratory STFC
-Copyright 2017-2019 King's College London (KCL)
+CCP SyneRBI Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
+Copyright 2017-2020 University College London (UCL)
+Copyright 2017-2020 Rutherford Appleton Laboratory STFC
+Copyright 2017-2020 King's College London (KCL)
 
 This software product is developed for the Collaborative Computational 
 Project in Positron Emission Tomography and Magnetic Resonance imaging

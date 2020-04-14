@@ -53,7 +53,7 @@ mkdir ~/devel
 ```
 
 ### Install CMake
-If you do not have CMake >= 3.10, install it first. You can probably use a package manager on your OS. Alternatively, you can do that either by following the official instructions ([download link](https://cmake.org/download/)) or running your own shell sript to do so (see an example [here](https://github.com/SynerBI/SynerBI_VM/blob/master/scripts/INSTALL_CMake.sh)). 
+If you do not have CMake >= 3.10, install it first. You can probably use a package manager on your OS. Alternatively, you can do that either by following the official instructions ([download link](https://cmake.org/download/)) or running your own shell sript to do so (see an example [here](https://github.com/SyneRBI/SyneRBI_VM/blob/master/scripts/INSTALL_CMake.sh)). 
 
 If you use a CMake installer, you will be asked to read and accept CMake's license. If you answered the last question during the CMake installation with yes, then you should use
 
@@ -72,7 +72,7 @@ You might want to add the `PATH` line to your start-up file e.g. `.profile`, `.b
 ```bash
 cd ~
 cd devel
-git clone https://github.com/SynerBI/SIRF-SuperBuild.git
+git clone https://github.com/SyneRBI/SIRF-SuperBuild.git
 ```
 
 ### Build and Install
@@ -80,7 +80,7 @@ Create a build directory and configure the software.
 
 Note that if you want to use MATLAB, you need to use (and specify) a compiler supported by MATLAB
 and might have to tell CMake where MATLAB is located. Please
-check our [SIRF and MATLAB page](https://github.com/SynerBI/SIRF/wiki/SIRF-and-MATLAB).
+check our [SIRF and MATLAB page](https://github.com/SyneRBI/SIRF/wiki/SIRF-and-MATLAB).
 
 ```bash
 cd ~/devel
@@ -182,18 +182,18 @@ cd $SIRF_PATH
 cd examples
 ls
 ```
-See [our related Wiki page](https://github.com/SynerBI/SIRF/wiki/Examples) for more information.
+See [our related Wiki page](https://github.com/SyneRBI/SIRF/wiki/Examples) for more information.
 
 ## OS specific information
 
 ### Installation instructions for Ubuntu <a name="Ubuntu-install"></a>
-They can be found [here](https://github.com/SynerBI/SIRF/wiki/SIRF-SuperBuild-Ubuntu-16.04)
+They can be found [here](https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-Ubuntu-16.04)
 
 ### Installation instructions for Mac OS <a name="OSX-install"></a>
-They can be found [here](https://github.com/SynerBI/SIRF/wiki/SIRF-SuperBuild-on-MacOS)
+They can be found [here](https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-on-MacOS)
 
 ### Installation instructions for Docker <a name="Docker-install"></a>
-They can be found [here](https://github.com/SynerBI/SIRF/wiki/SIRF-SuperBuild-on-Docker)
+They can be found [here](https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-on-Docker)
 
 ## Advanced installation
 
@@ -264,7 +264,7 @@ cmake ../SIRF-SuperBuild -DDISABLE_GIT_CHECKOUT_SIRF=ON -DSIRF_SOURCE_DIR=~/wher
 
 ### Building with Intel Math Kernel Library
 
-[Gadgetron](https://github.com/SynerBI/SIRF/wiki/SIRF,-Gadgetron-and-MKL) and Armadillo can make use of Intel's Math Kernel Library.
+[Gadgetron](https://github.com/SyneRBI/SIRF/wiki/SIRF,-Gadgetron-and-MKL) and Armadillo can make use of Intel's Math Kernel Library.
 
 1. Install Intel MKL following the instructions at [their](https://software.intel.com/en-us/mkl) website. For debian based linux follow [this link](https://software.intel.com/en-us/articles/installing-intel-free-libs-and-python-apt-repo). The latter will install MKL in `opt/intel`
 2. Gadgetron's [FindMKL.cmake](https://github.com/gadgetron/gadgetron/blob/master/cmake/FindMKL.cmake#L23) will try to look for MKL libraries in `/opt/intel` on Unix/Apple and in `C:/Program Files (x86)/Intel/Composer XE` in Windows. Make sure that this is the location of the library or pass the vatiable `MKLROOT_PATH` (Unix/Apple) or set the environment variable `MKLROOT_PATH` on Windows.
@@ -315,8 +315,8 @@ cmake ../SIRF-SuperBuild -DGadgetron_EXTRA_CMAKE_ARGS:STRING="-DBUILD_PYTHON_SUP
 
 * CMake does come with FindArmadillo.cmake but it currently (at least up to CMake 3.12) has no variable to specify its location at all. This implies that when using `USE_SYSTEM_ARMADILLO=On`, you have to install armadillo in a system location, unless some extra work is done. See [this post on stackoverflow](https://stackoverflow.com/questions/35304513/cmake-find-armadillo-library-installed-in-a-custom-location) for some suggestions, which we haven't tried.
 
-[CI-badge]: https://travis-ci.org/SynerBI/SIRF-SuperBuild.svg?branch=master
-[CI-link]: https://travis-ci.org/SynerBI/SIRF-SuperBuild
+[CI-badge]: https://travis-ci.org/SyneRBI/SIRF-SuperBuild.svg?branch=master
+[CI-link]: https://travis-ci.org/SyneRBI/SIRF-SuperBuild
 [style-badge]: https://api.codacy.com/project/badge/Grade/c1a4613d4bd247d19780881f8194eaf8
 [style-link]: https://www.codacy.com/app/CCP-PETMR/SIRF-SuperBuild
 [docker-badge]: https://img.shields.io/docker/pulls/synerbi/sirf.svg

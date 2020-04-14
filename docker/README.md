@@ -1,6 +1,6 @@
 # SIRF on Ubuntu 18.04 on Docker
 
-Docker wrapper for CCP SynerBI SIRF.
+Docker wrapper for CCP SyneRBI SIRF.
 
 ## TL;DR, I want a (Jupyter notebook) service NOW
 
@@ -17,7 +17,7 @@ from `./devel` (in this folder) on the host. The container will copy
 
 [docker-ce]: https://docs.docker.com/install/
 [docker-compose]: https://github.com/docker/compose/releases
-[SIRF-Exercises]: https://github.com/SynerBI/SIRF-Exercises
+[SIRF-Exercises]: https://github.com/SyneRBI/SIRF-Exercises
 
 Note: If on Windows, `localhost` probably won't work.
 Find out the service IP address using:
@@ -51,7 +51,7 @@ Service images are intended to be run in the background, and expose:
 | 9002 | `Gadgetron` |
 
 [dockerhub-SIRF]: https://hub.docker.com/r/synerbi/sirf/
-[SuperBuild]: https://github.com/SynerBI/SIRF-SuperBuild/
+[SuperBuild]: https://github.com/SyneRBI/SIRF-SuperBuild/
 
 # Introduction
 
@@ -85,7 +85,7 @@ firefox localhost:9999
 After installing [docker CE][docker-ce] and [`docker-compose`][docker-compose],
 
 ```bash
-git clone https://github.com/SynerBI/SIRF-SuperBuild
+git clone https://github.com/SyneRBI/SIRF-SuperBuild
 cd SIRF-SuperBuild/docker
 # if your host is linux:
 ./sirf-compose up --no-start sirf
@@ -111,7 +111,7 @@ docker start -ai sirf
 Alternatively, if you want a jupyter notebook server,
 
 ```bash
-git clone https://github.com/SynerBI/SIRF-SuperBuild
+git clone https://github.com/SyneRBI/SIRF-SuperBuild
 cd SIRF-SuperBuild/docker
 ./sirf-compose-server up -d sirf  # remove `./` if on windows
 ```
@@ -131,7 +131,7 @@ every time you want to play with `SIRF`.
 - Docker
     + The free [Community Edition (CE)][docker-ce] is sufficient
     + [`docker-compose`][docker-compose]
-- The [`SIRF-SuperBuild` repository](https://github.com/SynerBI/SIRF-SuperBuild)
+- The [`SIRF-SuperBuild` repository](https://github.com/SyneRBI/SIRF-SuperBuild)
     + download and unzip or `git clone` this locally
 
 ## Glossary
@@ -161,7 +161,7 @@ A wonderfully tiny list of everything important to know for a basic working know
 
 ## SIRF Image Building and Container Creation
 
-The docker image can be built from source using `SynerBI/SIRF-SuperBuild` by following the steps below. Alternatively, simply run `docker pull synerbi/sirf` to download a pre-built image.
+The docker image can be built from source using `SyneRBI/SIRF-SuperBuild` by following the steps below. Alternatively, simply run `docker pull synerbi/sirf` to download a pre-built image.
 
 `docker-compose` is used to help with creating containers (and even building images). It should be added to your `PATH` or at least have the executable copied to `SIRF-SuperBuild/docker`.
 
@@ -204,7 +204,7 @@ Note that Docker for Windows uses the newer
 [Hyper-V backend which can't be enabled if you have VirtualBox][hyper-vbox].
 You can use the older VirtualBox backend instead by using [Docker Machine].
 
-[wiki-wsl]: https://github.com/SynerBI/SIRF/wiki/SIRF-SuperBuild-on-Bash-on-Ubuntu-on-Windows-10
+[wiki-wsl]: https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-on-Bash-on-Ubuntu-on-Windows-10
 [hyper-vbox]: https://docs.docker.com/docker-for-windows/install/#what-to-know-before-you-install
 [Docker Machine]: https://docs.docker.com/machine/overview/#whats-the-difference-between-docker-engine-and-docker-machine
 
@@ -311,10 +311,10 @@ Finally, after finishing our work, we can stop the container.
     + See also: [SIRF SuperBuild on Docker wiki]
 - [Synergistic Image Reconstruction Framework (SIRF) project][SIRF]
     + [SIRF wiki]
-- [Collaborative Computational Project in Positron Emission Tomography and Magnetic Resonance imaging (CCP SynerBI)][CCP SynerBI]
+- [Collaborative Computational Project in Positron Emission Tomography and Magnetic Resonance imaging (CCP SyneRBI)][CCP SyneRBI]
 
-[SIRF docker source]: https://github.com/SynerBI/SIRF-SuperBuild/tree/master/docker
-[SIRF SuperBuild on Docker wiki]: https://github.com/SynerBI/SIRF/wiki/SIRF-SuperBuild-on-Docker
-[SIRF]: https://github.com/SynerBI/SIRF
-[SIRF wiki]: https://github.com/SynerBI/SIRF/wiki
-[CCP SynerBI]: https://www.ccpsynerbi.ac.uk/
+[SIRF docker source]: https://github.com/SyneRBI/SIRF-SuperBuild/tree/master/docker
+[SIRF SuperBuild on Docker wiki]: https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-on-Docker
+[SIRF]: https://github.com/SyneRBI/SIRF
+[SIRF wiki]: https://github.com/SyneRBI/SIRF/wiki
+[CCP SyneRBI]: https://www.ccpsynerbi.ac.uk/

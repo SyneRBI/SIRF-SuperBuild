@@ -3,7 +3,7 @@ Contributing
 
 Please help us by finding problems, discussing on the mailing lists, contributing documentation,
 bug fixes or even features. Below are some brief guidelines. They are essentially a copy of
-the [SIRF Contribution guidelines](https://github.com/SynerBI/SIRF/blob/master/CONTRIBUTING.md).
+the [SIRF Contribution guidelines](https://github.com/SyneRBI/SIRF/blob/master/CONTRIBUTING.md).
 you might want to check those as well, in case they are more recent.
 
 ## Reporting a problem
@@ -30,8 +30,8 @@ This is our recommended process. If it sounds too daunting, ask for help.
 3. Create a branch in your fork with a descriptive name and put your fixes there. If your fix is
 simple you could do it on github by editing a file, otherwise clone your project (or add a remote
 to your current git clone) and work as usual.
-4. If your change is important, add it to [CHANGES.md](https://github.com/SynerBI/SIRF-SuperBuild/blob/master/CHANGES.md)
-and even [README.md](https://github.com/SynerBI/SIRF-SuperBuild/blob/master/README.md) or other documentation files.
+4. If your change is important, add it to [CHANGES.md](https://github.com/SyneRBI/SIRF-SuperBuild/blob/master/CHANGES.md)
+and even [README.md](https://github.com/SyneRBI/SIRF-SuperBuild/blob/master/README.md) or other documentation files.
 5. Use [well-formed commit messages](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
 for each change (in particular with a single "subject" line
 followed by an empty line and then more details).
@@ -54,7 +54,7 @@ If you copied code from somewhere, you need to preserve its copyright date/notic
 you need to make sure its license is compatible with the SIRF license, and indicate clearly what the license
 of the copied code is (and follow its terms of course).
 
-In addition, you might need to add yourself to [NOTICE.txt](https://github.com/SynerBI/SIRF-SuperBuild/blob/master/NOTICE.txt).
+In addition, you might need to add yourself to [NOTICE.txt](https://github.com/SyneRBI/SIRF-SuperBuild/blob/master/NOTICE.txt).
 
 ## Project rules
 
@@ -84,6 +84,6 @@ In addition, you might need to add yourself to [NOTICE.txt](https://github.com/S
         * Easy cross-referencing of related issues, PRs, and commits
     + The mailing list gets notified within 24 hours.
 
-[issue-tracker]: https://github.com/SynerBI/SIRF-SuperBuild/issues
-[pull-requests]: https://github.com/SynerBI/SIRF-SuperBuild/pulls
+[issue-tracker]: https://github.com/SyneRBI/SIRF-SuperBuild/issues
+[pull-requests]: https://github.com/SyneRBI/SIRF-SuperBuild/pulls
 [googlegroup]: https://groups.google.com/forum/#!forum/ccp-petmr-codebot
