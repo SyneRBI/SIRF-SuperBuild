@@ -168,6 +168,7 @@ SuperBuild(){
         git remote set-url origin https://github.com/SyneRBI/SIRF-SuperBuild.git
     fi
     git fetch --tags --all
+    git pull
   fi
   # go to SB_TAG
   if [ $1 = 'default' ] 
