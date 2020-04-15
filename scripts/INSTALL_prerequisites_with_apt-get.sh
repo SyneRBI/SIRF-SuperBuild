@@ -2,8 +2,6 @@
 # Script that install various packages needed for Gadgetron, SIRF etc
 # on debian-based system (including Ubuntu).
 #
-# Needs to be run with super-user permissions, e.g. via sudo
-#
 # Please note: this script modifies your installation dramatically
 # without asking any questions.
 # We use it for the CCP PETMR VM etc.
@@ -13,8 +11,9 @@ set -e
 #if [ -z "SUDO" ]; then SUDO=sudo; fi
 export DEBIAN_FRONTEND=noninteractive
 SUDO=sudo
+$SUDO apt update
 echo "Installing Gadgetron pre-requisites..."
-APT_GET_INSTALL="$SUDO apt-get install -y --no-install-recommends"
+APT_GET_INSTALL="$SUDO apt install -y --no-install-recommends"
 ${APT_GET_INSTALL} libhdf5-serial-dev git build-essential libfftw3-dev h5utils hdf5-tools \
 	liblapack-dev libarmadillo-dev libace-dev libgtest-dev libopenblas-dev libpugixml-dev \
 	libatlas-base-dev libatlas-base-dev libxml2-dev libxslt1-dev unzip
@@ -34,7 +33,7 @@ echo "Found Boost major version ${boost_major}, minor ${boost_minor}"
 if [ $boost_major -gt 1 -o $boost_minor -gt 64 ]
 then
     echo "installing Boost ${boost_major}.${boost_minor} from system apt"
-    $SUDO apt install -y libboost-dev libboost-chrono-dev \
+    ${APT_GET_INSTALL} libboost-dev libboost-chrono-dev \
         libboost-filesystem-dev libboost-thread-dev \
         libboost-date-time-dev libboost-regex-dev \
         libboost-program-options-dev libboost-atomic-dev \
@@ -52,16 +51,16 @@ else
     $SUDO apt auto-remove -y
     # TODO: find out which version is in the ppa
     find_boost_version
-    echo "installing Boost ${boost_major}.${boost_minor} from system apt"
+    echo "installing Boost ${boost_major}.${boost_minor} from ppa:mhier apt"
     ${APT_GET_INSTALL} libboost${boost_major}.${boost_minor}-all-dev
 fi
 
 echo "Installing SWIG..."
 
-${APT_GET_INSTALL} --no-install-recommends swig
+${APT_GET_INSTALL} swig
 
 echo "Installing doxygen related packages"
-${APT_GET_INSTALL} --no-install-recommends doxygen graphviz
+${APT_GET_INSTALL} doxygen graphviz
 
 # replaced with pip install
 #echo "Installing python libraries etc"
