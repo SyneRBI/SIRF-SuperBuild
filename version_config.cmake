@@ -151,6 +151,20 @@ set(DEFAULT_SIRF-Contribs_TAG origin/master )
 set(DEFAULT_SPM_URL https://github.com/spm/SPM12.git )
 set(DEFAULT_SPM_TAG r7771)
 
+set(DEFAULT_JSON_URL https://github.com/nlohmann/json.git )
+set(DEFAULT_JSON_TAG v3.7.3)
+
+# CCPi CIL
+set(CIL_VERSION "v19.10")
+set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
+set(DEFAULT_CCPi-Framework_TAG ff08216d4e6fef84659b43155c5c52484b1dc543)
+set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git )
+set(DEFAULT_CCPi-Regularisation-Toolkit_TAG db048a42018857c7aa30033e978a3600cbedb85f)
+set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
+set(DEFAULT_CCPi-FrameworkPlugins_TAG "${CIL_VERSION}")
+set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
+set(DEFAULT_CCPi-Astra_TAG 8c2493710f5eac1316945585fe6333ab56f9a2a1)
+
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
 
@@ -176,15 +190,6 @@ if (DEVEL_BUILD)
 
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
   set(DEFAULT_ACE_TAG origin/master)
-  # CCPi CIL
-  set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
-  set(DEFAULT_CCPi-Framework_TAG ff08216d4e6fef84659b43155c5c52484b1dc543)
-  set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
-  set(DEFAULT_CCPi-Regularisation-Toolkit_TAG db048a42018857c7aa30033e978a3600cbedb85f)
-  set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
-  set(DEFAULT_CCPi-FrameworkPlugins_TAG origin/master)
-  set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
-  set(DEFAULT_CCPi-Astra_TAG 8c2493710f5eac1316945585fe6333ab56f9a2a1)
 
 else()
   set(DEFAULT_SIRF_TAG v2.1.0)
@@ -205,16 +210,7 @@ else()
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
   set(DEFAULT_ACE_TAG origin/master)
   
-  # CCPi CIL
-  set(CIL_VERSION "v19.10")
-  set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
-  set(DEFAULT_CCPi-Framework_TAG ff08216d4e6fef84659b43155c5c52484b1dc543)
-  set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git )
-  set(DEFAULT_CCPi-Regularisation-Toolkit_TAG db048a42018857c7aa30033e978a3600cbedb85f)
-  set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
-  set(DEFAULT_CCPi-FrameworkPlugins_TAG "${CIL_VERSION}")
-  set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
-  set(DEFAULT_CCPi-Astra_TAG 8c2493710f5eac1316945585fe6333ab56f9a2a1)
+  
 endif()
 
 
@@ -244,6 +240,10 @@ SET(glog_TAG ${DEFAULT_glog_TAG} CACHE STRING ON)
 set(ACE_URL ${DEFAULT_ACE_URL} CACHE STRING ON)
 set(ACE_TAG ${DEFAULT_ACE_TAG} CACHE STRING ON)
 
+set(JSON_URL ${DEFAULT_JSON_URL} CACHE STRING ON)
+set(JSON_TAG ${DEFAULT_JSON_TAG} CACHE STRING ON)
+
+
 set(CCPi-Regularisation-Toolkit_URL ${DEFAULT_CCPi-Regularisation-Toolkit_URL} CACHE STRING ON)
 set(CCPi-Regularisation-Toolkit_TAG ${DEFAULT_CCPi-Regularisation-Toolkit_TAG} CACHE STRING ON)
 set(CCPi-Framework_URL ${DEFAULT_CCPi-Framework_URL} CACHE STRING ON)
@@ -272,6 +272,9 @@ set(ITK_TAG ${DEFAULT_ITK_TAG} CACHE STRING ON)
 set(SPM_URL ${DEFAULT_SPM_URL} CACHE STRING ON)
 set(SPM_TAG ${DEFAULT_SPM_TAG} CACHE STRING ON)
 
+set(JSON_URL ${DEFAULT_JSON_URL} CACHE STRING ON)
+set(JSON_TAG ${DEFAULT_JSON_TAG} CACHE STRING ON)
+
 mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   Gadgetron_URL Gadgetron_TAG
   siemens_to_ismrmrd_URL siemens_to_ismrmrd_TAG
@@ -286,4 +289,5 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   SIRF-Contribs_URL SIRF-Contribs_TAG
   ITK_URL ITK_TAG
   SPM_URL SPM_TAG
+  JSON_URL JSON_TAG
 )

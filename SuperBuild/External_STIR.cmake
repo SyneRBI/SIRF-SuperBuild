@@ -23,10 +23,9 @@
 set(proj STIR)
 
 # Set dependency list
+set(${proj}_DEPENDENCIES "Boost")
 if (USE_ITK)
-  set(${proj}_DEPENDENCIES "Boost;ITK")
-else()
-  set(${proj}_DEPENDENCIES "Boost")
+  list(APPEND ${proj}_DEPENDENCIES "ITK")
 endif()
 if (BUILD_STIR_SWIG_PYTHON)
   list(APPEND ${proj}_DEPENDENCIES "SWIG")
@@ -34,6 +33,7 @@ endif()
 if (USE_NIFTYPET)
   list(APPEND ${proj}_DEPENDENCIES "NIFTYPET")
 endif()
+list(APPEND ${proj}_DEPENDENCIES "JSON")
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
