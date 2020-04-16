@@ -72,6 +72,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
     set(${proj}_PETPRJ_LIB "${SUPERBUILD_INSTALL_DIR}/lib/petprj.so")
     set(${proj}_MMR_AUXE_LIB "${SUPERBUILD_INSTALL_DIR}/lib/mmr_auxe.so")
+    set(${proj}_MMR_LMPROC_LIB "${SUPERBUILD_INSTALL_DIR}/lib/mmr_lmproc.so")
     set(${proj}_INCLUDE_DIR "${SUPERBUILD_INSTALL_DIR}/include")
 
 
