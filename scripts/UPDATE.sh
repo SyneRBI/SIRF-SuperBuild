@@ -120,12 +120,12 @@ SuperBuild(){
   cd $SIRF_SRC_PATH
   if [ ! -d SIRF-SuperBuild ] 
   then
-    git clone https://github.com/SynerBi/SIRF-SuperBuild.git
+    git clone https://github.com/SyneRBI/SIRF-SuperBuild.git
     cd SIRF-SuperBuild
   else
     cd SIRF-SuperBuild
-    # update the remote repository after rename to SynerBI
-    git remote set-url origin https://github.com/SynerBI/SIRF-SuperBuild.git
+    # update the remote repository after rename to SyneRBI
+    git remote set-url origin https://github.com/SyneRBI/SIRF-SuperBuild.git
     git fetch
     git pull
   fi
@@ -240,13 +240,13 @@ SuperBuild $SB_TAG
 cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/scripts/update*sh $SIRF_INSTALL_PATH/bin
 
 # Get extra python tools
-clone_or_pull  https://github.com/SynerBI/ismrmrd-python-tools.git
+clone_or_pull  https://github.com/SyneRBI/ismrmrd-python-tools.git
 cd $SIRF_SRC_PATH/ismrmrd-python-tools
 python setup.py install --user
 
 # install the SIRF-Exercises
 cd $SIRF_SRC_PATH
-clone_or_pull  https://github.com/SynerBI/SIRF-Exercises.git
+clone_or_pull  https://github.com/SyneRBI/SIRF-Exercises.git
 cd $SIRF_SRC_PATH/SIRF-Exercises
 PY_USER_BIN=`python -c 'import site; import os; print ( os.path.join(site.USER_BASE , "bin") )'`
 export PATH=${PY_USER_BIN}:${PATH}
