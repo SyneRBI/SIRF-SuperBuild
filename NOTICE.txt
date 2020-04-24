@@ -4,7 +4,8 @@ Copyright 2017-2020 Rutherford Appleton Laboratory STFC
 Copyright 2017-2020 King's College London (KCL)
 
 This software product is developed for the Collaborative Computational 
-Project in Positron Emission Tomography and Magnetic Resonance imaging
+Project Synergistic Reconstruction for Biomedical Imaging 
+(formerly in Positron Emission Tomography and Magnetic Resonance imaging)
 (http://www.ccpsynerbi.ac.uk/) at RAL STFC (http://www.stfc.ac.uk), UCL (http://www.ucl.ac.uk/)
 and other contributing institutions.
 

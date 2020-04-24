@@ -42,14 +42,14 @@ else()
 endif()
 
 ## Armadillo
-set(Armadillo_URL   https://downloads.sourceforge.net/project/arma/armadillo-9.800.2.tar.xz)
+set(Armadillo_URL https://downloads.sourceforge.net/project/arma/armadillo-9.800.2.tar.xz)
 set(Armadillo_MD5 c2fa488ea069b9972363ebad16e51ab5 )
 
 ## FFTW3
 if(WIN32)
   # Just use precompiled version
   # TODO would prefer the next zip file but for KT using an ftp URL times-out (firewall?)
-  set(FFTW3_URL https://www.ccpsynerbi.ac.uk/sites/www.ccpsynerbi.ac.uk/files/downloads/fftw-3.3.5-dll64.zip )
+  set(FFTW3_URL https://github.com/SyneRBI/assets/releases/download/latest/fftw-3.3.5-dll64.zip )
   set(FFTW3_MD5 cb3c5ad19a89864f036e7a2dd5be168c )
   #set(FFTW3_URL https://s3.amazonaws.com/install-gadgetron-vs2013/Dependencies/FFTW/zip/FFTW3.zip )
   #set(FFTW3_MD5 a42eac92d9ad06d7c53fb82b09df2b6e )
