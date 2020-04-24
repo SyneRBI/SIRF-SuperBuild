@@ -2,7 +2,7 @@
 # Author: Edoardo Pasca
 # Copyright 2019, 2020 STFC
 #
-# This file is part of the CCP SyneRBI (formely PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
+# This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 ##
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
