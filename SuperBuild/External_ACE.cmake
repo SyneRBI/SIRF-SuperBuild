@@ -74,7 +74,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   )
   endif()
 
-# Currently, setting ACE_ROOT has no effect, see https://github.com/SynerBI/SIRF-SuperBuild/issues/147
+# Currently, setting ACE_ROOT has no effect, see https://github.com/SyneRBI/SIRF-SuperBuild/issues/147
 #  mark_as_superbuild(
 #    VARS
 #      ${externalProjName}_ROOT:PATH

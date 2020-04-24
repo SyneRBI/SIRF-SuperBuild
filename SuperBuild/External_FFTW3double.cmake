@@ -82,7 +82,7 @@ if(NOT ( DEFINED "USE_SYSTEM_FFTW3" AND "${USE_SYSTEM_FFTW3}" ) )
 )
 endif()
 
-# Currently, setting FFTW3_ROOT_DIR has no effect, see https://github.com/SynerBI/SIRF-SuperBuild/issues/147
+# Currently, setting FFTW3_ROOT_DIR has no effect, see https://github.com/SyneRBI/SIRF-SuperBuild/issues/147
 #mark_as_superbuild(
 #  ALL_PROJECTS
 #  VARS
