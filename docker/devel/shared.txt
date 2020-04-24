@@ -4,7 +4,7 @@ Host:
 
 `SIRF-SuperBuild/docker/devel`
 
-Docker container (ccppetmr/sirf:latest):
+Docker container (synerbi/sirf:latest):
 
 `/devel`
 

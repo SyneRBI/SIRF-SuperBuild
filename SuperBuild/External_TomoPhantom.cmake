@@ -3,11 +3,11 @@
 # Author: Kris Thielemans
 # Author: Edoardo Pasca
 # Author: Casper da Costa-Luis
-# Copyright 2017, 2019 University College London
-# Copyright 2017, 2019 STFC
-# Copyright 2019 King's College London
+# Copyright 2017, 2020 University College London
+# Copyright 2017, 2020 STFC
+# Copyright 2019, 2020 King's College London
 #
-# This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
+# This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -102,11 +102,3 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     TMP_DIR ${${proj}_TMP_DIR}
   )
   endif()
-
-# Currently, setting ACE_ROOT has no effect, see https://github.com/CCPPETMR/SIRF-SuperBuild/issues/147
-#  mark_as_superbuild(
-#    VARS
-#      ${externalProjName}_ROOT:PATH
-#    LABELS
-#      "FIND_PACKAGE"
-#  )
