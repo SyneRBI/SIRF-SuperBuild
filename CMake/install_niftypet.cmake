@@ -1,8 +1,8 @@
 #========================================================================
 # Author: Richard Brown
-# Copyright 2019 University College London
+# Copyright 2019, 2020 University College London
 #
-# This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
+# This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,3 +30,4 @@ ENDFOREACH()
 ## Install libraries
 file(COPY ${NIFTYPET_BINARY_DIR}/nipet/prj/petprj.so DESTINATION ${SUPERBUILD_INSTALL_DIR}/lib)
 file(COPY ${NIFTYPET_BINARY_DIR}/nipet/mmr_auxe.so DESTINATION ${SUPERBUILD_INSTALL_DIR}/lib)
+file(COPY ${NIFTYPET_BINARY_DIR}/nipet/lm/mmr_lmproc.so DESTINATION ${SUPERBUILD_INSTALL_DIR}/lib)
