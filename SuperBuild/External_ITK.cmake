@@ -36,6 +36,7 @@ SetCanonicalDirectoryNames(${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
+  SetGitTagAndRepo("${proj}")
 
   ### --- Project specific additions here
 
@@ -50,17 +51,16 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
-    GIT_REPOSITORY ${${proj}_URL}
-    GIT_TAG ${${proj}_TAG}
+    ${${proj}_EP_ARGS_GIT}
     ${${proj}_EP_ARGS_DIRS}
 
     CMAKE_ARGS
-      -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
-      -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
-      -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}
-      -DCMAKE_INSTALL_PREFIX=${${proj}_INSTALL_DIR}
+      -DCMAKE_PREFIX_PATH:PATH=${SUPERBUILD_INSTALL_DIR}
+      -DCMAKE_LIBRARY_PATH:PATH=${SUPERBUILD_INSTALL_DIR}/lib
+      -DCMAKE_INCLUDE_PATH:PATH=${SUPERBUILD_INSTALL_DIR}
+      -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
 	    -DBUILD_SHARED_LIBS:BOOL=${ITK_SHARED_LIBS}
-      -DCMAKE_BUILD_TYPE=${EXTERNAL_PROJECT_BUILD_TYPE}
+      -DCMAKE_BUILD_TYPE:STRING=${EXTERNAL_PROJECT_BUILD_TYPE}
       ${HDF5_CMAKE_ARGS}
       -DITK_USE_SYSTEM_HDF5:BOOL=ON
       -DBUILD_TESTING:BOOL=${BUILD_TESTING_${proj}}

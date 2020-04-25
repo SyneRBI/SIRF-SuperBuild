@@ -35,6 +35,7 @@ SetCanonicalDirectoryNames(${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
+  SetGitTagAndRepo("${proj}")
 
   ### --- Project specific additions here
   if (NOT WIN32)
@@ -57,16 +58,15 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
-    GIT_REPOSITORY ${${proj}_URL}
-    GIT_TAG ${${proj}_TAG}
+    ${${proj}_EP_ARGS_GIT}
     ${${proj}_EP_ARGS_DIRS}
 
     CMAKE_ARGS
-      -DCMAKE_INSTALL_PREFIX=${ISMRMRD_INSTALL_DIR}
-      -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
-      -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
+      -DCMAKE_INSTALL_PREFIX:PATH=${ISMRMRD_INSTALL_DIR}
+      -DCMAKE_PREFIX_PATH:PATH=${SUPERBUILD_INSTALL_DIR}
+      -DCMAKE_LIBRARY_PATH:PATH=${SUPERBUILD_INSTALL_DIR}/lib
       ${HDF5_CMAKE_ARGS}
-      -DBOOST_ROOT=${BOOST_ROOT}
+      -DBOOST_ROOT:PATH=${BOOST_ROOT}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )

@@ -37,6 +37,7 @@ SetCanonicalDirectoryNames(${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
+  SetGitTagAndRepo("${proj}")
 
   ### --- Project specific additions here
 
@@ -45,13 +46,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
-    GIT_REPOSITORY ${${proj}_URL}
-    GIT_TAG ${${proj}_TAG}
+    ${${proj}_EP_ARGS_GIT}
     ${${proj}_EP_ARGS_DIRS}
 
     CMAKE_ARGS
-      -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
-      -DCMAKE_INSTALL_PREFIX=${${proj}_INSTALL_DIR}
+      -DCMAKE_PREFIX_PATH:PATH=${SUPERBUILD_INSTALL_DIR}
+      -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )

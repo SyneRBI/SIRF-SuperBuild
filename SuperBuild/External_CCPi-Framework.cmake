@@ -29,25 +29,13 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
-
-set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
-set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
-set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
-set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
-set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
+SetCanonicalDirectoryNames(${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
-
+  
   ### --- Project specific additions here
-  set(libcilreg_Install_Dir ${SUPERBUILD_INSTALL_DIR})
-
-  set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
-  set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
-
-  message("${proj} URL " ${${proj}_URL}  ) 
-  message("${proj} TAG " ${${proj}_TAG}  ) 
-
+ 
   if (DISABLE_OpenMP)
     message(FATAL_ERROR "CCPi-Framework requries OpenMP")
   endif()
@@ -62,17 +50,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     ExternalProject_Add(${proj}
       ${${proj}_EP_ARGS}
       ${${proj}_EP_ARGS_GIT}
-      SOURCE_DIR ${${proj}_SOURCE_DIR}
-      BINARY_DIR ${${proj}_BINARY_DIR}
-      DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-      STAMP_DIR ${${proj}_STAMP_DIR}
-      TMP_DIR ${${proj}_TMP_DIR}
-      INSTALL_DIR ${libcilreg_Install_Dir}
+      ${${proj}_EP_ARGS_DIRS}
       # apparently this is the only way to pass environment variables to
       # external projects
       CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG}
         ${CMAKE_COMMAND} ${${proj}_SOURCE_DIR}
-          -DCMAKE_INSTALL_PREFIX:STRING=${libcilreg_Install_Dir}
+          -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
           -DCMAKE_BUILD_TYPE:STRING=Release
           -DPYTHON_EXECUTABLE:FILEPATH=${PYTHON_EXECUTABLE}
           -DPYTHON_INCLUDE_DIR:PATH=${PYTHON_INCLUDE_DIRS}

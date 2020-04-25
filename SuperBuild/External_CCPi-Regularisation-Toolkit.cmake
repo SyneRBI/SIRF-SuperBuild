@@ -34,29 +34,22 @@ endif()
 
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
+SetCanonicalDirectoryNames(${proj})
+# Get any flag from the superbuild call that may be particular to this projects CMAKE_ARGS
+SetExternalProjectFlags(${proj})
 
-set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
-set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
-set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
-set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
-set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
+  SetGitTagAndRepo("${proj}")
 
   ### --- Project specific additions here
-  set(libcilreg_Install_Dir ${SUPERBUILD_INSTALL_DIR})
-
-  #message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
-  set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
-  set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
-
   option(${proj}_USE_CUDA "Enable ${proj} CUDA (if cuda libraries are present)" ${USE_CUDA})
 
   message(STATUS "${proj} URL " ${${proj}_URL}  )
   message(STATUS "${proj} TAG " ${${proj}_TAG}  )
+  
   set (CIL_VERSION ${${prog}_TAG})
-  message(STATUS "CIL_VERSION ${CIL_VERSION}" )
   # conda build should never get here
   if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
     # in case of PYTHONPATH it is sufficient to copy the files to the
@@ -79,29 +72,22 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
 
     # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
-    SetGitTagAndRepo("${proj}")
-
+    
     ExternalProject_Add(${proj}
       ${${proj}_EP_ARGS}
       ${${proj}_EP_ARGS_GIT}
-      SOURCE_DIR ${${proj}_SOURCE_DIR}
-      BINARY_DIR ${${proj}_BINARY_DIR}
-      DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-      STAMP_DIR ${${proj}_STAMP_DIR}
-      TMP_DIR ${${proj}_TMP_DIR}
-      INSTALL_DIR ${libcilreg_Install_Dir}
+      ${${proj}_EP_ARGS_DIRS}
       # apparently this is the only way to pass environment variables to
       # external projects
       CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} ${CMAKE_COMMAND} ${${proj}_SOURCE_DIR}
-        -DCMAKE_INSTALL_PREFIX=${libcilreg_Install_Dir}
-        -DBUILD_PYTHON_WRAPPER=ON -DCMAKE_BUILD_TYPE=Release
-        -DBUILD_CUDA:BOOL=${${proj}_USE_CUDA} -DCONDA_BUILD=OFF -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
+        -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
+        -DBUILD_PYTHON_WRAPPER:BOOL=ON -DCMAKE_BUILD_TYPE:STRING=Release
+        -DBUILD_CUDA:BOOL=${${proj}_USE_CUDA} -DCONDA_BUILD:BOOL=OFF
         -DPYTHON_EXECUTABLE:FILEPATH=${PYTHON_EXECUTABLE}
         -DPYTHON_INCLUDE_DIR:PATH=${PYTHON_INCLUDE_DIRS}
         -DPYTHON_LIBRARY:FILEPATH=${PYTHON_LIBRARIES}
         -DPYTHON_DEST_DIR:PATH=${PYTHON_DEST}
 
-      # This build is Unix specific
       BUILD_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} ${CMAKE_COMMAND} --build .
       INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install
       #TEST_COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -s ${${proj}_SOURCE_DIR}/test/ -p test*.py
@@ -114,19 +100,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       # the appropriate variables.
       ExternalProject_Add(${proj}
         ${${proj}_EP_ARGS}
-        GIT_REPOSITORY ${${proj}_URL}
-        GIT_TAG ${${proj}_TAG}
-        SOURCE_DIR ${${proj}_SOURCE_DIR}
-        BINARY_DIR ${${proj}_BINARY_DIR}
-        DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-        STAMP_DIR ${${proj}_STAMP_DIR}
-        TMP_DIR ${${proj}_TMP_DIR}
-        INSTALL_DIR ${libcilreg_Install_Dir}
+        ${${proj}_EP_ARGS_GIT}
+        ${${proj}_EP_ARGS_DIRS}
         CONFIGURE_COMMAND ""
         BUILD_COMMAND ""
         INSTALL_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} SRC_DIR=${${proj}_BINARY_DIR} RECIPE_DIR=${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe PYTHON=${PYTHON_EXECUTABLE} bash ${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe/build.sh
         CMAKE_ARGS
-           -DCMAKE_INSTALL_PREFIX=${libcilreg_Install_Dir}
+           -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
         DEPENDS
            ${${proj}_DEPENDENCIES}
       )
@@ -145,11 +125,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       message("USING the system ${externalProjName}")
     endif()
     ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-      SOURCE_DIR ${${proj}_SOURCE_DIR}
-      BINARY_DIR ${${proj}_BINARY_DIR}
-      DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-      STAMP_DIR ${${proj}_STAMP_DIR}
-      TMP_DIR ${${proj}_TMP_DIR}
+                              ${${proj}_EP_ARGS_DIRS}
     )
   endif()
 

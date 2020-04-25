@@ -40,29 +40,19 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ### --- Project specific additions here
 
-  set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
-  set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
-
-
-
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
     GIT_TAG ${${proj}_TAG}
     ${${proj}_EP_ARGS_DIRS}
     CMAKE_ARGS
-      -DCMAKE_INSTALL_PREFIX=${${proj}_INSTALL_DIR}
+      -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
       -DLIBRARY_DIR:PATH=${${proj}_INSTALL_DIR}/lib
       -DINCLUDE_DIR:PATH=${${proj}_INSTALL_DIR}/include
-    # TODO this relies on using "make", but we could be build with something else
-    INSTALL_COMMAND make ACE
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target ACE
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
-
-   # not used
-   # set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
-   # set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
 
    else()
       if(${USE_SYSTEM_${externalProjName}})

@@ -26,15 +26,13 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
-
-set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
-set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
-set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
-set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
-set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
+SetCanonicalDirectoryNames(${proj})
+# Get any flag from the superbuild call that may be particular to this projects CMAKE_ARGS
+SetExternalProjectFlags(${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
+  SetGitTagAndRepo("${proj}")
 
   # conda build should never get here
   if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
@@ -42,14 +40,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     # $PYTHONPATH directory
     ExternalProject_Add(${proj}
       ${${proj}_EP_ARGS}
-      GIT_REPOSITORY ${${proj}_URL}
-      GIT_TAG ${${proj}_TAG}
-      SOURCE_DIR ${${proj}_SOURCE_DIR}
-      BINARY_DIR ${${proj}_BINARY_DIR}
-      DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-      STAMP_DIR ${${proj}_STAMP_DIR}
-      TMP_DIR ${${proj}_TMP_DIR}
-      INSTALL_DIR ${SUPERBUILD_INSTALL_DIR}
+      ${${proj}_EP_ARGS_GIT}
+      ${${proj}_EP_ARGS_DIRS}
     
       CONFIGURE_COMMAND ""
       BUILD_COMMAND ""
@@ -68,10 +60,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
 else()
   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+                            ${${proj}_EP_ARGS_DIRS}
   )
 endif()

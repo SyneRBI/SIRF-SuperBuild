@@ -34,42 +34,26 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
-
+SetCanonicalDirectoryNames(${proj})
 # Get any flag from the superbuild call that may be particular to this projects CMAKE_ARGS
 SetExternalProjectFlags(${proj})
 
-
-set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
-set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
-set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
-set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
-set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
-
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
+  SetGitTagAndRepo("${proj}")
 
   ### --- Project specific additions here
-  set(TomoPhantom_Install_Dir ${SUPERBUILD_INSTALL_DIR})
-
-  set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
-  set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
-
-
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
-    GIT_REPOSITORY ${${proj}_URL}
-    GIT_TAG ${${proj}_TAG}
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_GIT}
+    ${${proj}_EP_ARGS_DIRS}
+    
 
     CMAKE_ARGS
-      -DCMAKE_INSTALL_PREFIX=${TomoPhantom_Install_Dir}
-    	-DLIBRARY_DIR:PATH=${TomoPhantom_Install_Dir}/lib
-    	-DINCLUDE_DIR:PATH=${TomoPhantom_Install_Dir}/include
+      -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
+    	-DLIBRARY_DIR:PATH=${${proj}_INSTALL_DIR}/lib
+    	-DINCLUDE_DIR:PATH=${${proj}_INSTALL_DIR}/include
     	-DCONDA_BUILD=OFF
     	-DBUILD_PYTHON_WRAPPER=ON
     	-DCMAKE_BUILD_TYPE=Release
@@ -85,20 +69,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         ${${proj}_DEPENDENCIES}
   )
 
-   # not used
-   # set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
-   # set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
-
    else()
       if(${USE_SYSTEM_${externalProjName}})
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
         message(STATUS "USING the system ${externalProjName}, found ACE_LIBRARIES=${ACE_LIBRARIES}")
     endif()
   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+                            ${${proj}_EP_ARGS_DIRS}
   )
   endif()
