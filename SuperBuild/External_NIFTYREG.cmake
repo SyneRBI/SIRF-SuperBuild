@@ -2,11 +2,10 @@
 # Author: Richard Brown
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
-# Copyright 2017 University College London
-# Copyright 2017 STFC
+# Copyright 2017, 2020 University College London
 #
-# This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
-#
+# This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
+##
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -65,15 +64,15 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     ${${proj}_EP_ARGS_DIRS}
     CMAKE_ARGS
       -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=${CMAKE_POSITION_INDEPENDENT_CODE}
-      -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
-      -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
-      -DCMAKE_INCLUDE_PATH=${SUPERBUILD_INSTALL_DIR}
-      -DCMAKE_INSTALL_PREFIX=${${proj}_Install_Dir}
-      -DUSE_THROW_EXCEP=ON
+      -DCMAKE_PREFIX_PATH:PATH=${SUPERBUILD_INSTALL_DIR}
+      -DCMAKE_LIBRARY_PATH:PATH=${SUPERBUILD_INSTALL_DIR}/lib
+      -DCMAKE_INCLUDE_PATH:PATH=${SUPERBUILD_INSTALL_DIR}
+      -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_Install_Dir}
+      -DUSE_THROW_EXCEP:BOOL=ON
       # fixes lib_reg_maths.a `GOMP_parallel' undefined reference linker errors
       -DUSE_OPENMP:BOOL=${${proj}_ENABLE_OPENMP}
       -DBUILD_ALL_DEP:BOOL=ON
-      -DUSE_CUDA=${${proj}_USE_CUDA}
+      -DUSE_CUDA:BOOL=${${proj}_USE_CUDA}
        ${${proj}_EXTRA_CMAKE_ARGS_LIST}
     DEPENDS ${${proj}_DEPENDENCIES})
 

@@ -2,10 +2,10 @@
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
 # Author: Edoardo Pasca
-# Copyright 2017 University College London
-# Copyright 2017 STFC
+# Copyright 2017, 2020 University College London
+# Copyright 2017, 2020 STFC
 #
-# This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
+# This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,6 +40,7 @@ SetExternalProjectFlags(${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
+  SetGitTagAndRepo("${proj}")
 
   ### --- Project specific additions here
 
@@ -56,8 +57,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   find_package(BLAS)
   if (APPLE AND NOT (CBLAS_LIBRARY AND CBLAS_INCLUDE_DIR))
 	# if the variables don't exist, let the user set them.
-	SET(CBLAS_LIBRARY "" CACHE FILEPATH "CBAS library")
-	SET(CBLAS_INCLUDE_DIR "" CACHE PATH "CBAS include directory")
+	SET(CBLAS_LIBRARY "" CACHE FILEPATH "CBLAS library")
+	SET(CBLAS_INCLUDE_DIR "" CACHE PATH "CBLAS include directory")
     message(FATAL_ERROR "Gadgetron needs CBLAS_LIBRARY and CBLAS_INCLUDE_DIR. If
       these variables do not exist in your CMake, create them manually. CBLAS_LIBRARY
       and CBLAS_INCLUDE_DIR should be FILEPATH and PATH, respectively, and live in

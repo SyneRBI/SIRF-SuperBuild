@@ -2,10 +2,10 @@
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
 # Author: Edoardo Pasca
-# Copyright 2017, 2018 University College London
-# Copyright 2017 STFC
+# Copyright 2017, 2020 University College London
+# Copyright 2017, 2020 STFC
 #
-# This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
+# This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -58,8 +58,6 @@ if(NOT ( DEFINED "USE_SYSTEM_FFTW3" AND "${USE_SYSTEM_FFTW3}" ) )
     set(CLANG_ARG -DCMAKE_COMPILER_IS_CLANGXX:BOOL=ON)
   endif()
 
-  #set(FFTWdouble_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj} )
-  
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
@@ -68,9 +66,6 @@ if(NOT ( DEFINED "USE_SYSTEM_FFTW3" AND "${USE_SYSTEM_FFTW3}" ) )
     CONFIGURE_COMMAND ${${proj}_SOURCE_DIR}/configure --with-pic --prefix ${${proj}_INSTALL_DIR}
     INSTALL_DIR ${${proj}_INSTALL_DIR}
   )
-
-  #set( FFTW3_ROOT_DIR:PATH ${${proj}_INSTALL_DIR} )
-
 
  else()
     if(${USE_SYSTEM_${externalProjName}})
@@ -82,7 +77,7 @@ if(NOT ( DEFINED "USE_SYSTEM_FFTW3" AND "${USE_SYSTEM_FFTW3}" ) )
 )
 endif()
 
-# Currently, setting FFTW3_ROOT_DIR has no effect, see https://github.com/CCPPETMR/SIRF-SuperBuild/issues/147
+# Currently, setting FFTW3_ROOT_DIR has no effect, see https://github.com/SyneRBI/SIRF-SuperBuild/issues/147
 #mark_as_superbuild(
 #  ALL_PROJECTS
 #  VARS
