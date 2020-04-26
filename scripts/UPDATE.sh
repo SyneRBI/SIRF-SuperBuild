@@ -236,7 +236,7 @@ update()
 SuperBuild $SB_TAG
 
 # copy scripts into the path
-cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/scripts/update*sh $SIRF_INSTALL_PATH/bin
+cp -vp $SIRF_SRC_PATH/SyneRBI_VM/scripts/update*sh $SIRF_INSTALL_PATH/bin
 
 # Get extra python tools
 clone_or_pull  https://github.com/SyneRBI/ismrmrd-python-tools.git
