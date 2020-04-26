@@ -61,22 +61,22 @@ if [ ! -d $userHOME/devel ]; then
 fi
 cd $userHOME/devel
 
-if [ ! -d $userHOME/devel/CCPPETMR_VM ]; then
-  git clone https://github.com/CCPPETMR/CCPPETMR_VM.git
-  cd CCPPETMR_VM
+if [ ! -d $userHOME/devel/SyneRBI_VM ]; then
+  git clone https://github.com/SyneRBI/SyneRBI_VM.git
+  cd SyneRBI_VM
 else
-  cd CCPPETMR_VM
+  cd SyneRBI_VM
   git pull
 fi
 
 
 
-bash $userHOME/devel/CCPPETMR_VM/scripts/INSTALL_prerequisites_with_apt-get.sh
-bash $userHOME/devel/CCPPETMR_VM/scripts/INSTALL_CMake.sh /usr/local
-bash $userHOME/devel/CCPPETMR_VM/scripts/INSTALL_python_packages.sh
+bash $userHOME/devel/SyneRBI_VM/scripts/INSTALL_prerequisites_with_apt-get.sh
+bash $userHOME/devel/SyneRBI_VM/scripts/INSTALL_CMake.sh /usr/local
+bash $userHOME/devel/SyneRBI_VM/scripts/INSTALL_python_packages.sh
 
 # port 8888 is forwarded to 8888 so the user can use the host browser
 # Therefore no browser is installed on the VM
 
 chown -R $SIRFUSERNAME:users $userHOME
-sudo -u $SIRFUSERNAME -H bash $userHOME/devel/CCPPETMR_VM/scripts/UPDATE.sh
+sudo -u $SIRFUSERNAME -H bash $userHOME/devel/SyneRBI_VM/scripts/UPDATE.sh
