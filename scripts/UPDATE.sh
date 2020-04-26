@@ -127,7 +127,6 @@ SuperBuild(){
     # update the remote repository after rename to SyneRBI
     git remote set-url origin https://github.com/SyneRBI/SIRF-SuperBuild.git
     git fetch
-    git pull
   fi
   # go to SB_TAG
   if [ $1 = 'default' ] 
