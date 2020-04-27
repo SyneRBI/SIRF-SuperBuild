@@ -8,7 +8,7 @@ PYTHON="${2:-miniconda}"
 case "$PYTHON" in
 miniconda)
   # miniconda
-  curl https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh > miniconda.sh
+  curl https://repo.anaconda.com/miniconda/Miniconda2-latest-Linux-x86_64.sh > miniconda.sh
   echo -e "\nyes\n${INSTALL_DIR}" | bash miniconda.sh
   rm miniconda.sh
   source "$INSTALL_DIR"/bin/activate
