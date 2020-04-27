@@ -191,7 +191,7 @@ if (DEVEL_BUILD)
   set(DEFAULT_ACE_TAG origin/master)
 
 else()
-  set(DEFAULT_SIRF_TAG bc6e1d9ea1447d2eb821f819d7e5c12888a0861d)
+  set(DEFAULT_SIRF_TAG 1756793187cdd96df397689f35ec0332455bc401)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
