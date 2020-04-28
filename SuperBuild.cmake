@@ -249,12 +249,12 @@ endif()
 
 # If building STIR and CUDA present, offer to build NiftyPET
 if (USE_CUDA AND NOT USE_SYSTEM_STIR)
-  set(USE_NIFTYPET ON CACHE BOOL "Build STIR with NiftyPET's projectors") # FORCE)
-  if (USE_NIFTYPET)
-    option(USE_SYSTEM_NIFTYPET "Build using an external version of NiftyPET" OFF)
+  set(USE_NiftyPET ON CACHE BOOL "Build STIR with NiftyPET's projectors") # FORCE)
+  if (USE_NiftyPET)
+    option(USE_SYSTEM_NiftyPET "Build using an external version of NiftyPET" OFF)
   endif()
 else()
-  set(USE_NIFTYPET OFF CACHE BOOL "Build STIR with NiftyPET's projectors" FORCE)
+  set(USE_NiftyPET OFF CACHE BOOL "Build STIR with NiftyPET's projectors" FORCE)
 endif()
 
 ## set versions

@@ -19,7 +19,7 @@
 #=========================================================================
 
 #This needs to be unique globally
-set(proj NIFTYPET)
+set(proj NiftyPET)
 
 # Set dependency list
 set(${proj}_DEPENDENCIES "")
@@ -43,7 +43,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     MESSAGE(FATAL_ERROR "${proj} currently only works with python version 2.")
   endif()
 
-  set(NIFTYPET_INSTALL_COMMAND ${CMAKE_SOURCE_DIR}/CMake/install_niftypet.cmake)
+  set(NiftyPET_INSTALL_COMMAND ${CMAKE_SOURCE_DIR}/CMake/install_NiftyPET.cmake)
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
@@ -67,7 +67,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -D${proj}_SOURCE_DIR:PATH=${${proj}_SOURCE_DIR}
       -D${proj}_BINARY_DIR:PATH=${${proj}_BINARY_DIR}
       -DSUPERBUILD_INSTALL_DIR:PATH=${SUPERBUILD_INSTALL_DIR}
-      -P ${NIFTYPET_INSTALL_COMMAND}
+      -P ${NiftyPET_INSTALL_COMMAND}
   )
 
     set(${proj}_PETPRJ_LIB "${SUPERBUILD_INSTALL_DIR}/lib/petprj.so")
