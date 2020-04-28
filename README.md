@@ -1,7 +1,7 @@
-# CCPPETMR Virtual Machine: Build your own VM 
+# CC SyneRBI Virtual Machine: Build your own VM 
 
-This project contains a series of files and scripts to create and install a virtual machine running [SIRF](https://github.com/CCPPETMR/SIRF) and its prerequisites. If you just want to download and use a pre-built VM, it can be downloaded from our [website](http://www.ccppetmr.ac.uk/downloads), just check the
-[installation  instructions](INSTALL.md) and our [wiki](https://github.com/CCPPETMR/CCPPETMR_VM/wiki)
+This project contains a series of files and scripts to create and install a virtual machine running [SIRF](https://github.com/SyneRBI/SIRF) and its prerequisites. If you just want to download and use a pre-built VM, it can be downloaded from our [website](http://www.ccppetmr.ac.uk/downloads), just check the
+[installation  instructions](INSTALL.md) and our [wiki](https://github.com/SyneRBI/SyneRBI_VM/wiki)
 for basic usage.
 
 The remainder of this file documents how to build your own VM.
@@ -22,7 +22,7 @@ The pre-built Ubuntu machine is downloaded and then configured. Virtual Box shou
 	
 That will finish up the creation steps. 
 
-Refer to [here](https://github.com/CCPPETMR/CCPPETMR_VM/blob/master/INSTALL.md) for further informations and instructions.
+Refer to [here](https://github.com/SyneRBI/SyneRBI_VM/blob/master/INSTALL.md) for further informations and instructions.
 
 ## Pre-built downloads
 A pre-built VM with SIRF installed is currently available at [www.ccppetmr.ac.uk/downloads](www.ccppetmr.ac.uk/downloads). The page states which version of VirtualBox was used to create it. 
@@ -40,7 +40,7 @@ which does the gnome configuration.
 ### Notes on CUDA
 
 Although this does not apply to the VirtualBox VM, these scripts are being used to create VM on the cloud. 
-We found that the appropriate CUDA toolkit to install is 10.1, by following [these](https://github.com/CCPPETMR/SIRF-SuperBuild/issues/273) instructions:
+We found that the appropriate CUDA toolkit to install is 10.1, by following [these](https://github.com/SyneRBI/SIRF-SuperBuild/issues/273) instructions:
 
 #### Uninstall CUDA
 
