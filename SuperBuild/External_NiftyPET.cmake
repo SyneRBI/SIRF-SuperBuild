@@ -39,9 +39,21 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ### --- Project specific additions here
 
-  IF(NOT ${PYTHON_VERSION_MAJOR} EQUAL 2)
-    MESSAGE(FATAL_ERROR "${proj} currently only works with python version 2.")
-  endif()
+  IF(${PYTHON_VERSION_MAJOR} EQUAL 2)
+    SET(NiftyPET_PYTHON_EXECUTABLE ${PYTHON_EXECUTABLE} CACHE PATH "Path to python2 executable for NiftyPET installation")
+    SET(NiftyPET_PYTHON_INCLUDE_DIR ${PYTHON_INCLUDE_DIR} CACHE PATH "Path to python2 include directories for NiftyPET installation")
+    SET(NiftyPET_PYTHON_LIBRARY ${PYTHON_LIBRARY} CACHE PATH "Path to python2 libraries for NiftyPET installation")
+  ELSE()
+    message(STATUS "NiftyPET currently only supports python2,"
+      " so using that for NiftyPET compilation...")
+    find_package (Python2 REQUIRED COMPONENTS Interpreter Development)
+    SET(NiftyPET_PYTHON_EXECUTABLE ${Python2_EXECUTABLE} CACHE PATH "Path to python2 executable for NiftyPET installation")
+    SET(NiftyPET_PYTHON_INCLUDE_DIR ${Python2_INCLUDE_DIRS} CACHE PATH "Path to python2 include directories for NiftyPET installation")
+    SET(NiftyPET_PYTHON_LIBRARY ${Python2_LIBRARIES} CACHE PATH "Path to python2 libraries for NiftyPET installation")
+  ENDIF()
+  mark_as_advanced(NiftyPET_PYTHON_EXECUTABLE
+    NiftyPET_PYTHON_INCLUDE_DIR
+    NiftyPET_PYTHON_LIBRARY)
 
   set(NiftyPET_INSTALL_COMMAND ${CMAKE_SOURCE_DIR}/CMake/install_NiftyPET.cmake)
 
@@ -56,9 +68,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
       -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
       -DCMAKE_INSTALL_PREFIX=${${proj}_INSTALL_DIR}
-      -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
-      -DPYTHON_INCLUDE_DIR:PATH=${PYTHON_INCLUDE_DIR}
-      -DPYTHON_LIBRARY=${PYTHON_LIBRARY}
+      -DPYTHON_EXECUTABLE=${NiftyPET_PYTHON_EXECUTABLE}
+      -DPYTHON_INCLUDE_DIR:PATH=${NiftyPET_PYTHON_INCLUDE_DIR}
+      -DPYTHON_LIBRARY=${NiftyPET_PYTHON_LIBRARY}
       ${${proj}_EXTRA_CMAKE_ARGS_LIST}
     DEPENDS
         ${${proj}_DEPENDENCIES}
