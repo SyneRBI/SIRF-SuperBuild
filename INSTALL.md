@@ -1,4 +1,4 @@
-# CCPPETMR Virtual Machine: Installation and running of pre-built machine
+# SyneRBI Virtual Machine: Installation and running of pre-built machine
 
 If you have any problems, please first re-check this web-page. If you cannot solve your issue, please email CCP-PETMR-USERS @ JISCMAIL.AC.UK
 
@@ -58,11 +58,11 @@ If you see a dialog box about "starting in scaled mode", you can press OK to all
 
     - To adjust other system settings you can click on the right top corner and then click on the tools icon (spanner and screwdriver) to start the settings app, or click on "Activities" on the top left corner and then type "settings" in the search box and it should open the settings apps. If the text and windows are so large it makes using the settings app difficult, try changing the scaling by pressing the small display icon near the bottom right of the VB window. 
 
-4. The VM has been created with a particular version of Virtual Box (see the Download page) and with the [VirtualBox Guest Additions](https://www.virtualbox.org/manual/ch04.html) (VGA) pre-installed. If you have a different (or even the same) version of Virtual Box you might experience [issues](https://github.com/CCPPETMR/CCPPETMR_VM/issues/9), especially [running the X server](https://github.com/CCPPETMR/CCPPETMR_VM/issues/60#issuecomment-367611385). If you are using a different version of VirtualBox we therefore strongly recommend to sync your VGA version as follows:\
+4. The VM has been created with a particular version of Virtual Box (see the Download page) and with the [VirtualBox Guest Additions](https://www.virtualbox.org/manual/ch04.html) (VGA) pre-installed. If you have a different (or even the same) version of Virtual Box you might experience [issues](https://github.com/SyneRBI/SyneRBI_VM/issues/9), especially [running the X server](https://github.com/SyneRBI/SyneRBI_VM/issues/60#issuecomment-367611385). If you are using a different version of VirtualBox we therefore strongly recommend to sync your VGA version as follows:\
 In the menu-bar of the window that contains your VM, click on "Devices" and then "Insert Guest Additions CD". (On a Mac, with the VM window selected, this menu bar is at the top of the screen). If this generates a window inside your VM to run the software on this "CD", say OK. Otherwise, type
 
   ```
-   sudo /home/sirfuser/devel/CCPPETMR_VM/scripts/update_VGA.sh
+   sudo /home/sirfuser/devel/SyneRBI_VM/scripts/update_VGA.sh
    sudo shutdown -r now
   ```
 The VM will reboot. (You will have to do this again if you upgrade your VirtualBox version).
@@ -70,7 +70,7 @@ The VM will reboot. (You will have to do this again if you upgrade your VirtualB
 5. Currently (20 April, 2018, SIRF_1.0.0) people are reporting problems after the VM is shutdown or rebooted. The VM windows system may fail to start and you are left with a flashing VM terminal window that stabilises after a few minutes. If your cursor has gone, it may be "in" this terminal window and can be released (press the Host Key (on most systems, right-ctrl, on a Mac the Apple command key). To restore proper functionality, follow the instructions in point 5 above, even if you already had the correct VGA installed. If you have previously 'inserted' the CD you may get an error message that you need to ignore. Then reboot.
 
 ## Usage 
-Check our [wiki](https://github.com/CCPPETMR/CCPPETMR_VM/wiki) for usage instructions.
+Check our [wiki](https://github.com/SyneRBI/SyneRBI_VM/wiki) for usage instructions.
 
 ## How to shut down the VM
 
@@ -91,11 +91,11 @@ Warning: in VB versions before 6.0.6, we strongly recommend to copy data from a 
 After installing the VGA, you might want to configure a shared directory between the host and the guest machine such that your virtual machine can "see" your "normal" files. Please read [the Virtualbox documentation on Folder Sharing](http://www.virtualbox.org/manual/ch04.html#sharedfolders). 
 Summary of steps (courtesy Nikos Efthimiou):
  
- 1. Right click on the CCPPETMR VM in VirtualBox main window and choose Settings.
+ 1. Right click on the SyneRBI VM in VirtualBox main window and choose Settings.
  2. Choose "Shared Folders".
  3. Add new folder (use small + button near the right edge of the dialog), select the folder you want, and give it a name, e.g. MyLaptop.
  4. Select folder and check "make permanent" and "auto mount".
- 5. Start the CCPPETMR VM (or switch to it) and open a terminal and type
+ 5. Start the SyneRBI VM (or switch to it) and open a terminal and type
  
          mkdir ~/MyLaptop
          sudo mount -t vboxsf -o rw,uid=1002,gid=1002 MyLaptop ~/MyLaptop
@@ -109,4 +109,4 @@ If you want you can unmount the folder by typing
 
 ## Using the VM as server
 
-See [here](https://github.com/CCPPETMR/CCPPETMR_VM/blob/master/Using_VM_as_server.md)
+See [here](https://github.com/SyneRBI/SyneRBI_VM/blob/master/Using_VM_as_server.md)

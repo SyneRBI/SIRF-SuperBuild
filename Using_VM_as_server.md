@@ -10,7 +10,7 @@ the VM by default:
 | Gadgetron | 9002 | 9002 | TCP/IP |
 
 ## Gadgetron server
-You can use CCPPETMR Virtual Machine as a Gadgetron server if you cannot install Gadgetron on you computer (we ourselves have not yet succeeded in installing it under Windows).
+You can use SyneRBI Virtual Machine as a Gadgetron server if you cannot install Gadgetron on you computer (we ourselves have not yet succeeded in installing it under Windows).
 
 1. Start Virtual Machine.
 1. Open a new terminal on the VM and type `gadgetron` there.
