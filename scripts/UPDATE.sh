@@ -267,7 +267,7 @@ then
   fi
   mkdir ~/Desktop 
 fi 
-cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/HELP.txt ~/Desktop/
+cp -vp $SIRF_SRC_PATH/SyneRBI_VM/HELP.txt ~/Desktop/
 
 if [ -r ~/.sirfc ]; then
   echo "Moving existing ~/.sirfc to a backup copy"
@@ -280,7 +280,7 @@ if [ ! -z "$STIR_exercises_PATH" ]; then
     echo "export STIR_exercises_PATH=$SIRF_SRC_PATH/STIR-exercises" >> ~/.sirfrc
 fi
 
-version=`echo -n "export SIRF_VM_VERSION=" | cat - ${SIRF_SRC_PATH}/CCPPETMR_VM/VM_version.txt`
+version=`echo -n "export SIRF_VM_VERSION=" | cat - ${SIRF_SRC_PATH}/SyneRBI_VM/VM_version.txt`
 echo $version > ~/.sirf_VM_version
 
 echo ""
