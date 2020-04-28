@@ -1,17 +1,17 @@
 #!/bin/bash
 #
-# Script to install/update the CCP-PETMR VM. It could also be used for any
+# Script to install/update the SyneRBI VM. It could also be used for any
 # other system but will currently change your .sirfrc.
 # This is to be avoided later on.
 #
 # Authors: Kris Thielemans, Evgueni Ovtchinnikov, Edoardo Pasca,
 # Casper da Costa-Luis
-# Copyright 2016-2018 University College London
-# Copyright 2016-2018 Rutherford Appleton Laboratory STFC
+# Copyright 2016-2020 University College London
+# Copyright 2016-2020 Rutherford Appleton Laboratory STFC
 #
 # This is software developed for the Collaborative Computational
-# Project in Positron Emission Tomography and Magnetic Resonance imaging
-# (http://www.ccppetmr.ac.uk/).
+# Project in Synergistic Reconstruction for Biomedical Imaging (formerly PETMR)
+# (http://www.ccpsynerbi.ac.uk/).
 
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -104,6 +104,15 @@ fi
 if [ ! -d $SIRF_SRC_PATH ]
 then
   mkdir -p $SIRF_SRC_PATH
+fi
+
+# cope with CCP-PETMR renaming
+if [ -d $SIRF_SRC_PATH/CCPPETMR_VM ]; then
+  if [ ! -h $SIRF_SRC_PATH/SyneRBI_VM ]; then
+    ln -s $SIRF_SRC_PATH/CCPPETMR_VM $SIRF_SRC_PATH/SyneRBI_VM
+    cd $SIRF_SRC_PATH/CCPPETMR_VM
+    git remote set-url origin https://github.com/SyneRBI/SyneRBI_VM.git
+  fi
 fi
 
 SIRF_INSTALL_PATH=$SIRF_SRC_PATH/install
