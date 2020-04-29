@@ -19,7 +19,7 @@
 #=========================================================================
 
 #This needs to be unique globally
-set(proj NIFTYPET)
+set(proj NiftyPET)
 
 # Set dependency list
 set(${proj}_DEPENDENCIES "")
@@ -39,11 +39,23 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ### --- Project specific additions here
 
-  IF(NOT ${PYTHON_VERSION_MAJOR} EQUAL 2)
-    MESSAGE(FATAL_ERROR "${proj} currently only works with python version 2.")
-  endif()
+  IF(${PYTHON_VERSION_MAJOR} EQUAL 2)
+    SET(NiftyPET_PYTHON_EXECUTABLE ${PYTHON_EXECUTABLE} CACHE PATH "Path to python2 executable for NiftyPET installation")
+    SET(NiftyPET_PYTHON_INCLUDE_DIR ${PYTHON_INCLUDE_DIR} CACHE PATH "Path to python2 include directories for NiftyPET installation")
+    SET(NiftyPET_PYTHON_LIBRARY ${PYTHON_LIBRARY} CACHE PATH "Path to python2 libraries for NiftyPET installation")
+  ELSE()
+    message(STATUS "NiftyPET currently only supports python2,"
+      " so using that for NiftyPET compilation...")
+    find_package (Python2 REQUIRED COMPONENTS Interpreter Development)
+    SET(NiftyPET_PYTHON_EXECUTABLE ${Python2_EXECUTABLE} CACHE PATH "Path to python2 executable for NiftyPET installation")
+    SET(NiftyPET_PYTHON_INCLUDE_DIR ${Python2_INCLUDE_DIRS} CACHE PATH "Path to python2 include directories for NiftyPET installation")
+    SET(NiftyPET_PYTHON_LIBRARY ${Python2_LIBRARIES} CACHE PATH "Path to python2 libraries for NiftyPET installation")
+  ENDIF()
+  mark_as_advanced(NiftyPET_PYTHON_EXECUTABLE
+    NiftyPET_PYTHON_INCLUDE_DIR
+    NiftyPET_PYTHON_LIBRARY)
 
-  set(NIFTYPET_INSTALL_COMMAND ${CMAKE_SOURCE_DIR}/CMake/install_niftypet.cmake)
+  set(NiftyPET_INSTALL_COMMAND ${CMAKE_SOURCE_DIR}/CMake/install_NiftyPET.cmake)
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
@@ -56,9 +68,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
       -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
       -DCMAKE_INSTALL_PREFIX=${${proj}_INSTALL_DIR}
-      -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
-      -DPYTHON_INCLUDE_DIR:PATH=${PYTHON_INCLUDE_DIR}
-      -DPYTHON_LIBRARY=${PYTHON_LIBRARY}
+      -DPYTHON_EXECUTABLE=${NiftyPET_PYTHON_EXECUTABLE}
+      -DPYTHON_INCLUDE_DIR:PATH=${NiftyPET_PYTHON_INCLUDE_DIR}
+      -DPYTHON_LIBRARY=${NiftyPET_PYTHON_LIBRARY}
       ${${proj}_EXTRA_CMAKE_ARGS_LIST}
     DEPENDS
         ${${proj}_DEPENDENCIES}
@@ -67,41 +79,27 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -D${proj}_SOURCE_DIR:PATH=${${proj}_SOURCE_DIR}
       -D${proj}_BINARY_DIR:PATH=${${proj}_BINARY_DIR}
       -DSUPERBUILD_INSTALL_DIR:PATH=${SUPERBUILD_INSTALL_DIR}
-      -P ${NIFTYPET_INSTALL_COMMAND}
+      -P ${NiftyPET_INSTALL_COMMAND}
   )
 
-    set(${proj}_PETPRJ_LIB "${SUPERBUILD_INSTALL_DIR}/lib/petprj.so")
-    set(${proj}_MMR_AUXE_LIB "${SUPERBUILD_INSTALL_DIR}/lib/mmr_auxe.so")
-    set(${proj}_MMR_LMPROC_LIB "${SUPERBUILD_INSTALL_DIR}/lib/mmr_lmproc.so")
-    set(${proj}_INCLUDE_DIR "${SUPERBUILD_INSTALL_DIR}/include")
+  set(${proj}_PATH "${SUPERBUILD_INSTALL_DIR}")
 
-
-   else()
-      if(${USE_SYSTEM_${externalProjName}})
-        FIND_LIBRARY(${proj}_PETPRJ_LIB mmr_auxe)
-        FIND_LIBRARY(${proj}_MMR_AUXE_LIB petprj)
-        set(${proj}_INCLUDE_DIR "" CACHE PATH "Path to NiftyPET include dir. Set this to top level of source code if unsure.")
-        if (NOT ${proj}_PETPRJ_LIB)
-          MESSAGE(FATAL_ERROR "${proj} projector library (libpetprj) not found.")
-        endif()
-        if (NOT ${proj}_MMR_AUXE_LIB)
-          MESSAGE(FATAL_ERROR "${proj} projector library (libmmr_auxe) not found.")
-        endif()
-        if (NOT EXISTS "${${proj}_INCLUDE_DIR}/niftypet/nipet/prj/src/prjf.h")
-          MESSAGE(FATAL_ERROR "${proj} source directory incorrect
-            (${${proj}_INCLUDE_DIR}/niftypet/nipet/prj/src/prjf.h doesn't exist).")
-        endif()
-
-        message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
-   endif()
-    ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-        ${${proj}_EP_ARGS_DIRS}
-    )
+else()
+  if(${USE_SYSTEM_${externalProjName}})
+    if (NOT ${proj}_PATH)
+      SET(${proj}_PATH "" CACHE PATH "Path to ${proj} installation")
+      MESSAGE(FATAL_ERROR "${proj}_PATH not set.")
+    endif()
+    find_package(NiftyPET REQUIRED)
   endif()
-
-  mark_as_superbuild(
-    VARS
-      ${externalProjName}_DIR:PATH
-    LABELS
-      "FIND_PACKAGE"
+  ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
+    ${${proj}_EP_ARGS_DIRS}
   )
+endif()
+
+mark_as_superbuild(
+  VARS
+    ${externalProjName}_PATH:PATH
+  LABELS
+    "FIND_PACKAGE"
+)

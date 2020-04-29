@@ -293,7 +293,7 @@ All the flags from the following projects can be set using this technique:
 - Gadgetron
 - SIRF
 - NIFTYREG
-- NIFTYPET
+- NiftyPET
 - CCPi-Regularisation-Toolkit
 - TomoPhantom  
 

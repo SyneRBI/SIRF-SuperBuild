@@ -21,13 +21,13 @@
 message("Performing SIRF's custom NiftyPET install")
 
 ## Install headers
-file(GLOB_RECURSE HDRS RELATIVE ${NIFTYPET_SOURCE_DIR} ${NIFTYPET_SOURCE_DIR}/*.h)
+file(GLOB_RECURSE HDRS RELATIVE ${NiftyPET_SOURCE_DIR} ${NiftyPET_SOURCE_DIR}/*.h)
 FOREACH(HDR ${HDRS})
   get_filename_component(path_to_copy_to "${SUPERBUILD_INSTALL_DIR}/include/${HDR}" DIRECTORY)
-  file(COPY ${NIFTYPET_SOURCE_DIR}/${HDR} DESTINATION ${path_to_copy_to})
+  file(COPY ${NiftyPET_SOURCE_DIR}/${HDR} DESTINATION ${path_to_copy_to})
 ENDFOREACH()
 
 ## Install libraries
-file(COPY ${NIFTYPET_BINARY_DIR}/nipet/prj/petprj.so DESTINATION ${SUPERBUILD_INSTALL_DIR}/lib)
-file(COPY ${NIFTYPET_BINARY_DIR}/nipet/mmr_auxe.so DESTINATION ${SUPERBUILD_INSTALL_DIR}/lib)
-file(COPY ${NIFTYPET_BINARY_DIR}/nipet/lm/mmr_lmproc.so DESTINATION ${SUPERBUILD_INSTALL_DIR}/lib)
+file(COPY ${NiftyPET_BINARY_DIR}/nipet/prj/petprj.so DESTINATION ${SUPERBUILD_INSTALL_DIR}/lib)
+file(COPY ${NiftyPET_BINARY_DIR}/nipet/mmr_auxe.so DESTINATION ${SUPERBUILD_INSTALL_DIR}/lib)
+file(COPY ${NiftyPET_BINARY_DIR}/nipet/lm/mmr_lmproc.so DESTINATION ${SUPERBUILD_INSTALL_DIR}/lib)
