@@ -33,7 +33,10 @@ endif()
 if (USE_NiftyPET)
   list(APPEND ${proj}_DEPENDENCIES "NiftyPET")
 endif()
-list(APPEND ${proj}_DEPENDENCIES "JSON")
+option(STIR_DISABLE_JSON "Disable JSON support in ${proj}" ON)
+if (STIR_USE_JSON)
+  list(APPEND ${proj}_DEPENDENCIES "JSON")
+endif()
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
@@ -99,7 +102,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     -DDISABLE_HDF5_SUPPORT:BOOL=${STIR_DISABLE_HDF5_SUPPORT}
     -DDISABLE_LLN_MATRIX:BOOL=${STIR_DISABLE_LLN_MATRIX}
     -DSTIR_ENABLE_EXPERIMENTAL:BOOL=${STIR_ENABLE_EXPERIMENTAL}
-
+    -DDISABLE_NLOHMANN_JSON:BOOL=${STIR_DISABLE_JSON}
    )
 
   # Append CMAKE_ARGS for ITK choices
