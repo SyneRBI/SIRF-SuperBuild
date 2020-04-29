@@ -116,9 +116,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ## If building with NiftyPET projector
   if (${USE_NiftyPET})
-    set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DNiftyPET_PETPRJ_LIB:FILEPATH=${NiftyPET_PETPRJ_LIB})
-    set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DNiftyPET_MMR_AUXE_LIB:FILEPATH=${NiftyPET_MMR_AUXE_LIB})
-    set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DNiftyPET_INCLUDE_DIR:PATH=${NiftyPET_INCLUDE_DIR})
+    set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DNiftyPET_PATH:PATH=${NiftyPET_PATH})
   endif()
 
   # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
