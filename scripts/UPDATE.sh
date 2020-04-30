@@ -34,17 +34,21 @@ set -e
 trap 'echo An error occurred in $0 at line $LINENO. Current working-dir: $PWD' ERR
 SB_TAG='default'
 num_parallel=2
-while getopts ht:j: option
+update_remote=0
+while getopts hrt:j: option
  do
  case "${option}"
-  in
+ in
+  r) update_remote=1;;
   t) SB_TAG=$OPTARG;;
   j) num_parallel=$OPTARG;;
   h)
-   echo "Usage: $0 [-t tag] [-j n]"
-   echo "Use the tag option to checkout a specific version."
-   echo "Otherwise the most recent release will be used."
+   echo "Usage: $0 [-t tag] [-j n] [-r] "
+   echo "Use the tag option to checkout a specific version of the SIRF-SuperBuild."
+   echo "   Otherwise the most recent release will be used."
    echo "Use the -j option to change the number of parallel builds from the default ${num_parallel}"
+   echo "Use the -r option to reset your git remotes to default SyneRBI sources."
+   echo "  We recommend to do this once when upgrading a CCPPETMR_VM."
    exit 
    ;;
   *)
@@ -110,8 +114,10 @@ fi
 if [ -d $SIRF_SRC_PATH/CCPPETMR_VM ]; then
   if [ ! -h $SIRF_SRC_PATH/SyneRBI_VM ]; then
     ln -s $SIRF_SRC_PATH/CCPPETMR_VM $SIRF_SRC_PATH/SyneRBI_VM
-    cd $SIRF_SRC_PATH/CCPPETMR_VM
-    git remote set-url origin https://github.com/SyneRBI/SyneRBI_VM.git
+    if [ $update_remote == 1 ]; then
+        cd $SIRF_SRC_PATH/CCPPETMR_VM
+        git remote set-url origin https://github.com/SyneRBI/SyneRBI_VM.git
+    fi
   fi
 fi
 
@@ -133,8 +139,9 @@ SuperBuild(){
     cd SIRF-SuperBuild
   else
     cd SIRF-SuperBuild
-    # update the remote repository after rename to SyneRBI
-    git remote set-url origin https://github.com/SyneRBI/SIRF-SuperBuild.git
+    if [ $update_remote == 1 ]; then
+        git remote set-url origin https://github.com/SyneRBI/SIRF-SuperBuild.git
+    fi
     git fetch
   fi
   # go to SB_TAG
@@ -202,7 +209,9 @@ clone_or_pull()
   if [ -d $repo ]
   then
     cd $repo
-    git remote set-url origin $repoURL
+    if [ $update_remote == 1 ]; then
+        git remote set-url origin $repoURL
+    fi
     git fetch
     git pull
   else
