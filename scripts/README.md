@@ -1,7 +1,7 @@
 
 ## first_run.sh
 
-the `first_run.sh` script is used by the CCPPETMR team during the creation of the official VirtualBox VM
+the `first_run.sh` script is used by the SyneRBI team during the creation of the official VirtualBox VM
 to 
 
  1. change a few settings of the gnome desktop environment and to 

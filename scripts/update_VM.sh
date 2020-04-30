@@ -1,8 +1,7 @@
 #!/bin/sh
 
 echo "Updating..."
-
-cd ~/devel/CCPPETMR_VM
+cd ~/devel/SyneRBI_VM
 git pull
 cd scripts
 

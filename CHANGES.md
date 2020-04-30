@@ -1,4 +1,9 @@
 # ChangeLog
+
+# 2.x.x
+
+- handle rename of project CCPPETMR->SyneRBI
+
 ## 2.1.0
 
 - added CIL prerequisites. 

@@ -1,17 +1,17 @@
 #!/bin/bash
 #
-# Script to install/update the CCP-PETMR VM. It could also be used for any
+# Script to install/update the SyneRBI VM. It could also be used for any
 # other system but will currently change your .sirfrc.
 # This is to be avoided later on.
 #
 # Authors: Kris Thielemans, Evgueni Ovtchinnikov, Edoardo Pasca,
 # Casper da Costa-Luis
-# Copyright 2016-2018 University College London
-# Copyright 2016-2018 Rutherford Appleton Laboratory STFC
+# Copyright 2016-2020 University College London
+# Copyright 2016-2020 Rutherford Appleton Laboratory STFC
 #
 # This is software developed for the Collaborative Computational
-# Project in Positron Emission Tomography and Magnetic Resonance imaging
-# (http://www.ccppetmr.ac.uk/).
+# Project in Synergistic Reconstruction for Biomedical Imaging (formerly PETMR)
+# (http://www.ccpsynerbi.ac.uk/).
 
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -34,17 +34,21 @@ set -e
 trap 'echo An error occurred in $0 at line $LINENO. Current working-dir: $PWD' ERR
 SB_TAG='default'
 num_parallel=2
-while getopts ht:j: option
+update_remote=0
+while getopts hrt:j: option
  do
  case "${option}"
-  in
+ in
+  r) update_remote=1;;
   t) SB_TAG=$OPTARG;;
   j) num_parallel=$OPTARG;;
   h)
-   echo "Usage: $0 [-t tag] [-j n]"
-   echo "Use the tag option to checkout a specific version."
-   echo "Otherwise the most recent release will be used."
+   echo "Usage: $0 [-t tag] [-j n] [-r] "
+   echo "Use the tag option to checkout a specific version of the SIRF-SuperBuild."
+   echo "   Otherwise the most recent release will be used."
    echo "Use the -j option to change the number of parallel builds from the default ${num_parallel}"
+   echo "Use the -r option to reset your git remotes to default SyneRBI sources."
+   echo "  We recommend to do this once when upgrading a CCPPETMR_VM."
    exit 
    ;;
   *)
@@ -81,21 +85,35 @@ else
   fi
 fi
 
+# check current version (if any) to take into account later on
+# (the new VM version will be saved at the end of the script)
 if [ -r ~/.sirf_VM_version ]
 then
   source ~/.sirf_VM_version
 else
   if [ -r /usr/local/bin/update_VM.sh ]
   then
-    # we are on the old VM
+    # we are on the very first VM
     SIRF_VM_VERSION=0.1
     echo virtual | sudo -S apt-get -y install python-scipy python-docopt python-matplotlib
+    echo '======================================================'
+    echo 'You have a very old VM. This update is likely to fail.'
+    echo '======================================================'
   else
-    SIRF_VM_VERSION=0.9
+    if [ -r ~/.sirfrc ]; then
+      SIRF_VM_VERSION=0.9
+      echo '======================================================'
+      echo 'You have a very old VM.'
+      echo 'You will probably have to update system files and re-run the update.'
+      echo 'Check the INSTALL_* files.'
+      echo '======================================================'
+    else
+      SIRF_VM_VERSION=new_VM
+    fi
   fi
-  echo "export SIRF_VM_VERSION=$SIRF_VM_VERSION" > ~/.sirf_VM_version
 fi
 
+exit 1
 # location of sources
 if [ -z $SIRF_SRC_PATH ]
 then
@@ -104,6 +122,17 @@ fi
 if [ ! -d $SIRF_SRC_PATH ]
 then
   mkdir -p $SIRF_SRC_PATH
+fi
+
+# cope with CCP-PETMR renaming
+if [ -d $SIRF_SRC_PATH/CCPPETMR_VM ]; then
+  if [ ! -h $SIRF_SRC_PATH/SyneRBI_VM ]; then
+    ln -s $SIRF_SRC_PATH/CCPPETMR_VM $SIRF_SRC_PATH/SyneRBI_VM
+    if [ $update_remote == 1 ]; then
+        cd $SIRF_SRC_PATH/CCPPETMR_VM
+        git remote set-url origin https://github.com/SyneRBI/SyneRBI_VM.git
+    fi
+  fi
 fi
 
 SIRF_INSTALL_PATH=$SIRF_SRC_PATH/install
@@ -120,10 +149,13 @@ SuperBuild(){
   cd $SIRF_SRC_PATH
   if [ ! -d SIRF-SuperBuild ] 
   then
-    git clone https://github.com/CCPPETMR/SIRF-SuperBuild.git
+    git clone https://github.com/SyneRBI/SIRF-SuperBuild.git
     cd SIRF-SuperBuild
   else
     cd SIRF-SuperBuild
+    if [ $update_remote == 1 ]; then
+        git remote set-url origin https://github.com/SyneRBI/SIRF-SuperBuild.git
+    fi
     git fetch
   fi
   # go to SB_TAG
@@ -166,8 +198,7 @@ SuperBuild(){
   if [ $SIRF_VM_VERSION = "0.9" ] 
   then 
     echo "*********************************************************"
-    echo "Your SIRF Installation is now Updated"
-    echo "We reccommend to delete old files and directories:"
+    echo "We recommend to delete old files and directories:"
     echo ""
     echo "rm -rf $SIRF_SRC_PATH/build"
     echo "rm -rf $SIRF_SRC_PATH/gadgetron"
@@ -191,6 +222,9 @@ clone_or_pull()
   if [ -d $repo ]
   then
     cd $repo
+    if [ $update_remote == 1 ]; then
+        git remote set-url origin $repoURL
+    fi
     git fetch
     git pull
   else
@@ -233,16 +267,16 @@ update()
 SuperBuild $SB_TAG
 
 # copy scripts into the path
-cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/scripts/update*sh $SIRF_INSTALL_PATH/bin
+cp -vp $SIRF_SRC_PATH/SyneRBI_VM/scripts/update*sh $SIRF_INSTALL_PATH/bin
 
 # Get extra python tools
-clone_or_pull  https://github.com/CCPPETMR/ismrmrd-python-tools.git
+clone_or_pull  https://github.com/SyneRBI/ismrmrd-python-tools.git
 cd $SIRF_SRC_PATH/ismrmrd-python-tools
 python setup.py install --user
 
 # install the SIRF-Exercises
 cd $SIRF_SRC_PATH
-clone_or_pull  https://github.com/CCPPETMR/SIRF-Exercises.git
+clone_or_pull  https://github.com/SyneRBI/SIRF-Exercises.git
 cd $SIRF_SRC_PATH/SIRF-Exercises
 PY_USER_BIN=`python -c 'import site; import os; print ( os.path.join(site.USER_BASE , "bin") )'`
 export PATH=${PY_USER_BIN}:${PATH}
@@ -264,7 +298,7 @@ then
   fi
   mkdir ~/Desktop 
 fi 
-cp -vp $SIRF_SRC_PATH/CCPPETMR_VM/HELP.txt ~/Desktop/
+cp -vp $SIRF_SRC_PATH/SyneRBI_VM/HELP.txt ~/Desktop/
 
 if [ -r ~/.sirfc ]; then
   echo "Moving existing ~/.sirfc to a backup copy"
@@ -277,7 +311,7 @@ if [ ! -z "$STIR_exercises_PATH" ]; then
     echo "export STIR_exercises_PATH=$SIRF_SRC_PATH/STIR-exercises" >> ~/.sirfrc
 fi
 
-version=`echo -n "export SIRF_VM_VERSION=" | cat - ${SIRF_SRC_PATH}/CCPPETMR_VM/VM_version.txt`
+version=`echo -n "export SIRF_VM_VERSION=" | cat - ${SIRF_SRC_PATH}/SyneRBI_VM/VM_version.txt`
 echo $version > ~/.sirf_VM_version
 
 echo ""
