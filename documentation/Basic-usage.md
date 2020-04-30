@@ -4,16 +4,16 @@ The main VirtualBox documentation is [here](https://www.virtualbox.org/wiki/End-
 rather straightforward however. For instance, once the machine is running, you can use the "View" menu
 to set a scale factor if the font is too large or too small, and that you can resize the window. This should resize your Ubuntu desktop accordingly.
 
-The CCP PETMR VM is configured as an Ubuntu machine with a single user 'sirfuser' with password 'virtual'.
+The VM is configured as an Ubuntu machine with a single user 'sirfuser' with password 'virtual'.
 
 VirtualBox Guest Additions (VGA) are used to let the VM integrate a bit more with your "host" OS, for instance to allow
-copy-pasting between your host and guest. We have these installed in the CCPPETMR VM but you will probably have to update them to match your version of VirtualBox. This might be as simple as clicking a link that will briefly appear once you log-in into your VM, but if that doesn't work, we have provided a utility for this. Step-by-step instructions:
+copy-pasting between your host and guest. We have these installed in the VM but you will probably have to update them to match your version of VirtualBox. This might be as simple as clicking a link that will briefly appear once you log-in into your VM, but if that doesn't work, we have provided a utility for this. Step-by-step instructions:
 
 1. start the VM and log-in
 2. in the menu-bar of the window that contains your VM, click on "Devices" and then "Insert Guest Additions CD" (if this fails, you could try some things [listed here](https://askubuntu.com/questions/573596/unable-to-install-guest-additions-cd-image-on-virtual-box/960324#960324), but ignore the answers about using `apt-get install`)
 3. if there appears a window inside your VM to software on this "CD", say OK, otherwise, open a terminal in your VM (see next section on how to open one), type
 
-    sudo ~/devel/CCPPETMR_VM/scripts/update_VGA.sh
+    sudo ~/devel/SyneRBI_VM/scripts/update_VGA.sh
 
 If during the execution of this scripts a dialog box appears to ask you if you want to auto-run a script, you can press cancel. After this, you probably want to reboot your VM (arrow on top-right of the VM, click on the "power" icon).
 

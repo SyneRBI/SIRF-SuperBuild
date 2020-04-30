@@ -1,5 +1,5 @@
 This directory contains information on how to use the Virtual Machine.
-You can download the VM itself from [our download page](http://www.ccppetmr.ac.uk/downloads).
+You can download the VM itself from [our download page](http://www.ccpsynerbi.ac.uk/downloads).
 
 * [Installation instructions are in our INSTALL.md](../INSTALL.md).
 * [Basic usage of the VM](Basic-usage.md)

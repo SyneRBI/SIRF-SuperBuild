@@ -42,7 +42,7 @@ Useful shortcuts in the Spyder editor (these are in Windows-style, including the
 The Spyder Integrated Development Environment (IDE) has of course lots of parameters which you can tune to your liking. The main setting that you might want to change is if the graphics are generated “inline” in the iPython console, or as separate windows. Go to Tools > Preferences > iPython console > Graphics > Graphics backend. Change from “inline” to “automatic” if you prefer the separate windows or vice versa.
 
 ## Running the SIRF Exercises
-The VM also contains the [SIRF exercises](https://github.com/CCPPETMR/SIRF-Exercises/). Please check the [README](https://github.com/CCPPETMR/SIRF-Exercises/blob/master/README.md).
+The VM also contains the [SIRF exercises](https://github.com/SyneRBI/SIRF-Exercises/). Please check the [README](https://github.com/SyneRBI/SIRF-Exercises/blob/master/README.md).
 
 SIRF-Exercises contain also jupyter notebooks. The official VM contains a jupyter notebook server. To start you need to issue the following two commands in two separate terminal windows. 
 

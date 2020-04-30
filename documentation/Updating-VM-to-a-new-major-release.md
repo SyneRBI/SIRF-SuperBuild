@@ -1,7 +1,7 @@
 # Updating the VM
 In most cases, typing `update_VM.sh` in a terminal will be sufficient to update the software. However, for some upgrades, extra system or Python packages can be required which were not preinstalled on the VM of a previous version. You can install these as follows
 ```sh
-cd ~/devel/CCPPETMR_VM
+cd ~/devel/SyneRBI_VM
 git pull
 cd scripts
 sudo -H ./INSTALL_prerequisites_with_apt-get.sh

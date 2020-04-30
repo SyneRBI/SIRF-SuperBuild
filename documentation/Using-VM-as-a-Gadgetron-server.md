@@ -1,4 +1,4 @@
-You can use CCPPETMR Virtual Machine as a Gadgetron server if you cannot install Gadgetron on you computer (we ourselves have not yet succeeded in installing it under Windows). This can be done using port forwarding. For this, you need to set up communication between your computer and VM in the following manner.
+You can use the SyneRBI Virtual Machine as a Gadgetron server if you cannot install Gadgetron on you computer (we ourselves have not yet succeeded in installing it under Windows). This can be done using port forwarding. For this, you need to set up communication between your computer and VM in the following manner.
 
 * Start Virtual Machine.
 
@@ -8,4 +8,4 @@ You can use CCPPETMR Virtual Machine as a Gadgetron server if you cannot install
 
 This will enable you to run SIRF MR demos on your computer.
 
-An [alternative solution](https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-on-Docker) is to use docker.
+An [alternative solution](https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-on-Docker) is to use docker.

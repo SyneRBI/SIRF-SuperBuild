@@ -1,6 +1,6 @@
 # SyneRBI Virtual Machine: Installation and running of pre-built machine
 
-If you have any problems, please first re-check this web-page. If you cannot solve your issue, please email CCP-PETMR-USERS @ JISCMAIL.AC.UK
+If you have any problems, please first re-check this web-page. If you cannot solve your issue, please email CCP-SyneRBI-USERS @ JISCMAIL.AC.UK
 
 
 ## Initial download and installation
@@ -8,7 +8,7 @@ This section assumes you want to use our pre-configured VM (which is recommended
 
 1. Make sure you have enough free disk-space on your laptop (~10GB for installation).
 
-2. Install VirtualBox (VB), our [Download page](http://www.ccppetmr.ac.uk/downloads) specifies the recommended version. 
+2. Install VirtualBox (VB), our [Download page](http://www.ccpsynerbi.ac.uk/downloads) specifies the recommended version. 
 (If it is older than the current default download from VB, you can [get an older version here](https://www.virtualbox.org/wiki/Download_Old_Builds)). Please note that this will require administrator permissions on your computer. The "host" operating system refers to your computer. 
 You do not need to install the Oracle extensions to VirtualBox, although it might come in handy for USB support. 
 Although other Virtual Machine software might work, we have not tried this and will not be able to help to get this going.
@@ -20,7 +20,7 @@ Although other Virtual Machine software might work, we have not tried this and w
     - If you receive an error along the lines of `kernel driver not installed (rc=-1908)`, the following might help. Click on the Apple icon in the top-left of your screen and then `System Preferences->Security & Privacy->General`. Click the padlock in the bottom-left and enter your password to be able to make changes to this page. Click `Allow` next to the Virtual Box text. Hopefully the problem will have been sorted.
     - If the installation takes you directly to the `Security and Privacy` window, select `Allow` (the VB is labelled as from Oracle). When the installer asks if it should Move to Trash, say `Keep` because you need to re-run the installation again with this revised security setting. Second time around, you can move it to trash.
 
-3. Download the preinstalled virtual machine from http://www.ccppetmr.ac.uk/downloads.
+3. Download the preinstalled virtual machine from http://www.ccpsynerbi.ac.uk/downloads.
 Warning: this file can be ~4.9GB. (You can download to a USB stick or hard drive to save space on your hard-disk).
 
 4. Open the downloaded OVA file (double-click or whatever is appropriate for your system). This should start VirtualBox with the "Import" dialog box.

@@ -1,6 +1,6 @@
 # CC SyneRBI Virtual Machine: Build your own VM 
 
-This project contains a series of files and scripts to create and install a virtual machine running [SIRF](https://github.com/SyneRBI/SIRF) and its prerequisites. If you just want to download and use a pre-built VM, it can be downloaded from our [website](http://www.ccppetmr.ac.uk/downloads), just check the
+This project contains a series of files and scripts to create and install a virtual machine running [SIRF](https://github.com/SyneRBI/SIRF) and its prerequisites. If you just want to download and use a pre-built VM, it can be downloaded from our [website](http://www.ccpsynerbi.ac.uk/downloads), just check the
 [installation  instructions](INSTALL.md) and our [wiki](https://github.com/SyneRBI/SyneRBI_VM/wiki)
 for basic usage.
 
@@ -19,13 +19,13 @@ Clone our repository and launch vagrant in the vagrant directory. In windows you
 The pre-built Ubuntu machine is downloaded and then configured. Virtual Box should be launched and you should see it appearing. After this first phase you should be able to launch 
 
     vagrant provision
-	
+
 That will finish up the creation steps. 
 
 Refer to [here](https://github.com/SyneRBI/SyneRBI_VM/blob/master/INSTALL.md) for further informations and instructions.
 
 ## Pre-built downloads
-A pre-built VM with SIRF installed is currently available at [www.ccppetmr.ac.uk/downloads](www.ccppetmr.ac.uk/downloads). The page states which version of VirtualBox was used to create it. 
+A pre-built VM with SIRF installed is currently available at [www.ccpsynerbi.ac.uk/downloads](www.ccpsynerbi.ac.uk/downloads). The page states which version of VirtualBox was used to create it. 
 
 ### Pre-built VM final steps
 When building the official prebuilt VM with SIRF pre-installed, we follow the steps above. 
