@@ -85,21 +85,35 @@ else
   fi
 fi
 
+# check current version (if any) to take into account later on
+# (the new VM version will be saved at the end of the script)
 if [ -r ~/.sirf_VM_version ]
 then
   source ~/.sirf_VM_version
 else
   if [ -r /usr/local/bin/update_VM.sh ]
   then
-    # we are on the old VM
+    # we are on the very first VM
     SIRF_VM_VERSION=0.1
     echo virtual | sudo -S apt-get -y install python-scipy python-docopt python-matplotlib
+    echo '======================================================'
+    echo 'You have a very old VM. This update is likely to fail.'
+    echo '======================================================'
   else
-    SIRF_VM_VERSION=0.9
+    if [ -r ~/.sirfrc ]; then
+      SIRF_VM_VERSION=0.9
+      echo '======================================================'
+      echo 'You have a very old VM.'
+      echo 'You will probably have to update system files and re-run the update.'
+      echo 'Check the INSTALL_* files.'
+      echo '======================================================'
+    else
+      SIRF_VM_VERSION=new_VM
+    fi
   fi
-  echo "export SIRF_VM_VERSION=$SIRF_VM_VERSION" > ~/.sirf_VM_version
 fi
 
+exit 1
 # location of sources
 if [ -z $SIRF_SRC_PATH ]
 then
@@ -184,8 +198,7 @@ SuperBuild(){
   if [ $SIRF_VM_VERSION = "0.9" ] 
   then 
     echo "*********************************************************"
-    echo "Your SIRF Installation is now Updated"
-    echo "We reccommend to delete old files and directories:"
+    echo "We recommend to delete old files and directories:"
     echo ""
     echo "rm -rf $SIRF_SRC_PATH/build"
     echo "rm -rf $SIRF_SRC_PATH/gadgetron"
