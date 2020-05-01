@@ -70,10 +70,13 @@ endif(APPLE)
 
 set (SUPERBUILD_INSTALL_DIR ${CMAKE_INSTALL_PREFIX})
 
-include(ExternalProject)
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release CACHE STRING
+      "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
+      FORCE)
+endif()
 
-set(EXTERNAL_PROJECT_BUILD_TYPE "${CMAKE_BUILD_TYPE}" CACHE INTERNAL "Default build type for support libraries")
-message(STATUS "EXTERNAL_PROJECT_BUILD_TYPE: ${EXTERNAL_PROJECT_BUILD_TYPE}")
+include(ExternalProject)
 
 # Make sure that some CMake variables are passed to all dependencies
 mark_as_superbuild(
@@ -81,6 +84,7 @@ mark_as_superbuild(
    VARS CMAKE_GENERATOR:STRING CMAKE_GENERATOR_PLATFORM:STRING CMAKE_GENERATOR_TOOLSET:STRING
         CMAKE_C_COMPILER:FILEPATH CMAKE_CXX_COMPILER:FILEPATH
         CMAKE_INSTALL_PREFIX:PATH
+        CMAKE_BUILD_TYPE:STRING
 )
 
 #### Python support
