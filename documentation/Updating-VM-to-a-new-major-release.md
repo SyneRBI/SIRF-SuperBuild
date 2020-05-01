@@ -10,6 +10,11 @@ sudo -H ./INSTALL_CMake.sh
 ./configure_gnome.sh
 update_VM.sh
 ```
+
+If you have changedany of your `*-Exercises` or `CIL_demos` folders, you might want to use the
+`update_with_backup_for_exercises.sh` script instead, which will first move your
+exercises to a time-stamped back-up folder.
+
 ## VM for specific training events
 In some cases, we create a VM for a specific training school. The configuration for such an event will be on a specific branch. For instance for the Synergistic Reconstruction training school November 2019, please do the following before the `git pull` mentioned above
 ```sh
