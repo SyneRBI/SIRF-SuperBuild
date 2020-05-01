@@ -7,8 +7,10 @@ backup_dir=$SIRF_SRC_PATH/backup_${timestamp}
 mkdir ${backup_dir}
 rm -rf $SIRF_PATH/data/examples/PET/working_folder
 for ex in SIRF-Exercises STIR-exercises CIL-Demos; do
-  if [ -d $ex ]; then
+    if [ -d $ex ]; then
+        echo "Moving \"$ex\" to \"${backup_dir}\"."
     mv $ex ${backup_dir}
   fi
 done
-update_VM.sh
+
+update_VM.sh $*
