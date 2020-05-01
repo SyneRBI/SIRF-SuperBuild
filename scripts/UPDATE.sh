@@ -155,7 +155,7 @@ SuperBuild(){
     if [ $update_remote == 1 ]; then
         git remote set-url origin https://github.com/SyneRBI/SIRF-SuperBuild.git
     fi
-    git fetch
+    git fetch --tags
   fi
   # go to SB_TAG
   if [ $1 = 'default' ] 
@@ -224,7 +224,7 @@ clone_or_pull()
     if [ $update_remote == 1 ]; then
         git remote set-url origin $repoURL
     fi
-    git fetch
+    git fetch --tags
     git pull
   else
     git clone --recursive $repoURL
