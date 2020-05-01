@@ -6,6 +6,7 @@ git pull
 cd scripts
 sudo -H ./INSTALL_prerequisites_with_apt-get.sh
 sudo -H ./INSTALL_python_packages.sh
+sudo -H ./INSTALL_CMake.sh
 ./configure_gnome.sh
 update_VM.sh
 ```
