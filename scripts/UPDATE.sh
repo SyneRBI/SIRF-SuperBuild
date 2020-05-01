@@ -113,7 +113,6 @@ else
   fi
 fi
 
-exit 1
 # location of sources
 if [ -z $SIRF_SRC_PATH ]
 then
