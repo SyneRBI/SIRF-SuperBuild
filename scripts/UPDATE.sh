@@ -35,19 +35,22 @@ trap 'echo An error occurred in $0 at line $LINENO. Current working-dir: $PWD' E
 SB_TAG='default'
 num_parallel=2
 update_remote=0
-while getopts hrt:j: option
+apt_install=0
+while getopts hrst:j: option
  do
  case "${option}"
  in
   r) update_remote=1;;
+  s) apt_install=1;;
   t) SB_TAG=$OPTARG;;
   j) num_parallel=$OPTARG;;
   h)
-   echo "Usage: $0 [-t tag] [-j n] [-r] "
+   echo "Usage: $0 [-t tag] [-j n] [-r] [-s]"
    echo "Use the tag option to checkout a specific version of the SIRF-SuperBuild."
    echo "   Otherwise the most recent release will be used."
    echo "Use the -j option to change the number of parallel builds from the default ${num_parallel}"
    echo "Use the -r option to reset your git remotes to default SyneRBI sources."
+   echo "Use the -s option to run apt install for all prerequisites (use with caution)."
    echo "  We recommend to do this once when upgrading a CCPPETMR_VM."
    exit 
    ;;
@@ -141,6 +144,17 @@ python -m pip install -U --user nbstripout
 git config --global filter.nbstripout.extrakeys '
   metadata.celltoolbar metadata.language_info.codemirror_mode.version
   metadata.language_info.pygments_lexer metadata.language_info.version'
+
+# Optionally install pre-requisites
+if [ $apt_install == 1 ]; then
+  cd ~/devel/SyneRBI_VM
+  git pull
+  cd scripts
+  sudo -H ./INSTALL_prerequisites_with_apt-get.sh
+  sudo -H ./INSTALL_python_packages.sh
+  sudo -H ./INSTALL_CMake.sh
+  ./configure_gnome.sh
+fi
 
 # SuperBuild
 SuperBuild(){
