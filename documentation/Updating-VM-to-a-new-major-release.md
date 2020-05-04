@@ -1,5 +1,5 @@
 # Updating the VM
-In most cases, typing `update_VM.sh` in a terminal will be sufficient to update the software. However, for some upgrades, extra system or Python packages can be required which were not preinstalled on the VM of a previous version. You can install these by adding the `-s` argument to the update command: `update_VM.sh -s`. In essence, this will run the following:
+In most cases, typing `update_VM.sh` in a terminal will be sufficient to update the software. However, for some upgrades, extra system or Python packages can be required which were not preinstalled on the VM of a previous version. You can install these by adding the `-s` argument to the update command: `update_VM.sh -s`. We recommend running `sudo apt update` before this. In essence, `update_VM.sh -s` will run the following:
 
 ```sh
 cd ~/devel/SyneRBI_VM

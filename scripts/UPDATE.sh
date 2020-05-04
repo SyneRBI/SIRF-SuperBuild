@@ -50,7 +50,7 @@ while getopts hrst:j: option
    echo "   Otherwise the most recent release will be used."
    echo "Use the -j option to change the number of parallel builds from the default ${num_parallel}"
    echo "Use the -r option to reset your git remotes to default SyneRBI sources."
-   echo "Use the -s option to run apt install for all prerequisites (use with caution)."
+   echo "Use the -s option to update and install necessary components (use with caution)."
    echo "  We recommend to do this once when upgrading a CCPPETMR_VM."
    exit 
    ;;
@@ -147,9 +147,7 @@ git config --global filter.nbstripout.extrakeys '
 
 # Optionally install pre-requisites
 if [ $apt_install == 1 ]; then
-  cd ~/devel/SyneRBI_VM
-  git pull
-  cd scripts
+  cd ~/devel/SyneRBI_VM/scripts
   sudo -H ./INSTALL_prerequisites_with_apt-get.sh
   sudo -H ./INSTALL_python_packages.sh
   sudo -H ./INSTALL_CMake.sh
