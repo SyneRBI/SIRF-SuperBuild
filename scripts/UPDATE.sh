@@ -50,8 +50,8 @@ while getopts hrst:j: option
    echo "   Otherwise the most recent release will be used."
    echo "Use the -j option to change the number of parallel builds from the default ${num_parallel}"
    echo "Use the -r option to reset your git remotes to default SyneRBI sources."
-   echo "Use the -s option to update and install necessary components (use with caution)."
    echo "  We recommend to do this once when upgrading a CCPPETMR_VM."
+   echo "Use the -s option to update and install necessary components (use with caution)."
    exit 
    ;;
   *)
