@@ -128,7 +128,7 @@ set(DEFAULT_ISMRMRD_TAG v1.4.1)
 
 ## Gadgetron
 set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
-set(DEFAULT_Gadgetron_TAG v3.17.0))))))))
+set(DEFAULT_Gadgetron_TAG v3.17.0)
 #set(DEFAULT_Gadgetron_TAG b6191eaaa72ccca6c6a5fe4c0fa3319694f512ab)
 
 ## ASTRA
