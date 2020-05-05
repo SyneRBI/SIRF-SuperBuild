@@ -1,5 +1,6 @@
 # Updating the VM
-In most cases, typing `update_VM.sh` in a terminal will be sufficient to update the software. However, for some upgrades, extra system or Python packages can be required which were not preinstalled on the VM of a previous version. You can install these as follows
+In most cases, typing `update_VM.sh` in a terminal will be sufficient to update the software. However, for some upgrades, extra system or Python packages can be required which were not preinstalled on the VM of a previous version. You can install these by adding the `-s` argument to the update command: `update_VM.sh -s`. We recommend running `sudo apt update` before this. In essence, `update_VM.sh -s` will run the following:
+
 ```sh
 cd ~/devel/SyneRBI_VM
 git pull
@@ -11,7 +12,7 @@ sudo -H ./INSTALL_CMake.sh
 update_VM.sh
 ```
 
-If you have changedany of your `*-Exercises` or `CIL_demos` folders, you might want to use the
+If you have changed any of your `*-Exercises` or `CIL_demos` folders, you might want to use the
 `update_with_backup_for_exercises.sh` script instead, which will first move your
 exercises to a time-stamped back-up folder.
 
