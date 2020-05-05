@@ -22,25 +22,6 @@
 #This needs to be unique globally
 set(proj STIR)
 
-# Set dependency list
-set(${proj}_DEPENDENCIES "Boost")
-if (USE_ITK)
-  list(APPEND ${proj}_DEPENDENCIES "ITK")
-endif()
-if (BUILD_STIR_SWIG_PYTHON)
-  list(APPEND ${proj}_DEPENDENCIES "SWIG")
-endif()
-if (USE_NiftyPET)
-  list(APPEND ${proj}_DEPENDENCIES "NiftyPET")
-endif()
-option(STIR_DISABLE_JSON "Disable JSON support in ${proj}" ON)
-if (STIR_USE_JSON)
-  list(APPEND ${proj}_DEPENDENCIES "JSON")
-endif()
-
-# Include dependent projects if any
-ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
-
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
@@ -78,6 +59,25 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   if(${STIR_BUILD_SWIG_PYTHON} AND NOT "${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
     message(FATAL_ERROR "STIR Python currently needs to have PYTHON_STRATEGY=PYTHONPATH")
   endif()
+
+  # Set dependency list
+  set(${proj}_DEPENDENCIES "Boost")
+  if (USE_ITK)
+    list(APPEND ${proj}_DEPENDENCIES "ITK")
+  endif()
+  if (BUILD_STIR_SWIG_PYTHON)
+    list(APPEND ${proj}_DEPENDENCIES "SWIG")
+  endif()
+  if (USE_NiftyPET)
+    list(APPEND ${proj}_DEPENDENCIES "NiftyPET")
+  endif()
+  option(STIR_DISABLE_JSON "Disable JSON support in ${proj}" ON)
+  if (STIR_USE_JSON)
+    list(APPEND ${proj}_DEPENDENCIES "JSON")
+  endif()
+
+  # Include dependent projects if any
+  ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 
   set(STIR_CMAKE_ARGS
     
