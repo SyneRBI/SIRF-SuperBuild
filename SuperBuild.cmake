@@ -235,7 +235,7 @@ option(BUILD_NIFTYREG "Build NIFTYREG" ON)
 option(BUILD_SIRF_Contribs "Build SIRF-Contribs" ON)
 
 option(BUILD_SIRF_Registration "Build SIRFS's registration functionality" ${BUILD_NIFTYREG})
-if (BUILD_SIRF_Registration AND NOT BUILD_NIFTYREG)
+if (BUILD_SIRF AND BUILD_SIRF_Registration AND NOT BUILD_NIFTYREG)
   message(WARNING "Building SIRF registration is enabled, but BUILD_NIFTYREG=OFF. Reverting to BUILD_NIFTYREG=ON")
   set(BUILD_NIFTYREG ON CACHE BOOL "Build NIFTYREG" FORCE)
 endif()
@@ -299,7 +299,7 @@ if (BUILD_CIL_LITE)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES CCPi-Regularisation-Toolkit CCPi-Framework CCPi-FrameworkPlugins)
 endif()
 
-if (BUILD_SIRF_Registration)
+if (BUILD_SIRF_Registration AND BUILD_SIRF)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES NIFTYREG)
 endif()
 
