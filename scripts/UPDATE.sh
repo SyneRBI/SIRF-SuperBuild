@@ -167,7 +167,7 @@ SuperBuild(){
     if [ $update_remote == 1 ]; then
         git remote set-url origin https://github.com/SyneRBI/SIRF-SuperBuild.git
     fi
-    git fetch --tags
+    git fetch --tags --all
   fi
   # go to SB_TAG
   if [ $1 = 'default' ] 
