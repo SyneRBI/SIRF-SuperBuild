@@ -70,10 +70,13 @@ endif(APPLE)
 
 set (SUPERBUILD_INSTALL_DIR ${CMAKE_INSTALL_PREFIX})
 
-include(ExternalProject)
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release CACHE STRING
+      "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
+      FORCE)
+endif()
 
-set(EXTERNAL_PROJECT_BUILD_TYPE "${CMAKE_BUILD_TYPE}" CACHE INTERNAL "Default build type for support libraries")
-message(STATUS "EXTERNAL_PROJECT_BUILD_TYPE: ${EXTERNAL_PROJECT_BUILD_TYPE}")
+include(ExternalProject)
 
 # Make sure that some CMake variables are passed to all dependencies
 mark_as_superbuild(
@@ -81,6 +84,7 @@ mark_as_superbuild(
    VARS CMAKE_GENERATOR:STRING CMAKE_GENERATOR_PLATFORM:STRING CMAKE_GENERATOR_TOOLSET:STRING
         CMAKE_C_COMPILER:FILEPATH CMAKE_CXX_COMPILER:FILEPATH
         CMAKE_INSTALL_PREFIX:PATH
+        CMAKE_BUILD_TYPE:STRING
 )
 
 #### Python support
@@ -231,7 +235,7 @@ option(BUILD_NIFTYREG "Build NIFTYREG" ON)
 option(BUILD_SIRF_Contribs "Build SIRF-Contribs" ON)
 
 option(BUILD_SIRF_Registration "Build SIRFS's registration functionality" ${BUILD_NIFTYREG})
-if (BUILD_SIRF_Registration AND NOT BUILD_NIFTYREG)
+if (BUILD_SIRF AND BUILD_SIRF_Registration AND NOT BUILD_NIFTYREG)
   message(WARNING "Building SIRF registration is enabled, but BUILD_NIFTYREG=OFF. Reverting to BUILD_NIFTYREG=ON")
   set(BUILD_NIFTYREG ON CACHE BOOL "Build NIFTYREG" FORCE)
 endif()
@@ -295,7 +299,7 @@ if (BUILD_CIL_LITE)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES CCPi-Regularisation-Toolkit CCPi-Framework CCPi-FrameworkPlugins)
 endif()
 
-if (BUILD_SIRF_Registration)
+if (BUILD_SIRF_Registration AND BUILD_SIRF)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES NIFTYREG)
 endif()
 
