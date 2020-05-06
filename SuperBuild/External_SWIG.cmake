@@ -35,13 +35,20 @@ set(externalProjName ${proj})
 
 SetCanonicalDirectoryNames(${proj})
 
+if (WIN32)
+  set(SWIG_INSTALL_DIR ${SUPERBUILD_INSTALL_DIR}/SWIG-3.0.12)
+  set(SB_SWIG_EXECUTABLE ${SWIG_INSTALL_DIR}/swig.exe)
+else(WIN32)
+  set(SWIG_INSTALL_DIR ${SUPERBUILD_INSTALL_DIR})
+  set(SB_SWIG_EXECUTABLE ${SWIG_INSTALL_DIR}/bin/swig)
+endif()
+
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
 
   if (WIN32)
-  set(SWIG_INSTALL_DIR ${SUPERBUILD_INSTALL_DIR}/SWIG-3.0.12)
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
@@ -53,11 +60,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory ${SWIG_INSTALL_DIR}
         COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${SWIG_INSTALL_DIR}
   )
-  set( SWIG_EXECUTABLE ${SWIG_INSTALL_DIR}/swig.exe CACHE FILEPATH "SWIG executable" FORCE)
+  set( SWIG_EXECUTABLE ${SB_SWIG_EXECUTABLE} CACHE FILEPATH "SWIG executable" FORCE)
 
   else(WIN32)
-
-  set(SWIG_INSTALL_DIR ${SUPERBUILD_INSTALL_DIR})
 
   set(SWIG_Configure_Script ${CMAKE_CURRENT_LIST_DIR}/External_SWIG_configure.cmake)
   set(SWIG_Build_Script ${CMAKE_CURRENT_LIST_DIR}/External_SWIG_build.cmake)
@@ -78,12 +83,18 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     INSTALL_DIR ${${proj}_INSTALL_DIR}
   )
 
-  set( SWIG_EXECUTABLE ${SWIG_INSTALL_DIR}/bin/swig  CACHE FILEPATH "SWIG executable" FORCE)
+  set( SWIG_EXECUTABLE ${SB_SWIG_EXECUTABLE} CACHE FILEPATH "SWIG executable" FORCE)
 
   endif(WIN32)
 
  else()
     if(${USE_SYSTEM_${externalProjName}})
+      # Check if the SWIG_EXECUTABLE has already been set from a previous run, when USE_SYSTEM_SWIG=OFF
+      # If this is the case, and the executable doesn't exist (presumably because cmake was run, but make SWIG
+      # hadn't been run yet), then unset the SWIG_EXECUTABLE value
+      if("${SWIG_EXECUTABLE}" STREQUAL "${SB_SWIG_EXECUTABLE}" AND NOT EXISTS "${SWIG_EXECUTABLE}")
+        unset(SWIG_EXECUTABLE CACHE)
+      endif()
       find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} ${${externalProjName}_COMPONENTS} REQUIRED)
       message(STATUS "USING the system ${externalProjName}, found SWIG_EXECUTABLE=${SWIG_EXECUTABLE}, SWIG_VERSION=${SWIG_VERSION}")
   endif()
