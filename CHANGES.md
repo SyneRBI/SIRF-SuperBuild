@@ -1,8 +1,9 @@
 # ChangeLog
 
-# 2.x.x
+# 2.2.0
 
 - handle rename of project CCPPETMR->SyneRBI
+- add option to update system prerequisites with update_VM.sh
 
 ## 2.1.0
 
