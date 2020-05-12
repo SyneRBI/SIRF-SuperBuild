@@ -2,10 +2,10 @@
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
 # Author: Edoardo Pasca
-# Copyright 2017, 2018 University College London
-# Copyright 2017, 2018 STFC
+# Copyright 2017, 2020 University College London
+# Copyright 2017, 2020 STFC
 #
-# This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
+# This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,29 +40,19 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ### --- Project specific additions here
 
-  set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
-  set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
-
-
-
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY ${${proj}_URL}
     GIT_TAG ${${proj}_TAG}
     ${${proj}_EP_ARGS_DIRS}
     CMAKE_ARGS
-      -DCMAKE_INSTALL_PREFIX=${${proj}_INSTALL_DIR}
+      -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
       -DLIBRARY_DIR:PATH=${${proj}_INSTALL_DIR}/lib
       -DINCLUDE_DIR:PATH=${${proj}_INSTALL_DIR}/include
-    # TODO this relies on using "make", but we could be build with something else
-    INSTALL_COMMAND make ACE
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target ACE
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
-
-   # not used
-   # set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
-   # set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
 
    else()
       if(${USE_SYSTEM_${externalProjName}})
@@ -74,7 +64,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   )
   endif()
 
-# Currently, setting ACE_ROOT has no effect, see https://github.com/CCPPETMR/SIRF-SuperBuild/issues/147
+# Currently, setting ACE_ROOT has no effect, see https://github.com/SyneRBI/SIRF-SuperBuild/issues/147
 #  mark_as_superbuild(
 #    VARS
 #      ${externalProjName}_ROOT:PATH

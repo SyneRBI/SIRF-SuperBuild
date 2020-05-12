@@ -62,9 +62,9 @@ addons:
 #       + or - refer to the value of the parameter affecting the specific package is passed to cmake:
 #       i.e. -boost => -DUSE_SYSTEM_Boost=OFF, which means that Boost will be built.
 # Note: On trusty, we need to build Armadillo and boost ourselves (the system versions are too old)
-# Note: On trusty, g++-7 causes errors with the system ACE, so cannot use g++-7 or later https://github.com/CCPPETMR/SIRF-SuperBuild/issues/169
-# Note: On osx, we can't test SYSTEM_Boost=OFF due to excessive log size (https://github.com/CCPPETMR/SIRF-SuperBuild/issues/167)
-# Note: currently ACE is not building correctly, so ACE is not built on any configuration https://github.com/CCPPETMR/SIRF-SuperBuild/issues/#174
+# Note: On trusty, g++-7 causes errors with the system ACE, so cannot use g++-7 or later https://github.com/SyneRBI/SIRF-SuperBuild/issues/169
+# Note: On osx, we can't test SYSTEM_Boost=OFF due to excessive log size (https://github.com/SyneRBI/SIRF-SuperBuild/issues/167)
+# Note: currently ACE is not building correctly, so ACE is not built on any configuration https://github.com/SyneRBI/SIRF-SuperBuild/issues/#174
 env:
  global:
  - BUILD_FLAGS="-DCMAKE_BUILD_TYPE=Release"
@@ -83,8 +83,8 @@ jobs:
       - *addons_apt_packages
       - g++-6
    python: 3.6
-   name: py36 gcc6 +xenial -boost +fftw3 +hdf5 +ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=OFF" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+   name: py36 gcc6 +xenial -boost +fftw3 +hdf5 +ace +cil
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
 
  # trusty disabled
  # This fails since Feb 2020 due to Python3 being 3.4.3, even though we ask for more recent.
@@ -104,20 +104,20 @@ jobs:
 # current linux
  - os: linux
    python: 3.6
-   name: py36 -boost +fftw3 +hdf5 +ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=OFF" PYMVER=3
+   name: py36 -boost +fftw3 +hdf5 +ace +cil
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON" PYMVER=3
  - os: linux
    python: 2.7
-   name: py27 -boost +fftw3 +hdf5 +ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=OFF" PYMVER=2
+   name: py27 -boost +fftw3 +hdf5 +ace +cil
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON" PYMVER=2
  - os: linux
    python: 2.7
-   name: py27 -boost +fftw3 +hdf5 +ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON" PYMVER=2
+   name: py27 -boost +fftw3 +hdf5 +ace +cil_lite
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL_LITE=ON" PYMVER=2
  - os: linux
    python: 3.6
-   name: py36 -boost +fftw3 +hdf5 +ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON" PYMVER=3
+   name: py36 -boost +fftw3 +hdf5 +ace +cil_lite
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL_LITE=ON" PYMVER=3
  - os: linux
    python: 2.7
    name: py27 -boost +fftw3 +hdf5 +siemens_to_ismrmrd +swig +ace
@@ -239,9 +239,9 @@ jobs:
        dpush() {
          # create and push alias $1 -> $2
          if [[ "$1" != "$2" ]]; then
-           docker tag ccppetmr/sirf:$1 ccppetmr/sirf:$2
+           docker tag synerbi/sirf:$1 synerbi/sirf:$2
          fi
-         docker push ccppetmr/sirf:$2
+         docker push synerbi/sirf:$2
        }
        if [[ -n "$TRAVIS_TAG" ]]; then ( set -ev
         # tag & push

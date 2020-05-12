@@ -2,10 +2,10 @@
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
 # Author: Edoardo Pasca
-# Copyright 2017, 2018 University College London
-# Copyright 2017 Science Technology Facilities Council
+# Copyright 2017, 2020 University College London
+# Copyright 2017, 2020 STFC
 #
-# This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
+# This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -53,6 +53,7 @@ if (WIN32)
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
+    ${${proj}_EP_ARGS_DIRS}
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
     INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory ${${proj}_INSTALL_DIR}
@@ -83,7 +84,7 @@ endif()
   )
 endif()
 
-# Currently, setting FFTW3_ROOT_DIR has no effect, see https://github.com/CCPPETMR/SIRF-SuperBuild/issues/147
+# Currently, setting FFTW3_ROOT_DIR has no effect, see https://github.com/SyneRBI/SIRF-SuperBuild/issues/147
 #mark_as_superbuild(
 #  ALL_PROJECTS
 #  VARS

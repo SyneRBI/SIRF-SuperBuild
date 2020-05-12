@@ -1,9 +1,9 @@
 #========================================================================
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
-# Copyright 2017-2019 University College London
+# Copyright 2017, 2020 University College London
 #
-# This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
+# This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,22 +21,6 @@
 
 #This needs to be unique globally
 set(proj STIR)
-
-# Set dependency list
-if (USE_ITK)
-  set(${proj}_DEPENDENCIES "Boost;ITK")
-else()
-  set(${proj}_DEPENDENCIES "Boost")
-endif()
-if (BUILD_STIR_SWIG_PYTHON)
-  list(APPEND ${proj}_DEPENDENCIES "SWIG")
-endif()
-if (USE_NIFTYPET)
-  list(APPEND ${proj}_DEPENDENCIES "NIFTYPET")
-endif()
-
-# Include dependent projects if any
-ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
@@ -76,6 +60,25 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     message(FATAL_ERROR "STIR Python currently needs to have PYTHON_STRATEGY=PYTHONPATH")
   endif()
 
+  # Set dependency list
+  set(${proj}_DEPENDENCIES "Boost")
+  if (USE_ITK)
+    list(APPEND ${proj}_DEPENDENCIES "ITK")
+  endif()
+  if (BUILD_STIR_SWIG_PYTHON)
+    list(APPEND ${proj}_DEPENDENCIES "SWIG")
+  endif()
+  if (USE_NiftyPET)
+    list(APPEND ${proj}_DEPENDENCIES "NiftyPET")
+  endif()
+  option(STIR_DISABLE_JSON "Disable JSON support in ${proj}" ON)
+  if (STIR_USE_JSON)
+    list(APPEND ${proj}_DEPENDENCIES "JSON")
+  endif()
+
+  # Include dependent projects if any
+  ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
+
   set(STIR_CMAKE_ARGS
     
     -DSWIG_EXECUTABLE:FILEPATH=${SWIG_EXECUTABLE}
@@ -99,7 +102,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     -DDISABLE_HDF5_SUPPORT:BOOL=${STIR_DISABLE_HDF5_SUPPORT}
     -DDISABLE_LLN_MATRIX:BOOL=${STIR_DISABLE_LLN_MATRIX}
     -DSTIR_ENABLE_EXPERIMENTAL:BOOL=${STIR_ENABLE_EXPERIMENTAL}
-
+    -DDISABLE_NLOHMANN_JSON:BOOL=${STIR_DISABLE_JSON}
    )
 
   # Append CMAKE_ARGS for ITK choices
@@ -115,10 +118,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   endif()
 
   ## If building with NiftyPET projector
-  if (${USE_NIFTYPET})
-    set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DNIFTYPET_PETPRJ_LIB:FILEPATH=${NIFTYPET_PETPRJ_LIB})
-    set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DNIFTYPET_MMR_AUXE_LIB:FILEPATH=${NIFTYPET_MMR_AUXE_LIB})
-    set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DNIFTYPET_INCLUDE_DIR:PATH=${NIFTYPET_INCLUDE_DIR})
+  if (${USE_NiftyPET})
+    set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DNiftyPET_PATH:PATH=${NiftyPET_PATH})
   endif()
 
   # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED

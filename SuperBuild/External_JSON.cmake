@@ -1,6 +1,6 @@
 #========================================================================
-# Author: Richard Brown
-# Copyright 2020 UCL
+# Copyright 2018-2020 Science Technology Facilities Council
+# Copyright 2018-2020 University College London
 #
 # This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -19,15 +19,20 @@
 #=========================================================================
 
 #This needs to be unique globally
-set(proj SPM)
+set(proj JSON)
+
+# Set dependency list
+set(${proj}_DEPENDENCIES "")
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
-SetCanonicalDirectoryNames(${proj})
 
+SetCanonicalDirectoryNames(${proj})
+# Get any flag from the superbuild call that may be particular to this projects CMAKE_ARGS
+SetExternalProjectFlags(${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
@@ -38,17 +43,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     ${${proj}_EP_ARGS}
     ${${proj}_EP_ARGS_GIT}
     ${${proj}_EP_ARGS_DIRS}
-    CONFIGURE_COMMAND ""
-    BUILD_COMMAND ""
-    INSTALL_COMMAND ""
+    DEPENDS ${${proj}_DEPENDENCIES}
   )
 
-  set(${proj}_DIR ${${proj}_SOURCE_DIR} CACHE PATH "SPM DIR")
 
-else()
-  find_package(${proj} REQUIRED)
-  message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
-  ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-                            ${${proj}_EP_ARGS_DIRS}
-  )
-endif()
+  else()
+    ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
+      ${${proj}_EP_ARGS_DIRS}
+    )
+  endif()

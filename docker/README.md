@@ -1,6 +1,6 @@
 # SIRF on Ubuntu 18.04 on Docker
 
-Docker wrapper for CCP PET-MR SIRF.
+Docker wrapper for CCP SyneRBI SIRF.
 
 ## TL;DR, I want a (Jupyter notebook) service NOW
 
@@ -17,7 +17,7 @@ from `./devel` (in this folder) on the host. The container will copy
 
 [docker-ce]: https://docs.docker.com/install/
 [docker-compose]: https://github.com/docker/compose/releases
-[SIRF-Exercises]: https://github.com/CCPPETMR/SIRF-Exercises
+[SIRF-Exercises]: https://github.com/SyneRBI/SIRF-Exercises
 
 Note: If on Windows, `localhost` probably won't work.
 Find out the service IP address using:
@@ -32,7 +32,7 @@ The repository is hosted at [hub.docker.com][dockerhub-SIRF].
 To pull directly, use:
 
 ```sh
-docker pull ccppetmr/sirf:<DOCKER_TAG>
+docker pull synerbi/sirf:<DOCKER_TAG>
 ```
 
 | `<DOCKER_TAG>` | Service `<DOCKER_TAG>` | [SuperBuild] branch/tag |
@@ -50,8 +50,8 @@ Service images are intended to be run in the background, and expose:
 | 8890-9 | `Jupyter` (in folder `/devel/SIRF-Exercises-<0-9>`) |
 | 9002 | `Gadgetron` |
 
-[dockerhub-SIRF]: https://hub.docker.com/r/ccppetmr/sirf/
-[SuperBuild]: https://github.com/CCPPETMR/SIRF-SuperBuild/
+[dockerhub-SIRF]: https://hub.docker.com/r/synerbi/sirf/
+[SuperBuild]: https://github.com/SyneRBI/SIRF-SuperBuild/
 
 # Introduction
 
@@ -85,7 +85,7 @@ firefox localhost:9999
 After installing [docker CE][docker-ce] and [`docker-compose`][docker-compose],
 
 ```bash
-git clone https://github.com/CCPPETMR/SIRF-SuperBuild
+git clone https://github.com/SyneRBI/SIRF-SuperBuild
 cd SIRF-SuperBuild/docker
 # if your host is linux:
 ./sirf-compose up --no-start sirf
@@ -111,7 +111,7 @@ docker start -ai sirf
 Alternatively, if you want a jupyter notebook server,
 
 ```bash
-git clone https://github.com/CCPPETMR/SIRF-SuperBuild
+git clone https://github.com/SyneRBI/SIRF-SuperBuild
 cd SIRF-SuperBuild/docker
 ./sirf-compose-server up -d sirf  # remove `./` if on windows
 ```
@@ -131,7 +131,7 @@ every time you want to play with `SIRF`.
 - Docker
     + The free [Community Edition (CE)][docker-ce] is sufficient
     + [`docker-compose`][docker-compose]
-- The [`SIRF-SuperBuild` repository](https://github.com/CCPPETMR/SIRF-SuperBuild)
+- The [`SIRF-SuperBuild` repository](https://github.com/SyneRBI/SIRF-SuperBuild)
     + download and unzip or `git clone` this locally
 
 ## Glossary
@@ -143,7 +143,7 @@ A wonderfully tiny list of everything important to know for a basic working know
 - *Layer*: a single build step
     + usually represented by a single line in a `Dockerfile` (e.g. `apt-get install cmake`)
 - *Image*: a sequence of *layers* (applied on top of a *base image*)
-    + analogous to a clean OS with `SIRF` installed (in this case *tagged* `ccppetmr/sirf`)
+    + analogous to a clean OS with `SIRF` installed (in this case *tagged* `synerbi/sirf`)
 - *Container*: a sandboxed workspace derived from an *image*
     + analogous to a running virtual machine (in this case named `sirf`)
     + easily stoppable, restartable, disposable
@@ -161,7 +161,7 @@ A wonderfully tiny list of everything important to know for a basic working know
 
 ## SIRF Image Building and Container Creation
 
-The docker image can be built from source using `CCPPETMR/SIRF-SuperBuild` by following the steps below. Alternatively, simply run `docker pull ccppetmr/sirf` to download a pre-built image.
+The docker image can be built from source using `SyneRBI/SIRF-SuperBuild` by following the steps below. Alternatively, simply run `docker pull synerbi/sirf` to download a pre-built image.
 
 `docker-compose` is used to help with creating containers (and even building images). It should be added to your `PATH` or at least have the executable copied to `SIRF-SuperBuild/docker`.
 
@@ -169,7 +169,7 @@ The docker image can be built from source using `CCPPETMR/SIRF-SuperBuild` by fo
 
 ```bash
 # Either:
-SIRF-SuperBuild/docker$ docker pull ccppetmr/sirf
+SIRF-SuperBuild/docker$ docker pull synerbi/sirf
 # Or:
 SIRF-SuperBuild/docker$ docker-compose build core sirf
 ```
@@ -185,7 +185,7 @@ SIRF-SuperBuild/docker$ ./sirf-compose up --no-start sirf
 
 ```
 Either:
-SIRF-SuperBuild/docker> docker pull ccppetmr/sirf
+SIRF-SuperBuild/docker> docker pull synerbi/sirf
 Or:
 SIRF-SuperBuild/docker> docker-compose build core sirf
 ```
@@ -204,7 +204,7 @@ Note that Docker for Windows uses the newer
 [Hyper-V backend which can't be enabled if you have VirtualBox][hyper-vbox].
 You can use the older VirtualBox backend instead by using [Docker Machine].
 
-[wiki-wsl]: https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-on-Bash-on-Ubuntu-on-Windows-10
+[wiki-wsl]: https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-on-Bash-on-Ubuntu-on-Windows-10
 [hyper-vbox]: https://docs.docker.com/docker-for-windows/install/#what-to-know-before-you-install
 [Docker Machine]: https://docs.docker.com/machine/overview/#whats-the-difference-between-docker-engine-and-docker-machine
 
@@ -311,10 +311,10 @@ Finally, after finishing our work, we can stop the container.
     + See also: [SIRF SuperBuild on Docker wiki]
 - [Synergistic Image Reconstruction Framework (SIRF) project][SIRF]
     + [SIRF wiki]
-- [Collaborative Computational Project in Positron Emission Tomography and Magnetic Resonance imaging (CCP PET-MR)][CCP PET-MR]
+- [Collaborative Computational Project in Positron Emission Tomography and Magnetic Resonance imaging (CCP SyneRBI)][CCP SyneRBI]
 
-[SIRF docker source]: https://github.com/CCPPETMR/SIRF-SuperBuild/tree/master/docker
-[SIRF SuperBuild on Docker wiki]: https://github.com/CCPPETMR/SIRF/wiki/SIRF-SuperBuild-on-Docker
-[SIRF]: https://github.com/CCPPETMR/SIRF
-[SIRF wiki]: https://github.com/CCPPETMR/SIRF/wiki
-[CCP PET-MR]: https://www.ccppetmr.ac.uk/
+[SIRF docker source]: https://github.com/SyneRBI/SIRF-SuperBuild/tree/master/docker
+[SIRF SuperBuild on Docker wiki]: https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-on-Docker
+[SIRF]: https://github.com/SyneRBI/SIRF
+[SIRF wiki]: https://github.com/SyneRBI/SIRF/wiki
+[CCP SyneRBI]: https://www.ccpsynerbi.ac.uk/

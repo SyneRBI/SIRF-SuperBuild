@@ -1,9 +1,9 @@
 #========================================================================
 # Author: Edoardo Pasca
-# Copyright 2019 STFC
+# Copyright 2019, 2020 STFC
 #
-# This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
-#
+# This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
+##
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -29,13 +29,13 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 
 find_package(Cython)
 if(NOT ${Cython_FOUND})
-    message(FATAL_ERROR "CCPi-Regularisation-Toolkit depends on Cython")
+    message(FATAL_ERROR "astra-toolkit binding to Python depends on Cython")
 endif()
 
-set (CUDA_TOOLKIT_ROOT_DIR $ENV{CUDA_BIN_DIR})
-find_package(CUDA)
 # as in CCPi RGL
-if (CUDA_FOUND)
+option(${proj}_USE_CUDA "Enable ${proj} CUDA (if cuda libraries are present)" ${USE_CUDA})
+if (${${proj}_USE_CUDA})
+   set (CUDA_TOOLKIT_ROOT_DIR $ENV{CUDA_BIN_DIR})
    set(CUDA_NVCC_FLAGS "-Xcompiler -fPIC -shared -D_FORCE_INLINES")
    message(STATUS "CUDA_SDK_ROOT_DIR ${CUDA_SDK_ROOT_DIR}")
    message(STATUS "CUDA_TOOLKIT_ROOT_DIR ${CUDA_TOOLKIT_ROOT_DIR}")
@@ -43,22 +43,13 @@ endif()
 
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
-
-set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
-set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
-set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
-set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
-set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
+SetCanonicalDirectoryNames(${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
-
+  SetGitTagAndRepo("${proj}")
   ### --- Project specific additions here
-  set(libastra_Install_Dir ${SUPERBUILD_INSTALL_DIR})
-
-  set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
-  set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
-
+  
   message("astra-toolkit URL " ${${proj}_URL}  )
   message("astra-toolkit TAG " ${${proj}_TAG}  )
 
@@ -86,33 +77,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
     set(cmd "${${proj}_SOURCE_DIR}/build/linux/configure")
     list(APPEND cmd "CPPFLAGS=-I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib")
-    if (CUDA_FOUND)
+    if (${${proj}_USE_CUDA})
       list(APPEND cmd "NVCCFLAGS=-I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib")
-
-      ExternalProject_Add(${proj}
-        ${${proj}_EP_ARGS}
-        GIT_REPOSITORY ${${proj}_URL}
-        GIT_TAG ${${proj}_TAG}
-        SOURCE_DIR ${${proj}_SOURCE_DIR}
-        BINARY_DIR ${${proj}_BINARY_DIR}
-        DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-        STAMP_DIR ${${proj}_STAMP_DIR}
-        TMP_DIR ${${proj}_TMP_DIR}
-        INSTALL_DIR ${libastra_Install_Dir}
-
-        CONFIGURE_COMMAND
-          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ./autogen.sh
-
-        # This build is Unix specific
-        BUILD_COMMAND
-        ${CMAKE_COMMAND} -E env ${cmd} --with-cuda=${CUDA_TOOLKIT_ROOT_DIR} --prefix=${libastra_Install_Dir} --with-python=${PYTHON_EXECUTABLE} --with-install-type=prefix
-        INSTALL_COMMAND
-          ${CMAKE_COMMAND} -E chdir ${${proj}_BINARY_DIR}/ make -j2 install-libraries
-        DEPENDS
-          ${${proj}_DEPENDENCIES}
-      )
-
-      set(python_wrapper "astra-python-wrapper")
+      set(ASTRA_BUILD_OPTIONS "--with-cuda=${CUDA_TOOLKIT_ROOT_DIR}")
 
       #create a configure script
       file(WRITE ${${proj}_SOURCE_DIR}/python_build
@@ -126,29 +93,7 @@ CPPFLAGS=\"-DASTRA_CUDA -DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${S
     else()
       # No CUDA
       message (STATUS "No CUDA found on host, skipping GPU")
-      ExternalProject_Add(${proj}
-        ${${proj}_EP_ARGS}
-        GIT_REPOSITORY ${${proj}_URL}
-        GIT_TAG ${${proj}_TAG}
-        SOURCE_DIR ${${proj}_SOURCE_DIR}
-        BINARY_DIR ${${proj}_BINARY_DIR}
-        DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-        STAMP_DIR ${${proj}_STAMP_DIR}
-        TMP_DIR ${${proj}_TMP_DIR}
-        INSTALL_DIR ${libastra_Install_Dir}
-
-        CONFIGURE_COMMAND
-          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ./autogen.sh
-        # This build is Unix specific
-        BUILD_COMMAND
-        ${CMAKE_COMMAND} -E env ${cmd} --prefix=${libastra_Install_Dir} --with-install-type=prefix --with-python=${PYTHON_EXECUTABLE}
-        INSTALL_COMMAND
-          ${CMAKE_COMMAND} -E chdir ${${proj}_BINARY_DIR}/ make -j install-libraries
-        DEPENDS
-          ${${proj}_DEPENDENCIES}
-      )
-
-      set(python_wrapper "astra-python-wrapper")
+      set(ASTRA_BUILD_OPTIONS "")
 
       #create a configure script
       file(WRITE ${${proj}_SOURCE_DIR}/python_build
@@ -161,7 +106,25 @@ CPPFLAGS=\"-DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INS
 
 
     endif()
+    ExternalProject_Add(${proj}
+        ${${proj}_EP_ARGS}
+        ${${proj}_EP_ARGS_GIT}
+        ${${proj}_EP_ARGS_DIRS}
+        
+        # This build is Unix specific
+        CONFIGURE_COMMAND
+          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ./autogen.sh
 
+        
+        BUILD_COMMAND
+        ${CMAKE_COMMAND} -E env ${cmd} ${ASTRA_BUILD_OPTIONS} --prefix=${${proj}_INSTALL_DIR} --with-install-type=prefix --with-python=${PYTHON_EXECUTABLE}
+        INSTALL_COMMAND
+          ${CMAKE_COMMAND} -E chdir ${${proj}_BINARY_DIR}/ make -j2 install-libraries
+        DEPENDS
+          ${${proj}_DEPENDENCIES}
+      )
+
+    set(python_wrapper "astra-python-wrapper")
     file(COPY ${${proj}_SOURCE_DIR}/python_build
          DESTINATION ${${proj}_BINARY_DIR}/python
          FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
@@ -172,7 +135,7 @@ CPPFLAGS=\"-DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INS
 #! /bin/bash
 set -ex
 build_dir=`ls ${${proj}_SOURCE_DIR}/python/build/ | grep lib`
-cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir/astra ${libastra_Install_Dir}/python/
+cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir/astra ${${proj}_INSTALL_DIR}/python/
 
 ")
 
@@ -182,12 +145,8 @@ cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir/astra ${libastra_Install_Di
 
     ExternalProject_Add(${python_wrapper}
         ${${proj}_EP_ARGS}
-        SOURCE_DIR ${${proj}_SOURCE_DIR}
-        BINARY_DIR ${${proj}_BINARY_DIR}
-        DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-        STAMP_DIR ${${proj}_STAMP_DIR}
-        TMP_DIR ${${proj}_TMP_DIR}
-        INSTALL_DIR ${libastra_Install_Dir}
+        ${${proj}_EP_ARGS_DIRS}
+        # INSTALL_DIR ${libastra_Install_Dir}
 
         CONFIGURE_COMMAND ${CMAKE_COMMAND} -E copy ${${proj}_BINARY_DIR}/python/python_build ${${proj}_SOURCE_DIR}/python/ && ${CMAKE_COMMAND} -E copy ${${proj}_BINARY_DIR}/python/python_install ${${proj}_SOURCE_DIR}/python/
 
@@ -212,7 +171,7 @@ cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir/astra ${libastra_Install_Di
   add_test(NAME ASTRA_BASIC_TEST
            COMMAND ${PYTHON_EXECUTABLE} -c "import astra; astra.test_noCUDA()"
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR})
-  if (CUDA_FOUND)
+  if (${${proj}_USE_CUDA})
     add_test(NAME ASTRA_BASIC_GPU_TEST
              COMMAND ${PYTHON_EXECUTABLE} -c "import astra; astra.test_CUDA()"
              WORKING_DIRECTORY ${${proj}_SOURCE_DIR})
@@ -220,10 +179,6 @@ cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir/astra ${libastra_Install_Di
 
 else()
   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-      SOURCE_DIR ${${proj}_SOURCE_DIR}
-      BINARY_DIR ${${proj}_BINARY_DIR}
-      DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-      STAMP_DIR ${${proj}_STAMP_DIR}
-      TMP_DIR ${${proj}_TMP_DIR}
-    )
+                            ${${proj}_EP_ARGS_DIRS}
+                            )
 endif()

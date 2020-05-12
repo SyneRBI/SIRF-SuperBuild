@@ -5,7 +5,7 @@
 # Copyright 2017-2020 University College London
 # Copyright 2017-2020 Science Technology Facilities Council
 #
-# This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
+# This file is part of the CCP SyneRBI Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -44,10 +44,16 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 endif()
 
 # Find CUDA
-find_package(CUDA)
-if (CUDA_FOUND)
-   message(STATUS "<<<<<<<<<<<<<<<<< CUDA FOUND >>>>>>>>>>>>>>>>>>>>>")
-   message(STATUS "Will enable CUDA dependencies where possible.")
+option(DISABLE_CUDA "Disable CUDA" OFF)
+if (NOT DISABLE_CUDA)
+  find_package(CUDA)
+endif()
+if (NOT DISABLE_CUDA AND CUDA_FOUND)
+  message(STATUS "<<<<<<<<<<<<<<<<< CUDA FOUND >>>>>>>>>>>>>>>>>>>>>")
+  message(STATUS "Will enable CUDA dependencies where possible.")
+  set(USE_CUDA ON CACHE INTERNAL "Use CUDA")
+else()
+  set(USE_CUDA OFF CACHE INTERNAL "Use CUDA" FORCE)
 endif()
 
 # If OSX give the advanced option to use absolute paths for shared libraries
@@ -64,10 +70,13 @@ endif(APPLE)
 
 set (SUPERBUILD_INSTALL_DIR ${CMAKE_INSTALL_PREFIX})
 
-include(ExternalProject)
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release CACHE STRING
+      "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
+      FORCE)
+endif()
 
-set(EXTERNAL_PROJECT_BUILD_TYPE "${CMAKE_BUILD_TYPE}" CACHE INTERNAL "Default build type for support libraries")
-message(STATUS "EXTERNAL_PROJECT_BUILD_TYPE: ${EXTERNAL_PROJECT_BUILD_TYPE}")
+include(ExternalProject)
 
 # Make sure that some CMake variables are passed to all dependencies
 mark_as_superbuild(
@@ -75,6 +84,7 @@ mark_as_superbuild(
    VARS CMAKE_GENERATOR:STRING CMAKE_GENERATOR_PLATFORM:STRING CMAKE_GENERATOR_TOOLSET:STRING
         CMAKE_C_COMPILER:FILEPATH CMAKE_CXX_COMPILER:FILEPATH
         CMAKE_INSTALL_PREFIX:PATH
+        CMAKE_BUILD_TYPE:STRING
 )
 
 #### Python support
@@ -225,7 +235,7 @@ option(BUILD_NIFTYREG "Build NIFTYREG" ON)
 option(BUILD_SIRF_Contribs "Build SIRF-Contribs" ON)
 
 option(BUILD_SIRF_Registration "Build SIRFS's registration functionality" ${BUILD_NIFTYREG})
-if (BUILD_SIRF_Registration AND NOT BUILD_NIFTYREG)
+if (BUILD_SIRF AND BUILD_SIRF_Registration AND NOT BUILD_NIFTYREG)
   message(WARNING "Building SIRF registration is enabled, but BUILD_NIFTYREG=OFF. Reverting to BUILD_NIFTYREG=ON")
   set(BUILD_NIFTYREG ON CACHE BOOL "Build NIFTYREG" FORCE)
 endif()
@@ -242,11 +252,13 @@ if (USE_ITK)
 endif()
 
 # If building STIR and CUDA present, offer to build NiftyPET
-if (CUDA_FOUND AND NOT USE_SYSTEM_STIR)
-  set(USE_NIFTYPET ON CACHE BOOL "Build STIR with NiftyPET's projectors") # FORCE)
-  if (USE_NIFTYPET)
-    option(USE_SYSTEM_NIFTYPET "Build using an external version of NiftyPET" OFF)
+if (USE_CUDA AND NOT USE_SYSTEM_STIR)
+  set(USE_NiftyPET ON CACHE BOOL "Build STIR with NiftyPET's projectors") # FORCE)
+  if (USE_NiftyPET)
+    option(USE_SYSTEM_NiftyPET "Build using an external version of NiftyPET" OFF)
   endif()
+else()
+  set(USE_NiftyPET OFF CACHE BOOL "Build STIR with NiftyPET's projectors" FORCE)
 endif()
 
 ## set versions
@@ -287,7 +299,7 @@ if (BUILD_CIL_LITE)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES CCPi-Regularisation-Toolkit CCPi-Framework CCPi-FrameworkPlugins)
 endif()
 
-if (BUILD_SIRF_Registration)
+if (BUILD_SIRF_Registration AND BUILD_SIRF)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES NIFTYREG)
 endif()
 
@@ -312,7 +324,7 @@ message(STATUS "PYTHON_INCLUDE_DIRS=${PYTHON_INCLUDE_DIRS}")
 #set(proj ${PRIMARY_PROJECT_NAME})
 
 # Make environment files
-set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
+set(SyneRBI_INSTALL ${SUPERBUILD_INSTALL_DIR})
 
 ## configure the environment files env_ccppetmr.sh/csh
 ## We create a whole bash/csh block script which does set the appropriate
@@ -367,13 +379,13 @@ endif()
 if (BUILD_GADGETRON)
 
   set(ENV_GADGETRON_HOME_SH "\
-GADGETRON_HOME=${CCPPETMR_INSTALL}\n\
+GADGETRON_HOME=${SyneRBI_INSTALL}\n\
 export GADGETRON_HOME\n")
-  set(ENV_GADGETRON_HOME_CSH "setenv GADGETRON_HOME ${CCPPETMR_INSTALL}\n")
+  set(ENV_GADGETRON_HOME_CSH "setenv GADGETRON_HOME ${SyneRBI_INSTALL}\n")
 endif()
 
-configure_file(env_ccppetmr.sh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.sh)
-configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
+configure_file(env_ccppetmr.sh.in ${SyneRBI_INSTALL}/bin/env_ccppetmr.sh)
+configure_file(env_ccppetmr.csh.in ${SyneRBI_INSTALL}/bin/env_ccppetmr.csh)
 
 # add tests
 enable_testing()
