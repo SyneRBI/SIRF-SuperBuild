@@ -20,6 +20,7 @@
 - Updated versions:
    - STIR: rel_4.0.1
    - CIL:  20.04
+   - SIRF: 2.2.0
 
 ## v2.1.0
 - Switch NiftyReg remote from `rijobro` to `KCL-BMEIS` (following the acceptance of one of our PRs to their code).
