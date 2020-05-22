@@ -10,7 +10,8 @@ cache:  # shared between builds
 stages:
 - test
 - docker-core
-- docker
+- name: docker
+  if: NOT type = pull_request
 
 # Currently commented out as set with environment flags
 # Both clang and gcc can be tested. More is the better.
@@ -328,6 +329,7 @@ jobs:
  - os: linux
    name: docker +DEVEL
    env: DOCKER_BUILD=DEVEL
+   if: branch = master
    services:
    - docker
    addons: *docker_addons
