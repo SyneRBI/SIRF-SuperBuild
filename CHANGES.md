@@ -18,7 +18,7 @@
 - Sorted out Nifty PET capitalisation.
 - Unified OpenMP control.
 - Updated versions:
-   - STIR: rel_4.0.1
+   - STIR: rel_4.0.2
    - CIL:  20.04
    - SIRF: 2.2.0
 
