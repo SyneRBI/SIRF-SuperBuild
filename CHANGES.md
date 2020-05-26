@@ -5,6 +5,7 @@
 - Made ${proj}_SOURCE_DIR a cached variables such that the user can point to an existing directory.
 - Added support for passing CMAKE args to projects from the SuperBuild call.
 - Use macros to drastically simplify (and reduce size of) the External*.cmake files.
+- Pass HDF5_ROOT through to projects if it's defined and USE_SYSTEM_HDF5=ON
 - Added checking whether default SWIG executable exists.
 - Corrected logic around building SIRF and Registration.
 - Added JSON as external package.
