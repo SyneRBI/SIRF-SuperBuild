@@ -310,7 +310,7 @@ endif()
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${PRIMARY_PROJECT_NAME}_DEPENDENCIES)
 
 message(STATUS "")
-message(STATUS "BOOST_ROOT = " ${BOOST_ROOT})
+message(STATUS "Boost_CMAKE_ARGS= " "${Boost_CMAKE_ARGS}")
 message(STATUS "ISMRMRD_DIR = " ${ISMRMRD_DIR})
 message(STATUS "STIR_DIR = " ${STIR_DIR})
 message(STATUS "HDF5_ROOT = " ${HDF5_ROOT})
