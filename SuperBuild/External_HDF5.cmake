@@ -94,6 +94,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
          -DHDF5_LIBRARIES:STRING=${HDF5_LIBRARIES}
          -DHDF5_FIND_DEBUG:BOOL=ON
       )
+      if (HDF5_ROOT)
+        set(HDF5_CMAKE_ARGS ${HDF5_CMAKE_ARGS} -DHDF5_ROOT:PATH=${HDF5_ROOT})
+      endif()
   endif()
   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
     ${${proj}_EP_ARGS_DIRS}
