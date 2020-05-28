@@ -77,10 +77,31 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(BOOST_INCLUDEDIR  ${Boost_Install_Dir}/include)
   set(BOOST_LIBRARY_DIR ${Boost_Install_Dir}/lib)
 
+  set(Boost_CMAKE_ARGS
+      -DBOOST_INCLUDEDIR:PATH=${BOOST_ROOT}/include/
+      -DBOOST_LIBRARYDIR:PATH=${BOOST_LIBRARY_DIR}
+      -DBOOST_ROOT:PATH=${BOOST_ROOT}
+  )
+
  else()
     if(${USE_SYSTEM_${externalProjName}})
       find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
-      message(STATUS "USING the system ${externalProjName}, using BOOST_LIBRARY_DIR=${BOOST_LIBRARY_DIR}")
+      set(Boost_CMAKE_ARGS -DBOOST_INCLUDEDIR:PATH=${Boost_INCLUDE_DIR})
+      if (Boost_LIBRARY_DIR_RELEASE)
+        # TODO might need to use Boost_LIBRARY_DIR_Debug for Debug builds
+        set(Boost_CMAKE_ARGS ${Boost_CMAKE_ARGS} -DBOOST_LIBRARYDIR:PATH=${Boost_LIBRARY_DIR_RELEASE})
+      endif()
+      if (BOOST_ROOT)
+        set(Boost_CMAKE_ARGS ${Boost_CMAKE_ARGS} -DBOOST_ROOT:PATH=${BOOST_ROOT})
+      endif()
+      if (WIN32)
+        # need to tell boost to use dynamic libraries as otherwise it tends to compile as static, 
+        # but link with dynamic libraries, resulting in linking problems
+        # TODO this does not work yet, as it overrides any CMAKE_CXX_FLAGS set by other means
+        # (CMake for VS 2015 sets by default CMAKE_CXX_FLAGS=/DWIN32 /D_WINDOWS /W3 /GR /EHsc)
+        #set(Boost_CMAKE_ARGS ${Boost_CMAKE_ARGS} -DCMAKE_CXX_FLAGS:STRING="-DBOOST_ALL_DYN_LINK")
+      endif()
+      message(STATUS "USING the system ${externalProjName}, using Boost_CMAKE_ARGS=" "${Boost_CMAKE_ARGS}")
  endif()
    ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
                              ${${proj}_EP_ARGS_DIRS}
