@@ -2,10 +2,10 @@
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
 # Author: Edoardo Pasca
-# Copyright 2017 University College London
-# Copyright 2017 STFC
+# Copyright 2017, 2020 University College London
+# Copyright 2017, 2020 STFC
 #
-# This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
+# This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,12 +32,7 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
-set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
-set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
-set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
-set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
-set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
-
+SetCanonicalDirectoryNames(${proj})
 
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
@@ -45,14 +40,14 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message(STATUS "HDF5_DOWNLOAD_VERSION=${HDF5_DOWNLOAD_VERSION}")
 
   ### --- Project specific additions here
-  set(HDF5_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
   if(CMAKE_COMPILER_IS_CLANGXX)
     set(CLANG_ARG -DCMAKE_COMPILER_IS_CLANGXX:BOOL=ON)
   endif()
 
   #set(HDF5_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}-prefix/src/HDF5/hdf5-1.10.0-patch1 )
-  set(HDF5_BUILD_HL_LIB ${CUDA_FOUND})
+  option(${proj}_USE_CUDA "Enable ${proj} CUDA (if cuda libraries are present)" ${USE_CUDA})
+  set(HDF5_BUILD_HL_LIB ${${proj}_USE_CUDA})
 
   if (WIN32 AND (${HDF5_DOWNLOAD_VERSION} STREQUAL 1.8.12))
     find_program(GIT "git")
@@ -72,11 +67,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
     PATCH_COMMAND ${PATCH_COMMAND}
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_DIRS}
 
     CMAKE_ARGS
       ${CLANG_ARG}
@@ -84,10 +75,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DHDF5_BUILD_TOOLS:BOOL=OFF
       -DHDF5_BUILD_HL_LIB:BOOL=${HDF5_BUILD_HL_LIB}
       -DBUILD_TESTING:BOOL=OFF
-    INSTALL_DIR ${HDF5_Install_Dir}
   )
 
-  set( HDF5_ROOT ${HDF5_Install_Dir} )
+  set( HDF5_ROOT ${HDF5_INSTALL_DIR} )
   set( HDF5_INCLUDE_DIRS ${HDF5_ROOT}/include )
   set(HDF5_CMAKE_ARGS
      -DHDF5_ROOT:PATH=${HDF5_ROOT}
@@ -104,13 +94,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
          -DHDF5_LIBRARIES:STRING=${HDF5_LIBRARIES}
          -DHDF5_FIND_DEBUG:BOOL=ON
       )
+      if (HDF5_ROOT)
+        set(HDF5_CMAKE_ARGS ${HDF5_CMAKE_ARGS} -DHDF5_ROOT:PATH=${HDF5_ROOT})
+      endif()
   endif()
   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_DIRS}
   )
 endif()
 

@@ -1,8 +1,8 @@
 #========================================================================
 # Author: Richard Brown
-# Copyright 2019 University College London
+# Copyright 2019, 2020 University College London
 #
-# This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
+# This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,12 +38,13 @@ macro(SetGitTagAndRepo proj)
 	# If disable git desired (and source directory exists), set tag and repo to blank
 	if (EXISTS "${${proj}_SOURCE_DIR}" AND DISABLE_GIT_CHECKOUT_${proj})
 		message(STATUS "Not going to perform git checkout for ${proj}...")
-		SET(${proj}_TAG_MODIFIED "")
-		SET(${proj}_URL_MODIFIED "")
+		set(${proj}_EP_ARGS_GIT "")
 	# Else, 
 	else()
 		message(STATUS "Will perform git checkout for ${proj}...")
-		SET(${proj}_TAG_MODIFIED "${${proj}_TAG}")
-		SET(${proj}_URL_MODIFIED "${${proj}_URL}")
+		set(${proj}_EP_ARGS_GIT
+                    GIT_REPOSITORY ${${proj}_URL}
+                    GIT_TAG ${${proj}_TAG}
+                 )
 	endif()
 endmacro()

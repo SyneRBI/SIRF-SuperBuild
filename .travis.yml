@@ -2,7 +2,6 @@
 # but `cache: pip` and `python:` is ignored
 os:
 - linux
-- osx
 language: cpp
 dist: bionic  # Ubuntu 18.04 LTS
 cache:  # shared between builds
@@ -11,7 +10,8 @@ cache:  # shared between builds
 stages:
 - test
 - docker-core
-- docker
+- name: docker
+  if: NOT type = pull_request
 
 # Currently commented out as set with environment flags
 # Both clang and gcc can be tested. More is the better.
@@ -63,16 +63,14 @@ addons:
 #       + or - refer to the value of the parameter affecting the specific package is passed to cmake:
 #       i.e. -boost => -DUSE_SYSTEM_Boost=OFF, which means that Boost will be built.
 # Note: On trusty, we need to build Armadillo and boost ourselves (the system versions are too old)
-# Note: On trusty, g++-7 causes errors with the system ACE, so cannot use g++-7 or later https://github.com/CCPPETMR/SIRF-SuperBuild/issues/169
-# Note: On osx, we can't test SYSTEM_Boost=OFF due to excessive log size (https://github.com/CCPPETMR/SIRF-SuperBuild/issues/167)
-# Note: currently ACE is not building correctly, so ACE is not built on any configuration https://github.com/CCPPETMR/SIRF-SuperBuild/issues/#174
+# Note: On trusty, g++-7 causes errors with the system ACE, so cannot use g++-7 or later https://github.com/SyneRBI/SIRF-SuperBuild/issues/169
+# Note: On osx, we can't test SYSTEM_Boost=OFF due to excessive log size (https://github.com/SyneRBI/SIRF-SuperBuild/issues/167)
+# Note: currently ACE is not building correctly, so ACE is not built on any configuration https://github.com/SyneRBI/SIRF-SuperBuild/issues/#174
 env:
  global:
  - BUILD_FLAGS="-DCMAKE_BUILD_TYPE=Release"
  - MAKEFLAGS="-j 2"  # too many threads may crash
 jobs:
- allow_failures:
- - os: osx
  include:
  # linux g{cc,++}-{6,7} py{2,3}
  # legacy linux
@@ -87,36 +85,40 @@ jobs:
       - g++-6
    python: 3.6
    name: py36 gcc6 +xenial -boost +fftw3 +hdf5 +ace +cil
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
- - os: linux
-   dist: trusty  # Ubuntu 14.04 LTS
-   addons:
-    apt:
-     sources: *addons_apt_sources
-     packages:
-      - *addons_apt_packages
-      - g++-6
-      - realpath  # building ACE on trusty
-   python: 3.6
-   name: py36 gcc6 +trusty -boost +fftw3 +hdf5 +ace +cil
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
- # current linux
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+
+ # trusty disabled
+ # This fails since Feb 2020 due to Python3 being 3.4.3, even though we ask for more recent.
+ #- os: linux
+ #  dist: trusty  # Ubuntu 14.04 LTS
+ #  addons:
+ #   apt:
+ #    sources: *addons_apt_sources
+ #    packages:
+ #     - *addons_apt_packages
+ #     - g++-6
+ #     - realpath  # building ACE on trusty
+ #  python: 3.6
+ #  name: py36 gcc6 +trusty -boost +fftw3 +hdf5 +ace
+ #  env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=OFF" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+
+# current linux
  - os: linux
    python: 3.6
    name: py36 -boost +fftw3 +hdf5 +ace +cil
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" PYMVER=3
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON" PYMVER=3
  - os: linux
    python: 2.7
    name: py27 -boost +fftw3 +hdf5 +ace +cil
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" PYMVER=2
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON" PYMVER=2
  - os: linux
    python: 2.7
    name: py27 -boost +fftw3 +hdf5 +ace +cil_lite
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL_LITE=ON -DSIRF_TAG=origin/add_to_sirf_classes -DCCPi-Framework_TAG=origin/master" PYMVER=2
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL_LITE=ON" PYMVER=2
  - os: linux
    python: 3.6
-   name: py36 -boost +fftw3 +hdf5 +ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON" PYMVER=3
+   name: py36 -boost +fftw3 +hdf5 +ace +cil_lite
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL_LITE=ON" PYMVER=3
  - os: linux
    python: 2.7
    name: py27 -boost +fftw3 +hdf5 +siemens_to_ismrmrd +swig +ace
@@ -131,27 +133,32 @@ jobs:
    env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_SWIG=OFF" PYMVER=2
  # osx
  - os: osx
+   osx_image: xcode11.2
    python: 2.7
    name: py27 +osx +boost -hdf5 -swig
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" PYMVER=2
  - os: osx
+   osx_image: xcode11.2
    python: 3.6
    name: py36 +osx +boost +fftw3 -hdf5 -swig
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" PYMVER=3
  - os: osx
+   osx_image: xcode11.2
    python: 2.7
    name: py27 +osx +DEVEL +boost -hdf5 +swig
    env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=2
  - os: osx
+   osx_image: xcode11.2
    python: 2.7
    name: py27 +osx +DEVEL +boost -fftw3 -hdf5 +swig
    env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=2
  # itk
- - os: linux
-   python: 3.6
-   name: py36 -boost +itk +fftw3 +hdf5
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_ITK=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON" PYMVER=3
+ # - os: linux <-- not working due to SB build of boost
+ #   python: 3.6
+ #   name: py36 -boost +itk +fftw3 +hdf5
+ #   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_ITK=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON" PYMVER=3
  - os: osx
+   osx_image: xcode11.2
    python: 2.7
    name: py27 +osx +boost +itk -hdf5 +swig
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=2
@@ -233,9 +240,9 @@ jobs:
        dpush() {
          # create and push alias $1 -> $2
          if [[ "$1" != "$2" ]]; then
-           docker tag ccppetmr/sirf:$1 ccppetmr/sirf:$2
+           docker tag synerbi/sirf:$1 synerbi/sirf:$2
          fi
-         docker push ccppetmr/sirf:$2
+         docker push synerbi/sirf:$2
        }
        if [[ -n "$TRAVIS_TAG" ]]; then ( set -ev
         # tag & push
@@ -322,6 +329,7 @@ jobs:
  - os: linux
    name: docker +DEVEL
    env: DOCKER_BUILD=DEVEL
+   if: branch = master
    services:
    - docker
    addons: *docker_addons
@@ -367,10 +375,8 @@ before_install:
      brew update
      BUILD_FLAGS="$BUILD_FLAGS -DSHARED_LIBS_ABS_PATH=ON"
      brew install openblas
-     # Get openblas version
-     blas_ver=$(brew list --versions openblas)
-     blas_ver=${blas_ver#"openblas "}
-     EXTRA_BUILD_FLAGS="$EXTRA_BUILD_FLAGS -DCBLAS_INCLUDE_DIR=/usr/local/Cellar/openblas/${blas_ver}/include -DCBLAS_LIBRARY=/usr/local/Cellar/openblas/${blas_ver}/lib/libblas.dylib"
+     # Let CMake find this blas version (note: we use /usr/local/opt/openblas symlink to get the most recent brew version)
+     EXTRA_BUILD_FLAGS="$EXTRA_BUILD_FLAGS -DCBLAS_INCLUDE_DIR=/usr/local/opt/openblas/include -DCBLAS_LIBRARY=/usr/local/opt/openblas/lib/libblas.dylib"
      if [ $PYMVER == 2 ]; then
        PYINST=/System/Library/Frameworks/Python.framework/Versions/$PYMVER.7
        PY_EXE=$PYINST/bin/python2.7
@@ -398,10 +404,6 @@ before_install:
      ( set -ev
        # boost is already installed but 1.65 doesn't work so update
        brew reinstall boost
-       # As of boost 1.69, boost.Process is broken. https://stackoverflow.com/a/54912043
-       # To fix, remove :: from all occurences of ::sigtimedwait, ::sigaddset and ::sigemptyset
-       # Hopefully will be able to remove this at some point...
-       find /usr/local/include/boost/ -name '*.hpp' -exec sed -i -e "s/::sigtimedwait/sigtimedwait/g; s/::sigaddset/sigaddset/g; s/::sigemptyset/sigemptyset/g; " {} \;
        # we currently need boost-python
        # brew install boost-python
        brew install ace
@@ -431,16 +433,18 @@ before_install:
      fi
    fi
 - echo "Using Python executable $PY_EXE"
+- $PY_EXE --version
 # get pip
 - curl -0 https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 - $PY_EXE get-pip.py --user
 # setuptools may be out of date on osx
 - $PY_EXE -m pip install --user -U pip setuptools wheel
+- $PY_EXE -m pip --version
 # ensure python bin dir exists (and coverage dependencies installed)
 - $PY_EXE -m pip install --user -U nose codecov coveralls
 # additional python deps
 - $PY_EXE -m pip install --user -U Cython  # first install Cython separately
-- $PY_EXE -m pip install --user -U numpy
+- $PY_EXE -m pip install --user -U numpy deprecation nibabel
 - |
    if [[ "$EXTRA_BUILD_FLAGS" == *"-DBUILD_CIL=ON"* || "$EXTRA_BUILD_FLAGS" == *"-DBUILD_CIL_LITE=ON"* ]]; then
      $PY_EXE -m pip install --user -U scipy h5py Pillow wget
@@ -454,8 +458,6 @@ before_install:
      # count unique clones, excluding travis, and print total
      gh_stats_count -k uniques
    fi
-- $PY_EXE --version
-- $PY_EXE -m pip --version
 - $PY_EXE -m pip freeze
 # ccache compiler override
 - ln -s "$(which ccache)" g++
@@ -470,6 +472,7 @@ before_install:
 - BUILD_FLAGS="$BUILD_FLAGS -DPYVER=$PYMVER"
 - BUILD_FLAGS="$BUILD_FLAGS -DCMAKE_C_COMPILER='$(which $CC)' -DCMAKE_CXX_COMPILER='$(which $CXX)'"
 - cmake --version
+- echo "cmake flags $BUILD_FLAGS $EXTRA_BUILD_FLAGS"
 
 install:
 - $PY_EXE -m pip install --user --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib

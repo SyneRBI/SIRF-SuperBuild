@@ -1,8 +1,6 @@
 #========================================================================
-# Author: Benjamin A Thomas
-# Author: Edoardo Pasca
-# Copyright 2017, 2020 University College London
-# Copyright 2017, 2020 STFC
+# Author: Richard Brown
+# Copyright 2020 UCL
 #
 # This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -21,56 +19,36 @@
 #=========================================================================
 
 #This needs to be unique globally
-set(proj GTest)
-
-# Set dependency list
-set(${proj}_DEPENDENCIES "")
-
+set(proj SPM)
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
-
 SetCanonicalDirectoryNames(${proj})
+
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
+
   SetGitTagAndRepo("${proj}")
-
-  ### --- Project specific additions here
-
-  set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
-  set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     ${${proj}_EP_ARGS_GIT}
     ${${proj}_EP_ARGS_DIRS}
-
-    CMAKE_ARGS
-      -DCMAKE_PREFIX_PATH:PATH=${SUPERBUILD_INSTALL_DIR}
-      -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
-    DEPENDS
-        ${${proj}_DEPENDENCIES}
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND ""
+    INSTALL_COMMAND ""
   )
 
-    set(GTEST_ROOT        ${GTest_INSTALL_DIR})
+  set(${proj}_DIR ${${proj}_SOURCE_DIR} CACHE PATH "SPM DIR")
 
-  else()
-      if(${USE_SYSTEM_${externalProjName}})
-        message(STATUS "USING the system ${externalProjName}, set GTEST_ROOT if needed.")
-        find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
-    endif()
-    ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-    ${${proj}_EP_ARGS_DIRS}
-)
-  endif()
-
-  mark_as_superbuild(
-    VARS
-      GTEST_ROOT:PATH
-    LABELS
-      "FIND_PACKAGE"
+else()
+  find_package(${proj} REQUIRED)
+  message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
+  ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
+                            ${${proj}_EP_ARGS_DIRS}
   )
+endif()

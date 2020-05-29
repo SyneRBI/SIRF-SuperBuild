@@ -1,9 +1,9 @@
 #========================================================================
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
-# Copyright 2017-2019 University College London
+# Copyright 2017, 2020 University College London
 #
-# This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
+# This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,43 +22,23 @@
 #This needs to be unique globally
 set(proj STIR)
 
-# Set dependency list
-if (USE_ITK)
-  set(${proj}_DEPENDENCIES "Boost;ITK")
-else()
-  set(${proj}_DEPENDENCIES "Boost")
-endif()
-if (BUILD_STIR_SWIG_PYTHON)
-  list(APPEND ${proj}_DEPENDENCIES "SWIG")
-endif()
-if (USE_NIFTYPET)
-  list(APPEND ${proj}_DEPENDENCIES "NIFTYPET")
-endif()
-
-# Include dependent projects if any
-ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
-
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
-set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
-set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
-set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
-set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
-set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
-
+SetCanonicalDirectoryNames(${proj})
+# Get any flag from the superbuild call that may be particular to this projects CMAKE_ARGS
+SetExternalProjectFlags(${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
 
   ### --- Project specific additions here
-  set(STIR_Install_Dir ${SUPERBUILD_INSTALL_DIR})
 
   option(BUILD_TESTING_${proj} "Build tests for ${proj}" OFF)
-  if (APPLE)
-    set (build_STIR_OPENMP_default OFF)
-  else()
+  if (NOT DISABLE_OpenMP)
     set (build_STIR_OPENMP_default ON)
+  else()
+    set (build_STIR_OPENMP_default OFF)
   endif()
   RenameVariable(BUILD_STIR_WITH_OPENMP STIR_ENABLE_OPENMP build_STIR_OPENMP_default)
   option(STIR_ENABLE_OPENMP "Build STIR with OpenMP acceleration" ${build_STIR_OPENMP_default})
@@ -70,6 +50,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   option(STIR_BUILD_SWIG_PYTHON "Build STIR Python interface" ${default_STIR_BUILD_SWIG_PYTHON})
   option(STIR_DISABLE_CERN_ROOT "Disable STIR ROOT interface" ON)
   option(STIR_DISABLE_LLN_MATRIX "Disable STIR Louvain-la-Neuve Matrix library for ECAT7 support" ON)
+  option(STIR_DISABLE_HDF5_SUPPORT "Disable STIR use of HDF5 libraries" ON)
   option(STIR_ENABLE_EXPERIMENTAL "Enable STIR experimental code" OFF)
 
   mark_as_advanced(BUILD_STIR_EXECUTABLES BUILD_STIR_SWIG_PYTHON STIR_DISABLE_CERN_ROOT)
@@ -79,7 +60,27 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     message(FATAL_ERROR "STIR Python currently needs to have PYTHON_STRATEGY=PYTHONPATH")
   endif()
 
+  # Set dependency list
+  set(${proj}_DEPENDENCIES "Boost")
+  if (USE_ITK)
+    list(APPEND ${proj}_DEPENDENCIES "ITK")
+  endif()
+  if (BUILD_STIR_SWIG_PYTHON)
+    list(APPEND ${proj}_DEPENDENCIES "SWIG")
+  endif()
+  if (USE_NiftyPET)
+    list(APPEND ${proj}_DEPENDENCIES "NiftyPET")
+  endif()
+  option(STIR_DISABLE_JSON "Disable JSON support in ${proj}" ON)
+  if (STIR_USE_JSON)
+    list(APPEND ${proj}_DEPENDENCIES "JSON")
+  endif()
+
+  # Include dependent projects if any
+  ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
+
   set(STIR_CMAKE_ARGS
+    
     -DSWIG_EXECUTABLE:FILEPATH=${SWIG_EXECUTABLE}
     -DBUILD_EXECUTABLES:BOOL=${STIR_BUILD_EXECUTABLES}
     -DBUILD_SWIG_PYTHON:BOOL=${STIR_BUILD_SWIG_PYTHON}
@@ -89,8 +90,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     -DBUILD_TESTING:BOOL=${BUILD_TESTING_${proj}}
     -DBUILD_DOCUMENTATION:BOOL=OFF
     -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
-    -DBOOST_ROOT:PATH=${BOOST_ROOT}
-    -DCMAKE_INSTALL_PREFIX:PATH=${STIR_Install_Dir}
+    ${Boost_CMAKE_ARGS}
+    -DCMAKE_INSTALL_PREFIX:PATH=${STIR_INSTALL_DIR}
     -DGRAPHICS:STRING=None
     -DCMAKE_CXX_STANDARD:STRING=11
     -DSTIR_OPENMP:BOOL=${STIR_ENABLE_OPENMP}
@@ -98,8 +99,10 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     -DOPENMP_LIBRARIES:PATH=${OPENMP_LIBRARIES}
     # Use 2 variables for ROOT to cover multiple STIR versions
     -DDISABLE_CERN_ROOT_SUPPORT:BOOL=${STIR_DISABLE_CERN_ROOT} -DDISABLE_CERN_ROOT:BOOL=${STIR_DISABLE_CERN_ROOT}
+    -DDISABLE_HDF5_SUPPORT:BOOL=${STIR_DISABLE_HDF5_SUPPORT}
     -DDISABLE_LLN_MATRIX:BOOL=${STIR_DISABLE_LLN_MATRIX}
     -DSTIR_ENABLE_EXPERIMENTAL:BOOL=${STIR_ENABLE_EXPERIMENTAL}
+    -DDISABLE_NLOHMANN_JSON:BOOL=${STIR_DISABLE_JSON}
    )
 
   # Append CMAKE_ARGS for ITK choices
@@ -115,10 +118,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   endif()
 
   ## If building with NiftyPET projector
-  if (${USE_NIFTYPET})
-    set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DNIFTYPET_PETPRJ_LIB:FILEPATH=${NIFTYPET_PETPRJ_LIB})
-    set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DNIFTYPET_MMR_AUXE_LIB:FILEPATH=${NIFTYPET_MMR_AUXE_LIB})
-    set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DNIFTYPET_INCLUDE_DIR:PATH=${NIFTYPET_INCLUDE_DIR})
+  if (${USE_NiftyPET})
+    set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DNiftyPET_PATH:PATH=${NiftyPET_PATH})
   endif()
 
   # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
@@ -126,23 +127,16 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
-    GIT_REPOSITORY "${${proj}_URL_MODIFIED}"
-    GIT_TAG "${${proj}_TAG_MODIFIED}"
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_GIT}
+    ${${proj}_EP_ARGS_DIRS}
 
-    CMAKE_ARGS ${STIR_CMAKE_ARGS}
-    INSTALL_DIR ${STIR_Install_Dir}
+    CMAKE_ARGS ${STIR_CMAKE_ARGS}  ${${proj}_EXTRA_CMAKE_ARGS_LIST}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
 
-  set(STIR_ROOT       ${STIR_Install_Dir})
   set(STIR_DIR       ${SUPERBUILD_INSTALL_DIR}/lib/cmake)
-  set(STIR_INCLUDE_DIRS ${STIR_ROOT}/stir)
+
 
   if (BUILD_TESTING_${proj})
     add_test(NAME ${proj}_TESTS
@@ -156,11 +150,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
    endif()
     ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_DIRS}
    )
   endif()
 

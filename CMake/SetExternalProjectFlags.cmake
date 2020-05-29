@@ -1,6 +1,6 @@
 #========================================================================
-# Author: Benjamin A Thomas
-# Copyright 2017, 2020 University College London
+# Author: Ander Biguri
+# Copyright 2020 University College London
 #
 # This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -18,17 +18,13 @@
 #
 #=========================================================================
 
-if(WIN32)
-  execute_process(COMMAND bootstrap.bat
-    WORKING_DIRECTORY ${BUILD_DIR} RESULT_VARIABLE bootstrap_result)
-else()
-  message(STATUS "Build dir is : ${BUILD_DIR}")
-  execute_process(COMMAND ./bootstrap.sh --prefix=${BOOST_INSTALL_DIR}
-    --with-libraries=system,filesystem,thread,program_options,chrono,date_time,atomic,timer,regex,test
-    #--with-libraries=system,thread,program_options,log,math...
-    #--without-libraries=atomic...
+# This defines a macro that gets flags passed to the superbuild to modify particular project cmake flags and marks them as advanced.
+# Allows passing cmake flags to the superbuild to be reused by particular projects.
 
-    WORKING_DIRECTORY ${BUILD_DIR} RESULT_VARIABLE bootstrap_result)
-endif(WIN32)
+macro(SetExternalProjectFlags proj)
 
-return(${bootstrap_result})
+	set(${proj}_EXTRA_CMAKE_ARGS "" CACHE STRING "Optional extra CMake arguments to be appended to the flags set by the SuperBuild(use semi-colons for multiple arguments)")
+	mark_as_advanced(${proj}_EXTRA_CMAKE_ARGS)
+	# string(REPLACE " " ";" ${proj}_EXTRA_CMAKE_ARGS_LIST "${${proj}_EXTRA_CMAKE_ARGS}")
+	message(STATUS ${proj}_EXTRA_CMAKE_ARGS= "${${proj}_EXTRA_CMAKE_ARGS}")
+endmacro()
