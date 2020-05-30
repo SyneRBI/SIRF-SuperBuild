@@ -4,8 +4,10 @@
 ![install-badge]
 
 The SIRF-SuperBuild allows the user to download and compile most of the software
-needed to compile SIRF and Gadgetron, and automatically build SIRF and Gadgetron.
-There is still a small number of libraries that are not installed
+needed to compile SIRF and Gadgetron, and automatically build SIRF and Gadgetron, and
+other packages useful for PET/MR data processing.
+
+Note that there is still a small number of libraries that are not installed
 by the SuperBuild, [see below for more info for your operating system](#os-specific-information).
 
 ## Table of Contents
@@ -70,8 +72,7 @@ You might want to add the `PATH` line to your start-up file e.g. `.profile`, `.b
 
 ### Clone the SIRF-SuperBuild project
 ```bash
-cd ~
-cd devel
+cd ~/devel
 git clone https://github.com/SyneRBI/SIRF-SuperBuild.git
 ```
 
@@ -83,18 +84,20 @@ and might have to tell CMake where MATLAB is located. Please
 check our [SIRF and MATLAB page](https://github.com/SyneRBI/SIRF/wiki/SIRF-and-MATLAB).
 
 ```bash
-cd ~/devel
-mkdir build
-cd build
+mkdir ~/devel/build
+cd ~/devel/build
 cmake ../SIRF-SuperBuild
 ```
-Use your build environment to build and install the project. On Linux/OSX etc, you would normally use
+You can of course use the GUI version of CMake (called `cmake-gui` on Linux/OSX), or the
+terminal verson `ccmake` to check and set various variables. See the [CMake tutorial on how to run CMake](https://cmake.org/runningcmake/).
+
+Then use your build environment to build and install the project. On Linux/OSX etc, you would normally use
 ```bash
 [sudo] make -jN
 ```
-where `N` are the number of cores you want to use for the compilation. You will only need the `sudo` command if you set `CMAKE_INSTALL_PREFIX` to a system folder (e.g., `/usr/local`).
+where `N` are the number of cores you want to use for the compilation. You will only need the `sudo` command if you set `CMAKE_INSTALL_PREFIX` to a system folder (e.g., `/usr/local`). Note that the default location is `<your-build>/INSTALL`.
 
-For Eclipse/XCode/Visual Studio, you could open the project, or try something like
+For Eclipse/XCode/Visual Studio, you could open the project, or build from the command line
 ```bash
 cmake --build . --config Release
 ```
@@ -124,16 +127,16 @@ source ~/devel/INSTALL/bin/env_ccppetmr.csh
 You probably want to add a similar line to your .cshrc.
 
 ### Open a terminal and start Gadgetron
-To be able to use Gadgetron, a Gadgetron client must already be open in another terminal window. To do this, open a new terminal window and enter:
+To be able to use Gadgetron, a Gadgetron server must be running. You can do this by opening a new terminal window and enter:
 
 ```
 gadgetron
 ```
 
-N.B.: If you didn't add any of the above statements to your .bashrc or .cshrc, you will have to source env_ccpetmr.* again in this terminal first.
+N.B.: If you didn't add any of the above statements to your `.bashrc` or `.cshrc`, you will have to source `env_ccpetmr.*` again in this terminal first.
 
 ### Testing
-Tests for the SIRF-SuperBuild are currently the SIRF tests. The tests can contain tests from all SuperBuild projects.
+Tests for the SIRF-SuperBuild are currently the SIRF tests. The tests can contain tests from most SuperBuild projects.
 After setting the environment variables and starting Gadgetron, you can run tests as:
 
 ```bash
@@ -170,7 +173,7 @@ The user may also run the SIRF tests independently of the SuperBuild. Just enter
 
 ```bash
 cd ~/devel/build
-cd SIRF-prefix/src/SIRF-build
+cd builds/SIRF/build
 ctest --verbose
 ```
 If you see failures, you might not have followed the above steps correctly, or have some missing Python modules.
@@ -187,7 +190,7 @@ See [our related Wiki page](https://github.com/SyneRBI/SIRF/wiki/Examples) for m
 ## OS specific information
 
 ### Installation instructions for Ubuntu <a name="Ubuntu-install"></a>
-They can be found [here](https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-Ubuntu-16.04)
+They can be found [here](https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-Ubuntu)
 
 ### Installation instructions for Mac OS <a name="OSX-install"></a>
 They can be found [here](https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-on-MacOS)
@@ -212,24 +215,11 @@ By default, Python and MATLAB executables and libraries are installed under `CMA
 In this case, you would then need to ensure that `PYTHONPATH` and `MATLABPATH` are updated accordingly. This is because the sourced `env_ccppetmr` will point to the original (old) location.
 
 ### Building with specific versions of dependencies
-By default, the SuperBuild will build the latest stable release of SIRF and associated versions of the dependencies. However, the SuperBuild allows the user to change the versions of the projects it's building.
+By default, the SuperBuild will build the latest stable release of SIRF and associated versions of the dependencies. However, the SuperBuild allows the user to change the versions of the projects it's building. The current default values can be found in [version_config.cmake](version_config.cmake).
 
-This is done at the configuration stage that happens when you run `cmake`.
+There is a `DEVEL_BUILD` tag that allows to build the upstream/master versions of all packages (`DEVEL_BUILD=ON`).
 
-There is a `DEVEL_BUILD` tag that allows to build the upstream/master versions of all packages (`DEVEL_BUILD=ON`). In the following table are listed example versions (hashes) of dependencies that are built by the SuperBuild. The current default values can be found in [version_config.cmake](version_config.cmake).
-
-|TAG        | DEVEL_BUILD=OFF (default) | DEVEL_BUILD=ON |
-|:--------- |:--------------- |:-------------- |
-|`SIRF_TAG` | `v2.0.0`          | `origin/master`         |
-|`STIR_URL` |  https://github.com/UCL/STIR | https://github.com/UCL/STIR |
-|`STIR_TAG` | `3a277f7a819f35a553a8d6097402ea25cf55a240` | `origin/master` |
-|`Gadgetron_URL` | https://github.com/gadgetron/gadgetron |https://github.com/gadgetron/gadgetron |
-|`Gadgetron_TAG` | `b6191eaaa72ccca6c6a5fe4c0fa3319694f512ab`  | `origin/master` |
-|`ISMRMRD_URL` | https://github.com/ismrmrd/ismrmrd | https://github.com/ismrmrd/ismrmrd |
-|`ISMRMRD_TAG` | `v1.4.0` | `origin/master` |
-|`NIFTYREG` | `99d584e2b8ea0bffe7e65e40c8dc818751782d92` | `99d584e2b8ea0bffe7e65e40c8dc818751782d92` |
-
-One may want to use only a specific version of a package. This is achieved by adding the right tag to the command line (see the table above for some available tags):
+One may want to use only a specific version of a package. This is achieved by adding the right tag to the command line:
 
 ```bash
 cd ~/devel/build
@@ -245,14 +235,7 @@ cmake ../SIRF-SuperBuild -DDEVEL_BUILD=ON -U*_TAG -U*_URL
 The `-U` flags will make sure that cached CMake variables are removed such that `DEVEL_BUILD=ON` will
 set them to the desired versions.
 
-Note that the CMake options in the table are Advanced Options. When running the CMake GUI (or ccmake) they will therefore only be visible when you toggle those on.
-
-*Warning:* All these variables are cached. This means that once set, you have to change them one by one. Setting
-`DEVEL_BUILD=ON` will therefore not work as expected on an existing build. You will need to delete the cached variables first.
-You could do
-```sh
-cmake -DDEVEL_BUILD=ON -USIRF_URL -USIRF_TAG -USTIR_URL -USTIR_TAG -UGadgetron_URL -UGadgetron_TAG -UISMRMRD_URL -UISMRMRD_TAG .
-```
+Note that the CMake `*_TAG` and `*URL` options are Advanced Options. When running the CMake GUI (or ccmake) they will therefore only be visible when you toggle those on.
 
 ### Building from your own source
 
@@ -268,13 +251,13 @@ cmake ../SIRF-SuperBuild -DDISABLE_GIT_CHECKOUT_SIRF=ON -DSIRF_SOURCE_DIR=~/wher
 
 1. Install Intel MKL following the instructions at [their](https://software.intel.com/en-us/mkl) website. For debian based linux follow [this link](https://software.intel.com/en-us/articles/installing-intel-free-libs-and-python-apt-repo). The latter will install MKL in `opt/intel`
 2. Gadgetron's [FindMKL.cmake](https://github.com/gadgetron/gadgetron/blob/master/cmake/FindMKL.cmake#L23) will try to look for MKL libraries in `/opt/intel` on Unix/Apple and in `C:/Program Files (x86)/Intel/Composer XE` in Windows. Make sure that this is the location of the library or pass the vatiable `MKLROOT_PATH` (Unix/Apple) or set the environment variable `MKLROOT_PATH` on Windows.
-3. Configure the SuperBuild to pass `Gadgetron_USE_MKL=ON`. To disable/enable after you've run `cmake` use `-UGadgetron_USE_MKL -DGadgetron_USE_MKL=ON` or `OFF` accordingly. 
+3. Configure the SuperBuild to pass `Gadgetron_USE_MKL=ON`.
 
 Notice that other packages may look for a blas implementation issuing CMake's [`find_package(BLAS)`](https://github.com/Kitware/CMake/blob/master/Modules/FindBLAS.cmake#L142L148). This will look for MKL taking hint directories from the environment variable `LD_LIBRARY_PATH`, `DYLD_LIBRARY_PATH` and `LIB`, on Unix, Apple and Windows respectively. 
 
 ### Building CCPi CIL
 
-It is possible to build the [CCPi Core Imaging Library CIL](https://www.ccpi.ac.uk/CIL) as part of the SuperBuild. The CIL consists on a few pieces of software (`CCPi-Framework`, `CCPi-FrameworkPlugins`, `CCPi-Regularisation-Toolkit`, `CCPi-Astra`)There are 2 options: 
+It is possible to build the [CCPi Core Imaging Library CIL](https://www.ccpi.ac.uk/CIL) as part of the SuperBuild. The CIL consists on a few pieces of software (`CCPi-Framework`, `CCPi-FrameworkPlugins`, `CCPi-Regularisation-Toolkit`, `CCPi-Astra`). There are 2 options: 
 
 1. `BUILD_CIL` will build CIL and [ASTRA-toolbox](https://github.com/astra-toolbox/astra-toolbox) and [TomoPhantom](https://github.com/dkazanc/TomoPhantom)
 2. `BUILD_CIL_LITE` will build only CIL (and leave out `CCPi-Astra`)
@@ -309,7 +292,7 @@ cmake ../SIRF-SuperBuild -DGadgetron_EXTRA_CMAKE_ARGS:STRING="-DBUILD_PYTHON_SUP
 
 * This is poorely documented in FindFFTW3.cmake, which could be fixed by a PR to Gadgetron, ISMRMRD and SIRF. Similarly, we could fix `FindFFTW3.cmake` to also use the CMake variable.
 
-* KT has tried to use `set(ENV{FFTW3_ROOT_DIR} bloe)` in our `External_FindFFTW.cmake`. This however doesn't pass the environment variable to the CMake instances for Gadgetron etc.
+* KT has tried to use `set(ENV{FFTW3_ROOT_DIR} somelocation)` in our `External_FindFFTW.cmake`. This however doesn't pass the environment variable to the CMake instances for Gadgetron etc.
 
 * By the way, when using `USE_SYSTEM_FFTW3=OFF`, CMake currently does find our own installation even if the `FFTW3_ROOT_DIR` env variable (as find_library etc give precedence to `MAKE_PREFIX_PATH` over `HINTS` ).
 
