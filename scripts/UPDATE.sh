@@ -140,7 +140,7 @@ fi
 SIRF_INSTALL_PATH=$SIRF_SRC_PATH/install
 
 # ignore notebook keys, https://github.com/CCPPETMR/SIRF-Exercises/issues/20
-python -m pip install -U --user nbstripout
+python -m pip install -U --user nbstripout==0.3.7
 git config --global filter.nbstripout.extrakeys '
   metadata.celltoolbar metadata.language_info.codemirror_mode.version
   metadata.language_info.pygments_lexer metadata.language_info.version'
