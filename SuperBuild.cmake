@@ -2,10 +2,10 @@
 # Author: Benjamin A Thomas
 # Author: Edoardo Pasca
 # Author: Casper da Costa-Luis
-# Copyright 2017 University College London
-# Copyright 2017 Science Technology Facilities Council
+# Copyright 2017-2020 University College London
+# Copyright 2017-2020 Science Technology Facilities Council
 #
-# This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
+# This file is part of the CCP SyneRBI Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -43,6 +43,19 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/INSTALL" CACHE PATH "Prefix for path for installation" FORCE)
 endif()
 
+# Find CUDA
+option(DISABLE_CUDA "Disable CUDA" OFF)
+if (NOT DISABLE_CUDA)
+  find_package(CUDA)
+endif()
+if (NOT DISABLE_CUDA AND CUDA_FOUND)
+  message(STATUS "<<<<<<<<<<<<<<<<< CUDA FOUND >>>>>>>>>>>>>>>>>>>>>")
+  message(STATUS "Will enable CUDA dependencies where possible.")
+  set(USE_CUDA ON CACHE INTERNAL "Use CUDA")
+else()
+  set(USE_CUDA OFF CACHE INTERNAL "Use CUDA" FORCE)
+endif()
+
 # If OSX give the advanced option to use absolute paths for shared libraries
 if (APPLE)
   option(SHARED_LIBS_ABS_PATH "Force shared libraries to be installed with absolute paths (as opposed to rpaths)" ON)
@@ -57,10 +70,13 @@ endif(APPLE)
 
 set (SUPERBUILD_INSTALL_DIR ${CMAKE_INSTALL_PREFIX})
 
-include(ExternalProject)
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release CACHE STRING
+      "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
+      FORCE)
+endif()
 
-set(EXTERNAL_PROJECT_BUILD_TYPE "${CMAKE_BUILD_TYPE}" CACHE INTERNAL "Default build type for support libraries")
-message(STATUS "EXTERNAL_PROJECT_BUILD_TYPE: ${EXTERNAL_PROJECT_BUILD_TYPE}")
+include(ExternalProject)
 
 # Make sure that some CMake variables are passed to all dependencies
 mark_as_superbuild(
@@ -68,65 +84,92 @@ mark_as_superbuild(
    VARS CMAKE_GENERATOR:STRING CMAKE_GENERATOR_PLATFORM:STRING CMAKE_GENERATOR_TOOLSET:STRING
         CMAKE_C_COMPILER:FILEPATH CMAKE_CXX_COMPILER:FILEPATH
         CMAKE_INSTALL_PREFIX:PATH
+        CMAKE_BUILD_TYPE:STRING
 )
 
-# Attempt to make Python settings consistent
-set(PYVER 0 CACHE STRING "Python version")
-if(PYVER EQUAL 0)
-  find_package(PythonInterp)
+#### Python support
+
+option(DISABLE_PYTHON "Disable building SIRF python support" OFF)
+if (DISABLE_PYTHON)
+  message(STATUS "Python support disabled")
 else()
-  find_package(PythonInterp ${PYVER})
+
+  # Attempt to make Python settings consistent
+  set(PYVER 0 CACHE STRING "Python version")
+  if(PYVER EQUAL 0)
+    find_package(PythonInterp)
+  else()
+    find_package(PythonInterp ${PYVER})
+  endif()
+  if (PYTHONINTERP_FOUND)
+    set(Python_ADDITIONAL_VERSIONS ${PYTHON_VERSION_STRING})
+    message(STATUS "Found PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}")
+    message(STATUS "Python version ${PYTHON_VERSION_STRING}")
+  endif()
+  # find_package(PythonLibs ${PYTHON_VERSION_STRING})
+  if(PYVER EQUAL 0)
+    find_package(PythonLibs)
+  else()
+    find_package(PythonLibs ${PYVER})
+  endif()
+  if (PYTHONLIBS_FOUND)
+    message(STATUS "Found PYTHON_INCLUDE_DIRS=${PYTHON_INCLUDE_DIRS}")
+    message(STATUS "Found PYTHON_LIBRARIES=${PYTHON_LIBRARIES}")
+  endif()
+
+  # Set destinations for Python files
+  set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
+  if (BUILD_PYTHON)
+    set(PYTHON_DEST_DIR "" CACHE PATH "Directory of the SIRF and/or STIR Python modules")
+    if (PYTHON_DEST_DIR)
+     set(PYTHON_DEST "${PYTHON_DEST_DIR}")
+    else()
+      set(PYTHON_DEST "${CMAKE_INSTALL_PREFIX}/python")
+    endif()
+    message(STATUS "Python libraries found")
+    message(STATUS "SIRF and/or STIR Python modules will be installed in " ${PYTHON_DEST})
+
+    set(PYTHON_STRATEGY "PYTHONPATH" CACHE STRING "\
+      PYTHONPATH: prefix PYTHONPATH \n\
+      SETUP_PY:   execute ${PYTHON_EXECUTABLE} setup.py install \n\
+      CONDA:      do nothing")
+    set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
+  endif()
 endif()
-if (PYTHONINTERP_FOUND)
-  set(Python_ADDITIONAL_VERSIONS ${PYTHON_VERSION_STRING})
-  message(STATUS "Found PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}")
-  message(STATUS "Python version ${PYTHON_VERSION_STRING}")
-endif()
-# find_package(PythonLibs ${PYTHON_VERSION_STRING})
-if(PYVER EQUAL 0)
-  find_package(PythonLibs)
+
+#### MATLAB support
+option(DISABLE_Matlab "Disable building MATLAB support" OFF)
+if (DISABLE_Matlab)
+  message(STATUS "Matlab support disabled")
 else()
-  find_package(PythonLibs ${PYVER})
-endif()
-if (PYTHONLIBS_FOUND)
-  message(STATUS "Found PYTHON_INCLUDE_DIRS=${PYTHON_INCLUDE_DIRS}")
-  message(STATUS "Found PYTHON_LIBRARIES=${PYTHON_LIBRARIES}")
-endif()
+  # Find Matlab
+  set(Matlab_ROOT_DIR $ENV{Matlab_ROOT_DIR} CACHE PATH "Path to Matlab root directory" )
+  # Note that we need the main program for the configuration files and the tests)
+  find_package(Matlab COMPONENTS MAIN_PROGRAM)
 
-# Find Matlab
-set(Matlab_ROOT_DIR $ENV{Matlab_ROOT_DIR} CACHE PATH "Path to Matlab root directory" )
-# Note that we need the main program for the configuration files and the tests)
-find_package(Matlab COMPONENTS MAIN_PROGRAM)
 
-# Set destinations for Python/MATLAB files
-set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
-if (BUILD_PYTHON)
-  set(PYTHON_DEST_DIR "" CACHE PATH "Directory of the SIRF and/or STIR Python modules")
-  if (PYTHON_DEST_DIR)
-   set(PYTHON_DEST "${PYTHON_DEST_DIR}")
-  else()
-    set(PYTHON_DEST "${CMAKE_INSTALL_PREFIX}/python")
+  set (BUILD_MATLAB ${Matlab_FOUND})
+  if (BUILD_MATLAB)
+    set(MATLAB_DEST_DIR "" CACHE PATH "Directory of the SIRF and/or STIR Matlab libraries")
+    if (MATLAB_DEST_DIR)
+      set(MATLAB_DEST "${MATLAB_DEST_DIR}")
+    else()
+      set(MATLAB_DEST "${CMAKE_INSTALL_PREFIX}/matlab")
+    endif()
+    message(STATUS "Matlab libraries found")
+    message(STATUS "SIRF and/or STIR Matlab libraries will be installed in " ${MATLAB_DEST})
   endif()
-  message(STATUS "Python libraries found")
-  message(STATUS "SIRF and/or STIR Python modules will be installed in " ${PYTHON_DEST})
+endif()
 
-  set(PYTHON_STRATEGY "PYTHONPATH" CACHE STRING "\
-    PYTHONPATH: prefix PYTHONPATH \n\
-    SETUP_PY:   execute ${PYTHON_EXECUTABLE} setup.py install \n\
-    CONDA:      do nothing")
-  set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
-endif()
-set (BUILD_MATLAB ${Matlab_FOUND})
-if (BUILD_MATLAB)
-  set(MATLAB_DEST_DIR "" CACHE PATH "Directory of the SIRF and/or STIR Matlab libraries")
-  if (MATLAB_DEST_DIR)
-    set(MATLAB_DEST "${MATLAB_DEST_DIR}")
-  else()
-    set(MATLAB_DEST "${CMAKE_INSTALL_PREFIX}/matlab")
-  endif()
-  message(STATUS "Matlab libraries found")
-  message(STATUS "SIRF and/or STIR Matlab libraries will be installed in " ${MATLAB_DEST})
-endif()
+# Include macro to sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
+# If the user doesn't want git checkout to be performed, 
+# these will be set to blank strings. Else, they'll be set to 
+# ${${proj}_URL} and ${${proj}_TAG}, respectively.
+include(${CMAKE_SOURCE_DIR}/CMake/SetGitTagAndRepo.cmake)
+# Include macro to set SOURCE_DIR etc
+include(${CMAKE_SOURCE_DIR}/CMake/SetCanonicalDirectoryNames.cmake)
+# Include macro to be able to pass flags to project CMAKEs
+include(${CMAKE_SOURCE_DIR}/CMake/SetExternalProjectFlags.cmake)
 
 if (UNIX AND NOT APPLE)
   option(USE_SYSTEM_Boost "Build using an external version of Boost" OFF)
@@ -146,6 +189,12 @@ option(USE_SYSTEM_NIFTYREG "Build using an external version of NIFTYREG" OFF)
 option(USE_SYSTEM_GTest "Build using an external version of GTest" OFF)
 option(USE_SYSTEM_ACE "Build using an external version of ACE" ON)
 
+# SPM requires matlab
+if (BUILD_MATLAB)
+  option(USE_SYSTEM_SPM "Build using an external version of SPM. Only SPM12 tested." OFF)
+  option(BUILD_SPM "Build SPM. Only SPM12 tested" ON)
+ENDIF()
+
 if (WIN32)
   set(build_Gadgetron_default OFF)
 else()
@@ -156,20 +205,42 @@ include (RenameVariable)
 
 RenameVariable(BUILD_GADGETRON BUILD_Gadgetron build_Gadgetron_default)
 
+# OpenMP support
+option(DISABLE_OpenMP "Disable OpenMP support for dependencies" OFF)
+if (NOT DISABLE_OpenMP)
+  find_package(OpenMP)
+  if (OPENMP_FOUND)
+    MESSAGE(STATUS "OpenMP found, support enabled")
+    mark_as_superbuild(ALL_PROJECTS VARS 
+      OpenMP_CXX_FLAGS:STRING OpenMP_CXX_LIB_NAMES:STRING OpenMP_C_FLAGS:STRING 
+      OpenMP_C_LIB_NAMES:STRING OpenMP_CXX_FLAGS:STRING OpenMP_CXX_LIB_NAMES:STRING 
+      OpenMP_libomp_LIBRARY:FILEPATH OpenMP_omp_LIBRARY:FILEPATH
+      OpenMP_gomp_LIBRARY:FILEPATH OpenMP_pthread_LIBRARY:FILEPATH
+      OPENMP_INCLUDES:PATH OPENMP_LIBRARIES:PATH
+      )
+  else()
+    MESSAGE(STATUS "OpenMP not found, support disabled")
+    SET(DISABLE_OpenMP ON CACHE BOOL "Disable OpenMP support for dependencies" FORCE)
+  endif()
+endif()
+
 option(BUILD_SIRF "Build SIRF" ON)
 option(BUILD_STIR "Build STIR" ON)
 option(BUILD_Gadgetron "Build Gadgetron" ${build_Gadgetron_default})
 option(BUILD_siemens_to_ismrmrd "Build siemens_to_ismrmrd" OFF)
-option(BUILD_petmr_rd_tools "Build petmr_rd_tools" OFF)
+option(BUILD_pet_rd_tools "Build pet_rd_tools" OFF)
+option(BUILD_CIL "Build CCPi CIL Modules and ASTRA engine" OFF)
+option(BUILD_CIL_LITE "Build CCPi CIL Modules" OFF)
 option(BUILD_NIFTYREG "Build NIFTYREG" ON)
+option(BUILD_SIRF_Contribs "Build SIRF-Contribs" ON)
 
 option(BUILD_SIRF_Registration "Build SIRFS's registration functionality" ${BUILD_NIFTYREG})
-if (BUILD_SIRF_Registration AND NOT BUILD_NIFTYREG)
+if (BUILD_SIRF AND BUILD_SIRF_Registration AND NOT BUILD_NIFTYREG)
   message(WARNING "Building SIRF registration is enabled, but BUILD_NIFTYREG=OFF. Reverting to BUILD_NIFTYREG=ON")
   set(BUILD_NIFTYREG ON CACHE BOOL "Build NIFTYREG" FORCE)
 endif()
 
-if (BUILD_petmr_rd_tools)
+if (BUILD_pet_rd_tools)
     set(USE_ITK ON CACHE BOOL "Use ITK" FORCE)
     option(USE_SYSTEM_glog "Build using an external version of glog" OFF)
 endif()
@@ -178,6 +249,16 @@ endif()
 option(USE_ITK "Use ITK" OFF)
 if (USE_ITK)
   option(USE_SYSTEM_ITK "Build using an external version of ITK" OFF)
+endif()
+
+# If building STIR and CUDA present, offer to build NiftyPET
+if (USE_CUDA AND NOT USE_SYSTEM_STIR)
+  set(USE_NiftyPET ON CACHE BOOL "Build STIR with NiftyPET's projectors") # FORCE)
+  if (USE_NiftyPET)
+    option(USE_SYSTEM_NiftyPET "Build using an external version of NiftyPET" OFF)
+  endif()
+else()
+  set(USE_NiftyPET OFF CACHE BOOL "Build STIR with NiftyPET's projectors" FORCE)
 endif()
 
 ## set versions
@@ -204,18 +285,32 @@ if (BUILD_siemens_to_ismrmrd)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES siemens_to_ismrmrd)
 endif()
 
-if (BUILD_petmr_rd_tools)
-  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES petmr_rd_tools)
+if (BUILD_pet_rd_tools)
+  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES pet_rd_tools)
 endif()
 
-if (BUILD_SIRF_Registration)
+if ("${PYTHON_STRATEGY}" STREQUAL "CONDA")
+  set (BUILD_CIL OFF)
+endif()
+if (BUILD_CIL)
+  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES CCPi-Regularisation-Toolkit CCPi-Astra CCPi-Framework CCPi-FrameworkPlugins TomoPhantom)
+endif()
+if (BUILD_CIL_LITE)
+  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES CCPi-Regularisation-Toolkit CCPi-Framework CCPi-FrameworkPlugins)
+endif()
+
+if (BUILD_SIRF_Registration AND BUILD_SIRF)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES NIFTYREG)
+endif()
+
+if (BUILD_SIRF_Contribs)
+  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES SIRF-Contribs)
 endif()
 
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${PRIMARY_PROJECT_NAME}_DEPENDENCIES)
 
 message(STATUS "")
-message(STATUS "BOOST_ROOT = " ${BOOST_ROOT})
+message(STATUS "Boost_CMAKE_ARGS= " "${Boost_CMAKE_ARGS}")
 message(STATUS "ISMRMRD_DIR = " ${ISMRMRD_DIR})
 message(STATUS "STIR_DIR = " ${STIR_DIR})
 message(STATUS "HDF5_ROOT = " ${HDF5_ROOT})
@@ -229,8 +324,7 @@ message(STATUS "PYTHON_INCLUDE_DIRS=${PYTHON_INCLUDE_DIRS}")
 #set(proj ${PRIMARY_PROJECT_NAME})
 
 # Make environment files
-set(SIRF_SRC_DIR ${SOURCE_ROOT_DIR}/SIRF)
-set(CCPPETMR_INSTALL ${SUPERBUILD_INSTALL_DIR})
+set(SyneRBI_INSTALL ${SUPERBUILD_INSTALL_DIR})
 
 ## configure the environment files env_ccppetmr.sh/csh
 ## We create a whole bash/csh block script which does set the appropriate
@@ -264,7 +358,7 @@ set(ENV_MATLAB_BASH "#####     Matlab not found     #####")
 set(ENV_MATLAB_CSH  "#####     Matlab not found     #####")
 if (Matlab_FOUND)
   set(ENV_MATLAB_BASH "\
-  MATLABPATH=${MATLAB_DEST}\n\
+  MATLABPATH=${MATLAB_DEST}:${SPM_DIR}\n\
 export MATLABPATH\n\
 SIRF_MATLAB_EXECUTABLE=${Matlab_MAIN_PROGRAM}\n\
 export SIRF_MATLAB_EXECUTABLE")
@@ -281,13 +375,13 @@ endif()
 if (BUILD_GADGETRON)
 
   set(ENV_GADGETRON_HOME_SH "\
-GADGETRON_HOME=${CCPPETMR_INSTALL}\n\
+GADGETRON_HOME=${SyneRBI_INSTALL}\n\
 export GADGETRON_HOME\n")
-  set(ENV_GADGETRON_HOME_CSH "setenv GADGETRON_HOME ${CCPPETMR_INSTALL}\n")
+  set(ENV_GADGETRON_HOME_CSH "setenv GADGETRON_HOME ${SyneRBI_INSTALL}\n")
 endif()
 
-configure_file(env_ccppetmr.sh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.sh)
-configure_file(env_ccppetmr.csh.in ${CCPPETMR_INSTALL}/bin/env_ccppetmr.csh)
+configure_file(env_ccppetmr.sh.in ${SyneRBI_INSTALL}/bin/env_ccppetmr.sh)
+configure_file(env_ccppetmr.csh.in ${SyneRBI_INSTALL}/bin/env_ccppetmr.csh)
 
 # add tests
 enable_testing()

@@ -8,13 +8,14 @@ PYTHON="${2:-miniconda}"
 case "$PYTHON" in
 miniconda)
   # miniconda
-  curl https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh > miniconda.sh
+  curl https://repo.anaconda.com/miniconda/Miniconda2-latest-Linux-x86_64.sh > miniconda.sh
   echo -e "\nyes\n${INSTALL_DIR}" | bash miniconda.sh
   rm miniconda.sh
   source "$INSTALL_DIR"/bin/activate
   conda config --add channels conda-forge
   # https://github.com/conda/conda/issues/6030
   #conda update -c conda-forge -y conda
+  conda update -c conda-forge -y setuptools pip
   ;;
 *python*)
   # virtualenv

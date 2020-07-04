@@ -1,8 +1,45 @@
 # ChangeLog
 
-## v2.0.1
-- Switch NiftyReg remote from `rijobro` to `KCL-BMEIS` (following the acceptance of one of our PRs to their code).
+## v2.2.0
+- Updated to reflect change from CCPPETMR to CCPSyneRBI.
+- Made ${proj}_SOURCE_DIR a cached variables such that the user can point to an existing directory.
+- Added support for passing CMAKE args to projects from the SuperBuild call.
+- Use macros to drastically simplify (and reduce size of) the External*.cmake files.
+- Pass HDF5_ROOT through to projects if it's defined and USE_SYSTEM_HDF5=ON
+- Added checking whether default SWIG executable exists.
+- Corrected logic around building SIRF and Registration.
+- Added JSON as external package.
+- Added option to build ITK with static libraries.
+- Added option to skip ITK path length checks.
+- Added option to compile Armadillo without HDF5 support.
+- Added options to disable STIR JSON support.
+- Added option to disable CUDA.
+- Added option to disable Gadgetron checkouts.
+- Added option to disable Python or MATLAB support.
+- Sorted out Nifty PET capitalisation.
+- Unified OpenMP control.
+- Updated versions:
+   - STIR: rel_4.0.2
+   - CIL:  20.04
+   - SIRF: 2.2.0
 
+## v2.1.0
+- Switch NiftyReg remote from `rijobro` to `KCL-BMEIS` (following the acceptance of one of our PRs to their code).
+- Azure:
+    - Added NVIDIA GPU support
+    - Now using Terraform HCL v0.12
+- Added CCPi CIL support and various packages for that
+- Added preliminary install option for NiftyPET
+- Added CUDA and OpenMP support for some packages
+- Improved documentation for docker
+- Updated various versions
+    - NiftyReg: 1.5.68
+    - ISMRMRD: v1.4.1
+    - STIR: stir_rel_4_00_alpha
+    - SIRF: v2.1.0
+    - PET RD Tools: v1.1.0
+    - Armadillo: 9.800.2
+- petmr-rd-tools -> pet-rd-tools fixes
 
 ## v2.0.0
 - Added CMake Variable `Gadgetron_USE_MKL` to allow Gadgetron build with MKL if available

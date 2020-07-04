@@ -1,9 +1,9 @@
 #========================================================================
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
-# Copyright 2017 University College London
+# Copyright 2017, 2020 University College London
 #
-# This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
+# This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,12 +30,8 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
+SetCanonicalDirectoryNames(${proj})
 
-set(${proj}_SOURCE_DIR "${SOURCE_ROOT_DIR}/${proj}" )
-set(${proj}_BINARY_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/build" )
-set(${proj}_DOWNLOAD_DIR "${SUPERBUILD_WORK_DIR}/downloads/${proj}" )
-set(${proj}_STAMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/stamp" )
-set(${proj}_TMP_DIR "${SUPERBUILD_WORK_DIR}/builds/${proj}/tmp" )
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
@@ -56,46 +52,59 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   endif()
 
   #set(BOOST_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj})
-  
-  
+
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
     URL_HASH MD5=${${proj}_MD5}
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_SOURCE_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    INSTALL_DIR ${Boost_Install_Dir}
-    TMP_DIR ${${proj}_TMP_DIR}
+    ${${proj}_EP_ARGS_DIRS}
+    
     BUILD_IN_SOURCE 0
 
     CONFIGURE_COMMAND ${CMAKE_COMMAND}
-                             ${CLANG_ARG}
-                             -DBUILD_DIR:PATH=${${proj}_SOURCE_DIR}
-                             -DBOOST_INSTALL_DIR:PATH=${Boost_Install_Dir}
-                             -P ${Boost_Configure_Script}
+      ${CLANG_ARG}
+      -DBUILD_DIR:PATH=${${proj}_SOURCE_DIR}
+      -DBOOST_INSTALL_DIR:PATH=${Boost_Install_Dir}
+      -P ${Boost_Configure_Script}
     INSTALL_COMMAND ""
     BUILD_COMMAND ${CMAKE_COMMAND}
-                             -DBUILD_DIR:PATH=${${proj}_SOURCE_DIR}
-                             -DBOOST_INSTALL_DIR:PATH=${Boost_Install_Dir} -P ${Boost_Build_Script}
+      -DBUILD_DIR:PATH=${${proj}_SOURCE_DIR}
+      -DBOOST_INSTALL_DIR:PATH=${Boost_Install_Dir} -P ${Boost_Build_Script}
   )
 
   set(BOOST_ROOT        ${Boost_Install_Dir})
   set(BOOST_INCLUDEDIR  ${Boost_Install_Dir}/include)
   set(BOOST_LIBRARY_DIR ${Boost_Install_Dir}/lib)
 
+  set(Boost_CMAKE_ARGS
+      -DBOOST_INCLUDEDIR:PATH=${BOOST_ROOT}/include/
+      -DBOOST_LIBRARYDIR:PATH=${BOOST_LIBRARY_DIR}
+      -DBOOST_ROOT:PATH=${BOOST_ROOT}
+  )
+
  else()
     if(${USE_SYSTEM_${externalProjName}})
       find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
-      message(STATUS "USING the system ${externalProjName}, using BOOST_LIBRARY_DIR=${BOOST_LIBRARY_DIR}")
+      set(Boost_CMAKE_ARGS -DBOOST_INCLUDEDIR:PATH=${Boost_INCLUDE_DIR})
+      if (Boost_LIBRARY_DIR_RELEASE)
+        # TODO might need to use Boost_LIBRARY_DIR_Debug for Debug builds
+        set(Boost_CMAKE_ARGS ${Boost_CMAKE_ARGS} -DBOOST_LIBRARYDIR:PATH=${Boost_LIBRARY_DIR_RELEASE})
+      endif()
+      if (BOOST_ROOT)
+        set(Boost_CMAKE_ARGS ${Boost_CMAKE_ARGS} -DBOOST_ROOT:PATH=${BOOST_ROOT})
+      endif()
+      if (WIN32)
+        # need to tell boost to use dynamic libraries as otherwise it tends to compile as static, 
+        # but link with dynamic libraries, resulting in linking problems
+        # TODO this does not work yet, as it overrides any CMAKE_CXX_FLAGS set by other means
+        # (CMake for VS 2015 sets by default CMAKE_CXX_FLAGS=/DWIN32 /D_WINDOWS /W3 /GR /EHsc)
+        #set(Boost_CMAKE_ARGS ${Boost_CMAKE_ARGS} -DCMAKE_CXX_FLAGS:STRING="-DBOOST_ALL_DYN_LINK")
+      endif()
+      message(STATUS "USING the system ${externalProjName}, using Boost_CMAKE_ARGS=" "${Boost_CMAKE_ARGS}")
  endif()
    ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-    SOURCE_DIR ${${proj}_SOURCE_DIR}
-    BINARY_DIR ${${proj}_BINARY_DIR}
-    DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
-    STAMP_DIR ${${proj}_STAMP_DIR}
-    TMP_DIR ${${proj}_TMP_DIR}
+                             ${${proj}_EP_ARGS_DIRS}
   )
 endif()
 

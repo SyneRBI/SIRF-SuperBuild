@@ -1,8 +1,8 @@
 #========================================================================
 # Author: Benjamin A Thomas
-# Copyright 2017 University College London
+# Copyright 2017, 2020 University College London
 #
-# This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
+# This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,7 +29,6 @@ else()
     #--without-libraries=atomic...
 
     WORKING_DIRECTORY ${BUILD_DIR} RESULT_VARIABLE bootstrap_result)
-
 endif(WIN32)
 
 return(${bootstrap_result})

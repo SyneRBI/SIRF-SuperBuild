@@ -1,13 +1,13 @@
-version: '3.4'
+version: '2.3'
 services:
  sirf:
-  image: ccppetmr/sirf:service-multi
+  image: synerbi/sirf:service-multi
   build:
    target: multi
    cache_from:
-    - ccppetmr/sirf:core
-    - ccppetmr/sirf:latest
-    - ccppetmr/sirf:service
-    - ccppetmr/sirf:service-multi
+    - synerbi/sirf:core
+    - synerbi/sirf:latest
+    - synerbi/sirf:service
+    - synerbi/sirf:service-multi
   ports:
    - "8890-8899:8890-8899"

@@ -2,55 +2,31 @@
 
 JUPPWD=$1
 JUPPORT=$2
+DSTUSER=$3
 
-echo User = $USER
+echo User = $DSTUSER
 
-NOCORES=`nproc`
-echo Using $NOCORES cores
-
-sudo apt-get update
-sudo apt-get -y upgrade
-
-mkdir ~/devel
-cd ~/devel
-
-git clone https://github.com/CCPPETMR/CCPPETMR_VM.git
-
-cd CCPPETMR_VM
-sudo bash scripts/INSTALL_prerequisites_with_apt-get.sh
-sudo bash scripts/INSTALL_python_packages.sh
-sudo apt-get purge cmake -y
-sudo bash scripts/INSTALL_CMake.sh
-
-cd ~/devel/CCPPETMR_VM
-bash scripts/UPDATE.sh -j `nproc` 
-bash scripts/update_VM.sh -j `nproc` 
-
-cd ~/devel/SIRF-Exercises/scripts
-bash download_PET_data.sh
-bash download_MR_data.sh
-
-cd ~
-sed -i -- "s/%%TARGETUSER%%/${USER}/g" jupyter.service
+cd /tmp
+sed -i -- "s/%%TARGETUSER%%/${DSTUSER}/g" jupyter.service
 sudo mv jupyter.service /etc/systemd/system/jupyter.service
 sudo chmod 755 /etc/systemd/system/jupyter.service
 
 sudo mkdir -p /srv/jupyter
-sed -i -- "s/%%TARGETUSER%%/${USER}/g" launch.sh
+sed -i -- "s/%%TARGETUSER%%/${DSTUSER}/g" launch.sh
 sudo mv launch.sh /srv/jupyter/launch.sh
 sudo chmod 755 /srv/jupyter/launch.sh
 
-mkdir /home/${USER}/.jupyter
+mkdir /home/${DSTUSER}/.jupyter
 jupyter-notebook --generate-config --allow-root
-cd /home/${USER}/.jupyter
+cd /home/${DSTUSER}/.jupyter
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 -subj "/C=UK/ST=London/L=London/O=University College London/OU=Institute of Nuclear Medicine/CN=." \
 -keyout mycert.pem -out mycert.pem 
 
-bash ~/jupyter_set_pwd.sh ${JUPPWD}
+bash /tmp/jupyter_set_pwd.sh ${JUPPWD}
 
 echo "c= get_config()" >> jupyter_notebook_config.py
-echo "c.NotebookApp.certfile = u'/home/${USER}/.jupyter/mycert.pem'" >> jupyter_notebook_config.py
+echo "c.NotebookApp.certfile = u'/home/${DSTUSER}/.jupyter/mycert.pem'" >> jupyter_notebook_config.py
 
 NEWPWD=`cat ~/.jupyter/jupyter_notebook_config.json | grep password | cut -d'"' -f4`
 echo "c.NotebookApp.password = u'${NEWPWD}'" >> jupyter_notebook_config.py

@@ -1,10 +1,10 @@
-version: '3.4'
+version: '2.3'
 services:
  sirf:
-  image: ccppetmr/sirf:devel
+  image: synerbi/sirf:devel
   build:
    args:
     EXTRA_BUILD_FLAGS: "-DDEVEL_BUILD=ON"
    cache_from:
-    - ccppetmr/sirf:core
-    - ccppetmr/sirf:devel
+    - synerbi/sirf:core
+    - synerbi/sirf:devel

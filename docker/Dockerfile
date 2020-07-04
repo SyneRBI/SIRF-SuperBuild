@@ -1,12 +1,14 @@
-FROM ubuntu:18.04 as base
+ARG BASE_IMAGE=ubuntu:18.04
+FROM ${BASE_IMAGE} as base
+
 LABEL \
   author.name="Casper da Costa-Luis"          \
   author.email=imaging@caspersci.uk.to        \
   maintainer.email=ccppetmr@stfc.ac.uk        \
-  maintainer.url=https://www.ccppetmr.ac.uk/  \
-  source.url=https://github.com/CCPPETMR/SIRF-SuperBuild/  \
+  maintainer.url=https://www.ccpsynerbi.ac.uk/  \
+  source.url=https://github.com/SyneRBI/SIRF-SuperBuild/  \
   licence="MPLv2.0 (https://www.mozilla.org/en-GB/MPL/2.0/)"  \
-  description="CCP PET-MR Ubuntu"
+  description="CCP SyneRBI Ubuntu"
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -57,7 +59,7 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/bin/bash"]
 
 FROM core as sirf
-LABEL description="CCP PET-MR SIRF"
+LABEL description="CCP SyneRBI SIRF"
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -78,9 +80,9 @@ RUN ccache -o cache_dir=/opt/ccache
 ARG BUILD_FLAGS="\
  -DCMAKE_BUILD_TYPE=Release\
  -DBUILD_STIR_WITH_OPENMP=ON -DUSE_SYSTEM_ACE=ON\
- -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON\
- -DUSE_SYSTEM_HDF5=ON -DUSE_ITK=ON -DBUILD_siemens_to_ismrmrd=ON\
- -DUSE_SYSTEM_SWIG=ON"
+ -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DBUILD_CIL=ON\
+ -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_ITK=ON\
+ -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
 ARG EXTRA_BUILD_FLAGS=""
 RUN bash user_sirf-ubuntu.sh
 RUN rm user_sirf-ubuntu.sh
@@ -91,6 +93,7 @@ ENV DEBIAN_FRONTEND ''
 CMD ["/bin/bash"]
 
 FROM sirf as service
+ENV DEBIAN_FRONTEND noninteractive
 
 COPY requirements-service.txt .
 COPY user_service-ubuntu.sh .
@@ -98,6 +101,7 @@ RUN bash user_service-ubuntu.sh
 RUN rm user_service-ubuntu.sh requirements-service.txt
 
 COPY service.sh /usr/local/bin/
+ENV DEBIAN_FRONTEND ''
 CMD ["/usr/local/bin/service.sh"]
 
 FROM service as multi
