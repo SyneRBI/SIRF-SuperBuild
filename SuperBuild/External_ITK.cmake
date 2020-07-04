@@ -49,6 +49,22 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   OPTION(ITK_SHARED_LIBS "ITK uses shared libraries" ON)
 
+  OPTION(ITK_MINIMAL_LIBS "Only build ITK IO libraries" ON)
+  if (ITK_MINIMAL_LIBS)
+
+    set(ITK_CMAKE_FLAGS
+      -DITK_BUILD_DEFAULT_MODULES:BOOL=OFF
+      -DITKGroup_IO:BOOL=ON
+      -DITKGroup_IO:BOOL=ON
+      -DModule_ITKReview:BOOL=ON # for PETPVC
+      )
+  else()
+
+    set(ITK_CMAKE_FLAGS
+      -DITK_BUILD_DEFAULT_MODULES:BOOL=ON
+      )
+  endif()
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     ${${proj}_EP_ARGS_GIT}
@@ -65,6 +81,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DBUILD_TESTING:BOOL=${BUILD_TESTING_${proj}}
       -DBUILD_EXAMPLES:BOOL=OFF
       -DITK_SKIP_PATH_LENGTH_CHECKS:BOOL=${ITK_SKIP_PATH_LENGTH_CHECKS}
+      ${ITK_CMAKE_FLAGS}
+      ${${proj}_EXTRA_CMAKE_ARGS}
     DEPENDS ${${proj}_DEPENDENCIES}
   )
 
