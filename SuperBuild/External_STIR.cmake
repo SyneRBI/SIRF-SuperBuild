@@ -90,7 +90,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     -DBUILD_TESTING:BOOL=${BUILD_TESTING_${proj}}
     -DBUILD_DOCUMENTATION:BOOL=OFF
     -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
-    ${Boost_CMAKE_ARGS}
     -DCMAKE_INSTALL_PREFIX:PATH=${STIR_INSTALL_DIR}
     -DGRAPHICS:STRING=None
     -DCMAKE_CXX_STANDARD:STRING=11
@@ -132,8 +131,11 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     ${${proj}_EP_ARGS}
     ${${proj}_EP_ARGS_GIT}
     ${${proj}_EP_ARGS_DIRS}
-
-    CMAKE_ARGS ${STIR_CMAKE_ARGS}  ${${proj}_EXTRA_CMAKE_ARGS_LIST}
+    CMAKE_ARGS
+       ${STIR_CMAKE_ARGS}
+       ${Boost_CMAKE_ARGS}
+       ${HDF5_CMAKE_ARGS}
+       ${${proj}_EXTRA_CMAKE_ARGS_LIST}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
