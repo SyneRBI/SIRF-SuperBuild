@@ -194,8 +194,8 @@ else()
   set(DEFAULT_SIRF_TAG v2.2.0)
 
   ## STIR
-  set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG release_4)
+  set(DEFAULT_STIR_URL https://github.com/KrisThielemans/STIR-1 )
+  set(DEFAULT_STIR_TAG GERDF9)
 
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)

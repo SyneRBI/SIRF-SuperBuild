@@ -48,9 +48,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(default_STIR_BUILD_SWIG_PYTHON OFF)
   RenameVariable(BUILD_STIR_SWIG_PYTHON STIR_BUILD_SWIG_PYTHON default_STIR_BUILD_SWIG_PYTHON)
   option(STIR_BUILD_SWIG_PYTHON "Build STIR Python interface" ${default_STIR_BUILD_SWIG_PYTHON})
-  option(STIR_DISABLE_CERN_ROOT "Disable STIR ROOT interface" ON)
+  option(STIR_DISABLE_CERN_ROOT "Disable STIR ROOT interface" OFF)
   option(STIR_DISABLE_LLN_MATRIX "Disable STIR Louvain-la-Neuve Matrix library for ECAT7 support" ON)
-  option(STIR_DISABLE_HDF5 "Disable STIR use of HDF5 libraries" ON)
+  option(STIR_DISABLE_HDF5 "Disable STIR use of HDF5 libraries" OFF)
   option(STIR_ENABLE_EXPERIMENTAL "Enable STIR experimental code" OFF)
 
   mark_as_advanced(BUILD_STIR_EXECUTABLES BUILD_STIR_SWIG_PYTHON STIR_DISABLE_CERN_ROOT)
