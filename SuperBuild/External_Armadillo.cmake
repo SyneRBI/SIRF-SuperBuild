@@ -71,6 +71,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     CMAKE_ARGS
       -DCMAKE_PREFIX_PATH:PATH=${SUPERBUILD_INSTALL_DIR}
       -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
+      -DCMAKE_INSTALL_LIBDIR:PATH=${${proj}_INSTALL_DIR}/lib #force installation in lib (override GNUInstallDirs)
       -DDETECT_HDF5:BOOL=OFF
       ${CLANG_ARG}
   )
