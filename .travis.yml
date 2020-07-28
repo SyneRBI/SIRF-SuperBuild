@@ -4,7 +4,7 @@ os:
 - linux
 language: cpp
 dist: bionic  # Ubuntu 18.04 LTS
-cache:  # shared between builds
+cache:  # cache C/C++/pip (shared between builds)
 - ccache
 - pip
 stages:
@@ -57,15 +57,16 @@ addons:
   - libtool
 
 # Environment variables
+# Note: On trusty we need to build Armadillo and boost ourselves (the system versions are too old)
+# Note: On OSX we can't test SYSTEM_Boost=OFF due to excessive log size (https://github.com/CCPPETMR/SIRF-SuperBuild/issues/167)
+# Note: currently ACE is not building correctly, so ACE is not built on any configuration https://github.com/CCPPETMR/SIRF-SuperBuild/issues/#174
+# Note: on Trusty, g++-7 causes errors with the system ACE, so cannot use g++-7 or later https://github.com/CCPPETMR/SIRF-SuperBuild/issues/169
 # Note: altering the matrix here will cause re-building of caches,
-#       so try to keep this concise to avoid need to update
+# so try to keep this concise to avoid need to update
 # Note: the `name:` key contains a resume of the parameters passed to cmake/docker
 #       + or - refer to the value of the parameter affecting the specific package is passed to cmake:
-#       i.e. -boost => -DUSE_SYSTEM_Boost=OFF, which means that Boost will be built.
-# Note: On trusty, we need to build Armadillo and boost ourselves (the system versions are too old)
-# Note: On trusty, g++-7 causes errors with the system ACE, so cannot use g++-7 or later https://github.com/SyneRBI/SIRF-SuperBuild/issues/169
-# Note: On osx, we can't test SYSTEM_Boost=OFF due to excessive log size (https://github.com/SyneRBI/SIRF-SuperBuild/issues/167)
-# Note: currently ACE is not building correctly, so ACE is not built on any configuration https://github.com/SyneRBI/SIRF-SuperBuild/issues/#174
+#       i.e. -boost == -DUSE_SYSTEM_Boost=OFF, which means that Boost will be built.
+
 env:
  global:
  - BUILD_FLAGS="-DCMAKE_BUILD_TYPE=Release"
@@ -134,9 +135,9 @@ jobs:
  # osx
  - os: osx
    osx_image: xcode11.2
-   python: 2.7
-   name: py27 +osx +boost -hdf5 -swig
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" PYMVER=2
+   python: 3
+   name: py3 +osx +boost -hdf5 -swig
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" PYMVER=3
  - os: osx
    osx_image: xcode11.2
    python: 3.6
@@ -144,23 +145,23 @@ jobs:
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" PYMVER=3
  - os: osx
    osx_image: xcode11.2
-   python: 2.7
-   name: py27 +osx +DEVEL +boost -hdf5 +swig
-   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=2
+   python: 3
+   name: py3 +osx +DEVEL +boost -hdf5 +swig
+   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=3
  - os: osx
    osx_image: xcode11.2
-   python: 2.7
-   name: py27 +osx +DEVEL +boost -fftw3 -hdf5 +swig
-   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=2
+   python: 3
+   name: py3 +osx +DEVEL +boost -fftw3 -hdf5 +swig
+   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=3
  - os: linux
    python: 3.6
    name: py36 +boost +itk +fftw3 +hdf5
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON" PYMVER=3
  - os: osx
    osx_image: xcode11.2
-   python: 2.7
-   name: py27 +osx +boost +itk -hdf5 +swig
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=2
+   python: 3
+   name: py3 +osx +boost +itk -hdf5 +swig
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=3
  # docker
  - os: linux
    stage: docker-core
@@ -371,33 +372,17 @@ before_install:
 # in compounds statements (note that export/cd etc won't persist).
 - |
    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+     # Update and upgrade brew
      brew update
+     brew upgrade
+
      BUILD_FLAGS="$BUILD_FLAGS -DSHARED_LIBS_ABS_PATH=ON"
      brew install openblas
      # Let CMake find this blas version (note: we use /usr/local/opt/openblas symlink to get the most recent brew version)
      EXTRA_BUILD_FLAGS="$EXTRA_BUILD_FLAGS -DCBLAS_INCLUDE_DIR=/usr/local/opt/openblas/include -DCBLAS_LIBRARY=/usr/local/opt/openblas/lib/libblas.dylib"
-     if [ $PYMVER == 2 ]; then
-       PYINST=/System/Library/Frameworks/Python.framework/Versions/$PYMVER.7
-       PY_EXE=$PYINST/bin/python2.7
-       # Next lines are not necessary if we give the actual path for the executable to cmake
-       #BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_LIBRARY=$PYINST/lib/libpython2.7.dylib"
-       #BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_INCLUDE_DIR=$PYINST/include/python2.7"
-     else
-       brew upgrade python || true # don't fail if upgrading doesn't do anything
-       # find exact location of Python executable to pass to CMake
-       # we attempt to find the last one if there are multiple Python 3 versions installed
-       PY_INST=$(ls -d1 /usr/local/Cellar/python/$PYMVER.*/Frameworks/Python.framework/Versions/$PYMVER.*|tail -n 1)
-       PYMVER=$(basename ${PY_INST})
-       PY_EXE=$PY_INST/bin/python$PYMVER
-       if [ ! -x "$PY_EXE" ]; then
-         echo "Something wrong with finding Python executable for OSX"
-         echo "PY_EXE = $PY_EXE"
-         travis_terminate 1
-       fi
-       # Next lines are not necessary if we give the actual path for the executable to cmake
-       #PY_LIB=$PY_INST/Python
-       #PY_INC=$PY_INST/Headers
-       # BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_LIBRARY=$PY_LIB -DPYTHON_INCLUDE_DIR=$PY_INC"
+     PY_EXE=$(which python${PYMVER})
+     if [[ $EXTRA_BUILD_FLAGS == *"-DUSE_VTK=ON"* ]] && [[ $EXTRA_BUILD_FLAGS == *"-DUSE_SYSTEM_VTK=ON"* ]]; then
+       brew install vtk
      fi
      BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_EXECUTABLE=$PY_EXE"
      ( set -ev
@@ -440,7 +425,7 @@ before_install:
 - $PY_EXE -m pip install --user -U pip setuptools wheel
 - $PY_EXE -m pip --version
 # ensure python bin dir exists (and coverage dependencies installed)
-- $PY_EXE -m pip install --user -U nose codecov coveralls
+- $PY_EXE -m pip install --user -U nose codecov coveralls requests
 # additional python deps
 - $PY_EXE -m pip install --user -U Cython  # first install Cython separately
 - $PY_EXE -m pip install --user -U numpy deprecation nibabel
