@@ -135,9 +135,9 @@ jobs:
  # osx
  - os: osx
    osx_image: xcode11.2
-   python: 2.7
-   name: py27 +osx +boost -hdf5 -swig
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" PYMVER=2
+   python: 3
+   name: py3 +osx +boost -hdf5 -swig
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" PYMVER=3
  - os: osx
    osx_image: xcode11.2
    python: 3.6
@@ -145,23 +145,23 @@ jobs:
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" PYMVER=3
  - os: osx
    osx_image: xcode11.2
-   python: 2.7
-   name: py27 +osx +DEVEL +boost -hdf5 +swig
-   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=2
+   python: 3
+   name: py3 +osx +DEVEL +boost -hdf5 +swig
+   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=3
  - os: osx
    osx_image: xcode11.2
-   python: 2.7
-   name: py27 +osx +DEVEL +boost -fftw3 -hdf5 +swig
-   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=2
+   python: 3
+   name: py3 +osx +DEVEL +boost -fftw3 -hdf5 +swig
+   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=3
  - os: linux
    python: 3.6
    name: py36 +boost +itk +fftw3 +hdf5
    env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON" PYMVER=3
  - os: osx
    osx_image: xcode11.2
-   python: 2.7
-   name: py27 +osx +boost +itk -hdf5 +swig
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=2
+   python: 3
+   name: py3 +osx +boost +itk -hdf5 +swig
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=3
  # docker
  - os: linux
    stage: docker-core
