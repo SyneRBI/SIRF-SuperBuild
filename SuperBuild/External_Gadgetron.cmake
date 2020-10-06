@@ -55,14 +55,19 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   # BLAS
   find_package(BLAS)
-  if (APPLE AND NOT (CBLAS_LIBRARY AND CBLAS_INCLUDE_DIR))
-	# if the variables don't exist, let the user set them.
-	SET(CBLAS_LIBRARY "" CACHE FILEPATH "CBLAS library")
-	SET(CBLAS_INCLUDE_DIR "" CACHE PATH "CBLAS include directory")
-    message(FATAL_ERROR "Gadgetron needs CBLAS_LIBRARY and CBLAS_INCLUDE_DIR. If
-      these variables do not exist in your CMake, create them manually. CBLAS_LIBRARY
-      and CBLAS_INCLUDE_DIR should be FILEPATH and PATH, respectively, and live in
-      /usr/local/Cellar/openblas/ if installed with \"brew install openblas\".")
+
+  message(STATUS "CBLAS ${CBLAS_LIBRARY} ${CBLAS_INCLUDE_DIR}")
+  if (NOT (CBLAS_LIBRARY AND CBLAS_INCLUDE_DIR))
+    if (APPLE)
+      # if the variables don't exist, let the user set them.
+      SET(CBLAS_LIBRARY "" CACHE FILEPATH "CBLAS library")
+      SET(CBLAS_INCLUDE_DIR "" CACHE PATH "CBLAS include directory")
+      message(FATAL_ERROR "Gadgetron needs CBLAS_LIBRARY and CBLAS_INCLUDE_DIR. If
+        these variables do not exist in your CMake, create them manually. CBLAS_LIBRARY
+        and CBLAS_INCLUDE_DIR should be FILEPATH and PATH, respectively, and live in
+        /usr/local/Cellar/openblas/ if installed with \"brew install openblas\".")
+    
+    endif()
   endif()
 
   #option(Gadgetron_BUILD_PYTHON_SUPPORT
@@ -86,19 +91,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
   SetGitTagAndRepo("${proj}")
-
-  ExternalProject_Add(${proj}
-    ${${proj}_EP_ARGS}
-    ${${proj}_EP_ARGS_GIT}
-    ${${proj}_EP_ARGS_DIRS}
-
-    CMAKE_ARGS
-      -DBUILD_PYTHON_SUPPORT:BOOL=${Gadgetron_BUILD_PYTHON_SUPPORT}
-      -DBUILD_MATLAB_SUPPORT:BOOL=${Gadgetron_BUILD_MATLAB_SUPPORT}
+  set (${proj}_CMAKE_ARGS 
+      -DBUILD_PYTHON_SUPPORT:BOOL=${${proj}_BUILD_PYTHON_SUPPORT}
+      -DBUILD_MATLAB_SUPPORT:BOOL=${${proj}_BUILD_MATLAB_SUPPORT}
       -DCMAKE_PREFIX_PATH:PATH=${SUPERBUILD_INSTALL_DIR}
       -DCMAKE_LIBRARY_PATH:PATH=${SUPERBUILD_INSTALL_DIR}/lib
       -DCMAKE_INCLUDE_PATH:PATH=${SUPERBUILD_INSTALL_DIR}/include
-      -DCMAKE_INSTALL_PREFIX:PATH=${Gadgetron_INSTALL_DIR}
+      -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
       ${Boost_CMAKE_ARGS}
       -DPYTHON_EXECUTABLE:FILEPATH=${PYTHON_EXECUTABLE}
       -DPYTHON_INCLUDE_DIR:PATH=${PYTHON_INCLUDE_DIRS}
@@ -106,11 +105,29 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DGTEST_ROOT:PATH=${GTEST_ROOT}
       ${HDF5_CMAKE_ARGS}
       -DISMRMRD_DIR:PATH=${ISMRMRD_DIR}
-      -DUSE_MKL:BOOL=${Gadgetron_USE_MKL}
+      -DUSE_MKL:BOOL=${${proj}_USE_MKL}
       -DUSE_CUDA:BOOL=${${proj}_USE_CUDA}
-      -DCBLAS_INCLUDE_DIR:PATH=${CBLAS_INCLUDE_DIR}
-      -DCBLAS_LIBRARY:FILEPATH=${CBLAS_LIBRARY}
-      -DUSE_OPENMP:BOOL=${${proj}_ENABLE_OPENMP}
+      -DUSE_OPENMP:BOOL=${${proj}_ENABLE_OPENMP})
+
+  if (CBLAS_INCLUDE_DIR)
+    message(STATUS "Adding CBLAS_INCLUDE_DIR to Gadgetron_CMAKE_ARGS: ${CBLAS_INCLUDE_DIR}")
+    list (APPEND ${proj}_CMAKE_ARGS "-DCBLAS_INCLUDE_DIR:PATH=${CBLAS_INCLUDE_DIR}")
+  else()
+    message(STATUS "CBLAS_INCLUDE_DIR will be found (probably) by Gadgetron")
+  endif()
+  if (CBLAS_LIBRARY)
+    message(STATUS "Adding CBLAS_LIBRARY to Gadgetron_CMAKE_ARGS: ${CBLAS_LIBRARY}")
+    list(APPEND ${proj}_CMAKE_ARGS "-DCBLAS_LIBRARY:FILEPATH=${CBLAS_LIBRARY}")
+  else()
+      message(STATUS "CBLAS_LIBRARY will be found (probably) by Gadgetron")
+  endif()
+
+  ExternalProject_Add(${proj}
+    ${${proj}_EP_ARGS}
+    ${${proj}_EP_ARGS_GIT}
+    ${${proj}_EP_ARGS_DIRS}
+
+    CMAKE_ARGS ${${proj}_CMAKE_ARGS}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
