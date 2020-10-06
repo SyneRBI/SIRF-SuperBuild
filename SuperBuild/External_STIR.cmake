@@ -90,7 +90,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     -DBUILD_TESTING:BOOL=${BUILD_TESTING_${proj}}
     -DBUILD_DOCUMENTATION:BOOL=OFF
     -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
-    ${Boost_CMAKE_ARGS}
     -DCMAKE_INSTALL_PREFIX:PATH=${STIR_INSTALL_DIR}
     -DGRAPHICS:STRING=None
     -DCMAKE_CXX_STANDARD:STRING=11
@@ -111,10 +110,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   #     2.  USE_ITK &&  USE_SYSTEM_ITK  <- Need to set ITK_DIR, set with find_package in External_ITK.cmake
   #     3.  USE_ITK && !USE_SYSTEM_ITK  <- No need to do anything (ITK_DIR will get set during the installation of ITK)
   # STIR enables ITK by default (If it is found, so no need to set -DDISABLE_ITK=OFF for cases 2 and 3)
-  if (NOT USE_ITK)
+  if (NOT USE_ITK) 
     set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DDISABLE_ITK:BOOL=ON)
-  elseif (USE_ITK AND USE_SYSTEM_ITK)
-    set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DITK_DIR:PATH=${ITK_DIR})
+  else()
+    set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DDISABLE_ITK:BOOL=OFF)
+    if (USE_SYSTEM_ITK)
+      set(STIR_CMAKE_ARGS ${STIR_CMAKE_ARGS} -DITK_DIR:PATH=${ITK_DIR})
+    endif()
   endif()
 
   ## If building with NiftyPET projector
@@ -129,8 +131,11 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     ${${proj}_EP_ARGS}
     ${${proj}_EP_ARGS_GIT}
     ${${proj}_EP_ARGS_DIRS}
-
-    CMAKE_ARGS ${STIR_CMAKE_ARGS}  ${${proj}_EXTRA_CMAKE_ARGS_LIST}
+    CMAKE_ARGS
+       ${STIR_CMAKE_ARGS}
+       ${Boost_CMAKE_ARGS}
+       ${HDF5_CMAKE_ARGS}
+       ${${proj}_EXTRA_CMAKE_ARGS_LIST}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )

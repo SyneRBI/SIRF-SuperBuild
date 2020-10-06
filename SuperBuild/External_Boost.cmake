@@ -108,6 +108,14 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   )
 endif()
 
+# Avoid linking problems with boost system, specifically 
+# boost::system::detail::generic_category_instance
+# by forcing Boost to use an inline variable, as opposed to
+# the instantiated variable in the library
+# See https://github.com/SyneRBI/SIRF-SuperBuild/issues/161
+set(Boost_CMAKE_ARGS ${Boost_CMAKE_ARGS}
+        -DCMAKE_CXX_FLAGS:STRING=-DBOOST_ERROR_CODE_HEADER_ONLY\ -DBOOST_SYSTEM_NO_DEPRECATED)
+
 mark_as_superbuild(
   VARS
     ${externalProjName}_DIR:PATH
