@@ -71,8 +71,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   if (USE_NiftyPET)
     list(APPEND ${proj}_DEPENDENCIES "NiftyPET")
   endif()
-  option(STIR_DISABLE_JSON "Disable JSON support in ${proj}" ON)
-  if (STIR_USE_JSON)
+  option(STIR_DISABLE_JSON "Disable JSON support in ${proj}" OFF)
+  if (NOT STIR_DISABLE_JSON)
     list(APPEND ${proj}_DEPENDENCIES "JSON")
   endif()
 
