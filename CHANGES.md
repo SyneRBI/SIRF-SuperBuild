@@ -1,6 +1,9 @@
 # ChangeLog
 ## v#.#.#
 - Enabled HDF5 support for STIR by default (build C++ libraries for HDF5)
+- Add option BULD_TESTING_JSON (default OFF)
+- Updated versions:
+   - JSON: 3.9.1
 
 ## v2.2.0
 - Updated to reflect change from CCPPETMR to CCPSyneRBI.

@@ -151,7 +151,7 @@ set(DEFAULT_SPM_URL https://github.com/spm/SPM12.git )
 set(DEFAULT_SPM_TAG r7771)
 
 set(DEFAULT_JSON_URL https://github.com/nlohmann/json.git )
-set(DEFAULT_JSON_TAG v3.7.3)
+set(DEFAULT_JSON_TAG v3.9.1)
 
 # CCPi CIL
 set(CIL_VERSION "v20.04")
