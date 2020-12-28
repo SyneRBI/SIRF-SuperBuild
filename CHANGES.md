@@ -4,6 +4,7 @@
 - Add option BULD_TESTING_JSON (default OFF)
 - Updated versions:
    - JSON: 3.9.1
+   - SWIG: 4.0.2
 
 ## v2.2.0
 - Updated to reflect change from CCPPETMR to CCPSyneRBI.
