@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
+cd "$(dirname $0)"
 ./sirf-compose-server -f docker-compose.srv-multi.yml "$@"
