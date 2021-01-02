@@ -251,7 +251,7 @@ SIRF-SuperBuild/docker$ ./sirf-compose run --rm sirf \
 ```
 
 Note that `./sirf-compose*` are simple wrappers around `docker-compose`.
-(You could check the corresponding `.yml` files, or even edit them to changes
+(You could check the corresponding `.yml` files, or even edit them to change
 names or add mounts etc.)
 
 - For a service (Jupyter) container:
@@ -302,15 +302,14 @@ resume working next time by using `start` again.
 ```bash
 SIRF-SuperBuild/docker$ ./sirf-compose-server up -d sirf
 SIRF-SuperBuild/docker$ firefox localhost:9999
-SIRF-SuperBuild/docker$ docker stop sirf
-SIRF-SuperBuild/docker$ ./sirf-compose-server down
+SIRF-SuperBuild/docker$ docker stop sirf  # or ./sirf-compose-server down
 ```
 
 The first line starts the `sirf` docker container, including `gadgetron` and
 `jupyter` within the container as background processes.
 The second line opens the notebook in a browser. The third line
 stops the container (and hence notebook server).
-Finally, after finishing with SIRF, we stop and remove the container.
+Finally, after finishing with SIRF, we stop (or optionally remove) the container.
 
 ## Stopping and removal
 You can check which containers are running (or not) via
