@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-docker-compose -f docker-compose.devel.yml -f docker-compose.nix.yml "$@"
+./sirf-compose -f docker-compose.devel.yml "$@"
