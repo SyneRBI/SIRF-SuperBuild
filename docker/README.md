@@ -287,15 +287,16 @@ SIRF-SuperBuild/docker$ docker start -ai sirf
 (py2) sirf:~$ gadgetron >> /dev/null &
 (py2) sirf:~$ python SIRF-SuperBuild/SIRF/examples/Python/MR/fully_sampled_recon.py
 (py2) sirf:~$ exit
+# optionally remove the container
 SIRF-SuperBuild/docker$ docker rm sirf
 ```
 
 The first line starts the `sirf` docker container.
 The second line starts `gadgetron` within the container as a background process.
 We can then run an example (or you could start an interactive python session).
-We then exit the container (which also stops it). Finally, we remove the container.
+We then exit the container (which also stops it). Finally, we can remove the container.
 Note that in practice you probably don't want to do the last step such that you can
-resume working next time by using `start` again.
+resume working next time by using `start` again (start-up will also be a lot faster).
 
 ### Jupyter
 
@@ -321,6 +322,7 @@ and stop and even remove them
 docker stop sirf
 docker rm sirf
 ```
+Note that `sirf-compose down` both stops and removes.
 Stopped containers do not use CPU time and only some additional disk-space. However, the images are quite large.
 You can check which images you have with
 ```sh
@@ -346,18 +348,13 @@ want to run different versions.
 - On host systems with less than 16GB RAM, before `docker-compose up ...` you may want to edit `SIRF-SuperBuild/docker/user_sirf-ubuntu.sh`, changing the line `make -j...` to simply `make`. This increases build time and reduces build memory requirements
 - `localhost` probably won't work on Windows. The service IP address is instead:
 `docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' sirf`
-- `docker logs -f sirf` and `docker ps -a` are useful commands for debugging
-```
-$ docker stop sirf
-```
 
 ### Links
 
 - [SIRF docker source]
-    + See also: [SIRF SuperBuild on Docker wiki]
 - [Synergistic Image Reconstruction Framework (SIRF) project][SIRF]
     + [SIRF wiki]
-- [Collaborative Computational Project in Positron Emission Tomography and Magnetic Resonance imaging (CCP SyneRBI)][CCP SyneRBI]
+- [Collaborative Computational Project in Synergistic Reconstruction for Biomedical Imaging (CCP SyneRBI)][CCP SyneRBI]
 
 [SIRF docker source]: https://github.com/SyneRBI/SIRF-SuperBuild/tree/master/docker
 [SIRF SuperBuild on Docker wiki]: https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-on-Docker
