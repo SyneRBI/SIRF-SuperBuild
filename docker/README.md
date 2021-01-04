@@ -12,7 +12,7 @@ git clone https://github.com/SyneRBI/SIRF-SuperBuild.git
 ```
 and change directory to this folder, `SIRF-SuperBuild/docker`.
 3. Optionally pull the pre-built image with `docker pull synerbi/sirf:service` (otherwise
-the next line will build it)
+the next line will build it, resulting in a much smaller download but larger build time)
 4. Run `./sirf-compose-server up -d sirf` 
 5. Open a browser at <http://localhost:9999>.
 Note that starting the container may take a few minutes the first
@@ -312,6 +312,7 @@ The second line opens the notebook in a browser. The third line
 stops the container (and hence notebook server).
 Finally, after finishing with SIRF, we stop (or optionally remove) the container.
 
+Please note that you cannot start a second `gadgetron` in `service` container, as you would experience port conflicts.
 ## Stopping and removal
 You can check which containers are running (or not) via
 ```sh
