@@ -332,6 +332,10 @@ set(SyneRBI_INSTALL ${SUPERBUILD_INSTALL_DIR})
 ## in the env_ccppetmr scripts we perform a substitution of the whole block
 ## during the configure_file() command call below.
 
+if (BUILD_SPM AND NOT DISABLE_MATLAB AND Matlab_ROOT_DIR AND "${CMAKE_SYSTEM}" MATCHES "Linux")
+  set(Matlab_extra_ld_path ":${Matlab_ROOT_DIR}/extern/bin/glnxa64")
+endif()
+
 set(ENV_PYTHON_BASH "#####    Python not found    #####")
 set(ENV_PYTHON_CSH  "#####    Python not found    #####")
 if(PYTHONINTERP_FOUND)
