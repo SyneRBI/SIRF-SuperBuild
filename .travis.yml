@@ -183,6 +183,9 @@ jobs:
         # count unique clones, excluding travis, and print total
         gh_stats_count -k uniques
       fi
+      if [[ "$TRAVIS_SECURE_ENV_VARS" == true ]]; then
+        echo "$DOCKER_PWD" | docker login -u $DOCKER_USR --password-stdin
+      fi
    # custom runtime not supported on travis
    - sed -i '/runtime/d' docker/docker-compose.srv-gpu.yml
    install: &docker_install
@@ -237,7 +240,6 @@ jobs:
    - |
       # push images
       if [[ "$TRAVIS_SECURE_ENV_VARS" == true ]]; then ( set -ev
-       echo "$DOCKER_PWD" | docker login -u $DOCKER_USR --password-stdin
        dpush() {
          # create and push alias $1 -> $2
          if [[ "$1" != "$2" ]]; then
