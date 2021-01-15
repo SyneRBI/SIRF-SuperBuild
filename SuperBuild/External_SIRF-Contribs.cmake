@@ -1,6 +1,7 @@
 #========================================================================
 # Author: Edoardo Pasca
 # Copyright 2018, 2020 STFC
+# Copyright 2021, University College London
 #
 # This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -33,30 +34,28 @@ SetExternalProjectFlags(${proj})
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
   SetGitTagAndRepo("${proj}")
+  if (BUILD_PYTHON)
+    # conda build should never get here
+    if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
+      # in case of PYTHONPATH it is sufficient to copy the files to the 
+      # $PYTHONPATH directory
+      ExternalProject_Add(${proj}
+        ${${proj}_EP_ARGS}
+        ${${proj}_EP_ARGS_GIT}
+        ${${proj}_EP_ARGS_DIRS}
 
-  # conda build should never get here
-  if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
-    # in case of PYTHONPATH it is sufficient to copy the files to the 
-    # $PYTHONPATH directory
-    ExternalProject_Add(${proj}
-      ${${proj}_EP_ARGS}
-      ${${proj}_EP_ARGS_GIT}
-      ${${proj}_EP_ARGS_DIRS}
-    
-      CONFIGURE_COMMAND ""
-      BUILD_COMMAND ""
-      INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/src/Python/sirf/ ${PYTHON_DEST}/sirf
-    )
-
-  else()
-    # if SETUP_PY one can launch the conda build.sh script setting 
-    # the appropriate variables.
-    message(FATAL_ERROR "Only PYTHONPATH install method is currently supported")
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND ""
+        INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/src/Python/sirf/ ${PYTHON_DEST}/sirf
+      )
+    else()
+      # if SETUP_PY one can launch the conda build.sh script setting 
+      # the appropriate variables.
+      message(FATAL_ERROR "Only PYTHONPATH install method is currently supported")
+    endif()
   endif()
 
-
-  set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
-  set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
+  # any non-Python stuff here    
 
 else()
   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
