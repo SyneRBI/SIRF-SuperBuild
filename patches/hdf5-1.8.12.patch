@@ -1,5 +1,6 @@
---- xx  2019-06-20 20:38:35.399865600 +0000
-+++ ./config/cmake/ConfigureChecks.cmake        2019-06-20 20:20:00.586270800 +0000
+diff -uN -b -r /home/sirfuser/MyLaptop/Documents/devel/buildVC/SIRF-SuperBuild/sources/HDF5/config/cmake/ConfigureChecks.cmake ./config/cmake/ConfigureChecks.cmake
+--- /home/sirfuser/MyLaptop/Documents/devel/buildVC/SIRF-SuperBuild/sources/HDF5/config/cmake/ConfigureChecks.cmake	2013-11-21 15:14:03.000000000 +0000
++++ ./config/cmake/ConfigureChecks.cmake	2020-12-22 17:01:52.811079900 +0000
 @@ -185,7 +185,7 @@
    ENDIF (NOT UNIX AND NOT CYGWIN AND NOT MINGW)
    SET (H5_HAVE_FUNCTION 1)
@@ -9,3 +10,48 @@
    SET (H5_HAVE_GETTIMEOFDAY 1)
    SET (H5_LONE_COLON 0)
    IF (MINGW)
+@@ -924,7 +924,7 @@
+ IF (NOT H5_PRINTF_LL_WIDTH OR H5_PRINTF_LL_WIDTH MATCHES "unknown")
+   SET (PRINT_LL_FOUND 0)
+   MESSAGE (STATUS "Checking for appropriate format for 64 bit long:")
+-  FOREACH (HDF5_PRINTF_LL l64 l L q I64 ll)
++  FOREACH (HDF5_PRINTF_LL I64 l64 l L q ll)
+     SET (CURRENT_TEST_DEFINITIONS "-DPRINTF_LL_WIDTH=${HDF5_PRINTF_LL}")
+     IF (H5_SIZEOF_LONG_LONG)
+       SET (CURRENT_TEST_DEFINITIONS "${CURRENT_TEST_DEFINITIONS} -DHAVE_LONG_LONG")
+@@ -939,6 +939,7 @@
+       IF (HDF5_PRINTF_LL_TEST_RUN MATCHES 0)
+         SET (H5_PRINTF_LL_WIDTH "\"${HDF5_PRINTF_LL}\"" CACHE INTERNAL "Width for printf for type `long long' or `__int64', us. `ll")
+         SET (PRINT_LL_FOUND 1)
++		BREAK()
+       ELSE (HDF5_PRINTF_LL_TEST_RUN MATCHES 0)
+         MESSAGE ("Width with ${HDF5_PRINTF_LL} failed with result: ${HDF5_PRINTF_LL_TEST_RUN}")
+       ENDIF (HDF5_PRINTF_LL_TEST_RUN MATCHES 0)
+diff -uN -b -r /home/sirfuser/MyLaptop/Documents/devel/buildVC/SIRF-SuperBuild/sources/HDF5/config/cmake/HDF5Tests.c ./config/cmake/HDF5Tests.c
+--- /home/sirfuser/MyLaptop/Documents/devel/buildVC/SIRF-SuperBuild/sources/HDF5/config/cmake/HDF5Tests.c	2013-11-21 15:14:03.000000000 +0000
++++ ./config/cmake/HDF5Tests.c	2020-12-22 17:02:05.556697100 +0000
+@@ -234,7 +234,11 @@
+ 
+ int main(void)
+ {
+-  char *llwidthArgs[] = { "l64", "l", "L", "q", "ll", NULL };
++  /*char *llwidthArgs[] = { "I64", "l64", "l", "L", "q", "ll", NULL };
++  */
++#define STRINGIFY(x) #x
++#define TOSTRING(x) STRINGIFY(x)
++  char *llwidthArgs	[] = { TOSTRING(PRINTF_LL_WIDTH), NULL };
+   char *s = malloc(128);
+   char **currentArg = NULL;
+   LL_TYPE x = (LL_TYPE)1048576 * (LL_TYPE)1048576;
+diff -uN -b -r /home/sirfuser/MyLaptop/Documents/devel/buildVC/SIRF-SuperBuild/sources/HDF5/config/cmake/HDFMacros.cmake ./config/cmake/HDFMacros.cmake
+--- /home/sirfuser/MyLaptop/Documents/devel/buildVC/SIRF-SuperBuild/sources/HDF5/config/cmake/HDFMacros.cmake	2013-11-21 15:14:03.000000000 +0000
++++ ./config/cmake/HDFMacros.cmake	2020-12-22 00:24:27.406789800 +0000
+@@ -48,7 +48,7 @@
+     GET_TARGET_PROPERTY (target_name ${libtarget} RELWITHDEBINFO_OUTPUT_NAME)
+     INSTALL (
+       FILES
+-          ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE}/${CMAKE_IMPORT_LIBRARY_PREFIX}${target_name}.pdb
++          #${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE}/${CMAKE_IMPORT_LIBRARY_PREFIX}${target_name}.pdb
+       DESTINATION
+           ${targetdestination}
+       CONFIGURATIONS RelWithDebInfo

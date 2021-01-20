@@ -11,7 +11,7 @@ SIRF_INSTALL_PATH=@SyneRBI_INSTALL@
 export SIRF_INSTALL_PATH
 # Where to find shared libraries
 # Setting for Linux but doesn't harm elsewhere
-LD_LIBRARY_PATH=@SyneRBI_INSTALL@/lib:$LD_LIBRARY_PATH
+LD_LIBRARY_PATH=@SyneRBI_INSTALL@/lib:$LD_LIBRARY_PATH@Matlab_extra_ld_path@
 export LD_LIBRARY_PATH
 # Setting for MacOS but doesn't harm elsewhere
 DYLD_FALLBACK_LIBRARY_PATH=@SyneRBI_INSTALL@/lib:$DYLD_FALLBACK_LIBRARY_PATH

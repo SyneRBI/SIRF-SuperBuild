@@ -18,16 +18,18 @@
 #
 #=========================================================================
 
-# This file defines a macro that sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED.
-# If the user doesn't want git checkout to be performed, 
-# these will be set to blank strings. Else, they'll be set to 
-# ${${proj}_URL} and ${${proj}_TAG}, respectively.
+# This file defines a macro that sets a variable `${proj}_EP_ARGS_GIT`,
+# which can then be used in the `External_project_add` call.
+# Normally the variable contains settings for `GIT_REPOSITORY` and `GIT_TAG`,
+# setting them to `${proj}_URL` and `${proj}_TAG` respectively.
+#
+# If the user doesn't want git checkout to be performed,
+# she should set `DISABLE_GIT_CHECKOUT_STIR_${proj}=ON`, which
+# will set `${proj}_EP_ARGS_GIT` to a blank string.
 #
 # Example usage:
-#   cmake . -DDISABLE_GIT_CHECKOUT_STIR=ON
+#   cmake . -DDISABLE_GIT_CHECKOUT_STIR:BOOL=ON
 #
-# This will call SetGitTagAndRepo(STIR), setting 
-# STIR_TAG_MODIFIED and STIR_URL_MODIFIED accordingly.
 
 macro(SetGitTagAndRepo proj)
 	

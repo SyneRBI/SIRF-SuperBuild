@@ -135,6 +135,21 @@ else()
       CONDA:      do nothing")
     set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
   endif()
+
+  # set PYTHONLIBS_CMAKE_ARGS to be used in the ExternalProject_add calls
+  # note: Find_package(PythonLibs) takes PYTHON_INCLUDE_DIR and PYTHON_LIBRARY as input
+  set (PYTHONLIBS_CMAKE_ARGS -DPYTHON_EXECUTABLE:FILEPATH=${PYTHON_EXECUTABLE})
+  if (EXISTS "${PYTHON_INCLUDE_DIR}")
+    set (PYTHONLIBS_CMAKE_ARGS ${PYTHONLIBS_CMAKE_ARGS}
+      -DPYTHON_INCLUDE_DIR:PATH=${PYTHON_INCLUDE_DIR})
+  endif()
+  if (EXISTS "${PYTHON_LIBRARY}")
+    set (PYTHONLIBS_CMAKE_ARGS ${PYTHONLIBS_CMAKE_ARGS}
+      -DPYTHON_LIBRARY:FILEPATH=${PYTHON_LIBRARY})
+  endif()
+
+
+  message(STATUS "PYTHONLIBS_CMAKE_ARGS= " "${PYTHONLIBS_CMAKE_ARGS}")
 endif()
 
 #### MATLAB support
@@ -232,8 +247,7 @@ option(BUILD_pet_rd_tools "Build pet_rd_tools" OFF)
 option(BUILD_CIL "Build CCPi CIL Modules and ASTRA engine" OFF)
 option(BUILD_CIL_LITE "Build CCPi CIL Modules" OFF)
 option(BUILD_NIFTYREG "Build NIFTYREG" ON)
-option(BUILD_SIRF_Contribs "Build SIRF-Contribs" ON)
-
+option(BUILD_SIRF_Contribs "Build SIRF-Contribs" ${BUILD_SIRF})
 option(BUILD_SIRF_Registration "Build SIRFS's registration functionality" ${BUILD_NIFTYREG})
 if (BUILD_SIRF AND BUILD_SIRF_Registration AND NOT BUILD_NIFTYREG)
   message(WARNING "Building SIRF registration is enabled, but BUILD_NIFTYREG=OFF. Reverting to BUILD_NIFTYREG=ON")
@@ -313,12 +327,8 @@ message(STATUS "")
 message(STATUS "Boost_CMAKE_ARGS= " "${Boost_CMAKE_ARGS}")
 message(STATUS "ISMRMRD_DIR = " ${ISMRMRD_DIR})
 message(STATUS "STIR_DIR = " ${STIR_DIR})
-message(STATUS "HDF5_ROOT = " ${HDF5_ROOT})
 message(STATUS "GTEST_ROOT = " ${GTEST_ROOT})
 message(STATUS "Matlab_ROOT_DIR = " ${Matlab_ROOT_DIR})
-message(STATUS "PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}")
-message(STATUS "PYTHON_LIBRARIES=${PYTHON_LIBRARIES}")
-message(STATUS "PYTHON_INCLUDE_DIRS=${PYTHON_INCLUDE_DIRS}")
 
 #Need to configure main project here.
 #set(proj ${PRIMARY_PROJECT_NAME})
@@ -331,6 +341,10 @@ set(SyneRBI_INSTALL ${SUPERBUILD_INSTALL_DIR})
 ## environment variables for Python and Matlab.
 ## in the env_ccppetmr scripts we perform a substitution of the whole block
 ## during the configure_file() command call below.
+
+if (BUILD_SPM AND NOT DISABLE_MATLAB AND Matlab_ROOT_DIR AND "${CMAKE_SYSTEM}" MATCHES "Linux")
+  set(Matlab_extra_ld_path ":${Matlab_ROOT_DIR}/extern/bin/glnxa64")
+endif()
 
 set(ENV_PYTHON_BASH "#####    Python not found    #####")
 set(ENV_PYTHON_CSH  "#####    Python not found    #####")

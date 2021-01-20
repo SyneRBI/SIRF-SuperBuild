@@ -62,6 +62,11 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     message(STATUS "HDF5 PATCH_COMMAND=${PATCH_COMMAND}")
   endif()
 
+  if (WIN32)
+    # It seems that we need shared libraries on Windows, as static ones aren't automatically found
+    set(CMAKE_ARGS_WIN -DBUILD_SHARED_LIBS:BOOL=ON)
+  endif()
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
@@ -71,9 +76,11 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
     CMAKE_ARGS
       ${CLANG_ARG}
+	  ${CMAKE_ARGS_WIN}
       -DHDF5_BUILD_EXAMPLES:BOOL=OFF
       -DHDF5_BUILD_TOOLS:BOOL=OFF
       -DHDF5_BUILD_HL_LIB:BOOL=${HDF5_BUILD_HL_LIB}
+      -DHDF5_BUILD_CPP_LIB:BOOL=ON
       -DBUILD_TESTING:BOOL=OFF
   )
 
