@@ -164,6 +164,10 @@ set(DEFAULT_CCPi-FrameworkPlugins_TAG ${CIL_VERSION})
 set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
 set(DEFAULT_CCPi-Astra_TAG ${CIL_VERSION})
 
+# range-v3
+set(DEFAULT_JSON_URL https://github.com/ericniebler/range-v3.git )
+set(DEFAULT_JSON_TAG 0.11.0)
+
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
 
@@ -205,9 +209,12 @@ else()
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
   set(DEFAULT_pet_rd_tools_TAG v1.1.0)
 
+  # ACE
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
   set(DEFAULT_ACE_TAG origin/master)
   
+  # range-v3
+  set(DEFAULT_JSON_TAG origin/master)
   
 endif()
 
