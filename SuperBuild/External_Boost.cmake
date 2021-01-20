@@ -108,13 +108,18 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   )
 endif()
 
+if (NOT WIN32)
 # Avoid linking problems with boost system, specifically 
 # boost::system::detail::generic_category_instance
 # by forcing Boost to use an inline variable, as opposed to
 # the instantiated variable in the library
 # See https://github.com/SyneRBI/SIRF-SuperBuild/issues/161
+# However, this solution is flawed as it overrides any system compiler flags, see
+# https://github.com/SyneRBI/SIRF-SuperBuild/issues/455
+# Probably should check if it's still necessary for recent Boost.
 set(Boost_CMAKE_ARGS ${Boost_CMAKE_ARGS}
         -DCMAKE_CXX_FLAGS:STRING=-DBOOST_ERROR_CODE_HEADER_ONLY\ -DBOOST_SYSTEM_NO_DEPRECATED)
+endif()
 
 mark_as_superbuild(
   VARS

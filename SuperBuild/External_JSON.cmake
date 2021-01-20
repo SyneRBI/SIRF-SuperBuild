@@ -36,16 +36,24 @@ SetExternalProjectFlags(${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
-
+  option(BUILD_TESTING_${proj} "Build tests for ${proj}" OFF)
   SetGitTagAndRepo("${proj}")
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     ${${proj}_EP_ARGS_GIT}
     ${${proj}_EP_ARGS_DIRS}
+    CMAKE_ARGS
+      -DJSON_BuildTests:BOOL=${BUILD_TESTING_${proj}}
+       ${${proj}_EXTRA_CMAKE_ARGS_LIST}
     DEPENDS ${${proj}_DEPENDENCIES}
   )
 
+  if (BUILD_TESTING_${proj})
+    add_test(NAME ${proj}_TESTS
+         COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION> --output-on-failure
+         WORKING_DIRECTORY ${${proj}_BINARY_DIR})
+  endif()
 
   else()
     ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
