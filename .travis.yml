@@ -55,6 +55,7 @@ addons:
   - autogen
   - autoconf
   - libtool
+  - python3-olefile
 
 # Environment variables
 # Note: On trusty we need to build Armadillo and boost ourselves (the system versions are too old)
