@@ -1,2 +1,4 @@
 #!/usr/bin/env bash
+pushd "$(dirname $0)"
 ./sirf-compose-server -f docker-compose.srv-multi.yml "$@"
+popd

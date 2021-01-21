@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+pushd "$(dirname $0)"
+./sirf-compose-devel-server -f docker-compose.srv-gpu.yml "$@"
+popd

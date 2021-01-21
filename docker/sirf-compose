@@ -1,2 +1,4 @@
 #!/usr/bin/env bash
+pushd "$(dirname $0)"
 docker-compose -f docker-compose.yml -f docker-compose.nix.yml "$@"
+popd
