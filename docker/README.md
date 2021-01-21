@@ -294,9 +294,8 @@ SIRF-SuperBuild/docker$ docker rm sirf
 The first line starts the `sirf` docker container.
 The second line starts `gadgetron` within the container as a background process.
 We can then run an example (or you could start an interactive python session).
-We then exit the container (which also stops it). Finally, we can remove the container.
-Note that in practice you probably don't want to do the last step such that you can
-resume working next time by using `start` again (start-up will also be a lot faster).
+We then exit the container (which also stops it). Finally, if we choose to remove the container,
+next time we will start afresh (which might not be desirable of course).
 
 ### Jupyter
 
