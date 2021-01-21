@@ -1,4 +1,11 @@
 # ChangeLog
+## v#.#.#
+- Enabled HDF5 support for STIR by default (build C++ libraries for HDF5)
+- Fix some issues with finding Python [#472](https://github.com/SyneRBI/SIRF-SuperBuild/issues/472)
+- Add option `BUILD_TESTING_JSON` (default OFF)
+- Updated versions:
+   - JSON: 3.9.1
+   - SWIG: 4.0.2
 
 ## v2.2.0
 - Updated to reflect change from CCPPETMR to CCPSyneRBI.
