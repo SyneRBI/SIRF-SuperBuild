@@ -1,7 +1,7 @@
 # SIRF-SuperBuild
 
 [![CI-badge]][CI-link] [![style-badge]][style-link] [![docker-badge]][docker-link]
-![install-badge][![zenodo-badge]][zenodo-link]
+![install-badge] [![zenodo-badge]][zenodo-link]
 
 The SIRF-SuperBuild allows the user to download and compile most of the software
 needed to compile SIRF and Gadgetron, and automatically build SIRF and Gadgetron, and
