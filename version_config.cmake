@@ -194,7 +194,9 @@ if (DEVEL_BUILD)
   set(DEFAULT_ACE_TAG origin/master)
 
 else()
-  set(DEFAULT_SIRF_TAG v2.2.0)
+  # version 2.2.0 has a bug in algebra leading to failure of SIRF CIL TESTS
+  # which are fixed in master
+  set(DEFAULT_SIRF_TAG 933630ece93ded99dffbdc60e4eef993051621b1)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
