@@ -76,18 +76,56 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
 
   add_test(NAME CIL_FRAMEWORK_TESTS_1
-           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_Data*.py 
+           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_DataContainer.py 
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   add_test(NAME CIL_FRAMEWORK_TESTS_2
-           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_algor*.p 
+           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_algor*.py 
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   add_test(NAME CIL_FRAMEWORK_TESTS_3
            COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_run_*.py
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
-   add_test(NAME CIL_SIRF_TESTS
+  add_test(NAME CIL_SIRF_TESTS
 	   COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_SIRF*.py
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
-     
+  add_test(NAME CIL_FRAMEWORK_TESTS_4
+           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_Block_*.py
+           WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
+  add_test(NAME CIL_FRAMEWORK_TESTS_5
+           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_dataexample.py
+           WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
+  add_test(NAME CIL_FRAMEWORK_TESTS_6
+           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_functions.py
+           WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
+  add_test(NAME CIL_FRAMEWORK_TESTS_7
+           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_Gradient.py
+           WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
+  add_test(NAME CIL_FRAMEWORK_TESTS_8
+           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_NexusReaderWriter.py
+           WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
+  add_test(NAME CIL_FRAMEWORK_TESTS_9
+           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_Operator.py
+           WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
+  add_test(NAME CIL_FRAMEWORK_TESTS_10
+           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_PluginsRegularisation.py
+           WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
+  add_test(NAME CIL_FRAMEWORK_TESTS_11
+           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_quality_measures.py
+           WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
+  add_test(NAME CIL_FRAMEWORK_TESTS_12
+           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_smoothMixedL21Norm.py
+           WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
+  add_test(NAME CIL_FRAMEWORK_TESTS_13
+           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_subset.py
+           WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
+  add_test(NAME CIL_FRAMEWORK_TESTS_14
+           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_SumFunction.py
+           WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
+  add_test(NAME CIL_FRAMEWORK_TESTS_15
+           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_TranslateFunction.py
+           WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
+  # add_test(NAME CIL_FRAMEWORK_TESTS_ALL
+  #          COMMAND ${PYTHON_EXECUTABLE} -m unittest discover
+  #          WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   else()
     ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
       SOURCE_DIR ${${proj}_SOURCE_DIR}
