@@ -106,7 +106,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DISMRMRD_DIR:PATH=${ISMRMRD_DIR}
       -DUSE_MKL:BOOL=${${proj}_USE_MKL}
       -DUSE_CUDA:BOOL=${${proj}_USE_CUDA}
-      -DUSE_OPENMP:BOOL=${${proj}_ENABLE_OPENMP})
+      -DUSE_OPENMP:BOOL=${${proj}_ENABLE_OPENMP}
+      )
 
   if (CBLAS_INCLUDE_DIR)
     message(STATUS "Adding CBLAS_INCLUDE_DIR to Gadgetron_CMAKE_ARGS: ${CBLAS_INCLUDE_DIR}")
@@ -129,6 +130,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     CMAKE_ARGS ${${proj}_CMAKE_ARGS}
     DEPENDS
         ${${proj}_DEPENDENCIES}
+    BUILD_COMMAND ${CMAKE_COMMAND} -E env CPATH=$ENV{CPATH}:${SUPERBUILD_INSTALL_DIR}/include
+      ${CMAKE_COMMAND} --build .
   )
 
     set(Gadgetron_ROOT        ${Gadgetron_SOURCE_DIR})
