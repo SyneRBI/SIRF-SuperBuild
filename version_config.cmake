@@ -115,7 +115,7 @@ set(DEFAULT_glog_TAG v0.3.5)
 
 ## ITK
 set(DEFAULT_ITK_URL https://github.com/InsightSoftwareConsortium/ITK.git)
-set(DEFAULT_ITK_TAG v4.13.1)
+set(DEFAULT_ITK_TAG v5.1.2)
 
 ## NIFTYREG
 set(DEFAULT_NIFTYREG_URL https://github.com/KCL-BMEIS/niftyreg.git )
@@ -170,8 +170,8 @@ set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
 set(DEFAULT_CCPi-Astra_TAG "${CIL_VERSION}.1")
 
 # range-v3
-set(DEFAULT_JSON_URL https://github.com/ericniebler/range-v3.git )
-set(DEFAULT_JSON_TAG 0.11.0)
+set(DEFAULT_range-v3_URL https://github.com/ericniebler/range-v3.git )
+set(DEFAULT_range-v3_TAG 0.11.0)
 
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
@@ -219,7 +219,7 @@ else()
   set(DEFAULT_ACE_TAG origin/master)
   
   # range-v3
-  set(DEFAULT_JSON_TAG origin/master)
+  set(DEFAULT_range-v3_TAG origin/master)
   
 endif()
 
@@ -285,6 +285,10 @@ set(SPM_TAG ${DEFAULT_SPM_TAG} CACHE STRING ON)
 set(JSON_URL ${DEFAULT_JSON_URL} CACHE STRING ON)
 set(JSON_TAG ${DEFAULT_JSON_TAG} CACHE STRING ON)
 
+set(range-v3_URL ${DEFAULT_range-v3_URL} CACHE STRING ON)
+set(range-v3_TAG ${DEFAULT_range-v3_TAG} CACHE STRING ON)
+
+
 mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   Gadgetron_URL Gadgetron_TAG
   siemens_to_ismrmrd_URL siemens_to_ismrmrd_TAG
@@ -300,4 +304,5 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   ITK_URL ITK_TAG
   SPM_URL SPM_TAG
   JSON_URL JSON_TAG
+  range-v3_URL range-v3_TAG
 )

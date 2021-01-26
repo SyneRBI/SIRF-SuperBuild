@@ -79,7 +79,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     "Build Gadgetron MATLAB gadgets (not required for SIRF)" ${default_Gadgetron_BUILD_MATLAB_SUPPORT})
   option(Gadgetron_USE_MKL "Instruct Gadgetron to build linking to the MKL. The user must be able to install MKL on his own." OFF)
 
-  option(${proj}_USE_CUDA "Enable ${proj} CUDA (if cuda libraries are present)" ${USE_CUDA})
+  option(${proj}_USE_CUDA "Enable ${proj} CUDA (if cuda libraries are present and SDK is compatible with GCC9)" ${USE_CUDA})
+  if (${CUDA_VERSION} VERSION_LESS "11")
+    message(WARNING "Your CUDA Tookit version ${CUDA_VERSION} is incompatible with GCC9, so we'll disable Gadgetron CUDA support.")
+    set (${proj}_USE_CUDA OFF)
+  endif()
+
   mark_as_advanced(${proj}_USE_CUDA)
 
   if (NOT DISABLE_OpenMP)
@@ -107,6 +112,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DUSE_MKL:BOOL=${${proj}_USE_MKL}
       -DUSE_CUDA:BOOL=${${proj}_USE_CUDA}
       -DUSE_OPENMP:BOOL=${${proj}_ENABLE_OPENMP}
+      -DBUILD_TESTING:BOOL=OFF
       )
 
   if (CBLAS_INCLUDE_DIR)
@@ -130,7 +136,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     CMAKE_ARGS ${${proj}_CMAKE_ARGS}
     DEPENDS
         ${${proj}_DEPENDENCIES}
-    BUILD_COMMAND ${CMAKE_COMMAND} -E env CPATH=$ENV{CPATH}:${SUPERBUILD_INSTALL_DIR}/include
+    CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CC=${CC_9} CXX=${CXX_9} ${CMAKE_COMMAND} ${${proj}_SOURCE_DIR} ${${proj}_CMAKE_ARGS}
+    BUILD_COMMAND ${CMAKE_COMMAND} -E env CPATH=$ENV{CPATH}:${SUPERBUILD_INSTALL_DIR}/include 
       ${CMAKE_COMMAND} --build .
   )
 
