@@ -115,7 +115,7 @@ set(DEFAULT_glog_TAG v0.3.5)
 
 ## ITK
 set(DEFAULT_ITK_URL https://github.com/InsightSoftwareConsortium/ITK.git)
-set(DEFAULT_ITK_TAG v5.1.2)
+set(DEFAULT_ITK_TAG v4.13.3)
 
 ## NIFTYREG
 set(DEFAULT_NIFTYREG_URL https://github.com/KCL-BMEIS/niftyreg.git )
@@ -133,7 +133,7 @@ endif()
 
 ## Gadgetron
 set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
-set(DEFAULT_Gadgetron_TAG master)
+set(DEFAULT_Gadgetron_TAG 7d7a31ce187c24f237c62a55b70a61474f9b4039)
 
 ## ASTRA
 set(DEFAULT_astra-toolbox_URL https://github.com/astra-toolbox/astra-toolbox )
@@ -197,7 +197,7 @@ if (DEVEL_BUILD)
   set(DEFAULT_pet_rd_tools_TAG origin/master)
 
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
-  set(DEFAULT_ACE_TAG origin/master)
+  set(DEFAULT_ACE_TAG origin/ACE_version_6.5.9)
 
 else()
   set(DEFAULT_SIRF_TAG v2.2.0)

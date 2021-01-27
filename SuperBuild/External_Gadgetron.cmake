@@ -24,11 +24,20 @@
 #This needs to be unique globally
 set(proj Gadgetron)
 
+if ((NOT CC_9) OR (NOT CXX_9))
+  message(FATAL_ERROR "Please set the flag -DCC_9 and -DCXX_9 to point to the location of gcc-9 and g++-9")
+endif()
 # Set dependency list
 set(${proj}_DEPENDENCIES "ACE;Boost;HDF5;ISMRMRD;FFTW3double;Armadillo;GTest;range-v3")
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
+
+if (NOT HDF5_CMAKE_ARGS)
+  message( FATAL_ERROR "HDF5_CMAKE_ARGS not found: ${HDF5_CMAKE_ARGS}")
+else()
+  message( STATUS "HDF5_CMAKE_ARGS found: ${HDF5_CMAKE_ARGS}")
+endif()
 
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
@@ -107,12 +116,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       ${PYTHONLIBS_CMAKE_ARGS}
       -DGTEST_ROOT:PATH=${GTEST_ROOT}
       ${HDF5_CMAKE_ARGS}
+      -DHDF5_FOUND:BOOL=ON
       ${FFTW3_CMAKE_ARGS}
       -DISMRMRD_DIR:PATH=${ISMRMRD_DIR}
       -DUSE_MKL:BOOL=${${proj}_USE_MKL}
       -DUSE_CUDA:BOOL=${${proj}_USE_CUDA}
       -DUSE_OPENMP:BOOL=${${proj}_ENABLE_OPENMP}
-      -DBUILD_TESTING:BOOL=OFF
+      -DBUILD_TESTING:BOOL=ON
       )
 
   if (CBLAS_INCLUDE_DIR)
