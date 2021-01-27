@@ -394,17 +394,17 @@ export GADGETRON_HOME\n")
   set(ENV_GADGETRON_HOME_CSH "setenv GADGETRON_HOME ${SyneRBI_INSTALL}\n")
 endif()
 
-configure_file(env_ccpsynerbi.sh.in ${SyneRBI_INSTALL}/bin/env_ccpsynerbi.sh)
-configure_file(env_ccpsynerbi.csh.in ${SyneRBI_INSTALL}/bin/env_ccpsynerbi.csh)
+configure_file(env_sirf.sh.in ${SyneRBI_INSTALL}/bin/env_sirf.sh)
+configure_file(env_sirf.csh.in ${SyneRBI_INSTALL}/bin/env_sirf.csh)
 
 if (${CMAKE_VERSION} VERSION_LESS "3.14")
   # CREATE_LINK has been introduced in CMake 3.14
   # we create a copy instead.
-  configure_file(env_ccpsynerbi.sh.in ${SyneRBI_INSTALL}/bin/env_ccppetmr.sh)
-  configure_file(env_ccpsynerbi.csh.in ${SyneRBI_INSTALL}/bin/env_ccppetmr.csh)
+  configure_file(env_sirf.sh.in ${SyneRBI_INSTALL}/bin/env_ccppetmr.sh)
+  configure_file(env_sirf.csh.in ${SyneRBI_INSTALL}/bin/env_ccppetmr.csh)
 else ()
-  file(CREATE_LINK ${SyneRBI_INSTALL}/bin/env_ccpsynerbi.sh ${SyneRBI_INSTALL}/bin/env_ccppetmr.sh SYMBOLIC)
-  file(CREATE_LINK ${SyneRBI_INSTALL}/bin/env_ccpsynerbi.csh ${SyneRBI_INSTALL}/bin/env_ccppetmr.csh SYMBOLIC)
+  file(CREATE_LINK ${SyneRBI_INSTALL}/bin/env_sirf.sh ${SyneRBI_INSTALL}/bin/env_ccppetmr.sh SYMBOLIC)
+  file(CREATE_LINK ${SyneRBI_INSTALL}/bin/env_sirf.csh ${SyneRBI_INSTALL}/bin/env_ccppetmr.csh SYMBOLIC)
 endif()
 
 # add tests
