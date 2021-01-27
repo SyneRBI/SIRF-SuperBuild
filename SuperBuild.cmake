@@ -397,8 +397,15 @@ endif()
 configure_file(env_ccpsynerbi.sh.in ${SyneRBI_INSTALL}/bin/env_ccpsynerbi.sh)
 configure_file(env_ccpsynerbi.csh.in ${SyneRBI_INSTALL}/bin/env_ccpsynerbi.csh)
 
-file(CREATE_LINK ${SyneRBI_INSTALL}/bin/env_ccpsynerbi.sh ${SyneRBI_INSTALL}/bin/env_ccppetmr.sh SYMBOLIC)
-file(CREATE_LINK ${SyneRBI_INSTALL}/bin/env_ccpsynerbi.csh ${SyneRBI_INSTALL}/bin/env_ccppetmr.csh SYMBOLIC)
+if (${CMAKE_VERSION} VERSION_LESS "3.14")
+  # CREATE_LINK has been introduced in CMake 3.14
+  # we create a copy instead.
+  configure_file(env_ccpsynerbi.sh.in ${SyneRBI_INSTALL}/bin/env_ccppetmr.sh)
+  configure_file(env_ccpsynerbi.csh.in ${SyneRBI_INSTALL}/bin/env_ccppetmr.csh)
+else ()
+  file(CREATE_LINK ${SyneRBI_INSTALL}/bin/env_ccpsynerbi.sh ${SyneRBI_INSTALL}/bin/env_ccppetmr.sh SYMBOLIC)
+  file(CREATE_LINK ${SyneRBI_INSTALL}/bin/env_ccpsynerbi.csh ${SyneRBI_INSTALL}/bin/env_ccppetmr.csh SYMBOLIC)
+endif()
 
 # add tests
 enable_testing()
