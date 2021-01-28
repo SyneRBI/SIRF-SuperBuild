@@ -116,15 +116,17 @@ Source a script with the environment variables appropriate for your shell
 
 For instance, assuming that you set `CMAKE_INSTALL_PREFIX=~/devel/INSTALL`,for sh/bash/ksh etc
 ```bash
-source ~/devel/INSTALL/bin/env_ccppetmr.sh
+source ~/devel/INSTALL/bin/env_sirf.sh
 ```
 You probably want to add a similar line to your .bashrc/.profile.
 
 Or for csh
 ```csh
-source ~/devel/INSTALL/bin/env_ccppetmr.csh
+source ~/devel/INSTALL/bin/env_sirf.csh
 ```
 You probably want to add a similar line to your .cshrc.
+
+Notice that for backwards compatibility a symbolic link to `env_sirf.sh` with the name `env_ccppetmr.sh` will be created, and similarly for the csh.
 
 ### Open a terminal and start Gadgetron
 To be able to use Gadgetron, a Gadgetron server must be running. You can do this by opening a new terminal window and enter:
@@ -133,7 +135,7 @@ To be able to use Gadgetron, a Gadgetron server must be running. You can do this
 gadgetron
 ```
 
-N.B.: If you didn't add any of the above statements to your `.bashrc` or `.cshrc`, you will have to source `env_ccpetmr.*` again in this terminal first.
+N.B.: If you didn't add any of the above statements to your `.bashrc` or `.cshrc`, you will have to source `env_sirf.*` again in this terminal first.
 
 ### Testing
 Tests for the SIRF-SuperBuild are currently the SIRF tests. The tests can contain tests from most SuperBuild projects.

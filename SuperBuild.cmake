@@ -394,9 +394,18 @@ export GADGETRON_HOME\n")
   set(ENV_GADGETRON_HOME_CSH "setenv GADGETRON_HOME ${SyneRBI_INSTALL}\n")
 endif()
 
-# handle rename CCP PETMR -> CCP SyneRBI
-configure_file(env_ccppetmr.sh.in ${SyneRBI_INSTALL}/bin/env_ccppetmr.sh)
-configure_file(env_ccppetmr.csh.in ${SyneRBI_INSTALL}/bin/env_ccppetmr.csh)
+configure_file(env_sirf.sh.in ${SyneRBI_INSTALL}/bin/env_sirf.sh)
+configure_file(env_sirf.csh.in ${SyneRBI_INSTALL}/bin/env_sirf.csh)
+
+if (${CMAKE_VERSION} VERSION_LESS "3.14")
+  # CREATE_LINK has been introduced in CMake 3.14
+  # we create a copy instead.
+  configure_file(env_sirf.sh.in ${SyneRBI_INSTALL}/bin/env_ccppetmr.sh)
+  configure_file(env_sirf.csh.in ${SyneRBI_INSTALL}/bin/env_ccppetmr.csh)
+else ()
+  file(CREATE_LINK ${SyneRBI_INSTALL}/bin/env_sirf.sh ${SyneRBI_INSTALL}/bin/env_ccppetmr.sh SYMBOLIC)
+  file(CREATE_LINK ${SyneRBI_INSTALL}/bin/env_sirf.csh ${SyneRBI_INSTALL}/bin/env_ccppetmr.csh SYMBOLIC)
+endif()
 
 # add tests
 enable_testing()
