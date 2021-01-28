@@ -1,6 +1,6 @@
 # ChangeLog
 ## v#.#.#
-- Environment files with name env_ccpsynerbi.sh (and csh) are created. Symbolic links or copies with the previous name env_ccppetmr.sh (and csh) depending on the version of CMake available are made.
+- Environment files with name env_sirf.sh (and csh) are created. Symbolic links or copies with the previous name env_ccppetmr.sh (and csh) depending on the version of CMake available are made.
 - Enabled HDF5 support for STIR by default (build C++ libraries for HDF5)
 - Fix some issues with finding Python [#472](https://github.com/SyneRBI/SIRF-SuperBuild/issues/472)
 - Add option `BUILD_TESTING_JSON` (default OFF)
