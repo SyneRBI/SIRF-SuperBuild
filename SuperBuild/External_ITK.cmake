@@ -52,11 +52,10 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   OPTION(ITK_MINIMAL_LIBS "Only build ITK IO libraries" ON)
   if (ITK_MINIMAL_LIBS)
 
+    # -DModule_ITKReview:BOOL=ON # should be ON for PETPVC, but not for others
     set(ITK_CMAKE_FLAGS
       -DITK_BUILD_DEFAULT_MODULES:BOOL=OFF
       -DITKGroup_IO:BOOL=ON
-      -DITKGroup_IO:BOOL=ON
-      -DModule_ITKReview:BOOL=ON # for PETPVC
       )
   else()
 
