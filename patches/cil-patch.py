@@ -17,6 +17,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.import sys
 
+import sys
 with open(sys.argv[1], 'r') as f:
     testdata = f.read()
     updated = testdata.replace('sys.prefix', "os.environ['SIRF_INSTALL_PATH']")
