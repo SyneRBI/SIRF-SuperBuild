@@ -1,5 +1,6 @@
 # ChangeLog
 ## v#.#.#
+- Patch Gadgetron include file hoNDFFT.h to remove spurious ".."
 - Environment files with name env_sirf.sh (and csh) are created. Symbolic links or copies with the previous name env_ccppetmr.sh (and csh) depending on the version of CMake available are made.
 - Enabled HDF5 support for STIR by default (build C++ libraries for HDF5)
 - Disabled building of `Module_ITKReview` by default
