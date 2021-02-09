@@ -1,5 +1,5 @@
 # This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
-# Copyright 2020 - 2021 Rutherford Appleton Laboratory STFC
+# Copyright 2021 Rutherford Appleton Laboratory STFC
 #
 # Author: Edoardo Pasca
 #
@@ -15,11 +15,12 @@
 #   distributed under the License is distributed on an "AS IS" BASIS,
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
-#   limitations under the License.import sys
-
+#   limitations under the License.
 import sys
+
 with open(sys.argv[1], 'r') as f:
     testdata = f.read()
-    updated = testdata.replace('sys.prefix', "os.environ['SIRF_INSTALL_PATH']")
-with open(sys.argv[2], 'w') as fw:    
+    updated = testdata.replace('../NFFT.h', "NFFT.h")
+    updated = updated.replace('../nfft_export.h', "nfft_export.h")
+with open(sys.argv[2], 'w') as fw:
     fw.write(updated)

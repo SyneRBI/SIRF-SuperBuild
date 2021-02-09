@@ -32,9 +32,7 @@ addons:
   - libboost-all-dev
   - libhdf5-serial-dev
   - libfftw3-dev
-  - python-dev
   - python3-dev
-  - python-tk
   - python3-tk
   - libopenblas-dev
   - libatlas-base-dev
@@ -55,6 +53,7 @@ addons:
   - autogen
   - autoconf
   - libtool
+  - python3-olefile
 
 # Environment variables
 # Note: On trusty we need to build Armadillo and boost ourselves (the system versions are too old)

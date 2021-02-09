@@ -159,15 +159,15 @@ set(DEFAULT_JSON_URL https://github.com/nlohmann/json.git )
 set(DEFAULT_JSON_TAG v3.9.1)
 
 # CCPi CIL
-set(CIL_VERSION "v20.04")
+set(CIL_VERSION "v20.09")
 set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
-set(DEFAULT_CCPi-Framework_TAG ${CIL_VERSION})
+set(DEFAULT_CCPi-Framework_TAG "${CIL_VERSION}.1")
 set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git )
 set(DEFAULT_CCPi-Regularisation-Toolkit_TAG ${CIL_VERSION})
 set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
 set(DEFAULT_CCPi-FrameworkPlugins_TAG ${CIL_VERSION})
 set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
-set(DEFAULT_CCPi-Astra_TAG ${CIL_VERSION})
+set(DEFAULT_CCPi-Astra_TAG "${CIL_VERSION}.1")
 
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
