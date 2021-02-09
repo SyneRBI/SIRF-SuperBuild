@@ -195,7 +195,8 @@ SuperBuild(){
         -DUSE_ITK=ON \
         -DDEVEL_BUILD=OFF\
         -DBUILD_CIL_LITE=ON\
-        -DNIFTYREG_USE_CUDA=OFF
+        -DNIFTYREG_USE_CUDA=OFF\
+	-DBUILD_pet_rd_tools=ON
   make -j${num_parallel}
 
   if [ ! -f ${SIRF_INSTALL_PATH}/share/gadgetron/config/gadgetron.xml ]
