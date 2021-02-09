@@ -83,6 +83,15 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set(${proj}_ENABLE_OPENMP OFF)
   endif()
 
+  # require to have access to Python for patching
+  if (NOT PYTHON_EXECUTABLE)
+    if (${CMAKE_VERSION} VERSION_LESS "3.12")
+      find_package(PythonInterp REQUIRED)
+    else()
+      find_package(Python COMPONENTS Interpreter REQUIRED)
+      set (PYTHON_EXECUTABLE ${Python_EXECUTABLE})
+    endif()
+  endif()
 
   # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
   SetGitTagAndRepo("${proj}")
@@ -112,6 +121,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DUSE_OPENMP:BOOL=${${proj}_ENABLE_OPENMP}
     DEPENDS
         ${${proj}_DEPENDENCIES}
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install &&  ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/patches/Gadgetron_include-patch.py ${SUPERBUILD_INSTALL_DIR}/include/gadgetron/hoNFFT.h ${SUPERBUILD_INSTALL_DIR}/include/gadgetron/hoNFFT.h
   )
 
     set(Gadgetron_ROOT        ${Gadgetron_SOURCE_DIR})
