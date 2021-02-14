@@ -1,11 +1,6 @@
 #========================================================================
-# Author: Benjamin A Thomas
-# Author: Kris Thielemans
-# Author: Edoardo Pasca
-# Author: Casper da Costa-Luis
-# Copyright 2017, 2020 University College London
-# Copyright 2017, 2020 STFC
-# Copyright 2019, 2020 King's College London
+# Copyright 2018-2020 Science Technology Facilities Council
+# Copyright 2018-2020 University College London
 #
 # This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -24,7 +19,7 @@
 #=========================================================================
 
 #This needs to be unique globally
-set(proj TomoPhantom)
+set(proj JSON)
 
 # Set dependency list
 set(${proj}_DEPENDENCIES "")
@@ -34,44 +29,34 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
+
 SetCanonicalDirectoryNames(${proj})
 # Get any flag from the superbuild call that may be particular to this projects CMAKE_ARGS
 SetExternalProjectFlags(${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
+  option(BUILD_TESTING_${proj} "Build tests for ${proj}" OFF)
   SetGitTagAndRepo("${proj}")
-
-  ### --- Project specific additions here
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     ${${proj}_EP_ARGS_GIT}
     ${${proj}_EP_ARGS_DIRS}
-    
-
     CMAKE_ARGS
-      -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
-    	-DLIBRARY_DIR:PATH=${${proj}_INSTALL_DIR}/lib
-    	-DINCLUDE_DIR:PATH=${${proj}_INSTALL_DIR}/include
-    	-DCONDA_BUILD=OFF
-    	-DBUILD_PYTHON_WRAPPER=ON
-        ${PYTHONLIBS_CMAKE_ARGS}
-    	-DPYTHON_DEST_DIR:PATH=${PYTHON_DEST_DIR}
-    	-DPYTHON_STRATEGY=${PYTHON_STRATEGY}
-      ${${proj}_EXTRA_CMAKE_ARGS_LIST}
-    # TODO this relies on using "make", but we could be build with something else
-    #INSTALL_COMMAND make TomoPhantom
-    DEPENDS
-        ${${proj}_DEPENDENCIES}
+      -DJSON_BuildTests:BOOL=${BUILD_TESTING_${proj}}
+       ${${proj}_EXTRA_CMAKE_ARGS_LIST}
+    DEPENDS ${${proj}_DEPENDENCIES}
   )
 
-   else()
-      if(${USE_SYSTEM_${externalProjName}})
-        find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
-        message(STATUS "USING the system ${externalProjName}, found ACE_LIBRARIES=${ACE_LIBRARIES}")
-    endif()
-  ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-                            ${${proj}_EP_ARGS_DIRS}
-  )
+  if (BUILD_TESTING_${proj})
+    add_test(NAME ${proj}_TESTS
+         COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION> --output-on-failure
+         WORKING_DIRECTORY ${${proj}_BINARY_DIR})
+  endif()
+
+  else()
+    ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
+      ${${proj}_EP_ARGS_DIRS}
+    )
   endif()

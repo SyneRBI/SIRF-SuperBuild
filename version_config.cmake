@@ -1,12 +1,11 @@
-
 #========================================================================
 # Author: Edoardo Pasca
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
-# Copyright 2017-2018 University College London
-# Copyright 2017-2018 Science Technology Facilities Council
+# Copyright 2017-2020 University College London
+# Copyright 2017-2020 Science Technology Facilities Council
 #
-# This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
+# This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,7 +23,7 @@
 
 ## BOOST  # Gadgetron needs at least 1.65
 if (APPLE) # really should be checking for CLang
-    # Boost 1.65 contains a bug for recent Clang https://github.com/CCPPETMR/SIRF-SuperBuild/issues/170
+	# Boost 1.65 contains a bug for recent Clang https://github.com/SyneRBI/SIRF-SuperBuild/issues/170
     set(Boost_VERSION 1.68.0)
     set(Boost_REQUIRED_VERSION 1.66.0)
     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_68_0.zip)
@@ -43,14 +42,14 @@ else()
 endif()
 
 ## Armadillo
-set(Armadillo_URL   https://downloads.sourceforge.net/project/arma/armadillo-9.800.2.tar.xz)
+set(Armadillo_URL https://downloads.sourceforge.net/project/arma/armadillo-9.800.2.tar.xz)
 set(Armadillo_MD5 c2fa488ea069b9972363ebad16e51ab5 )
 
 ## FFTW3
 if(WIN32)
   # Just use precompiled version
   # TODO would prefer the next zip file but for KT using an ftp URL times-out (firewall?)
-  set(FFTW3_URL https://www.ccppetmr.ac.uk/sites/www.ccppetmr.ac.uk/files/downloads/fftw-3.3.5-dll64.zip )
+  set(FFTW3_URL https://github.com/SyneRBI/assets/releases/download/latest/fftw-3.3.5-dll64.zip )
   set(FFTW3_MD5 cb3c5ad19a89864f036e7a2dd5be168c )
   #set(FFTW3_URL https://s3.amazonaws.com/install-gadgetron-vs2013/Dependencies/FFTW/zip/FFTW3.zip )
   #set(FFTW3_MD5 a42eac92d9ad06d7c53fb82b09df2b6e )
@@ -84,11 +83,11 @@ else()
   set(HDF5_DOWNLOAD_MAJOR_MINOR_VERSION "1.10")
   set(HDF5_DOWNLOAD_PATCH_VERSION "1")
   set(HDF5_DOWNLOAD_VERSION "${HDF5_DOWNLOAD_MAJOR_MINOR_VERSION}.${HDF5_DOWNLOAD_PATCH_VERSION}")
-  set(HDF5_URL https://www.ccppetmr.ac.uk/sites/www.ccppetmr.ac.uk/files/downloads/hdf5-${HDF5_DOWNLOAD_VERSION}.tar.gz)
+  set(HDF5_URL https://github.com/SyneRBI/assets/releases/download/latest/hdf5-${HDF5_DOWNLOAD_VERSION}.tar.gz)
 endif()
 
 if (${HDF5_DOWNLOAD_VERSION} STREQUAL 1.8.12)
-  set(HDF5_MD5 4711e0d6b87d442f194c5d29ba7fbe62 )
+  set(HDF5_MD5 d804802feb99b87fc668a90e6fa34411 )
 elseif (${HDF5_DOWNLOAD_VERSION} STREQUAL 1.10.1)
   set(HDF5_MD5 43a2f9466702fb1db31df98ae6677f15 )
 else()
@@ -98,11 +97,11 @@ endif()
 ## SWIG
 set (SWIG_REQUIRED_VERSION 2)
 if (WIN32)
-  set(SWIG_URL http://downloads.sourceforge.net/swig/swigwin-3.0.12.zip  )
-  set(SWIG_MD5 a49524dad2c91ae1920974e7062bfc93 )
+  set(SWIG_URL http://downloads.sourceforge.net/swig/swigwin-4.0.2.zip  )
+  set(SWIG_MD5 009926b512aee9318546bdd4c7eab6f9 )
 else(WIN32)
-  set(SWIG_URL http://downloads.sourceforge.net/swig/swig-3.0.12.tar.gz )
-  set(SWIG_MD5 82133dfa7bba75ff9ad98a7046be687c )
+  set(SWIG_URL http://downloads.sourceforge.net/swig/swig-4.0.2.tar.gz )
+  set(SWIG_MD5 7c3e46cb5af2b469722cafa0d91e127b )
 endif(WIN32)
 option(DEVEL_BUILD "Use current versions of major packages" OFF)
 
@@ -111,12 +110,12 @@ set(GTest_URL https://github.com/google/googletest )
 set(GTest_TAG release-1.8.0)
 
 ## glog
-set(glog_URL https://github.com/google/glog )
-set(glog_TAG v0.3.5)
+set(DEFAULT_glog_URL https://github.com/google/glog )
+set(DEFAULT_glog_TAG v0.3.5)
 
 ## ITK
-set(ITK_URL https://itk.org/ITK.git)
-set(ITK_TAG v4.13.1)
+set(DEFAULT_ITK_URL https://github.com/InsightSoftwareConsortium/ITK.git)
+set(DEFAULT_ITK_TAG v4.13.1)
 
 ## NIFTYREG
 set(DEFAULT_NIFTYREG_URL https://github.com/KCL-BMEIS/niftyreg.git )
@@ -124,8 +123,13 @@ set(DEFAULT_NIFTYREG_TAG 99d584e2b8ea0bffe7e65e40c8dc818751782d92 )
 set(DEFAULT_NIFTYREG_REQUIRED_VERSION 1.5.68)
 
 ## ISMRMRD
-set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
-set(DEFAULT_ISMRMRD_TAG v1.4.1)
+if (WIN32)
+  set(DEFAULT_ISMRMRD_URL https://github.com/SyneRBI/ismrmrd )
+  set(DEFAULT_ISMRMRD_TAG program_options_fix)
+else()
+  set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
+  set(DEFAULT_ISMRMRD_TAG v1.4.1)
+endif()
 
 ## Gadgetron
 set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
@@ -133,19 +137,35 @@ set(DEFAULT_Gadgetron_TAG b6191eaaa72ccca6c6a5fe4c0fa3319694f512ab)
 
 ## ASTRA
 set(DEFAULT_astra-toolbox_URL https://github.com/astra-toolbox/astra-toolbox )
-set(DEFAULT_astra-toolbox_TAG v1.8.3)
+set(DEFAULT_astra-toolbox_TAG origin/master)
 
 ## TomoPhantom
 set(DEFAULT_TomoPhantom_URL https://github.com/dkazanc/TomoPhantom )
 set(DEFAULT_TomoPhantom_TAG v1.4)
 
 ## NiftyPET
-set(DEFAULT_NIFTYPET_URL https://github.com/pjmark/NIPET )
-set(DEFAULT_NIFTYPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
+set(DEFAULT_NiftyPET_URL https://github.com/pjmark/NIPET )
+set(DEFAULT_NiftyPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
 
 ## SIRF-Contribs
-set(DEFAULT_SIRF-Contribs_URL https://github.com/CCPPETMR/SIRF-Contribs )
+set(DEFAULT_SIRF-Contribs_URL https://github.com/SyneRBI/SIRF-Contribs )
 set(DEFAULT_SIRF-Contribs_TAG origin/master )
+
+## SPM
+set(DEFAULT_SPM_URL https://github.com/spm/SPM12.git )
+set(DEFAULT_SPM_TAG r7771)
+
+set(DEFAULT_JSON_URL https://github.com/nlohmann/json.git )
+set(DEFAULT_JSON_TAG v3.9.1)
+
+# CCPi CIL
+set(CIL_VERSION "v20.11")
+set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
+set(DEFAULT_CCPi-Framework_TAG "${CIL_VERSION}.2")
+set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
+set(DEFAULT_CCPi-Astra_TAG "${CIL_VERSION}.2")
+set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
+set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v20.09")
 
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
@@ -154,7 +174,7 @@ mark_as_advanced(DEVEL_BUILD)
 # with devel build it uses latest version of upstream packages
 # otherwise uses the versions for current SIRF
 
-set(DEFAULT_SIRF_URL https://github.com/CCPPETMR/SIRF )
+set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF )
 if (DEVEL_BUILD)
 
   set (DEFAULT_SIRF_TAG origin/master)
@@ -170,29 +190,17 @@ if (DEVEL_BUILD)
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
   set(DEFAULT_pet_rd_tools_TAG origin/master)
 
-  ## glog
-  set(DEFAULT_glog_URL https://github.com/google/glog )
-  set(DEFAULT_glog_TAG v035)
- 
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
   set(DEFAULT_ACE_TAG origin/master)
-  # CCPi CIL
-  set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
-  set(DEFAULT_CCPi-Framework_TAG origin/master)
-  set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
-  set(DEFAULT_CCPi-Regularisation-Toolkit_TAG origin/master)
-  set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
-  set(DEFAULT_CCPi-FrameworkPlugins_TAG origin/master)
-  set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
-  set(DEFAULT_CCPi-Astra_TAG origin/master)
 
 else()
-  set(DEFAULT_SIRF_TAG v2.1.0)
+  # version 2.2.0 has a bug in algebra leading to failure of SIRF CIL TESTS
+  # which are fixed in master
+  set(DEFAULT_SIRF_TAG 933630ece93ded99dffbdc60e4eef993051621b1)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG stir_rel_4_00_alpha)
-  #set(DEFAULT_STIR_TAG 3a277f7a819f35a553a8d6097402ea25cf55a240)
+  set(DEFAULT_STIR_TAG release_4)
 
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
@@ -200,25 +208,12 @@ else()
 
   ## pet-rd-tools
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
-  set(DEFAULT_pet_rd_tools_TAG v1.1.0)
-
-  ## glog
-  set(DEFAULT_glog_URL https://github.com/google/glog )
-  set(DEFAULT_glog_TAG v035)
+  set(DEFAULT_pet_rd_tools_TAG v2.0.1)
 
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
   set(DEFAULT_ACE_TAG origin/master)
   
-  # CCPi CIL
-  set(CIL_VERSION "v19.10")
-  set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
-  set(DEFAULT_CCPi-Framework_TAG ${CIL_VERSION})
-  set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git )
-  set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "${CIL_VERSION}")
-  set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
-  set(DEFAULT_CCPi-FrameworkPlugins_TAG "${CIL_VERSION}")
-  set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
-  set(DEFAULT_CCPi-Astra_TAG "${CIL_VERSION}")
+  
 endif()
 
 
@@ -248,6 +243,10 @@ SET(glog_TAG ${DEFAULT_glog_TAG} CACHE STRING ON)
 set(ACE_URL ${DEFAULT_ACE_URL} CACHE STRING ON)
 set(ACE_TAG ${DEFAULT_ACE_TAG} CACHE STRING ON)
 
+set(JSON_URL ${DEFAULT_JSON_URL} CACHE STRING ON)
+set(JSON_TAG ${DEFAULT_JSON_TAG} CACHE STRING ON)
+
+
 set(CCPi-Regularisation-Toolkit_URL ${DEFAULT_CCPi-Regularisation-Toolkit_URL} CACHE STRING ON)
 set(CCPi-Regularisation-Toolkit_TAG ${DEFAULT_CCPi-Regularisation-Toolkit_TAG} CACHE STRING ON)
 set(CCPi-Framework_URL ${DEFAULT_CCPi-Framework_URL} CACHE STRING ON)
@@ -264,11 +263,20 @@ set(TomoPhantom_TAG ${DEFAULT_TomoPhantom_TAG} CACHE STRING ON)
 set(NIFTYREG_URL ${DEFAULT_NIFTYREG_URL} CACHE STRING ON)
 set(NIFTYREG_TAG ${DEFAULT_NIFTYREG_TAG} CACHE STRING ON)
 
-set(NIFTYPET_URL ${DEFAULT_NIFTYPET_URL} CACHE STRING ON)
-set(NIFTYPET_TAG ${DEFAULT_NIFTYPET_TAG} CACHE STRING ON)
+set(NiftyPET_URL ${DEFAULT_NiftyPET_URL} CACHE STRING ON)
+set(NiftyPET_TAG ${DEFAULT_NiftyPET_TAG} CACHE STRING ON)
 
 set(SIRF-Contribs_URL ${DEFAULT_SIRF-Contribs_URL} CACHE STRING ON)
 set(SIRF-Contribs_TAG ${DEFAULT_SIRF-Contribs_TAG} CACHE STRING ON)
+
+set(ITK_URL ${DEFAULT_ITK_URL} CACHE STRING ON)
+set(ITK_TAG ${DEFAULT_ITK_TAG} CACHE STRING ON)
+
+set(SPM_URL ${DEFAULT_SPM_URL} CACHE STRING ON)
+set(SPM_TAG ${DEFAULT_SPM_TAG} CACHE STRING ON)
+
+set(JSON_URL ${DEFAULT_JSON_URL} CACHE STRING ON)
+set(JSON_TAG ${DEFAULT_JSON_TAG} CACHE STRING ON)
 
 mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   Gadgetron_URL Gadgetron_TAG
@@ -280,6 +288,9 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   CCPi-Framework_URL CCPi-Framework_TAG
   CCPi-FrameworkPlugins_URL CCPi-FrameworkPlugins_TAG
   CCPi-Regularisation-Toolkit_URL CCPi-Regularisation-Toolkit_TAG
-  NIFTYPET_URL NIFTYPET_TAG
+  NiftyPET_URL NiftyPET_TAG
   SIRF-Contribs_URL SIRF-Contribs_TAG
+  ITK_URL ITK_TAG
+  SPM_URL SPM_TAG
+  JSON_URL JSON_TAG
 )

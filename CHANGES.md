@@ -1,4 +1,40 @@
 # ChangeLog
+## v#.#.#
+- Updates for CIL 20.11+ which has a different python module structure. CCPi-FrameworkPlugins has been also removed.
+- Use more recent SIRF hash where the known bug in python algebric methods is fixed.
+- Patch Gadgetron include file hoNDFFT.h to remove spurious ".."
+- Environment files with name env_sirf.sh (and csh) are created. Symbolic links or copies with the previous name env_ccppetmr.sh (and csh) depending on the version of CMake available are made.
+- Enabled HDF5 support for STIR by default (build C++ libraries for HDF5)
+- Disabled building of `Module_ITKReview` by default
+- Fix some issues with finding Python [#472](https://github.com/SyneRBI/SIRF-SuperBuild/issues/472)
+- Add option `BUILD_TESTING_JSON` (default OFF)
+- Updated versions:
+   - JSON: 3.9.1
+   - SWIG: 4.0.2
+   - SIRF: 933630ece93ded99dffbdc60e4eef993051621b1
+## v2.2.0
+- Updated to reflect change from CCPPETMR to CCPSyneRBI.
+- Made ${proj}_SOURCE_DIR a cached variables such that the user can point to an existing directory.
+- Added support for passing CMAKE args to projects from the SuperBuild call.
+- Use macros to drastically simplify (and reduce size of) the External*.cmake files.
+- Pass HDF5_ROOT through to projects if it's defined and USE_SYSTEM_HDF5=ON
+- Added checking whether default SWIG executable exists.
+- Corrected logic around building SIRF and Registration.
+- Added JSON as external package.
+- Added option to build ITK with static libraries.
+- Added option to skip ITK path length checks.
+- Added option to compile Armadillo without HDF5 support.
+- Added options to disable STIR JSON support.
+- Added option to disable CUDA.
+- Added option to disable Gadgetron checkouts.
+- Added option to disable Python or MATLAB support.
+- Sorted out Nifty PET capitalisation.
+- Unified OpenMP control.
+- Updated versions:
+   - STIR: rel_4.0.2
+   - CIL:  20.04
+   - SIRF: 2.2.0
+
 ## v2.1.0
 - Switch NiftyReg remote from `rijobro` to `KCL-BMEIS` (following the acceptance of one of our PRs to their code).
 - Azure:

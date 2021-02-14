@@ -1,6 +1,6 @@
 #========================================================================
-# Author: Benjamin A Thomas
-# Copyright 2017, 2020 University College London
+# Author: Richard Brown
+# Copyright 2019, 2020 University College London
 #
 # This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -18,17 +18,16 @@
 #
 #=========================================================================
 
-if(WIN32)
-  execute_process(COMMAND bootstrap.bat
-    WORKING_DIRECTORY ${BUILD_DIR} RESULT_VARIABLE bootstrap_result)
-else()
-  message(STATUS "Build dir is : ${BUILD_DIR}")
-  execute_process(COMMAND ./bootstrap.sh --prefix=${BOOST_INSTALL_DIR}
-    --with-libraries=system,filesystem,thread,program_options,chrono,date_time,atomic,timer,regex,test
-    #--with-libraries=system,thread,program_options,log,math...
-    #--without-libraries=atomic...
+if (NOT SPM_DIR)
+  set(SPM_DIR "" CACHE PATH "Path to SPM")
+endif()
 
-    WORKING_DIRECTORY ${BUILD_DIR} RESULT_VARIABLE bootstrap_result)
-endif(WIN32)
+find_file(spm_realign "spm_realign.m" PATHS "${SPM_DIR}" NO_DEFAULT_PATH)
 
-return(${bootstrap_result})
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(SPM
+  FOUND_VAR SPM_FOUND
+  REQUIRED_VARS spm_realign
+)
+
+unset(spm_realign CACHE)

@@ -1,23 +1,23 @@
-# This file sets environment variables for the CCP PETMR software.
+# This file sets environment variables for the CCP SyneRBI software.
 # Use it like this
 #    source /path/to/whereever/env_ccppetmr.csh
 # Preferably add this line to your .cshrc
 
-setenv SIRF_PATH @SIRF_SRC_DIR@
+setenv SIRF_PATH @SIRF_SOURCE_DIR@
 # Where all binaries are installed
-setenv SIRF_INSTALL_PATH @CCPPETMR_INSTALL@
+setenv SIRF_INSTALL_PATH @SyneRBI_INSTALL@
 # Where to find shared libraries
 # Setting for Linux but doesn't harm elsewhere
 if $?LD_LIBRARY_PATH then
-	setenv LD_LIBRARY_PATH @CCPPETMR_INSTALL@/lib:$LD_LIBRARY_PATH
+	setenv LD_LIBRARY_PATH @SyneRBI_INSTALL@/lib:$LD_LIBRARY_PATH@Matlab_extra_ld_path@
 else
-	setenv LD_LIBRARY_PATH @CCPPETMR_INSTALL@/lib
+	setenv LD_LIBRARY_PATH @SyneRBI_INSTALL@/lib@Matlab_extra_ld_path@
 endif
 # Setting for MacOS but doesn't harm elsewhere
 if $?DYLD_FALLBACK_LIBRARY_PATH then
-	setenv DYLD_FALLBACK_LIBRARY_PATH @CCPPETMR_INSTALL@/lib:$DYLD_FALLBACK_LIBRARY_PATH
+	setenv DYLD_FALLBACK_LIBRARY_PATH @SyneRBI_INSTALL@/lib:$DYLD_FALLBACK_LIBRARY_PATH
 else
-	setenv DYLD_FALLBACK_LIBRARY_PATH @CCPPETMR_INSTALL@/lib
+	setenv DYLD_FALLBACK_LIBRARY_PATH @SyneRBI_INSTALL@/lib
 endif
 
 #####     Environment variables for Python    
@@ -26,7 +26,7 @@ endif
 #####     Environment variables for Matlab   
 @ENV_MATLAB_CSH@
 
-set path=( @CCPPETMR_INSTALL@/bin $path )
+set path=( @SyneRBI_INSTALL@/bin $path )
 
 # Export Gadgetron Home
 @ENV_GADGETRON_HOME_CSH@
