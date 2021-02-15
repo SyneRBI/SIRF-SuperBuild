@@ -7,6 +7,15 @@ package:
 build:
   preserve_egg_dir: False
   number: 0
+  missing_dso_whitelist:
+    - $RPATH/libc.so.6  # [linux]
+    - $RPATH/libm.so.6  # [linux]
+    - $RPATH/libdl.so.2 # [linux]
+    - $RPATH/libpthread.so.0 # [linux]
+    - $RPATH/librt.so.1 # [linux]
+    - $RPATH/libicuuc.so.60  #[linux]
+    - $RPATH/libicui18n.so.60 #[linux]
+    
     
 requirements:
   build:
