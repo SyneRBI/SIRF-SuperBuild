@@ -62,7 +62,7 @@ cmake ../SIRF-SuperBuild \
     -DUSE_SYSTEM_HDF5=ON \
     -DBUILD_siemens_to_ismrmrd=Off \
     -DUSE_SYSTEM_GTest=On\
-    -DUSE_ITK=ON\
+    -DUSE_ITK=OFF\
     -DUSE_SYSTEM_ITK=ON\
     -DCONDA_BUILD=On
 

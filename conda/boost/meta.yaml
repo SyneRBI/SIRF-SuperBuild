@@ -7,22 +7,20 @@ package:
 build:
   preserve_egg_dir: False
 #  number: 0
+  missing_dso_whitelist:
+    - $RPATH/libc.so.6  # [linux]
+    - $RPATH/libm.so.6  # [linux]
+    - $RPATH/libdl.so.2 # [linux]
+    - $RPATH/libpthread.so.0 # [linux]
+    - $RPATH/librt.so.1 # [linux]
+    - $RPATH/libicuuc.so.60  #[linux]
+    - $RPATH/libicui18n.so.60 #[linux]
     
 requirements:
   build:
-    #- boost ==1.64.0	
-    #- boost-cpp ==1.64.0 
-#    - boost
-#    - boost-cpp
-#    - python 3.6 # [py36]
-#    - python 2.7 # [py27]
     - cmake >=3.1
     - vc 14 # [win and py36] 
     - vc 9  # [win and py27]
-#    - numpy
-#    - scipy
-#    - matplotlib
-#    - docopt
     - h5py
 #    - libxml2
     - psutil
@@ -38,20 +36,12 @@ requirements:
   run:
     - vc 14 # [win and py35]
     - vc 9  # [win and py27]
-#    - python 3.6 # [py36]
-#    - python 2.7 # [py27]
-#    - numpy
-#    - scipy
-#    - matplotlib
-#    - docopt
     - h5py
     - psutil
     - fftw
     - libgcc-ng
     - libstdcxx-ng
     - openblas
-#    - armadillo
-#    - gtest
 	
 about:
   home: http://www.ccppetmr.ac.uk

@@ -7,6 +7,16 @@ package:
 build:
   preserve_egg_dir: False
 #  number: 0
+  missing_dso_whitelist:
+    - $RPATH/libc.so.6  # [linux]
+    - $RPATH/libm.so.6  # [linux]
+    - $RPATH/libdl.so.2 # [linux]
+    - $RPATH/libpthread.so.0 # [linux]
+    - $RPATH/librt.so.1 # [linux]
+    - $RPATH/libicuuc.so.60  #[linux]
+    - $RPATH/libicui18n.so.60 #[linux]
+    - /lib64/ld-linux-x86-64.so.2
+    
     
 requirements:
   build:
@@ -24,9 +34,9 @@ requirements:
 #    - scipy
 #    - matplotlib
 #    - docopt
-    - h5py
+    # - h5py
 #    - libxml2
-    - psutil
+    # - psutil
     - nose
     - coverage
     - fftw
@@ -54,10 +64,14 @@ requirements:
     - libgcc-ng
     - libstdcxx-ng
     - openblas
+    - libopenblas
     - armadillo
     - gtest
     - ismrmrd
     - ace
+    - cudatoolkit =10.1
+    - _openmp_mutex # [linux]
+    - hdf5 
 	
 about:
   home: http://www.ccppetmr.ac.uk
