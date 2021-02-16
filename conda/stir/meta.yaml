@@ -15,6 +15,7 @@ build:
     - $RPATH/librt.so.1 # [linux]
     - $RPATH/libicuuc.so.60  #[linux]
     - $RPATH/libicui18n.so.60 #[linux]
+    - /lib64/ld-linux-x86-64.so.2 # [linux]
     
     
 requirements:
@@ -41,9 +42,13 @@ requirements:
     - swig >=3
 #    - libxslt
 #- armadillo
+    - hdf5
     - gtest
       #- ismrmrd
-    - itk
+    # - itk ==4.13.1
+    - ismrmrd
+    - _openmp_mutex # [linux]
+    - cudatoolkit=10.1
 
 
   run:
@@ -61,7 +66,9 @@ requirements:
     - libgcc-ng
     - libstdcxx-ng
     - openblas
-    - itk
+    - ismrmrd
+    - _openmp_mutex # [linux]
+    - cudatoolkit=10.1
 	
 about:
   home: http://www.ccppetmr.ac.uk

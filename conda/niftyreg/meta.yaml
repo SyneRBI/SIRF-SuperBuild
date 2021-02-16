@@ -62,6 +62,7 @@ requirements:
     - libgcc-ng
     - libstdcxx-ng
     - ismrmrd
+    - _openmp_mutex # [linux]
       #    - openblas
     # - itk
 	

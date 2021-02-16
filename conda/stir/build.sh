@@ -52,7 +52,7 @@ cmake ../SIRF-SuperBuild \
     -UGadgetron_TAG \
     -UISMRMRD_URL \
     -UISMRMRD_TAG \
-    -DBUILD_GADGETRON=On \
+    -DBUILD_GADGETRON=OFF \
     -DUSE_SYSTEM_SWIG=On \
     -DUSE_SYSTEM_Boost=On \
     -DUSE_SYSTEM_Armadillo=On \
@@ -63,7 +63,7 @@ cmake ../SIRF-SuperBuild \
     -DBUILD_siemens_to_ismrmrd=Off \
     -DUSE_SYSTEM_GTest=On\
     -DUSE_ITK=ON\
-    -DUSE_SYSTEM_ITK=ON\
+    -DUSE_SYSTEM_ITK=OFF\
     -DCONDA_BUILD=On
 
 make -j2 STIR

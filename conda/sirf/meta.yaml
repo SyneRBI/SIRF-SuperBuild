@@ -43,7 +43,7 @@ requirements:
 #    - libxslt
 #    - armadillo
     - gtest
-#    - ismrmrd
+    - ismrmrd
 
 
   run:
@@ -56,8 +56,8 @@ requirements:
     - docopt
     - gadgetron ==b6191eaaa72ccca6c6a5fe4c0fa3319694f512ab
     - h5py
-    - stir
-    - niftyreg
+    # - stir
+    # - niftyreg
 #    - boost >=1.63
 #    - h5py
 #    - psutil
@@ -68,6 +68,11 @@ requirements:
 #    - armadillo
 #    - gtest
 #    - ismrmrd
+    - libgcc-ng
+    - libstdcxx-ng
+    - ismrmrd
+    - _openmp_mutex # [linux]
+    - stir
 	
 about:
   home: http://www.ccppetmr.ac.uk

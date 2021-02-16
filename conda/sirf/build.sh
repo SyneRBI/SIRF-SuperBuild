@@ -63,11 +63,11 @@ cmake ../SIRF-SuperBuild \
     -DBUILD_siemens_to_ismrmrd=Off \
     -DUSE_SYSTEM_GTest=On\
     -DUSE_ITK=ON\
-    -DUSE_SYSTEM_ITK=ON\
-    -DUSE_SYSTEM_NIFTYREG=ON\
+    -DUSE_SYSTEM_ITK=OFF\
+    -DUSE_SYSTEM_NIFTYREG=OFF\
     -DCONDA_BUILD=On
 
-#make -j2 NIFTYREG
+make -j2 NIFTYREG
 make -j2 STIR
 make -j1 SIRF
 
