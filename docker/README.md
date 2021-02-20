@@ -331,7 +331,7 @@ docker images
 (Note that this reports the "total" size, not taking into account any overlap between different layers).
 
 If you decide you no longer need one (e.g. because you will download a newer version), you can then use
-``sh
+```sh
 docker rmi <IMAGEID>
 ```
 
