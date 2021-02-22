@@ -147,6 +147,10 @@ set(DEFAULT_TomoPhantom_TAG v1.4)
 set(DEFAULT_NiftyPET_URL https://github.com/pjmark/NIPET )
 set(DEFAULT_NiftyPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
 
+## parallelproj
+set(DEFAULT_parallelproj_URL https://github.com/gschramm/parallelproj )
+set(DEFAULT_parallelproj_TAG origin/master)
+
 ## SIRF-Contribs
 set(DEFAULT_SIRF-Contribs_URL https://github.com/SyneRBI/SIRF-Contribs )
 set(DEFAULT_SIRF-Contribs_TAG origin/master )
@@ -266,6 +270,9 @@ set(NIFTYREG_TAG ${DEFAULT_NIFTYREG_TAG} CACHE STRING ON)
 set(NiftyPET_URL ${DEFAULT_NiftyPET_URL} CACHE STRING ON)
 set(NiftyPET_TAG ${DEFAULT_NiftyPET_TAG} CACHE STRING ON)
 
+set(parallelproj_URL ${DEFAULT_parallelproj_URL} CACHE STRING ON)
+set(parallelproj_TAG ${DEFAULT_parallelproj_TAG} CACHE STRING ON)
+
 set(SIRF-Contribs_URL ${DEFAULT_SIRF-Contribs_URL} CACHE STRING ON)
 set(SIRF-Contribs_TAG ${DEFAULT_SIRF-Contribs_TAG} CACHE STRING ON)
 
@@ -289,6 +296,7 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   CCPi-FrameworkPlugins_URL CCPi-FrameworkPlugins_TAG
   CCPi-Regularisation-Toolkit_URL CCPi-Regularisation-Toolkit_TAG
   NiftyPET_URL NiftyPET_TAG
+  parallelproj_URL parallelproj_TAG
   SIRF-Contribs_URL SIRF-Contribs_TAG
   ITK_URL ITK_TAG
   SPM_URL SPM_TAG
