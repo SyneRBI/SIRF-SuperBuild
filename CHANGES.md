@@ -11,7 +11,7 @@
 - Updated versions:
    - JSON: 3.9.1
    - SWIG: 4.0.2
-   - SIRF: 933630ece93ded99dffbdc60e4eef993051621b1
+   - SIRF: ba1af302970cbe0042a3e47ad81060309854055a
 ## v2.2.0
 - Updated to reflect change from CCPPETMR to CCPSyneRBI.
 - Made ${proj}_SOURCE_DIR a cached variables such that the user can point to an existing directory.
