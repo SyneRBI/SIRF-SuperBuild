@@ -2,7 +2,8 @@
 # Author: Benjamin A Thomas
 # Author: Edoardo Pasca
 # Author: Casper da Costa-Luis
-# Copyright 2017-2020 University College London
+# Author: Kris Thielemans
+# Copyright 2017-2021 University College London
 # Copyright 2017-2020 Science Technology Facilities Council
 #
 # This file is part of the CCP SyneRBI Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
@@ -273,6 +274,12 @@ if (USE_CUDA AND NOT USE_SYSTEM_STIR)
   endif()
 else()
   set(USE_NiftyPET OFF CACHE BOOL "Build STIR with NiftyPET's projectors" FORCE)
+endif()
+
+# parallelproj
+set(USE_parallelproj ON CACHE BOOL "Build STIR with parallelproj's projectors") # FORCE)
+if (USE_parallelproj)
+  option(USE_SYSTEM_parallelproj "Build using an external version of parallelproj" OFF)
 endif()
 
 ## set versions
