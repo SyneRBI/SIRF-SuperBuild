@@ -251,8 +251,6 @@ set(CCPi-Regularisation-Toolkit_URL ${DEFAULT_CCPi-Regularisation-Toolkit_URL} C
 set(CCPi-Regularisation-Toolkit_TAG ${DEFAULT_CCPi-Regularisation-Toolkit_TAG} CACHE STRING ON)
 set(CCPi-Framework_URL ${DEFAULT_CCPi-Framework_URL} CACHE STRING ON)
 set(CCPi-Framework_TAG ${DEFAULT_CCPi-Framework_TAG} CACHE STRING ON)
-set(CCPi-FrameworkPlugins_URL ${DEFAULT_CCPi-FrameworkPlugins_URL} CACHE STRING ON)
-set(CCPi-FrameworkPlugins_TAG ${DEFAULT_CCPi-FrameworkPlugins_TAG} CACHE STRING ON)
 set(CCPi-Astra_URL ${DEFAULT_CCPi-Astra_URL} CACHE STRING ON)
 set(CCPi-Astra_TAG ${DEFAULT_CCPi-Astra_TAG} CACHE STRING ON)
 set(astra-toolbox_URL ${DEFAULT_astra-toolbox_URL} CACHE STRING ON)
@@ -286,11 +284,14 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   glog_URL glog_TAG
   NIFTYREG_URL NIFTYREG_TAG
   CCPi-Framework_URL CCPi-Framework_TAG
-  CCPi-FrameworkPlugins_URL CCPi-FrameworkPlugins_TAG
+  CCPi-Astra_URL CCPi-Astra_TAG
   CCPi-Regularisation-Toolkit_URL CCPi-Regularisation-Toolkit_TAG
   NiftyPET_URL NiftyPET_TAG
   SIRF-Contribs_URL SIRF-Contribs_TAG
   ITK_URL ITK_TAG
   SPM_URL SPM_TAG
   JSON_URL JSON_TAG
+  astra-toolbox_URL astra-toolbox_TAG
+  ACE_URL ACE_TAG
+  
 )
