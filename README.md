@@ -292,6 +292,9 @@ As an example, the following changes some Gadgetron and NiftyReg flags
 ```sh
 cmake ../SIRF-SuperBuild -DGadgetron_EXTRA_CMAKE_ARGS:STRING="-DBUILD_PYTHON_SUPPORT:BOOL=ON;" -DNIFTYREG_EXTRA_CMAKE_ARGS:STRING="-DCUDA_FAST_MATH:BOOL=OFF;-DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF"
 ``` 
+### Building with CUDA
+
+Some dependencies like Gadgetron, NiftyPET and Parallelproj require building parts of their code base with CUDA. It has been found that version [10.1 update 1](https://github.com/gadgetron/gadgetron/issues/792#issuecomment-786481256) works, but following updates of 10.1 and 10.2 do not build Gadgetron. It is reported that version CUDA toolkit version 11 works. We have not tested lower versions of the toolkit yet.
 
 ## Notes
 
