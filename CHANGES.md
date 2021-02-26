@@ -1,5 +1,7 @@
 # ChangeLog
 ## v#.#.#
+- Updates for CIL 20.11+ which has a different python module structure. CCPi-FrameworkPlugins has been also removed.
+- Use more recent SIRF hash where the known bug in python algebric methods is fixed.
 - Patch Gadgetron include file hoNDFFT.h to remove spurious ".."
 - Environment files with name env_sirf.sh (and csh) are created. Symbolic links or copies with the previous name env_ccppetmr.sh (and csh) depending on the version of CMake available are made.
 - Enabled HDF5 support for STIR by default (build C++ libraries for HDF5)
@@ -9,7 +11,7 @@
 - Updated versions:
    - JSON: 3.9.1
    - SWIG: 4.0.2
-
+   - SIRF: ba1af302970cbe0042a3e47ad81060309854055a
 ## v2.2.0
 - Updated to reflect change from CCPPETMR to CCPSyneRBI.
 - Made ${proj}_SOURCE_DIR a cached variables such that the user can point to an existing directory.

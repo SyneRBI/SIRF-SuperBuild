@@ -147,6 +147,10 @@ set(DEFAULT_TomoPhantom_TAG v1.4)
 set(DEFAULT_NiftyPET_URL https://github.com/pjmark/NIPET )
 set(DEFAULT_NiftyPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
 
+## parallelproj
+set(DEFAULT_parallelproj_URL https://github.com/gschramm/parallelproj )
+set(DEFAULT_parallelproj_TAG origin/master)
+
 ## SIRF-Contribs
 set(DEFAULT_SIRF-Contribs_URL https://github.com/SyneRBI/SIRF-Contribs )
 set(DEFAULT_SIRF-Contribs_TAG origin/master )
@@ -159,15 +163,13 @@ set(DEFAULT_JSON_URL https://github.com/nlohmann/json.git )
 set(DEFAULT_JSON_TAG v3.9.1)
 
 # CCPi CIL
-set(CIL_VERSION "v20.09")
+set(CIL_VERSION "v20.11")
 set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
-set(DEFAULT_CCPi-Framework_TAG "${CIL_VERSION}.1")
-set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git )
-set(DEFAULT_CCPi-Regularisation-Toolkit_TAG ${CIL_VERSION})
-set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
-set(DEFAULT_CCPi-FrameworkPlugins_TAG ${CIL_VERSION})
+set(DEFAULT_CCPi-Framework_TAG "${CIL_VERSION}.2")
 set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
-set(DEFAULT_CCPi-Astra_TAG "${CIL_VERSION}.1")
+set(DEFAULT_CCPi-Astra_TAG "${CIL_VERSION}.2")
+set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
+set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v20.09")
 
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
@@ -196,7 +198,9 @@ if (DEVEL_BUILD)
   set(DEFAULT_ACE_TAG origin/master)
 
 else()
-  set(DEFAULT_SIRF_TAG v2.2.0)
+  # version 2.2.0 has a bug in algebra leading to failure of SIRF CIL TESTS
+  # which are fixed in master
+  set(DEFAULT_SIRF_TAG ba1af302970cbe0042a3e47ad81060309854055a)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
@@ -251,8 +255,6 @@ set(CCPi-Regularisation-Toolkit_URL ${DEFAULT_CCPi-Regularisation-Toolkit_URL} C
 set(CCPi-Regularisation-Toolkit_TAG ${DEFAULT_CCPi-Regularisation-Toolkit_TAG} CACHE STRING ON)
 set(CCPi-Framework_URL ${DEFAULT_CCPi-Framework_URL} CACHE STRING ON)
 set(CCPi-Framework_TAG ${DEFAULT_CCPi-Framework_TAG} CACHE STRING ON)
-set(CCPi-FrameworkPlugins_URL ${DEFAULT_CCPi-FrameworkPlugins_URL} CACHE STRING ON)
-set(CCPi-FrameworkPlugins_TAG ${DEFAULT_CCPi-FrameworkPlugins_TAG} CACHE STRING ON)
 set(CCPi-Astra_URL ${DEFAULT_CCPi-Astra_URL} CACHE STRING ON)
 set(CCPi-Astra_TAG ${DEFAULT_CCPi-Astra_TAG} CACHE STRING ON)
 set(astra-toolbox_URL ${DEFAULT_astra-toolbox_URL} CACHE STRING ON)
@@ -265,6 +267,9 @@ set(NIFTYREG_TAG ${DEFAULT_NIFTYREG_TAG} CACHE STRING ON)
 
 set(NiftyPET_URL ${DEFAULT_NiftyPET_URL} CACHE STRING ON)
 set(NiftyPET_TAG ${DEFAULT_NiftyPET_TAG} CACHE STRING ON)
+
+set(parallelproj_URL ${DEFAULT_parallelproj_URL} CACHE STRING ON)
+set(parallelproj_TAG ${DEFAULT_parallelproj_TAG} CACHE STRING ON)
 
 set(SIRF-Contribs_URL ${DEFAULT_SIRF-Contribs_URL} CACHE STRING ON)
 set(SIRF-Contribs_TAG ${DEFAULT_SIRF-Contribs_TAG} CACHE STRING ON)
@@ -286,11 +291,15 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   glog_URL glog_TAG
   NIFTYREG_URL NIFTYREG_TAG
   CCPi-Framework_URL CCPi-Framework_TAG
-  CCPi-FrameworkPlugins_URL CCPi-FrameworkPlugins_TAG
+  CCPi-Astra_URL CCPi-Astra_TAG
   CCPi-Regularisation-Toolkit_URL CCPi-Regularisation-Toolkit_TAG
   NiftyPET_URL NiftyPET_TAG
+  parallelproj_URL parallelproj_TAG
   SIRF-Contribs_URL SIRF-Contribs_TAG
   ITK_URL ITK_TAG
   SPM_URL SPM_TAG
   JSON_URL JSON_TAG
+  astra-toolbox_URL astra-toolbox_TAG
+  ACE_URL ACE_TAG
+  
 )
