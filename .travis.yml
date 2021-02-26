@@ -84,8 +84,8 @@ jobs:
       - *addons_apt_packages
       - g++-6
    python: 3.6
-   name: py36 gcc6 +xenial -boost +fftw3 +hdf5 +ace +cil
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
+   name: py36 gcc6 +xenial -boost +fftw3 +hdf5 +ace +cil -itk
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DUSE_ITK=OFF" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
 
  # trusty disabled
  # This fails since Feb 2020 due to Python3 being 3.4.3, even though we ask for more recent.
@@ -105,16 +105,16 @@ jobs:
 # current linux
  - os: linux
    python: 3.6
-   name: py36 -boost +fftw3 +hdf5 +ace +cil
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON" PYMVER=3
+   name: py36 -boost +fftw3 +hdf5 +ace +cil -itk
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DUSE_ITK=OFF" PYMVER=3
  - os: linux
    python: 3.6
-   name: py36 -boost +fftw3 +hdf5 +ace +cil_lite
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL_LITE=ON" PYMVER=3
+   name: py36 -boost +fftw3 +hdf5 +ace +cil_lite -itk
+   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL_LITE=ON -DUSE_ITK=OFF" PYMVER=3
  - os: linux
    python: 3.6
-   name: py36 +DEVEL -boost -hdf5 -fftw3 +ace +siemens_to_ismrmrd
-   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_ACE=ON -DBUILD_siemens_to_ismrmrd=ON" PYMVER=3
+   name: py36 +DEVEL -boost -hdf5 -fftw3 +ace +siemens_to_ismrmrd -itk
+   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_ACE=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_ITK=OFF" PYMVER=3
  # osx disabled due to https://github.com/SyneRBI/SIRF-SuperBuild/issues/450
  #- os: osx
  #  osx_image: xcode11.2

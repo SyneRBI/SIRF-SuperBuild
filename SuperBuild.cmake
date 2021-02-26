@@ -261,7 +261,7 @@ if (BUILD_pet_rd_tools)
 endif()
 
 # ITK
-option(USE_ITK "Use ITK" OFF)
+option(USE_ITK "Use ITK" ON)
 if (USE_ITK)
   option(USE_SYSTEM_ITK "Build using an external version of ITK" OFF)
 endif()
