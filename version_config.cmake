@@ -178,10 +178,12 @@ mark_as_advanced(DEVEL_BUILD)
 # with devel build it uses latest version of upstream packages
 # otherwise uses the versions for current SIRF
 
-set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF )
+#set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF )
+set(DEFAULT_SIRF_URL https://github.com/johannesmayer/SIRF.git )
 if (DEVEL_BUILD)
 
-  set (DEFAULT_SIRF_TAG origin/master)
+  #set (DEFAULT_SIRF_TAG origin/master)
+  set (DEFAULT_SIRF_TAG origin/rpe-encoding)
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
   set(DEFAULT_STIR_TAG origin/master)
