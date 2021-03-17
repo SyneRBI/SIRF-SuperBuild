@@ -25,7 +25,7 @@ set(proj SIRF)
 # Set dependency list
 set(${proj}_DEPENDENCIES "Boost;HDF5;ISMRMRD;FFTW3;SWIG")
 
-if (${BUILD_GADGETRON})
+if (${BUILD_Gadgetron})
     set(${proj}_DEPENDENCIES "${${proj}_DEPENDENCIES};Gadgetron")
 endif()
 if (${BUILD_NIFTYREG})
