@@ -1,5 +1,6 @@
 # ChangeLog
 ## v#.#.#
+- Docker: change to use Python3 (miniconda3-latest)
 - Sets `USE_ITK=ON` by default.
 - Updates for CIL 20.11+ which has a different python module structure. CCPi-FrameworkPlugins has been also removed.
 - Use more recent SIRF hash where the known bug in python algebric methods is fixed.
