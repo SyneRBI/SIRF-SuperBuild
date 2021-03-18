@@ -72,21 +72,6 @@ env:
  - MAKEFLAGS="-j 2"  # too many threads may crash
 jobs:
  include:
- # linux g{cc,++}-{6,7} py{2,3}
- # legacy linux
- - os: linux
-   stage: test
-   dist: xenial  # Ubuntu 16.04 LTS
-   addons:
-    apt:
-     sources: *addons_apt_sources
-     packages:
-      - *addons_apt_packages
-      - g++-6
-   python: 3.6
-   name: py36 gcc6 +xenial -boost +fftw3 +hdf5 +ace +cil -itk
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON -DUSE_ITK=OFF" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
-
  # trusty disabled
  # This fails since Feb 2020 due to Python3 being 3.4.3, even though we ask for more recent.
  #- os: linux
