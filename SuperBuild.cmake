@@ -404,7 +404,7 @@ endif()
 configure_file(env_sirf.sh.in ${SyneRBI_INSTALL}/bin/env_sirf.sh)
 configure_file(env_sirf.csh.in ${SyneRBI_INSTALL}/bin/env_sirf.csh)
 
-if (${CMAKE_VERSION} VERSION_LESS "3.14")
+if (${CMAKE_VERSION} VERSION_LESS "3.14" OR WIN32)
   # CREATE_LINK has been introduced in CMake 3.14
   # we create a copy instead.
   configure_file(env_sirf.sh.in ${SyneRBI_INSTALL}/bin/env_ccppetmr.sh)
