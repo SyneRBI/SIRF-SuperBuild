@@ -8,5 +8,6 @@ h5py  # CIL
 Pillow  # CIL
 wget  # CIL
 six  # CIL
+olefile # CIL
 nibabel
 deprecation
