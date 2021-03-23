@@ -1,5 +1,7 @@
 # ChangeLog
 ## v#.#.#
+- Add Gadgetron as a dependency if BUILD_Gadgetron is ON.
+- Switched Travis ctest from --verbose to --output-on-failure and added travis_wait of 20 minutes to keep it from timing-out if some tests take longer than 10.
 - Docker: change to use Python3 (miniconda3-latest)
 - Sets `USE_ITK=ON` by default.
 - Updates for CIL 20.11+ which has a different python module structure. CCPi-FrameworkPlugins has been also removed.
