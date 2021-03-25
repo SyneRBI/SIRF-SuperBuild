@@ -39,7 +39,7 @@ jobs:
       run: 
           export INSTALL_DIR=~/install;
           cd ${GITHUB_WORKSPACE}/build;
-          cmake --build . ;
+          cmake --build . -j 2;
     - name: tests
       shell: bash
       run: 
