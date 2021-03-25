@@ -31,23 +31,20 @@ jobs:
           export EXTRA_BUILD_FLAGS="";
           mkdir -p build/;
           cd build;
-          echo "install dir/buildVM is" ;
-          pwd;
-          echo "Is the SuperBuild in ${superbuild}?";
-          ls ${superbuild};
-          echo "let us call cmake from ${INSTALL_DIR}/buildVM";
           export CC="gcc-7";
           export CXX="g++-7";
           cmake -S ${GITHUB_WORKSPACE} ${BUILD_FLAGS} ${EXTRA_BUILD_FLAGS} ;
-    - name: make
+    - name: build
+      shell: bash
       run: 
           export INSTALL_DIR=~/install;
           cd ${GITHUB_WORKSPACE}/build;
           cmake --build . ;
     - name: tests
+      shell: bash
       run: 
-          export INSTALL_DIR=devel;
-          source ${INSTALL_DIR}/install/bin/env_sirf.sh ;
+          export INSTALL_DIR=~/install;
+          source ${INSTALL_DIR}/bin/env_sirf.sh ;
           gadgetron >& gadgetron.log& ;
-          cd ${INSTALL_DIR}/buildVM ;
+          cd ${GITHUB_WORKSPACE}/build ;
           ctest --output-on-failure; test_fail=$? ;
