@@ -43,8 +43,4 @@ jobs:
     - name: tests
       shell: bash
       run: 
-          export INSTALL_DIR=~/install;
-          source ${INSTALL_DIR}/bin/env_sirf.sh ;
-          gadgetron >& gadgetron.log& ;
-          cd ${GITHUB_WORKSPACE}/build ;
-          ctest --output-on-failure; test_fail=$? ;
+          bash docker/ctest_sirf.sh
