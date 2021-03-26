@@ -121,7 +121,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DUSE_OPENMP:BOOL=${${proj}_ENABLE_OPENMP}
     DEPENDS
         ${${proj}_DEPENDENCIES}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install &&  ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/patches/Gadgetron_include-patch.py ${SUPERBUILD_INSTALL_DIR}/include/gadgetron/hoNFFT.h ${SUPERBUILD_INSTALL_DIR}/include/gadgetron/hoNFFT.h
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install && 
+                    ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/patches/Gadgetron_include-patch.py ${SUPERBUILD_INSTALL_DIR}/include/gadgetron/hoNFFT.h ${SUPERBUILD_INSTALL_DIR}/include/gadgetron/hoNFFT.h &&
+                    ${CMAKE_COMMAND} -E copy ${SUPERBUILD_INSTALL_DIR}/share/gadgetron/config/gadgetron.xml.example ${SUPERBUILD_INSTALL_DIR}/share/gadgetron/config/gadgetron.xml
   )
 
     set(Gadgetron_ROOT        ${Gadgetron_SOURCE_DIR})
