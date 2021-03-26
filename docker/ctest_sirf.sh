@@ -1,0 +1,17 @@
+#! /bin/bash
+# source env 
+export INSTALL_DIR=~/install
+source ${INSTALL_DIR}/bin/env_sirf.sh
+
+${INSTALL_DIR}/bin/gadgetron >& gadgetron.log&
+# print for debugging
+cat ${GITHUB_WORKSPACE}/build/builds/SIRF/build/CMakeCache.txt
+ctest --output-on-failure; test_fail=$?
+# echo "----------- Killing gadgetron server"
+# killall gadgetron
+if [[ $test_fail -ne 0 ]]; then
+ #echo "----------- Test output"
+ # cat builds/SIRF/build/Testing/Temporary/LastTest.log
+ echo "----------- Last 70 lines of gadgetron.log"
+ tail -n 70 gadgetron.log
+fi
