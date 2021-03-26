@@ -3,6 +3,10 @@
 export INSTALL_DIR=~/install
 source ${INSTALL_DIR}/bin/env_sirf.sh
 
+# append the path of virtualenv
+export PATH=/home/runner/.local/bin:$PATH
+source ~/devel/install/bin/activate 
+
 ${INSTALL_DIR}/bin/gadgetron >& gadgetron.log&
 # print for debugging
 cat ${GITHUB_WORKSPACE}/build/builds/SIRF/build/CMakeCache.txt
