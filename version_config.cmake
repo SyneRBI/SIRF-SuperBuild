@@ -196,6 +196,14 @@ if (DEVEL_BUILD)
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
   set(DEFAULT_ACE_TAG origin/master)
 
+  # CCPi CIL
+  set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
+  set(DEFAULT_CCPi-Framework_TAG origin/master)
+  set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
+  set(DEFAULT_CCPi-Astra_TAG origin/master)
+  set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
+  set(DEFAULT_CCPi-Regularisation-Toolkit_TAG origin/master)
+
 else()
   # version 2.2.0 has a bug in algebra leading to failure of SIRF CIL TESTS
   # which are fixed in master
