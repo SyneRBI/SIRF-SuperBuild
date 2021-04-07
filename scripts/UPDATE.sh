@@ -4,10 +4,13 @@
 # other system but will currently change your .sirfrc.
 # This is to be avoided later on.
 #
+# Warning: if you use a local branch (as opposed to a remote branch or a tag), this
+# script will merge remote updates automatically, without asking.
+#
 # Authors: Kris Thielemans, Evgueni Ovtchinnikov, Edoardo Pasca,
 # Casper da Costa-Luis
-# Copyright 2016-2020 University College London
-# Copyright 2016-2020 Rutherford Appleton Laboratory STFC
+# Copyright 2016-2021 University College London
+# Copyright 2016-2021 Rutherford Appleton Laboratory STFC
 #
 # This is software developed for the Collaborative Computational
 # Project in Synergistic Reconstruction for Biomedical Imaging (formerly PETMR)
@@ -168,7 +171,6 @@ SuperBuild(){
         git remote set-url origin https://github.com/SyneRBI/SIRF-SuperBuild.git
     fi
     git fetch --tags --all
-    git pull
   fi
   # go to SB_TAG
   if [ $1 = 'default' ] 
@@ -180,6 +182,13 @@ SuperBuild(){
    SB_TAG=$1
   fi
   git checkout $SB_TAG
+  # check if we are not in detached HEAD state
+  if git symbolic-ref -q HEAD
+  then
+     # We are on a local branch.
+     echo "Warning: updating your local branch with 'git pull'"
+     git pull
+  fi
   cd ..
   mkdir -p buildVM
   
@@ -239,12 +248,18 @@ clone_or_pull()
         git remote set-url origin $repoURL
     fi
     git fetch --tags
-    git pull
   else
     git clone --recursive $repoURL
     cd $repo
   fi
   git checkout $git_ref
+  # check if we are not in detached HEAD state
+  if git symbolic-ref -q HEAD
+  then
+      # We are on a local branch.
+      echo "Warning: updating your local branch with 'git pull'"
+      git pull
+  fi
   git submodule update --init
 }
 
