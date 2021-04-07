@@ -161,15 +161,13 @@ fi
 SuperBuild(){
   echo "==================== SuperBuild ====================="
   cd $SIRF_SRC_PATH
+  SB_repo=https://github.com/SyneRBI/SIRF-SuperBuild.git
   if [ ! -d SIRF-SuperBuild ] 
   then
-    git clone https://github.com/SyneRBI/SIRF-SuperBuild.git
+    git clone $SB_repo
     cd SIRF-SuperBuild
   else
     cd SIRF-SuperBuild
-    if [ $update_remote == 1 ]; then
-        git remote set-url origin https://github.com/SyneRBI/SIRF-SuperBuild.git
-    fi
     git fetch --tags --all
   fi
   # go to SB_TAG
@@ -181,14 +179,7 @@ SuperBuild(){
   else
    SB_TAG=$1
   fi
-  git checkout $SB_TAG
-  # check if we are not in detached HEAD state
-  if git symbolic-ref -q HEAD
-  then
-     # We are on a local branch.
-     echo "Warning: updating your local branch with 'git pull'"
-     git pull
-  fi
+  clone_or_pull $SB_repo $SB_TAG
   cd ..
   mkdir -p buildVM
   
