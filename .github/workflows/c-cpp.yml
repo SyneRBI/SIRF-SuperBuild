@@ -33,12 +33,14 @@ jobs:
           cd build;
           export CC="gcc-7";
           export CXX="g++-7";
+          source ~/devel/install/bin/activate;
           cmake -S ${GITHUB_WORKSPACE} ${BUILD_FLAGS} ${EXTRA_BUILD_FLAGS} ;
     - name: build
       shell: bash
       run: 
           export INSTALL_DIR=~/install;
           cd ${GITHUB_WORKSPACE}/build;
+          source ~/devel/install/bin/activate;
           cmake --build . -j 2;
     - name: tests
       shell: bash
