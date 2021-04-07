@@ -238,7 +238,7 @@ clone_or_pull()
     if [ $update_remote == 1 ]; then
         git remote set-url origin $repoURL
     fi
-    git fetch --tags
+    git fetch --tags --all
   else
     git clone --recursive $repoURL
     cd $repo
