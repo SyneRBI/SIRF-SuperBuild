@@ -11,3 +11,4 @@ six  # CIL
 olefile # CIL
 nibabel
 deprecation
+nose
