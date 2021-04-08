@@ -9,8 +9,8 @@ source ~/virtualenv/bin/activate
 
 gadgetron >& gadgetron.log&
 # print for debugging
-cat ${GITHUB_WORKSPACE}/build/builds/SIRF/build/CMakeCache.txt
-cd ${GITHUB_WORKSPACE}/build
+cat $GITHUB_WORKSPACE/build/builds/SIRF/build/CMakeCache.txt
+cd $GITHUB_WORKSPACE/build
 ctest --output-on-failure; test_fail=$?
 # echo "----------- Killing gadgetron server"
 # killall gadgetron
