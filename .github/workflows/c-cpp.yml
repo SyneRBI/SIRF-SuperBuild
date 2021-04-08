@@ -21,7 +21,7 @@ jobs:
           sudo bash build_python-ubuntu.sh;
           sudo bash build_gadgetron-ubuntu.sh;
           sudo bash build_system-ubuntu.sh;
-          bash user_python-ubuntu.sh ~/devel/install python3 ;        
+          bash user_python-ubuntu.sh ~/virtualenv python3 ;        
     - name: configure
       shell: bash
       run: 
@@ -33,14 +33,14 @@ jobs:
           cd build;
           export CC="gcc-7";
           export CXX="g++-7";
-          source ~/devel/install/bin/activate;
+          source ~/virtualenv/bin/activate;
           cmake -S ${GITHUB_WORKSPACE} ${BUILD_FLAGS} ${EXTRA_BUILD_FLAGS} ;
     - name: build
       shell: bash
       run: 
           export INSTALL_DIR=~/install;
           cd ${GITHUB_WORKSPACE}/build;
-          source ~/devel/install/bin/activate;
+          source ~/virtualenv/bin/activate;
           cmake --build . -j 2;
     - name: tests
       shell: bash
