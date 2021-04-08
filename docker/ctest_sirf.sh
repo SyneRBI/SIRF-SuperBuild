@@ -20,3 +20,4 @@ if [[ $test_fail -ne 0 ]]; then
  echo "----------- Last 70 lines of gadgetron.log"
  tail -n 70 gadgetron.log
 fi
+exit $test_fail
