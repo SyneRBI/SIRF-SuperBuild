@@ -1,6 +1,6 @@
 # SIRF-SuperBuild
 
-[![CI-badge]][CI-link] [![style-badge]][style-link] [![docker-badge]][docker-link]
+![github build](https://github.com/SyneRBI/SIRF-SuperBuild/actions/workflows/c-cpp.yml/badge.svg) [![CI-badge]][CI-link] [![style-badge]][style-link] [![docker-badge]][docker-link]
 ![install-badge] [![zenodo-badge]][zenodo-link]
 
 The SIRF-SuperBuild allows the user to download and compile most of the software
