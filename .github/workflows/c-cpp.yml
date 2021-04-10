@@ -9,7 +9,12 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        # the agent machine operating systems
+        os: [ubuntu-latest, ubuntu-18.04]
+        EXTRA_BUILD_FLAGS: ["", "-DDEVEL_BUILD=ON"]
 
     steps:
     - uses: actions/checkout@v2
@@ -28,12 +33,13 @@ jobs:
         key: ${{ matrix.os }}-${{ matrix.type }}
     - name: configure
       shell: bash
+      env:
+          EXTRA_BUILD_FLAGS: ${{ matrix.EXTRA_BUILD_FLAGS }}
       run: |
           set -ex;
           export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
           export superbuild=`pwd`;
           export BUILD_FLAGS="-DCMAKE_BUILD_TYPE=Release -DBUILD_STIR_WITH_OPENMP=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_ITK=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DCMAKE_INSTALL_PREFIX=~/install -DPYVER=3";
-          export EXTRA_BUILD_FLAGS="";
           mkdir -p build/;
           cd build;
           export CC="gcc-7";
@@ -43,7 +49,6 @@ jobs:
     - name: build
       shell: bash
       run: 
-          export INSTALL_DIR=~/install;
           cd ${GITHUB_WORKSPACE}/build;
           source ~/virtualenv/bin/activate;
           cmake --build . -j 2;
