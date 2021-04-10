@@ -21,11 +21,16 @@ jobs:
           sudo bash build_python-ubuntu.sh;
           sudo bash build_gadgetron-ubuntu.sh;
           sudo bash build_system-ubuntu.sh;
-          bash user_python-ubuntu.sh ~/virtualenv python3 ;        
+          bash user_python-ubuntu.sh ~/virtualenv python3 ;
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1
+      with:
+        key: ${{ matrix.os }}-${{ matrix.type }}
     - name: configure
       shell: bash
-      run: 
+      run: |
           set -ex;
+          export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
           export superbuild=`pwd`;
           export BUILD_FLAGS="-DCMAKE_BUILD_TYPE=Release -DBUILD_STIR_WITH_OPENMP=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_ITK=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DCMAKE_INSTALL_PREFIX=~/install -DPYVER=3";
           export EXTRA_BUILD_FLAGS="";
