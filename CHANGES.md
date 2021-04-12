@@ -1,5 +1,7 @@
 # ChangeLog
 ## v#.#.#
+- Add GitHub action for CI. 
+- Docker build moved to Python3 only.
 - Add Gadgetron as a dependency if BUILD_Gadgetron is ON.
 - Switched Travis ctest from --verbose to --output-on-failure and added travis_wait of 20 minutes to keep it from timing-out if some tests take longer than 10.
 - Docker: change to use Python3 (miniconda3-latest)

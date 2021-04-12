@@ -8,7 +8,8 @@ apt-get install -yq --no-install-recommends \
   bash-completion      \
   build-essential      \
   git                  \
-  g++                  \
+  g++-7                \
+  gcc-7                \
   man                  \
   make                 \
   ccache               \
