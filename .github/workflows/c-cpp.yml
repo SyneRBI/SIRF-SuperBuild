@@ -15,7 +15,7 @@ jobs:
         # the agent machine operating systems
         os: [ubuntu-latest, ubuntu-18.04]
         DEVEL_BUILD: ["OFF", "ON"]
-        EXTRA_BUILD_FLAGS: ["-DUSE_ITK=ON"]
+        EXTRA_BUILD_FLAGS: ["-DUSE_ITK=ON", "-DBUILD_CIL_LITE=ON"]
         CMAKE_BUILD_TYPE: ["Release"]
         # let's run all of them, as opposed to aborting when one fails
       fail-fast: false
