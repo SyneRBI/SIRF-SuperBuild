@@ -149,7 +149,7 @@ set(DEFAULT_NiftyPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
 
 ## parallelproj
 set(DEFAULT_parallelproj_URL https://github.com/gschramm/parallelproj )
-set(DEFAULT_parallelproj_TAG v0.6)
+set(DEFAULT_parallelproj_TAG v0.7)
 
 ## SIRF-Contribs
 set(DEFAULT_SIRF-Contribs_URL https://github.com/SyneRBI/SIRF-Contribs )
