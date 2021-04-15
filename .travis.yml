@@ -80,7 +80,7 @@ env:
  - MAKEFLAGS="-j 2"  # too many threads may crash
 jobs:
  include:
-#- os: linux
+ - os: linux
    python: 3.6
    name: py36 +DEVEL -boost -hdf5 -fftw3 +ace +siemens_to_ismrmrd +itk +cil
    env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_ACE=ON -DBUILD_siemens_to_ismrmrd=ON  -DBUILD_CIL=ON -DUSE_ITK=OFF" PYMVER=3
