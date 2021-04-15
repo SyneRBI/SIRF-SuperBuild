@@ -3,9 +3,6 @@ branches:
   - master
   # version
   - /^v\d.*/
-  except:
-  # all the rest
-  - /.*/
 
 # Note: with `language: cpp`, `cache: ccache` works
 # but `cache: pip` and `python:` is ignored
