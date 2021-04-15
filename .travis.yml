@@ -1,3 +1,12 @@
+branches:
+  only:
+  - master
+  # version
+  - /^v\d.*/
+  except:
+  # all the rest
+  - /.*/
+
 # Note: with `language: cpp`, `cache: ccache` works
 # but `cache: pip` and `python:` is ignored
 os:
@@ -12,10 +21,6 @@ stages:
 - docker-core
 - name: docker
   if: NOT type = pull_request
-
-branches:
-  only:
-  - master
 
 # Currently commented out as set with environment flags
 # Both clang and gcc can be tested. More is the better.
