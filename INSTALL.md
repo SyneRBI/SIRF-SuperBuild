@@ -1,6 +1,6 @@
 # SyneRBI Virtual Machine: Installation and running of pre-built machine
 
-If you have any problems, please first re-check this web-page. If you cannot solve your issue, please email CCP-SyneRBI-USERS @ JISCMAIL.AC.UK
+If you have any problems, please first re-check this web-page. If you cannot solve your issue, please email syneRBI-USERS @ JISCMAIL.AC.UK
 
 
 ## Initial download and installation
@@ -30,7 +30,7 @@ Warning: this file can be ~4.9GB. (You can download to a USB stick or hard drive
 	- RAM: use about half the RAM of your laptop (assigning too much RAM will slow down your laptop dramatically, using not enough will slow down the virtual machine. 1.5GB seems to be enough for most things though.)
 	- Virtual Disk Image: normally this filename is fine but you can save it somewhere else if you like
 
-6. Tick the box "Reinitialise the MAC address of all network cards"
+6. If still present, tick the box "Reinitialise the MAC address of all network cards"
 
 7. Press Import and wait for a few minutes (everything will be decompressed etc).
 
@@ -67,7 +67,7 @@ In the menu-bar of the window that contains your VM, click on "Devices" and then
   ```
 The VM will reboot. (You will have to do this again if you upgrade your VirtualBox version).
 
-5. Currently (20 April, 2018, SIRF_1.0.0) people are reporting problems after the VM is shutdown or rebooted. The VM windows system may fail to start and you are left with a flashing VM terminal window that stabilises after a few minutes. If your cursor has gone, it may be "in" this terminal window and can be released (press the Host Key (on most systems, right-ctrl, on a Mac the Apple command key). To restore proper functionality, follow the instructions in point 5 above, even if you already had the correct VGA installed. If you have previously 'inserted' the CD you may get an error message that you need to ignore. Then reboot.
+5. On old VM versions (e.g. 20 April 2018, SIRF_1.0.0) people were reporting problems after the VM is shutdown or rebooted, but this problem no longer seems to exist. The VM windows system may fail to start and you are left with a flashing VM terminal window that stabilises after a few minutes. If your cursor has gone, it may be "in" this terminal window and can be released (press the Host Key (on most systems, right-ctrl, on a Mac the Apple command key). To restore proper functionality, follow the instructions in point 5 above, even if you already had the correct VGA installed. If you have previously 'inserted' the CD you may get an error message that you need to ignore. Then reboot.
 
 ## Usage 
 Check our [wiki](https://github.com/SyneRBI/SyneRBI_VM/wiki) for usage instructions.
