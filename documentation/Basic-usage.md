@@ -35,10 +35,17 @@ When you want to get a new version of our software that is installed on the VM
 
      update_VM.sh
 
-This scripts has some additional options for advanced usage only. For instance, if you
+When updating from an older version of SIRF, the system dependencies can be updated using
+
+     update_VM.sh -s
+     
+The script has some additional options for advanced usage only. For instance, if you
 are a developer and want to use the latest version of the software and want
 to run 10 build processes simultaneously, you could do
 
      update_VM.sh -t master -j 10
 
+Note that this will currently update the SIRF-SuperBuild software, but still use the `DEVEL_BUILD=OFF` option (see [here](https://github.com/SyneRBI/SIRF-SuperBuild#Building-with-specific-versions-of-dependencies) for more information.
+
+Of course, we recommend maing a copy of your VM, or a [snapshot](https://docs.oracle.com/en/virtualization/virtualbox/6.0/user/snapshots.html) before doing an update.
 
