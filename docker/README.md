@@ -11,6 +11,7 @@ Docker wrapper for CCP SyneRBI SIRF.
 git clone https://github.com/SyneRBI/SIRF-SuperBuild.git
 ```
 and change directory to this folder, `SIRF-SuperBuild/docker`.
+
 3. Optionally pull the pre-built image with `docker pull synerbi/sirf:service` (otherwise
 the next line will build it, resulting in a much smaller download but larger build time)
 4. Run `./sirf-compose-server up -d sirf` 
