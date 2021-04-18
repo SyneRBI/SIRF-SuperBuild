@@ -34,7 +34,7 @@ esac
 
 # Python (runtime)
 if [ -f requirements.txt ]; then
-  ${PYTHON} -m pip install -U -r requirements.txt
+  pip install -U -r requirements.txt
 fi
 
 if [ "$PYTHON" = "miniconda" ]; then
