@@ -30,7 +30,7 @@ print_usage()
     echo "Usage:"
     echo "   `basename $prog` --help"
     echo "   `basename $prog` --python 'python-command' [pip-install-options ...]"
-    echo 'Default Python is $SIRF_PYTHON_EXECUTABLE if it is set or python otherwise.'
+    echo 'Default Python is $SIRF_PYTHON_EXECUTABLE if it is set or python3 otherwise.'
     echo "Any options (aside from --help and --python) are passed to the 'pip install' commands."
 }
 
@@ -41,7 +41,7 @@ trap 'echo An error occurred in $0 at line $LINENO. Current working-dir: $PWD' E
 # default python version
 if [ -z "$SIRF_PYTHON_EXECUTABLE" ]
 then
-    PYTHON=python
+    PYTHON=python3
 else
     PYTHON=$SIRF_PYTHON_EXECUTABLE
 fi
@@ -67,7 +67,10 @@ done
 
 $PYTHON -m pip install $PIPOPTIONS --upgrade pip wheel setuptools
 $PYTHON -m pip install $PIPOPTIONS --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib nose coverage docopt deprecation nibabel pytest tqdm
-$PYTHON -m pip install $PIPOPTIONS jupyter spyder==3.2
+$PYTHON -m pip install $PIPOPTIONS jupyter spyder
 $PYTHON -m pip uninstall $PIPOPTIONS -y spyder-kernels
+
+# otherwise Jupyter uses py 2 even when you choose py3: https://github.com/jupyter/jupyter/issues/270
+$PYTHON -m ipykernel install --user  
 # CIL
-$PYTHON -m pip install $PIPOPTIONS pillow==5
+$PYTHON -m pip install $PIPOPTIONS pillow olefile

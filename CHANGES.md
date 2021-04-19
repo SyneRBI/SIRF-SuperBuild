@@ -1,5 +1,8 @@
 # ChangeLog
 
+# x.x.x
+- build with python3
+
 # 2.2.0
 
 - handle rename of project CCPPETMR->SyneRBI

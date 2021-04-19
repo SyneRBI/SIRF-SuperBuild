@@ -13,16 +13,15 @@ Open another terminal and type for instance
 cd $SIRF_PATH
 cd examples/Python/MR
 ls
-python fully_sampled_recon.py
+python3 fully_sampled_recon.py
 ```
 or to get some help
 ```bash
-python fully_sampled_recon.py --help
+python3 fully_sampled_recon.py --help
 ```
 
 ## Using Spyder
-**Warning**: the SIRF 2.0.0 VM still uses Python 2 for SIRF. This creates trouble with newer spyder
-versions. We therefore use spyder 3.2. **Do not upgrade spyder**
+Spyder is installed with `pip` using the python that has been used to build SIRF, i.e. python3.
 
 You will want to see what the demos are doing. The easiest way is to use [Spyder](https://pythonhosted.org/spyder/#). You can start this from a terminal like this
 ```bash

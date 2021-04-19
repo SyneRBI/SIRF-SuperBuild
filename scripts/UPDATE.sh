@@ -140,7 +140,7 @@ fi
 SIRF_INSTALL_PATH=$SIRF_SRC_PATH/install
 
 # ignore notebook keys, https://github.com/CCPPETMR/SIRF-Exercises/issues/20
-python -m pip install -U --user nbstripout==0.3.7
+python3 -m pip install -U --user nbstripout
 git config --global filter.nbstripout.extrakeys '
   metadata.celltoolbar metadata.language_info.codemirror_mode.version
   metadata.language_info.pygments_lexer metadata.language_info.version'
@@ -180,9 +180,10 @@ SuperBuild(){
   fi
   git checkout $SB_TAG
   cd ..
-  mkdir -p buildVM
+  buildVM=buildVM
+  mkdir -p $buildVM
   
-  cd buildVM
+  cd $buildVM
   cmake ../SIRF-SuperBuild \
         -DCMAKE_INSTALL_PREFIX=${SIRF_INSTALL_PATH} \
         -U\*_URL -U\*_TAG \
@@ -194,8 +195,10 @@ SuperBuild(){
         -DBUILD_siemens_to_ismrmrd=On \
         -DUSE_ITK=ON \
         -DDEVEL_BUILD=OFF\
-        -DBUILD_CIL_LITE=ON\
         -DNIFTYREG_USE_CUDA=OFF\
+        -DBUILD_CIL_LITE=ON\
+        -DCYTHON_EXECUTABLE=/usr/bin/cython3\
+        -DPYTHON_EXECUTABLE=/usr/bin/python3\
 	-DBUILD_pet_rd_tools=ON
   make -j${num_parallel}
 
