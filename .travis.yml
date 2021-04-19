@@ -264,16 +264,16 @@ jobs:
    install: *docker_install
    script: *docker_script
    after_success: *docker_after_success
- # - os: linux
- #   name: docker +DEVEL +SERVICE
- #   env: DOCKER_BUILD=DEVEL_SERVICE
- #   services:
- #   - docker
- #   addons: *docker_addons
- #   before_install: *docker_before_install
- #   install: *docker_install
- #   script: *docker_script
- #   after_success: *docker_after_success
+ - os: linux
+   name: docker +DEVEL +SERVICE
+   env: DOCKER_BUILD=DEVEL_SERVICE
+   services:
+   - docker
+   addons: *docker_addons
+   before_install: *docker_before_install
+   install: *docker_install
+   script: *docker_script
+   after_success: *docker_after_success
  - os: linux
    name: docker +SERVICE +GPU
    env: DOCKER_BUILD=SERVICE_GPU
