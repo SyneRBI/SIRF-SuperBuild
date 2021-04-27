@@ -208,6 +208,7 @@ jobs:
           dpush core-gpu core-gpu
           ;;
         LATEST)
+          dpush latest latest
           ;;
         DEVEL)
           dpush devel devel
@@ -216,8 +217,10 @@ jobs:
           dpush service devel-service
           ;;
         SERVICE)
+          dpush service service
           ;;
         SERVICE_GPU)
+          dpush service-gpu service-gpu
           ;;
         *)
           exit 1
