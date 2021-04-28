@@ -23,6 +23,9 @@ export PS1='sirf:\w$(__git_ps1)\$ '
 [ -f /opt/SIRF-SuperBuild/INSTALL/bin/env_ccppetmr.sh ] && \
    . /opt/SIRF-SuperBuild/INSTALL/bin/env_ccppetmr.sh
 
+# .local/bin (used by pip for instance)
+export PATH="${PATH}:~/.local/bin"
+
 # shared permissions
 # [ $(ls -l / | grep devel | awk '{print $3}') == $(whoami) ] || sudo chown -R $(whoami) /devel
 # [ $(ls -l / | grep devel | awk '{print $4}') == $(whoami) ] || sudo chgrp -R $(whoami) /devel
