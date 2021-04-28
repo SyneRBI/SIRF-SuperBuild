@@ -164,7 +164,7 @@ set(DEFAULT_JSON_TAG v3.9.1)
 
 # CCPi CIL
 set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
-set(DEFAULT_CCPi-Framework_TAG "v21.0.0")
+set(DEFAULT_CCPi-Framework_TAG "v21.1.0")
 set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
 set(DEFAULT_CCPi-Astra_TAG "v20.11.2")
 set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
