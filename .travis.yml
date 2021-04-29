@@ -119,7 +119,7 @@ jobs:
    - export DCC="docker-compose -p "travis_${TRAVIS_JOB_NUMBER/./_}" -f $PWD/docker-compose.yml"
    - if [[ "$DOCKER_BUILD" == *"DEVEL"* ]]; then export DCC="$DCC -f $PWD/docker-compose.devel.yml"; fi
    - if [[ "$DOCKER_BUILD" == *"SERVICE"* ]]; then export DCC="$DCC -f $PWD/docker-compose.srv.yml"; fi
-   - if [[ "$DOCKER_BUILD" == *"GPU"* ]]; then export DCC="$DCC -f $PWD/docker-compose.srv-gpu.yml -f $PWD/docker-compose.cil.yml"; fi
+   - if [[ "$DOCKER_BUILD" == *"GPU"* ]]; then export DCC="$DCC -f $PWD/docker-compose.srv-gpu.yml"; fi
    # pull previous base image for its layer cache
    - $DCC pull core
    # count the docker pull (prefix `d`)
