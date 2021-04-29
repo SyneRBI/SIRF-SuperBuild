@@ -163,11 +163,10 @@ set(DEFAULT_JSON_URL https://github.com/nlohmann/json.git )
 set(DEFAULT_JSON_TAG v3.9.1)
 
 # CCPi CIL
-set(CIL_VERSION "v20.11")
 set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
-set(DEFAULT_CCPi-Framework_TAG "${CIL_VERSION}.2")
+set(DEFAULT_CCPi-Framework_TAG "v21.1.0")
 set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
-set(DEFAULT_CCPi-Astra_TAG "${CIL_VERSION}.2")
+set(DEFAULT_CCPi-Astra_TAG "v21.0.0")
 set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
 set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v20.09")
 
@@ -196,6 +195,14 @@ if (DEVEL_BUILD)
 
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
   set(DEFAULT_ACE_TAG origin/master)
+
+  # CCPi CIL
+  set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
+  set(DEFAULT_CCPi-Framework_TAG origin/master)
+  set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
+  set(DEFAULT_CCPi-Astra_TAG origin/master)
+  set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
+  set(DEFAULT_CCPi-Regularisation-Toolkit_TAG origin/master)
 
 else()
   # version 2.2.0 has a bug in algebra leading to failure of SIRF CIL TESTS
