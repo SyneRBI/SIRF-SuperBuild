@@ -1,5 +1,6 @@
 # ChangeLog
 ## v#.#.#
+- travis to use BUILD_CIL=ON for GPU+SERVICE builds
 - Add GitHub action for CI. 
 - Docker build moved to Python3 only.
 - Add Gadgetron as a dependency if BUILD_Gadgetron is ON.
