@@ -1,7 +1,7 @@
 version: '2.3'
 services:
  sirf:
-  image: synerbi/sirf:devel
+  image: synerbi/sirf:cil
   build:
    args:
     EXTRA_BUILD_FLAGS: "-DBUILD_CIL=ON"
