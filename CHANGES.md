@@ -1,23 +1,23 @@
 # ChangeLog
-## v#.#.#
+## v3.0.0-rc.1
+- Environment files with name env_sirf.sh (and csh) are created. Symbolic links or copies with the previous name env_ccppetmr.sh (and csh) depending on the version of CMake available are made.
 - Add GitHub action for CI. 
 - Docker build moved to Python3 only.
-- Add Gadgetron as a dependency if BUILD_Gadgetron is ON.
 - Switched Travis ctest from --verbose to --output-on-failure and added travis_wait of 20 minutes to keep it from timing-out if some tests take longer than 10.
-- Docker: change to use Python3 (miniconda3-latest)
 - Sets `USE_ITK=ON` by default.
-- Updates for CIL 20.11+ which has a different python module structure. CCPi-FrameworkPlugins has been also removed.
-- Use more recent SIRF hash where the known bug in python algebric methods is fixed.
-- Patch Gadgetron include file hoNDFFT.h to remove spurious ".."
-- Environment files with name env_sirf.sh (and csh) are created. Symbolic links or copies with the previous name env_ccppetmr.sh (and csh) depending on the version of CMake available are made.
-- Enabled HDF5 support for STIR by default (build C++ libraries for HDF5)
 - Disabled building of `Module_ITKReview` by default
+- Updates for CIL 20.11+ which has a different python module structure. CCPi-FrameworkPlugins has been also removed.
+- Patch Gadgetron include file hoNDFFT.h to remove spurious ".."
+- Add Gadgetron as a dependency of SIRF if `BUILD_Gadgetron` is `ON`.
+- Enabled HDF5 support for STIR by default (build C++ libraries for HDF5)
 - Fix some issues with finding Python [#472](https://github.com/SyneRBI/SIRF-SuperBuild/issues/472)
 - Add option `BUILD_TESTING_JSON` (default OFF)
 - Updated versions:
    - JSON: 3.9.1
    - SWIG: 4.0.2
-   - SIRF: ba1af302970cbe0042a3e47ad81060309854055a
+   - STIR: 4.1.0
+   - SIRF: 3.0.0
+
 ## v2.2.0
 - Updated to reflect change from CCPPETMR to CCPSyneRBI.
 - Made ${proj}_SOURCE_DIR a cached variables such that the user can point to an existing directory.

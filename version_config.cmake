@@ -205,13 +205,11 @@ if (DEVEL_BUILD)
   set(DEFAULT_CCPi-Regularisation-Toolkit_TAG origin/master)
 
 else()
-  # version 2.2.0 has a bug in algebra leading to failure of SIRF CIL TESTS
-  # which are fixed in master
-  set(DEFAULT_SIRF_TAG ba1af302970cbe0042a3e47ad81060309854055a)
+  set(DEFAULT_SIRF_TAG v3.0.0-rc.1)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG release_4)
+  set(DEFAULT_STIR_TAG 4.1.0)
 
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
