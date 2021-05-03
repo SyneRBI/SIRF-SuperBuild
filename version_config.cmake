@@ -205,7 +205,8 @@ if (DEVEL_BUILD)
   set(DEFAULT_CCPi-Regularisation-Toolkit_TAG origin/master)
 
 else()
-  set(DEFAULT_SIRF_TAG v3.0.0-rc.1)
+  # just past 3.0.0-rc.1 due to Singles fix
+  set(DEFAULT_SIRF_TAG 34f49e217d3a82c098d1f4deab1028142adc16ca)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
