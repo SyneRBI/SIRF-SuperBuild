@@ -4,10 +4,13 @@
 # other system but will currently change your .sirfrc.
 # This is to be avoided later on.
 #
+# Warning: if you use a local branch (as opposed to a remote branch or a tag), this
+# script will merge remote updates automatically, without asking.
+#
 # Authors: Kris Thielemans, Evgueni Ovtchinnikov, Edoardo Pasca,
 # Casper da Costa-Luis
-# Copyright 2016-2020 University College London
-# Copyright 2016-2020 Rutherford Appleton Laboratory STFC
+# Copyright 2016-2021 University College London
+# Copyright 2016-2021 Rutherford Appleton Laboratory STFC
 #
 # This is software developed for the Collaborative Computational
 # Project in Synergistic Reconstruction for Biomedical Imaging (formerly PETMR)
@@ -158,15 +161,13 @@ fi
 SuperBuild(){
   echo "==================== SuperBuild ====================="
   cd $SIRF_SRC_PATH
+  SB_repo=https://github.com/SyneRBI/SIRF-SuperBuild.git
   if [ ! -d SIRF-SuperBuild ] 
   then
-    git clone https://github.com/SyneRBI/SIRF-SuperBuild.git
+    git clone $SB_repo
     cd SIRF-SuperBuild
   else
     cd SIRF-SuperBuild
-    if [ $update_remote == 1 ]; then
-        git remote set-url origin https://github.com/SyneRBI/SIRF-SuperBuild.git
-    fi
     git fetch --tags --all
   fi
   # go to SB_TAG
@@ -178,7 +179,7 @@ SuperBuild(){
   else
    SB_TAG=$1
   fi
-  git checkout $SB_TAG
+  clone_or_pull $SB_repo $SB_TAG
   cd ..
   buildVM=buildVM
   mkdir -p $buildVM
@@ -240,13 +241,19 @@ clone_or_pull()
     if [ $update_remote == 1 ]; then
         git remote set-url origin $repoURL
     fi
-    git fetch --tags
-    git pull
+    git fetch --tags --all
   else
     git clone --recursive $repoURL
     cd $repo
   fi
   git checkout $git_ref
+  # check if we are not in detached HEAD state
+  if git symbolic-ref -q HEAD
+  then
+      # We are on a local branch.
+      echo "Warning: updating your local branch with 'git pull'"
+      git pull
+  fi
   git submodule update --init
 }
 
