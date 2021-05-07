@@ -297,7 +297,7 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   glog_URL glog_TAG
   NIFTYREG_URL NIFTYREG_TAG
   CIL_URL CIL_TAG
-  CCPi-Astra_URL CCPi-Astra_TAG
+  CIL-ASTRA_URL CIL-ASTRA_TAG
   CCPi-Regularisation-Toolkit_URL CCPi-Regularisation-Toolkit_TAG
   NiftyPET_URL NiftyPET_TAG
   parallelproj_URL parallelproj_TAG
