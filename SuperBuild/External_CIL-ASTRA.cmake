@@ -19,10 +19,10 @@
 #=========================================================================
 
 #This needs to be unique globally
-set(proj CCPi-Astra)
+set(proj CIL-ASTRA)
 
 # Set dependency list
-set(${proj}_DEPENDENCIES "CCPi-Framework;astra-toolbox")
+set(${proj}_DEPENDENCIES "CIL;astra-toolbox")
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)

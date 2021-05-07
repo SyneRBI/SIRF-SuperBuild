@@ -163,10 +163,10 @@ set(DEFAULT_JSON_URL https://github.com/nlohmann/json.git )
 set(DEFAULT_JSON_TAG v3.9.1)
 
 # CCPi CIL
-set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
-set(DEFAULT_CCPi-Framework_TAG "v21.1.0")
-set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
-set(DEFAULT_CCPi-Astra_TAG "v21.0.0")
+set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
+set(DEFAULT_CIL_TAG "v21.1.0")
+set(DEFAULT_CIL-ASTRA_URL https://github.com/TomographicImaging/CIL-ASTRA.git)
+set(DEFAULT_CIL-ASTRA_TAG "v21.0.0")
 set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
 set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v20.09")
 
@@ -197,10 +197,10 @@ if (DEVEL_BUILD)
   set(DEFAULT_ACE_TAG origin/master)
 
   # CCPi CIL
-  set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
-  set(DEFAULT_CCPi-Framework_TAG origin/master)
-  set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
-  set(DEFAULT_CCPi-Astra_TAG origin/master)
+  set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
+  set(DEFAULT_CIL_TAG origin/master)
+  set(DEFAULT_CIL-ASTRA_URL https://github.com/vais-ral/CIL-ASTRA.git)
+  set(DEFAULT_CIL-ASTRA_TAG origin/master)
   set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
   set(DEFAULT_CCPi-Regularisation-Toolkit_TAG origin/master)
 
@@ -259,10 +259,10 @@ set(JSON_TAG ${DEFAULT_JSON_TAG} CACHE STRING ON)
 
 set(CCPi-Regularisation-Toolkit_URL ${DEFAULT_CCPi-Regularisation-Toolkit_URL} CACHE STRING ON)
 set(CCPi-Regularisation-Toolkit_TAG ${DEFAULT_CCPi-Regularisation-Toolkit_TAG} CACHE STRING ON)
-set(CCPi-Framework_URL ${DEFAULT_CCPi-Framework_URL} CACHE STRING ON)
-set(CCPi-Framework_TAG ${DEFAULT_CCPi-Framework_TAG} CACHE STRING ON)
-set(CCPi-Astra_URL ${DEFAULT_CCPi-Astra_URL} CACHE STRING ON)
-set(CCPi-Astra_TAG ${DEFAULT_CCPi-Astra_TAG} CACHE STRING ON)
+set(CIL_URL ${DEFAULT_CIL_URL} CACHE STRING ON)
+set(CIL_TAG ${DEFAULT_CIL_TAG} CACHE STRING ON)
+set(CIL-ASTRA_URL ${DEFAULT_CIL-ASTRA_URL} CACHE STRING ON)
+set(CIL-ASTRA_TAG ${DEFAULT_CIL-ASTRA_TAG} CACHE STRING ON)
 set(astra-toolbox_URL ${DEFAULT_astra-toolbox_URL} CACHE STRING ON)
 set(astra-toolbox_TAG ${DEFAULT_astra-toolbox_TAG} CACHE STRING ON)
 set(TomoPhantom_URL ${DEFAULT_TomoPhantom_URL} CACHE STRING ON)
@@ -296,7 +296,7 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   pet_rd_tools_URL pet_rd_tools_TAG
   glog_URL glog_TAG
   NIFTYREG_URL NIFTYREG_TAG
-  CCPi-Framework_URL CCPi-Framework_TAG
+  CIL_URL CIL_TAG
   CCPi-Astra_URL CCPi-Astra_TAG
   CCPi-Regularisation-Toolkit_URL CCPi-Regularisation-Toolkit_TAG
   NiftyPET_URL NiftyPET_TAG
