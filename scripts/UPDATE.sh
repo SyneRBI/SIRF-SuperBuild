@@ -300,7 +300,12 @@ python setup.py install --user
 cd $SIRF_SRC_PATH
 clone_or_pull  https://github.com/SyneRBI/SIRF-Exercises.git
 cd $SIRF_SRC_PATH/SIRF-Exercises
-PY_USER_BIN=`python -c 'import site; import os; print ( os.path.join(site.USER_BASE , "bin") )'`
+# Python (runtime)
+if [ -f requirements.txt ]; then
+  python3 -m pip install -U -r requirements.txt
+fi
+
+PY_USER_BIN=`python3 -c 'import site; import os; print ( os.path.join(site.USER_BASE , "bin") )'`
 export PATH=${PY_USER_BIN}:${PATH}
 nbstripout --install
 
