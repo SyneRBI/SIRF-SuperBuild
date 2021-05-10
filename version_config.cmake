@@ -62,36 +62,20 @@ set(FFTW3double_URL ${FFTW3_URL})
 set(FFTW3double_MD5 ${FFTW3_MD5})
 
 ## HDF5
+set(DEFAULT_HDF5_URL https://github.com/HDFGroup/hdf5/)
 if (WIN32)
+  set(HDF5_REQUIRED_VERSION 1.8.12)
   # 1.8.15 hdf5-targets.cmake refers to non-existent zlib files
   # (or at least this was the case for older Anaconda installations)
-  if (USE_SYSTEM_HDF5)
-    set(HDF5_REQUIRED_VERSION 1.8.12)
-    #set(HDF5_REQUIRED_VERSION 1.8)
-  endif()
-  if (BUILD_MATLAB)
-    set(HDF5_DOWNLOAD_MAJOR_MINOR_VERSION "1.8")
-    set(HDF5_DOWNLOAD_PATCH_VERSION "12")
-  else()
-    set(HDF5_DOWNLOAD_MAJOR_MINOR_VERSION "1.10")
-    set(HDF5_DOWNLOAD_PATCH_VERSION "1")
-  endif()
-  set(HDF5_DOWNLOAD_VERSION "${HDF5_DOWNLOAD_MAJOR_MINOR_VERSION}.${HDF5_DOWNLOAD_PATCH_VERSION}")
-  set(HDF5_URL https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-${HDF5_DOWNLOAD_MAJOR_MINOR_VERSION}/hdf5-${HDF5_DOWNLOAD_VERSION}/src/hdf5-${HDF5_DOWNLOAD_VERSION}.tar.gz)
 else()
   set(HDF5_REQUIRED_VERSION 1.8)
-  set(HDF5_DOWNLOAD_MAJOR_MINOR_VERSION "1.10")
-  set(HDF5_DOWNLOAD_PATCH_VERSION "1")
-  set(HDF5_DOWNLOAD_VERSION "${HDF5_DOWNLOAD_MAJOR_MINOR_VERSION}.${HDF5_DOWNLOAD_PATCH_VERSION}")
-  set(HDF5_URL https://github.com/SyneRBI/assets/releases/download/latest/hdf5-${HDF5_DOWNLOAD_VERSION}.tar.gz)
 endif()
-
-if (${HDF5_DOWNLOAD_VERSION} STREQUAL 1.8.12)
-  set(HDF5_MD5 d804802feb99b87fc668a90e6fa34411 )
-elseif (${HDF5_DOWNLOAD_VERSION} STREQUAL 1.10.1)
-  set(HDF5_MD5 43a2f9466702fb1db31df98ae6677f15 )
+if (BUILD_MATLAB)
+  # Ideally would call MATLAB and use "[majnum,minnum,relnum]=H5.get_libversion()"
+  # but it's been stuck on 1.8.12 for a long time
+  set(DEFAULT_HDF5_TAG hdf5-1_8_12)
 else()
-  message(FATAL_ERROR "Developer error: need to set HDF5_MD5 for version ${HDF5_DOWNLOAD_VERSION}")
+  set(DEFAULT_HDF5_TAG hdf5-1_10_1)
 endif()
 
 ## SWIG
@@ -103,6 +87,7 @@ else(WIN32)
   set(SWIG_URL http://downloads.sourceforge.net/swig/swig-4.0.2.tar.gz )
   set(SWIG_MD5 7c3e46cb5af2b469722cafa0d91e127b )
 endif(WIN32)
+
 option(DEVEL_BUILD "Use current versions of major packages" OFF)
 
 ## Googletest
@@ -227,7 +212,7 @@ else()
 endif()
 
 
-# Set the tags for SIRF, STIR, Gadgetron and ISMRMRD
+# Set the tags for SIRF, STIR, Gadgetron and ISMRMRD etc
 # these can be overridden by the user
 SET(SIRF_URL ${DEFAULT_SIRF_URL} CACHE STRING ON)
 SET(SIRF_TAG ${DEFAULT_SIRF_TAG} CACHE STRING ON)
@@ -279,6 +264,9 @@ set(parallelproj_TAG ${DEFAULT_parallelproj_TAG} CACHE STRING ON)
 
 set(SIRF-Contribs_URL ${DEFAULT_SIRF-Contribs_URL} CACHE STRING ON)
 set(SIRF-Contribs_TAG ${DEFAULT_SIRF-Contribs_TAG} CACHE STRING ON)
+
+set(HDF5_URL ${DEFAULT_HDF5_URL} CACHE STRING ON)
+set(HDF5_TAG ${DEFAULT_HDF5_TAG} CACHE STRING ON)
 
 set(ITK_URL ${DEFAULT_ITK_URL} CACHE STRING ON)
 set(ITK_TAG ${DEFAULT_ITK_TAG} CACHE STRING ON)
