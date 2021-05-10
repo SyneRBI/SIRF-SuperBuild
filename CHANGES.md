@@ -15,7 +15,7 @@
 - Updated versions:
    - JSON: 3.9.1
    - SWIG: 4.0.2
-   - STIR: 4.1.0
+   - STIR: 4.1.1
    - SIRF: 3.0.0
 
 ## v2.2.0
