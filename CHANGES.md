@@ -1,4 +1,7 @@
 # ChangeLog
+## v3.0.0-xx
+- CIL repositry has been transferred to the TomographicImaging organisation; reflect changes in CIL repositories
+
 ## v3.0.0-rc.1
 - Environment files with name env_sirf.sh (and csh) are created. Symbolic links or copies with the previous name env_ccppetmr.sh (and csh) depending on the version of CMake available are made.
 - Add GitHub action for CI. 
@@ -17,6 +20,7 @@
    - SWIG: 4.0.2
    - STIR: 4.1.1
    - SIRF: 3.0.0
+   - CIL: 21.1.0
 
 ## v2.2.0
 - Updated to reflect change from CCPPETMR to CCPSyneRBI.

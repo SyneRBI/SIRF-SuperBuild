@@ -19,7 +19,7 @@
 #=========================================================================
 
 #This needs to be unique globally
-set(proj CCPi-Framework)
+set(proj CIL)
 
 # Set dependency list
 set(${proj}_DEPENDENCIES "")
