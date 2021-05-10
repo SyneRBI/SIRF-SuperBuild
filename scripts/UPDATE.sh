@@ -141,9 +141,12 @@ if [ -d $SIRF_SRC_PATH/CCPPETMR_VM ]; then
 fi
 
 SIRF_INSTALL_PATH=$SIRF_SRC_PATH/install
+# best to use full path
+PYTHON_EXECUTABLE=/usr/bin/python3
+CYTHON_EXECUTABLE=/usr/bin/cython3
 
 # ignore notebook keys, https://github.com/CCPPETMR/SIRF-Exercises/issues/20
-python3 -m pip install -U --user nbstripout
+"$PYTHON_EXECUTABLE" -m pip install -U --user nbstripout
 git config --global filter.nbstripout.extrakeys '
   metadata.celltoolbar metadata.language_info.codemirror_mode.version
   metadata.language_info.pygments_lexer metadata.language_info.version'
@@ -152,7 +155,7 @@ git config --global filter.nbstripout.extrakeys '
 if [ $apt_install == 1 ]; then
   cd ~/devel/SyneRBI_VM/scripts
   sudo -H ./INSTALL_prerequisites_with_apt-get.sh
-  sudo -H ./INSTALL_python_packages.sh
+  sudo -H ./INSTALL_python_packages.sh --python "$PYTHON_EXECUTABLE"
   sudo -H ./INSTALL_CMake.sh
   ./configure_gnome.sh
 fi
@@ -198,8 +201,8 @@ SuperBuild(){
         -DDEVEL_BUILD=OFF\
         -DNIFTYREG_USE_CUDA=OFF\
         -DBUILD_CIL_LITE=ON\
-        -DCYTHON_EXECUTABLE=/usr/bin/cython3\
-        -DPYTHON_EXECUTABLE=/usr/bin/python3\
+        -DCYTHON_EXECUTABLE="$CYTHON_EXECUTABLE"\
+        -DPYTHON_EXECUTABLE="$PYTHON_EXECUTABLE"\
 	-DBUILD_pet_rd_tools=ON
   make -j${num_parallel}
 
@@ -294,7 +297,7 @@ cp -vp $SIRF_SRC_PATH/SyneRBI_VM/scripts/update*sh $SIRF_INSTALL_PATH/bin
 # Get extra python tools
 clone_or_pull  https://github.com/SyneRBI/ismrmrd-python-tools.git
 cd $SIRF_SRC_PATH/ismrmrd-python-tools
-python setup.py install --user
+"$PYTHON_EXECUTABLE" setup.py install --user
 
 # install the SIRF-Exercises
 cd $SIRF_SRC_PATH
@@ -302,10 +305,10 @@ clone_or_pull  https://github.com/SyneRBI/SIRF-Exercises.git
 cd $SIRF_SRC_PATH/SIRF-Exercises
 # Python (runtime)
 if [ -f requirements.txt ]; then
-  python3 -m pip install -U -r requirements.txt
+  "$PYTHON_EXECUTABLE" -m pip install -U -r requirements.txt
 fi
 
-PY_USER_BIN=`python3 -c 'import site; import os; print ( os.path.join(site.USER_BASE , "bin") )'`
+PY_USER_BIN=`"$PYTHON_EXECUTABLE" -c 'import site; import os; print ( os.path.join(site.USER_BASE , "bin") )'`
 export PATH=${PY_USER_BIN}:${PATH}
 nbstripout --install
 
