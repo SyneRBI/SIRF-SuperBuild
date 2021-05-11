@@ -43,11 +43,12 @@ if [ ! -f ~/.jupyter/jupyter_notebook_config.py ]; then
   >> ~/.jupyter/jupyter_notebook_config.py
 fi
 
-pushd /devel
-[ -d SIRF-Exercises ] || cp -a $SIRF_PATH/../../../SIRF-Exercises .
-which unzip || sudo apt-get install -yqq unzip
-for i in SIRF-Exercises/scripts/download_*.sh; do ./$i $PWD; done
-popd
+# Do not download the SIRF-Exercises data
+# pushd /devel
+# [ -d SIRF-Exercises ] || cp -a $SIRF_PATH/../../../SIRF-Exercises .
+# which unzip || sudo apt-get install -yqq unzip
+# for i in SIRF-Exercises/scripts/download_*.sh; do ./$i $PWD; done
+# popd
 
 # serve a master notebook
 jupyter notebook --ip 0.0.0.0 --port $JUPYTER_PORT --no-browser \
