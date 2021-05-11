@@ -2,6 +2,7 @@
 
 # x.x.x
 - build with python3
+- add update_VM_to_full_CIL.sh script to use `BUILD_CIL=ON` in SuperBuild
 
 # 2.2.0
 
