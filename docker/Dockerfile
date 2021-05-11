@@ -107,3 +107,7 @@ CMD ["/usr/local/bin/service.sh"]
 
 FROM service as multi
 COPY service.multi.sh /usr/local/bin/
+
+COPY download_data.sh /usr/local/bin/
+ENV DEBIAN_FRONTEND ''
+CMD ["/usr/local/bin/download_data.sh"]

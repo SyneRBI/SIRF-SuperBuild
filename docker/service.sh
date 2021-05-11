@@ -1,19 +1,17 @@
 #!/usr/bin/env bash
 
 ## Usage:
-# service.sh [<DEBUG_LEVEL> [<JUPYTER_PORT> [<DOWNLOAD_DATA] ] ]
+# service.sh [<DEBUG_LEVEL> [<JUPYTER_PORT>]]
 #
 # Arguments:
 #   <DEBUG_LEVEL>   : [default: 0]
 #   <JUPYTER_PORT>  : [default: 8888]
-#   <DOWNLOAD_DATA> : [default: 0]
 ##
 
 [ -f .bashrc ] && . .bashrc
 this=$(dirname "${BASH_SOURCE[0]}")
 DEBUG="${1:-0}"
 JUPYTER_PORT="${2:-8888}"
-DOWNLOAD_DATA="${3:-0}"
 
 stop_service()
 {
@@ -45,14 +43,6 @@ if [ ! -f ~/.jupyter/jupyter_notebook_config.py ]; then
   >> ~/.jupyter/jupyter_notebook_config.py
 fi
 
-# download the SIRF-Exercises data if requested
-if [ "$DOWNLOAD_DATA" != 0 ]; then
-  pushd /devel
-  [ -d SIRF-Exercises ] || cp -a $SIRF_PATH/../../../SIRF-Exercises .
-  which unzip || sudo apt-get install -yqq unzip
-  for i in SIRF-Exercises/scripts/download_*.sh; do ./$i $PWD; done
-  popd
-fi
 
 # serve a master notebook
 jupyter notebook --ip 0.0.0.0 --port $JUPYTER_PORT --no-browser \
