@@ -75,8 +75,8 @@ RUN rm user_python-ubuntu.sh requirements.txt
 
 # SIRF
 COPY user_sirf-ubuntu.sh .
-COPY devel/.ccache/ /opt/ccache/
-RUN ccache -o cache_dir=/opt/ccache
+# COPY devel/.ccache/ /opt/ccache/
+# RUN ccache -o cache_dir=/opt/ccache
 ARG BUILD_FLAGS="\
  -DCMAKE_BUILD_TYPE=Release\
  -DBUILD_STIR_WITH_OPENMP=ON -DUSE_SYSTEM_ACE=ON\
