@@ -101,9 +101,12 @@ COPY user_service-ubuntu.sh .
 RUN bash user_service-ubuntu.sh
 RUN rm user_service-ubuntu.sh requirements-service.txt
 
+COPY download_data.sh /usr/local/bin/
+
 COPY service.sh /usr/local/bin/
 ENV DEBIAN_FRONTEND ''
 CMD ["/usr/local/bin/service.sh"]
 
 FROM service as multi
 COPY service.multi.sh /usr/local/bin/
+
