@@ -36,6 +36,10 @@ GCONFIG=./INSTALL/share/gadgetron/config/gadgetron.xml
 [ -f ./INSTALL/bin/gadgetron ] \
   && ./INSTALL/bin/gadgetron >& gadgetron.log&
 
+# make sure the SIRF-Exercises are in the expected location
+pushd /devel
+[ -d SIRF-Exercises ] || cp -a $SIRF_PATH/../../../SIRF-Exercises .
+
 # start jupyter
 if [ ! -f ~/.jupyter/jupyter_notebook_config.py ]; then
   jupyter notebook --generate-config
