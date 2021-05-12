@@ -37,7 +37,7 @@ GCONFIG=./INSTALL/share/gadgetron/config/gadgetron.xml
   && ./INSTALL/bin/gadgetron >& gadgetron.log&
 
 # make sure the SIRF-Exercises are in the expected location
-pushd /devel
+cd /devel
 [ -d SIRF-Exercises ] || cp -a $SIRF_PATH/../../../SIRF-Exercises .
 
 # start jupyter

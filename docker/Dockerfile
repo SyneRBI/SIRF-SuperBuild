@@ -75,8 +75,8 @@ RUN rm user_python-ubuntu.sh requirements.txt
 
 # SIRF
 COPY user_sirf-ubuntu.sh .
-# COPY devel/.ccache/ /opt/ccache/
-# RUN ccache -o cache_dir=/opt/ccache
+COPY devel/.ccache/ /opt/ccache/
+RUN ccache -o cache_dir=/opt/ccache
 ARG BUILD_FLAGS="\
  -DCMAKE_BUILD_TYPE=Release\
  -DBUILD_STIR_WITH_OPENMP=ON -DUSE_SYSTEM_ACE=ON\
@@ -101,13 +101,11 @@ COPY user_service-ubuntu.sh .
 RUN bash user_service-ubuntu.sh
 RUN rm user_service-ubuntu.sh requirements-service.txt
 
+COPY download_data.sh /usr/local/bin/
+
 COPY service.sh /usr/local/bin/
 ENV DEBIAN_FRONTEND ''
 CMD ["/usr/local/bin/service.sh"]
-
-COPY download_data.sh /usr/local/bin/
-ENV DEBIAN_FRONTEND ''
-CMD ["/usr/local/bin/download_data.sh"]
 
 FROM service as multi
 COPY service.multi.sh /usr/local/bin/
