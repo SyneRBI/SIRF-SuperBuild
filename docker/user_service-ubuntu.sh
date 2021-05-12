@@ -11,4 +11,10 @@ if [ -f requirements-service.txt ]; then
   pip install -U -r requirements-service.txt
 fi
 
+#install SIRF-Exercises requirements
+cd $INSTALL_DIR
+if [ -f requirements.txt ]; then
+  conda install -c conda-forge -y --file requirements.txt || \
+  pip install -U -r requirements.txt
+fi
 # jupyter labextension install @jupyter-widgets/jupyterlab-manager
