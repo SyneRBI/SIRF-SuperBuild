@@ -12,7 +12,7 @@ if [ -f requirements-service.txt ]; then
 fi
 
 #install SIRF-Exercises requirements
-cd $INSTALL_DIR
+cd $INSTALL_DIR/SIRF-Exercises
 if [ -f requirements.txt ]; then
   conda install -c conda-forge -y --file requirements.txt || \
   pip install -U -r requirements.txt
