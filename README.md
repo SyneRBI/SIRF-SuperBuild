@@ -200,7 +200,7 @@ They can be found [here](https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-Ub
 They can be found [here](https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-on-MacOS)
 
 ### Installation instructions for Docker <a name="Docker-install"></a>
-They can be found [here](https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-on-Docker)
+They can be found [here](docker/README.md)
 
 ## Advanced installation
 
