@@ -1,7 +1,10 @@
 # ChangeLog
 
-# x.x.x
+# 3.0.0
 - build with python3
+- updated apt and python requirements for SIRF 3.0.0 and CIL v21.1.0
+- install [pet-rd-tools](https://github.com/UCL/pet-rd-tools)
+- add update_VM_to_full_CIL.sh script to use `BUILD_CIL=ON` in SuperBuild
 
 # 2.2.0
 
