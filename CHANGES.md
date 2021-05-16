@@ -1,26 +1,26 @@
 # ChangeLog
-## v3.0.0-xx
-- CIL repositry has been transferred to the TomographicImaging organisation; reflect changes in CIL repositories
-
-## v3.0.0-rc.1
-- Environment files with name env_sirf.sh (and csh) are created. Symbolic links or copies with the previous name env_ccppetmr.sh (and csh) depending on the version of CMake available are made.
-- Add GitHub action for CI. 
+## v3.0.0
 - Docker build moved to Python3 only.
-- Switched Travis ctest from --verbose to --output-on-failure and added travis_wait of 20 minutes to keep it from timing-out if some tests take longer than 10.
-- Sets `USE_ITK=ON` by default.
-- Disabled building of `Module_ITKReview` by default
-- Updates for CIL 20.11+ which has a different python module structure. CCPi-FrameworkPlugins has been also removed.
-- Patch Gadgetron include file hoNDFFT.h to remove spurious ".."
-- Add Gadgetron as a dependency of SIRF if `BUILD_Gadgetron` is `ON`.
-- Enabled HDF5 support for STIR by default (build C++ libraries for HDF5)
+- Environment files with name env_sirf.sh (and csh) are created. Symbolic links or copies with the previous name env_ccppetmr.sh (and csh) depending on the version of CMake available are made.
 - Fix some issues with finding Python [#472](https://github.com/SyneRBI/SIRF-SuperBuild/issues/472)
-- Add option `BUILD_TESTING_JSON` (default OFF)
+- Handling dependent projects:
+    - Sets `USE_ITK=ON` by default.
+    - Disabled building of `Module_ITKReview` by default
+    - Updates for CIL 20.11+ which has a different python module structure. CCPi-FrameworkPlugins has been also removed.
+    - CIL repository has been transferred to the TomographicImaging organisation; reflect changes in CIL repositories
+    - Patch Gadgetron include file hoNDFFT.h to remove spurious ".."
+    - Add Gadgetron as a dependency of SIRF if `BUILD_Gadgetron` is `ON`.
+    - Enabled HDF5 support for STIR by default (build C++ libraries for HDF5)
+    - Add option `BUILD_TESTING_JSON` (default OFF)
 - Updated versions:
    - JSON: 3.9.1
    - SWIG: 4.0.2
    - STIR: 4.1.1
    - SIRF: 3.0.0
    - CIL: 21.1.0
+- Continuous Integration testing:
+    - Add GitHub actions and removed most Travs runs
+    - Switched Travis ctest from --verbose to --output-on-failure and added travis_wait of 20 minutes to keep it from timing-out if some tests take longer than 10.
 
 ## v2.2.0
 - Updated to reflect change from CCPPETMR to CCPSyneRBI.
