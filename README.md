@@ -90,6 +90,7 @@ cmake ../SIRF-SuperBuild
 ```
 You can of course use the GUI version of CMake (called `cmake-gui` on Linux/OSX), or the
 terminal verson `ccmake` to check and set various variables. See the [CMake tutorial on how to run CMake](https://cmake.org/runningcmake/).
+By default, this will select stable configurations of the various projects. See [the advanced installation section](#advanced-installation).
 
 Then use your build environment to build and install the project. On Linux/OSX etc, you would normally use
 ```bash
@@ -110,11 +111,7 @@ The installed Gadgetron include files contain some spurious `..` which prevent c
 The include has been fixed in more recent versions of Gadgetron and our patch should not do anything in such case.
 
 ### Example Gadgetron configuration file
-Gadgetron requires a configuration file. An example is supplied and, as a starting point, this can be copied and used as the real thing:
-```
-mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
-```
-replacing `INSTALL` with the directory you used for `CMAKE_INSTALL_PREFIX`.
+Gadgetron requires a configuration file. An example is supplied and copied by the installation procedure (unless one exists).
 
 ### Set Environment variables
 Source a script with the environment variables appropriate for your shell
@@ -143,7 +140,7 @@ gadgetron
 N.B.: If you didn't add any of the above statements to your `.bashrc` or `.cshrc`, you will have to source `env_sirf.*` again in this terminal first.
 
 ### Testing
-Tests for the SIRF-SuperBuild are currently the SIRF tests. The tests can contain tests from most SuperBuild projects.
+Tests for most SuperBuild projects can be en/disabled projects when configuring the build.
 After setting the environment variables and starting Gadgetron, you can run tests as:
 
 ```bash
@@ -203,7 +200,7 @@ They can be found [here](https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-Ub
 They can be found [here](https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-on-MacOS)
 
 ### Installation instructions for Docker <a name="Docker-install"></a>
-They can be found [here](https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-on-Docker)
+They can be found [here](docker/README.md)
 
 ## Advanced installation
 
@@ -224,7 +221,7 @@ In this case, you would then need to ensure that `PYTHONPATH` and `MATLABPATH` a
 ### Building with specific versions of dependencies
 By default, the SuperBuild will build the latest stable release of SIRF and associated versions of the dependencies. However, the SuperBuild allows the user to change the versions of the projects it's building. The current default values can be found in [version_config.cmake](version_config.cmake).
 
-There is a `DEVEL_BUILD` tag that allows to build the upstream/master versions of all packages (`DEVEL_BUILD=ON`).
+There is a `DEVEL_BUILD` tag that allows to build the upstream/master versions of most packages (`DEVEL_BUILD=ON`).
 
 One may want to use only a specific version of a package. This is achieved by adding the right tag to the command line:
 
@@ -264,10 +261,10 @@ Notice that other packages may look for a blas implementation issuing CMake's [`
 
 ### Building CCPi CIL
 
-It is possible to build the [CCPi Core Imaging Library CIL](https://www.ccpi.ac.uk/CIL) as part of the SuperBuild. The CIL consists on a few pieces of software (`CCPi-Framework`, `CCPi-FrameworkPlugins`, `CCPi-Regularisation-Toolkit`, `CCPi-Astra`). There are 2 options: 
+It is possible to build the [CCPi Core Imaging Library CIL](https://www.ccpi.ac.uk/CIL) as part of the SuperBuild. The functionality of `CIL` can be expanded by plugins. Currently available: [`CCPi-Regularisation`](https://github.com/vais-ral/CCPi-Regularisation-Toolkit), [`CIL-ASTRA`](https://github.com/TomographicImaging/CIL-ASTRA), [`TomoPhantom`](https://github.com/dkazanc/TomoPhantom) and [`TIGRE`](https://github.com/CERN/TIGRE)). There are 2 options: 
 
-1. `BUILD_CIL` will build CIL and [ASTRA-toolbox](https://github.com/astra-toolbox/astra-toolbox) and [TomoPhantom](https://github.com/dkazanc/TomoPhantom)
-2. `BUILD_CIL_LITE` will build only CIL (and leave out `CCPi-Astra`)
+1. `BUILD_CIL` will build `CIL` and all the following plugins: `CIL-ASTRA`, `CCPi-Regularisation`, [ASTRA-toolbox](https://github.com/astra-toolbox/astra-toolbox) and `TomoPhantom`
+2. `BUILD_CIL_LITE` will build `CIL` with the `CCPi-Regularisation` plugins.
 
 ### Passing CMAKE arguments to specific projects
 

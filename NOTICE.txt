@@ -1,7 +1,7 @@
 CCP SyneRBI Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
-Copyright 2017-2020 University College London (UCL)
-Copyright 2017-2020 Rutherford Appleton Laboratory STFC
-Copyright 2017-2020 King's College London (KCL)
+Copyright 2017-2021 University College London (UCL)
+Copyright 2017-2021 Rutherford Appleton Laboratory STFC
+Copyright 2017-2021 King's College London (KCL)
 
 This software product is developed for the Collaborative Computational 
 Project in Synergistic Reconstruction for Biomedical Imaging,
@@ -10,10 +10,13 @@ at RAL STFC (http://www.stfc.ac.uk), UCL (http://www.ucl.ac.uk/)
 and other contributing institutions.
 
 Main contributors (see each file for authors):
-Benjamin A Thomas(UCL)
 Kris Thielemans (UCL)
+Benjamin A Thomas(UCL)
 Edoardo Pasca (STFC)
 Casper da Costa-Luis (KCL)
+Ander Biguri (UCL)
 Richard Brown (UCL)
 Evgueni Ovtchinnikov (STFC)
-Ander Biguri (UCL)
+Ashley Gillman (CSIRO)
+Christoph Kolbitsch (PTB)
+David Atkinson (UCL)

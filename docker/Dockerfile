@@ -82,7 +82,8 @@ ARG BUILD_FLAGS="\
  -DBUILD_STIR_WITH_OPENMP=ON -DUSE_SYSTEM_ACE=ON\
  -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DBUILD_CIL=ON\
  -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_ITK=ON\
- -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
+ -DUSE_SYSTEM_SWIG=ON\
+ -DBUILD_siemens_to_ismrmrd=ON -DBUILD_pet_rd_tools=ON"
 ARG EXTRA_BUILD_FLAGS=""
 RUN bash user_sirf-ubuntu.sh
 RUN rm user_sirf-ubuntu.sh
@@ -100,9 +101,12 @@ COPY user_service-ubuntu.sh .
 RUN bash user_service-ubuntu.sh
 RUN rm user_service-ubuntu.sh requirements-service.txt
 
+COPY download_data.sh /usr/local/bin/
+
 COPY service.sh /usr/local/bin/
 ENV DEBIAN_FRONTEND ''
 CMD ["/usr/local/bin/service.sh"]
 
 FROM service as multi
 COPY service.multi.sh /usr/local/bin/
+

@@ -13,7 +13,8 @@ apt-get install -yq --no-install-recommends \
   man                  \
   make                 \
   ccache               \
-  sudo
+  sudo                 \
+  unzip
 apt-get clean
 
 pushd $INSTALL_DIR
