@@ -8,4 +8,4 @@ You can use the SyneRBI Virtual Machine as a Gadgetron server if you cannot inst
 
 This will enable you to run SIRF MR demos on your computer.
 
-An [alternative solution](https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-on-Docker) is to use docker.
+An [alternative solution](https://github.com/SyneRBI/SIRF-SuperBuild/tree/master/docker/README.md) is to use docker.
