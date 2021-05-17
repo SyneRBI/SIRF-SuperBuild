@@ -1,5 +1,8 @@
 # ChangeLog
+
 ## v3.0.0
+- travis to use BUILD_CIL=ON for GPU+SERVICE builds
+- Add GitHub action for CI. 
 - Docker build moved to Python3 only.
 - Environment files with name env_sirf.sh (and csh) are created. Symbolic links or copies with the previous name env_ccppetmr.sh (and csh) depending on the version of CMake available are made.
 - Fix some issues with finding Python [#472](https://github.com/SyneRBI/SIRF-SuperBuild/issues/472)
