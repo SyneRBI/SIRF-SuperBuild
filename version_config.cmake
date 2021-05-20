@@ -205,7 +205,6 @@ if (DEVEL_BUILD)
   set(DEFAULT_CCPi-Regularisation-Toolkit_TAG origin/master)
 
 else()
-  # just past 3.0.0-rc.1 due to Singles fix
   set(DEFAULT_SIRF_TAG v3.0.0)
 
   ## STIR
