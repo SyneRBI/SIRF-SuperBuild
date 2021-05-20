@@ -206,7 +206,7 @@ if (DEVEL_BUILD)
 
 else()
   # just past 3.0.0-rc.1 due to Singles fix
-  set(DEFAULT_SIRF_TAG d5865a6dbbbbc1d7a142a9dc64ce24c164e8ff43)
+  set(DEFAULT_SIRF_TAG v3.0.0)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
