@@ -21,6 +21,7 @@
    - STIR: 4.1.1
    - SIRF: 3.0.0
    - CIL: 21.1.0
+   - CCPi-Regularisation toolkit: 20.09
 - Continuous Integration testing:
     - Add GitHub actions and removed most Travs runs
     - Switched Travis ctest from --verbose to --output-on-failure and added travis_wait of 20 minutes to keep it from timing-out if some tests take longer than 10.
