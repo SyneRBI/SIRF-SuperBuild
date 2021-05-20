@@ -2,6 +2,6 @@
 set -ev
 apt-get update -qq
 apt-get install -yq --no-install-recommends \
-  python-dev           \
-  python-tk
+  python3-dev           \
+  python3-tk
 apt-get clean

@@ -36,10 +36,17 @@ and even [README.md](https://github.com/SyneRBI/SIRF-SuperBuild/blob/master/READ
 for each change (in particular with a single "subject" line
 followed by an empty line and then more details).
 6. Push the commits to your fork and submit a [pull request (PR)](https://help.github.com/articles/creating-a-pull-request)
-(enable changes by project admins.) Be prepared to add further commits to your branch after discussion.
+(enable changes by project admins.)
 In the description of the PR, add a statement about which Issue this applies to
 using [a phrase such that github auto-closes the issue when merged to master](https://help.github.com/articles/closing-issues-using-keywords/).
-7. After acceptance of your PR, go home with a nice warm feeling.
+7. Be prepared to add further commits to your branch after discussion.
+Please by mindful about the resources used by our Continuous Integration (CI) workflows:
+  - Group your commits and only push once your code compiles and tests succeed on your machine
+  - Use specific keywords in the first line of the last commit that you push to prevent CI being run:
+     - `[ci skip]` skips all CI runs (e.g. when you only change documentation, or when your update isn't ready yet)
+     - `[actions skip]` does not run GitHub Actions, see [here](https://github.blog/changelog/2021-02-08-github-actions-skip-pull-request-and-push-workflows-with-skip-ci/).a
+     - `[travis skip]` does not run Travis-CI, see [here](https://docs.travis-ci.com/user/customizing-the-build/#skipping-a-build).
+8. After acceptance of your PR, go home with a nice warm feeling.
 
 Suggested reading: 
 https://help.github.com/articles/fork-a-repo/, https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project or https://guides.github.com/activities/forking/.
@@ -72,7 +79,7 @@ In addition, you might need to add yourself to [NOTICE.txt](https://github.com/S
   commenting/improving/merging this branch/PR
   independent of other developments.
 - Discussions on issues and PRs are forwarded to the
-  <CCP-PETMR-DEVEL@jiscmail.ac.uk> mailing list daily.
+  <SyneRBI-DEVEL@jiscmail.ac.uk> mailing list daily.
     + Forwarded from github via the [googlegroup],
       which is also a backup in case github dies.
 - Contributions of new features should also update documentation and release notes. After version 1.0,

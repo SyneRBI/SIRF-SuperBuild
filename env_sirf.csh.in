@@ -9,9 +9,9 @@ setenv SIRF_INSTALL_PATH @SyneRBI_INSTALL@
 # Where to find shared libraries
 # Setting for Linux but doesn't harm elsewhere
 if $?LD_LIBRARY_PATH then
-	setenv LD_LIBRARY_PATH @SyneRBI_INSTALL@/lib:$LD_LIBRARY_PATH
+	setenv LD_LIBRARY_PATH @SyneRBI_INSTALL@/lib:@SyneRBI_INSTALL@/lib64:$LD_LIBRARY_PATH@Matlab_extra_ld_path@
 else
-	setenv LD_LIBRARY_PATH @SyneRBI_INSTALL@/lib
+	setenv LD_LIBRARY_PATH @SyneRBI_INSTALL@/lib:@SyneRBI_INSTALL@/lib64:@Matlab_extra_ld_path@
 endif
 # Setting for MacOS but doesn't harm elsewhere
 if $?DYLD_FALLBACK_LIBRARY_PATH then

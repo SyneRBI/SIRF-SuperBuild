@@ -1,11 +1,7 @@
 #========================================================================
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
-# Author: Edoardo Pasca
-# Author: Casper da Costa-Luis
 # Copyright 2017, 2020 University College London
-# Copyright 2017, 2020 STFC
-# Copyright 2019, 2020 King's College London
 #
 # This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -24,19 +20,19 @@
 #=========================================================================
 
 #This needs to be unique globally
-set(proj TomoPhantom)
+set(proj parallelproj)
 
 # Set dependency list
-set(${proj}_DEPENDENCIES "")
+#set(${proj}_DEPENDENCIES "")
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
+
 SetCanonicalDirectoryNames(${proj})
-# Get any flag from the superbuild call that may be particular to this projects CMAKE_ARGS
-SetExternalProjectFlags(${proj})
+
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
@@ -44,24 +40,20 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ### --- Project specific additions here
 
+ set(${proj}_CMAKE_ARGS
+      ${PYTHONLIBS_CMAKE_ARGS}
+      -DOPENMP_INCLUDES:PATH=${OPENMP_INCLUDES}
+      -DOPENMP_LIBRARIES:PATH=${OPENMP_LIBRARIES}
+  #   -DCMAKE_INSTALL_PREFIX=${${proj}_INSTALL_DIR}
+  )
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     ${${proj}_EP_ARGS_GIT}
     ${${proj}_EP_ARGS_DIRS}
-    
 
-    CMAKE_ARGS
-      -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
-    	-DLIBRARY_DIR:PATH=${${proj}_INSTALL_DIR}/lib
-    	-DINCLUDE_DIR:PATH=${${proj}_INSTALL_DIR}/include
-    	-DCONDA_BUILD=OFF
-    	-DBUILD_PYTHON_WRAPPER=ON
-        ${PYTHONLIBS_CMAKE_ARGS}
-    	-DPYTHON_DEST_DIR:PATH=${PYTHON_DEST_DIR}
-    	-DPYTHON_STRATEGY=${PYTHON_STRATEGY}
-      ${${proj}_EXTRA_CMAKE_ARGS_LIST}
-    # TODO this relies on using "make", but we could be build with something else
-    #INSTALL_COMMAND make TomoPhantom
+    CMAKE_ARGS ${${proj}_CMAKE_ARGS}
+    ${${proj}_EXTRA_CMAKE_ARGS_LIST}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
@@ -69,9 +61,16 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
    else()
       if(${USE_SYSTEM_${externalProjName}})
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
-        message(STATUS "USING the system ${externalProjName}, found ACE_LIBRARIES=${ACE_LIBRARIES}")
-    endif()
-  ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-                            ${${proj}_EP_ARGS_DIRS}
-  )
+        message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
+   endif()
+    ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
+    ${${proj}_EP_ARGS_DIRS}
+   )
   endif()
+
+  mark_as_superbuild(
+    VARS
+      ${externalProjName}_DIR:PATH
+    LABELS
+      "FIND_PACKAGE"
+  )

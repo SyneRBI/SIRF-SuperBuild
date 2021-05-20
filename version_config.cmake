@@ -87,7 +87,7 @@ else()
 endif()
 
 if (${HDF5_DOWNLOAD_VERSION} STREQUAL 1.8.12)
-  set(HDF5_MD5 4711e0d6b87d442f194c5d29ba7fbe62 )
+  set(HDF5_MD5 d804802feb99b87fc668a90e6fa34411 )
 elseif (${HDF5_DOWNLOAD_VERSION} STREQUAL 1.10.1)
   set(HDF5_MD5 43a2f9466702fb1db31df98ae6677f15 )
 else()
@@ -97,11 +97,11 @@ endif()
 ## SWIG
 set (SWIG_REQUIRED_VERSION 2)
 if (WIN32)
-  set(SWIG_URL http://downloads.sourceforge.net/swig/swigwin-3.0.12.zip  )
-  set(SWIG_MD5 a49524dad2c91ae1920974e7062bfc93 )
+  set(SWIG_URL http://downloads.sourceforge.net/swig/swigwin-4.0.2.zip  )
+  set(SWIG_MD5 009926b512aee9318546bdd4c7eab6f9 )
 else(WIN32)
-  set(SWIG_URL http://downloads.sourceforge.net/swig/swig-3.0.12.tar.gz )
-  set(SWIG_MD5 82133dfa7bba75ff9ad98a7046be687c )
+  set(SWIG_URL http://downloads.sourceforge.net/swig/swig-4.0.2.tar.gz )
+  set(SWIG_MD5 7c3e46cb5af2b469722cafa0d91e127b )
 endif(WIN32)
 option(DEVEL_BUILD "Use current versions of major packages" OFF)
 
@@ -123,8 +123,13 @@ set(DEFAULT_NIFTYREG_TAG 99d584e2b8ea0bffe7e65e40c8dc818751782d92 )
 set(DEFAULT_NIFTYREG_REQUIRED_VERSION 1.5.68)
 
 ## ISMRMRD
-set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
-set(DEFAULT_ISMRMRD_TAG v1.4.1)
+if (WIN32)
+  set(DEFAULT_ISMRMRD_URL https://github.com/SyneRBI/ismrmrd )
+  set(DEFAULT_ISMRMRD_TAG program_options_fix)
+else()
+  set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
+  set(DEFAULT_ISMRMRD_TAG v1.4.1)
+endif()
 
 ## Gadgetron
 set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
@@ -142,6 +147,10 @@ set(DEFAULT_TomoPhantom_TAG v1.4)
 set(DEFAULT_NiftyPET_URL https://github.com/pjmark/NIPET )
 set(DEFAULT_NiftyPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
 
+## parallelproj
+set(DEFAULT_parallelproj_URL https://github.com/gschramm/parallelproj )
+set(DEFAULT_parallelproj_TAG v0.7)
+
 ## SIRF-Contribs
 set(DEFAULT_SIRF-Contribs_URL https://github.com/SyneRBI/SIRF-Contribs )
 set(DEFAULT_SIRF-Contribs_TAG origin/master )
@@ -151,18 +160,15 @@ set(DEFAULT_SPM_URL https://github.com/spm/SPM12.git )
 set(DEFAULT_SPM_TAG r7771)
 
 set(DEFAULT_JSON_URL https://github.com/nlohmann/json.git )
-set(DEFAULT_JSON_TAG v3.7.3)
+set(DEFAULT_JSON_TAG v3.9.1)
 
 # CCPi CIL
-set(CIL_VERSION "v20.04")
-set(DEFAULT_CCPi-Framework_URL https://github.com/vais-ral/CCPi-Framework.git)
-set(DEFAULT_CCPi-Framework_TAG ${CIL_VERSION})
-set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git )
-set(DEFAULT_CCPi-Regularisation-Toolkit_TAG ${CIL_VERSION})
-set(DEFAULT_CCPi-FrameworkPlugins_URL https://github.com/vais-ral/CCPi-FrameworkPlugins.git)
-set(DEFAULT_CCPi-FrameworkPlugins_TAG ${CIL_VERSION})
-set(DEFAULT_CCPi-Astra_URL https://github.com/vais-ral/CCPi-Astra.git)
-set(DEFAULT_CCPi-Astra_TAG ${CIL_VERSION})
+set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
+set(DEFAULT_CIL_TAG "v21.1.0")
+set(DEFAULT_CIL-ASTRA_URL https://github.com/TomographicImaging/CIL-ASTRA.git)
+set(DEFAULT_CIL-ASTRA_TAG "v21.0.0")
+set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
+set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v20.09")
 
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
@@ -190,12 +196,20 @@ if (DEVEL_BUILD)
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
   set(DEFAULT_ACE_TAG origin/master)
 
+  # CCPi CIL
+  set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
+  set(DEFAULT_CIL_TAG origin/master)
+  set(DEFAULT_CIL-ASTRA_URL https://github.com/TomographicImaging/CIL-ASTRA.git)
+  set(DEFAULT_CIL-ASTRA_TAG origin/master)
+  set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
+  set(DEFAULT_CCPi-Regularisation-Toolkit_TAG origin/master)
+
 else()
-  set(DEFAULT_SIRF_TAG v2.2.0)
+  set(DEFAULT_SIRF_TAG v3.0.0)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG release_4)
+  set(DEFAULT_STIR_TAG rel_4.1.1)
 
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
@@ -203,7 +217,7 @@ else()
 
   ## pet-rd-tools
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
-  set(DEFAULT_pet_rd_tools_TAG v1.1.0)
+  set(DEFAULT_pet_rd_tools_TAG v2.0.1)
 
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
   set(DEFAULT_ACE_TAG origin/master)
@@ -244,12 +258,10 @@ set(JSON_TAG ${DEFAULT_JSON_TAG} CACHE STRING ON)
 
 set(CCPi-Regularisation-Toolkit_URL ${DEFAULT_CCPi-Regularisation-Toolkit_URL} CACHE STRING ON)
 set(CCPi-Regularisation-Toolkit_TAG ${DEFAULT_CCPi-Regularisation-Toolkit_TAG} CACHE STRING ON)
-set(CCPi-Framework_URL ${DEFAULT_CCPi-Framework_URL} CACHE STRING ON)
-set(CCPi-Framework_TAG ${DEFAULT_CCPi-Framework_TAG} CACHE STRING ON)
-set(CCPi-FrameworkPlugins_URL ${DEFAULT_CCPi-FrameworkPlugins_URL} CACHE STRING ON)
-set(CCPi-FrameworkPlugins_TAG ${DEFAULT_CCPi-FrameworkPlugins_TAG} CACHE STRING ON)
-set(CCPi-Astra_URL ${DEFAULT_CCPi-Astra_URL} CACHE STRING ON)
-set(CCPi-Astra_TAG ${DEFAULT_CCPi-Astra_TAG} CACHE STRING ON)
+set(CIL_URL ${DEFAULT_CIL_URL} CACHE STRING ON)
+set(CIL_TAG ${DEFAULT_CIL_TAG} CACHE STRING ON)
+set(CIL-ASTRA_URL ${DEFAULT_CIL-ASTRA_URL} CACHE STRING ON)
+set(CIL-ASTRA_TAG ${DEFAULT_CIL-ASTRA_TAG} CACHE STRING ON)
 set(astra-toolbox_URL ${DEFAULT_astra-toolbox_URL} CACHE STRING ON)
 set(astra-toolbox_TAG ${DEFAULT_astra-toolbox_TAG} CACHE STRING ON)
 set(TomoPhantom_URL ${DEFAULT_TomoPhantom_URL} CACHE STRING ON)
@@ -260,6 +272,9 @@ set(NIFTYREG_TAG ${DEFAULT_NIFTYREG_TAG} CACHE STRING ON)
 
 set(NiftyPET_URL ${DEFAULT_NiftyPET_URL} CACHE STRING ON)
 set(NiftyPET_TAG ${DEFAULT_NiftyPET_TAG} CACHE STRING ON)
+
+set(parallelproj_URL ${DEFAULT_parallelproj_URL} CACHE STRING ON)
+set(parallelproj_TAG ${DEFAULT_parallelproj_TAG} CACHE STRING ON)
 
 set(SIRF-Contribs_URL ${DEFAULT_SIRF-Contribs_URL} CACHE STRING ON)
 set(SIRF-Contribs_TAG ${DEFAULT_SIRF-Contribs_TAG} CACHE STRING ON)
@@ -280,12 +295,16 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   pet_rd_tools_URL pet_rd_tools_TAG
   glog_URL glog_TAG
   NIFTYREG_URL NIFTYREG_TAG
-  CCPi-Framework_URL CCPi-Framework_TAG
-  CCPi-FrameworkPlugins_URL CCPi-FrameworkPlugins_TAG
+  CIL_URL CIL_TAG
+  CIL-ASTRA_URL CIL-ASTRA_TAG
   CCPi-Regularisation-Toolkit_URL CCPi-Regularisation-Toolkit_TAG
   NiftyPET_URL NiftyPET_TAG
+  parallelproj_URL parallelproj_TAG
   SIRF-Contribs_URL SIRF-Contribs_TAG
   ITK_URL ITK_TAG
   SPM_URL SPM_TAG
   JSON_URL JSON_TAG
+  astra-toolbox_URL astra-toolbox_TAG
+  ACE_URL ACE_TAG
+  
 )

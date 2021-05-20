@@ -50,7 +50,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   option(STIR_BUILD_SWIG_PYTHON "Build STIR Python interface" ${default_STIR_BUILD_SWIG_PYTHON})
   option(STIR_DISABLE_CERN_ROOT "Disable STIR ROOT interface" ON)
   option(STIR_DISABLE_LLN_MATRIX "Disable STIR Louvain-la-Neuve Matrix library for ECAT7 support" ON)
-  option(STIR_DISABLE_HDF5 "Disable STIR use of HDF5 libraries" ON)
+  option(STIR_DISABLE_HDF5 "Disable STIR use of HDF5 libraries (and hence GE Raw Data support)" OFF)
   option(STIR_ENABLE_EXPERIMENTAL "Enable STIR experimental code" OFF)
 
   mark_as_advanced(BUILD_STIR_EXECUTABLES BUILD_STIR_SWIG_PYTHON STIR_DISABLE_CERN_ROOT)
@@ -71,11 +71,16 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   if (USE_NiftyPET)
     list(APPEND ${proj}_DEPENDENCIES "NiftyPET")
   endif()
-  option(STIR_DISABLE_JSON "Disable JSON support in ${proj}" ON)
-  if (STIR_USE_JSON)
+  if (USE_parallelproj)
+    list(APPEND ${proj}_DEPENDENCIES "parallelproj")
+  endif()
+  option(STIR_DISABLE_JSON "Disable JSON support in ${proj}" OFF)
+  if (NOT STIR_DISABLE_JSON)
     list(APPEND ${proj}_DEPENDENCIES "JSON")
   endif()
-
+  if (NOT STIR_DISABLE_HDF5)
+    list(APPEND ${proj}_DEPENDENCIES "HDF5")
+  endif()
   # Include dependent projects if any
   ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 
@@ -85,6 +90,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     -DBUILD_EXECUTABLES:BOOL=${STIR_BUILD_EXECUTABLES}
     -DBUILD_SWIG_PYTHON:BOOL=${STIR_BUILD_SWIG_PYTHON}
     -DPYTHON_DEST:PATH=${PYTHON_DEST}
+    ${PYTHONLIBS_CMAKE_ARGS}
     -DMatlab_ROOT_DIR:PATH=${Matlab_ROOT_DIR}
     -DMATLAB_DEST:PATH=${MATLAB_DEST}
     -DBUILD_TESTING:BOOL=${BUILD_TESTING_${proj}}

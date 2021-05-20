@@ -46,6 +46,10 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   endif()
 
 if (WIN32)
+
+  # we don't bother building it, but copy the files into an FFTW subdir_directory
+  # We then still need to run "lib" to create export libraries (as per the README-WINDOWS from FFTW)
+  # TODO: We should check if we're building with 32bit or 64bit tools, assuming the latter
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     URL ${${proj}_URL}
@@ -55,8 +59,16 @@ if (WIN32)
     BUILD_COMMAND ""
     INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory ${${proj}_INSTALL_DIR}
         COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${${proj}_INSTALL_DIR}/FFTW
+        COMMAND ${CMAKE_COMMAND} -E chdir ${${proj}_INSTALL_DIR}/FFTW lib /machine:x64 /def:libfftw3f-3.def
+        COMMAND ${CMAKE_COMMAND} -E chdir ${${proj}_INSTALL_DIR}/FFTW lib /machine:x64 /def:libfftw3-3.def
+        COMMAND ${CMAKE_COMMAND} -E chdir ${${proj}_INSTALL_DIR}/FFTW lib /machine:x64 /def:libfftw3l-3.def
   )
-  set( FFTW3_ROOT_DIR ${${proj}_INSTALL_DIR}/FFTW )
+  set( ${proj}_INSTALL_DIR ${${proj}_INSTALL_DIR}/FFTW )
+  set(FFTW3_CMAKE_ARGS
+      -DFFTW3_INCLUDE_DIR:PATH=${${proj}_INSTALL_DIR}/
+	  -DFFTW3F_LIBRARY:FILEPATH=${${proj}_INSTALL_DIR}/libfftw3f-3.lib
+	  -DFFTW3_LIBRARY:FILEPATH=${${proj}_INSTALL_DIR}/libfftw3-3.lib
+	  )
 else()
   #set(FFTW_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj} )
   
@@ -73,7 +85,7 @@ else()
   # let's hope for the best
   # ideally we would also set DFFTW3_LIBRARIES but that's hard and system dependent
   set(FFTW3_CMAKE_ARGS
-      -DFFTW3_INCLUDE_DIR:PATH=${FFTW_Install_Dir}/include
+      -DFFTW3_INCLUDE_DIR:PATH=${${proj}_INSTALL_DIR}/include
   )
 
 endif()

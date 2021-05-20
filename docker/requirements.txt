@@ -2,11 +2,13 @@ docopt
 matplotlib
 git+https://github.com/ismrmrd/ismrmrd-python-tools.git@master#egg=ismrmrd-python-tools
 Cython  # CIL
-numpy  # CIL
+numpy<=1.18  # CIL
 scipy  # CIL
 h5py  # CIL
 Pillow  # CIL
 wget  # CIL
 six  # CIL
+olefile # CIL
 nibabel
 deprecation
+nose

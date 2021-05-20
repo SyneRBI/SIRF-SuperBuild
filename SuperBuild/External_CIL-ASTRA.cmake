@@ -1,6 +1,6 @@
 #========================================================================
 # Author: Edoardo Pasca
-# Copyright 2018, 2020 STFC
+# Copyright 2019, 2020 STFC
 #
 # This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -19,10 +19,10 @@
 #=========================================================================
 
 #This needs to be unique globally
-set(proj CCPi-FrameworkPlugins)
+set(proj CIL-ASTRA)
 
 # Set dependency list
-set(${proj}_DEPENDENCIES "CCPi-Framework")
+set(${proj}_DEPENDENCIES "CIL;astra-toolbox")
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
@@ -30,17 +30,22 @@ ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 SetCanonicalDirectoryNames(${proj})
-# Get any flag from the superbuild call that may be particular to this projects CMAKE_ARGS
-SetExternalProjectFlags(${proj})
+
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
   SetGitTagAndRepo("${proj}")
+
   ### --- Project specific additions here
+  # set(libcilreg_Install_Dir ${SUPERBUILD_INSTALL_DIR})
+
+  # #message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
+  # set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
+  # set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
+
 
   message("${proj} URL " ${${proj}_URL}  )
   message("${proj} TAG " ${${proj}_TAG}  )
-
   # conda build should never get here
   if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
     # in case of PYTHONPATH it is sufficient to copy the files to the
@@ -52,7 +57,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
       CONFIGURE_COMMAND ""
       BUILD_COMMAND ""
-      INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/Wrappers/Python/ccpi ${PYTHON_DEST}/ccpi
+      INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/Wrappers/Python/cil/plugins/astra ${PYTHON_DEST}/cil/plugins/astra
       CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
       DEPENDS ${${proj}_DEPENDENCIES}
     )
