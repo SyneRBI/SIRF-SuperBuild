@@ -42,7 +42,7 @@ using [a phrase such that github auto-closes the issue when merged to master](ht
 7. Be prepared to add further commits to your branch after discussion.
 Please by mindful about the resources used by our Continuous Integration (CI) workflows:
   - Group your commits and only push once your code compiles and tests succeed on your machine
-  - Use specific keywords in the first line of the last commit that you push to prevent CI being run:
+  - Use specific keywords in the body of the last commit that you push to prevent CI being run:
      - `[ci skip]` skips all CI runs (e.g. when you only change documentation, or when your update isn't ready yet)
      - `[actions skip]` does not run GitHub Actions, see [here](https://github.blog/changelog/2021-02-08-github-actions-skip-pull-request-and-push-workflows-with-skip-ci/).a
      - `[travis skip]` does not run Travis-CI, see [here](https://docs.travis-ci.com/user/customizing-the-build/#skipping-a-build).
