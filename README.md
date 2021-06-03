@@ -28,13 +28,14 @@ by the SuperBuild, [see below for more info for your operating system](#os-speci
    2. [Installation instructions for Mac OS](#OSX-install)
    3. [Installation instructions for Docker](#Docker-install)
 4. [Advanced installation](#Advanced-installation)
-   1. [Compiling against your own packages](#Compiling-packages)
-   2. [Python and MATLAB installation locations](#Python-and-MATLAB-installation-locations)
-   3. [Building with specific versions of dependencies](#Building-with-specific-versions-of-dependencies)
-   4. [Building from your own source](#Building-from-your-own-source)
-   5. [Building with Intel Math Kernel Library](#Building-with-Intel-Math-Kernel-Library)
-   6. [Building CCPi CIL](#Building-CCPi-CIL)
-   7. [Passing CMAKE arguments to specific projects](#Passing-CMAKE-arguments-to-specific-projects)
+   1. [use a different compiler than the system default](use-a-different-compiler-than-the-system-default)
+   2. [Compiling against your own packages](#Compiling-packages)
+   3. [Python and MATLAB installation locations](#Python-and-MATLAB-installation-locations)
+   4. [Building with specific versions of dependencies](#Building-with-specific-versions-of-dependencies)
+   5. [Building from your own source](#Building-from-your-own-source)
+   6. [Building with Intel Math Kernel Library](#Building-with-Intel-Math-Kernel-Library)
+   7. [Building CCPi CIL](#Building-CCPi-CIL)
+   8. [Passing CMAKE arguments to specific projects](#Passing-CMAKE-arguments-to-specific-projects)
 
 
 ## Dependencies
