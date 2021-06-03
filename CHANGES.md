@@ -1,5 +1,8 @@
 # ChangeLog
 
+## v3.x.x
+- no longer build NiftyPET on docker until we have transitioned it to Python3
+
 ## v3.0.0
 - travis to use BUILD_CIL=ON for all Docker builds
 - Add GitHub action for CI. 
