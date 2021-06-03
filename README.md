@@ -204,6 +204,16 @@ They can be found [here](docker/README.md)
 
 ## Advanced installation
 
+## Use a different compiler than the system default
+You can tell CMake to use a different compiler than what it finds by default. You will need to specify both C and C++ compilers. For instance, to use `gcc8`, use
+```sh
+CC=gcc8
+CXX=g++8
+export CC CXX
+ccmake normal-options
+```
+This needs to be done the very first time you run CMake for that build.
+
 ### Compiling against your own packages <a name="Compiling-packages"></a>
 SIRF depends on many packages. By default, these packages are installed by the Superbuild. However, the user can decide to compile SIRF against their own versions of certain packages. This can be done via the `USE_SYSTEM_*` options in `CMake`. For example, if you wish to compile SIRF against a version of Boost that is already on your machine, you could set `USE_SYSTEM_BOOST` to `ON`.
 
