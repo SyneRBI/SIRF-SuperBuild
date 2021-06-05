@@ -130,7 +130,6 @@ jobs:
    # rebuild base image (using above docker cache)
    - |
       if [[ "$DOCKER_BUILD" == *"CORE"* ]]; then ( set -ev
-        # rm .dockerignore  # TODO: remove this line
         $DCC build --pull core
       ); else ( set -ev
         # rebuild sirf image (with travis' ccache)
@@ -142,7 +141,6 @@ jobs:
           sudo chown -R $USER:$(id -g) ~/.ccache
           mv ~/.ccache devel/
         fi
-        rm .dockerignore  # TODO: remove this line
         # don't count the extra clone we're about to do
         # TODO: Do we need this? Is docker a distinct cloner from travis?
         # cloners_count_decrement

@@ -1,2 +1,3 @@
-/devel/**
-!/devel/.ccache/**
+devel/**
+!devel/.ccache/**
+devel/.ccache/.gitignore
