@@ -4,7 +4,8 @@ Docker wrapper for CCP SyneRBI SIRF.
 
 ## TL;DR, I want a Jupyter notebook service NOW
 
-1. Install [docker CE][docker-ce] and [`docker-compose`][docker-compose],
+1. Install [docker CE][docker-ce] and [`docker-compose`][docker-compose]. If you are on Linux/CentOS/similar and have a GPU,
+install the [NVidia container runtime][NVidia-container-runtime].
 2. Download the SIRF-SuperBuild ([current master](https://github.com/SyneRBI/SIRF-SuperBuild/archive/master.zip), or
 [latest release](https://github.com/SyneRBI/SIRF-SuperBuild/releases)) or
 ```
@@ -14,7 +15,7 @@ and change directory to this folder, `SIRF-SuperBuild/docker`.
 
 3. Optionally pull the pre-built image with `docker pull synerbi/sirf:service` (otherwise
 the next line will build it, resulting in a much smaller download but larger build time)
-4. Run `./sirf-compose-server up -d sirf` 
+4. Run `./sirf-compose-server up -d sirf` (or `./sirf-compose-server-gpu up -d sirf`)
 5. Open a browser at <http://localhost:9999>.
 Note that starting the container may take a few minutes the first
 time, but only a few seconds afterwards.
@@ -31,6 +32,7 @@ even docker-image upgrades.
 
 [docker-ce]: https://docs.docker.com/install/
 [docker-compose]: https://github.com/docker/compose/releases
+[NVidia-container-runtime]: https://github.com/nvidia/nvidia-container-runtime#installation
 [SIRF-Exercises]: https://github.com/SyneRBI/SIRF-Exercises
 
 Note: If on Windows, `localhost` probably won't work.
@@ -42,18 +44,21 @@ and use the resultant IP instead of `localhost` (e.g.: `172.18.0.2:9999`).
 
 ## Tags
 
-The repository is hosted at [hub.docker.com][dockerhub-SIRF].
+The repository is hosted at [hub.docker.com][dockerhub-SIRF]. We upload 2 classes of images (see below for more information):
+- Command Line Interface (CLI)-only
+- "Service" images have `Jupyter` notebook server and auto-start it
+
 To pull directly, use:
 
 ```sh
 docker pull synerbi/sirf:<DOCKER_TAG>
 ```
 
-| `<DOCKER_TAG>` | Service `<DOCKER_TAG>` | [SuperBuild] branch/tag |
+| CLI-only `<DOCKER_TAG>` | Service (i.e. `Jupyter`) `<DOCKER_TAG>` | [SuperBuild] branch/tag |
 |:--- |:--- |:--- |
 | `release` | `release-service` | `<latest_tag>` |
 | `<tag>` | `<tag>-service` | `<tag>` |
-| `latest` | `service` | `master` |
+| `latest` | `service` and `service-gpu` | `master` |
 | `devel` | `devel-service` | `master` with `cmake -DDEVEL_BUILD=ON` |
 
 Service images are intended to be run in the background, and expose:
@@ -71,7 +76,7 @@ Service images are intended to be run in the background, and expose:
 
 Docker is a low-overhead, container-based replacement for virtual machines (VMs).
 
-This works best on a linux (host) system due to:
+This works on Unix-type systems, MacOS and Windows 10, but best on a linux host system due to:
 
 1. Possibility to get CUDA support within the container
 2. `X11` windows displayed natively without needing e.g. a `vnc` server or desktop in the container
@@ -85,6 +90,7 @@ installation instructions.
 - Docker
     + The free [Community Edition (CE)][docker-ce] is sufficient
     + [`docker-compose`][docker-compose]
+    + If you are on Linux/CentOS/similar and have a GPU, install the [NVidia container runtime][NVidia-container-runtime].
 - The [`SIRF-SuperBuild` repository](https://github.com/SyneRBI/SIRF-SuperBuild)
     + download and unzip or `git clone` this locally
 
@@ -193,8 +199,10 @@ Using the container works in the same way as above.
 ### Creating a container providing a (Linux-based) Jupyter Server with SIRF
 
 ```bash
-# Linux or MacOS:
+# Linux without GPU or MacOS:
 SIRF-SuperBuild/docker$ ./sirf-compose-server up -d sirf
+# Linux with GPU
+SIRF-SuperBuild/docker$ ./sirf-compose-server-gpu -d sirf
 # Windows:
 SIRF-SuperBuild/docker> sirf-compose-server up -d sirf
 ```
@@ -211,7 +219,7 @@ To stop the server and container, run `docker stop sirf`. If you also
 want to remove the container, you can use instead `./sirf-compose-server down`,
 see below.
 
-Please note that you cannot start a second `gadgetron` in `service` container, as you would experience port conflicts.
+Please note that you cannot start a second `gadgetron` in a `service` container, as you would experience port conflicts.
 
 ### sirf-compose information 
 The `./sirf-compose*` scripts are simple wrappers around `docker-compose`.
@@ -220,6 +228,7 @@ names or add mounts etc.)
 
 - For a service (Jupyter) container:
     + `./sirf-compose-server`
+    + `./sirf-compose-server-gpu`
 - For a container hosting 10 Jupyter servers:
     + `./sirf-compose-server-multi`
 - For a basic interactive container:
@@ -240,7 +249,7 @@ For example, to host multiple Jupyter servers in one container, simply:
 ### More information on usage
 
 You can use `docker exec` to execute commands in a container that is already running.
-This could be useful for the `Jupyter server` container for instance. For instance
+This could be useful for the `Jupyter server` container. For instance
 ```sh
 # check what is running in the container
 docker exec -w / ps aux
