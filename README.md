@@ -110,7 +110,7 @@ cmake --build . --config Release
 Note that there is no separate install step.
 
 ### MATLAB and Python conflicts
-We have encountered problems with either running or building SIRF on systems that have both Python and MATLAB installed due to problems with different versions of the HDF5 libraries (see e.g. [#208](https://github.com/SyneRBI/SIRF-SuperBuild/issues/208).
+We have encountered problems with either running or building SIRF on systems that have both Python and MATLAB installed due to problems with different versions of the HDF5 libraries (see e.g. [#208](https://github.com/SyneRBI/SIRF-SuperBuild/issues/208)).
 If you do have both MATLAB and Python, it might therefore be best to build twice. For instance
 ```sh
 mkdir ~/devel/build_Python
@@ -326,15 +326,16 @@ Some dependencies like Gadgetron, NiftyPET and Parallelproj require building par
 
 ## Notes
 
-* As CMake doesn't come with FFTW3 support, it is currently necessary to have `FindFFTW3.cmake` reproduced 3 times. sigh.
+### FFTW3 issues
+As CMake doesn't come with FFTW3 support, it is currently necessary to have `FindFFTW3.cmake` reproduced 3 times. sigh.
 
-* This is poorely documented in FindFFTW3.cmake, which could be fixed by a PR to Gadgetron, ISMRMRD and SIRF. Similarly, we could fix `FindFFTW3.cmake` to also use the CMake variable.
+If you want to use your own FFTW3 library but it is not in a standard location, you have to set an environment variable `FFTW3_ROOT_DIR` before running CMake.
+This is poorely documented in FindFFTW3.cmake, which could be fixed by a PR to Gadgetron, ISMRMRD and SIRF. (Note that KT has tried to use `set(ENV{FFTW3_ROOT_DIR} somelocation)` in our `External_FindFFTW.cmake`. This however doesn't pass the environment variable to the CMake instances for Gadgetron etc.)
 
-* KT has tried to use `set(ENV{FFTW3_ROOT_DIR} somelocation)` in our `External_FindFFTW.cmake`. This however doesn't pass the environment variable to the CMake instances for Gadgetron etc.
+By the way, if you build with `USE_SYSTEM_FFTW3=OFF` (the default except on Windows), the  `FFTW3_ROOT_DIR` env variable is ignored (as find_library etc give precedence to `MAKE_PREFIX_PATH` over `HINTS` ).
 
-* By the way, when using `USE_SYSTEM_FFTW3=OFF`, CMake currently does find our own installation even if the `FFTW3_ROOT_DIR` env variable (as find_library etc give precedence to `MAKE_PREFIX_PATH` over `HINTS` ).
-
-* CMake does come with FindArmadillo.cmake but it currently (at least up to CMake 3.12) has no variable to specify its location at all. This implies that when using `USE_SYSTEM_ARMADILLO=On`, you have to install armadillo in a system location, unless some extra work is done. See [this post on stackoverflow](https://stackoverflow.com/questions/35304513/cmake-find-armadillo-library-installed-in-a-custom-location) for some suggestions, which we haven't tried.
+### Armadillo issues
+CMake does come with `FindArmadillo.cmake` but it currently (at least up to CMake 3.12) has no variable to specify its location at all. This implies that when using `USE_SYSTEM_ARMADILLO=On`, you have to install armadillo in a system location, unless some extra work is done. See [this post on stackoverflow](https://stackoverflow.com/questions/35304513/cmake-find-armadillo-library-installed-in-a-custom-location) for some suggestions, which we haven't tried.
 
 [CI-badge]: https://travis-ci.org/SyneRBI/SIRF-SuperBuild.svg?branch=master
 [CI-link]: https://travis-ci.org/SyneRBI/SIRF-SuperBuild
