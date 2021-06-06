@@ -2,7 +2,7 @@
 
 Docker wrapper for CCP SyneRBI SIRF.
 
-## TL;DR, I want a (Jupyter notebook) service NOW
+## TL;DR, I want a Jupyter notebook service NOW
 
 1. Install [docker CE][docker-ce] and [`docker-compose`][docker-compose],
 2. Download the SIRF-SuperBuild ([current master](https://github.com/SyneRBI/SIRF-SuperBuild/archive/master.zip), or
@@ -23,8 +23,11 @@ eventually there should be a message stating the notebook has started.)
 The password is `virtual`.
 The directory is mounted at `/devel` in the docker container
 from `./devel` (in this folder) on the host. The container will copy
-[SIRF-Exercises] into this folder if not present.
+[SIRF-Exercises] into this folder if not present. This means that
+files and notebooks in `./devel` will be persistent between sessions and
+even docker-image upgrades.
 6. Stop the container (preserving its status) with `docker stop sirf`.
+7. Next time, just do `docker start sirf`.
 
 [docker-ce]: https://docs.docker.com/install/
 [docker-compose]: https://github.com/docker/compose/releases
@@ -64,78 +67,18 @@ Service images are intended to be run in the background, and expose:
 [dockerhub-SIRF]: https://hub.docker.com/r/synerbi/sirf/
 [SuperBuild]: https://github.com/SyneRBI/SIRF-SuperBuild/
 
-# Introduction
+## Introduction
 
 Docker is a low-overhead, container-based replacement for virtual machines (VMs).
 
-This works best on a linux system due to:
+This works best on a linux (host) system due to:
 
 1. Possibility to get CUDA support within the container
 2. `X11` windows displayed natively without needing e.g. a `vnc` server or desktop in the container
 
-This is probably the easiest way to directly use `SIRF` due to really short
-installation instructions essentially consisting of:
+This is probably the easiest way to directly use `SIRF` due to short
+installation instructions.
 
-```sh
-docker-compose up --no-start sirf
-docker start -ai sirf
-```
-
-This becomes even simpler if `SIRF` is only going to be used inside a
-Jupyter notebook:
-
-```sh
-./sirf-compose-server up -d sirf
-firefox localhost:9999
-```
-
-## Summary
-
-### CLI
-
-After installing [docker CE][docker-ce] and [`docker-compose`][docker-compose],
-
-```bash
-git clone https://github.com/SyneRBI/SIRF-SuperBuild
-cd SIRF-SuperBuild/docker
-# if your host is linux:
-./sirf-compose up --no-start sirf
-# alternative if your host is windows:
-docker-compose up --no-start sirf
-```
-
-Then it's just
-
-```bash
-docker start -ai sirf
-```
-
-every time you want to play with `SIRF`.
-
-```bash
-docker start -ai sirf
-(pyvenv) sirf:~$ python /opt/SIRF-SuperBuild/sources/SIRF/examples/Python/PET/osem_reconstruction.py
-```
-
-### Jupyter
-
-Alternatively, if you want a jupyter notebook server,
-
-```bash
-git clone https://github.com/SyneRBI/SIRF-SuperBuild
-cd SIRF-SuperBuild/docker
-./sirf-compose-server up -d sirf  # remove `./` if on windows
-```
-
-Then it's just
-
-```bash
-./sirf-compose-server up -d sirf  # start sirf
-firefox localhost:9999  # open a browser pointing to the server
-./sirf-compose-server down  # stop sirf server
-```
-
-every time you want to play with `SIRF`.
 
 ## Prerequisites
 
@@ -145,9 +88,23 @@ every time you want to play with `SIRF`.
 - The [`SIRF-SuperBuild` repository](https://github.com/SyneRBI/SIRF-SuperBuild)
     + download and unzip or `git clone` this locally
 
+### Windows specific notes
+
+Note that Docker for Windows uses the 
+[Hyper-V backend][hyper-vbox]. Unfortunately, this conflicts with VirtualBox (last checked start 2021) so you would
+have to en/disable Hyper-V and reboot.
+You can use the older VirtualBox backend instead by using [Docker Machine].
+
+You may want to consult [SIRF on Windows Subsystem for Linux][wiki-wsl]
+regarding setting up Xserver/VNCserver and other UNIX-for-Windows-users tips.
+
+[wiki-wsl]: https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-on-Bash-on-Ubuntu-on-Windows-10
+[hyper-vbox]: https://docs.docker.com/docker-for-windows/install/#what-to-know-before-you-install
+[Docker Machine]: https://docs.docker.com/machine/overview/#whats-the-difference-between-docker-engine-and-docker-machine
+
 ## Glossary
 
-A wonderfully tiny list of everything important to know for a basic working knowledge of docker.
+A brief list of everything important to know for a basic working knowledge of docker.
 
 - *Base image*: the starting point for building a Docker image
     + analogous to a clean OS (in this case `ubuntu:18.04`)
@@ -159,9 +116,9 @@ A wonderfully tiny list of everything important to know for a basic working know
     + analogous to a running virtual machine (in this case named `sirf`)
     + easily stoppable, restartable, disposable
     + can be thought of as end-user-created *layers* which would never be formally part of a redistributable *image*
-    + can share files, network connections, and devices with the host computer
+    + each container has its own filesystem, but can share files, network connections, and devices with the host computer
 
-*Images* are *built* or *pulled*. *Containers* are *created* from them:
+*Images* are *built* or *pulled*. *Containers* are *created* from *images*:
 
 - *Build*: typically refers to *pulling* a *base image*, then *building* all the *layers* necessary to form an *image*
     + usually one-off
@@ -170,14 +127,24 @@ A wonderfully tiny list of everything important to know for a basic working know
 - *Create*: typically refers to making a *container* from an *image*
     + often recreated for a semi-clean slate - especially if data is shared with the host computer so that no data is lost on disposal
 
-## SIRF Image Building and Container Creation
-
-The docker image can be built from source using `SyneRBI/SIRF-SuperBuild` by following the steps below. Alternatively, simply run `docker pull synerbi/sirf` to download a pre-built image.
-
+[`docker-compose`][docker-compose] provides a way to create and launch images and containers, specifying port forwarding etc.
 `docker-compose` is used to help with creating containers (and even building images). It should be added to your `PATH` or at least have the executable copied to `SIRF-SuperBuild/docker`.
 
-### Linux CLI
+## Creating and using SIRF containers
 
+The docker images can be built from source or pulled using `SyneRBI/SIRF-SuperBuild`, and containers created, by following the steps below.
+
+Please note that these instructions will mount the `SIRF-SuperBuild/docker/devel` folder on the host as `/devel` in the docker container.
+The container will copy
+[SIRF-Exercises] into this folder if not present. This means that
+files and notebooks in `/devel` will be persistent between sessions and
+even docker-image upgrades. You should therefore remove the contents of
+`SIRF-SuperBuild/docker/devel` if you want to really start afresh.
+
+### Creating a container providing a Linux CLI with SIRF
+
+#### Using a Linux or MacOS CLI
+Build/pull the image:
 ```bash
 # Either:
 SIRF-SuperBuild/docker$ docker pull synerbi/sirf
@@ -185,14 +152,27 @@ SIRF-SuperBuild/docker$ docker pull synerbi/sirf
 SIRF-SuperBuild/docker$ docker-compose build core sirf
 ```
 
-After this a container called `sirf` is created:
-For easier file and window sharing, the `sirf` container should be started using the host user's ID and some environment variables:
+We can now create a container.
+For easier file and window sharing, use the provided script (which calls `docker-compose` but handles the host user's ID and some environment variables):
 
 ```bash
 SIRF-SuperBuild/docker$ ./sirf-compose up --no-start sirf
 ```
 
-### Windows CLI
+We can now use this interactively.
+```bash
+SIRF-SuperBuild/docker$ docker start -ai sirf
+(py2) sirf:~$ gadgetron >> /dev/null &
+(py2) sirf:~$ python SIRF-SuperBuild/SIRF/examples/Python/MR/fully_sampled_recon.py
+(py2) sirf:~$ exit
+```
+
+The first line starts the `sirf` docker container.
+The second line starts `gadgetron` within the container as a background process.
+We can then run an example (or you could start an interactive python session).
+We then exit the container (which also stops it).
+
+#### Using a Windows CLI
 
 ```
 Either:
@@ -208,27 +188,18 @@ Instead of passing user IDs, Windows requires that
 SIRF-SuperBuild/docker> docker-compose up --no-start sirf
 ```
 
-You may want to consult [SIRF on Windows Subsystem for Linux][wiki-wsl]
-regarding setting up Xserver/VNCserver and other UNIX-for-Windows-users tips.
+Using the container works in the same way as above.
 
-Note that Docker for Windows uses the newer
-[Hyper-V backend][hyper-vbox]. Unfortunately, this should not be enabled yet (last checked start 2021) if you have VirtualBox.
-You can use the older VirtualBox backend instead by using [Docker Machine].
-
-[wiki-wsl]: https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-on-Bash-on-Ubuntu-on-Windows-10
-[hyper-vbox]: https://docs.docker.com/docker-for-windows/install/#what-to-know-before-you-install
-[Docker Machine]: https://docs.docker.com/machine/overview/#whats-the-difference-between-docker-engine-and-docker-machine
-
-### Linux/Windows Jupyter Server
-
-Alternatively, if you want a jupyter notebook server,
+### Creating a container providing a (Linux-based) Jupyter Server with SIRF
 
 ```bash
-# Linux:
+# Linux or MacOS:
 SIRF-SuperBuild/docker$ ./sirf-compose-server up -d sirf
 # Windows:
 SIRF-SuperBuild/docker> sirf-compose-server up -d sirf
 ```
+This starts the `sirf` docker container, including `gadgetron` and
+`jupyter` within the container as background processes.
 
 Open your favourite web browser on your host OS, and go to
 <http://localhost:9999>.
@@ -237,21 +208,13 @@ If the browser is giving you a connection error,
 (there should be an eventual message about Jupyter being started).
 
 To stop the server and container, run `docker stop sirf`. If you also
-want to remove the container, you can use instead `./sirf-compose-server down`.
+want to remove the container, you can use instead `./sirf-compose-server down`,
+see below.
 
-### Developers
+Please note that you cannot start a second `gadgetron` in `service` container, as you would experience port conflicts.
 
-`ccache` is used in the container to speed up rebuilding images from scratch.
-The cache is pulled from the host machine via the `devel/.ccache` folder.
-To replace the host's cache with the updated one from the container, run:
-
-```bash
-SIRF-SuperBuild/docker$ sudo rm -rf devel/.ccache/*
-SIRF-SuperBuild/docker$ ./sirf-compose run --rm sirf \
-  /bin/bash -c 'sudo cp -a /opt/ccache/* /devel/.ccache/'
-```
-
-Note that `./sirf-compose*` are simple wrappers around `docker-compose`.
+### sirf-compose information 
+The `./sirf-compose*` scripts are simple wrappers around `docker-compose`.
 (You could check the corresponding `.yml` files, or even edit them to change
 names or add mounts etc.)
 
@@ -272,48 +235,20 @@ For example, to host multiple Jupyter servers in one container, simply:
 ./sirf-compose-server-multi stop  # stop and remove the container
 ```
 
-Note that the `devel/SIRF-Exercises*` shared folders created in the above steps
-will persist across container (and indeed host) restarts.
 
-## Usage
 
-Well, that was easy. The container can be run interactively for daily use.
-Note that the `devel` folder in the host's `SIRF-SuperBuild/docker` directory
-is mounted to `/devel` in the container.
+### More information on usage
 
-### CLI
-
-```bash
-SIRF-SuperBuild/docker$ docker start -ai sirf
-(py2) sirf:~$ gadgetron >> /dev/null &
-(py2) sirf:~$ python SIRF-SuperBuild/SIRF/examples/Python/MR/fully_sampled_recon.py
-(py2) sirf:~$ exit
-# optionally remove the container
-SIRF-SuperBuild/docker$ docker rm sirf
+You can use `docker exec` to execute commands in a container that is already running.
+This could be useful for the `Jupyter server` container for instance. For instance
+```sh
+# check what is running in the container
+docker exec -w / ps aux
+# start an interactive bash session (with working-directory /devel)
+docker exec -w /devel -ti sirf /bin/bash
 ```
+Note that `exec` logs in as `root`.
 
-The first line starts the `sirf` docker container.
-The second line starts `gadgetron` within the container as a background process.
-We can then run an example (or you could start an interactive python session).
-We then exit the container (which also stops it). Finally, if we choose to remove the container,
-next time we will start afresh (which might not be desirable of course).
-
-### Jupyter
-
-```bash
-SIRF-SuperBuild/docker$ ./sirf-compose-server up -d sirf
-SIRF-SuperBuild/docker$ firefox localhost:9999
-SIRF-SuperBuild/docker$ docker stop sirf  # or ./sirf-compose-server down
-```
-
-The first line starts the `sirf` docker container, including `gadgetron` and
-`jupyter` within the container as background processes.
-The second line opens the notebook in a browser. The third line
-stops the container (and hence notebook server).
-Finally, after finishing with SIRF, we stop (or optionally remove) the container.
-
-Please note that you cannot start a second `gadgetron` in `service` container, as you would experience port conflicts.
-## Stopping and removal
 You can check which containers are running (or not) via
 ```sh
 docker ps -a
@@ -324,19 +259,22 @@ docker stop sirf
 docker rm sirf
 ```
 Note that `sirf-compose down` both stops and removes.
+
+If you choose to remove the container,
+next time you will start afresh (which might not be desirable of course).
 Stopped containers do not use CPU time and only some additional disk-space. However, the images are quite large.
 You can check which images you have with
 ```sh
-docker images
+docker image ls
 ```
 (Note that this reports the "total" size, not taking into account any overlap between different layers).
 
-If you decide you no longer need one (e.g. because you will download a newer version), you can then use
+If you decide you no longer need one, you can use
 ```sh
 docker rmi <IMAGEID>
 ```
 
-# Notes
+## Notes
 
 - Tests can be run as follows:
 ```bash
@@ -345,10 +283,8 @@ docker rmi <IMAGEID>
 - Currently all `compose` files call the container `sirf`. You could edit the `.yml` file if you
 want to run different versions.
 - "Cannot connect to display" errors are usually fixed by running `xhost +local:""` on the host linux system
-- Non-linux users (e.g. Windows) will need to set up a desktop and vnc server in order to have a GUI (docker files coming soon)
+- Non-linux users (e.g. Windows) will need to set up a desktop and vnc server in order to have a GUI
 - On host systems with less than 16GB RAM, before `docker-compose up ...` you may want to edit `SIRF-SuperBuild/docker/user_sirf-ubuntu.sh`, changing the line `make -j...` to simply `make`. This increases build time and reduces build memory requirements
-- `localhost` probably won't work on Windows. The service IP address is instead:
-`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' sirf`
 
 ### Links
 
