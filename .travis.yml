@@ -155,7 +155,8 @@ jobs:
    - |
       # run tests within the container
       # TODO: also add CORE tests!
-      if [[ "$DOCKER_BUILD" != *"CORE"* ]]; then
+      # TODO: GPU tests are failing even with nvidia run-time https://github.com/SyneRBI/SIRF-SuperBuild/issues/553
+      if [[ "$DOCKER_BUILD" != *"CORE"* && "$DOCKER_BUILD" != *"GPU"* ]]; then
         $DCC run --rm sirf /bin/bash --login -c '/devel/test.sh 1'
       fi
    after_success: &docker_after_success

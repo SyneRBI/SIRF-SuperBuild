@@ -30,17 +30,17 @@ stop_service()
 
 pushd $SIRF_PATH/../..
 
-# start gadgetron
+echo "start gadgetron"
 GCONFIG=./INSTALL/share/gadgetron/config/gadgetron.xml
 [ -f "$GCONFIG" ] || cp "$GCONFIG".example "$GCONFIG"
 [ -f ./INSTALL/bin/gadgetron ] \
   && ./INSTALL/bin/gadgetron >& gadgetron.log&
 
-# make sure the SIRF-Exercises are in the expected location
+echo "make sure the SIRF-Exercises are in the expected location (/devel in the container)"
 cd /devel
 [ -d SIRF-Exercises ] || cp -a $SIRF_PATH/../../../SIRF-Exercises .
 
-# start jupyter
+echo "start jupyter"
 if [ ! -f ~/.jupyter/jupyter_notebook_config.py ]; then
   jupyter notebook --generate-config
   echo "c.NotebookApp.password = u'sha1:cbf03843d2bb:8729d2fbec60cacf6485758752789cd9989e756c'" \

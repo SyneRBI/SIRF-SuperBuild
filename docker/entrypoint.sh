@@ -19,7 +19,7 @@ cd /
 [ -d $OLD_HOME ] && mv $OLD_HOME $HOME
 cd $HOME
 
-echo "$UID:$GID Creating and switching to: $mainUser:$USER_ID:$GROUP_ID"
+echo "Creating $mainUser:$USER_ID:$GROUP_ID"
 # groupadd -g $GROUP_ID -o -f $mainUser
 addgroup --quiet --system --gid "$GROUP_ID" "$mainUser"
 # useradd --shell /bin/bash -u $USER_ID -o -c "" -M -d $HOME \
@@ -33,9 +33,10 @@ echo "$mainUser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"$mainUser"
 
 for i in /opt/* "$HOME"; do
   if [ -d "$i" ]; then
-    chown -R $mainUser "$i"
-    chgrp -R $mainUser "$i"
+    echo "Updating file permissions for $i"
+    chown -R $mainUser:$mainUser "$i"
   fi
 done
 
+echo "Switching to $mainUser and executing $@"
 exec gosu $mainUser "$@"
