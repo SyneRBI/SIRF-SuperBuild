@@ -90,8 +90,11 @@ cd ~/devel/build
 cmake ../SIRF-SuperBuild
 ```
 You can of course use the GUI version of CMake (called `cmake-gui` on Linux/OSX), or the
-terminal verson `ccmake` to check and set various variables. See the [CMake tutorial on how to run CMake](https://cmake.org/runningcmake/).
+terminal version `ccmake` to check and set various variables. See the [CMake tutorial on how to run CMake](https://cmake.org/runningcmake/).
+
 By default, this will select stable configurations of the various projects. See [the advanced installation section](#advanced-installation).
+
+*Important*: it is currently not recommended to build both MATLAB and Python support, see [below](#matlab-and-python-conflicts).
 
 Then use your build environment to build and install the project. On Linux/OSX etc, you would normally use
 ```bash
@@ -105,6 +108,23 @@ cmake --build . --config Release
 ```
 
 Note that there is no separate install step.
+
+### MATLAB and Python conflicts
+We have encountered problems with either running or building SIRF on systems that have both Python and MATLAB installed due to problems with different versions of the HDF5 libraries (see e.g. [#208](https://github.com/SyneRBI/SIRF-SuperBuild/issues/208).
+If you do have both MATLAB and Python, it might therefore be best to build twice. For instance
+```sh
+mkdir ~/devel/build_Python
+cd ~/devel/build_Python
+cmake -DDISABLE_Matlab:BOOL=ON <other-args> ../SIRF-SuperBuild
+make -j3
+cd ../
+mkdir build_Matlab
+cd build_Matlab
+export CC=gcc7 # or whatever the appropriate compiler is for MATLAB
+export CXX=g++7
+cmake -DDISABLE_PYTHON:BOOL=ON  <other-args> ../SIRF-SuperBuild
+make -j3
+```
 
 ### Gadgetron include patch
 The installed Gadgetron include files contain some spurious `..` which prevent correct compilation of code with it. For this reason we patch the include file after it's installed. To patch we use Python as it is probably the most portable tool.
