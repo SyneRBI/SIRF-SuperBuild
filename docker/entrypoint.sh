@@ -34,8 +34,7 @@ echo "$mainUser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"$mainUser"
 for i in /opt/* "$HOME"; do
   if [ -d "$i" ]; then
     echo "Updating file permissions for $i"
-    chown -R $mainUser "$i"
-    chgrp -R $mainUser "$i"
+    chown -R $mainUser:$mainUser "$i"
   fi
 done
 
