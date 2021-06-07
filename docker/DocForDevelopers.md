@@ -9,7 +9,7 @@ After building a container, you can optionally replace the cache on the host wit
 ```bash
 SIRF-SuperBuild/docker$ sudo rm -rf devel/.ccache/*
 SIRF-SuperBuild/docker$ ./sirf-compose run --rm sirf \
-  /bin/bash -c 'sudo cp -a /opt/ccache/* /devel/.ccache/'
+  /bin/bash -c 'cp -a /opt/ccache/* /devel/.ccache/'
 ```
 This way, the cache will be used when you update SIRF in the container, or when you build another container.
 
