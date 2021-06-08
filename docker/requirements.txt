@@ -1,14 +1,14 @@
 docopt
 matplotlib
 git+https://github.com/ismrmrd/ismrmrd-python-tools.git@master#egg=ismrmrd-python-tools
-Cython  # CIL
+Cython       # CIL
 numpy<=1.18  # CIL
-scipy  # CIL
-h5py  # CIL
-Pillow  # CIL
-wget  # CIL
-six  # CIL
-olefile # CIL
+scipy        # CIL
+h5py         # CIL
+Pillow       # CIL
+wget         # CIL
+six          # CIL
+olefile      # CIL
 nibabel
 deprecation
 nose

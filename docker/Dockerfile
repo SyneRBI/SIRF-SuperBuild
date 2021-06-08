@@ -69,9 +69,10 @@ RUN chmod 644 .bashrc .profile
 
 # Python (virtualenv)
 COPY requirements.txt .
+COPY requirements_conda_forge.txt .
 COPY user_python-ubuntu.sh .
 RUN bash user_python-ubuntu.sh
-RUN rm user_python-ubuntu.sh requirements.txt
+RUN rm user_python-ubuntu.sh requirements.txt requirements_conda_forge.txt
 
 # SIRF
 COPY user_sirf-ubuntu.sh .
