@@ -12,7 +12,7 @@ echo $COMPILER_FLAGS
 echo $BUILD_FLAGS $EXTRA_BUILD_FLAGS
 cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS $COMPILER_FLAGS .
 
-make -j 2
+cmake --build . -j 2
 
 [ -f INSTALL/share/gadgetron/config/gadgetron.xml ] || \
 [ -f INSTALL/share/gadgetron/config/gadgetron.xml.example ] && \
