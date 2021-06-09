@@ -15,7 +15,7 @@ fi
 cd $INSTALL_DIR/SIRF-Exercises
 if [ -f requirements.txt ]; then
    # uses only the requirement name not --only-binary
-   gawk '{print $1}' requirements.txt > crequirements.txt
+   awk '{print $1}' requirements.txt > crequirements.txt
   conda install -c conda-forge -y --file crequirements.txt || \
   pip install -U -r requirements.txt
   if [ -f crequirements.txt ] ; then

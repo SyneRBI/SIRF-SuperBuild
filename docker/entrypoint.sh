@@ -3,8 +3,8 @@
 # Add local user
 # Either use runtime USER_ID:GROUP_ID or fallback 1000:1000
 
-USER_ID=${USER_ID:-1000}
-GROUP_ID=${GROUP_ID:-1000}
+USER_ID=${USER_ID:-9000}
+GROUP_ID=${GROUP_ID:-9000}
 mainUser=${mainUser:-sirfuser}
 OLD_HOME=/home-away
 export HOME=/home/$mainUser
