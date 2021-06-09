@@ -74,8 +74,8 @@ RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
 ENV DEBIAN_FRONTEND ''
 WORKDIR /home-away
 COPY entrypoint.sh /usr/local/bin/
-# ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-# CMD ["/bin/bash"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["/bin/bash"]
 
 FROM core as sirf
 
@@ -150,5 +150,4 @@ RUN echo "auth requisite pam_deny.so" >> /etc/pam.d/su && \
 
 RUN echo "${NB_USER} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"${NB_USER}"
 USER ${NB_UID} 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-CMD ["/bin/bash"]
+
