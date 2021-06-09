@@ -307,3 +307,6 @@ want to run different versions.
 [SIRF]: https://github.com/SyneRBI/SIRF
 [SIRF wiki]: https://github.com/SyneRBI/SIRF/wiki
 [CCP SyneRBI]: https://www.ccpsynerbi.ac.uk/
+
+### Files from Jupyter
+the file `fix-permission`_ comes from the Jupyter project `https://github.com/jupyter/docker-stacks/blob/master/base-notebook/fix-permissions<https://github.com/jupyter/docker-stacks/blob/master/base-notebook/fix-permissions>`_ and the license is `LICENSE-jupyter.txt`_. 
