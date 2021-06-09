@@ -10,6 +10,25 @@ LABEL \
   licence="MPLv2.0 (https://www.mozilla.org/en-GB/MPL/2.0/)"  \
   description="CCP SyneRBI Ubuntu"
 
+
+# Install all OS dependencies for notebook server that starts but lacks all
+# features (e.g., download as all possible file formats)
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update --yes && \
+    apt-get install --yes --no-install-recommends \
+    wget \
+    ca-certificates \
+    sudo \
+    locales \
+    fonts-liberation \
+    run-one && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* && \
+    echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
+    locale-gen
+    # tini \
+    
+
+
 ENV DEBIAN_FRONTEND noninteractive
 
 COPY raw-ubuntu.sh .
@@ -55,10 +74,11 @@ RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
 ENV DEBIAN_FRONTEND ''
 WORKDIR /home-away
 COPY entrypoint.sh /usr/local/bin/
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-CMD ["/bin/bash"]
+# ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+# CMD ["/bin/bash"]
 
 FROM core as sirf
+
 LABEL description="CCP SyneRBI SIRF"
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -112,3 +132,22 @@ CMD ["/usr/local/bin/service.sh"]
 FROM service as multi
 COPY service.multi.sh /usr/local/bin/
 
+# create user jovyan
+ARG NB_USER="jovyan"
+ARG NB_UID="1000"
+ARG NB_GID="100"
+# Copy a script that we will use to correct permissions after running certain commands
+COPY fix-permissions /usr/local/bin/fix-permissions 
+# Create NB_USER with name jovyan user with UID=1000 and in the 'users' group
+# and make sure these dirs are writable by the `users` group.
+RUN chmod a+rx /usr/local/bin/fix-permissions\
+    echo "auth requisite pam_deny.so" >> /etc/pam.d/su && \
+    sed -i.bak -e 's/^%admin/#%admin/' /etc/sudoers && \
+    sed -i.bak -e 's/^%sudo/#%sudo/' /etc/sudoers && \
+    useradd -l -m -s /bin/bash -N -u "${NB_UID}" "${NB_USER}" && \
+    chmod g+w /etc/passwd && \
+    fix-permissions "${HOME}" \
+    echo "${NB_USER} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"${NB_USER}"
+USER ${NB_UID} 
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["/bin/bash"]
