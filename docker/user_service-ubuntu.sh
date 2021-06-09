@@ -20,4 +20,4 @@ fi
 # jupyter labextension install @jupyter-widgets/jupyterlab-manager
 
 # CIL-Demos
-git clone https://github.com/TomographicImaging/CIL-Demos.git --recursive -b master $INSTALL_DIR/CIL-Demos
+git clone https://github.com/TomographicImaging/CIL-Demos.git --recursive -b main $INSTALL_DIR/CIL-Demos

@@ -137,17 +137,18 @@ ARG NB_USER="jovyan"
 ARG NB_UID="1000"
 ARG NB_GID="100"
 # Copy a script that we will use to correct permissions after running certain commands
-COPY fix-permissions /usr/local/bin/fix-permissions 
+COPY fix-permissions /usr/local/bin/fix-permissions
+RUN chmod a+rx /usr/local/bin/fix-permissions
 # Create NB_USER with name jovyan user with UID=1000 and in the 'users' group
 # and make sure these dirs are writable by the `users` group.
-RUN chmod a+rx /usr/local/bin/fix-permissions\
-    echo "auth requisite pam_deny.so" >> /etc/pam.d/su && \
+RUN echo "auth requisite pam_deny.so" >> /etc/pam.d/su && \
     sed -i.bak -e 's/^%admin/#%admin/' /etc/sudoers && \
     sed -i.bak -e 's/^%sudo/#%sudo/' /etc/sudoers && \
     useradd -l -m -s /bin/bash -N -u "${NB_UID}" "${NB_USER}" && \
     chmod g+w /etc/passwd && \
-    fix-permissions "${HOME}" \
-    echo "${NB_USER} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"${NB_USER}"
+    fix-permissions "${HOME}"
+
+RUN echo "${NB_USER} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"${NB_USER}"
 USER ${NB_UID} 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/bin/bash"]
