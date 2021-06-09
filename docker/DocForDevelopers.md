@@ -22,7 +22,7 @@ Clearly, you should read the Docker and `docker-compose` documentation. The foll
 
 `Dockerfile` defines a sequences of images (base, `core`, `sirf`, `service`) that build on top of each-other. In various places, the file uses `ARG` variables can be overriden at build-time, see https://docs.docker.com/engine/reference/builder/#arg. These are set in the `docker-compose*.yml`.
 
-We use the [`ENTRYPOINT` mechanism](https://docs.docker.com/engine/reference/builder/#entrypoint), setting the command that will be executed at container start-up to [entrypoint.sh](entrypoint.sh) which is passed a `CMD`, specified in the `Dockerfile (`/bin/bash` for all except `service` which uses [service.sh](service.sh). (Both the `ENTRYPOINT` and `CMD` be overriden by passing relevant options to `docker run`).
+We use the [`ENTRYPOINT` mechanism](https://docs.docker.com/engine/reference/builder/#entrypoint), setting the command that will be executed at container start-up to [entrypoint.sh](entrypoint.sh) which is passed a `CMD`, specified in the `Dockerfile` (`/bin/bash` for all except `service` which uses [service.sh](service.sh). (Both the `ENTRYPOINT` and `CMD` be overriden by passing relevant options to `docker run`).
 
 The very first time the container is run, `entrypoint.sh` creates the `sirfuser` user, copies files in correct places, and takes care of file permissions (see below).
 
