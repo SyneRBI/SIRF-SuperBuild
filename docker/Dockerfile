@@ -136,6 +136,7 @@ COPY service.multi.sh /usr/local/bin/
 ARG NB_USER="jovyan"
 ARG NB_UID="1000"
 ARG NB_GID="100"
+ARG HOME="/home/${NB_USER}"
 # Copy a script that we will use to correct permissions after running certain commands
 COPY fix-permissions /usr/local/bin/fix-permissions
 RUN chmod a+rx /usr/local/bin/fix-permissions
