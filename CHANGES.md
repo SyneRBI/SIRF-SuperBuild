@@ -3,6 +3,7 @@
 ## v3.x.x
 - disable built of NiftyPET by default as requires Python2 for which we dropped support
 - docker: add dependencies that are available only from conda-forge (for CIL)
+- updated ISMRMRD to 1.4.2.1
 
 ## v3.0.0
 - travis to use BUILD_CIL=ON for all Docker builds
