@@ -13,6 +13,12 @@ this=$(dirname "${BASH_SOURCE[0]}")
 DEBUG="${1:-0}"
 JUPYTER_PORT="${2:-8888}"
 
+whoami
+
+# activate conda/virtualenv
+source /opt/pyvenv/bin/activate
+
+
 stop_service()
 {
   echo "stopping jobs"
@@ -27,8 +33,10 @@ stop_service()
 
   exit 0
 }
+export SIRF_PATH=/opt/SIRF-SuperBuild
+pushd $SIRF_PATH
 
-pushd $SIRF_PATH/../..
+source ./INSTALL/bin/env_sirf.sh
 
 echo "start gadgetron"
 GCONFIG=./INSTALL/share/gadgetron/config/gadgetron.xml
@@ -43,7 +51,7 @@ cd /devel
 echo "start jupyter"
 if [ ! -f ~/.jupyter/jupyter_notebook_config.py ]; then
   jupyter notebook --generate-config
-  echo "c.NotebookApp.password = u'sha1:cbf03843d2bb:8729d2fbec60cacf6485758752789cd9989e756c'" \
+  echo "c.ServerApp.password = u'sha1:cbf03843d2bb:8729d2fbec60cacf6485758752789cd9989e756c'" \
   >> ~/.jupyter/jupyter_notebook_config.py
 fi
 
