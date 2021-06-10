@@ -125,9 +125,6 @@ RUN rm user_service-ubuntu.sh requirements-service.txt
 
 COPY download_data.sh /usr/local/bin/
 
-COPY service.sh /usr/local/bin/
-ENV DEBIAN_FRONTEND ''
-CMD ["/usr/local/bin/service.sh"]
 
 # create user jovyan
 ARG NB_USER="jovyan"
@@ -144,10 +141,16 @@ RUN echo "auth requisite pam_deny.so" >> /etc/pam.d/su && \
     sed -i.bak -e 's/^%sudo/#%sudo/' /etc/sudoers && \
     useradd -l -m -s /bin/bash -N -u "${NB_UID}" "${NB_USER}" && \
     chmod g+w /etc/passwd && \
-    fix-permissions "${HOME}"
+    mv /home-away "${HOME}" && \
+    fix-permissions "${HOME}" && \
+    for i in /opt/* "$HOME"; do \
+    if [ -d "$i" ]; then echo "Updating file permissions for $i" ;\
+      fix-permissions "$i"; fi ;  done
 
 RUN echo "${NB_USER} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"${NB_USER}"
-USER ${NB_UID} 
+COPY service.sh /usr/local/bin/
+ENV DEBIAN_FRONTEND ''
+CMD ["/usr/local/bin/service.sh"]
 
 FROM service as multi
 COPY service.multi.sh /usr/local/bin/
