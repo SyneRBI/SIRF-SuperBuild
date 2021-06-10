@@ -3,6 +3,8 @@
 set -ev
 INSTALL_DIR="${1:-/opt}"
 
+source "$INSTALL_DIR"/pyvenv/bin/activate
+
 # SIRF-Exercises
 git clone https://github.com/SyneRBI/SIRF-Exercises --recursive -b master $INSTALL_DIR/SIRF-Exercises
 

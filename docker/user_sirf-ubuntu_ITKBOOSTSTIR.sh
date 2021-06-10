@@ -23,11 +23,12 @@ echo $COMPILER_FLAGS
 echo $BUILD_FLAGS $EXTRA_BUILD_FLAGS
 cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS $COMPILER_FLAGS .
 
-cmake --build . -j 12
+cmake --build . -j 12 --target Boost
 
-if [ ! $? -eq '0' ]
-then 
-  cmake --build . -j 2
-fi
+cmake --build . -j 12 --target ITK
+
+cmake --build . -j 12 --target STIR
+
+
 
 popd

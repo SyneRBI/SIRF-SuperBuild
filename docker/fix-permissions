@@ -15,7 +15,12 @@
 # AND permissions include group rwX (directory-execute)
 # AND directories have setuid,setgid bits set
 
-set -e
+set -ex
+
+# if [ ! -n ${NB_GID} ] || [ ${NB_GID} -eq ' ' ] ; then
+#   echo "setting default value of NB_GID 100"
+# export NB_GID='100'
+# fi
 
 for d in "$@"; do
     find "${d}" \

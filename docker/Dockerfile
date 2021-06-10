@@ -40,6 +40,25 @@ RUN rm raw-ubuntu.sh
 ENV LANG en_GB.UTF-8
 ENV LANGUAGE en_GB:en
 
+# create user jovyan
+ARG NB_USER="jovyan"
+ARG NB_UID="1000"
+ARG NB_GID="100"
+ARG HOME="/home/${NB_USER}" 
+# Copy a script that we will use to correct permissions after running certain commands
+COPY fix-permissions /usr/local/bin/fix-permissions
+RUN chmod a+rx /usr/local/bin/fix-permissions
+# Create NB_USER with name jovyan user with UID=1000 and in the 'users' group
+# and make sure these dirs are writable by the `users` group.
+RUN echo "auth requisite pam_deny.so" >> /etc/pam.d/su && \
+    sed -i.bak -e 's/^%admin/#%admin/' /etc/sudoers && \
+    sed -i.bak -e 's/^%sudo/#%sudo/' /etc/sudoers && \
+    useradd -l -m -s /bin/bash -N -u "${NB_UID}" "${NB_USER}" && \
+    chmod g+w /etc/passwd && \
+    fix-permissions "${HOME}"
+
+RUN echo "${NB_USER} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"${NB_USER}"
+
 FROM base as core
 
 COPY build_essential-ubuntu.sh .
@@ -72,10 +91,10 @@ RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
   gosu \
   && apt-get clean
 ENV DEBIAN_FRONTEND ''
-WORKDIR /home-away
-COPY entrypoint.sh /usr/local/bin/
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-CMD ["/bin/bash"]
+
+# COPY entrypoint.sh /usr/local/bin/
+# ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+# CMD ["/bin/bash"]
 
 FROM core as sirf
 
@@ -91,13 +110,28 @@ RUN chmod 644 .bashrc .profile
 COPY requirements.txt .
 COPY requirements_conda_forge.txt .
 COPY user_python-ubuntu.sh .
-RUN bash user_python-ubuntu.sh
-RUN rm user_python-ubuntu.sh requirements.txt requirements_conda_forge.txt
+RUN bash user_python-ubuntu.sh && \
+    rm user_python-ubuntu.sh requirements.txt requirements_conda_forge.txt
+COPY ls_dir.sh .
+RUN bash ls_dir.sh
+# create user jovyan
+ARG NB_USER="jovyan"
+ARG NB_UID="1000"
+ARG NB_GID="100"
+ARG HOME="/home/${NB_USER}" 
+RUN fix-permissions "/opt/pyvenv"
 
-# SIRF
+# Build SIRF as jovyan
+WORKDIR /home/jovyan
+
 COPY user_sirf-ubuntu.sh .
+COPY user_sirf-ubuntu_ITKBOOSTSTIR.sh .
+COPY user_sirf-ubuntu_Gadgetron.sh .
 COPY devel/.ccache/ /opt/ccache/
 RUN ccache -o cache_dir=/opt/ccache
+
+# Switch to jovyan
+# USER ${NB_UID} 
 ARG BUILD_FLAGS="\
  -DCMAKE_BUILD_TYPE=Release\
  -DBUILD_STIR_WITH_OPENMP=ON -DUSE_SYSTEM_ACE=ON\
@@ -105,17 +139,33 @@ ARG BUILD_FLAGS="\
  -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_ITK=ON\
  -DUSE_SYSTEM_SWIG=ON\
  -DUSE_NiftyPET=OFF\
+ -DUSE_SYSTEM_HDF5=ON\
  -DBUILD_siemens_to_ismrmrd=ON -DBUILD_pet_rd_tools=ON"
 ARG EXTRA_BUILD_FLAGS=""
+RUN bash user_sirf-ubuntu_ITKBOOSTSTIR.sh
+RUN rm user_sirf-ubuntu_ITKBOOSTSTIR.sh
+
+RUN bash user_sirf-ubuntu_Gadgetron.sh
+RUN rm user_sirf-ubuntu_Gadgetron.sh
+
 RUN bash user_sirf-ubuntu.sh
 RUN rm user_sirf-ubuntu.sh
 
-RUN mv ~/.git-prompt.sh .
+RUN fix-permissions "/opt/"
+# RUN mv ~/.git-prompt.sh .
 
 ENV DEBIAN_FRONTEND ''
 CMD ["/bin/bash"]
 
 FROM sirf as service
+# create user jovyan
+ARG NB_USER="jovyan"
+ARG NB_UID="1000"
+ARG NB_GID="100"
+ARG HOME="/home/${NB_USER}" 
+# switch back to root to install
+USER root
+
 ENV DEBIAN_FRONTEND noninteractive
 
 COPY requirements-service.txt .
@@ -126,33 +176,28 @@ RUN rm user_service-ubuntu.sh requirements-service.txt
 COPY download_data.sh /usr/local/bin/
 
 
+
+COPY service.sh /usr/local/bin/
+ENV DEBIAN_FRONTEND ''
+
+
+#########################################
+# RUN mv /home-away "${HOME}" && \
+#     fix-permissions "${HOME}" && \
+#     for i in /opt/* "$HOME"; do \
+#     if [ -d "$i" ]; then echo "Updating file permissions for $i" ;\
+#       fix-permissions "$i"; fi ;  done
+
+# Switch back to jovyan to avoid accidental container runs as root
+USER ${NB_UID} 
+CMD ["/usr/local/bin/service.sh"]
+
+FROM service as multi
 # create user jovyan
 ARG NB_USER="jovyan"
 ARG NB_UID="1000"
 ARG NB_GID="100"
 ARG HOME="/home/${NB_USER}" 
-# Copy a script that we will use to correct permissions after running certain commands
-COPY fix-permissions /usr/local/bin/fix-permissions
-RUN chmod a+rx /usr/local/bin/fix-permissions
-# Create NB_USER with name jovyan user with UID=1000 and in the 'users' group
-# and make sure these dirs are writable by the `users` group.
-RUN echo "auth requisite pam_deny.so" >> /etc/pam.d/su && \
-    sed -i.bak -e 's/^%admin/#%admin/' /etc/sudoers && \
-    sed -i.bak -e 's/^%sudo/#%sudo/' /etc/sudoers && \
-    useradd -l -m -s /bin/bash -N -u "${NB_UID}" "${NB_USER}" && \
-    chmod g+w /etc/passwd && \
-    mv /home-away "${HOME}" && \
-    fix-permissions "${HOME}" && \
-    for i in /opt/* "$HOME"; do \
-    if [ -d "$i" ]; then echo "Updating file permissions for $i" ;\
-      fix-permissions "$i"; fi ;  done
-
-RUN echo "${NB_USER} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"${NB_USER}"
-COPY service.sh /usr/local/bin/
-ENV DEBIAN_FRONTEND ''
-CMD ["/usr/local/bin/service.sh"]
-
-FROM service as multi
 COPY service.multi.sh /usr/local/bin/
 
 

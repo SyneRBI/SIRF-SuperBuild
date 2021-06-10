@@ -23,11 +23,16 @@ echo $COMPILER_FLAGS
 echo $BUILD_FLAGS $EXTRA_BUILD_FLAGS
 cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS $COMPILER_FLAGS .
 
-cmake --build . -j 12
+cmake --build . -j 12 --target Gadgetron
 
 if [ ! $? -eq '0' ]
 then 
-  cmake --build . -j 2
+  cmake --build . -j 2 --target Gadgetron
 fi
+
+[ -f INSTALL/share/gadgetron/config/gadgetron.xml ] || \
+[ -f INSTALL/share/gadgetron/config/gadgetron.xml.example ] && \
+  mv INSTALL/share/gadgetron/config/gadgetron.xml.example \
+     INSTALL/share/gadgetron/config/gadgetron.xml
 
 popd
