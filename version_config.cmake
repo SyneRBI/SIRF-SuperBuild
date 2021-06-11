@@ -113,7 +113,7 @@ if (WIN32)
   set(DEFAULT_ISMRMRD_TAG program_options_fix)
 else()
   set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
-  set(DEFAULT_ISMRMRD_TAG v1.4.2.1)
+  set(DEFAULT_ISMRMRD_TAG v1.4.1)
 endif()
 
 ## Gadgetron
