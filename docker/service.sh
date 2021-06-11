@@ -33,21 +33,21 @@ stop_service()
 
   exit 0
 }
-export SIRF_PATH=/opt/SIRF-SuperBuild
-pushd $SIRF_PATH
 
 source ./INSTALL/bin/env_sirf.sh
+pushd $SIRF_PATH/../../
+
 
 echo "start gadgetron"
 GCONFIG=./INSTALL/share/gadgetron/config/gadgetron.xml
 [ -f "$GCONFIG" ] || cp "$GCONFIG".example "$GCONFIG"
 [ -f ./INSTALL/bin/gadgetron ] \
-  && ./INSTALL/bin/gadgetron >& gadgetron.log&
+  && LD_LIBRARY_PATH=${CONDA_PREFIX}/lib:$LD_LIBRARY_PATH ./INSTALL/bin/gadgetron >& gadgetron.log&
 
 echo "make sure the SIRF-Exercises and CIL-Demos are in the expected location (/devel in the container)"
 cd /devel
 for notebooks in SIRF-Exercises CIL-Demos
-do 
+do
   [ -d ${notebooks} ] || cp -a $SIRF_PATH/../../../${notebooks} .
 done
 
@@ -55,7 +55,7 @@ done
 echo "start jupyter"
 if [ ! -f ~/.jupyter/jupyter_notebook_config.py ]; then
   jupyter notebook --generate-config
-  echo "c.ServerApp.password = u'sha1:cbf03843d2bb:8729d2fbec60cacf6485758752789cd9989e756c'" \
+  echo "c.NotebookApp.password = u'sha1:cbf03843d2bb:8729d2fbec60cacf6485758752789cd9989e756c'" \
   >> ~/.jupyter/jupyter_notebook_config.py
 fi
 
