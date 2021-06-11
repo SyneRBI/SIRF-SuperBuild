@@ -44,9 +44,13 @@ GCONFIG=./INSTALL/share/gadgetron/config/gadgetron.xml
 [ -f ./INSTALL/bin/gadgetron ] \
   && ./INSTALL/bin/gadgetron >& gadgetron.log&
 
-echo "make sure the SIRF-Exercises are in the expected location (/devel in the container)"
+echo "make sure the SIRF-Exercises and CIL-Demos are in the expected location (/devel in the container)"
 cd /devel
-[ -d SIRF-Exercises ] || cp -a $SIRF_PATH/../../../SIRF-Exercises .
+for notebooks in SIRF-Exercises CIL-Demos
+do 
+  [ -d ${notebooks} ] || cp -a $SIRF_PATH/../../../${notebooks} .
+done
+
 
 echo "start jupyter"
 if [ ! -f ~/.jupyter/jupyter_notebook_config.py ]; then

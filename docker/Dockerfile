@@ -169,15 +169,17 @@ USER root
 ENV DEBIAN_FRONTEND noninteractive
 
 COPY requirements-service.txt .
+# install jupyterhub-singleuser
+COPY requirements-service-jupyterhub.txt .
 COPY user_service-ubuntu.sh .
 RUN bash user_service-ubuntu.sh
 RUN rm user_service-ubuntu.sh requirements-service.txt
 
 COPY download_data.sh /usr/local/bin/
 
-
-
 COPY service.sh /usr/local/bin/
+
+
 ENV DEBIAN_FRONTEND ''
 
 

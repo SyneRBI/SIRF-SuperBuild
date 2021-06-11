@@ -13,6 +13,11 @@ if [ -f requirements-service.txt ]; then
   pip install -U -r requirements-service.txt
 fi
 
+if [ -f requirements-service-jupyterhub.txt ]; then
+  conda install -c conda-forge -y --file requirements-service-jupyterhub.txt || \
+  pip install -U -r requirements-service-jupyterhub.txt
+fi
+
 #install SIRF-Exercises requirements
 cd $INSTALL_DIR/SIRF-Exercises
 if [ -f requirements.txt ]; then
