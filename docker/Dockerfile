@@ -3,6 +3,7 @@ FROM ${BASE_IMAGE} as base
 
 LABEL \
   author.name="Casper da Costa-Luis"          \
+  author.name="Edoardo Pasca"                 \
   author.email=imaging@caspersci.uk.to        \
   maintainer.email=ccppetmr@stfc.ac.uk        \
   maintainer.url=https://www.ccpsynerbi.ac.uk/  \
@@ -182,16 +183,18 @@ COPY service.sh /usr/local/bin/
 
 ENV DEBIAN_FRONTEND ''
 
-
-#########################################
-# RUN mv /home-away "${HOME}" && \
-#     fix-permissions "${HOME}" && \
-#     for i in /opt/* "$HOME"; do \
-#     if [ -d "$i" ]; then echo "Updating file permissions for $i" ;\
-#       fix-permissions "$i"; fi ;  done
+WORKDIR ${HOME}
+COPY .bashrc .
+COPY .profile .
+RUN chmod 644 .bashrc .profile &&\
+    chown ${NB_UID}:${NB_GID} .bashrc &&\
+    chown ${NB_UID}:${NB_GID} .profile
 
 # Switch back to jovyan to avoid accidental container runs as root
 USER ${NB_UID} 
+ENV PATH "/opt/pyvenv/bin:$PATH"
+RUN echo $PATH
+
 CMD ["/usr/local/bin/service.sh"]
 
 FROM service as multi
