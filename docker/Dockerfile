@@ -186,9 +186,16 @@ ENV DEBIAN_FRONTEND ''
 WORKDIR ${HOME}
 COPY .bashrc .
 COPY .profile .
+COPY create_jupyter_notebook_config.sh .
 RUN chmod 644 .bashrc .profile &&\
     chown ${NB_UID}:${NB_GID} .bashrc &&\
-    chown ${NB_UID}:${NB_GID} .profile
+    chown ${NB_UID}:${NB_GID} .profile &&\
+    bash create_jupyter_notebook_config.sh &&\
+    fix-permissions ".jupyter" && \
+    fix-permissions ".ccache" && \
+    fix-permissions ".conda" && \
+    fix-permissions ".cmake"
+
 
 # Switch back to jovyan to avoid accidental container runs as root
 USER ${NB_UID} 
