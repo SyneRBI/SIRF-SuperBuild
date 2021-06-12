@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# This script is expected to be run as root
+# at container start-up time
+
 # Add local user
 # Either use runtime USER_ID:GROUP_ID or fallback 1000:1000
 
@@ -14,9 +17,10 @@ if [ -d $HOME ]; then
   exec gosu $mainUser "$@"
 fi
 
-cd /
-# allow docker exec into already started container
-[ -d $OLD_HOME ] && mv $OLD_HOME $HOME
+# We need to copy files from /home-away to new home and create the user
+
+# copy files
+[ -d $OLD_HOME ] && cp -r $OLD_HOME $HOME
 cd $HOME
 
 echo "Creating $mainUser:$USER_ID:$GROUP_ID"
@@ -28,12 +32,13 @@ addgroup --quiet --system --gid "$GROUP_ID" "$mainUser"
 adduser --quiet --system --shell /bin/bash \
   --no-create-home --home /home/"$mainUser" \
   --ingroup "$mainUser" --uid "$USER_ID" "$mainUser"
+addgroup "$mainUser" users
 
 echo "$mainUser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"$mainUser"
 
-for i in /opt/* "$HOME"; do
+for i in /opt/*-Exercises /opt/*-Demos "$HOME"; do
   if [ -d "$i" ]; then
-    echo "Updating file permissions for $i"
+    echo "Updating file ownership for $i"
     chown -R $mainUser:$mainUser "$i"
   fi
 done

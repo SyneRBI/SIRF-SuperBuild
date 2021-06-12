@@ -52,6 +52,7 @@ RUN [ -e /usr/bin/X ] || ln -s /usr/bin/Xorg /usr/bin/X
 RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
   gosu \
   && apt-get clean
+
 ENV DEBIAN_FRONTEND ''
 WORKDIR /home-away
 COPY entrypoint.sh /usr/local/bin/
@@ -61,23 +62,58 @@ CMD ["/bin/bash"]
 FROM core as sirf
 LABEL description="CCP SyneRBI SIRF"
 
+# create user jovyan (jupyterhub seems to require this name)
+ARG NB_USER="jovyan"
+ARG NB_GROUP="users"
+# some crazy number, hopefully not conflicting
+ARG NB_UID="22222"
+# standard guid for users
+ARG NB_GID="100"
+ARG HOME="/home/${NB_USER}"
+
 ENV DEBIAN_FRONTEND noninteractive
 
+# make /opt  writeable for all users
+RUN chmod go+rwx /opt
+
+# copy to $WORKDIR (i.e. /home-away) as this is where entrypoint.sh will pick them up
 COPY .bashrc .
 COPY .profile .
-RUN chmod 644 .bashrc .profile
+
+# Create NB_GROUP and NB_USER
+RUN addgroup --gid ${NB_GID} "${NB_GROUP}" || true && \
+    useradd -l -m -s /bin/bash -N -u "${NB_UID}" -g "${NB_GID}" "${NB_USER}" || true
+# TODO add into sudo ? (probably not for safety)
+
+WORKDIR ${HOME}
+
+# copy to home of NB_USER
+COPY .bashrc .
+COPY .profile .
+RUN chmod 644 .bashrc .profile && chown -R "${NB_USER}":"${NB_GROUP}" "${HOME}"
+
+# run user scripts as NB_USER
+USER ${NB_USER}:${NB_GROUP}
 
 # Python (virtualenv)
 COPY requirements.txt .
 COPY requirements_conda_forge.txt .
 COPY user_python-ubuntu.sh .
-RUN bash user_python-ubuntu.sh
-RUN rm user_python-ubuntu.sh requirements.txt requirements_conda_forge.txt
+RUN bash user_python-ubuntu.sh && \
+    rm user_python-ubuntu.sh requirements.txt requirements_conda_forge.txt
+
+# ccache
+USER root
+COPY devel/.ccache/ /opt/ccache/
+# give everyone write permisions
+RUN chmod -R go+w /opt/ccache
 
 # SIRF
-COPY user_sirf-ubuntu.sh .
-COPY devel/.ccache/ /opt/ccache/
+USER "${NB_USER}"
+
 RUN ccache -o cache_dir=/opt/ccache
+COPY user_sirf-ubuntu.sh .
+
 ARG BUILD_FLAGS="\
  -DCMAKE_BUILD_TYPE=Release\
  -DBUILD_STIR_WITH_OPENMP=ON -DUSE_SYSTEM_ACE=ON\
@@ -90,25 +126,53 @@ ARG EXTRA_BUILD_FLAGS=""
 RUN bash user_sirf-ubuntu.sh
 RUN rm user_sirf-ubuntu.sh
 
-RUN mv ~/.git-prompt.sh .
+# give everyone write and execute permission
+RUN chmod -R go+rwX /opt/SIRF-SuperBuild/INSTALL
 
 ENV DEBIAN_FRONTEND ''
+
+# go back to root (entrypoint.sh will switch users)
+USER root
 CMD ["/bin/bash"]
 
 FROM sirf as service
+
 ENV DEBIAN_FRONTEND noninteractive
+
+ARG NB_USER="jovyan"
+ARG NB_GROUP="users"
+ARG HOME="/home/${NB_USER}"
+
+USER "${NB_USER}"
 
 COPY requirements-service.txt .
 COPY user_service-ubuntu.sh .
 RUN bash user_service-ubuntu.sh
 RUN rm user_service-ubuntu.sh requirements-service.txt
 
+USER root
 COPY download_data.sh /usr/local/bin/
 
 COPY service.sh /usr/local/bin/
 ENV DEBIAN_FRONTEND ''
 CMD ["/usr/local/bin/service.sh"]
 
+# note: remain root (entrypoint.sh will switch users)
+
 FROM service as multi
 COPY service.multi.sh /usr/local/bin/
 
+FROM sirf as jupyterhub
+
+ENV DEBIAN_FRONTEND noninteractive
+
+ARG NB_USER="jovyan"
+ARG NB_GROUP="users"
+ARG HOME="/home/${NB_USER}"
+
+USER "${NB_USER}"
+
+# TODO some stuff here
+#CMD ["/usr/local/bin/service-jupyterhub.sh"]
+
+ENV DEBIAN_FRONTEND ''

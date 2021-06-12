@@ -19,9 +19,9 @@ stop_service()
   for i in $(jobs -p); do kill -n 15 $i; done 2>/dev/null
 
   if [ "$DEBUG" != 0 ]; then
-    if [ -f gadgetron.log ]; then
-      echo "----------- Last 70 lines of gadgetron.log"
-      tail -n 70 gadgetron.log
+    if [ -f ~/gadgetron.log ]; then
+      echo "----------- Last 70 lines of ~/gadgetron.log"
+      tail -n 70 ~/gadgetron.log
     fi
   fi
 
@@ -34,7 +34,7 @@ echo "start gadgetron"
 GCONFIG=./INSTALL/share/gadgetron/config/gadgetron.xml
 [ -f "$GCONFIG" ] || cp "$GCONFIG".example "$GCONFIG"
 [ -f ./INSTALL/bin/gadgetron ] \
-  && ./INSTALL/bin/gadgetron >& gadgetron.log&
+  && ./INSTALL/bin/gadgetron >& ~/gadgetron.log&
 
 echo "make sure the SIRF-Exercises are in the expected location (/devel in the container)"
 cd /devel
