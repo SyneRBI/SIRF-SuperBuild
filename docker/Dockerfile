@@ -2,7 +2,7 @@ ARG BASE_IMAGE=ubuntu:18.04
 FROM ${BASE_IMAGE} as base
 
 LABEL \
-  author.name="Casper da Costa-Luis"          \
+  author.name="Casper da Costa-Luis, Kris Thielemans, Edoardo Pasca"                 \
   author.email=imaging@caspersci.uk.to        \
   maintainer.email=ccppetmr@stfc.ac.uk        \
   maintainer.url=https://www.ccpsynerbi.ac.uk/  \

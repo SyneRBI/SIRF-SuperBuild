@@ -26,6 +26,11 @@ We use the [`ENTRYPOINT` mechanism](https://docs.docker.com/engine/reference/bui
 
 The very first time the container is run, `entrypoint.sh` creates the `sirfuser` user, copies files in correct places, and takes care of file permissions (see below).
 
+### Why the jovyan user?
+The `NB_USER` (by default called `jovyan`) is a convention used by JupyterHub. It launches jupyter
+notebooks under this user. Due to permission problems, it should not have `root` access.
+We build all files as this user.
+
 ### File permissions
 
 Quoting from https://blog.gougousis.net/file-permissions-the-painful-side-of-docker/.
@@ -35,6 +40,8 @@ Quoting from https://blog.gougousis.net/file-permissions-the-painful-side-of-doc
 (Note that this is for Linux. On Mac, Docker uses NFS and apparently this doesn't give UID problems, and Windows uses file sharing).
 
 We handle this by creating the container `sirfuser` with the same `UID:GID` as the user who executes `sirf-compose*` (by passing `USER_ID` and `GROUP_ID` as environment variables), and execute processes in the container as `sirfuser`. (Note that often Docker containers run processes as `root`). Unfortunately, this means that `entrypoint.sh` also has to `chown` various files.
+
+As `chown` can take quite some time when the container is created, we try to minimise this by adding both `jovyan` and `sirfuser` to the `users` group, and giving "group" `rw` access to the files created by `jovyan`. This way, `entrypoint.sh` needs to `chown` (or `chmod`) only the `sirfuser` home-directory and a few others.
 
 ## `sirf-compose*`
 
