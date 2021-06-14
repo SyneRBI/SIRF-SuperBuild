@@ -14,8 +14,9 @@
   . ~/.git-prompt.sh
 
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
-export PS1='sirf:\w$(__git_ps1)\$ '
-
+#export PS1='sirf:\w$(__git_ps1)\$ '
+# play safe with an innocent prompt that also works in the Bourne shell
+export PS1='sirf$ '
 # Python (virtualenv)
 [ -f /opt/pyvenv/bin/activate ] && . /opt/pyvenv/bin/activate
 
