@@ -8,7 +8,7 @@ if [ ! -f ~/.jupyter/jupyter_notebook_config.py ]; then
   echo "c.NotebookApp.notebook_dir = '/devel'" >> ~/.jupyter/jupyter_notebook_config.py
 fi
 
-# https://jupyterhub.readthedocs.io/en/stable/reference/config-user-env.html#configuring-jupyter-and-ipython
-if [ ! -f /opt/pyvenv/etc/jupyter/jupyter_notebook_config.py ]; then
-  cp ~/.jupyter/jupyter_notebook_config.py /opt/pyvenv/etc/jupyter/jupyter_notebook_config.py
-fi
+# # https://jupyterhub.readthedocs.io/en/stable/reference/config-user-env.html#configuring-jupyter-and-ipython
+# if [ ! -f /opt/pyvenv/etc/jupyter/jupyter_notebook_config.py ]; then
+#   cp ~/.jupyter/jupyter_notebook_config.py /opt/pyvenv/etc/jupyter/jupyter_notebook_config.py
+# fi
