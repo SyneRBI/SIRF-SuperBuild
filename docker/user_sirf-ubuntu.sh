@@ -12,7 +12,6 @@ if [ ! -d $INSTALL_DIR/SIRF-SuperBuild ]
 then 
   git clone https://github.com/SyneRBI/SIRF-SuperBuild --recursive -b master $INSTALL_DIR/SIRF-SuperBuild
   pushd $INSTALL_DIR/SIRF-SuperBuild
-  git checkout 9767f8adb189474e95f357ba1986e2755ba4a6dd
   popd
 fi
 pushd $INSTALL_DIR/SIRF-SuperBuild

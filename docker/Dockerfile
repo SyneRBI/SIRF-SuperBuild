@@ -194,7 +194,8 @@ RUN chmod 644 .bashrc .profile &&\
     fix-permissions ".jupyter" && \
     fix-permissions ".ccache" && \
     fix-permissions ".conda" && \
-    fix-permissions ".cmake"
+    fix-permissions ".cmake" && \
+    fix-permissions /opt/SIRF-SuperBuild/INSTALL
 
 
 # Switch back to jovyan to avoid accidental container runs as root
