@@ -21,8 +21,8 @@ export PS1='sirf$ '
 [ -f /opt/pyvenv/bin/activate ] && . /opt/pyvenv/bin/activate
 
 # SIRF env
-[ -f /opt/SIRF-SuperBuild/INSTALL/bin/env_ccppetmr.sh ] && \
-   . /opt/SIRF-SuperBuild/INSTALL/bin/env_ccppetmr.sh
+[ -f /opt/SIRF-SuperBuild/INSTALL/bin/env_sirf.sh ] && \
+   . /opt/SIRF-SuperBuild/INSTALL/bin/env_sirf.sh
 
 # .local/bin (used by pip for instance)
 export PATH="${PATH}:~/.local/bin"
