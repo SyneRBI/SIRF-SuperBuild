@@ -170,9 +170,39 @@ ARG NB_USER="jovyan"
 ARG NB_GROUP="users"
 ARG HOME="/home/${NB_USER}"
 
+USER root
+
+# Install all OS dependencies for notebook server that starts but lacks all
+# features (e.g., download as all possible file formats)
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update --yes && \
+    apt-get install --yes --no-install-recommends \
+    wget \
+    ca-certificates \
+    sudo \
+    locales \
+    fonts-liberation \
+    run-one && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# remove some sudo permissions
+RUN echo "auth requisite pam_deny.so" >> /etc/pam.d/su && \
+    sed -i.bak -e 's/^%admin/#%admin/' /etc/sudoers && \
+    sed -i.bak -e 's/^%sudo/#%sudo/' /etc/sudoers
+
+# Add Tini (note: no tini apt-package yet in Ubuntu 18.04)
+ENV TINI_VERSION v0.19.0
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
+RUN chmod +x /tini
+
+# TODO install jupyterhub requirements
+
 USER "${NB_USER}"
 
+ENTRYPOINT ["/tini", "-g", "--"]
 # TODO some stuff here
 #CMD ["/usr/local/bin/service-jupyterhub.sh"]
+
+# TODO set some env variables (or do it in a compose file)
 
 ENV DEBIAN_FRONTEND ''
