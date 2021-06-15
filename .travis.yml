@@ -113,8 +113,8 @@ jobs:
    - sed -i '/runtime/d' docker/docker-compose.srv-gpu.yml
    install: &docker_install
    - cd docker
-   - if [[ -z "$GROUPS" ]]; then export GROUPS=$(id -g); fi
-   - if [[ -z "$UID" ]]; then export UID=$(id -u); fi
+   - if [[ -z "$GROUP_ID" ]]; then export GROUP_ID=$(id -g); fi
+   - if [[ -z "$USER_ID" ]]; then export USER_ID=$(id -u); fi
    - export DCC="docker-compose -p "travis_${TRAVIS_JOB_NUMBER/./_}" -f $PWD/docker-compose.yml"
    - if [[ "$DOCKER_BUILD" == *"DEVEL"* ]]; then export DCC="$DCC -f $PWD/docker-compose.devel.yml"; fi
    - if [[ "$DOCKER_BUILD" == *"SERVICE"* ]]; then export DCC="$DCC -f $PWD/docker-compose.srv.yml"; fi
@@ -156,7 +156,7 @@ jobs:
       # TODO: also add CORE tests!
       # TODO: GPU tests are failing even with nvidia run-time https://github.com/SyneRBI/SIRF-SuperBuild/issues/553
       if [[ "$DOCKER_BUILD" != *"CORE"* && "$DOCKER_BUILD" != *"GPU"* ]]; then
-        $DCC run --rm sirf /bin/bash --login -c '/devel/test.sh 1'
+        #KT $DCC run --rm sirf /bin/bash --login -c '/devel/test.sh 1'
       fi
    after_success: &docker_after_success
    - |
