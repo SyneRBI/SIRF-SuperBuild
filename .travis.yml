@@ -14,7 +14,6 @@ cache:  # cache C/C++/pip (shared between builds)
 - ccache
 - pip
 stages:
-- test
 - docker-core
 - name: docker
   if: NOT type = pull_request
@@ -77,14 +76,14 @@ env:
  - MAKEFLAGS="-j 2"  # too many threads may crash
 jobs:
  include:
- - os: linux
-   python: 3.6
-   name: py36 +DEVEL -boost -hdf5 -fftw3 +ace +siemens_to_ismrmrd +itk +cil
-   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_ACE=ON -DBUILD_siemens_to_ismrmrd=ON  -DBUILD_CIL=ON -DUSE_ITK=OFF" PYMVER=3
- - os: linux
-   python: 3.6
-   name: py36 +boost +itk +fftw3 +hdf5 +cil_lite
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON  -DBUILD_CIL_LITE=ON" PYMVER=3
+ #- os: linux
+ #  python: 3.6
+ #  name: py36 +DEVEL -boost -hdf5 -fftw3 +ace +siemens_to_ismrmrd +itk +cil
+ #  env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_ACE=ON -DBUILD_si#emens_to_ismrmrd=ON  -DBUILD_CIL=ON -DUSE_ITK=OFF" PYMVER=3
+ #- os: linux
+ #  python: 3.6
+ #  name: py36 +boost +itk +fftw3 +hdf5 +cil_lite
+ #  env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON  -DBUILD_CIL_LITE=ON" PYMVER=3
 
  # docker
  - os: linux
