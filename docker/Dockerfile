@@ -81,8 +81,8 @@ COPY .bashrc .
 COPY .profile .
 
 # Create NB_GROUP and NB_USER
-RUN addgroup --gid ${NB_GID} "${NB_GROUP}" || true && \
-    useradd -l -m -s /bin/bash -N -u "${NB_UID}" -g "${NB_GID}" "${NB_USER}" || true
+RUN (addgroup --gid ${NB_GID} "${NB_GROUP}" || true) && \
+    (useradd -l -m -s /bin/bash -N -u "${NB_UID}" -g "${NB_GID}" "${NB_USER}" || true)
 # TODO add into sudo ? (probably not for safety)
 
 WORKDIR ${HOME}
