@@ -147,7 +147,7 @@ jobs:
         $DCC build sirf
         # extract updated ccache
         # sudo rm -rf devel/.ccache/*
-        $DCC run --rm sirf /bin/bash -c 'sudo rm -rf /devel/.ccache/* && sudo cp -a /opt/ccache/* /devel/.ccache/'
+        $DCC run --rm sirf /bin/bash -c 'rm -rf /devel/.ccache/* && cp -a /opt/ccache/* /devel/.ccache/'
         # replace travis' ccache with the built images's
         mv devel/.ccache ~
       ); fi

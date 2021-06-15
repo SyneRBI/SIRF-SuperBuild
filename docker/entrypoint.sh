@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# This script is expected to be run as root
+# at container start-up time
+
 # Add local user
 # Either use runtime USER_ID:GROUP_ID or fallback 1000:1000
 
@@ -29,12 +32,13 @@ addgroup --quiet --system --gid "$GROUP_ID" "$mainUser"
 adduser --quiet --system --shell /bin/bash \
   --no-create-home --home /home/"$mainUser" \
   --ingroup "$mainUser" --uid "$USER_ID" "$mainUser"
+addgroup "$mainUser" users
 
 echo "$mainUser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"$mainUser"
 
-for i in /opt/* "$HOME"; do
+for i in /opt/*-Exercises /opt/*-Demos "$HOME"; do
   if [ -d "$i" ]; then
-    echo "Updating file permissions for $i"
+    echo "Updating file ownership for $i"
     chown -R $mainUser:$mainUser "$i"
   fi
 done

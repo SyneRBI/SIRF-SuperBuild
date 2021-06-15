@@ -17,16 +17,10 @@ and change directory to this folder, `SIRF-SuperBuild/docker`.
 the next line will build it, resulting in a much smaller download but longer build time.
 4. Run `./sirf-compose-server up -d sirf` (or `./sirf-compose-server-gpu up -d sirf`)
 5. Open a browser at <http://localhost:9999>.
-Note that starting the container may take 10 minutes or more the first
-time, but only a few seconds afterwards.
+Note that starting the container may take a few seconds the first
+time, but will be very quick afterwards.
 (Run `docker logs -f sirf` to see the container's progress -
 eventually there should be a message stating the notebook has started.)
-The password is `virtual`.
-The directory is mounted at `/devel` in the docker container
-from `./devel` (in this folder) on the host. The container will copy
-[SIRF-Exercises] into this folder if not present. This means that
-files and notebooks in `./devel` will persist on your host between sessions and
-even docker-image upgrades.
 6. Stop the container (preserving its status) with `docker stop sirf`.
 7. Next time, just do `docker start sirf`.
 
@@ -35,7 +29,14 @@ even docker-image upgrades.
 [NVidia-container-runtime]: https://github.com/nvidia/nvidia-container-runtime#installation
 [SIRF-Exercises]: https://github.com/SyneRBI/SIRF-Exercises
 
-Note: If on Windows, `localhost` probably won't work.
+### Important notes:
+- The `Jupyter` password is `virtual`.
+- The directory is mounted at `/devel` in the docker container
+from `./devel` (in this folder) on the host. The container will copy
+[SIRF-Exercises] into this folder if not present. This means that
+files and notebooks in `./devel` will persist between sessions and
+even docker-image upgrades.
+- If on Windows, `localhost` probably won't work.
 Find out the service IP address using:
 ```
 docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' sirf
