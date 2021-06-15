@@ -113,8 +113,8 @@ jobs:
    - sed -i '/runtime/d' docker/docker-compose.srv-gpu.yml
    install: &docker_install
    - cd docker
-   - if [[ -z "$GROUPS" ]]; then export GROUPS=$(id -g); fi
-   - if [[ -z "$UID" ]]; then export UID=$(id -u); fi
+   - if [[ -z "$GROUP_ID" ]]; then export GROUP_ID=$(id -g); fi
+   - if [[ -z "$USER_ID" ]]; then export USER_ID=$(id -u); fi
    - export DCC="docker-compose -p "travis_${TRAVIS_JOB_NUMBER/./_}" -f $PWD/docker-compose.yml"
    - if [[ "$DOCKER_BUILD" == *"DEVEL"* ]]; then export DCC="$DCC -f $PWD/docker-compose.devel.yml"; fi
    - if [[ "$DOCKER_BUILD" == *"SERVICE"* ]]; then export DCC="$DCC -f $PWD/docker-compose.srv.yml"; fi
