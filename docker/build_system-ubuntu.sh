@@ -3,7 +3,11 @@ set -ev
 # SIRF external dependencies
 apt-get update -qq
 apt-get install -yq --no-install-recommends \
-  libboost-all-dev     \
+  libboost-dev libboost-chrono-dev \
+  libboost-filesystem-dev libboost-thread-dev \
+  libboost-date-time-dev libboost-regex-dev \
+  libboost-program-options-dev libboost-atomic-dev \
+  libboost-test-dev libboost-timer-dev \
   libfftw3-dev         \
   libhdf5-serial-dev   \
   swig

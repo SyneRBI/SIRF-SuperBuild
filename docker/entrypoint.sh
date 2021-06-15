@@ -14,9 +14,10 @@ if [ -d $HOME ]; then
   exec gosu $mainUser "$@"
 fi
 
-cd /
-# allow docker exec into already started container
-[ -d $OLD_HOME ] && mv $OLD_HOME $HOME
+# We need to copy files from /home-away to new home and create the user
+
+# copy files
+[ -d $OLD_HOME ] && cp -r $OLD_HOME $HOME
 cd $HOME
 
 echo "Creating $mainUser:$USER_ID:$GROUP_ID"

@@ -14,14 +14,19 @@
   . ~/.git-prompt.sh
 
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
-export PS1='sirf:\w$(__git_ps1)\$ '
-
+#export PS1='sirf:\w$(__git_ps1)\$ '
+# play safe with an innocent prompt that also works in the Bourne shell
+export PS1='sirf$ '
 # Python (virtualenv)
 [ -f /opt/pyvenv/bin/activate ] && . /opt/pyvenv/bin/activate
 
 # SIRF env
-[ -f /opt/SIRF-SuperBuild/INSTALL/bin/env_ccppetmr.sh ] && \
-   . /opt/SIRF-SuperBuild/INSTALL/bin/env_ccppetmr.sh
+[ -f /opt/SIRF-SuperBuild/INSTALL/bin/env_sirf.sh ] && \
+   . /opt/SIRF-SuperBuild/INSTALL/bin/env_sirf.sh
+
+# Need to add this as we have built using some of these shared libraries
+# See https://github.com/SyneRBI/SIRF-SuperBuild/issues/573
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/opt/pyvenv/lib
 
 # .local/bin (used by pip for instance)
 export PATH="${PATH}:~/.local/bin"
