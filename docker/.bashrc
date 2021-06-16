@@ -29,7 +29,7 @@ export PS1='sirf$ '
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/opt/pyvenv/lib
 
 # .local/bin (used by pip for instance)
-export PATH="${PATH}:~/.local/bin"
+export PATH="${PATH}":~/.local/bin
 
 # shared permissions
 # [ $(ls -l / | grep devel | awk '{print $3}') == $(whoami) ] || sudo chown -R $(whoami) /devel
