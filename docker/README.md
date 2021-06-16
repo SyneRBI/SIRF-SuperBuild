@@ -4,8 +4,9 @@ Docker wrapper for CCP SyneRBI SIRF.
 
 ## TL;DR, I want a Jupyter notebook service NOW
 
-1. Install [docker CE][docker-ce] and [`docker-compose`][docker-compose]. (If you are on a Mac, these are installed when you install [Docker Desktop](https://www.docker.com/products/docker-desktop)). If you are on Linux/CentOS/similar and have a GPU,
-install the [NVidia container runtime][NVidia-container-runtime].
+1. Install [docker CE][docker-ce] and [`docker-compose`][docker-compose]. (If you are on a Mac, these are installed when you install [Docker Desktop](https://www.docker.com/products/docker-desktop)).
+    - (optional) If you are on Linux/CentOS/similar and have a GPU,
+install the [NVidia container runtime][NVidia-container-runtime]. Be sure to run the [Engine Setup](https://github.com/nvidia/nvidia-container-runtime#docker-engine-setup).
 2. Download the SIRF-SuperBuild ([current master](https://github.com/SyneRBI/SIRF-SuperBuild/archive/master.zip), or
 [latest release](https://github.com/SyneRBI/SIRF-SuperBuild/releases)) or
 ```
@@ -90,6 +91,7 @@ installation instructions.
 
 - Docker
     + The free [Community Edition (CE)][docker-ce] is sufficient
+        + If you are installing on Linux, you will also have to follow the steps to [enable managing docker as a non-root user](https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user).
     + [`docker-compose`][docker-compose]
     + If you are on Linux/CentOS/similar and have a GPU, install the [NVidia container runtime][NVidia-container-runtime].
 - The [`SIRF-SuperBuild` repository](https://github.com/SyneRBI/SIRF-SuperBuild)
@@ -308,3 +310,12 @@ want to run different versions.
 [SIRF]: https://github.com/SyneRBI/SIRF
 [SIRF wiki]: https://github.com/SyneRBI/SIRF/wiki
 [CCP SyneRBI]: https://www.ccpsynerbi.ac.uk/
+
+### Common errors
+
+Problem: When trying to run `/sirf-compose-server-gpu up -d sirf` I get:
+```
+ERROR: for sirf  Cannot create container for service sirf: Unknown runtime specified nvidia
+```
+Solution:
+Did you install the [NVidia container runtime][NVidia-container-runtime] and run the [Engine Setup](https://github.com/nvidia/nvidia-container-runtime#docker-engine-setup)?
