@@ -190,7 +190,7 @@ if (DEVEL_BUILD)
   set(DEFAULT_CCPi-Regularisation-Toolkit_TAG origin/master)
 
 else()
-  set(DEFAULT_SIRF_TAG e3d50cdc826663ca3b9efab561effc18b3cc6e43)
+  set(DEFAULT_SIRF_TAG 58961137baddb2054405e9c7de647adc62ade7fe)
 #  set(DEFAULT_SIRF_TAG v3.0.0)
 
   ## STIR
