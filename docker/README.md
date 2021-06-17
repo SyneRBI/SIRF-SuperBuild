@@ -319,3 +319,20 @@ ERROR: for sirf  Cannot create container for service sirf: Unknown runtime speci
 ```
 Solution:
 Did you install the [NVidia container runtime][NVidia-container-runtime] and run the [Engine Setup](https://github.com/nvidia/nvidia-container-runtime#docker-engine-setup)?
+
+
+
+Problem: When trying to run `/sirf-compose-server-gpu up -d sirf` I get:
+```
+ERROR: The Compose file './docker-compose.srv-gpu.yml' is invalid because:
+Unsupported config option for services.gadgetron: 'runtime'
+Unsupported config option for services.sirf: 'runtime'
+```
+Solution:
+The most likely issue is that you have an old version of `docker-compose` (you need 1.19.0 or newer). Update your docker compose as (you may need root permissions). 
+Note that if you have python 2 and python 3 installed you may need to use `pip` instead of `pip3`, as your docker-compose may be installed in a different python version. 
+
+```
+pip3 uninstall docker-compose
+pip3 install docker-compose 
+```
