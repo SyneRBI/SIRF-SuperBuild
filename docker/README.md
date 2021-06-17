@@ -143,7 +143,15 @@ A brief list of everything important to know for a basic working knowledge of do
 
 The docker images can be built from source or pulled using `SyneRBI/SIRF-SuperBuild`, and containers created, by following the steps below.
 
-Please note that these instructions will mount the `SIRF-SuperBuild/docker/devel` folder on the host as `/devel` in the docker container.
+**Warnings**:
+
+When building an image yourself, by default the current `master` branch of the `SIRF-SuperBuild` is used. It might be
+safer to specify a tag. This can be done by first setting an environment variable. e.g. in `bash` and similar shells:
+```bash
+export SIRF_SB_TAG=v3.1.0
+```
+
+These instructions will mount the `SIRF-SuperBuild/docker/devel` folder on the host as `/devel` in the docker container.
 When using a `service*` image, the container will copy
 [SIRF-Exercises] into this folder if not present. This means that
 files and notebooks in `/devel` will be persistent between sessions and
@@ -294,9 +302,11 @@ docker rmi <IMAGEID>
 ```
 - Currently all `compose` files call the container `sirf`. You could edit the `.yml` file if you
 want to run different versions.
-- "Cannot connect to display" errors are usually fixed by running `xhost +local:""` on the host linux system
-- Non-linux users (e.g. Windows) will need to set up a desktop and vnc server in order to have a GUI
-- On host systems with less than 16GB RAM, before `docker-compose up ...` you may want to edit `SIRF-SuperBuild/docker/user_sirf-ubuntu.sh`, changing the line `make -j...` to simply `make`. This increases build time and reduces build memory requirements
+- "Cannot connect to display" errors are usually fixed by running `xhost +local:""` on the host linux system.
+- Non-linux users (e.g. Windows) will need to set up a desktop and vnc server in order to have a GUI.
+- On host systems with less than 16GB RAM, you might want to set the number of parallel builds used by cmake when creating
+the image to `1` (it currently defaults to `2`) by [setting an environment variable](./DocForDevelopers.md#Useful-environment-variables)
+before running `compose`.
 
 ### Links
 
