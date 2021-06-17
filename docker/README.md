@@ -158,7 +158,7 @@ Build/pull the image:
 # Either:
 SIRF-SuperBuild/docker$ docker pull synerbi/sirf
 # Or:
-SIRF-SuperBuild/docker$ docker-compose build core sirf
+SIRF-SuperBuild/docker$ ./sirf-compose-server build core sirf
 ```
 
 We can now create a container.
