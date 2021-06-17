@@ -36,7 +36,7 @@ addgroup "$mainUser" users
 
 echo "$mainUser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"$mainUser"
 
-for i in /opt/*-Exercises /opt/*-Demos "$HOME"; do
+for i in "$HOME"; do
   if [ -d "$i" ]; then
     echo "Updating file ownership for $i"
     chown -R $mainUser:$mainUser "$i"
