@@ -144,7 +144,7 @@ A brief list of everything important to know for a basic working knowledge of do
 The docker images can be built from source or pulled using `SyneRBI/SIRF-SuperBuild`, and containers created, by following the steps below.
 
 Please note that these instructions will mount the `SIRF-SuperBuild/docker/devel` folder on the host as `/devel` in the docker container.
-The container will copy
+When using a `service*` image, the container will copy
 [SIRF-Exercises] into this folder if not present. This means that
 files and notebooks in `/devel` will be persistent between sessions and
 even docker-image upgrades. You should therefore remove the contents of
