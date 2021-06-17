@@ -7,7 +7,10 @@
     and still switch to sirfuser for running the container. This avoids having to
     reset permissions of many files, and therefore speeds-up container start-up.
   - add dependencies that are available only from conda-forge (for CIL)
-- updated ISMRMRD to 1.4.2.1
+- allow specifying `HDF5_URL` and `HDF5_TAG` like for others
+- updated versions:
+  - SIRF: 3.1.0
+  - CIL: xxxx
 
 ## v3.0.0
 - travis to use BUILD_CIL=ON for all Docker builds
