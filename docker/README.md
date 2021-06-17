@@ -290,7 +290,7 @@ docker rmi <IMAGEID>
 
 - Tests can be run as follows:
 ```bash
-(py2) sirf:~$ /devel/test.sh
+(py2) sirf:~$ sudo -Hu jovyan bash --login -c /devel/test.sh
 ```
 - Currently all `compose` files call the container `sirf`. You could edit the `.yml` file if you
 want to run different versions.
