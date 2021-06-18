@@ -8,9 +8,9 @@
     {"identifier": "10.5281/zenodo.2707911", "relation": "software"}],
   "communities": [{"identifier": "ccp-petmr"},{"identifier": "synerbi"}],
   "creators": [
-    {"name": "Thomas, Benjamin A.", "orcid": "0000-0002-9784-1177", "affiliation": "University College London"},
-    {"name": "Pasca, Edoardo", "orcid": "0000-0001-6957-2160", "affiliation":"UK Research & Innovation"},
     {"name": "da Costa-Luis, Casper O.", "orcid": "0000-0002-7211-1557", "affiliation": "King's College London"},
+    {"name": "Pasca, Edoardo", "orcid": "0000-0001-6957-2160", "affiliation":"UK Research & Innovation"},
+    {"name": "Thomas, Benjamin A.", "orcid": "0000-0002-9784-1177", "affiliation": "University College London"},
     {"name": "Brown, Richard", "orcid": "0000-0001-6989-9200", "affiliation": "University College London"},
     {"name": "Biguri, Ander", "orcid": "0000-0002-2636-3032", "affiliation": "University College London"},
     {"name": "Ovtchinnikov, Evgueni", "affiliation":"UK Research & Innovation"},

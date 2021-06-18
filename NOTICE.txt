@@ -10,10 +10,10 @@ at RAL STFC (http://www.stfc.ac.uk), UCL (http://www.ucl.ac.uk/)
 and other contributing institutions.
 
 Main contributors (see each file for authors):
-Kris Thielemans (UCL)
-Benjamin A Thomas(UCL)
-Edoardo Pasca (STFC)
 Casper da Costa-Luis (KCL)
+Kris Thielemans (UCL)
+Edoardo Pasca (STFC)
+Benjamin A Thomas(UCL)
 Ander Biguri (UCL)
 Richard Brown (UCL)
 Evgueni Ovtchinnikov (STFC)
