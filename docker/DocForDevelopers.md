@@ -1,5 +1,25 @@
 # Extra information on the SIRF Docker set-up for developers
 
+## Useful environment variables
+You can determine which version of the `SIRF-SuperBuild` is built in the docker image, in `bash` and similar shells:
+```bash
+export SIRF_SB_TAG=v3.1.0
+```
+You can use a `git` hash as well of course. You can also set where to `clone` from:
+```bash
+export SIRF_SB_URL=https://github.com/KrisThielemans/SIRF-SuperBuild
+```
+If you have many cores, you can speed-up the build by saying
+```bash
+export NUM_PARALLEL_BUILDS=9
+```
+This will be passed to `cmake --build -j`.
+
+Of course, if you are using `bash`, you can specify any of these for a specific run, e.g.
+```
+NUM_PARALLEL_BUILDS=9 ./sirf-compose build sirf
+```
+
 ## `ccache`
 
 `ccache` is used in the container to speed up rebuilding images from scratch.

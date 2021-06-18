@@ -6,6 +6,8 @@
   - major change w.r.t. users and permissions. We know build as user jovyan (by default)
     and still switch to sirfuser for running the container. This avoids having to
     reset permissions of many files, and therefore speeds-up container start-up.
+  - introduced `SIRF_SB_URL`, `SIRF_SB_TAG` and `NUM_PARALLEL_BUILDS`. They default to the
+    values used before (i.e. resp. the main `SIRF-SuperBuild` repo, `master` and `2`).
   - add dependencies that are available only from conda-forge (for CIL)
 - allow specifying `HDF5_URL` and `HDF5_TAG` like for others
 - updated versions:
