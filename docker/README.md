@@ -178,13 +178,13 @@ Here, `--no-start` delays actually starting the container.
 We can now use this interactively, by starting the containder with flags `-ai`.
 ```bash
 SIRF-SuperBuild/docker$ docker start -ai sirf
-(py2) sirf:~$ gadgetron >> /dev/null &  # we are free to use tools like Gadgetron
-(py2) sirf:~$ python SIRF-SuperBuild/SIRF/examples/Python/MR/fully_sampled_recon.py  # or SIRF
+(py2) sirf:~$ gadgetron >> /dev/null &  # launch Gadgetron as a "background" process
+(py2) sirf:~$ python SIRF-SuperBuild/SIRF/examples/Python/MR/fully_sampled_recon.py  # run a SIRF demo
 (py2) sirf:~$ exit
 ```
 
 The first line starts the `sirf` docker container.
-The second line starts `gadgetron` within the container as a background process (optional, but needed for using Gadgetron of course).
+The second line starts `gadgetron` within the container as a background process (optional, but needed for using Gadgetron, i.e. most SIRF MR functionality).
 We can then run an example (or you could start an interactive python session).
 We then exit the container (which also stops it).
 
