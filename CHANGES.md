@@ -12,7 +12,7 @@
 - allow specifying `HDF5_URL` and `HDF5_TAG` like for other projects
 - updated versions:
   - SIRF: 3.1.0
-  - CIL: ca12ef252e68eaa7a3cccd19250e5481f02bcfd2
+  - CIL: b81326291c6061d57fa332a248cb9d15d9f957eb
   - CIL-ASTRA: 21.2.0
 - disable built of NiftyPET by default as our current setup  requires Python2 for which we dropped support
 - Continuous Integration testing:
