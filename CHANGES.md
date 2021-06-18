@@ -12,12 +12,14 @@
 - allow specifying `HDF5_URL` and `HDF5_TAG` like for other projects
 - updated versions:
   - SIRF: 3.1.0
-  - CIL: xxxx
+  - CIL: ca12ef252e68eaa7a3cccd19250e5481f02bcfd2
+  - CIL-ASTRA: 21.2.0
 - disable built of NiftyPET by default as our current setup  requires Python2 for which we dropped support
+- Continuous Integration testing:
+    - Removed all Travis runs except those that run docker
 
 ## v3.0.0
-- travis to use BUILD_CIL=ON for all Docker builds
-- Add GitHub action for CI. 
+- use BUILD_CIL=ON for all Docker builds
 - Docker build moved to Python3 only.
 - Environment files with name env_sirf.sh (and csh) are created. Symbolic links or copies with the previous name env_ccppetmr.sh (and csh) depending on the version of CMake available are made.
 - Fix some issues with finding Python [#472](https://github.com/SyneRBI/SIRF-SuperBuild/issues/472)
@@ -38,7 +40,7 @@
    - CIL: 21.1.0
    - CCPi-Regularisation toolkit: 20.09
 - Continuous Integration testing:
-    - Add GitHub actions and removed most Travs runs
+    - Add GitHub actions and removed most Travis runs
     - Switched Travis ctest from --verbose to --output-on-failure and added travis_wait of 20 minutes to keep it from timing-out if some tests take longer than 10.
 
 ## v2.2.0
