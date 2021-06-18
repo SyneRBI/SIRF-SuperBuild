@@ -25,5 +25,5 @@ mkdir -p ~/.jupyter
 #jupyter notebook --generate-config
 echo "c.NotebookApp.ip = '0.0.0.0'" > ~/.jupyter/jupyter_notebook_config.py
 echo "c.NotebookApp.notebook_dir = u'/home/sirfuser/devel/'" >> ~/.jupyter/jupyter_notebook_config.py
-#set a default password "virtual"
-jupyter notebook password
+echo "c.NotebookApp.password = u'sha1:cbf03843d2bb:8729d2fbec60cacf6485758752789cd9989e756c'" \
+  >> ~/.jupyter/jupyter_notebook_config.py
