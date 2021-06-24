@@ -2,8 +2,8 @@
 # Author: Edoardo Pasca
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
-# Copyright 2017-2020 University College London
-# Copyright 2017-2020 Science Technology Facilities Council
+# Copyright 2017-2021 University College London
+# Copyright 2017-2021 Science Technology Facilities Council
 #
 # This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -190,7 +190,7 @@ if (DEVEL_BUILD)
   set(DEFAULT_CCPi-Regularisation-Toolkit_TAG origin/master)
 
 else()
-  set(DEFAULT_SIRF_TAG "ce6c26c6de6ad6b11a57b4b12fc97170ef4ad26e")
+  set(DEFAULT_SIRF_TAG v3.1.0)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
