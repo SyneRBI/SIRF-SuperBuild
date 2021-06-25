@@ -1,5 +1,9 @@
 # ChangeLog
 
+# 3.1.0
+- update to SIRF 3.1.0
+- `update_VM_to_full_CIL.sh` is preferred way to install CIL. `CIL_LITE` is set to `ON` during SuperBuild.
+
 # 3.0.0
 - build with python3
 - updated apt and python requirements for SIRF 3.0.0 and CIL v21.1.0
