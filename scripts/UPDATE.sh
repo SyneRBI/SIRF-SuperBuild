@@ -203,8 +203,8 @@ SuperBuild(){
         -DBUILD_CIL_LITE=ON\
         -DCYTHON_EXECUTABLE="$CYTHON_EXECUTABLE"\
         -DPYTHON_EXECUTABLE="$PYTHON_EXECUTABLE"\
-	-DBUILD_pet_rd_tools=ON
-  make -j${num_parallel}
+        -DBUILD_pet_rd_tools=ON
+  cmake --build . -j${num_parallel}
 
   if [ ! -f ${SIRF_INSTALL_PATH}/share/gadgetron/config/gadgetron.xml ]
   then
