@@ -19,10 +19,10 @@
 #=========================================================================
 
 #This needs to be unique globally
-set(proj CCPi-Astra)
+set(proj CIL-ASTRA)
 
 # Set dependency list
-set(${proj}_DEPENDENCIES "CCPi-Framework;astra-toolbox")
+set(${proj}_DEPENDENCIES "CIL;astra-toolbox")
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
@@ -57,7 +57,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
       CONFIGURE_COMMAND ""
       BUILD_COMMAND ""
-      INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/Wrappers/Python/cil/plugins/astra ${PYTHON_DEST}/cil/plugins/astra
+      INSTALL_COMMAND ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/Wrappers/Python/ ${PYTHON_EXECUTABLE} setup.py install --install-lib ${PYTHON_DEST}
       CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
       DEPENDS ${${proj}_DEPENDENCIES}
     )

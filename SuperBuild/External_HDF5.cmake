@@ -37,7 +37,7 @@ SetCanonicalDirectoryNames(${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
-  message(STATUS "HDF5_DOWNLOAD_VERSION=${HDF5_DOWNLOAD_VERSION}")
+  SetGitTagAndRepo("${proj}")
 
   ### --- Project specific additions here
 
@@ -45,11 +45,10 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set(CLANG_ARG -DCMAKE_COMPILER_IS_CLANGXX:BOOL=ON)
   endif()
 
-  #set(HDF5_SOURCE_DIR ${SOURCE_DOWNLOAD_CACHE}/${proj}-prefix/src/HDF5/hdf5-1.10.0-patch1 )
   option(${proj}_USE_CUDA "Enable ${proj} CUDA (if cuda libraries are present)" ${USE_CUDA})
   set(HDF5_BUILD_HL_LIB ${${proj}_USE_CUDA})
 
-  if (WIN32 AND (${HDF5_DOWNLOAD_VERSION} STREQUAL 1.8.12))
+  if (WIN32 AND (${HDF5_TAG} STREQUAL hdf5-1_8_12))
     find_program(GIT "git")
     set(PATCHFILE "${CMAKE_SOURCE_DIR}/patches/hdf5-${HDF5_DOWNLOAD_VERSION}.patch")
     set(PATCH_COMMAND git apply -v --ignore-space-change --ignore-whitespace ${PATCHFILE})
@@ -69,10 +68,10 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
-    URL ${${proj}_URL}
-    URL_HASH MD5=${${proj}_MD5}
-    PATCH_COMMAND ${PATCH_COMMAND}
+    ${${proj}_EP_ARGS_GIT}
+    GIT_SHALLOW ON
     ${${proj}_EP_ARGS_DIRS}
+    PATCH_COMMAND ${PATCH_COMMAND}
 
     CMAKE_ARGS
       ${CLANG_ARG}

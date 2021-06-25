@@ -111,6 +111,7 @@ CPPFLAGS=\"-DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INS
         ${${proj}_EP_ARGS_GIT}
         ${${proj}_EP_ARGS_DIRS}
         
+	PATCH_COMMAND ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR} ${CMAKE_COMMAND} -E remove -f python_build && ${CMAKE_COMMAND} -E remove -f python_install
         # This build is Unix specific
         CONFIGURE_COMMAND
           ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ./autogen.sh
@@ -147,6 +148,8 @@ cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir/astra ${${proj}_INSTALL_DIR
         ${${proj}_EP_ARGS}
         ${${proj}_EP_ARGS_DIRS}
         # INSTALL_DIR ${libastra_Install_Dir}
+
+	PATCH_COMMAND ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR} ${CMAKE_COMMAND} -E remove -f python_build && ${CMAKE_COMMAND} -E remove -f python_install
 
         CONFIGURE_COMMAND ${CMAKE_COMMAND} -E copy ${${proj}_BINARY_DIR}/python/python_build ${${proj}_SOURCE_DIR}/python/ && ${CMAKE_COMMAND} -E copy ${${proj}_BINARY_DIR}/python/python_install ${${proj}_SOURCE_DIR}/python/
 

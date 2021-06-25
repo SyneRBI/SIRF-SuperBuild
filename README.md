@@ -28,13 +28,14 @@ by the SuperBuild, [see below for more info for your operating system](#os-speci
    2. [Installation instructions for Mac OS](#OSX-install)
    3. [Installation instructions for Docker](#Docker-install)
 4. [Advanced installation](#Advanced-installation)
-   1. [Compiling against your own packages](#Compiling-packages)
-   2. [Python and MATLAB installation locations](#Python-and-MATLAB-installation-locations)
-   3. [Building with specific versions of dependencies](#Building-with-specific-versions-of-dependencies)
-   4. [Building from your own source](#Building-from-your-own-source)
-   5. [Building with Intel Math Kernel Library](#Building-with-Intel-Math-Kernel-Library)
-   6. [Building CCPi CIL](#Building-CCPi-CIL)
-   7. [Passing CMAKE arguments to specific projects](#Passing-CMAKE-arguments-to-specific-projects)
+   1. [use a different compiler than the system default](use-a-different-compiler-than-the-system-default)
+   2. [Compiling against your own packages](#Compiling-packages)
+   3. [Python and MATLAB installation locations](#Python-and-MATLAB-installation-locations)
+   4. [Building with specific versions of dependencies](#Building-with-specific-versions-of-dependencies)
+   5. [Building from your own source](#Building-from-your-own-source)
+   6. [Building with Intel Math Kernel Library](#Building-with-Intel-Math-Kernel-Library)
+   7. [Building CCPi CIL](#Building-CCPi-CIL)
+   8. [Passing CMAKE arguments to specific projects](#Passing-CMAKE-arguments-to-specific-projects)
 
 
 ## Dependencies
@@ -89,7 +90,11 @@ cd ~/devel/build
 cmake ../SIRF-SuperBuild
 ```
 You can of course use the GUI version of CMake (called `cmake-gui` on Linux/OSX), or the
-terminal verson `ccmake` to check and set various variables. See the [CMake tutorial on how to run CMake](https://cmake.org/runningcmake/).
+terminal version `ccmake` to check and set various variables. See the [CMake tutorial on how to run CMake](https://cmake.org/runningcmake/).
+
+By default, this will select stable configurations of the various projects. See [the advanced installation section](#advanced-installation).
+
+*Important*: it is currently not recommended to build both MATLAB and Python support, see [below](#matlab-and-python-conflicts).
 
 Then use your build environment to build and install the project. On Linux/OSX etc, you would normally use
 ```bash
@@ -104,17 +109,30 @@ cmake --build . --config Release
 
 Note that there is no separate install step.
 
+### MATLAB and Python conflicts
+We have encountered problems with either running or building SIRF on systems that have both Python and MATLAB installed due to problems with different versions of the HDF5 libraries (see e.g. [#208](https://github.com/SyneRBI/SIRF-SuperBuild/issues/208)).
+If you do have both MATLAB and Python, it might therefore be best to build twice. For instance
+```sh
+mkdir ~/devel/build_Python
+cd ~/devel/build_Python
+cmake -DDISABLE_Matlab:BOOL=ON <other-args> ../SIRF-SuperBuild
+make -j3
+cd ../
+mkdir build_Matlab
+cd build_Matlab
+export CC=gcc7 # or whatever the appropriate compiler is for MATLAB
+export CXX=g++7
+cmake -DDISABLE_PYTHON:BOOL=ON  <other-args> ../SIRF-SuperBuild
+make -j3
+```
+
 ### Gadgetron include patch
 The installed Gadgetron include files contain some spurious `..` which prevent correct compilation of code with it. For this reason we patch the include file after it's installed. To patch we use Python as it is probably the most portable tool.
 
 The include has been fixed in more recent versions of Gadgetron and our patch should not do anything in such case.
 
 ### Example Gadgetron configuration file
-Gadgetron requires a configuration file. An example is supplied and, as a starting point, this can be copied and used as the real thing:
-```
-mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
-```
-replacing `INSTALL` with the directory you used for `CMAKE_INSTALL_PREFIX`.
+Gadgetron requires a configuration file. An example is supplied and copied by the installation procedure (unless one exists).
 
 ### Set Environment variables
 Source a script with the environment variables appropriate for your shell
@@ -143,7 +161,7 @@ gadgetron
 N.B.: If you didn't add any of the above statements to your `.bashrc` or `.cshrc`, you will have to source `env_sirf.*` again in this terminal first.
 
 ### Testing
-Tests for the SIRF-SuperBuild are currently the SIRF tests. The tests can contain tests from most SuperBuild projects.
+Tests for most SuperBuild projects can be en/disabled projects when configuring the build.
 After setting the environment variables and starting Gadgetron, you can run tests as:
 
 ```bash
@@ -203,9 +221,19 @@ They can be found [here](https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-Ub
 They can be found [here](https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-on-MacOS)
 
 ### Installation instructions for Docker <a name="Docker-install"></a>
-They can be found [here](https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-on-Docker)
+They can be found [here](docker/README.md)
 
 ## Advanced installation
+
+## Use a different compiler than the system default
+You can tell CMake to use a different compiler than what it finds by default. You will need to specify both C and C++ compilers. For instance, to use `gcc8`, use
+```sh
+CC=gcc8
+CXX=g++8
+export CC CXX
+ccmake normal-options
+```
+This needs to be done the very first time you run CMake for that build.
 
 ### Compiling against your own packages <a name="Compiling-packages"></a>
 SIRF depends on many packages. By default, these packages are installed by the Superbuild. However, the user can decide to compile SIRF against their own versions of certain packages. This can be done via the `USE_SYSTEM_*` options in `CMake`. For example, if you wish to compile SIRF against a version of Boost that is already on your machine, you could set `USE_SYSTEM_BOOST` to `ON`.
@@ -224,7 +252,7 @@ In this case, you would then need to ensure that `PYTHONPATH` and `MATLABPATH` a
 ### Building with specific versions of dependencies
 By default, the SuperBuild will build the latest stable release of SIRF and associated versions of the dependencies. However, the SuperBuild allows the user to change the versions of the projects it's building. The current default values can be found in [version_config.cmake](version_config.cmake).
 
-There is a `DEVEL_BUILD` tag that allows to build the upstream/master versions of all packages (`DEVEL_BUILD=ON`).
+There is a `DEVEL_BUILD` tag that allows to build the upstream/master versions of most packages (`DEVEL_BUILD=ON`).
 
 One may want to use only a specific version of a package. This is achieved by adding the right tag to the command line:
 
@@ -264,10 +292,10 @@ Notice that other packages may look for a blas implementation issuing CMake's [`
 
 ### Building CCPi CIL
 
-It is possible to build the [CCPi Core Imaging Library CIL](https://www.ccpi.ac.uk/CIL) as part of the SuperBuild. The CIL consists on a few pieces of software (`CCPi-Framework`, `CCPi-FrameworkPlugins`, `CCPi-Regularisation-Toolkit`, `CCPi-Astra`). There are 2 options: 
+It is possible to build the [CCPi Core Imaging Library CIL](https://www.ccpi.ac.uk/CIL) as part of the SuperBuild. The functionality of `CIL` can be expanded by plugins. Currently available: [`CCPi-Regularisation`](https://github.com/vais-ral/CCPi-Regularisation-Toolkit), [`CIL-ASTRA`](https://github.com/TomographicImaging/CIL-ASTRA), [`TomoPhantom`](https://github.com/dkazanc/TomoPhantom) and [`TIGRE`](https://github.com/CERN/TIGRE)). There are 2 options: 
 
-1. `BUILD_CIL` will build CIL and [ASTRA-toolbox](https://github.com/astra-toolbox/astra-toolbox) and [TomoPhantom](https://github.com/dkazanc/TomoPhantom)
-2. `BUILD_CIL_LITE` will build only CIL (and leave out `CCPi-Astra`)
+1. `BUILD_CIL` will build `CIL` and all the following plugins: `CIL-ASTRA`, `CCPi-Regularisation`, [ASTRA-toolbox](https://github.com/astra-toolbox/astra-toolbox) and `TomoPhantom`
+2. `BUILD_CIL_LITE` will build `CIL` with the `CCPi-Regularisation` plugins.
 
 ### Passing CMAKE arguments to specific projects
 
@@ -298,15 +326,16 @@ Some dependencies like Gadgetron, NiftyPET and Parallelproj require building par
 
 ## Notes
 
-* As CMake doesn't come with FFTW3 support, it is currently necessary to have `FindFFTW3.cmake` reproduced 3 times. sigh.
+### FFTW3 issues
+As CMake doesn't come with FFTW3 support, it is currently necessary to have `FindFFTW3.cmake` reproduced 3 times. sigh.
 
-* This is poorely documented in FindFFTW3.cmake, which could be fixed by a PR to Gadgetron, ISMRMRD and SIRF. Similarly, we could fix `FindFFTW3.cmake` to also use the CMake variable.
+If you want to use your own FFTW3 library but it is not in a standard location, you have to set an environment variable `FFTW3_ROOT_DIR` before running CMake.
+This is poorely documented in FindFFTW3.cmake, which could be fixed by a PR to Gadgetron, ISMRMRD and SIRF. (Note that KT has tried to use `set(ENV{FFTW3_ROOT_DIR} somelocation)` in our `External_FindFFTW.cmake`. This however doesn't pass the environment variable to the CMake instances for Gadgetron etc.)
 
-* KT has tried to use `set(ENV{FFTW3_ROOT_DIR} somelocation)` in our `External_FindFFTW.cmake`. This however doesn't pass the environment variable to the CMake instances for Gadgetron etc.
+By the way, if you build with `USE_SYSTEM_FFTW3=OFF` (the default except on Windows), the  `FFTW3_ROOT_DIR` env variable is ignored (as find_library etc give precedence to `MAKE_PREFIX_PATH` over `HINTS` ).
 
-* By the way, when using `USE_SYSTEM_FFTW3=OFF`, CMake currently does find our own installation even if the `FFTW3_ROOT_DIR` env variable (as find_library etc give precedence to `MAKE_PREFIX_PATH` over `HINTS` ).
-
-* CMake does come with FindArmadillo.cmake but it currently (at least up to CMake 3.12) has no variable to specify its location at all. This implies that when using `USE_SYSTEM_ARMADILLO=On`, you have to install armadillo in a system location, unless some extra work is done. See [this post on stackoverflow](https://stackoverflow.com/questions/35304513/cmake-find-armadillo-library-installed-in-a-custom-location) for some suggestions, which we haven't tried.
+### Armadillo issues
+CMake does come with `FindArmadillo.cmake` but it currently (at least up to CMake 3.12) has no variable to specify its location at all. This implies that when using `USE_SYSTEM_ARMADILLO=On`, you have to install armadillo in a system location, unless some extra work is done. See [this post on stackoverflow](https://stackoverflow.com/questions/35304513/cmake-find-armadillo-library-installed-in-a-custom-location) for some suggestions, which we haven't tried.
 
 [CI-badge]: https://travis-ci.org/SyneRBI/SIRF-SuperBuild.svg?branch=master
 [CI-link]: https://travis-ci.org/SyneRBI/SIRF-SuperBuild

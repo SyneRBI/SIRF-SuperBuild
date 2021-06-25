@@ -34,10 +34,13 @@ esac
 
 # Python (runtime)
 if [ -f requirements.txt ]; then
-  ${PYTHON} -m pip install -U -r requirements.txt
+  pip install -U -r requirements.txt
 fi
 
 if [ "$PYTHON" = "miniconda" ]; then
+  if [ -f requirements_conda_forge.txt ]; then
+    conda install --yes -c conda-forge --file requirements_conda_forge.txt
+  fi
   conda update -c conda-forge -y --all
   conda clean -y --all
 fi

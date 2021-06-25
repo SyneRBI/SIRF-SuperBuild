@@ -4,7 +4,7 @@
 # service.sh [<DEBUG_LEVEL> [<JUPYTER_PORT>]]
 #
 # Arguments:
-#   <DEBUG_LEVEL>  : [default: 0]
+#   <DEBUG_LEVEL>   : [default: 0]
 #   <JUPYTER_PORT>  : [default: 8888]
 ##
 
@@ -19,9 +19,9 @@ stop_service()
   for i in $(jobs -p); do kill -n 15 $i; done 2>/dev/null
 
   if [ "$DEBUG" != 0 ]; then
-    if [ -f gadgetron.log ]; then
-      echo "----------- Last 70 lines of gadgetron.log"
-      tail -n 70 gadgetron.log
+    if [ -f ~/gadgetron.log ]; then
+      echo "----------- Last 70 lines of ~/gadgetron.log"
+      tail -n 70 ~/gadgetron.log
     fi
   fi
 
@@ -30,24 +30,28 @@ stop_service()
 
 pushd $SIRF_PATH/../..
 
-# start gadgetron
+echo "start gadgetron"
 GCONFIG=./INSTALL/share/gadgetron/config/gadgetron.xml
 [ -f "$GCONFIG" ] || cp "$GCONFIG".example "$GCONFIG"
 [ -f ./INSTALL/bin/gadgetron ] \
-  && ./INSTALL/bin/gadgetron >& gadgetron.log&
+  && ./INSTALL/bin/gadgetron >& ~/gadgetron.log&
 
-# start jupyter
+echo "make sure the SIRF-Exercises are in the expected location (/devel in the container)"
+cd /devel
+[ -d SIRF-Exercises ] || cp -a $SIRF_PATH/../../../SIRF-Exercises .
+# link SIRF-Contrib into it
+if [ ! -r SIRF-contrib ]; then
+    echo "Creating link to SIRF-contrib"
+    ln -s "$SIRF_INSTALL_PATH"/python/sirf/contrib SIRF-contrib
+fi
+
+echo "start jupyter"
 if [ ! -f ~/.jupyter/jupyter_notebook_config.py ]; then
   jupyter notebook --generate-config
   echo "c.NotebookApp.password = u'sha1:cbf03843d2bb:8729d2fbec60cacf6485758752789cd9989e756c'" \
   >> ~/.jupyter/jupyter_notebook_config.py
 fi
 
-pushd /devel
-[ -d SIRF-Exercises ] || cp -a $SIRF_PATH/../../../SIRF-Exercises .
-which unzip || sudo apt-get install -yqq unzip
-for i in SIRF-Exercises/scripts/download_*.sh; do ./$i $PWD; done
-popd
 
 # serve a master notebook
 jupyter notebook --ip 0.0.0.0 --port $JUPYTER_PORT --no-browser \
