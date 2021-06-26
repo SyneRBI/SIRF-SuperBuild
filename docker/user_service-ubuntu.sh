@@ -17,4 +17,11 @@ if [ -f requirements.txt ]; then
   conda install -c conda-forge -y --file requirements.txt || \
   pip install -U -r requirements.txt
 fi
+
+# configure nbstripout
+git config --global filter.nbstripout.extrakeys '
+  metadata.celltoolbar metadata.language_info.codemirror_mode.version
+  metadata.language_info.pygments_lexer metadata.language_info.version'
+  
+nbstripout --install
 # jupyter labextension install @jupyter-widgets/jupyterlab-manager
