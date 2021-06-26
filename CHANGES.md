@@ -2,6 +2,7 @@
 
 ## v3.1.0
 - docker:
+  - configure nbstripout in SIRF-Exercises for `sirf-service`
   - major change w.r.t. users and permissions. We now build as user `jovyan` (by default)
     and still switch to `sirfuser` for running the container. This avoids having to
     reset permissions of many files, and therefore speeds-up container start-up.
@@ -12,7 +13,7 @@
 - allow specifying `HDF5_URL` and `HDF5_TAG` like for other projects
 - updated versions:
   - SIRF: 3.1.0
-  - CIL: b81326291c6061d57fa332a248cb9d15d9f957eb
+  - CIL: 21.2.0
   - CIL-ASTRA: 21.2.0
 - disable built of NiftyPET by default as our current setup  requires Python2 for which we dropped support
 - Continuous Integration testing:
