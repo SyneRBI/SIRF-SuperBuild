@@ -25,3 +25,8 @@ git config --global filter.nbstripout.extrakeys '
   
 nbstripout --install
 # jupyter labextension install @jupyter-widgets/jupyterlab-manager
+
+# CIL-Demos
+git clone https://github.com/TomographicImaging/CIL-Demos.git --recursive -b main $INSTALL_DIR/CIL-Demos
+cd $INSTALL_DIR/CIL-Demos
+nbstripout --install
