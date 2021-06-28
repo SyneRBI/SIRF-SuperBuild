@@ -31,7 +31,7 @@ addgroup --quiet --system --gid "$GROUP_ID" "$mainUser"
 #   -p $(echo somepassword | openssl passwd -1 -stdin)
 adduser --quiet --system --shell /bin/bash \
   --no-create-home --home /home/"$mainUser" \
-  --ingroup "$mainUser" --uid "$USER_ID" "$mainUser"
+  --gid "$GROUP_ID" --uid "$USER_ID" "$mainUser"
 addgroup "$mainUser" users
 
 echo "$mainUser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"$mainUser"
