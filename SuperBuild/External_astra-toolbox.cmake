@@ -111,7 +111,10 @@ CPPFLAGS=\"-DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INS
         ${${proj}_EP_ARGS_GIT}
         ${${proj}_EP_ARGS_DIRS}
         
-	PATCH_COMMAND ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR} ${CMAKE_COMMAND} -E remove -f python_build && ${CMAKE_COMMAND} -E remove -f python_install
+	      PATCH_COMMAND ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR} ${CMAKE_COMMAND} -DINFILE=.gitignore -DLINE="python_build" -P ${CMAKE_SOURCE_DIR}/CMake/add_to_gitignore.cmake &&
+        ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR} ${CMAKE_COMMAND} -DINFILE=.gitignore -DLINE="python_install" -P ${CMAKE_SOURCE_DIR}/CMake/add_to_gitignore.cmake &&
+        ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR} ${CMAKE_COMMAND} -DINFILE=.gitignore -DLINE="python/python_build" -P ${CMAKE_SOURCE_DIR}/CMake/add_to_gitignore.cmake &&
+        ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR} ${CMAKE_COMMAND} -DINFILE=.gitignore -DLINE="python/python_build" -P ${CMAKE_SOURCE_DIR}/CMake/add_to_gitignore.cmake
         # This build is Unix specific
         CONFIGURE_COMMAND
           ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ./autogen.sh
