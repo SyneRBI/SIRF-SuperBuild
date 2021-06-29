@@ -149,8 +149,14 @@ cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir/astra ${${proj}_INSTALL_DIR
     
     ExternalProject_Add(${python_wrapper}
         ${${proj}_EP_ARGS}
-        ${${python_wrapper}_EP_ARGS_DIRS}
-        
+        #${${python_wrapper}_EP_ARGS_DIRS}
+        SOURCE_DIR ${${proj}_SOURCE_DIR}
+        BINARY_DIR ${${proj}_BINARY_DIR}
+        DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
+        STAMP_DIR ${${proj}_STAMP_DIR}
+        TMP_DIR ${${proj}_TMP_DIR}
+        INSTALL_DIR ${${proj}_INSTALL_DIR}
+
         # INSTALL_DIR ${libastra_Install_Dir}
         CONFIGURE_COMMAND ""
         # This build is Unix specific
