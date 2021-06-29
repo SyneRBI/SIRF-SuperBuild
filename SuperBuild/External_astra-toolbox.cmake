@@ -82,7 +82,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       set(ASTRA_BUILD_OPTIONS "--with-cuda=${CUDA_TOOLKIT_ROOT_DIR}")
 
       #create a configure script
-      file(WRITE ${${proj}_SOURCE_DIR}/python_build
+      file(WRITE ${${proj}_BINARY_DIR}/python_build
 "
 #! /bin/bash
 set -ex
@@ -96,7 +96,7 @@ CPPFLAGS=\"-DASTRA_CUDA -DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${S
       set(ASTRA_BUILD_OPTIONS "")
 
       #create a configure script
-      file(WRITE ${${proj}_SOURCE_DIR}/python_build
+      file(WRITE ${${proj}_BINARY_DIR}/python_build
 "
 #! /bin/bash
 set -ex
@@ -111,11 +111,7 @@ CPPFLAGS=\"-DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INS
         ${${proj}_EP_ARGS_GIT}
         ${${proj}_EP_ARGS_DIRS}
         
-	      PATCH_COMMAND 
-        ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR} ${CMAKE_COMMAND} -E remove -f python_build &&
-        ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR} ${CMAKE_COMMAND} -E remove -f python_install &&
-        ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/python ${CMAKE_COMMAND} -E remove -f python_build &&
-        ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/python ${CMAKE_COMMAND} -E remove -f python_install
+
         # This build is Unix specific
         CONFIGURE_COMMAND
           ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ./autogen.sh
@@ -130,12 +126,12 @@ CPPFLAGS=\"-DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INS
       )
 
     set(python_wrapper "astra-python-wrapper")
-    file(COPY ${${proj}_SOURCE_DIR}/python_build
-         DESTINATION ${${proj}_BINARY_DIR}/python
-         FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
+    # file(COPY ${${proj}_SOURCE_DIR}/python_build
+    #      DESTINATION ${${proj}_BINARY_DIR}/python
+    #      FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
 
     #create an install script
-    file(WRITE ${${proj}_SOURCE_DIR}/python_install
+    file(WRITE ${${proj}_BINARY_DIR}/python/python_install
 "
 #! /bin/bash
 set -ex
@@ -144,28 +140,24 @@ cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir/astra ${${proj}_INSTALL_DIR
 
 ")
 
-    file(COPY ${${proj}_SOURCE_DIR}/python_install
- 	   DESTINATION ${${proj}_BINARY_DIR}/python
-           FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
-
+    # file(COPY ${${proj}_SOURCE_DIR}/python_install
+ 	  #  DESTINATION ${${proj}_BINARY_DIR}/python
+    #        FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
+    SetCanonicalDirectoryNames("${python_wrapper}")
+    message (STATUS "CREATE ${${python_wrapper}_SOURCE_DIR}/not_empty.txt FILE IN ${${python_wrapper}_SOURCE_DIR}")
+    file(WRITE ${${python_wrapper}_SOURCE_DIR}/not_empty.txt "")
+    
     ExternalProject_Add(${python_wrapper}
         ${${proj}_EP_ARGS}
-        ${${proj}_EP_ARGS_DIRS}
+        ${${python_wrapper}_EP_ARGS_DIRS}
+        
         # INSTALL_DIR ${libastra_Install_Dir}
-
-	PATCH_COMMAND ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR} ${CMAKE_COMMAND} -E remove -f python_build && ${CMAKE_COMMAND} -E remove -f python_install
-
-        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E copy ${${proj}_BINARY_DIR}/python/python_build ${${proj}_SOURCE_DIR}/python/ && ${CMAKE_COMMAND} -E copy ${${proj}_BINARY_DIR}/python/python_install ${${proj}_SOURCE_DIR}/python/
 
         # This build is Unix specific
         BUILD_COMMAND
-          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/python ./python_build
+          ${CMAKE_COMMAND} -E chdir ${${proj}_BINARY_DIR}/python ./python_build
         INSTALL_COMMAND
-          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/python ./python_install &&
-          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR} ${CMAKE_COMMAND} -E remove -f python_build &&
-          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR} ${CMAKE_COMMAND} -E remove -f python_install &&
-          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/python ${CMAKE_COMMAND} -E remove -f python_build &&
-          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/python ${CMAKE_COMMAND} -E remove -f python_install
+          ${CMAKE_COMMAND} -E chdir ${${proj}_BINARY_DIR}/python ./python_install 
         DEPENDS
           ${proj}
       )
