@@ -152,7 +152,7 @@ cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir/astra ${${proj}_INSTALL_DIR
         ${${python_wrapper}_EP_ARGS_DIRS}
         
         # INSTALL_DIR ${libastra_Install_Dir}
-
+        CONFIGURE_COMMAND ""
         # This build is Unix specific
         BUILD_COMMAND
           ${CMAKE_COMMAND} -E chdir ${${proj}_BINARY_DIR}/python ./python_build
