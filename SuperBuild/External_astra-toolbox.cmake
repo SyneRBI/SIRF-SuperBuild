@@ -161,7 +161,11 @@ cp -rv ${${proj}_SOURCE_DIR}/python/build/$build_dir/astra ${${proj}_INSTALL_DIR
         BUILD_COMMAND
           ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/python ./python_build
         INSTALL_COMMAND
-          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/python ./python_install
+          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/python ./python_install &&
+          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR} ${CMAKE_COMMAND} -E remove -f python_build &&
+          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR} ${CMAKE_COMMAND} -E remove -f python_install &&
+          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/python ${CMAKE_COMMAND} -E remove -f python_build &&
+          ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/python ${CMAKE_COMMAND} -E remove -f python_install
         DEPENDS
           ${proj}
       )
