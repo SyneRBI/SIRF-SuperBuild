@@ -22,7 +22,7 @@
 set(proj CIL-ASTRA)
 
 # Set dependency list
-set(${proj}_DEPENDENCIES "CIL;astra-toolbox")
+set(${proj}_DEPENDENCIES "CIL;astra-python-wrapper")
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)

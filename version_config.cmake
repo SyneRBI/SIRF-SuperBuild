@@ -249,6 +249,8 @@ set(CIL-ASTRA_URL ${DEFAULT_CIL-ASTRA_URL} CACHE STRING ON)
 set(CIL-ASTRA_TAG ${DEFAULT_CIL-ASTRA_TAG} CACHE STRING ON)
 set(astra-toolbox_URL ${DEFAULT_astra-toolbox_URL} CACHE STRING ON)
 set(astra-toolbox_TAG ${DEFAULT_astra-toolbox_TAG} CACHE STRING ON)
+set(astra-python-wrapper_URL ${DEFAULT_astra-toolbox_URL} CACHE STRING ON)
+set(astra-python-wrapper_TAG ${DEFAULT_astra-toolbox_TAG} CACHE STRING ON)
 set(TomoPhantom_URL ${DEFAULT_TomoPhantom_URL} CACHE STRING ON)
 set(TomoPhantom_TAG ${DEFAULT_TomoPhantom_TAG} CACHE STRING ON)
 
@@ -293,6 +295,7 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   SPM_URL SPM_TAG
   JSON_URL JSON_TAG
   astra-toolbox_URL astra-toolbox_TAG
+  astra-python-wrapper_URL astra-python-wrapper_TAG
   ACE_URL ACE_TAG
   
 )
