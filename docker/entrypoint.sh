@@ -39,7 +39,7 @@ echo "$mainUser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"$mainUser"
 for i in "$HOME"; do
   if [ -d "$i" ]; then
     echo "Updating file ownership for $i"
-    chown -R $mainUser:$mainUser "$i"
+    chown -R "$USER_ID":"$GROUP_ID" "$i"
   fi
 done
 
