@@ -136,6 +136,7 @@ cp -rv ${${astra}_SOURCE_DIR}/python/build/$build_dir/astra ${${proj}_INSTALL_DI
 
     ExternalProject_Add(${proj}
         ${${astra}_EP_ARGS}
+        ${${astra}_EP_ARGS_GIT}
         SOURCE_DIR ${${astra}_SOURCE_DIR}
         BINARY_DIR ${${proj}_BINARY_DIR}
         DOWNLOAD_DIR ${${proj}_DOWNLOAD_DIR}
