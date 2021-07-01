@@ -1,7 +1,9 @@
 # ChangeLog
 ## v3.x.x
 
-- added external project astra-python-wrapper to allow updates of ASTRA without conflicts
+- added external project astra-python-wrapper to allow updates of ASTRA without conflicts [#605](https://github.com/SyneRBI/SIRF-SuperBuild/issues/605)
+- fix docker/entrypoint for case where a user has a GID that already exists in the Docker image [#606](https://github.com/SyneRBI/SIRF-SuperBuild/issues/606)
+
 ## v3.1.0
 - docker:
   - configure nbstripout in SIRF-Exercises for `sirf-service`
