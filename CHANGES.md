@@ -1,5 +1,7 @@
 # ChangeLog
+## v3.x.x
 
+- added external project astra-python-wrapper to allow updates of ASTRA without conflicts
 ## v3.1.0
 - docker:
   - configure nbstripout in SIRF-Exercises for `sirf-service`
