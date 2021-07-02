@@ -276,12 +276,12 @@ For example, to host multiple Jupyter servers in one container, simply:
 ### More information on usage
 
 You can use `docker exec` to execute commands in a container that is already running.
-This could be useful for the `Jupyter server` container. For instance
+This could be useful for debugging problems with the `Jupyter server` container. For instance
 ```sh
-# check what is running in the container
-docker exec -w / ps aux
-# start an interactive bash session (with working-directory /devel)
-docker exec -w /devel -ti sirf /bin/bash
+# check what processes are running in the container
+docker exec sirf ps aux
+# start an interactive bash session
+docker exec -ti sirf /bin/bash
 ```
 Note that `exec` logs in as `root`.
 
@@ -312,7 +312,7 @@ docker rmi <IMAGEID>
 
 ## Notes
 
-- Tests can be run as follows:
+- Tests of SIRF and other installed packages can be run as follows:
 ```bash
 (py2) sirf:~$ sudo -Hu jovyan bash --login -c /devel/test.sh
 ```
@@ -343,8 +343,9 @@ Problem: When trying to run `/sirf-compose-server-gpu up -d sirf` I get:
 ```
 ERROR: for sirf  Cannot create container for service sirf: Unknown runtime specified nvidia
 ```
-Solution:
-Did you install the [NVidia container runtime][NVidia-container-runtime] and run the [Engine Setup](https://github.com/nvidia/nvidia-container-runtime#docker-engine-setup)?
+Solutions:
+- If you are on Linux, did you install the [NVidia container runtime][NVidia-container-runtime] and run the [Engine Setup](https://github.com/nvidia/nvidia-container-runtime#docker-engine-setup)?
+- If you are not on Linux, docker currently (June 2021) does not yet support GPU access.
 
 
 
