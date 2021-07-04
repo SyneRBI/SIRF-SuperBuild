@@ -338,7 +338,7 @@ before running `compose`.
 [CCP SyneRBI]: https://www.ccpsynerbi.ac.uk/
 
 ### Common errors
-
+#### Unknown runtime specified nvidia
 Problem: When trying to run `/sirf-compose-server-gpu up -d sirf` I get:
 ```
 ERROR: for sirf  Cannot create container for service sirf: Unknown runtime specified nvidia
@@ -363,3 +363,9 @@ Note that if you have python 2 and python 3 installed you may need to use `pip` 
 pip3 uninstall docker-compose
 pip3 install docker-compose 
 ```
+#### MacOS: Cannot connect to the Docker daemon
+```
+% ./sirf-compose-server up -d sirf
+Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
+```
+To the best of our knowledge, this is a confusing error message by Docker. The Mac version does not seem run a daemon. Instead, you have to run the Docker App before typing any `docker` commands in the terminal (as suggested on https://stackoverflow.com/a/44719239/15030207)
