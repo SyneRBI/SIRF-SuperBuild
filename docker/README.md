@@ -368,4 +368,4 @@ pip3 install docker-compose
 % ./sirf-compose-server up -d sirf
 Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
 ```
-To the best of our knowledge, this is a confusing error message by Docker. The Mac version does not seem run a daemon. Instead, you have to run the Docker App before typing any `docker` commands in the terminal (as suggested on https://stackoverflow.com/a/44719239/15030207)
+To the best of our knowledge, this is a confusing error message by Docker. The Mac version does not seem run a daemon. Instead, you have to run Docker Desktop before typing any `docker` commands in the terminal (as suggested on https://stackoverflow.com/a/44719239/15030207)
