@@ -1,11 +1,6 @@
 #========================================================================
-# Author: Benjamin A Thomas
-# Author: Kris Thielemans
 # Author: Edoardo Pasca
-# Author: Casper da Costa-Luis
-# Copyright 2017, 2020 University College London
-# Copyright 2017, 2020 STFC
-# Copyright 2019, 2020 King's College London
+# Copyright 2020 UKRI STFC
 #
 # This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
