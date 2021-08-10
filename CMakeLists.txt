@@ -24,6 +24,10 @@ else()
   cmake_minimum_required( VERSION 3.10.0 FATAL_ERROR)
 endif()
 
+# define how to behave with option when a variable of the same name exists
+# https://cmake.org/cmake/help/latest/policy/CMP0077.html#policy:CMP0077
+cmake_policy(SET CMP0077 OLD)
+
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMake" ${CMAKE_MODULE_PATH})
 include(ExternalProject)
 include(ExternalProjectDependency)
