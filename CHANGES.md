@@ -1,4 +1,8 @@
 # ChangeLog
+## vx.x.x
+
+- fix usage of `proj_EXTRA_CMAKE_ARGS` facility (it was broken for all projects except ITK) [#616](https://github.com/SyneRBI/SIRF-SuperBuild/issues/616)
+
 ## v3.1.1
 
 - added external project astra-python-wrapper to allow updates of ASTRA without conflicts [#605](https://github.com/SyneRBI/SIRF-SuperBuild/issues/605)
