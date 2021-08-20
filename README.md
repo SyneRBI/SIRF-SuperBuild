@@ -307,6 +307,7 @@ cmake ../SIRF-SuperBuild -D${proj}_EXTRA_CMAKE_ARGS:STRING="-Dflag1:BOOL=ON;-Dfl
 
 All the flags from the following projects can be set using this technique:
 
+- ITK
 - STIR
 - Gadgetron
 - SIRF

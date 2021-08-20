@@ -45,7 +45,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     ${${proj}_EP_ARGS_DIRS}
     CMAKE_ARGS
       -DJSON_BuildTests:BOOL=${BUILD_TESTING_${proj}}
-       ${${proj}_EXTRA_CMAKE_ARGS_LIST}
+       ${${proj}_EXTRA_CMAKE_ARGS}
     DEPENDS ${${proj}_DEPENDENCIES}
   )
 
