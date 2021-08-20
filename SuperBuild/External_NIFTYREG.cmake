@@ -73,7 +73,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DUSE_OPENMP:BOOL=${${proj}_ENABLE_OPENMP}
       -DBUILD_ALL_DEP:BOOL=ON
       -DUSE_CUDA:BOOL=${${proj}_USE_CUDA}
-       ${${proj}_EXTRA_CMAKE_ARGS_LIST}
+       ${${proj}_EXTRA_CMAKE_ARGS}
     DEPENDS ${${proj}_DEPENDENCIES})
 
     set(${proj}_ROOT        ${${proj}_SOURCE_DIR})

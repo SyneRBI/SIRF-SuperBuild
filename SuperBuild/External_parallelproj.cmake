@@ -53,7 +53,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     ${${proj}_EP_ARGS_DIRS}
 
     CMAKE_ARGS ${${proj}_CMAKE_ARGS}
-    ${${proj}_EXTRA_CMAKE_ARGS_LIST}
+    ${${proj}_EXTRA_CMAKE_ARGS}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
