@@ -14,8 +14,11 @@ SUDO=sudo
 
 APT_GET_INSTALL="$SUDO apt-get install -y --no-install-recommends"
 
+${APT_GET_INSTALL} build-essential
 echo "Installing linux headers for VGA updates"
-${APT_GET_INSTALL} build-essential linux-headers-$(uname -r)
+# By appending the "true" we make sure that the script does not stop
+# if this install failes (e.g. on Windows WSL2)
+${APT_GET_INSTALL} linux-headers-$(uname -r) || true
 
 echo "Installing Gadgetron pre-requisites..."
 ${APT_GET_INSTALL} libhdf5-serial-dev git libfftw3-dev h5utils hdf5-tools \
