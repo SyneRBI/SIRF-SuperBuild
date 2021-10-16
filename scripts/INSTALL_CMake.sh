@@ -14,7 +14,7 @@ then
 else
     INSTALL_LOC=$1
 fi
-ver=3.17.2
+ver=3.21.3
 
 echo "Downloading CMake $ver in /tmp"
 cd /tmp
