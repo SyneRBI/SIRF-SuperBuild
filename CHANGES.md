@@ -1,6 +1,7 @@
 # ChangeLog
 ## vx.x.x
 
+- moved the VM repository to the `VirtualBox` subdirectory
 - fix usage of `proj_EXTRA_CMAKE_ARGS` facility (it was broken for all projects except ITK) [#616](https://github.com/SyneRBI/SIRF-SuperBuild/issues/616)
 
 ## v3.1.1
