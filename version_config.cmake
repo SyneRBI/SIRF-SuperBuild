@@ -109,7 +109,7 @@ set(DEFAULT_NIFTYREG_REQUIRED_VERSION 1.5.68)
 
 ## ISMRMRD
 set(DEFAULT_ISMRMRD_URL https://github.com/SyneRBI/ismrmrd )
-set(DEFAULT_ISMRMRD_TAG v1.4.2.1)
+set(DEFAULT_ISMRMRD_TAG v1.4.2)
 #if (WIN32)
 #  set(DEFAULT_ISMRMRD_URL https://github.com/SyneRBI/ismrmrd )
 #  set(DEFAULT_ISMRMRD_TAG program_options_fix)
