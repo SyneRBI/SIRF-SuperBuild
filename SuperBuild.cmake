@@ -121,14 +121,14 @@ else()
   # Set destinations for Python files
   set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
   if (BUILD_PYTHON)
-    set(PYTHON_DEST_DIR "" CACHE PATH "Directory of the SIRF and/or STIR Python modules")
+    set(PYTHON_DEST_DIR "" CACHE PATH "Directory of the Python modules (if not set, use ${CMAKE_INSTALL_PREFIX}/python)")
     if (PYTHON_DEST_DIR)
      set(PYTHON_DEST "${PYTHON_DEST_DIR}")
     else()
       set(PYTHON_DEST "${CMAKE_INSTALL_PREFIX}/python")
     endif()
     message(STATUS "Python libraries found")
-    message(STATUS "SIRF and/or STIR Python modules will be installed in " ${PYTHON_DEST})
+    message(STATUS "Python modules will be installed in " ${PYTHON_DEST})
 
     set(PYTHON_STRATEGY "PYTHONPATH" CACHE STRING "\
       PYTHONPATH: prefix PYTHONPATH \n\
