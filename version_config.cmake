@@ -185,7 +185,7 @@ if (DEVEL_BUILD)
 
   # CCPi CIL
   set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
-  set(DEFAULT_CIL_TAG origin/master)
+  set(DEFAULT_CIL_TAG origin/dot_test)
   set(DEFAULT_CIL-ASTRA_URL https://github.com/TomographicImaging/CIL-ASTRA.git)
   set(DEFAULT_CIL-ASTRA_TAG origin/master)
   set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
