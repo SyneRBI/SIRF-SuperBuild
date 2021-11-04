@@ -54,22 +54,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
     # in case of PYTHONPATH it is sufficient to copy the files to the
     # $PYTHONPATH directory
-    set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
-    if (BUILD_PYTHON)
-      set(PYTHON_DEST_DIR "" CACHE PATH "Directory of the CIL regularisation Python modules")
-      if (PYTHON_DEST_DIR)
-        set(PYTHON_DEST "${PYTHON_DEST_DIR}")
-      else()
-        set(PYTHON_DEST "${CMAKE_INSTALL_PREFIX}/python")
-      endif()
-      message(STATUS "Python libraries found")
-      message(STATUS "CIL Regularisation Python modules will be installed in " ${PYTHON_DEST})
-    endif()
-    set(PYTHON_STRATEGY "PYTHONPATH" CACHE STRING "\
-      PYTHONPATH: prefix PYTHONPATH \n\
-      SETUP_PY:   execute ${PYTHON_EXECUTABLE} setup.py install \n\
-      CONDA:      do nothing")
-    set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
 
     # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
     
