@@ -100,7 +100,7 @@ set(DEFAULT_glog_TAG v0.3.5)
 
 ## ITK
 set(DEFAULT_ITK_URL https://github.com/InsightSoftwareConsortium/ITK.git)
-set(DEFAULT_ITK_TAG v4.13.3)
+set(DEFAULT_ITK_TAG v4.13.1)
 
 ## NIFTYREG
 set(DEFAULT_NIFTYREG_URL https://github.com/KCL-BMEIS/niftyreg.git )
