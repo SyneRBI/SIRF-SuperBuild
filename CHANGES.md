@@ -1,16 +1,57 @@
 # ChangeLog
-## v#.#.#
-- renames the environment scripts to env_ccpsynerbi.* . Creates a symbolic link or a copy to env_ccppetmr.* for backward compatibility
-- Enabled HDF5 support for STIR by default (build C++ libraries for HDF5)
+## vx.x.x
+
+- moved the VM repository to the `VirtualBox` subdirectory
+- fix usage of `proj_EXTRA_CMAKE_ARGS` facility (it was broken for all projects except ITK) [#616](https://github.com/SyneRBI/SIRF-SuperBuild/issues/616)
+
+## v3.1.1
+
+- added external project astra-python-wrapper to allow updates of ASTRA without conflicts [#605](https://github.com/SyneRBI/SIRF-SuperBuild/issues/605)
+- fix docker/entrypoint for case where a user has a GID that already exists in the Docker image [#606](https://github.com/SyneRBI/SIRF-SuperBuild/issues/606)
+
+## v3.1.0
+- docker:
+  - configure nbstripout in SIRF-Exercises for `sirf-service`
+  - major change w.r.t. users and permissions. We now build as user `jovyan` (by default)
+    and still switch to `sirfuser` for running the container. This avoids having to
+    reset permissions of many files, and therefore speeds-up container start-up.
+  - introduced `SIRF_SB_URL`, `SIRF_SB_TAG` and `NUM_PARALLEL_BUILDS`. They default to the
+    values used before (i.e. resp. the main `SIRF-SuperBuild` repo, `master` and `2`).
+  - add dependencies that are available only from conda-forge (for CIL)
+  - improved documentation
+- allow specifying `HDF5_URL` and `HDF5_TAG` like for other projects
+- updated versions:
+  - SIRF: 3.1.0
+  - CIL: 21.2.0
+  - CIL-ASTRA: 21.2.0
+- disable built of NiftyPET by default as our current setup  requires Python2 for which we dropped support
+- Continuous Integration testing:
+    - Removed all Travis runs except those that run docker
+
+## v3.0.0
+- use BUILD_CIL=ON for all Docker builds
+- Docker build moved to Python3 only.
+- Environment files with name env_sirf.sh (and csh) are created. Symbolic links or copies with the previous name env_ccppetmr.sh (and csh) depending on the version of CMake available are made.
 - Fix some issues with finding Python [#472](https://github.com/SyneRBI/SIRF-SuperBuild/issues/472)
-- Add option `BUILD_TESTING_JSON` (default OFF)
-- added flag CC_9 and CXX_9 to pass to Gadgetron for build as it requires GCC9
-- added range-v3
+- Handling dependent projects:
+    - Sets `USE_ITK=ON` by default.
+    - Disabled building of `Module_ITKReview` by default
+    - Updates for CIL 20.11+ which has a different python module structure. CCPi-FrameworkPlugins has been also removed.
+    - CIL repository has been transferred to the TomographicImaging organisation; reflect changes in CIL repositories
+    - Patch Gadgetron include file hoNDFFT.h to remove spurious ".."
+    - Add Gadgetron as a dependency of SIRF if `BUILD_Gadgetron` is `ON`.
+    - Enabled HDF5 support for STIR by default (build C++ libraries for HDF5)
+    - Add option `BUILD_TESTING_JSON` (default OFF)
 - Updated versions:
    - JSON: 3.9.1
    - SWIG: 4.0.2
-   - Gadgetron: master
-   - ACE: 6.5.9
+   - STIR: 4.1.1
+   - SIRF: 3.0.0
+   - CIL: 21.1.0
+   - CCPi-Regularisation toolkit: 20.09
+- Continuous Integration testing:
+    - Add GitHub actions and removed most Travis runs
+    - Switched Travis ctest from --verbose to --output-on-failure and added travis_wait of 20 minutes to keep it from timing-out if some tests take longer than 10.
 
 ## v2.2.0
 - Updated to reflect change from CCPPETMR to CCPSyneRBI.

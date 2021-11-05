@@ -6,11 +6,15 @@ services:
   environment:
    # mainUser: ${USER:-sirfuser}
    mainUser: sirfuser
-   GROUP_ID: ${GROUPS:-1000}
-   USER_ID: ${UID:-1000}
+   GROUP_ID: ${GROUP_ID:-1000}
+   USER_ID: ${USER_ID:-1000}
   build:
    context: .
    target: sirf
+   args:
+    SIRF_SB_URL: ${SIRF_SB_URL:-https://github.com/SyneRBI/SIRF-SuperBuild}
+    SIRF_SB_TAG: ${SIRF_SB_TAG:-master}
+    NUM_PARALLEL_BUILDS: ${NUM_PARALLEL_BUILDS:-2}
    cache_from:
     - synerbi/sirf:core
     - synerbi/sirf:latest

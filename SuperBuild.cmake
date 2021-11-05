@@ -2,7 +2,8 @@
 # Author: Benjamin A Thomas
 # Author: Edoardo Pasca
 # Author: Casper da Costa-Luis
-# Copyright 2017-2020 University College London
+# Author: Kris Thielemans
+# Copyright 2017-2021 University College London
 # Copyright 2017-2020 Science Technology Facilities Council
 #
 # This file is part of the CCP SyneRBI Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
@@ -260,19 +261,25 @@ if (BUILD_pet_rd_tools)
 endif()
 
 # ITK
-option(USE_ITK "Use ITK" OFF)
+option(USE_ITK "Use ITK" ON)
 if (USE_ITK)
   option(USE_SYSTEM_ITK "Build using an external version of ITK" OFF)
 endif()
 
 # If building STIR and CUDA present, offer to build NiftyPET
 if (USE_CUDA AND NOT USE_SYSTEM_STIR)
-  set(USE_NiftyPET ON CACHE BOOL "Build STIR with NiftyPET's projectors") # FORCE)
+  set(USE_NiftyPET OFF CACHE BOOL "Build STIR with NiftyPET's projectors") # FORCE)
   if (USE_NiftyPET)
     option(USE_SYSTEM_NiftyPET "Build using an external version of NiftyPET" OFF)
   endif()
 else()
   set(USE_NiftyPET OFF CACHE BOOL "Build STIR with NiftyPET's projectors" FORCE)
+endif()
+
+# parallelproj
+set(USE_parallelproj ON CACHE BOOL "Build STIR with parallelproj's projectors") # FORCE)
+if (USE_parallelproj)
+  option(USE_SYSTEM_parallelproj "Build using an external version of parallelproj" OFF)
 endif()
 
 ## set versions
@@ -307,10 +314,10 @@ if ("${PYTHON_STRATEGY}" STREQUAL "CONDA")
   set (BUILD_CIL OFF)
 endif()
 if (BUILD_CIL)
-  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES CCPi-Regularisation-Toolkit CCPi-Astra CCPi-Framework CCPi-FrameworkPlugins TomoPhantom)
+  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES CIL CIL-ASTRA CCPi-Regularisation-Toolkit TomoPhantom)
 endif()
 if (BUILD_CIL_LITE)
-  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES CCPi-Regularisation-Toolkit CCPi-Framework CCPi-FrameworkPlugins)
+  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES CIL CCPi-Regularisation-Toolkit)
 endif()
 
 if (BUILD_SIRF_Registration AND BUILD_SIRF)
@@ -394,11 +401,18 @@ export GADGETRON_HOME\n")
   set(ENV_GADGETRON_HOME_CSH "setenv GADGETRON_HOME ${SyneRBI_INSTALL}\n")
 endif()
 
-configure_file(env_ccppetmr.sh.in ${SyneRBI_INSTALL}/bin/env_ccpsynerbi.sh)
-configure_file(env_ccppetmr.csh.in ${SyneRBI_INSTALL}/bin/env_ccpsynerbi.csh)
+configure_file(env_sirf.sh.in ${SyneRBI_INSTALL}/bin/env_sirf.sh)
+configure_file(env_sirf.csh.in ${SyneRBI_INSTALL}/bin/env_sirf.csh)
 
-file(CREATE_LINK ${SyneRBI_INSTALL}/bin/env_ccpsynerbi.sh ${SyneRBI_INSTALL}/bin/env_ccppetmr.sh SYMBOLIC)
-file(CREATE_LINK ${SyneRBI_INSTALL}/bin/env_ccpsynerbi.csh ${SyneRBI_INSTALL}/bin/env_ccppetmr.csh SYMBOLIC)
+if (${CMAKE_VERSION} VERSION_LESS "3.14" OR WIN32)
+  # CREATE_LINK has been introduced in CMake 3.14
+  # we create a copy instead.
+  configure_file(env_sirf.sh.in ${SyneRBI_INSTALL}/bin/env_ccppetmr.sh)
+  configure_file(env_sirf.csh.in ${SyneRBI_INSTALL}/bin/env_ccppetmr.csh)
+else ()
+  file(CREATE_LINK ${SyneRBI_INSTALL}/bin/env_sirf.sh ${SyneRBI_INSTALL}/bin/env_ccppetmr.sh SYMBOLIC)
+  file(CREATE_LINK ${SyneRBI_INSTALL}/bin/env_sirf.csh ${SyneRBI_INSTALL}/bin/env_ccppetmr.csh SYMBOLIC)
+endif()
 
 # add tests
 enable_testing()

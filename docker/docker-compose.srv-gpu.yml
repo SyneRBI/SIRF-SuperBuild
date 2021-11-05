@@ -5,6 +5,9 @@ services:
   image: synerbi/sirf:service-gpu
   build:
    target: service
+   args:
+    BASE_IMAGE: nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04
+    EXTRA_BUILD_FLAGS: "-DBUILD_CIL=ON"
    cache_from:
     - synerbi/sirf:core-gpu
     - synerbi/sirf:service-gpu

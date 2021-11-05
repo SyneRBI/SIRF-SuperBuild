@@ -53,7 +53,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   option(STIR_DISABLE_HDF5 "Disable STIR use of HDF5 libraries (and hence GE Raw Data support)" OFF)
   option(STIR_ENABLE_EXPERIMENTAL "Enable STIR experimental code" OFF)
 
-  mark_as_advanced(BUILD_STIR_EXECUTABLES BUILD_STIR_SWIG_PYTHON STIR_DISABLE_CERN_ROOT)
+  mark_as_advanced(STIR_BUILD_EXECUTABLES STIR_BUILD_SWIG_PYTHON STIR_DISABLE_CERN_ROOT)
   mark_as_advanced(STIR_DISABLE_LLN_MATRIX STIR_ENABLE_EXPERIMENTAL)
 
   if(${STIR_BUILD_SWIG_PYTHON} AND NOT "${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
@@ -65,11 +65,14 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   if (USE_ITK)
     list(APPEND ${proj}_DEPENDENCIES "ITK")
   endif()
-  if (BUILD_STIR_SWIG_PYTHON)
+  if (STIR_BUILD_SWIG_PYTHON)
     list(APPEND ${proj}_DEPENDENCIES "SWIG")
   endif()
   if (USE_NiftyPET)
     list(APPEND ${proj}_DEPENDENCIES "NiftyPET")
+  endif()
+  if (USE_parallelproj)
+    list(APPEND ${proj}_DEPENDENCIES "parallelproj")
   endif()
   option(STIR_DISABLE_JSON "Disable JSON support in ${proj}" OFF)
   if (NOT STIR_DISABLE_JSON)
@@ -138,7 +141,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
        ${STIR_CMAKE_ARGS}
        ${Boost_CMAKE_ARGS}
        ${HDF5_CMAKE_ARGS}
-       ${${proj}_EXTRA_CMAKE_ARGS_LIST}
+       ${${proj}_EXTRA_CMAKE_ARGS}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )

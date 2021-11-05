@@ -24,6 +24,10 @@ set(proj SIRF)
 
 # Set dependency list
 set(${proj}_DEPENDENCIES "Boost;HDF5;ISMRMRD;FFTW3;SWIG")
+
+if (${BUILD_Gadgetron})
+    set(${proj}_DEPENDENCIES "${${proj}_DEPENDENCIES};Gadgetron")
+endif()
 if (${BUILD_NIFTYREG})
   set(${proj}_DEPENDENCIES "${${proj}_DEPENDENCIES};NIFTYREG")
 endif()
@@ -101,7 +105,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DOPENMP_INCLUDES:PATH=${OPENMP_INCLUDES}
       -DOPENMP_LIBRARIES:PATH=${OPENMP_LIBRARIES}
 		  ${extra_args}
-      ${${proj}_EXTRA_CMAKE_ARGS_LIST}
+      -DGadgetron_USE_CUDA=${Gadgetron_USE_CUDA}
+      ${${proj}_EXTRA_CMAKE_ARGS}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )

@@ -1,3 +1,9 @@
+branches:
+  only:
+  - master
+  # version
+  - /^v\d.*/
+
 # Note: with `language: cpp`, `cache: ccache` works
 # but `cache: pip` and `python:` is ignored
 os:
@@ -8,7 +14,6 @@ cache:  # cache C/C++/pip (shared between builds)
 - ccache
 - pip
 stages:
-- test
 - docker-core
 - name: docker
   if: NOT type = pull_request
@@ -27,14 +32,11 @@ addons:
   packages: &addons_apt_packages
   - git-core
   - build-essential
-  - g++-6
   - g++-7
   - libboost-all-dev
   - libhdf5-serial-dev
   - libfftw3-dev
-  - python-dev
   - python3-dev
-  - python-tk
   - python3-tk
   - libopenblas-dev
   - libatlas-base-dev
@@ -74,95 +76,14 @@ env:
  - MAKEFLAGS="-j 2"  # too many threads may crash
 jobs:
  include:
- # linux g{cc,++}-{6,7} py{2,3}
- # legacy linux
- - os: linux
-   stage: test
-   dist: xenial  # Ubuntu 16.04 LTS
-   addons:
-    apt:
-     sources: *addons_apt_sources
-     packages:
-      - *addons_apt_packages
-      - g++-6
-   python: 3.6
-   name: py36 gcc6 +xenial -boost +fftw3 +hdf5 +ace +cil
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
-
- # trusty disabled
- # This fails since Feb 2020 due to Python3 being 3.4.3, even though we ask for more recent.
  #- os: linux
- #  dist: trusty  # Ubuntu 14.04 LTS
- #  addons:
- #   apt:
- #    sources: *addons_apt_sources
- #    packages:
- #     - *addons_apt_packages
- #     - g++-6
- #     - realpath  # building ACE on trusty
  #  python: 3.6
- #  name: py36 gcc6 +trusty -boost +fftw3 +hdf5 +ace
- #  env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=OFF" MATRIX_EVAL="CC=gcc-6 CXX=g++-6" PYMVER=3
-
-# current linux
- - os: linux
-   python: 3.6
-   name: py36 -boost +fftw3 +hdf5 +ace +cil
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON" PYMVER=3
- - os: linux
-   python: 2.7
-   name: py27 -boost +fftw3 +hdf5 +ace +cil
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL=ON" PYMVER=2
- - os: linux
-   python: 2.7
-   name: py27 -boost +fftw3 +hdf5 +ace +cil_lite
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL_LITE=ON" PYMVER=2
- - os: linux
-   python: 3.6
-   name: py36 -boost +fftw3 +hdf5 +ace +cil_lite
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_SYSTEM_ACE=ON -DBUILD_CIL_LITE=ON" PYMVER=3
- - os: linux
-   python: 2.7
-   name: py27 -boost +fftw3 +hdf5 +siemens_to_ismrmrd +swig +ace
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_ACE=ON" PYMVER=2
- - os: linux
-   python: 3.6
-   name: py36 +DEVEL -boost -hdf5 -fftw3 +ace +siemens_to_ismrmrd
-   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_ACE=ON -DBUILD_siemens_to_ismrmrd=ON" PYMVER=3
- - os: linux
-   python: 2.7
-   name: py27 +DEVEL -boost -fftw3 -hdf5 -swig +ace
-   env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_SWIG=OFF" PYMVER=2
- # osx disabled due to https://github.com/SyneRBI/SIRF-SuperBuild/issues/450
- #- os: osx
- #  osx_image: xcode11.2
- #  python: 3
- #  name: py3 +osx +boost -hdf5 -swig
- #  env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" PYMVER=3
- #- os: osx
- #  osx_image: xcode11.2
+ #  name: py36 +DEVEL -boost -hdf5 -fftw3 +ace +siemens_to_ismrmrd +itk +cil
+ #  env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_ACE=ON -DBUILD_si#emens_to_ismrmrd=ON  -DBUILD_CIL=ON -DUSE_ITK=OFF" PYMVER=3
+ #- os: linux
  #  python: 3.6
- #  name: py36 +osx +boost +fftw3 -hdf5 -swig
- #  env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=OFF" PYMVER=3
- #- os: osx
- #  osx_image: xcode11.2
- #  python: 3
- #  name: py3 +osx +DEVEL +boost -hdf5 +swig
- #  env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=3
- #- os: osx
- #  osx_image: xcode11.2
- #  python: 3
- #  name: py3 +osx +DEVEL +boost -fftw3 -hdf5 +swig
- #  env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=3
- - os: linux
-   python: 3.6
-   name: py36 +boost +itk +fftw3 +hdf5
-   env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON" PYMVER=3
- #- os: osx
- #  osx_image: xcode11.2
- #  python: 3
- #  name: py3 +osx +boost +itk -hdf5 +swig
- #  env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_SWIG=ON" PYMVER=3
+ #  name: py36 +boost +itk +fftw3 +hdf5 +cil_lite
+ #  env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON  -DBUILD_CIL_LITE=ON" PYMVER=3
 
  # docker
  - os: linux
@@ -192,8 +113,8 @@ jobs:
    - sed -i '/runtime/d' docker/docker-compose.srv-gpu.yml
    install: &docker_install
    - cd docker
-   - if [[ -z "$GROUPS" ]]; then export GROUPS=$(id -g); fi
-   - if [[ -z "$UID" ]]; then export UID=$(id -u); fi
+   - if [[ -z "$GROUP_ID" ]]; then export GROUP_ID=$(id -g); fi
+   - if [[ -z "$USER_ID" ]]; then export USER_ID=$(id -u); fi
    - export DCC="docker-compose -p "travis_${TRAVIS_JOB_NUMBER/./_}" -f $PWD/docker-compose.yml"
    - if [[ "$DOCKER_BUILD" == *"DEVEL"* ]]; then export DCC="$DCC -f $PWD/docker-compose.devel.yml"; fi
    - if [[ "$DOCKER_BUILD" == *"SERVICE"* ]]; then export DCC="$DCC -f $PWD/docker-compose.srv.yml"; fi
@@ -208,7 +129,6 @@ jobs:
    # rebuild base image (using above docker cache)
    - |
       if [[ "$DOCKER_BUILD" == *"CORE"* ]]; then ( set -ev
-        # rm .dockerignore  # TODO: remove this line
         $DCC build --pull core
       ); else ( set -ev
         # rebuild sirf image (with travis' ccache)
@@ -220,14 +140,13 @@ jobs:
           sudo chown -R $USER:$(id -g) ~/.ccache
           mv ~/.ccache devel/
         fi
-        rm .dockerignore  # TODO: remove this line
         # don't count the extra clone we're about to do
         # TODO: Do we need this? Is docker a distinct cloner from travis?
         # cloners_count_decrement
         $DCC build sirf
         # extract updated ccache
         # sudo rm -rf devel/.ccache/*
-        $DCC run --rm sirf /bin/bash -c 'sudo rm -rf /devel/.ccache/* && sudo cp -a /opt/ccache/* /devel/.ccache/'
+        $DCC run --rm sirf /bin/bash -c 'rm -rf /devel/.ccache/* && cp -a /opt/ccache/* /devel/.ccache/'
         # replace travis' ccache with the built images's
         mv devel/.ccache ~
       ); fi
@@ -235,8 +154,10 @@ jobs:
    - |
       # run tests within the container
       # TODO: also add CORE tests!
-      if [[ "$DOCKER_BUILD" != *"CORE"* ]]; then
-        $DCC run --rm sirf /bin/bash --login -c '/devel/test.sh 1'
+      # TODO: GPU tests are failing even with nvidia run-time https://github.com/SyneRBI/SIRF-SuperBuild/issues/553
+      if [[ "$DOCKER_BUILD" != *"CORE"* && "$DOCKER_BUILD" != *"GPU"* ]]; then
+        # Need to run as jovyan to be able to write to build directory (needed by ctest)
+        $DCC run --rm -u jovyan --entrypoint /bin/bash sirf --login -c /devel/test.sh 1
       fi
    after_success: &docker_after_success
    - |
@@ -286,6 +207,7 @@ jobs:
           dpush core-gpu core-gpu
           ;;
         LATEST)
+          dpush latest latest
           ;;
         DEVEL)
           dpush devel devel
@@ -294,8 +216,10 @@ jobs:
           dpush service devel-service
           ;;
         SERVICE)
+          dpush service service
           ;;
         SERVICE_GPU)
+          dpush service-gpu service-gpu
           ;;
         *)
           exit 1
@@ -342,16 +266,16 @@ jobs:
    install: *docker_install
    script: *docker_script
    after_success: *docker_after_success
- # - os: linux
- #   name: docker +DEVEL +SERVICE
- #   env: DOCKER_BUILD=DEVEL_SERVICE
- #   services:
- #   - docker
- #   addons: *docker_addons
- #   before_install: *docker_before_install
- #   install: *docker_install
- #   script: *docker_script
- #   after_success: *docker_after_success
+ - os: linux
+   name: docker +DEVEL +SERVICE
+   env: DOCKER_BUILD=DEVEL_SERVICE
+   services:
+   - docker
+   addons: *docker_addons
+   before_install: *docker_before_install
+   install: *docker_install
+   script: *docker_script
+   after_success: *docker_after_success
  - os: linux
    name: docker +SERVICE +GPU
    env: DOCKER_BUILD=SERVICE_GPU
@@ -450,10 +374,8 @@ before_install:
 - $PY_EXE -m pip freeze
 # ccache compiler override
 - ln -s "$(which ccache)" g++
-- ln -s "$(which ccache)" g++-6
 - ln -s "$(which ccache)" g++-7
 - ln -s "$(which ccache)" gcc
-- ln -s "$(which ccache)" gcc-6
 - ln -s "$(which ccache)" gcc-7
 - export PATH="$PWD:$PATH"
 - popd
@@ -479,7 +401,7 @@ script:
 # print for debugging
 - cat builds/SIRF/build/CMakeCache.txt
 - |
-   ctest --output-on-failure; test_fail=$?
+   travis_wait 20 ctest --output-on-failure; test_fail=$?
    # echo "----------- Killing gadgetron server"
    # killall gadgetron
    if [[ $test_fail -ne 0 ]]; then

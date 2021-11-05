@@ -8,7 +8,7 @@ PYTHON="${2:-miniconda}"
 case "$PYTHON" in
 miniconda)
   # miniconda
-  curl https://repo.anaconda.com/miniconda/Miniconda2-latest-Linux-x86_64.sh > miniconda.sh
+  curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh > miniconda.sh
   echo -e "\nyes\n${INSTALL_DIR}" | bash miniconda.sh
   rm miniconda.sh
   source "$INSTALL_DIR"/bin/activate
@@ -38,6 +38,9 @@ if [ -f requirements.txt ]; then
 fi
 
 if [ "$PYTHON" = "miniconda" ]; then
+  if [ -f requirements_conda_forge.txt ]; then
+    conda install --yes -c conda-forge --file requirements_conda_forge.txt
+  fi
   conda update -c conda-forge -y --all
   conda clean -y --all
 fi

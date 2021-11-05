@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
-pushd "$(dirname $0)"
+cd "$(dirname $0)"
+export GROUP_ID=$(id -g)
+export USER_ID=$(id -u)
 docker-compose -f docker-compose.yml -f docker-compose.nix.yml "$@"
-popd

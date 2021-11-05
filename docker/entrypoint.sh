@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# This script is expected to be run as root
+# at container start-up time
+
 # Add local user
 # Either use runtime USER_ID:GROUP_ID or fallback 1000:1000
 
@@ -14,12 +17,13 @@ if [ -d $HOME ]; then
   exec gosu $mainUser "$@"
 fi
 
-cd /
-# allow docker exec into already started container
-[ -d $OLD_HOME ] && mv $OLD_HOME $HOME
+# We need to copy files from /home-away to new home and create the user
+
+# copy files
+[ -d $OLD_HOME ] && cp -r $OLD_HOME $HOME
 cd $HOME
 
-echo "$UID:$GID Creating and switching to: $mainUser:$USER_ID:$GROUP_ID"
+echo "Creating $mainUser:$USER_ID:$GROUP_ID"
 # groupadd -g $GROUP_ID -o -f $mainUser
 addgroup --quiet --system --gid "$GROUP_ID" "$mainUser"
 # useradd --shell /bin/bash -u $USER_ID -o -c "" -M -d $HOME \
@@ -27,15 +31,17 @@ addgroup --quiet --system --gid "$GROUP_ID" "$mainUser"
 #   -p $(echo somepassword | openssl passwd -1 -stdin)
 adduser --quiet --system --shell /bin/bash \
   --no-create-home --home /home/"$mainUser" \
-  --ingroup "$mainUser" --uid "$USER_ID" "$mainUser"
+  --gid "$GROUP_ID" --uid "$USER_ID" "$mainUser"
+addgroup "$mainUser" users
 
 echo "$mainUser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"$mainUser"
 
-for i in /opt/* "$HOME"; do
+for i in "$HOME"; do
   if [ -d "$i" ]; then
-    chown -R $mainUser "$i"
-    chgrp -R $mainUser "$i"
+    echo "Updating file ownership for $i"
+    chown -R "$USER_ID":"$GROUP_ID" "$i"
   fi
 done
 
+echo "Switching to $mainUser and executing $@"
 exec gosu $mainUser "$@"

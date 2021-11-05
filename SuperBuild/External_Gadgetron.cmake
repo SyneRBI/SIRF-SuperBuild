@@ -102,6 +102,15 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set(${proj}_ENABLE_OPENMP OFF)
   endif()
 
+  # require to have access to Python for patching
+  if (NOT PYTHON_EXECUTABLE)
+    if (${CMAKE_VERSION} VERSION_LESS "3.12")
+      find_package(PythonInterp REQUIRED)
+    else()
+      find_package(Python COMPONENTS Interpreter REQUIRED)
+      set (PYTHON_EXECUTABLE ${Python_EXECUTABLE})
+    endif()
+  endif()
 
   # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
   SetGitTagAndRepo("${proj}")
@@ -149,6 +158,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CC=${CC_9} CXX=${CXX_9} ${CMAKE_COMMAND} ${${proj}_SOURCE_DIR} ${${proj}_CMAKE_ARGS}
     BUILD_COMMAND ${CMAKE_COMMAND} -E env CPATH=$ENV{CPATH}:${SUPERBUILD_INSTALL_DIR}/include 
       ${CMAKE_COMMAND} --build .
+    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install 
+    # COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/patches/Gadgetron_include-patch.py ${SUPERBUILD_INSTALL_DIR}/include/gadgetron/hoNFFT.h ${SUPERBUILD_INSTALL_DIR}/include/gadgetron/hoNFFT.h
+    COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/patches/copy_file_if_not_exists.py ${SUPERBUILD_INSTALL_DIR}/share/gadgetron/config/gadgetron.xml.example ${SUPERBUILD_INSTALL_DIR}/share/gadgetron/config/gadgetron.xml
   )
 
     set(Gadgetron_ROOT        ${Gadgetron_SOURCE_DIR})

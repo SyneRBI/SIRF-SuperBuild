@@ -1,11 +1,6 @@
 #========================================================================
-# Author: Benjamin A Thomas
-# Author: Kris Thielemans
 # Author: Edoardo Pasca
-# Author: Casper da Costa-Luis
-# Copyright 2017, 2020 University College London
-# Copyright 2017, 2020 STFC
-# Copyright 2019, 2020 King's College London
+# Copyright 2020 UKRI STFC
 #
 # This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -59,7 +54,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         ${PYTHONLIBS_CMAKE_ARGS}
     	-DPYTHON_DEST_DIR:PATH=${PYTHON_DEST_DIR}
     	-DPYTHON_STRATEGY=${PYTHON_STRATEGY}
-      ${${proj}_EXTRA_CMAKE_ARGS_LIST}
+      ${${proj}_EXTRA_CMAKE_ARGS}
     # TODO this relies on using "make", but we could be build with something else
     #INSTALL_COMMAND make TomoPhantom
     DEPENDS
