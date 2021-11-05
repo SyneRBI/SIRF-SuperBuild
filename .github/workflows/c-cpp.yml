@@ -50,8 +50,8 @@ jobs:
           cd build;
           export CC="gcc-8";
           export CXX="g++-8";
-          export CC_9=$(gcc-9);
-          export CXX=$(g++-9);
+          export CC_9=$(which gcc-9);
+          export CXX=$(which g++-9);
           source ~/virtualenv/bin/activate;
           cmake -S ${GITHUB_WORKSPACE} ${BUILD_FLAGS} ${EXTRA_BUILD_FLAGS} ${DEVEL_BUILD};
     - name: build
