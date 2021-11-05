@@ -23,5 +23,15 @@ apt-get install -yq --no-install-recommends \
   liblapack-dev          \
   liblapacke-dev         \
   libplplot-dev          \
-  libdcmtk-dev
+  libdcmtk-dev           \
+
 apt-get clean
+
+# install GCC9 required by Gadgetron
+apt-get update -y && \
+apt-get upgrade -y && \
+apt-get dist-upgrade -y && \
+apt-get install build-essential software-properties-common -y && \
+add-apt-repository ppa:ubuntu-toolchain-r/test -y && \
+apt-get update -y && \
+apt-get install gcc-9 g++-9 -y
