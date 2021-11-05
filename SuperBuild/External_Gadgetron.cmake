@@ -33,11 +33,6 @@ set(${proj}_DEPENDENCIES "ACE;Boost;HDF5;ISMRMRD;FFTW3double;Armadillo;GTest;ran
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 
-if (NOT HDF5_CMAKE_ARGS)
-  message( FATAL_ERROR "HDF5_CMAKE_ARGS not found: ${HDF5_CMAKE_ARGS}")
-else()
-  message( STATUS "HDF5_CMAKE_ARGS found: ${HDF5_CMAKE_ARGS}")
-endif()
 
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
@@ -88,9 +83,14 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     "Build Gadgetron MATLAB gadgets (not required for SIRF)" ${default_Gadgetron_BUILD_MATLAB_SUPPORT})
   option(Gadgetron_USE_MKL "Instruct Gadgetron to build linking to the MKL. The user must be able to install MKL on his own." OFF)
 
-  option(${proj}_USE_CUDA "Enable ${proj} CUDA (if cuda libraries are present and SDK is compatible with GCC9)" ${USE_CUDA})
-  if (${CUDA_VERSION} VERSION_LESS "11")
-    message(WARNING "Your CUDA Tookit version ${CUDA_VERSION} is incompatible with GCC9, so we'll disable Gadgetron CUDA support.")
+  
+  if (USE_CUDA)
+    option(${proj}_USE_CUDA "Enable ${proj} CUDA (if cuda libraries are present and SDK is compatible with GCC9)" ${USE_CUDA})
+    if (${CUDA_VERSION} VERSION_LESS "11")
+      message(WARNING "Your CUDA Tookit version ${CUDA_VERSION} is incompatible with GCC9, so we'll disable Gadgetron CUDA support.")
+      set (${proj}_USE_CUDA OFF)
+    endif()
+  else()
     set (${proj}_USE_CUDA OFF)
   endif()
 
@@ -125,7 +125,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       ${PYTHONLIBS_CMAKE_ARGS}
       -DGTEST_ROOT:PATH=${GTEST_ROOT}
       ${HDF5_CMAKE_ARGS}
-      -DHDF5_FOUND:BOOL=ON
       ${FFTW3_CMAKE_ARGS}
       -DISMRMRD_DIR:PATH=${ISMRMRD_DIR}
       -DUSE_MKL:BOOL=${${proj}_USE_MKL}
