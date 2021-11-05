@@ -30,15 +30,15 @@ if (APPLE) # really should be checking for CLang
     set(Boost_MD5 f4096c4583947b0eb103c8539f1623a3)
 else()
      # Use version in Ubuntu 18.04
-     set(Boost_VERSION 1.65.1)
+     set(Boost_VERSION 1.72.0)
      if (BUILD_GADGETRON)
-       set(Boost_REQUIRED_VERSION 1.65.1)
+       set(Boost_REQUIRED_VERSION 1.71.0)
      else()
        # Ubutnu 16.04 version should be fine
        set(Boost_REQUIRED_VERSION 1.58.0)
      endif()
-     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_65_1.zip)
-     set(Boost_MD5 9824a7a3e25c9d4fdf2def07bce8651c)
+     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_72_0.zip)
+     set(Boost_MD5 93cf8511f2e9b4456e5178cb07fc829d)
 endif()
 
 ## Armadillo
@@ -118,7 +118,7 @@ endif()
 
 ## Gadgetron
 set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
-set(DEFAULT_Gadgetron_TAG 7d7a31ce187c24f237c62a55b70a61474f9b4039)
+set(DEFAULT_Gadgetron_TAG origin/master)
 
 ## ASTRA
 set(DEFAULT_astra-toolbox_URL https://github.com/astra-toolbox/astra-toolbox )
