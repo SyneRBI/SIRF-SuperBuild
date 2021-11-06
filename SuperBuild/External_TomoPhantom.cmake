@@ -52,8 +52,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     	-DCONDA_BUILD=OFF
     	-DBUILD_PYTHON_WRAPPER=ON
         ${PYTHONLIBS_CMAKE_ARGS}
-    	-DPYTHON_DEST_DIR:PATH=${PYTHON_DEST_DIR}
-    	-DPYTHON_STRATEGY=${PYTHON_STRATEGY}
+    	-DPYTHON_DEST_DIR:PATH=${PYTHON_DEST}
       ${${proj}_EXTRA_CMAKE_ARGS}
     # TODO this relies on using "make", but we could be build with something else
     #INSTALL_COMMAND make TomoPhantom
