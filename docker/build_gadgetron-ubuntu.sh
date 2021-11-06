@@ -6,10 +6,10 @@ apt-get update -qq
 apt-get install -yq --no-install-recommends \
   libhdf5-serial-dev     \
   libboost-dev libboost-chrono-dev \
-        libboost-filesystem-dev libboost-thread-dev \
-        libboost-date-time-dev libboost-regex-dev \
-        libboost-program-options-dev libboost-atomic-dev \
-        libboost-test-dev libboost-timer-dev \
+  libboost-filesystem-dev libboost-thread-dev \
+  libboost-date-time-dev libboost-regex-dev \
+  libboost-program-options-dev libboost-atomic-dev \
+  libboost-test-dev libboost-timer-dev \
   libfftw3-dev           \
   h5utils                \
   jq                     \
@@ -25,13 +25,10 @@ apt-get install -yq --no-install-recommends \
   libplplot-dev          \
   libdcmtk-dev           \
 
-apt-get clean
-
 # install GCC9 required by Gadgetron
-apt-get update -y && \
-apt-get upgrade -y && \
-apt-get dist-upgrade -y && \
-apt-get install build-essential software-properties-common -y && \
+apt-get install software-properties-common -y && \
 add-apt-repository ppa:ubuntu-toolchain-r/test -y && \
 apt-get update -y && \
 apt-get install gcc-9 g++-9 -y
+
+apt-get clean
