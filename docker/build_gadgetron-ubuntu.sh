@@ -31,4 +31,11 @@ add-apt-repository ppa:ubuntu-toolchain-r/test -y && \
 apt-get update -y && \
 apt-get install gcc-9 g++-9 -y
 
+apt-get install -y libgflags-dev\
+  libsnappy-dev \
+  zlib1g-dev \
+  libbz2-dev \
+  liblz4-dev \
+  libzstd-dev
+
 apt-get clean
