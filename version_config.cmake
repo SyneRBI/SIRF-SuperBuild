@@ -92,7 +92,7 @@ option(DEVEL_BUILD "Use current versions of major packages" OFF)
 
 ## Googletest
 set(GTest_URL https://github.com/google/googletest )
-set(GTest_TAG release-1.8.0)
+set(GTest_TAG release-1.11.0)
 
 ## glog
 set(DEFAULT_glog_URL https://github.com/google/glog )
