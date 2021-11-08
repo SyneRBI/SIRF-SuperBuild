@@ -147,7 +147,7 @@ set(DEFAULT_SPM_URL https://github.com/spm/SPM12.git )
 set(DEFAULT_SPM_TAG r7771)
 
 set(DEFAULT_JSON_URL https://github.com/nlohmann/json.git )
-set(DEFAULT_JSON_TAG v3.9.1)
+set(DEFAULT_JSON_TAG v3.10.4)
 
 # CCPi CIL
 set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
