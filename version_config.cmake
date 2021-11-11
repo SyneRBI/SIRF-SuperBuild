@@ -39,7 +39,7 @@ else()
        set(Boost_REQUIRED_VERSION 1.58.0)
      endif()
      set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_77_0.zip)
-     set(Boost_MD5 09dc857466718f27237144c6f2432d86)
+     set(Boost_MD5 82b73eb9c84deb1af15535c210030f91)
 endif()
 
 ## Armadillo
