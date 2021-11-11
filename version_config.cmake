@@ -30,15 +30,16 @@ if (APPLE) # really should be checking for CLang
     set(Boost_MD5 f4096c4583947b0eb103c8539f1623a3)
 else()
      # Use version in Ubuntu 18.04
-     set(Boost_VERSION 1.72.0)
+     set(Boost_VERSION 1.77.0)
      if (BUILD_GADGETRON)
+     # https://github.com/gadgetron/gadgetron/blob/12ffc43debb9bad2e170713006d29dea78d966bf/CMakeLists.txt#L205-L209
        set(Boost_REQUIRED_VERSION 1.71.0)
      else()
        # Ubutnu 16.04 version should be fine
        set(Boost_REQUIRED_VERSION 1.58.0)
      endif()
-     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_72_0.zip)
-     set(Boost_MD5 93cf8511f2e9b4456e5178cb07fc829d)
+     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_77_0.zip)
+     set(Boost_MD5 09dc857466718f27237144c6f2432d86)
 endif()
 
 ## Armadillo
