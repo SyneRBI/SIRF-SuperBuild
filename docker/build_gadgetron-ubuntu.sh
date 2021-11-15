@@ -25,7 +25,6 @@ apt-get install -yq --no-install-recommends \
   libplplot-dev          \
   libdcmtk-dev           \
   libpugixml-dev         \
-  libgflags2             \
   libgflags-dev
 
 # install GCC9 required by Gadgetron
