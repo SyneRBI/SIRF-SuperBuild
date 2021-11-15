@@ -28,7 +28,7 @@ if ((NOT CC_9) OR (NOT CXX_9))
   message(FATAL_ERROR "Please set the flag -DCC_9 and -DCXX_9 to point to the location of gcc-9 and g++-9")
 endif()
 # Set dependency list
-set(${proj}_DEPENDENCIES "ACE;Boost;HDF5;ISMRMRD;FFTW3double;Armadillo;GTest;range-v3;JSON")
+set(${proj}_DEPENDENCIES "ACE;Boost;HDF5;ISMRMRD;FFTW3double;Armadillo;GTest;range-v3;JSON;RocksDB")
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
@@ -130,7 +130,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DUSE_MKL:BOOL=${${proj}_USE_MKL}
       -DUSE_CUDA:BOOL=${${proj}_USE_CUDA}
       -DUSE_OPENMP:BOOL=${${proj}_ENABLE_OPENMP}
-      -DBUILD_TESTING:BOOL=ON
+      -DBUILD_TESTING:BOOL=OFF
       )
 
   if (CBLAS_INCLUDE_DIR)

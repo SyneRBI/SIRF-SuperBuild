@@ -166,6 +166,10 @@ set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v20.09")
 set(DEFAULT_range-v3_URL https://github.com/ericniebler/range-v3.git )
 set(DEFAULT_range-v3_TAG 0.11.0)
 
+set(DEFAULT_RocksDB_URL https://github.com/facebook/rocksdb.git )
+set(DEFAULT_RocksDB_TAG v6.26.0)
+
+
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
 
@@ -295,6 +299,8 @@ set(JSON_TAG ${DEFAULT_JSON_TAG} CACHE STRING ON)
 set(range-v3_URL ${DEFAULT_range-v3_URL} CACHE STRING ON)
 set(range-v3_TAG ${DEFAULT_range-v3_TAG} CACHE STRING ON)
 
+set(RocksDB_URL ${DEFAULT_RocksDB_URL} CACHE STRING ON)
+set(RocksDB_TAG ${DEFAULT_RocksDB_TAG} CACHE STRING ON)
 
 mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   Gadgetron_URL Gadgetron_TAG
@@ -316,5 +322,6 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   astra-toolbox_URL astra-toolbox_TAG
   astra-python-wrapper_URL astra-python-wrapper_TAG
   ACE_URL ACE_TAG
+  RocksDB_URL RocksDB_TAG
   
 )
