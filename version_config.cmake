@@ -30,7 +30,7 @@ if (APPLE) # really should be checking for CLang
     set(Boost_MD5 f4096c4583947b0eb103c8539f1623a3)
 else()
      # Use version in Ubuntu 18.04
-     set(Boost_VERSION 1.77.0)
+     set(Boost_VERSION 1.78.0)
      if (BUILD_GADGETRON)
      # https://github.com/gadgetron/gadgetron/blob/12ffc43debb9bad2e170713006d29dea78d966bf/CMakeLists.txt#L205-L209
        set(Boost_REQUIRED_VERSION 1.71.0)
@@ -38,8 +38,12 @@ else()
        # Ubutnu 16.04 version should be fine
        set(Boost_REQUIRED_VERSION 1.58.0)
      endif()
-     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_77_0.zip)
-     set(Boost_MD5 82b73eb9c84deb1af15535c210030f91)
+     # set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_71_0.zip)
+     # https://github.com/boostorg/math/pull/676
+     # https://github.com/boostorg/math/commit/720536a08e4e33639869e1b7a99d9ec923409c0b
+     # seems the bugfix entered Boost 1.78.0 which is not yet released, but probably 1.71.0 is patched on Ubuntu
+     set (Boost_URL https://sourceforge.net/projects/boost/files/boost/1.78.0.beta1/boost_1_78_0_b1.zip)
+     set(Boost_MD5 40ad9e539f6f26fab0b3d314eb6c0290)
 endif()
 
 ## Armadillo
