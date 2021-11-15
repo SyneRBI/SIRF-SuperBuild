@@ -24,7 +24,9 @@ apt-get install -yq --no-install-recommends \
   liblapacke-dev         \
   libplplot-dev          \
   libdcmtk-dev           \
-  libpugixml-dev
+  libpugixml-dev         \
+  libgflags2             \
+  libgflags-dev
 
 # install GCC9 required by Gadgetron
 apt-get install software-properties-common -y && \
@@ -32,6 +34,6 @@ add-apt-repository ppa:ubuntu-toolchain-r/test -y && \
 apt-get update -y && \
 apt-get install gcc-9 g++-9 -y
 
-apt-get install -y librocksdb-dev
+# apt-get install -y librocksdb-dev
 
 apt-get clean
