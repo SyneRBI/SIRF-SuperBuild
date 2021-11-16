@@ -58,7 +58,7 @@ jobs:
           cd ${GITHUB_WORKSPACE}/build;
           source ~/virtualenv/bin/activate;
           cmake --build . -j 1 --target Gadgetron;
-          cmake --build . -j 2;
+          cmake --build . -j 1;
     - name: tests
       shell: bash
       run: 
