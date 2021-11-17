@@ -1,8 +1,17 @@
 # ChangeLog
 ## vx.x.x
-
+- Build Gadgetron master. Requires new packages libdcmtk-dev libpugixml-dev libgflags-dev. Added SuperBuild project dependency: range-v3;JSON;RocksDB
 - moved the VM repository to the `VirtualBox` subdirectory
 - fix usage of `proj_EXTRA_CMAKE_ARGS` facility (it was broken for all projects except ITK) [#616](https://github.com/SyneRBI/SIRF-SuperBuild/issues/616)
+- updated versions:
+  - Gadgetron: master
+  - Boost 1.78.0 beta 1
+  - RocksDB: 6.26.0
+  - GoogleTest: 1.11.0
+  - JSON: 3.10.4
+  - range-v3: 0.11.0
+  - ACE : ACE_version_6.5.9 
+  - siemens_to_ismrmrd: 8bb8b08f53ce73c2de9ba5f47f1532f96292d92b
 
 ## v3.1.1
 
