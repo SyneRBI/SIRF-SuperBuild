@@ -1,7 +1,7 @@
 #========================================================================
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
-# Copyright 2017, 2020 University College London
+# Copyright 2017, 2020, 2021 University College London
 #
 # This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -74,13 +74,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   )
 
   set(BOOST_ROOT        ${Boost_Install_Dir})
-  set(BOOST_INCLUDEDIR  ${Boost_Install_Dir}/include)
   set(BOOST_LIBRARY_DIR ${Boost_Install_Dir}/lib)
 
   set(Boost_CMAKE_ARGS
       -DBOOST_INCLUDEDIR:PATH=${BOOST_ROOT}/include/
       -DBOOST_LIBRARYDIR:PATH=${BOOST_LIBRARY_DIR}
       -DBOOST_ROOT:PATH=${BOOST_ROOT}
+      -DBoost_NO_SYSTEM_PATHS:BOOL=ON
   )
 
  else()
@@ -91,8 +91,15 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         # TODO might need to use Boost_LIBRARY_DIR_Debug for Debug builds
         set(Boost_CMAKE_ARGS ${Boost_CMAKE_ARGS} -DBOOST_LIBRARYDIR:PATH=${Boost_LIBRARY_DIR_RELEASE})
       endif()
+      # pass on any options specified by the caller
       if (BOOST_ROOT)
         set(Boost_CMAKE_ARGS ${Boost_CMAKE_ARGS} -DBOOST_ROOT:PATH=${BOOST_ROOT})
+      endif()
+      if (BOOSTROOT)
+        set(Boost_CMAKE_ARGS ${Boost_CMAKE_ARGS} -DBOOSTROOT:PATH=${BOOSTROOT})
+      endif()
+      if (Boost_DIR)
+        set(Boost_CMAKE_ARGS ${Boost_CMAKE_ARGS} -DBoost_DIR:PATH=${Boost_DIR})
       endif()
       if (WIN32)
         # need to tell boost to use dynamic libraries as otherwise it tends to compile as static, 
