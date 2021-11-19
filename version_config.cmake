@@ -157,6 +157,10 @@ set(DEFAULT_CIL-ASTRA_TAG "v21.2.0")
 set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
 set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v20.09")
 
+# CERN ROOT
+set(DEFAULT_ROOT_URL https://github.com/root-project/root)
+set(DEFAULT_ROOT_TAG "v6-24-06")
+
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
 
@@ -256,6 +260,9 @@ set(astra-python-wrapper_TAG ${DEFAULT_astra-toolbox_TAG} CACHE STRING ON)
 set(TomoPhantom_URL ${DEFAULT_TomoPhantom_URL} CACHE STRING ON)
 set(TomoPhantom_TAG ${DEFAULT_TomoPhantom_TAG} CACHE STRING ON)
 
+set(ROOT_URL ${DEFAULT_ROOT_URL} CACHE STRING ON)
+set(ROOT_TAG ${DEFAULT_ROOT_TAG} CACHE STRING ON)
+
 set(NIFTYREG_URL ${DEFAULT_NIFTYREG_URL} CACHE STRING ON)
 set(NIFTYREG_TAG ${DEFAULT_NIFTYREG_TAG} CACHE STRING ON)
 
@@ -296,6 +303,7 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   ITK_URL ITK_TAG
   SPM_URL SPM_TAG
   JSON_URL JSON_TAG
+  ROOT_URL ROOT_TAG
   astra-toolbox_URL astra-toolbox_TAG
   astra-python-wrapper_URL astra-python-wrapper_TAG
   ACE_URL ACE_TAG
