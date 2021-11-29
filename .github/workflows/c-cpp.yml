@@ -12,11 +12,24 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        # the agent machine operating systems
-        os: [ubuntu-latest, ubuntu-18.04]
-        DEVEL_BUILD: ["OFF", "ON"]
-        EXTRA_BUILD_FLAGS: ["-DUSE_ITK=ON -DBUILD_CIL=ON"]
-        CMAKE_BUILD_TYPE: ["Release"]
+        include:
+        - os: ubuntu-latest
+          DEVEL_BUILD: "OFF"
+          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON"
+          CMAKE_BUILD_TYPE: "Release"
+        - os: ubuntu-latest
+          DEVEL_BUILD: "ON"
+          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_ROOT:BOOL=ON"
+          CMAKE_BUILD_TYPE: "Release"
+        - os: ubuntu-18.04
+          DEVEL_BUILD: "OFF"
+          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON"
+          CMAKE_BUILD_TYPE: "Release"
+        - os: ubuntu-18.04
+          DEVEL_BUILD: "ON"
+          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON"
+          CMAKE_BUILD_TYPE: "Release"
+
         # let's run all of them, as opposed to aborting when one fails
       fail-fast: false
 
