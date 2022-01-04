@@ -5,7 +5,7 @@
 - fix usage of `proj_EXTRA_CMAKE_ARGS` facility (it was broken for all projects except ITK) [#616](https://github.com/SyneRBI/SIRF-SuperBuild/issues/616)
 - Boost: fix cases where the wrong version of boost could be found [#627](https://github.com/SyneRBI/SIRF-SuperBuild/issues/627)
 - updated versions:
-  - ITK: 5.2.1
+  - ITK: 5.2.1 However, we now build a smaller set of IO modules See SuperBuild/External_ITK.cmake)
 
 ## v3.1.1
 
