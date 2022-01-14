@@ -6,6 +6,7 @@
 - Boost: fix cases where the wrong version of boost could be found [#627](https://github.com/SyneRBI/SIRF-SuperBuild/issues/627)
 - updated versions:
   - ISMRMRD: 1.5.0
+  - ITK: 5.2.1 However, we now build a smaller set of IO modules See SuperBuild/External_ITK.cmake)
 
 ## v3.1.1
 
