@@ -10,6 +10,7 @@ LABEL \
   licence="MPLv2.0 (https://www.mozilla.org/en-GB/MPL/2.0/)"  \
   description="CCP SyneRBI Ubuntu"
 
+USER root
 ENV DEBIAN_FRONTEND noninteractive
 
 COPY raw-ubuntu.sh .
