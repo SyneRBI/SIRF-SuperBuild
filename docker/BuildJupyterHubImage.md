@@ -32,7 +32,15 @@ docker tag 9cbadae5917e paskino/jupyter:scipy-notebook-cuda11
 cd ../datascience-notebook
 docker build --build-arg BASE_CONTAINER=paskino/jupyter:scipy-notebook-cuda11 .
 
-# SCD cloud images
-# jupyter-datascience-notebook
+# Start building SIRF
 
+cd SIRF-SuperBuild/docker
+# I tagged the output of the previous step as 
+# paskino/jupyter   datascience-notebook-cuda11
+# AND (because this is how it is picked by the jupyterhub instance, 
+# so by updating the image paskino/sirfcil:service-gpu I can test that everything works)
+# paskino/sirfcil:service-gpu
+
+# build the core target
+docker build --build-arg BASE_IMAGE=paskino/sirfcil:service-gpu --target core .
 ```
