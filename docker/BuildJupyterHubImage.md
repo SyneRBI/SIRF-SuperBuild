@@ -31,9 +31,14 @@ docker tag 9cbadae5917e paskino/jupyter:scipy-notebook-cuda11
 # datascience-notebook
 cd ../datascience-notebook
 docker build --build-arg BASE_CONTAINER=paskino/jupyter:scipy-notebook-cuda11 .
+```
 
 # Start building SIRF
 
+
+
+```
+git clone git@github.com:SyneRBI/SIRF-SuperBuild.git
 cd SIRF-SuperBuild/docker
 # I tagged the output of the previous step as 
 # paskino/jupyter   datascience-notebook-cuda11
