@@ -100,16 +100,16 @@ set(DEFAULT_glog_TAG v0.3.5)
 
 ## ITK
 set(DEFAULT_ITK_URL https://github.com/InsightSoftwareConsortium/ITK.git)
-set(DEFAULT_ITK_TAG v4.13.1)
+set(DEFAULT_ITK_TAG v5.2.1)
 
 ## NIFTYREG
 set(DEFAULT_NIFTYREG_URL https://github.com/KCL-BMEIS/niftyreg.git )
-set(DEFAULT_NIFTYREG_TAG 99d584e2b8ea0bffe7e65e40c8dc818751782d92 )
+set(DEFAULT_NIFTYREG_TAG 8ad2f11507ddedb09ed74a9bd97377b70532ee75)
 set(DEFAULT_NIFTYREG_REQUIRED_VERSION 1.5.68)
 
 ## ISMRMRD
 set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
-set(DEFAULT_ISMRMRD_TAG v1.4.2.1)
+set(DEFAULT_ISMRMRD_TAG v1.5.0)
 #if (WIN32)
 #  set(DEFAULT_ISMRMRD_URL https://github.com/SyneRBI/ismrmrd )
 #  set(DEFAULT_ISMRMRD_TAG program_options_fix)

@@ -9,7 +9,7 @@ apt-get install -yq --no-install-recommends \
         libboost-filesystem-dev libboost-thread-dev \
         libboost-date-time-dev libboost-regex-dev \
         libboost-program-options-dev libboost-atomic-dev \
-        libboost-test-dev libboost-timer-dev \
+        libboost-test-dev libboost-timer-dev libboost-random-dev\
   libfftw3-dev           \
   h5utils                \
   jq                     \

@@ -24,7 +24,7 @@ if(WIN32)
 else()
   message(STATUS "Build dir is : ${BUILD_DIR}")
   execute_process(COMMAND ./bootstrap.sh --prefix=${BOOST_INSTALL_DIR}
-    --with-libraries=system,filesystem,thread,program_options,chrono,date_time,atomic,timer,regex,test
+    --with-libraries=system,filesystem,thread,program_options,chrono,date_time,atomic,timer,regex,test,random
     #--with-libraries=system,thread,program_options,log,math...
     #--without-libraries=atomic...
 

@@ -37,7 +37,8 @@ by the SuperBuild, [see below for more info for your operating system](#os-speci
     7. [Building with Intel Math Kernel Library](#Building-with-Intel-Math-Kernel-Library)
     8. [Building CCPi CIL](#Building-CCPi-CIL)
     9. [Passing CMAKE arguments to specific projects](#Passing-CMAKE-arguments-to-specific-projects)
-
+   10. [Building with CUDA](#Building-with-CUDA)
+5. [Notes](#Notes)
 
 ## Dependencies
 
@@ -269,6 +270,30 @@ For this reason, we advise new SIRF users to compile with all the `USE_SYSTEM_*`
 By default, Python and MATLAB executables and libraries are installed under `CMAKE_INSTALL_PREFIX/python` and `CMAKE_INSTALL_PREFIX/matlab`, respectively. If you wish for them to be installed elsewhere, you can simply cut and paste these folders to their desired locations.
 
 In this case, you would then need to ensure that `PYTHONPATH` and `MATLABPATH` are updated accordingly. This is because the sourced `env_ccppetmr` will point to the original (old) location.
+
+### Package specific information
+
+For default versions built, see [version_config.cmake](version_config.cmake) and 
+[below on how to change them](#Building-with-specific-versions-of-dependencies).
+
+The SuperBuild allows building many packages and sets dependencies correctly. However, the
+emphasis is on building SIRF. Its dependent packages are therefore by default built in a
+minimal configuration. We provide some CMake variables to change that behaviour, and also
+set some main options of some packages. Most of these are "advanced" CMake options so as not to
+confuse the new user. Naming of these options is generally the same as in the original package
+but prefixed. We list main examples here, but you can check with CMake (or the `External*.cmake` files).
+(See [below](#Passing-CMAKE-arguments-to-specific-projects) for information
+on how to set other options).
+
+#### STIR
+- `STIR_BUILD_EXECUTABLES` defaults to `OFF`
+- `STIR_BUILD_SWIG_PYTHON` defaults to `OFF`, meaning that the STIR Python interface will not be built, i.e. you have to use the SIRF Python interface to STIR.
+- `STIR_DISABLE_LLN_MATRIX` defaults to `ON`, you might want to set this to `OFF` if you have GATE and use its output to ECAT sinograms (although this is not recommended).
+- `STIR_ENABLE_EXPERIMENTAL` defaults to `OFF`
+
+#### ITK
+- `ITK_MINIMAL_LIBS` defaults to `ON`. For the list of modules (concentrated on IO) built, check [External_ITK.cmake](SuperBuild/External_ITK.cmake).
+- `ITK_USE_SYSTEM_HDF5` defaults to `ON`, i.e. tell ITK to use same HDF5 library as other software built here. Note that this would normally be the HDF5 version built by the SuperBuild. Set this variables `OFF` if ITK has problems with HDF5.
 
 ### Building with specific versions of dependencies
 By default, the SuperBuild will build the latest stable release of SIRF and associated versions of the dependencies. However, the SuperBuild allows the user to change the versions of the projects it's building. The current default values can be found in [version_config.cmake](version_config.cmake).
