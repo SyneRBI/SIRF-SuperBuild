@@ -12,12 +12,57 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        # the agent machine operating systems
-        os: [ubuntu-latest, ubuntu-18.04]
-        DEVEL_BUILD: ["OFF", "ON"]
-        EXTRA_BUILD_FLAGS: ["-DUSE_ITK=ON -DBUILD_CIL=ON"]
-        CMAKE_BUILD_TYPE: ["Release"]
-        # let's run all of them, as opposed to aborting when one fails
+        include:
+        - os: ubuntu-latest
+          compiler: gcc
+          compiler_version: 9
+          BUILD_TYPE: "Release"
+          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
+          DEVEL_BUILD: "OFF"
+        - os: ubuntu-latest
+          compiler: gcc
+          compiler_version: 9
+          BUILD_TYPE: "Release"
+          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=OFF"
+          DEVEL_BUILD: "OFF"
+        #- os: ubuntu-latest
+        #  compiler: gcc
+        #  compiler_version: 9
+        #  BUILD_TYPE: "Release"
+        #  EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
+        #  DEVEL_BUILD: "OFF"
+        - os: ubuntu-latest
+          compiler: gcc
+          compiler_version: 9
+          BUILD_TYPE: "Release"
+          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
+          DEVEL_BUILD: "OFF"
+        - os: ubuntu-latest
+          compiler: gcc
+          compiler_version: 9
+          BUILD_TYPE: "Release"
+          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
+          DEVEL_BUILD: "ON"
+        - os: ubuntu-latest
+          compiler: gcc
+          compiler_version: 8
+          BUILD_TYPE: "Release"
+          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
+          DEVEL_BUILD: "OFF"
+        - os: ubuntu-18.04
+          compiler: gcc
+          compiler_version: 8
+          BUILD_TYPE: "Release"
+          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
+          DEVEL_BUILD: "OFF"
+        - os: ubuntu-18.04
+          compiler: gcc
+          compiler_version: 8
+          BUILD_TYPE: "Release"
+          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
+          DEVEL_BUILD: "ON"
+
+      # let's run all of them, as opposed to aborting when one fails
       fail-fast: false
 
     steps:
@@ -34,7 +79,27 @@ jobs:
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1
       with:
-        key: ${{ matrix.os }}-${{ matrix.CMAKE_BUILD_TYPE }}-${{ matrix.DEVEL_BUILD }}
+        key: ${{ matrix.os }}-${{ matrix.compiler }}-${{ matrix.compiler_version }}-${{ matrix.BUILD_TYPE }}
+    - name: set_compiler_variables
+      shell: bash
+      run: |
+          set -ex
+          if test 'XX${{ matrix.compiler }}' = 'XXclang'; then
+            CC="clang"
+            CXX="clang++"
+          elif test 'XX${{ matrix.compiler }}' = 'XXgcc'; then
+            CC="gcc"
+            CXX="g++"
+          fi
+          if test 'XX${{ matrix.compiler_version }}' != 'XX'; then
+            CC=${CC}-${{ matrix.compiler_version }}
+            CXX=${CXX}-${{ matrix.compiler_version }}   
+          fi
+
+          export CC CXX
+          # make available to jobs below
+          echo CC="$CC" >> $GITHUB_ENV
+          echo CXX="$CXX" >> $GITHUB_ENV
     - name: configure
       shell: bash
       env:
@@ -45,11 +110,9 @@ jobs:
           set -ex;
           export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
           export superbuild=`pwd`;
-          export BUILD_FLAGS="-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DCMAKE_INSTALL_PREFIX=~/install -DPYVER=3";
+          export BUILD_FLAGS="-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=~/install -DPYVER=3";
           mkdir -p build/;
           cd build;
-          export CC="gcc-8";
-          export CXX="g++-8";
           source ~/virtualenv/bin/activate;
           cmake -S ${GITHUB_WORKSPACE} ${BUILD_FLAGS} ${EXTRA_BUILD_FLAGS} ${DEVEL_BUILD};
     - name: build
