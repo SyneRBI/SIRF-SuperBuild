@@ -266,6 +266,12 @@ if (USE_ITK)
   option(USE_SYSTEM_ITK "Build using an external version of ITK" OFF)
 endif()
 
+# ROOT
+option (USE_ROOT "Use CERN ROOT (optional for STIR)" OFF)
+if (USE_ROOT)
+  option(USE_SYSTEM_ROOT "Build using an external version of ROOT" OFF)
+endif()
+
 # If building STIR and CUDA present, offer to build NiftyPET
 if (USE_CUDA AND NOT USE_SYSTEM_STIR)
   set(USE_NiftyPET OFF CACHE BOOL "Build STIR with NiftyPET's projectors") # FORCE)
