@@ -28,15 +28,15 @@ by the SuperBuild, [see below for more info for your operating system](#os-speci
    2. [Installation instructions for Mac OS](#OSX-install)
    3. [Installation instructions for Docker](#Docker-install)
 4. [Advanced installation](#Advanced-installation)
-   1. [use a different compiler than the system default](use-a-different-compiler-than-the-system-default)
-   2. [Compiling against your own packages](#Compiling-packages)
-   3. [Python and MATLAB installation locations](#Python-and-MATLAB-installation-locations)
-   4. [Package specific information](#Package-specific-information)
-   5. [Building with specific versions of dependencies](#Building-with-specific-versions-of-dependencies)
-   6. [Building from your own source](#Building-from-your-own-source)
-   7. [Building with Intel Math Kernel Library](#Building-with-Intel-Math-Kernel-Library)
-   8. [Building CCPi CIL](#Building-CCPi-CIL)
-   9. [Passing CMAKE arguments to specific projects](#Passing-CMAKE-arguments-to-specific-projects)
+    1. [Optional libraries](optional-libraries)
+    2. [use a different compiler than the system default](use-a-different-compiler-than-the-system-default)
+    3. [Compiling against your own packages](#Compiling-packages)
+    4. [Python and MATLAB installation locations](#Python-and-MATLAB-installation-locations)
+    5. [Building with specific versions of dependencies](#Building-with-specific-versions-of-dependencies)
+    6. [Building from your own source](#Building-from-your-own-source)
+    7. [Building with Intel Math Kernel Library](#Building-with-Intel-Math-Kernel-Library)
+    8. [Building CCPi CIL](#Building-CCPi-CIL)
+    9. [Passing CMAKE arguments to specific projects](#Passing-CMAKE-arguments-to-specific-projects)
    10. [Building with CUDA](#Building-with-CUDA)
 5. [Notes](#Notes)
 
@@ -227,6 +227,26 @@ They can be found [here](docker/README.md)
 
 ## Advanced installation
 
+## Optional libraries
+STIR can use other libraries to add extra IO capabilities. At present, the SuperBuild supports the following:
+- ITK: the [Insight Toolkit](https://itk.org/). STIR will use this to read in images in file formats supported by ITK,
+including DICOM, Nifty, MetaIO, NRRD.
+- ROOT: the [CERN framework for data handling](https://root.cern.ch/). STIR will use this to read ROOT files produced
+by Open GATE, the Monte Carlo simulator.
+
+Each of these has 2 CMake variables. For example, for ITK:
+- `USE_ITK`: enable ITK support
+- `USE_SYSTEM_ITK` (defaults `OFF`): if `USE_ITK=ON` and `USE_SYSTEM_ITK=ON`, do not build ITK, but let CMake find it on your system. If it cannot, you can set `ITK_DIR` to the path where `ITKConfig.cmake` was installed. See also [this section](#Compiling-packages).
+
+Currently, `USE_ITK` defaults to `ON` and `USE_ROOT` defaults to `OFF`.
+
+Each of these projects has many CMake variables when you build it directly. In this SuperBuild, we set them to build a minimal (?) set of libraries sufficient for STIR support.
+You can enable more features by using other CMake variables (e.g. `ROOT_X11` defaults to `OFF`), but see also [this section](#passing-cmake-arguments-to-specific-projects).
+
+**WARNINGS**:<br />
+- ROOT insert its own error handler for when a program crashes, which at first sight claims that there is a problem with ROOT. More than likely however, the problem is elsewhere. The stack trace printed on the console might help.
+- Building these libraries takes quite a long time. You could try to install them in other ways, but might encounter problems then. Let us know if that is the case.
+
 ## Use a different compiler than the system default
 You can tell CMake to use a different compiler than what it finds by default. You will need to specify both C and C++ compilers. For instance, to use `gcc8`, use
 ```sh
@@ -235,7 +255,7 @@ CXX=g++8
 export CC CXX
 ccmake normal-options
 ```
-This needs to be done the very first time you run CMake for that build.
+This needs to be done the **very first time** you run CMake for that build.
 
 ### Compiling against your own packages <a name="Compiling-packages"></a>
 SIRF depends on many packages. By default, these packages are installed by the Superbuild. However, the user can decide to compile SIRF against their own versions of certain packages. This can be done via the `USE_SYSTEM_*` options in `CMake`. For example, if you wish to compile SIRF against a version of Boost that is already on your machine, you could set `USE_SYSTEM_BOOST` to `ON`.
@@ -334,6 +354,7 @@ cmake ../SIRF-SuperBuild -D${proj}_EXTRA_CMAKE_ARGS:STRING="-Dflag1:BOOL=ON;-Dfl
 All the flags from the following projects can be set using this technique:
 
 - ITK
+- ROOT
 - STIR
 - Gadgetron
 - SIRF

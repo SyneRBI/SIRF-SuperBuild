@@ -63,6 +63,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
     # -DModule_ITKReview:BOOL=ON # should be ON for PETPVC, but not for others
     # ITKImageGrid is ON as it contains itkOrientImageFilter, used by STIR
+    # ITKGroup_Filtering is ON as used by pet_rd_tools, PETPVC
     set(ITK_CMAKE_FLAGS
       -DITK_BUILD_DEFAULT_MODULES:BOOL=OFF
       -DITKGroup_IO:BOOL=OFF
@@ -78,6 +79,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DModule_ITKIORAW:BOOL=ON
       -DModule_ITKIOTIFF:BOOL=ON
       -DModule_ITKImageGrid:BOOL=ON
+      -DITKGroup_Filtering=ON
       )
   else()
 
