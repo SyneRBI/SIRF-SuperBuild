@@ -48,4 +48,11 @@ cd SIRF-SuperBuild/docker
 
 # build the core target
 docker build --build-arg BASE_IMAGE=paskino/sirfcil:service-gpu --target core .
+bfd56db03d9b
+```
+
+```
+# build standard SIRF docker
+docker build --build-arg NUM_PARALLEL_BUILDS=1 --target sirf .
+cd1ed7d07d11
 ```

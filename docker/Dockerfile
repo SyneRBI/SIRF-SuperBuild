@@ -125,7 +125,7 @@ ARG NUM_PARALLEL_BUILDS="2"
 ARG BUILD_FLAGS="\
  -DCMAKE_BUILD_TYPE=Release\
  -DSTIR_ENABLE_OPENMP=ON -DUSE_SYSTEM_ACE=ON\
- -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DBUILD_CIL=ON\
+ -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DBUILD_CIL=OFF\
  -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_ITK=ON\
  -DUSE_SYSTEM_SWIG=ON\
  -DUSE_NiftyPET=OFF\
@@ -214,3 +214,13 @@ ENTRYPOINT ["/tini", "-g", "--"]
 # TODO set some env variables (or do it in a compose file)
 
 ENV DEBIAN_FRONTEND ''
+
+FROM core as jupyterhub
+# https://docs.docker.com/develop/develop-images/multistage-build/#use-an-external-image-as-a-stage
+# not documented in https://docs.docker.com/engine/reference/builder/#copy
+# FROM --from=nginx:latest /etc/nginx/nginx.conf /nginx.conf
+COPY --from=synerbi/sirf:sirf-core /opt/SIRF-SuperBuild/INSTALL /opt/SIRF-SuperBuild/
+RUN conda install cil cil-astra tigre cudatoolkit=9.2 -c conda-forge -c intel -c astra-toolbox/label/dev -c ccpi
+
+
+
