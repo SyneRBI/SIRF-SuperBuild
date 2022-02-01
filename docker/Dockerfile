@@ -116,17 +116,20 @@ RUN ccache -o cache_dir=/opt/ccache
 COPY user_sirf-ubuntu.sh .
 
 # SIRF-SuperBuild version
-ARG SIRF_SB_URL="https://github.com/SyneRBI/SIRF-SuperBuild"
-ARG SIRF_SB_TAG="master"
+ARG SIRF_SB_URL="https://github.com/paskino/SIRF-SuperBuild"
+ARG SIRF_SB_TAG="jupyterhub_docker_build"
 # speeding up the cmake build
 # (implementation note: changing this in your environment will invalidate the docker cache sadly)
 ARG NUM_PARALLEL_BUILDS="2"
 
 ARG BUILD_FLAGS="\
+ -DSIRF_URL=https://github.com/paskino/SIRF.git\
+ -DSIRG_TAG=simplify_Boost_link\
  -DCMAKE_BUILD_TYPE=Release\
  -DSTIR_ENABLE_OPENMP=ON -DUSE_SYSTEM_ACE=ON\
  -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DBUILD_CIL=OFF\
  -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_ITK=ON\
+ -DGadgetron_USE_CUDA=OFF\
  -DUSE_SYSTEM_SWIG=ON\
  -DUSE_NiftyPET=OFF\
  -DBUILD_siemens_to_ismrmrd=ON -DBUILD_pet_rd_tools=ON"
