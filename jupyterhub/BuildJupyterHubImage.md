@@ -46,13 +46,17 @@ cd SIRF-SuperBuild/docker
 # so by updating the image paskino/sirfcil:service-gpu I can test that everything works)
 # paskino/sirfcil:service-gpu
 
-# build the core target
-docker build --build-arg BASE_IMAGE=paskino/sirfcil:service-gpu --target core .
-bfd56db03d9b
+# build standard SIRF docker
+docker build --build-arg NUM_PARALLEL_BUILDS=1 --target sirf .
+# cd1ed7d07d11
+
+
 ```
 
 ```
-# build standard SIRF docker
-docker build --build-arg NUM_PARALLEL_BUILDS=1 --target sirf .
-cd1ed7d07d11
+# this will build on top of a GPU enabled docker datascience-notebook
+# and copy stuff from the sirf image, i.e. the INSTALL directory
+# and install CIL via conda
+cd ../jupyterhub
+docker build --build-arg BASE_IMAGE=paskino/jupyter:datascience-notebook-cuda11 .
 ```
