@@ -1,11 +1,24 @@
 ## Build the Jupyterhub image 
 
+To create the image with SIRF and all the other stuff required by jupyterhub we start from the `datascience-notebook` from `https://github.com/jupyter/docker-stacks`_.
+
+However, we require GPU access (for [CIL](https://github.com/TomographicImaging/CIL.git)).
+
+The strategy is:
+  1. to modify the `datascience-notebook` to have the `nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04` base image, `paskino/jupyter:datascience-notebook-cuda10-ubuntu18.04`
+  1. build the `synerbi/sirf:sirf-core` image with the `nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04` base image
+  1. build the jupyterhub image from the image at point 1, copy the SIRF `INSTALL` directory from the `synerbi/sirf:sirf-core` (previous step), set the appropriate environmental variable and install CIL via conda
+
 Jupyterhub uses images from `https://github.com/jupyter/docker-stacks`_ which I cloned in `https://github.com/paskino/docker-stacks`_
 
 ### Create the base image for jupyterhub with NVIDIA runtime on Ubuntu 18.04
 
-Currently the `base-notebook` in [`jupyter/docker-stacks`](`https://github.com/jupyter/docker-stacks`) builds on top of Ubuntu 20.04. The `tini` package is [required](https://github.com/jupyter/docker-stacks/blob/f27d615c5052c3a567835ceba3c21ab5d7b0416a/base-notebook/Dockerfile#L39-L42), but it is not available in Ubuntu 18.04 as apt package.  So to be able to use the `nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04` base image we need to modify the `base-notebook` and install `tini` in another way.
+Currently the `base-notebook` in [`jupyter/docker-stacks`](`https://github.com/jupyter/docker-stacks`) builds on top of Ubuntu 20.04. The `tini` package is [required](https://github.com/jupyter/docker-stacks/blob/f27d615c5052c3a567835ceba3c21ab5d7b0416a/base-notebook/Dockerfile#L39-L42), but it is not available in Ubuntu 18.04 as apt package.  
+
+So to be able to use the `nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04` base image we need to modify the `base-notebook` and install `tini` in another way.
 The modifications are available at https://github.com/paskino/docker-stacks/tree/base_image_ubuntu18.04
+
+Below a list of commands that will build the `paskino/jupyter:datascience-notebook-cuda10-ubuntu18.04`
 
 ```
 git clone git@github.com:paskino/docker-stacks.git
@@ -54,8 +67,9 @@ docker tag cd1ed7d07d11 synerbi/sirf:sirf-core
 
 ### Putting things together
 
-To create the image with SIRF and all the other stuff required by jupyterhub we start from the modified `datascience-notebook` with GPU access (see above).
-Making sure that the `synerbi/sirf:sirf-core` and the `paskino/jupyter:datascience-notebook-cuda10-ubuntu18.04` have the same base image and the software required by SIRF installed we can _copy_ the SIRF INSTALL directory to the `datascience-notebook` image and set the required environment variables.
+
+
+To install SIRF we can literally _copy_ the SIRF INSTALL directory to the `datascience-notebook` image and set the required environment variables.
 
 Notice that CIL is now installed via conda so the SuperBuild is set not to build it.
 
