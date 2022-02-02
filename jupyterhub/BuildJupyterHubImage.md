@@ -62,7 +62,7 @@ docker build --build-arg NUM_PARALLEL_BUILDS=1 --build-arg BASE_IMAGE=nvidia/cud
 # To be able to access the files in the docker directory one needs to launch 
 # docker build from that directory and point to the Dockerfile in the other
 
-docker build --build-arg BASE_IMAGE=paskino/jupyter:datascience-notebook-cuda11 -f ../jupyterhub/Dockerfile .
+docker build --build-arg BASE_IMAGE=paskino/jupyter:datascience-notebook-cuda10-ubuntu18.04 -f ../jupyterhub/Dockerfile .
 ```
 
 entrypoint for tini is defined in the base-notebook Dockerfile
