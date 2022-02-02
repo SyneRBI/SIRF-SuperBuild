@@ -2,15 +2,16 @@
 
 Jupyterhub uses images from `https://github.com/jupyter/docker-stacks`_ which I cloned in `https://github.com/paskino/docker-stacks`_
 
-### create the base image for jupyterhub
+### Create the base image for jupyterhub with NVIDIA runtime on Ubuntu 18.04
 
-# base image Ubuntu 18.04 NVIDIA
-
-Need to modify `base-notebook` as `tini` is required and not in the `nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04` base image.
+Currently the `base-notebook` in [`jupyter/docker-stacks`](`https://github.com/jupyter/docker-stacks`) builds on top of Ubuntu 20.04. The `tini` package is [required](https://github.com/jupyter/docker-stacks/blob/f27d615c5052c3a567835ceba3c21ab5d7b0416a/base-notebook/Dockerfile#L39-L42), but it is not available in Ubuntu 18.04 as apt package.  So to be able to use the `nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04` base image we need to modify the `base-notebook` and install `tini` in another way.
+The modifications are available at https://github.com/paskino/docker-stacks/tree/base_image_ubuntu18.04
 
 ```
-git clone git@github.com:jupyter/docker-stacks.git
-git clone git@github.com:stfc/cloud-docker-images.git
+git clone git@github.com:paskino/docker-stacks.git
+cd docker-stacks
+git checkout base_image_ubuntu18.04
+cd ..
 
 # base notebook
 cd docker-stacks/base-notebook
@@ -35,46 +36,49 @@ docker build --build-arg BASE_CONTAINER=paskino/jupyter:scipy-notebook-cuda10-ub
 docker tag aec093c609c5 paskino/jupyter:datascience-notebook-cuda10-ubuntu18.04
 ```
 
-# Start building SIRF
+Finally we have the base `datascience-notebook` with the `nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04` base image.
 
+### Start building SIRF
 
+Build the `sirf` target of the SIRF Dockerfile with the `nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04` base image.
 
 ```
 git clone git@github.com:SyneRBI/SIRF-SuperBuild.git
 cd SIRF-SuperBuild/docker
-# I tagged the output of the previous step as 
-# paskino/jupyter   datascience-notebook-cuda11
-# AND (because this is how it is picked by the jupyterhub instance, 
-# so by updating the image paskino/sirfcil:service-gpu I can test that everything works)
-# paskino/sirfcil:service-gpu
 
 # build standard SIRF docker
-docker build --build-arg NUM_PARALLEL_BUILDS=1 --build-arg BASE_IMAGE=nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04 --target sirf .
-# cd1ed7d07d11
-
-
+docker build --build-arg BASE_IMAGE=nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04 --target sirf .
+# tag as synerbi/sirf:sirf-core
+docker tag cd1ed7d07d11 synerbi/sirf:sirf-core
 ```
 
-```
-# this will build on top of a GPU enabled docker datascience-notebook
-# and copy stuff from the sirf image, i.e. the INSTALL directory
-# and install CIL via conda
-# To be able to access the files in the docker directory one needs to launch 
-# docker build from that directory and point to the Dockerfile in the other
+### Putting things together
 
+To create the image with SIRF and all the other stuff required by jupyterhub we start from the modified `datascience-notebook` with GPU access (see above).
+Making sure that the `synerbi/sirf:sirf-core` and the `paskino/jupyter:datascience-notebook-cuda10-ubuntu18.04` have the same base image and the software required by SIRF installed we can _copy_ the SIRF INSTALL directory to the `datascience-notebook` image and set the required environment variables.
+
+Notice that CIL is now installed via conda so the SuperBuild is set not to build it.
+
+```
+cd SIRF-SuperBuild/docker
 docker build --build-arg BASE_IMAGE=paskino/jupyter:datascience-notebook-cuda10-ubuntu18.04 -f ../jupyterhub/Dockerfile .
+docker tag 4970647d72ea paskino/sirfcil:service-gpu
 ```
 
-entrypoint for tini is defined in the base-notebook Dockerfile
+### Testing
 
+The cloud is set to update the image `paskino/sirfcil:service-gpu`, therefore it is sufficient to tag the image produced in the section above as  
+```
+docker tag 4970647d72ea paskino/sirfcil:service-gpu
+```
 
-# base image Ubuntu 20.04 NVIDIA
+### Work in progress
+#### base image Ubuntu 20.04 NVIDIA
 
 Work in progress
 
 ```
 git clone git@github.com:jupyter/docker-stacks.git
-git clone git@github.com:stfc/cloud-docker-images.git
 
 # base notebook
 cd docker-stacks/base-notebook
