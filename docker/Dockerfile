@@ -114,7 +114,6 @@ USER "${NB_USER}"
 
 RUN ccache -o cache_dir=/opt/ccache
 COPY user_sirf-ubuntu.sh .
-COPY user_sirf-ubuntu2.sh .
 
 # SIRF-SuperBuild version
 ARG SIRF_SB_URL="https://github.com/SyneRBI/SIRF-SuperBuild"
@@ -133,11 +132,6 @@ ARG BUILD_FLAGS="\
  -DUSE_NiftyPET=OFF\
  -DBUILD_siemens_to_ismrmrd=ON -DBUILD_pet_rd_tools=ON"
 ARG EXTRA_BUILD_FLAGS=""
-
-RUN bash user_sirf-ubuntu2.sh
-RUN rm user_sirf-ubuntu2.sh
-
-
 RUN bash user_sirf-ubuntu.sh
 RUN rm user_sirf-ubuntu.sh
 
