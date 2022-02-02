@@ -70,6 +70,8 @@ entrypoint for tini is defined in the base-notebook Dockerfile
 
 # base image Ubuntu 20.04 NVIDIA
 
+Work in progress
+
 ```
 git clone git@github.com:jupyter/docker-stacks.git
 git clone git@github.com:stfc/cloud-docker-images.git
@@ -97,3 +99,5 @@ docker tag 9cbadae5917e paskino/jupyter:scipy-notebook-cuda11
 cd ../datascience-notebook
 docker build --build-arg BASE_CONTAINER=paskino/jupyter:scipy-notebook-cuda11 .
 ```
+
+Build of SIRF on Ubuntu 20.04 [fails](https://github.com/SyneRBI/SIRF-SuperBuild/issues/649)
