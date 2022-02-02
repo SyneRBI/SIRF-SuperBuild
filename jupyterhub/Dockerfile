@@ -44,5 +44,13 @@ COPY build_system-ubuntu.sh .
 RUN bash build_system-ubuntu.sh
 RUN rm build_system-ubuntu.sh 
 
+# copy tini in /usr/bin because I installed tini in / rather than in the path
+# in the base-notebook, see
+# https://github.com/paskino/docker-stacks/blob/8d4c9922710debc22e229dbcdc91f8fcd613db52/base-notebook/Dockerfile#L22-L27
+RUN cp /tini /usr/bin
+RUN chmod +x /usr/bin/tini
+
+RUN conda install deprecation nibabel nose docopt -c conda-forge -c intel -c astra-toolbox/label/dev -c ccpi
+RUN python -m pip install git+https://github.com/ismrmrd/ismrmrd-python-tools.git@master#egg=ismrmrd-python-tools
 # switch back to 
 USER jovyan

@@ -1,6 +1,6 @@
 ## Build the Jupyterhub image 
 
-To create the image with SIRF and all the other stuff required by jupyterhub we start from the `datascience-notebook` from `https://github.com/jupyter/docker-stacks`_.
+To create the image with SIRF and all the other stuff required by jupyterhub we start from the `datascience-notebook` from https://github.com/jupyter/docker-stacks.
 
 However, we require GPU access (for [CIL](https://github.com/TomographicImaging/CIL.git)).
 
@@ -9,7 +9,7 @@ The strategy is:
   1. build the `synerbi/sirf:sirf-core` image with the `nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04` base image
   1. build the jupyterhub image from the image at point 1, copy the SIRF `INSTALL` directory from the `synerbi/sirf:sirf-core` (previous step), set the appropriate environmental variable and install CIL via conda
 
-Jupyterhub uses images from `https://github.com/jupyter/docker-stacks`_ which I cloned in `https://github.com/paskino/docker-stacks`_
+Jupyterhub uses images from https://github.com/jupyter/docker-stacks which I cloned in https://github.com/paskino/docker-stacks
 
 ### Create the base image for jupyterhub with NVIDIA runtime on Ubuntu 18.04
 
