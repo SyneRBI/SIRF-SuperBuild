@@ -204,8 +204,8 @@ RUN echo "auth requisite pam_deny.so" >> /etc/pam.d/su && \
 
 # Add Tini (note: no tini apt-package yet in Ubuntu 18.04)
 ENV TINI_VERSION v0.19.0
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
-RUN chmod +x /tini
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
+RUN chmod +x /usr/bin/tini
 
 # TODO install jupyterhub requirements
 

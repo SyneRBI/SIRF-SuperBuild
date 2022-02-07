@@ -2,7 +2,9 @@ ARG BASE_IMAGE=ubuntu:18.04
 # paskino/jupyter   datascience-notebook-cuda11
 FROM ${BASE_IMAGE} as base
 
-RUN conda install cil cil-astra tigre cudatoolkit=9.2 -c conda-forge -c intel -c astra-toolbox/label/dev -c ccpi
+# Install CIL with all packages from conda: https://github.com/TomographicImaging/CIL#installation
+RUN conda install -c conda-forge -c intel -c astra-toolbox/label/dev -c ccpi cil cil-astra ccpi-regulariser tigre tomophantom=1.4.10
+
 
 # https://docs.docker.com/develop/develop-images/multistage-build/#use-an-external-image-as-a-stage
 # not documented in https://docs.docker.com/engine/reference/builder/#copy
@@ -44,17 +46,10 @@ COPY build_system-ubuntu.sh .
 RUN bash build_system-ubuntu.sh
 RUN rm build_system-ubuntu.sh 
 
-# copy tini in /usr/bin because I installed tini in / rather than in the path
-# in the base-notebook, see
-# https://github.com/paskino/docker-stacks/blob/8d4c9922710debc22e229dbcdc91f8fcd613db52/base-notebook/Dockerfile#L22-L27
-RUN cp /tini /usr/bin
-RUN chmod +x /usr/bin/tini
-
+# install requirements skipping CIL ones that are taken care of by conda
 RUN conda install deprecation nibabel nose docopt -c conda-forge -c intel -c astra-toolbox/label/dev -c ccpi
 RUN python -m pip install git+https://github.com/ismrmrd/ismrmrd-python-tools.git@master#egg=ismrmrd-python-tools
 
-COPY --from=synerbi/sirf:sirf-core /opt/SIRF-SuperBuild/builds/SIRF /opt/SIRF-SuperBuild/builds/SIRF
-COPY --from=synerbi/sirf:sirf-core /opt/SIRF-SuperBuild/sources/SIRF /opt/SIRF-SuperBuild/sources/SIRF
 # switch back to 
 USER jovyan
 
