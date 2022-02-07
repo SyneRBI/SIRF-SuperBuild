@@ -14,8 +14,8 @@ COPY --from=synerbi/sirf:sirf-core /opt/SIRF-SuperBuild/INSTALL/ /opt/SIRF-Super
 # From https://github.com/paskino/SIRF-SuperBuild/blob/301c2274621e4729cadbd2a1705d8c4d9e3b7e50/docker/Dockerfile#L212-L219
 # Set environment variables for SIRF
 USER jovyan 
-ENV PATH "/opt/pyvenv/bin:/opt/SIRF-SuperBuild/INSTALL/bin:$PATH"
-ENV LD_LIBRARY_PATH "/opt/SIRF-SuperBuild/INSTALL/lib:/opt/SIRF-SuperBuild/INSTALL/lib64:/opt/pyvenv/lib/:$LD_LIBRARY_PATH"
+ENV PATH "/opt/conda/bin:/opt/SIRF-SuperBuild/INSTALL/bin:$PATH"
+ENV LD_LIBRARY_PATH "/opt/SIRF-SuperBuild/INSTALL/lib:/opt/SIRF-SuperBuild/INSTALL/lib64:/opt/conda/lib/:$LD_LIBRARY_PATH"
 ENV PYTHONPATH "/opt/SIRF-SuperBuild/INSTALL/python"
 ENV SIRF_INSTALL_PATH "/opt/SIRF-SuperBuild/INSTALL"
 ENV SIRF_EXERCISES_DATA_PATH "/mnt/materials/SIRF/Fully3D/SIRF/"
@@ -52,5 +52,10 @@ RUN chmod +x /usr/bin/tini
 
 RUN conda install deprecation nibabel nose docopt -c conda-forge -c intel -c astra-toolbox/label/dev -c ccpi
 RUN python -m pip install git+https://github.com/ismrmrd/ismrmrd-python-tools.git@master#egg=ismrmrd-python-tools
+
+COPY --from=synerbi/sirf:sirf-core /opt/SIRF-SuperBuild/builds/SIRF /opt/SIRF-SuperBuild/builds/SIRF
+COPY --from=synerbi/sirf:sirf-core /opt/SIRF-SuperBuild/sources/SIRF /opt/SIRF-SuperBuild/sources/SIRF
 # switch back to 
 USER jovyan
+
+#/opt/SIRF-SuperBuild/INSTALL/lib:/opt/SIRF-SuperBuild/INSTALL/lib64:/usr/local/nvidia/lib:/usr/local/nvidia/lib64::/opt/conda/lib
