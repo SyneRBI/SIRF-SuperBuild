@@ -19,9 +19,7 @@ miniconda)
   ;;
 *python*)
   # virtualenv
-  
-  # curl https://bootstrap.pypa.io/get-pip.py > get-pip.py
-  curl https://bootstrap.pypa.io/pip/3.6/get-pip.py > get-pip.py
+  curl $($PYTHON get_pip_download_link.py) > get-pip.py
   ${PYTHON} get-pip.py
   rm get-pip.py
   ${PYTHON} -m pip install -U pip virtualenv
