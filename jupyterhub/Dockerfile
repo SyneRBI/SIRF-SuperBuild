@@ -3,7 +3,7 @@ ARG BASE_IMAGE=ubuntu:18.04
 FROM ${BASE_IMAGE} as base
 
 # Install CIL with all packages from conda: https://github.com/TomographicImaging/CIL#installation
-RUN conda install -c conda-forge -c intel -c astra-toolbox/label/dev -c ccpi cil cil-astra ccpi-regulariser tigre tomophantom=1.4.10
+RUN conda install -c conda-forge -c intel -c ccpi -c astra-toolbox/label/dev cil cil-astra ccpi-regulariser tigre tomophantom=1.4.10
 
 
 # https://docs.docker.com/develop/develop-images/multistage-build/#use-an-external-image-as-a-stage
