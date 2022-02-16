@@ -1,2 +1,5 @@
-pywavelets   # CIL
-dxchange     # CIL
+cil
+cil-astra
+ccpi-regulariser 
+tigre 
+tomophantom=1.4.10

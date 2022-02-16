@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 [ -f .bashrc ] && . .bashrc
-set -ev
+set -exv
 INSTALL_DIR="${1:-/opt/pyvenv}"
 PYTHON="${2:-miniconda}"
 
@@ -19,7 +19,7 @@ miniconda)
   ;;
 *python*)
   # virtualenv
-  curl https://bootstrap.pypa.io/get-pip.py > get-pip.py
+  curl $($PYTHON get_pip_download_link.py) > get-pip.py
   ${PYTHON} get-pip.py
   rm get-pip.py
   ${PYTHON} -m pip install -U pip virtualenv
@@ -39,7 +39,7 @@ fi
 
 if [ "$PYTHON" = "miniconda" ]; then
   if [ -f requirements_conda_forge.txt ]; then
-    conda install --yes -c conda-forge --file requirements_conda_forge.txt
+    conda install --yes -c conda-forge -c intel -c ccpi -c astra-toolbox/label/dev --file requirements_conda_forge.txt
   fi
   conda update -c conda-forge -y --all
   conda clean -y --all

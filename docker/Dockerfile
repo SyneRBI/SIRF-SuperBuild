@@ -10,6 +10,7 @@ LABEL \
   licence="MPLv2.0 (https://www.mozilla.org/en-GB/MPL/2.0/)"  \
   description="CCP SyneRBI Ubuntu"
 
+USER root
 ENV DEBIAN_FRONTEND noninteractive
 
 COPY raw-ubuntu.sh .
@@ -124,12 +125,13 @@ ARG NUM_PARALLEL_BUILDS="2"
 ARG BUILD_FLAGS="\
  -DCMAKE_BUILD_TYPE=Release\
  -DSTIR_ENABLE_OPENMP=ON -DUSE_SYSTEM_ACE=ON\
- -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DBUILD_CIL=ON\
+ -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON\
  -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_ITK=ON\
+ -DGadgetron_USE_CUDA=OFF\
  -DUSE_SYSTEM_SWIG=ON\
  -DUSE_NiftyPET=OFF\
  -DBUILD_siemens_to_ismrmrd=ON -DBUILD_pet_rd_tools=ON"
-ARG EXTRA_BUILD_FLAGS=""
+ARG EXTRA_BUILD_FLAGS="-DBUILD_CIL=OFF"
 RUN bash user_sirf-ubuntu.sh
 RUN rm user_sirf-ubuntu.sh
 

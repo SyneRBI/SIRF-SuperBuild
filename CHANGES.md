@@ -1,6 +1,8 @@
 # ChangeLog
 ## vx.x.x
 
+- Docker images install CIL via conda, so setting `BUILD_CIL=OFF` in the docker build
+- Added jupyterhub Dockerfile and documentation to build the jupyterhub image used in training on top of SIRF docker images and jupyter datascience-notebook image with GPU access.
 - Adds Boost random for ISMRMRD 1.5.0 [#636](https://github.com/SyneRBI/SIRF-SuperBuild/issues/636)
 - moved the VM repository to the `VirtualBox` subdirectory
 - fix usage of `proj_EXTRA_CMAKE_ARGS` facility (it was broken for all projects except ITK) [#616](https://github.com/SyneRBI/SIRF-SuperBuild/issues/616)
@@ -11,6 +13,7 @@
   - ITK: 5.2.1 However, we now build a smaller set of modules,
      most (but not all) of IO, and Filtering. See SuperBuild/External_ITK.cmake)
   - NiftyReg: 99d584e2b8ea0bffe7e65e40c8dc818751782d92 ) (fixes gcc-9 OpenMP problems)
+  - CIL: v21.3.1
 
 ## v3.1.1
 
