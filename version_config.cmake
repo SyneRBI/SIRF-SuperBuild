@@ -178,7 +178,7 @@ if (DEVEL_BUILD)
 
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd )
-  set(DEFAULT_siemens_to_ismrmrd_TAG origin/master)
+  set(DEFAULT_siemens_to_ismrmrd_TAG 6d0ab3d3d0c8ade5c0526db1c6af9825008425ad)
 
   ## pet-rd-tools
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
@@ -204,7 +204,7 @@ else()
 
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
-  set(DEFAULT_siemens_to_ismrmrd_TAG ba4773f9cf4bba5f3ccd19930e3548d8273fee01)
+  set(DEFAULT_siemens_to_ismrmrd_TAG 6d0ab3d3d0c8ade5c0526db1c6af9825008425ad)
 
   ## pet-rd-tools
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
