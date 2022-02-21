@@ -37,7 +37,7 @@ services:
     - ubuntu:18.04
     - synerbi/sirf:core
    args:
-    - EXTRA_BUILD_FLAGS: "-DBUILD_CIL=OFF"
+    EXTRA_BUILD_FLAGS: "-DBUILD_CIL=OFF"
  gadgetron:
   container_name: gadgetron
   image: gadgetron/ubuntu_1804_no_cuda:latest
