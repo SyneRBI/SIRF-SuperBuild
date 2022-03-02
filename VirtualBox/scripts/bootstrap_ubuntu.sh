@@ -66,7 +66,7 @@ if [ ! -d $userHOME/devel/SIRF-SuperBuild ]; then
   cd SIRF-SuperBuild
 else
   cd SIRF-SuperBuild
-  git pull
+  # git pull
 fi
 
 

@@ -153,7 +153,7 @@ git config --global filter.nbstripout.extrakeys '
 
 # Optionally install pre-requisites
 if [ $apt_install == 1 ]; then
-  cd ~/devel/SyneRBI_VM/scripts
+  cd ~/devel/SIRF-SuperBuild/VirtualBox/scripts
   sudo -H ./INSTALL_prerequisites_with_apt-get.sh
   sudo -H ./INSTALL_python_packages.sh --python "$PYTHON_EXECUTABLE"
   sudo -H ./INSTALL_CMake.sh
@@ -292,7 +292,7 @@ update()
 SuperBuild $SB_TAG
 
 # copy scripts into the path
-cp -vp $SIRF_SRC_PATH/SyneRBI_VM/scripts/update*sh $SIRF_INSTALL_PATH/bin
+cp -vp $SIRF_SRC_PATH/SIRF-SuperBuild/VirtualBox/scripts/update*sh $SIRF_INSTALL_PATH/bin
 
 # Get extra python tools
 clone_or_pull  https://github.com/SyneRBI/ismrmrd-python-tools.git
@@ -328,7 +328,7 @@ then
   fi
   mkdir ~/Desktop 
 fi 
-cp -vp $SIRF_SRC_PATH/SyneRBI_VM/HELP.txt ~/Desktop/
+cp -vp $SIRF_SRC_PATH/SIRF-SuperBuild/VirtualBox/HELP.txt ~/Desktop/
 
 if [ -r ~/.sirfc ]; then
   echo "Moving existing ~/.sirfc to a backup copy"
@@ -341,7 +341,7 @@ if [ ! -z "$STIR_exercises_PATH" ]; then
     echo "export STIR_exercises_PATH=$SIRF_SRC_PATH/STIR-exercises" >> ~/.sirfrc
 fi
 
-version=`echo -n "export SIRF_VM_VERSION=" | cat - ${SIRF_SRC_PATH}/SyneRBI_VM/VM_version.txt`
+version=`echo -n "export SIRF_VM_VERSION=" | cat - ${SIRF_SRC_PATH}/SIRF-SuperBuild/VirtualBox/VM_version.txt`
 echo $version > ~/.sirf_VM_version
 
 echo ""
