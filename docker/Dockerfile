@@ -71,6 +71,7 @@ ARG NB_UID="22222"
 # standard guid for users
 ARG NB_GID="100"
 ARG HOME="/home/${NB_USER}"
+ARG PYTHON_INSTALL_DIR=/opt/conda
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -100,7 +101,7 @@ USER ${NB_USER}:${NB_GROUP}
 COPY requirements.txt .
 COPY requirements_conda_forge.txt .
 COPY user_python-ubuntu.sh .
-RUN bash user_python-ubuntu.sh && \
+RUN bash user_python-ubuntu.sh $PYTHON_INSTALL_DIR && \
     rm user_python-ubuntu.sh requirements.txt requirements_conda_forge.txt
 
 # ccache
