@@ -26,6 +26,11 @@ ${APT_GET_INSTALL} libhdf5-serial-dev git libfftw3-dev h5utils hdf5-tools \
 	libatlas-base-dev libatlas-base-dev libxml2-dev libxslt1-dev unzip \
 	libdcmtk-dev
 
+# install libgmock-dev if in the apt packages https://github.com/SyneRBI/SIRF-SuperBuild/issues/647#issuecomment-1042841986
+if apt-cache show libgmock-dev >& /dev/null`; then
+  apt install  libgmock-dev
+fi
+
 echo "Installing boost 1.65 or later"
 # first find current boost version (if any)
 # the 'tail' makes sure we use the last one listed by apt-cache in case there is more than 1 version
