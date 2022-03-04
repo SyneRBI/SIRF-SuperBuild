@@ -15,6 +15,10 @@
      most (but not all) of IO, and Filtering. See SuperBuild/External_ITK.cmake)
   - NiftyReg: 99d584e2b8ea0bffe7e65e40c8dc818751782d92 ) (fixes gcc-9 OpenMP problems)
   - CIL: v21.3.1
+  - GTest: 1.11.0
+  - Boost: 1.78.0
+  - JSON: 3.10.4
+  - ACE: 6.5.9
 
 ## v3.1.1
 
