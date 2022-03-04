@@ -30,15 +30,15 @@ if (APPLE) # really should be checking for CLang
     set(Boost_MD5 f4096c4583947b0eb103c8539f1623a3)
 else()
      # Use version in Ubuntu 18.04
-     set(Boost_VERSION 1.65.1)
+     set(Boost_VERSION 1.78.0)
      if (BUILD_GADGETRON)
        set(Boost_REQUIRED_VERSION 1.65.1)
      else()
        # Ubutnu 16.04 version should be fine
        set(Boost_REQUIRED_VERSION 1.58.0)
      endif()
-     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_65_1.zip)
-     set(Boost_MD5 9824a7a3e25c9d4fdf2def07bce8651c)
+     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_78_0.zip)
+     set(Boost_MD5 e193e5089060ed6ce5145c8eb05e67e3)
 endif()
 
 ## Armadillo
@@ -92,7 +92,7 @@ option(DEVEL_BUILD "Use current versions of major packages" OFF)
 
 ## Googletest
 set(GTest_URL https://github.com/google/googletest )
-set(GTest_TAG release-1.8.0)
+set(GTest_TAG release-1.11.0)
 
 ## glog
 set(DEFAULT_glog_URL https://github.com/google/glog )
@@ -147,7 +147,7 @@ set(DEFAULT_SPM_URL https://github.com/spm/SPM12.git )
 set(DEFAULT_SPM_TAG r7771)
 
 set(DEFAULT_JSON_URL https://github.com/nlohmann/json.git )
-set(DEFAULT_JSON_TAG v3.9.1)
+set(DEFAULT_JSON_TAG v3.10.4)
 
 # CCPi CIL
 set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
@@ -185,7 +185,7 @@ if (DEVEL_BUILD)
   set(DEFAULT_pet_rd_tools_TAG origin/master)
 
   set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
-  set(DEFAULT_ACE_TAG origin/master)
+  set(DEFAULT_ACE_TAG origin/ACE_version_6.5.9)
 
   # CCPi CIL
   set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
