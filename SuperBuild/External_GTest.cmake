@@ -56,8 +56,15 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         ${${proj}_DEPENDENCIES}
   )
 
-  set(GTest_CMAKE_ARGS
-    -DGTest_DIR:PATH="${GTest_INSTALL_DIR}/lib/cmake/GTest")
+  if (${CMAKE_VERSION} VERSION_LESS "3.20")
+    # older CMake versions ignore GTest_DIR
+    set(GTest_CMAKE_ARGS
+      -DGTEST_ROOT:PATH="${GTest_INSTALL_DIR}")
+  else()
+    # We're using GTest 1.11.0 or later which exports CMake files
+    set(GTest_CMAKE_ARGS
+      -DGTest_DIR:PATH="${GTest_INSTALL_DIR}/lib/cmake/GTest")
+  endif()
 
 else()
       if(${USE_SYSTEM_${externalProjName}})
