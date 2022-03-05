@@ -19,6 +19,7 @@
   - Boost: 1.78.0
   - JSON: 3.10.4
   - ACE: 6.5.9
+  - parallelproj: v0.8
 
 ## v3.1.1
 
