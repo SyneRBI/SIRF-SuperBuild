@@ -1,7 +1,7 @@
 #========================================================================
 # Author: Benjamin A Thomas
 # Author: Edoardo Pasca
-# Copyright 2017, 2020 University College London
+# Copyright 2017, 2020, 2022 University College London
 # Copyright 2017, 2020 STFC
 #
 # This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
@@ -56,21 +56,20 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         ${${proj}_DEPENDENCIES}
   )
 
-    set(GTEST_ROOT        ${GTest_INSTALL_DIR})
+  set(GTest_CMAKE_ARGS
+    -DGTest_DIR:PATH="${GTest_INSTALL_DIR}/lib/cmake/GTest")
 
-  else()
+else()
       if(${USE_SYSTEM_${externalProjName}})
-        message(STATUS "USING the system ${externalProjName}, set GTEST_ROOT if needed.")
+        message(STATUS "USING the system ${externalProjName}, set GTest_DIR (or GTEST_ROOT for GTest < 1.8.1) if needed.")
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
     endif()
     ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-    ${${proj}_EP_ARGS_DIRS}
-)
-  endif()
+      ${${proj}_EP_ARGS_DIRS})
 
-  mark_as_superbuild(
-    VARS
-      GTEST_ROOT:PATH
-    LABELS
-      "FIND_PACKAGE"
-  )
+    if (DEFINED GTest_DIR)
+      set(GTest_CMAKE_ARGS -DGTest_DIR:PATH="${GTest_DIR}")
+    elseif (DEFINED GTEST_ROOT)
+      set(GTest_CMAKE_ARGS -DGTEST_ROOT:PATH="${GTEST_ROOT}")
+    endif()
+endif()
