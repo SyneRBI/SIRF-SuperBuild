@@ -59,7 +59,7 @@ jobs:
           compiler: gcc
           compiler_version: 8
           BUILD_TYPE: "Release"
-          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=OFF -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=OFF  -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
+          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=OFF -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=OFF  -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=OFF -DUSE_SYSTEM_SWIG=ON"
           DEVEL_BUILD: "ON"
 
       # let's run all of them, as opposed to aborting when one fails
