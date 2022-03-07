@@ -3,8 +3,8 @@
 set -ev
 INSTALL_DIR="${1:-/opt}"
 # set default URL/tag
-: ${SIRF_SB_URL=https://github.com/SyneRBI/SIRF-SuperBuild}
-: ${SIRF_SB_TAG=master}
+: ${SIRF_SB_URL=https://github.com/paskino/SIRF-SuperBuild}
+: ${SIRF_SB_TAG=check_build_build_boost}
 # set default number of parallel builds
 : ${NUM_PARALLEL_BUILDS=1}
 
