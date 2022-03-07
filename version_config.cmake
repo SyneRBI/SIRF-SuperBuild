@@ -204,7 +204,7 @@ else()
 
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
-  set(DEFAULT_siemens_to_ismrmrd_TAG 6d0ab3d3d0c8ade5c0526db1c6af9825008425ad)
+  set(DEFAULT_siemens_to_ismrmrd_TAG origin/master)
 
   ## pet-rd-tools
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
