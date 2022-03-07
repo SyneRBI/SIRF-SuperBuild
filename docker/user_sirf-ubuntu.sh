@@ -6,7 +6,7 @@ INSTALL_DIR="${1:-/opt}"
 : ${SIRF_SB_URL=https://github.com/SyneRBI/SIRF-SuperBuild}
 : ${SIRF_SB_TAG=master}
 # set default number of parallel builds
-: ${NUM_PARALLEL_BUILDS=2}
+: ${NUM_PARALLEL_BUILDS=1}
 
 git clone "$SIRF_SB_URL" --recursive "$INSTALL_DIR"/SIRF-SuperBuild
 cd $INSTALL_DIR/SIRF-SuperBuild
