@@ -202,6 +202,8 @@ else()
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
   set(DEFAULT_STIR_TAG rel_4.1.1)
 
+  # ismrmrd
+  set(DEFAULT_ISMRMRD_TAG v1.7.0)
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
   set(DEFAULT_siemens_to_ismrmrd_TAG origin/master)
