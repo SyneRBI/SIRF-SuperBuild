@@ -120,7 +120,7 @@ ARG SIRF_SB_URL="https://github.com/SyneRBI/SIRF-SuperBuild"
 ARG SIRF_SB_TAG="master"
 # speeding up the cmake build
 # (implementation note: changing this in your environment will invalidate the docker cache sadly)
-ARG NUM_PARALLEL_BUILDS="2"
+ARG NUM_PARALLEL_BUILDS="1"
 
 ARG BUILD_FLAGS="\
  -DCMAKE_BUILD_TYPE=Release\
@@ -134,6 +134,7 @@ ARG BUILD_FLAGS="\
 ARG EXTRA_BUILD_FLAGS="-DBUILD_CIL=OFF"
 RUN bash user_sirf-ubuntu.sh
 RUN rm user_sirf-ubuntu.sh
+RUN cmake --build /opt/SIRF-SuperBuild/ -j ${NUM_PARALLEL_BUILDS}
 
 # give everyone write and execute permission
 RUN chmod -R go+rwX /opt/SIRF-SuperBuild/INSTALL
