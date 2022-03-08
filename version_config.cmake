@@ -161,6 +161,10 @@ set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v20.09")
 set(DEFAULT_ROOT_URL https://github.com/root-project/root)
 set(DEFAULT_ROOT_TAG "v6-24-06")
 
+# ACE
+set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
+set(DEFAULT_ACE_TAG origin/ACE_version_6.5.9)
+
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
 
@@ -183,9 +187,6 @@ if (DEVEL_BUILD)
   ## pet-rd-tools
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
   set(DEFAULT_pet_rd_tools_TAG origin/master)
-
-  set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
-  set(DEFAULT_ACE_TAG origin/ACE_version_6.5.9)
 
   # CCPi CIL
   set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
@@ -212,10 +213,6 @@ else()
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
   set(DEFAULT_pet_rd_tools_TAG v2.0.1)
 
-  set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
-  set(DEFAULT_ACE_TAG origin/master)
-  
-  
 endif()
 
 
