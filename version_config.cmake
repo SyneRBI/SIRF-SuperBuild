@@ -29,16 +29,18 @@ if (APPLE) # really should be checking for CLang
     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_68_0.zip)
     set(Boost_MD5 f4096c4583947b0eb103c8539f1623a3)
 else()
-     # Use version in Ubuntu 18.04
-     set(Boost_VERSION 1.78.0)
+    # Use version in Ubuntu 20.04, i.e. 1.71
+    # but it is not in the binaries, so I try 1.72
+    # as it seems siemens_to_ismrmrd does not work with 1.78
+     set(Boost_VERSION 1.72.0)
      if (BUILD_GADGETRON)
        set(Boost_REQUIRED_VERSION 1.65.1)
      else()
        # Ubutnu 16.04 version should be fine
        set(Boost_REQUIRED_VERSION 1.58.0)
      endif()
-     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_78_0.zip)
-     set(Boost_MD5 e193e5089060ed6ce5145c8eb05e67e3)
+     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_72_0.zip)
+     set(Boost_MD5 93cf8511f2e9b4456e5178cb07fc829d)
 endif()
 
 ## Armadillo
@@ -161,6 +163,10 @@ set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v20.09")
 set(DEFAULT_ROOT_URL https://github.com/root-project/root)
 set(DEFAULT_ROOT_TAG "v6-24-06")
 
+# ACE
+set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
+set(DEFAULT_ACE_TAG origin/ACE_version_6.5.9)
+
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
 
@@ -183,9 +189,6 @@ if (DEVEL_BUILD)
   ## pet-rd-tools
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
   set(DEFAULT_pet_rd_tools_TAG origin/master)
-
-  set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
-  set(DEFAULT_ACE_TAG origin/ACE_version_6.5.9)
 
   # CCPi CIL
   set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
@@ -210,10 +213,6 @@ else()
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
   set(DEFAULT_pet_rd_tools_TAG v2.0.1)
 
-  set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
-  set(DEFAULT_ACE_TAG origin/master)
-  
-  
 endif()
 
 
