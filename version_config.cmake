@@ -29,7 +29,9 @@ if (APPLE) # really should be checking for CLang
     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_68_0.zip)
     set(Boost_MD5 f4096c4583947b0eb103c8539f1623a3)
 else()
-     # Use version in Ubuntu 20.04 1.71 but it is not in the binaries. Try 1.72
+    # Use version in Ubuntu 20.04, i.e. 1.71
+    # but it is not in the binaries, so I try 1.72
+    # as it seems siemens_to_ismrmrd does not work with 1.78
      set(Boost_VERSION 1.72.0)
      if (BUILD_GADGETRON)
        set(Boost_REQUIRED_VERSION 1.65.1)
