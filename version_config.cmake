@@ -163,7 +163,7 @@ set(DEFAULT_ROOT_TAG "v6-24-06")
 
 # ACE
 set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
-set(DEFAULT_ACE_TAG origin/ACE_version_6.5.9)
+set(DEFAULT_ACE_TAG v6.5.9)
 
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
