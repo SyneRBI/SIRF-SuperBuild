@@ -134,7 +134,6 @@ ARG BUILD_FLAGS="\
 ARG EXTRA_BUILD_FLAGS="-DBUILD_CIL=OFF"
 RUN bash user_sirf-ubuntu.sh
 RUN rm user_sirf-ubuntu.sh
-RUN cmake --build /opt/SIRF-SuperBuild/ -j ${NUM_PARALLEL_BUILDS}
 
 # give everyone write and execute permission
 RUN chmod -R go+rwX /opt/SIRF-SuperBuild/INSTALL
