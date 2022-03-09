@@ -14,7 +14,7 @@ apt-get install -yq --no-install-recommends \
   h5utils                \
   jq                     \
   hdf5-tools             \
-  libatlas-base-dev      \
+  libopenblas-dev      \
   libxml2-dev            \
   libfreetype6-dev       \
   libxslt-dev            \
