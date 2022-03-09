@@ -29,18 +29,15 @@ if (APPLE) # really should be checking for CLang
     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_68_0.zip)
     set(Boost_MD5 f4096c4583947b0eb103c8539f1623a3)
 else()
-    # Use version in Ubuntu 20.04, i.e. 1.71
-    # but it is not in the binaries, so I try 1.72
-    # as it seems siemens_to_ismrmrd does not work with 1.78
-     set(Boost_VERSION 1.72.0)
+     set(Boost_VERSION 1.78.0)
      if (BUILD_GADGETRON)
        set(Boost_REQUIRED_VERSION 1.65.1)
      else()
        # Ubutnu 16.04 version should be fine
        set(Boost_REQUIRED_VERSION 1.58.0)
      endif()
-     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_72_0.zip)
-     set(Boost_MD5 93cf8511f2e9b4456e5178cb07fc829d)
+     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_78_0.zip)
+     set(Boost_MD5 e193e5089060ed6ce5145c8eb05e67e3)
 endif()
 
 ## Armadillo
@@ -153,7 +150,8 @@ set(DEFAULT_JSON_TAG v3.10.4)
 
 # CCPi CIL
 set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
-set(DEFAULT_CIL_TAG "v21.3.1")
+# TODO update to a tagged version > v21.3.1 once available
+set(DEFAULT_CIL_TAG f5c06566215564ad78ba0f1738d0836f3ad37a60)
 set(DEFAULT_CIL-ASTRA_URL https://github.com/TomographicImaging/CIL-ASTRA.git)
 set(DEFAULT_CIL-ASTRA_TAG "v21.3.0")
 set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
@@ -165,7 +163,7 @@ set(DEFAULT_ROOT_TAG "v6-24-06")
 
 # ACE
 set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
-set(DEFAULT_ACE_TAG origin/ACE_version_6.5.9)
+set(DEFAULT_ACE_TAG v6.5.9)
 
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
@@ -184,7 +182,7 @@ if (DEVEL_BUILD)
 
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd )
-  set(DEFAULT_siemens_to_ismrmrd_TAG 6d0ab3d3d0c8ade5c0526db1c6af9825008425ad)
+  set(DEFAULT_siemens_to_ismrmrd_TAG origin/master)
 
   ## pet-rd-tools
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
@@ -209,7 +207,7 @@ else()
   set(DEFAULT_ISMRMRD_TAG v1.7.0)
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
-  set(DEFAULT_siemens_to_ismrmrd_TAG origin/master)
+  set(DEFAULT_siemens_to_ismrmrd_TAG b87759e49e53dab4939147eb52b7a0e6465f3d04)
 
   ## pet-rd-tools
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )

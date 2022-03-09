@@ -13,53 +13,53 @@ jobs:
     strategy:
       matrix:
         include:
-        # - os: ubuntu-latest
-        #   compiler: gcc
-        #   compiler_version: 9
-        #   BUILD_TYPE: "Release"
-        #   EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=OFF -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
-        #   DEVEL_BUILD: "OFF"
-        # - os: ubuntu-latest
-        #   compiler: gcc
-        #   compiler_version: 9
-        #   BUILD_TYPE: "Release"
-        #   EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=OFF -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=OFF"
-        #   DEVEL_BUILD: "OFF"
-        # #- os: ubuntu-latest
-        # #  compiler: gcc
-        # #  compiler_version: 9
-        # #  BUILD_TYPE: "Release"
-        # #  EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
-        # #  DEVEL_BUILD: "OFF"
-        # - os: ubuntu-latest
-        #   compiler: gcc
-        #   compiler_version: 9
-        #   BUILD_TYPE: "Release"
-        #   EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=OFF -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
-        #   DEVEL_BUILD: "OFF"
-        # - os: ubuntu-latest
-        #   compiler: gcc
-        #   compiler_version: 9
-        #   BUILD_TYPE: "Release"
-        #   EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=OFF -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_ROOT:BOOL=ON"
-        #   DEVEL_BUILD: "ON"
-        # - os: ubuntu-latest
-        #   compiler: gcc
-        #   compiler_version: 8
-        #   BUILD_TYPE: "Release"
-        #   EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=OFF -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=OFF  -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
-        #   DEVEL_BUILD: "OFF"
-        - os: ubuntu-18.04
+        - os: ubuntu-latest
+          compiler: gcc
+          compiler_version: 9
+          BUILD_TYPE: "Release"
+          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
+          DEVEL_BUILD: "OFF"
+        - os: ubuntu-latest
+          compiler: gcc
+          compiler_version: 9
+          BUILD_TYPE: "Release"
+          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=OFF"
+          DEVEL_BUILD: "OFF"
+        #- os: ubuntu-latest
+        #  compiler: gcc
+        #  compiler_version: 9
+        #  BUILD_TYPE: "Release"
+        #  EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
+        #  DEVEL_BUILD: "OFF"
+        - os: ubuntu-latest
+          compiler: gcc
+          compiler_version: 9
+          BUILD_TYPE: "Release"
+          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
+          DEVEL_BUILD: "OFF"
+        - os: ubuntu-latest
+          compiler: gcc
+          compiler_version: 9
+          BUILD_TYPE: "Release"
+          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_ROOT:BOOL=ON"
+          DEVEL_BUILD: "ON"
+        - os: ubuntu-latest
           compiler: gcc
           compiler_version: 8
           BUILD_TYPE: "Release"
-          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=OFF -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=OFF  -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
+          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
           DEVEL_BUILD: "OFF"
         - os: ubuntu-18.04
           compiler: gcc
           compiler_version: 8
           BUILD_TYPE: "Release"
-          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=OFF -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=OFF  -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=OFF -DUSE_SYSTEM_SWIG=ON"
+          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
+          DEVEL_BUILD: "OFF"
+        - os: ubuntu-18.04
+          compiler: gcc
+          compiler_version: 8
+          BUILD_TYPE: "Release"
+          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
           DEVEL_BUILD: "ON"
 
       # let's run all of them, as opposed to aborting when one fails
@@ -120,7 +120,7 @@ jobs:
       run: 
           cd ${GITHUB_WORKSPACE}/build;
           source ~/virtualenv/bin/activate;
-          cmake --build . -j 1;
+          cmake --build . -j 2;
     - name: tests
       shell: bash
       run: 
