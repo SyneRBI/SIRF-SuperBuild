@@ -3,10 +3,10 @@
 set -ev
 INSTALL_DIR="${1:-/opt}"
 # set default URL/tag
-: ${SIRF_SB_URL=https://github.com/paskino/SIRF-SuperBuild}
-: ${SIRF_SB_TAG=check_build_build_boost}
+: ${SIRF_SB_URL=https://github.com/SyneRBI/SIRF-SuperBuild}
+: ${SIRF_SB_TAG=master}
 # set default number of parallel builds
-: ${NUM_PARALLEL_BUILDS=1}
+: ${NUM_PARALLEL_BUILDS=2}
 
 git clone "$SIRF_SB_URL" --recursive "$INSTALL_DIR"/SIRF-SuperBuild
 cd $INSTALL_DIR/SIRF-SuperBuild
