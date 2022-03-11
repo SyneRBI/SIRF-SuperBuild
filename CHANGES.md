@@ -10,7 +10,7 @@
 - add the CERN ROOT library (if USE_ROOT=ON, but defaults to OFF), which can be used by STIR to read GATE ROOT files.
 - updated versions:
   - ISMRMRD: 1.5.0
-  - siemens_to_ismrmrd: [6d0ab3d3d0c8ade5c0526db1c6af9825008425ad](https://github.com/ismrmrd/siemens_to_ismrmrd/commit/6d0ab3d3d0c8ade5c0526db1c6af9825008425ad)
+  - siemens_to_ismrmrd: [6d0ab3d3d0c8ade5c0526db1c6af9825008425ad](https://github.com/ismrmrd/siemens_to_ismrmrd/commit/6d0ab3d3d0c8ade5c0526db1c6af9825008425ad) > 1.2.2 with bug-fix for boost/foreach.hpp
   - ITK: 5.2.1 However, we now build a smaller set of modules,
      most (but not all) of IO, and Filtering. See SuperBuild/External_ITK.cmake)
   - NiftyReg: 99d584e2b8ea0bffe7e65e40c8dc818751782d92 ) (fixes gcc-9 OpenMP problems)
