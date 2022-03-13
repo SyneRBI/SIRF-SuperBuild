@@ -29,15 +29,15 @@ if (APPLE) # really should be checking for CLang
     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_68_0.zip)
     set(Boost_MD5 f4096c4583947b0eb103c8539f1623a3)
 else()
-     set(Boost_VERSION 1.78.0)
+     set(Boost_VERSION 1.72.0)
      if (BUILD_GADGETRON)
        set(Boost_REQUIRED_VERSION 1.65.1)
      else()
        # Ubutnu 16.04 version should be fine
        set(Boost_REQUIRED_VERSION 1.58.0)
      endif()
-     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_78_0.zip)
-     set(Boost_MD5 e193e5089060ed6ce5145c8eb05e67e3)
+     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_72_0.zip)
+     set(Boost_MD5 93cf8511f2e9b4456e5178cb07fc829d)
 endif()
 
 ## Armadillo
