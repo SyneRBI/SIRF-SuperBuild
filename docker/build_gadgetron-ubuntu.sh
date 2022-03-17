@@ -27,7 +27,7 @@ apt-get install -yq --no-install-recommends \
 apt-get clean
 
 # install libgmock-dev if in the apt packages https://github.com/SyneRBI/SIRF-SuperBuild/issues/647#issuecomment-1042841986
-if apt-cache show libgmock-dev >& /dev/null`; then
+if apt-cache show libgmock-dev >& /dev/null; then
   apt install  libgmock-dev libgtest-dev
 else
   apt install  libgtest-dev
