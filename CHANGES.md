@@ -1,6 +1,7 @@
 # ChangeLog
 ## vx.x.x
 
+- CMake minimum required version is set to 3.16.2, as it supports Boost 1.72
 - Docker images install CIL via conda, so setting `BUILD_CIL=OFF` in the docker build
 - Added jupyterhub Dockerfile and documentation to build the jupyterhub image used in training on top of SIRF docker images and jupyter datascience-notebook image with GPU access.
 - Adds Boost random for ISMRMRD 1.5.0 [#636](https://github.com/SyneRBI/SIRF-SuperBuild/issues/636)
