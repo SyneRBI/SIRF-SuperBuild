@@ -30,6 +30,6 @@ apt-get clean
 if apt-cache show libgmock-dev >& /dev/null`; then
   apt install  libgmock-dev libgtest-dev
 else
-  apt install  libgmock-dev
+  apt install  libgtest-dev
 fi
 
