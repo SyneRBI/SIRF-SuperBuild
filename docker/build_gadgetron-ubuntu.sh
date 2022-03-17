@@ -23,5 +23,11 @@ apt-get install -yq --no-install-recommends \
   liblapack-dev          \
   liblapacke-dev         \
   libplplot-dev          \
-  libdcmtk-dev
+  libdcmtk-dev \
+  libgtest-dev
 apt-get clean
+
+# install libgmock-dev if in the apt packages https://github.com/SyneRBI/SIRF-SuperBuild/issues/647#issuecomment-1042841986
+if apt-cache show libgmock-dev >& /dev/null`; then
+  apt install  libgmock-dev
+fi
