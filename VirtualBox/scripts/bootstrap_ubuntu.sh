@@ -61,22 +61,22 @@ if [ ! -d $userHOME/devel ]; then
 fi
 cd $userHOME/devel
 
-if [ ! -d $userHOME/devel/SyneRBI_VM ]; then
-  git clone https://github.com/SyneRBI/SyneRBI_VM.git
-  cd SyneRBI_VM
+if [ ! -d $userHOME/devel/SIRF-SuperBuild ]; then
+  git clone https://github.com/SyneRBI/SIRF-SuperBuild.git
+  cd SIRF-SuperBuild
 else
-  cd SyneRBI_VM
-  git pull
+  cd SIRF-SuperBuild
+  # git pull
 fi
 
 
 
-bash $userHOME/devel/SyneRBI_VM/scripts/INSTALL_prerequisites_with_apt-get.sh
-bash $userHOME/devel/SyneRBI_VM/scripts/INSTALL_CMake.sh /usr/local
-bash $userHOME/devel/SyneRBI_VM/scripts/INSTALL_python_packages.sh
+bash $userHOME/devel/SIRF-SuperBuild/VirtualBox/scripts/INSTALL_prerequisites_with_apt-get.sh
+bash $userHOME/devel/SIRF-SuperBuild/VirtualBox/scripts/INSTALL_CMake.sh /usr/local
+bash $userHOME/devel/SIRF-SuperBuild/VirtualBox/scripts/INSTALL_python_packages.sh
 
 # port 8888 is forwarded to 8888 so the user can use the host browser
 # Therefore no browser is installed on the VM
 
 chown -R $SIRFUSERNAME:users $userHOME
-sudo -u $SIRFUSERNAME -H bash $userHOME/devel/SyneRBI_VM/scripts/UPDATE.sh
+sudo -u $SIRFUSERNAME -H bash $userHOME/devel/SIRF-SuperBuild/VirtualBox/scripts/UPDATE.sh -t origin/vm_32
