@@ -10,7 +10,7 @@ apt-get install -yq --no-install-recommends \
   h5utils                \
   jq                     \
   hdf5-tools             \
-  libatlas-base-dev      \
+  libopenblas-dev      \
   libxml2-dev            \
   libfreetype6-dev       \
   libxslt-dev            \
@@ -21,3 +21,11 @@ apt-get install -yq --no-install-recommends \
   libplplot-dev          \
   libdcmtk-dev
 apt-get clean
+
+# install libgmock-dev if in the apt packages https://github.com/SyneRBI/SIRF-SuperBuild/issues/647#issuecomment-1042841986
+if apt-cache show libgmock-dev >& /dev/null; then
+  apt install  libgmock-dev libgtest-dev
+else
+  apt install  libgtest-dev
+fi
+

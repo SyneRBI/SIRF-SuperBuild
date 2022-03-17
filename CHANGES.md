@@ -1,6 +1,8 @@
 # ChangeLog
-## vx.x.x
+## v3.2.0
 
+- CMake minimum required version is set to 3.16.2, as it supports Boost 1.72
+- VirtualBox VM is created from the SIRF-SuperBuild repository
 - Docker images install CIL via conda, so setting `BUILD_CIL=OFF` in the docker build
 - Added jupyterhub Dockerfile and documentation to build the jupyterhub image used in training on top of SIRF docker images and jupyter datascience-notebook image with GPU access.
 - Adds Boost random for ISMRMRD 1.5.0 [#636](https://github.com/SyneRBI/SIRF-SuperBuild/issues/636)
@@ -9,14 +11,15 @@
 - Boost: fix cases where the wrong version of boost could be found [#627](https://github.com/SyneRBI/SIRF-SuperBuild/issues/627)
 - add the CERN ROOT library (if USE_ROOT=ON, but defaults to OFF), which can be used by STIR to read GATE ROOT files.
 - updated versions:
-  - ISMRMRD: 1.5.0
-  - siemens_to_ismrmrd: [6d0ab3d3d0c8ade5c0526db1c6af9825008425ad](https://github.com/ismrmrd/siemens_to_ismrmrd/commit/6d0ab3d3d0c8ade5c0526db1c6af9825008425ad)
+  - CMake: 3.16.2
+  - ISMRMRD: 1.7.0
+  - siemens_to_ismrmrd: [6d0ab3d3d0c8ade5c0526db1c6af9825008425ad](https://github.com/ismrmrd/siemens_to_ismrmrd/commit/6d0ab3d3d0c8ade5c0526db1c6af9825008425ad) > 1.2.2 with bug-fix for boost/foreach.hpp
   - ITK: 5.2.1 However, we now build a smaller set of modules,
      most (but not all) of IO, and Filtering. See SuperBuild/External_ITK.cmake)
   - NiftyReg: 99d584e2b8ea0bffe7e65e40c8dc818751782d92 ) (fixes gcc-9 OpenMP problems)
-  - CIL: v21.3.1
+  - CIL: f5c06566215564ad78ba0f1738d0836f3ad37a60 > v21.3.1  which contains a bugfix in a unittest [#658](https://github.com/SyneRBI/SIRF-SuperBuild/issues/658)
   - GTest: 1.11.0
-  - Boost: 1.78.0
+  - Boost: 1.72.0
   - JSON: 3.10.4
   - ACE: 6.5.9
   - parallelproj: v0.8
