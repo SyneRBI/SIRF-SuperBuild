@@ -13,7 +13,7 @@ export DEBIAN_FRONTEND=noninteractive
 SUDO=sudo
 
 # TODO would be better to guarantee absolute path for SCRIPTS
-SCRIPTS=`dirname $0`/../../docker
+SCRIPTS=$(dirname $0)/../../docker
 
 $SUDO $SCRIPTS/build_essential-ubuntu.sh
 
