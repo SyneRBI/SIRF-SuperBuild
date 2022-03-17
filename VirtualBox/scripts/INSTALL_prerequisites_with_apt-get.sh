@@ -13,9 +13,9 @@ export DEBIAN_FRONTEND=noninteractive
 SUDO=sudo
 
 # TODO would be better to guarantee absolute path for SCRIPTS
-SCRIPTS=$(dirname $0)/../../docker
+SCRIPTS="$(dirname $0)/../../docker"
 
-$SUDO $SCRIPTS/build_essential-ubuntu.sh
+$SUDO "$SCRIPTS/build_essential-ubuntu.sh"
 
 APT_GET_INSTALL="$SUDO apt-get install -y --no-install-recommends"
 
@@ -24,10 +24,10 @@ echo "Installing linux headers for VGA updates"
 # if this install failes (e.g. on Windows WSL2)
 ${APT_GET_INSTALL} linux-headers-$(uname -r) || true
 
-$SUDO $SCRIPTS/build_system-ubuntu.sh
+$SUDO "$SCRIPTS/build_system-ubuntu.sh"
 
 echo "Installing Gadgetron pre-requisites..."
-$SUDO $SCRIPTS/build_gadgetron-ubuntu.sh
+$SUDO "$SCRIPTS/build_gadgetron-ubuntu.sh"
 ${APT_GET_INSTALL} libpugixml-dev
 
 echo "Installing expect"

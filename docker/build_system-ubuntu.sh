@@ -8,7 +8,7 @@ APT_GET_INSTALL="apt-get install -yq --no-install-recommends"
 # first find current boost version (if any)
 # the 'tail' makes sure we use the last one listed by apt-cache in case there is more than 1 version
 function find_boost_version() {
-  tmp=`apt-cache search libboost|grep ALL|egrep libboost[1-9]|tail -n 1`
+  tmp=$(apt-cache search libboost|grep ALL|egrep libboost[1-9]|tail -n 1)
   boost_major=${tmp:8:1}
   boost_minor=${tmp:10:2}
 }
@@ -16,7 +16,7 @@ function find_boost_version() {
 find_boost_version
 
 # echo "Found Boost major version ${boost_major}, minor ${boost_minor}"
-if [ $boost_major -gt 1 -o $boost_minor -gt 64 ]
+if [ "$boost_major" -gt 1 -o "$boost_minor" -gt 64 ]
 then
     echo "installing Boost ${boost_major}.${boost_minor} from system apt"
     ${APT_GET_INSTALL} libboost-dev libboost-chrono-dev \
@@ -39,7 +39,7 @@ else
     # TODO: find out which version is in the ppa
     find_boost_version
     echo "installing Boost ${boost_major}.${boost_minor} from ppa:mhier apt"
-    ${APT_GET_INSTALL} libboost${boost_major}.${boost_minor}-all-dev
+    ${APT_GET_INSTALL} "libboost${boost_major}.${boost_minor}-all-dev"
 fi
 
 ${APT_GET_INSTALL} \
