@@ -19,7 +19,8 @@
 #
 #=========================================================================
 if (WIN32)
-  cmake_minimum_required( VERSION 3.16.2 FATAL_ERROR)
+  # need really recent CMake, for instance for cmake_path
+  cmake_minimum_required( VERSION 3.20.0 FATAL_ERROR)
 else()
   cmake_minimum_required( VERSION 3.16.2 FATAL_ERROR)
 endif()
