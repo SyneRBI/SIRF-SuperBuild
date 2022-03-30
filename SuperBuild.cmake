@@ -95,13 +95,9 @@ if (DISABLE_PYTHON)
   message(STATUS "Python support disabled")
 else()
 
-  # Attempt to make Python settings consistent
-  set(PYVER 0 CACHE STRING "Python version")
-  if(PYVER EQUAL 0)
-    find_package(PythonInterp)
-  else()
-    find_package(PythonInterp ${PYVER})
-  endif()
+  # only Python 3 is supported
+  find_package(PythonInterp 3)
+  
   if (PYTHONINTERP_FOUND)
     set(Python_ADDITIONAL_VERSIONS ${PYTHON_VERSION_STRING})
     message(STATUS "Found PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}")
