@@ -10,6 +10,7 @@
 - moved the VM repository to the `VirtualBox` subdirectory
 - fix usage of `proj_EXTRA_CMAKE_ARGS` facility (it was broken for all projects except ITK) [#616](https://github.com/SyneRBI/SIRF-SuperBuild/issues/616)
 - Boost: fix cases where the wrong version of boost could be found [#627](https://github.com/SyneRBI/SIRF-SuperBuild/issues/627)
+- GTest: if USE_SYSTEM_GTest=OFF, attempt to force finding our version, otherwise, pass GTest_DIR or GTEST_ROOT on to dependent projects.
 - add the CERN ROOT library (if USE_ROOT=ON, but defaults to OFF), which can be used by STIR to read GATE ROOT files.
 - updated versions:
   - CMake: 3.16.2

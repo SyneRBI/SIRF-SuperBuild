@@ -336,7 +336,7 @@ message(STATUS "")
 message(STATUS "Boost_CMAKE_ARGS= " "${Boost_CMAKE_ARGS}")
 message(STATUS "ISMRMRD_DIR = " ${ISMRMRD_DIR})
 message(STATUS "STIR_DIR = " ${STIR_DIR})
-message(STATUS "GTEST_ROOT = " ${GTEST_ROOT})
+message(STATUS "GTest_CMAKE_ARGS = " ${GTest_CMAKE_ARGS})
 message(STATUS "Matlab_ROOT_DIR = " ${Matlab_ROOT_DIR})
 
 #Need to configure main project here.
