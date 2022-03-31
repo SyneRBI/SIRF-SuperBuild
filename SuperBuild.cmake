@@ -105,7 +105,7 @@ else()
   endif()
   
   find_package(PythonLibs 3)
-  endif()
+  
   if (PYTHONLIBS_FOUND)
     message(STATUS "Found PYTHON_INCLUDE_DIRS=${PYTHON_INCLUDE_DIRS}")
     message(STATUS "Found PYTHON_LIBRARIES=${PYTHON_LIBRARIES}")
