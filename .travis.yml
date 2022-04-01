@@ -380,7 +380,7 @@ before_install:
 - export PATH="$PWD:$PATH"
 - popd
 # N.B.: don't put into build matrix to allow caching.
-- BUILD_FLAGS="$BUILD_FLAGS -DPYVER=$PYMVER"
+- BUILD_FLAGS="$BUILD_FLAGS"
 - BUILD_FLAGS="$BUILD_FLAGS -DCMAKE_C_COMPILER='$(which $CC)' -DCMAKE_CXX_COMPILER='$(which $CXX)'"
 - cmake --version
 - echo "cmake flags $BUILD_FLAGS $EXTRA_BUILD_FLAGS"
