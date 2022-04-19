@@ -18,7 +18,7 @@
 # play safe with an innocent prompt that also works in the Bourne shell
 export PS1='sirf$ '
 # Python (virtualenv)
-[ -f /opt/conda/bin/activate ] && . /opt/conda/bin/activate
+[ -f PYTHON_INSTALL_DIR/bin/activate ] && . PYTHON_INSTALL_DIR/bin/activate
 
 # SIRF env
 [ -f /opt/SIRF-SuperBuild/INSTALL/bin/env_sirf.sh ] && \
@@ -26,7 +26,7 @@ export PS1='sirf$ '
 
 # Need to add this as we have built using some of these shared libraries
 # See https://github.com/SyneRBI/SIRF-SuperBuild/issues/573
-export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/opt/conda/lib
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:PYTHON_INSTALL_DIR/lib
 
 # .local/bin (used by pip for instance)
 export PATH="${PATH}":~/.local/bin

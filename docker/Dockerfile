@@ -72,6 +72,7 @@ ARG NB_UID="22222"
 ARG NB_GID="100"
 ARG HOME="/home/${NB_USER}"
 ARG PYTHON_INSTALL_DIR=/opt/conda
+ARG PYTHON_EXECUTABLE="miniconda"
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -97,12 +98,14 @@ RUN chmod 644 .bashrc .profile && chown -R "${NB_USER}":"${NB_GROUP}" "${HOME}"
 # run user scripts as NB_USER
 USER ${NB_USER}:${NB_GROUP}
 
-# Python (virtualenv)
+# Python (virtualenv or conda)
 COPY requirements.txt .
 COPY requirements_conda_forge.txt .
 COPY user_python-ubuntu.sh .
-RUN bash user_python-ubuntu.sh $PYTHON_INSTALL_DIR && \
+RUN bash user_python-ubuntu.sh "$PYTHON_INSTALL_DIR" "${PYTHON_EXECUTABLE}" && \
     rm user_python-ubuntu.sh requirements.txt requirements_conda_forge.txt
+# update bashrc with the location of PYTHON_INSTALL_DIR
+RUN RUN sed -i s:PYTHON_INSTALL_DIR:${PYTHON_INSTALL_DIR}:g .bashrc
 
 # ccache
 USER root
