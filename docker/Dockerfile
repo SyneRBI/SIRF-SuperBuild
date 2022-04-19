@@ -94,6 +94,8 @@ WORKDIR ${HOME}
 COPY .bashrc .
 COPY .profile .
 RUN chmod 644 .bashrc .profile && chown -R "${NB_USER}":"${NB_GROUP}" "${HOME}"
+# update bashrc with the location of PYTHON_INSTALL_DIR
+RUN sed -i s:PYTHON_INSTALL_DIR:${PYTHON_INSTALL_DIR}:g .bashrc
 
 # run user scripts as NB_USER
 USER ${NB_USER}:${NB_GROUP}
@@ -102,10 +104,9 @@ USER ${NB_USER}:${NB_GROUP}
 COPY requirements.txt .
 COPY requirements_conda_forge.txt .
 COPY user_python-ubuntu.sh .
-RUN bash user_python-ubuntu.sh "$PYTHON_INSTALL_DIR" "${PYTHON_EXECUTABLE}" && \
+RUN bash user_python-ubuntu.sh "$PYTHON_INSTALL_DIR" && \
     rm user_python-ubuntu.sh requirements.txt requirements_conda_forge.txt
-# update bashrc with the location of PYTHON_INSTALL_DIR
-RUN RUN sed -i s:PYTHON_INSTALL_DIR:${PYTHON_INSTALL_DIR}:g .bashrc
+
 
 # ccache
 USER root
