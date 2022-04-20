@@ -1,8 +1,27 @@
 #!/usr/bin/env bash
+
+# User can pass 2 parameters to this script: 
+# 1. PYTHON_EXECUTABLE which can be either the 'miniconda' string or the location of the Python executable
+# 2. PYTHON_INSTALL_DIR which points to the location where the user has their virtual environment installed
+#    The virtual environment can be either virtualenv or conda
+#
+# To pass these parameters the user needs to set (at least) temporary environment variables:
+# PYTHON_EXECUTABLE=python3 PYTHON_INSTALL_DIR="~/virtualenv" bash user_python-ubuntu.sh
+# Fx`xor details see https://github.com/SyneRBI/SIRF-SuperBuild/pull/692#issuecomment-1102704682 
 [ -f .bashrc ] && . .bashrc
 set -exv
-INSTALL_DIR="${1:-/opt/conda}"
-PYTHON="${2:-miniconda}"
+
+if [ -n "${PYTHON_EXECUTABLE}" ]; then 
+  PYTHON=$PYTHON_EXECUTABLE
+else
+  PYTHON='miniconda'
+fi
+
+if [[ -n "${PYTHON_INSTALL_DIR}" ]]; then
+  INSTALL_DIR=${PYTHON_INSTALL_DIR}
+else
+  INSTALL_DIR="/opt/conda"
+fi
 
 # Python
 case "$PYTHON" in
