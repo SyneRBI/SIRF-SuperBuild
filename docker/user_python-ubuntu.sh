@@ -7,7 +7,7 @@
 #
 # To pass these parameters the user needs to set (at least) temporary environment variables:
 # PYTHON_EXECUTABLE=python3 PYTHON_INSTALL_DIR="~/virtualenv" bash user_python-ubuntu.sh
-# Fx`xor details see https://github.com/SyneRBI/SIRF-SuperBuild/pull/692#issuecomment-1102704682 
+# For details see https://github.com/SyneRBI/SIRF-SuperBuild/pull/692#issuecomment-1102704682 
 [ -f .bashrc ] && . .bashrc
 set -exv
 
