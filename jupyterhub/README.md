@@ -19,7 +19,7 @@ Currently the `base-notebook` in [`jupyter/docker-stacks`](`https://github.com/j
 So to be able to use the `nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04` base image we need to modify the `base-notebook` and install `tini` in another way.
 The modifications are available at https://github.com/paskino/docker-stacks/tree/base_image_ubuntu18.04
 
-Below a list of commands that will build the `paskino/jupyter:datascience-notebook-cuda10-ubuntu18.04`
+Below a list of commands that will build the `paskino/jupyter:datascience-notebook-cuda11-cudnn8-devel-ubuntu18.04`
 
 ```
 git clone git@github.com:paskino/docker-stacks.git
@@ -30,31 +30,31 @@ cd ..
 # base notebook
 cd docker-stacks/base-notebook
 # change the base class with the ROOT_CONTAINER argument
-docker build --build-arg ROOT_CONTAINER=nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04 .
+docker build --build-arg ROOT_CONTAINER=nvidia/cuda:11.5.0-cudnn8-devel-ubuntu18.04 .
 # tag the created image
-docker tag 4dbe50ddc554 paskino/jupyter:base-notebook-cuda10-ubuntu18.04
+docker tag 4dbe50ddc554 paskino/jupyter:base-notebook-cuda11-cudnn8-devel-ubuntu18.04
 
 # minimal notebook
 cd ../minimal-notebook
-docker build --build-arg BASE_CONTAINER=paskino/jupyter:base-notebook-cuda10-ubuntu18.04 .
-docker tag 4bfaa92b9ed6 paskino/jupyter:minimal-notebook-cuda10-ubuntu18.04
+docker build --build-arg BASE_CONTAINER=paskino/jupyter:base-notebook-cuda11-cudnn8-devel-ubuntu18.04 .
+docker tag 89a140d2318c paskino/jupyter:minimal-notebook-cuda11-cudnn8-devel-ubuntu18.04
 
 # scipy-notebook
 cd ../scipy-notebook
-docker build --build-arg BASE_CONTAINER=paskino/jupyter:minimal-notebook-cuda10-ubuntu18.04 .
-docker tag 9cbadae5917e paskino/jupyter:scipy-notebook-cuda10-ubuntu18.04
+docker build --build-arg BASE_CONTAINER=paskino/jupyter:minimal-notebook-cuda11-cudnn8-devel-ubuntu18.04 .
+docker tag 36ca7783b57d paskino/jupyter:scipy-notebook-cuda11-cudnn8-devel-ubuntu18.04
 
 # datascience-notebook
 cd ../datascience-notebook
-docker build --build-arg BASE_CONTAINER=paskino/jupyter:scipy-notebook-cuda10-ubuntu18.04 .
-docker tag aec093c609c5 paskino/jupyter:datascience-notebook-cuda10-ubuntu18.04
+docker build --build-arg BASE_CONTAINER=paskino/jupyter:scipy-notebook-cuda11-cudnn8-devel-ubuntu18.04 .
+docker tag 5c63287f0aee paskino/jupyter:datascience-notebook-cuda11-cudnn8-devel-ubuntu18.04
 ```
 
-Finally we have the base `datascience-notebook` with the `nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04` base image.
+Finally we have the base `datascience-notebook` with the `nvidia/cuda:11.5.0-cudnn8-devel-ubuntu18.04` base image.
 
 ### Start building SIRF
 
-Build the `sirf` target of the SIRF Dockerfile with the `nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04` base image.
+Build the `sirf` target of the SIRF Dockerfile with the `nvidia/cuda:11.5.0-cudnn8-devel-ubuntu18.04` base image.
 
 ```
 git clone git@github.com:SyneRBI/SIRF-SuperBuild.git
