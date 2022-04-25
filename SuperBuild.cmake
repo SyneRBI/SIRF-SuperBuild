@@ -198,6 +198,12 @@ option(USE_SYSTEM_NIFTYREG "Build using an external version of NIFTYREG" OFF)
 option(USE_SYSTEM_GTest "Build using an external version of GTest" OFF)
 option(USE_SYSTEM_ACE "Build using an external version of ACE" ON)
 
+if (USE_SYSTEM_siemens_to_ismrmrd)
+  set(ISMRMRD_REQUIRED_VERSION "1.4.2.1" CACHE STRING ON)
+else()
+  set(ISMRMRD_REQUIRED_VERSION "1.7" CACHE STRING ON)
+endif()
+
 # SPM requires matlab
 if (BUILD_MATLAB)
   option(USE_SYSTEM_SPM "Build using an external version of SPM. Only SPM12 tested." OFF)
