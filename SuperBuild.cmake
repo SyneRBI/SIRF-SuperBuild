@@ -198,6 +198,11 @@ option(USE_SYSTEM_NIFTYREG "Build using an external version of NIFTYREG" OFF)
 option(USE_SYSTEM_GTest "Build using an external version of GTest" OFF)
 option(USE_SYSTEM_ACE "Build using an external version of ACE" ON)
 
+if (USE_SYSTEM_STIR)
+  set(STIR_REQUIRED_VERSION "4.1.0" CACHE STRING ON)
+endif()
+
+
 if (USE_SYSTEM_siemens_to_ismrmrd)
   set(ISMRMRD_REQUIRED_VERSION "1.4.2.1" CACHE STRING ON)
 else()
@@ -283,6 +288,7 @@ endif()
 
 # parallelproj
 set(USE_parallelproj ON CACHE BOOL "Build STIR with parallelproj's projectors") # FORCE)
+set(parallelproj_REQUIRED_VERSION "0.8" CACHE STRING ON)
 if (USE_parallelproj)
   option(USE_SYSTEM_parallelproj "Build using an external version of parallelproj" OFF)
 endif()
