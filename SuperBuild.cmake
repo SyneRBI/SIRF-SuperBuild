@@ -277,7 +277,6 @@ endif()
 
 # parallelproj
 set(USE_parallelproj ON CACHE BOOL "Build STIR with parallelproj's projectors") # FORCE)
-
 if (USE_parallelproj)
   option(USE_SYSTEM_parallelproj "Build using an external version of parallelproj" OFF)
 endif()
