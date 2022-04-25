@@ -179,10 +179,16 @@ if (DEVEL_BUILD)
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
   set(DEFAULT_STIR_TAG origin/master)
+  set(STIR_REQUIRED_VERSION "4.1.0" CACHE STRING ON)
 
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd )
   set(DEFAULT_siemens_to_ismrmrd_TAG b87759e49e53dab4939147eb52b7a0e6465f3d04)
+  if (USE_SYSTEM_siemens_to_ismrmrd)
+    set(ISMRMRD_REQUIRED_VERSION "1.4.2.1" CACHE STRING ON)
+  else()
+    set(ISMRMRD_REQUIRED_VERSION "1.7" CACHE STRING ON)
+  endif()
 
   ## pet-rd-tools
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
@@ -270,6 +276,7 @@ set(NiftyPET_TAG ${DEFAULT_NiftyPET_TAG} CACHE STRING ON)
 
 set(parallelproj_URL ${DEFAULT_parallelproj_URL} CACHE STRING ON)
 set(parallelproj_TAG ${DEFAULT_parallelproj_TAG} CACHE STRING ON)
+set(parallelproj_REQUIRED_VERSION "0.8" CACHE STRING ON)
 
 set(SIRF-Contribs_URL ${DEFAULT_SIRF-Contribs_URL} CACHE STRING ON)
 set(SIRF-Contribs_TAG ${DEFAULT_SIRF-Contribs_TAG} CACHE STRING ON)
