@@ -184,10 +184,10 @@ if (DEVEL_BUILD)
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd )
   set(DEFAULT_siemens_to_ismrmrd_TAG b87759e49e53dab4939147eb52b7a0e6465f3d04)
-  if (USE_SYSTEM_siemens_to_ismrmrd)
-    set(ISMRMRD_REQUIRED_VERSION "1.4.2.1")
-  else()
+  if (BUILD_siemens_to_ismrmrd)
     set(ISMRMRD_REQUIRED_VERSION "1.7")
+  else()
+    set(ISMRMRD_REQUIRED_VERSION "1.4.2.1")
   endif()
 
   ## pet-rd-tools
