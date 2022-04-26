@@ -151,7 +151,7 @@ set(DEFAULT_JSON_TAG v3.10.4)
 # CCPi CIL
 set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
 # TODO update to a tagged version > v21.3.1 once available
-set(DEFAULT_CIL_TAG fc2e97d8c33c4108e134394330bcd0d053597aca)
+set(DEFAULT_CIL_TAG 36ec5160c4d26cc2612719dddcdb5405408b9797)
 set(DEFAULT_CIL-ASTRA_URL https://github.com/TomographicImaging/CIL-ASTRA.git)
 set(DEFAULT_CIL-ASTRA_TAG "v21.3.0")
 set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
