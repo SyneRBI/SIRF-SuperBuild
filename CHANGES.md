@@ -1,6 +1,7 @@
 # ChangeLog
 ## v3.2.0
-
+- CMake: removed USE_SYSTEM_siemens_to_ismrmrd
+- CMake: added required versions for STIR, NIFTYREG, ISMRMRD.
 - Drop Python 2 support
 - CMake minimum required version is set to 3.16.2, as it supports Boost 1.72
 - VirtualBox VM is created from the SIRF-SuperBuild repository
@@ -14,7 +15,7 @@
 - add the CERN ROOT library (if USE_ROOT=ON, but defaults to OFF), which can be used by STIR to read GATE ROOT files.
 - updated versions:
   - CMake: 3.16.2
-  - ISMRMRD: 1.7.0
+  - ISMRMRD: 1.7.0 if siemens_to_ismrmrd is built, 1.4.2.1 otherwise
   - siemens_to_ismrmrd: [6d0ab3d3d0c8ade5c0526db1c6af9825008425ad](https://github.com/ismrmrd/siemens_to_ismrmrd/commit/6d0ab3d3d0c8ade5c0526db1c6af9825008425ad) > 1.2.2 with bug-fix for boost/foreach.hpp
   - ITK: 5.2.1 However, we now build a smaller set of modules,
      most (but not all) of IO, and Filtering. See SuperBuild/External_ITK.cmake)
