@@ -1,5 +1,6 @@
 # This CITATION.cff file was generated with cffinit.
 # Visit https://bit.ly/cffinit to generate yours today!
+# Manually edited by David Atkinson.
 
 cff-version: 1.2.0
 title: SIRF-SuperBuild
@@ -8,74 +9,52 @@ message: >-
   metadata from this file.
 type: software
 authors:
-  - given-names: Evgueni
-    family-names: Ovtchinnikov
-    orcid: 'https://orcid.org/0000-0002-9359-6514'
-    affiliation: UK Research & Innovation
-  - given-names: Richard
-    family-names: Brown
-    affiliation: University College London
-    orcid: 'https://orcid.org/0000-0001-6989-9200'
-  - given-names: Johannes
-    family-names: Mayer
-    affiliation: Physikalisch-Technische Bundesanstalt (PTB)
-    orcid: 'https://orcid.org/0000-0002-2500-445X'
   - given-names: Edoardo
     family-names: Pasca
     affiliation: UK Research & Innovation
     orcid: 'https://orcid.org/0000-0001-6957-2160'
+  - affiliation: University College London
+    family-names: Thomas
+    given-names: Ben
+    orcid: 'https://orcid.org/0000-0002-9784-1177'
   - given-names: Casper
     family-names: da Costa-Luis
     affiliation: King's College London
     orcid: 'https://orcid.org/0000-0002-7211-1557'
-  - given-names: David
-    family-names: Atkinson
+  - given-names: Richard
+    family-names: Brown
     affiliation: University College London
-    orcid: 'https://orcid.org/0000-0003-1124-6666'
-  - given-names: Christoph
-    family-names: Kolbitsch
-    orcid: 'https://orcid.org/0000-0002-4355-8368'
-    affiliation: Physikalisch-Technische Bundesanstalt (PTB)
-  - given-names: Nikos
-    family-names: Efthimiou
-    orcid: 'https://orcid.org/0000-0003-1947-5033'
+    orcid: 'https://orcid.org/0000-0001-6989-9200'
+  - given-names: Ander
+    family-names: Biguri
+    orcid: 'https://orcid.org/0000-0002-2636-3032'
+    affiliation: University College London
+  - given-names: Evgueni
+    family-names: Ovtchinnikov
+    orcid: 'https://orcid.org/0000-0002-9359-6514'
+    affiliation: UK Research & Innovation
   - given-names: Ashley
     family-names: Gillman
     orcid: 'https://orcid.org/0000-0001-9130-1092'
     affiliation: >-
       Commonwealth Scientific and Industrial Research
       Organisation, and University of Queensland
-  - given-names: Ander
-    family-names: Biguri
-    orcid: 'https://orcid.org/0000-0002-2636-3032'
-    affiliation: University College London
-  - affiliation: National Physical Laboratory (UK)
-    orcid: 'https://orcid.org/0000-0002-2766-4339'
-    given-names: Daniel
-    family-names: Deidda
-  - orcid: 'https://orcid.org/0000-0001-8523-353X'
-    affiliation: University of Bath
-    given-names: Matthias
-    family-names: Ehrhardt
-  - given-names: Evangelos
-    family-names: Papoutsellis
-    affiliation: UK Research & Innovation
+  - given-names: Christoph
+    family-names: Kolbitsch
+    orcid: 'https://orcid.org/0000-0002-4355-8368'
+    affiliation: Physikalisch-Technische Bundesanstalt (PTB)
+ - given-names: Johannes
+    family-names: Mayer
+    affiliation: Physikalisch-Technische Bundesanstalt (PTB)
+    orcid: 'https://orcid.org/0000-0002-2500-445X'
   - orcid: 'https://orcid.org/0000-0002-9151-3295'
     affiliation: University College London
     given-names: Alexander
     family-names: Whitehead
-  - family-names: Fardell
-    given-names: Gemma
-    orcid: 'https://orcid.org/0000-0003-2388-5211'
-    affiliation: UK Research & Innovation
-  - affiliation: University College London
-    family-names: Thomas
-    given-names: Ben
-    orcid: 'https://orcid.org/0000-0002-9784-1177'
-  - orcid: 'https://orcid.org/0000-0003-2919-1894'
+  - given-names: David
+    family-names: Atkinson
     affiliation: University College London
-    given-names: Francesca
-    family-names: Leek
+    orcid: 'https://orcid.org/0000-0003-1124-6666'
   - orcid: 'https://orcid.org/0000-0002-5514-199X'
     affiliation: University College London
     family-names: Thielemans
