@@ -104,7 +104,7 @@ set(DEFAULT_ITK_TAG v5.2.1)
 ## NIFTYREG
 set(DEFAULT_NIFTYREG_URL https://github.com/KCL-BMEIS/niftyreg.git )
 set(DEFAULT_NIFTYREG_TAG 8ad2f11507ddedb09ed74a9bd97377b70532ee75)
-set(DEFAULT_NIFTYREG_REQUIRED_VERSION 1.5.68)
+set(NIFTYREG_REQUIRED_VERSION 1.5.68)
 
 ## ISMRMRD
 set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
@@ -179,10 +179,16 @@ if (DEVEL_BUILD)
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
   set(DEFAULT_STIR_TAG origin/master)
+  set(STIR_REQUIRED_VERSION "4.1.0")
 
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd )
   set(DEFAULT_siemens_to_ismrmrd_TAG b87759e49e53dab4939147eb52b7a0e6465f3d04)
+  if (BUILD_siemens_to_ismrmrd)
+    set(ISMRMRD_REQUIRED_VERSION "1.7")
+  else()
+    set(ISMRMRD_REQUIRED_VERSION "1.4.2.1")
+  endif()
 
   ## pet-rd-tools
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
@@ -270,6 +276,7 @@ set(NiftyPET_TAG ${DEFAULT_NiftyPET_TAG} CACHE STRING ON)
 
 set(parallelproj_URL ${DEFAULT_parallelproj_URL} CACHE STRING ON)
 set(parallelproj_TAG ${DEFAULT_parallelproj_TAG} CACHE STRING ON)
+set(parallelproj_REQUIRED_VERSION "0.8")
 
 set(SIRF-Contribs_URL ${DEFAULT_SIRF-Contribs_URL} CACHE STRING ON)
 set(SIRF-Contribs_TAG ${DEFAULT_SIRF-Contribs_TAG} CACHE STRING ON)
