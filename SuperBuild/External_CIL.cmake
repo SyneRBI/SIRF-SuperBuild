@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 #=========================================================================
-
 #This needs to be unique globally
 set(proj CIL)
 
@@ -53,6 +52,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       ${${proj}_EP_ARGS_DIRS}
       # apparently this is the only way to pass environment variables to
       # external projects
+      PATCH_COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/patches/cil-patch.py ${${proj}_SOURCE_DIR}/Wrappers/Python/cil/utilities/dataexample.py
       CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG}
         ${CMAKE_COMMAND} ${${proj}_SOURCE_DIR}
           -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
@@ -60,7 +60,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
           -DPYTHON_DEST_DIR:PATH=${PYTHON_DEST}
           -DOPENMP_INCLUDES:PATH=${OPENMP_INCLUDES}
           -DCIL_VERSION:STRING=${${proj}_TAG}
-      INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install && ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/Wrappers/Python/data ${SUPERBUILD_INSTALL_DIR}/share/cil/ && ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/patches/cil-patch.py ${${proj}_SOURCE_DIR}/Wrappers/Python/cil/utilities/dataexample.py ${PYTHON_DEST}/cil/utilities/dataexample.py
+      INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install && ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/Wrappers/Python/data ${SUPERBUILD_INSTALL_DIR}/share/cil/
       DEPENDS ${${proj}_DEPENDENCIES}
     )
 

@@ -20,7 +20,7 @@
   - ITK: 5.2.1 However, we now build a smaller set of modules,
      most (but not all) of IO, and Filtering. See SuperBuild/External_ITK.cmake)
   - NiftyReg: 99d584e2b8ea0bffe7e65e40c8dc818751782d92 ) (fixes gcc-9 OpenMP problems)
-  - CIL: f5c06566215564ad78ba0f1738d0836f3ad37a60 > v21.3.1  which contains a bugfix in a unittest [#658](https://github.com/SyneRBI/SIRF-SuperBuild/issues/658)
+  - CIL: 36ec5160c4d26cc2612719dddcdb5405408b9797 > v21.3.1  which contains a bugfix in a unittest [#658](https://github.com/SyneRBI/SIRF-SuperBuild/issues/658)
   - GTest: 1.11.0
   - Boost: 1.72.0
   - JSON: 3.10.4
