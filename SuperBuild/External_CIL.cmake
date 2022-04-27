@@ -42,6 +42,15 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
   SetGitTagAndRepo("${proj}")
 
+  # Pass IPP_INCLUDE And IPP_LIBRARY if they exist
+  set (IPP_INCLUDE_AND_LIB "")
+  if (IPP_LIBRARY)
+    string(APPEND IPP_INCLUDE_AND_LIB "-DIPP_LIBRARY:STRING=${IPP_LIBRARY} ")
+  endif()
+  if (IPP_INCLUDE)
+    string(APPEND IPP_INCLUDE_AND_LIB "-DIPP_INCLUDE:STRING=${IPP_INCLUDE}")
+  endif()
+  
   # conda build should never get here
   if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
     # in case of PYTHONPATH it is sufficient to copy the files to the 
@@ -60,6 +69,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
           -DPYTHON_DEST_DIR:PATH=${PYTHON_DEST}
           -DOPENMP_INCLUDES:PATH=${OPENMP_INCLUDES}
           -DCIL_VERSION:STRING=${${proj}_TAG}
+          ${IPP_INCLUDE_AND_LIB}
       INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install && ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/Wrappers/Python/data ${SUPERBUILD_INSTALL_DIR}/share/cil/
       DEPENDS ${${proj}_DEPENDENCIES}
     )
