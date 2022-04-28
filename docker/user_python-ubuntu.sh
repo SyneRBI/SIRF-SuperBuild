@@ -51,15 +51,15 @@ miniconda)
   ;;
 esac
 
-# Python (runtime)
-if [ -f requirements.txt ]; then
-  pip install -U -r requirements.txt
-fi
-
 if [ "$PYTHON" = "miniconda" ]; then
   if [ -f requirements_conda_forge.txt ]; then
     conda install --yes -c conda-forge -c intel -c ccpi -c astra-toolbox/label/dev --file requirements_conda_forge.txt
   fi
   conda update -c conda-forge -y --all
   conda clean -y --all
+fi
+
+# Python (runtime)
+if [ -f requirements.txt ]; then
+  pip install -U -r requirements.txt
 fi
