@@ -1,5 +1,6 @@
 # ChangeLog
 ## v3.2.0
+- Moved the VM to this repo
 - CMake: removed USE_SYSTEM_siemens_to_ismrmrd
 - CMake: added required versions for STIR, NIFTYREG, ISMRMRD.
 - Drop Python 2 support
