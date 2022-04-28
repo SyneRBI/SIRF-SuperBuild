@@ -62,6 +62,8 @@ cd SIRF-SuperBuild/docker
 
 # build standard SIRF docker
 docker build --build-arg BASE_IMAGE=nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04 --build-arg PYTHON_INSTALL_DIR=/opt/conda --target sirf .
+ nohup docker build --build-arg BASE_IMAGE=nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04 --build-arg PYTHON_INSTALL_DIR=/opt/conda --build-arg EXTRA_BUILD_FLAGS="-DBUILD_CIL_LITE=ON -DIPP_LIBRARY=/opt/conda/lib -DIPP_INCLUDE=/opt/conda/include" --build-arg SIRF_SB_URL="https://github.com/paskino/SIRF-SuperBuild" --build-arg SIRF_SB_TAG="CIL_pass_IPP_library" --target sirf . > build_with_ipp.log &
+
 # tag as synerbi/sirf:sirf-core
 docker tag cd1ed7d07d11 synerbi/sirf:sirf-core
 ```
