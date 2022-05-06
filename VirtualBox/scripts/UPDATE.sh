@@ -200,7 +200,7 @@ SuperBuild(){
         -DUSE_ITK=ON \
         -DDEVEL_BUILD=OFF\
         -DNIFTYREG_USE_CUDA=OFF\
-        -DBUILD_CIL_LITE=ON\
+        -DBUILD_CIL=ON\
         -DCYTHON_EXECUTABLE="$CYTHON_EXECUTABLE"\
         -DPYTHON_EXECUTABLE="$PYTHON_EXECUTABLE"\
         -DBUILD_pet_rd_tools=ON
