@@ -1,4 +1,8 @@
 # ChangeLog
+# v3.x.x
+- VM: 
+  - set BUILD_CIL=ON
+
 ## v3.2.0
 - Moved the VM to this repo
 - CMake: removed USE_SYSTEM_siemens_to_ismrmrd
