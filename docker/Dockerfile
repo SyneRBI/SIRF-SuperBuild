@@ -24,6 +24,10 @@ ENV LANGUAGE en_GB:en
 
 FROM base as core
 
+# https://forums.developer.nvidia.com/t/gpg-error-http-developer-download-nvidia-com-compute-cuda-repos-ubuntu1804-x86-64/212904/3
+RUN apt-key del 7fa2af80
+RUN apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/3bf863cc.pub
+
 COPY build_essential-ubuntu.sh .
 RUN bash build_essential-ubuntu.sh
 RUN rm build_essential-ubuntu.sh

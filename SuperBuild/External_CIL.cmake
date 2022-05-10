@@ -62,6 +62,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       # apparently this is the only way to pass environment variables to
       # external projects
       PATCH_COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/patches/cil-patch.py ${${proj}_SOURCE_DIR}/Wrappers/Python/cil/utilities/dataexample.py
+      UPDATE_COMMAND ""
       CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG}
         ${CMAKE_COMMAND} ${${proj}_SOURCE_DIR}
           -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
