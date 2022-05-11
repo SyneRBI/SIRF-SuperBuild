@@ -3,23 +3,22 @@
 To create the image with SIRF and all the other stuff required by jupyterhub we start from the `datascience-notebook` from https://github.com/jupyter/docker-stacks.
 A few mods for use with Ubuntu 18.04 are in the fork https://github.com/paskino/docker-stacks/tree/base_image_ubuntu18.04 which is used as base for creating the new `datascience-notebook`.
 
-However, we require GPU access (for [CIL](https://github.com/TomographicImaging/CIL.git)).
+However, we require GPU access (for [CIL](https://github.com/TomographicImaging/CIL.git)) so we need one of the NVIDIA docker images https://hub.docker.com/r/nvidia/cuda/tags?page=1&name=cudnn8-devel-ubuntu18.04 
 
 The strategy is:
-  1. to modify the `datascience-notebook` to have the `nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04` base image, `paskino/jupyter:datascience-notebook-cuda10-ubuntu18.04`
-  1. build the `synerbi/sirf:sirf-core` image with the `nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04` base image
+  1. to modify the `datascience-notebook` to have the `nvidia/cuda:10.2-cudnn8-devel-ubuntu18.04` base image, `paskino/jupyter:datascience-notebook-cuda10-cudnn8-devel-ubuntu18.04`
+  1. build the `synerbi/sirf:sirf-core` image with the `nvidia/cuda:10.2-cudnn8-devel-ubuntu18.04` base image
   1. build the jupyterhub image from the image at point 1, copy the SIRF `INSTALL` directory from the `synerbi/sirf:sirf-core` (previous step), set the appropriate environmental variable and install CIL via conda
 
-Jupyterhub uses images from https://github.com/jupyter/docker-stacks which 
 
 ### Create the base image for jupyterhub with NVIDIA runtime on Ubuntu 18.04
 
 Currently the `base-notebook` in [`jupyter/docker-stacks`](`https://github.com/jupyter/docker-stacks`) builds on top of Ubuntu 20.04. The `tini` package is [required](https://github.com/jupyter/docker-stacks/blob/f27d615c5052c3a567835ceba3c21ab5d7b0416a/base-notebook/Dockerfile#L39-L42), but it is not available in Ubuntu 18.04 as apt package.  
 
-So to be able to use the `nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04` base image we need to modify the `base-notebook` and install `tini` in another way.
+So to be able to use the `nvidia/cuda:10.2-cudnn8-devel-ubuntu18.04` base image we need to modify the `base-notebook` and install `tini` in another way.
 The modifications are available at https://github.com/paskino/docker-stacks/tree/base_image_ubuntu18.04
 
-Below a list of commands that will build the `paskino/jupyter:datascience-notebook-cuda11-cudnn8-devel-ubuntu18.04`
+Below a list of commands that will build the `paskino/jupyter:datascience-notebook-cuda10-cudnn8-devel-ubuntu18.04`
 
 ```
 git clone git@github.com:paskino/docker-stacks.git
@@ -30,24 +29,24 @@ cd ..
 # base notebook
 cd docker-stacks/base-notebook
 # change the base class with the ROOT_CONTAINER argument
-docker build --build-arg ROOT_CONTAINER=nvidia/cuda:11.5.0-cudnn8-devel-ubuntu18.04 .
+docker build --build-arg ROOT_CONTAINER=nvidia/cuda:10.2-cudnn8-devel-ubuntu18.04 .
 # tag the created image
-docker tag 4dbe50ddc554 paskino/jupyter:base-notebook-cuda11-cudnn8-devel-ubuntu18.04
+docker tag 4dbe50ddc554 paskino/jupyter:base-notebook-cuda10-cudnn8-devel-ubuntu18.04
 
 # minimal notebook
 cd ../minimal-notebook
-docker build --build-arg BASE_CONTAINER=paskino/jupyter:base-notebook-cuda11-cudnn8-devel-ubuntu18.04 .
-docker tag 89a140d2318c paskino/jupyter:minimal-notebook-cuda11-cudnn8-devel-ubuntu18.04
+docker build --build-arg BASE_CONTAINER=paskino/jupyter:base-notebook-cuda10-cudnn8-devel-ubuntu18.04 .
+docker tag 89a140d2318c paskino/jupyter:minimal-notebook-cuda10-cudnn8-devel-ubuntu18.04
 
 # scipy-notebook
 cd ../scipy-notebook
-docker build --build-arg BASE_CONTAINER=paskino/jupyter:minimal-notebook-cuda11-cudnn8-devel-ubuntu18.04 .
-docker tag 36ca7783b57d paskino/jupyter:scipy-notebook-cuda11-cudnn8-devel-ubuntu18.04
+docker build --build-arg BASE_CONTAINER=paskino/jupyter:minimal-notebook-cuda10-cudnn8-devel-ubuntu18.04 .
+docker tag 36ca7783b57d paskino/jupyter:scipy-notebook-cuda10-cudnn8-devel-ubuntu18.04
 
 # datascience-notebook
 cd ../datascience-notebook
-docker build --build-arg BASE_CONTAINER=paskino/jupyter:scipy-notebook-cuda11-cudnn8-devel-ubuntu18.04 .
-docker tag 5c63287f0aee paskino/jupyter:datascience-notebook-cuda11-cudnn8-devel-ubuntu18.04
+docker build --build-arg BASE_CONTAINER=paskino/jupyter:scipy-notebook-cuda10-cudnn8-devel-ubuntu18.04 .
+docker tag 5c63287f0aee paskino/jupyter:datascience-notebook-cuda10-cudnn8-devel-ubuntu18.04
 ```
 
 Finally we have the base `datascience-notebook` with the `nvidia/cuda:11.5.0-cudnn8-devel-ubuntu18.04` base image.
@@ -61,12 +60,21 @@ git clone git@github.com:SyneRBI/SIRF-SuperBuild.git
 cd SIRF-SuperBuild/docker
 
 # build standard SIRF docker
-docker build --build-arg BASE_IMAGE=nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04 --build-arg PYTHON_INSTALL_DIR=/opt/conda --target sirf .
+docker build --build-arg BASE_IMAGE=nvidia/cuda:10.2-cudnn8-devel-ubuntu18.04 --build-arg PYTHON_INSTALL_DIR=/opt/conda --target sirf .
 
-# if you want to build the image with CIL using Intel IPP library one needs
-# to pass the location of the IPP library down to CIL's CMake
-docker build --build-arg BASE_IMAGE=nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04 --build-arg PYTHON_INSTALL_DIR=/opt/conda --build-arg EXTRA_BUILD_FLAGS="-DBUILD_CIL_LITE=ON -DIPP_LIBRARY=/opt/conda/lib -DIPP_INCLUDE=/opt/conda/include" --target sirf . 
+```
 
+#### Installing CIL via conda
+The command above will install cil via conda (using requirements_conda-forge.txt) and will install the latest stable release. 
+
+
+#### Building CIL as part of the SIRF SuperBuild
+If you want to build the image with CIL using Intel IPP library one needs to pass the location of the IPP library down to CIL's CMake, this can be done with the following command. 
+
+```
+
+docker build --build-arg BASE_IMAGE=nvidia/cuda:10.2-cudnn8-devel-ubuntu18.04 --build-arg PYTHON_INSTALL_DIR=/opt/conda --build-arg EXTRA_BUILD_FLAGS="-DBUILD_CIL_LITE=ON -DIPP_LIBRARY=/opt/conda/lib -DIPP_INCLUDE=/opt/conda/include" --build-arg SIRF_SB_URL="https://github.com/paskino/SIRF-SuperBuild.git" --build-arg SIRF_SB_TAG="CIL_pass_IPP_library" --target sirf . 
+```
 
 # tag as synerbi/sirf:sirf-core
 docker tag cd1ed7d07d11 synerbi/sirf:sirf-core
