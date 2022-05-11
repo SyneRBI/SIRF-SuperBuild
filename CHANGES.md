@@ -2,6 +2,9 @@
 # v3.x.x
 - VM: 
   - set BUILD_CIL=ON
+- updated versions:
+  - STIR: 5.0.1
+  - parallelproj: v1.0
 
 ## v3.2.0
 - Moved the VM to this repo
