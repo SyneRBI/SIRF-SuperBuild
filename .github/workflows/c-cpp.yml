@@ -110,7 +110,7 @@ jobs:
           set -ex;
           export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
           export superbuild=`pwd`;
-          export BUILD_FLAGS="-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=~/install";
+          export BUILD_FLAGS="-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=~/install -DSIRF_URL=https://github.com/KrisThielemans/SIRF.git -DSIRF_TAG=CMake_ISMRMRD_RTPATH_Fix";
           mkdir -p build/;
           cd build;
           source ~/virtualenv/bin/activate;
