@@ -1,0 +1,30 @@
+# This file sets environment variables for the CCP SyneRBI software for PowerShell
+# Use it like this		
+#    . /path/to/whereever/env_sirf.ps1	
+# Preferably add this line to your .profile
+  		  
+# need to be forward slashes, as otherwise cannot find files
+$Env:SIRF_PATH = "@SIRF_SOURCE_DIR@"
+
+# Where all binaries are installed
+$Env:SIRF_INSTALL_PATH="@WIN_SyneRBI_INSTALL@"
+
+$Env:Path = "$Env:SIRF_INSTALL_PATH\bin" + ";" + $Env:Path
+if ("@WIN_FFTW_PATH@")
+{  $Env:Path += ";@WIN_FFTW_PATH@" }
+if ("@WIN_BOOST_PATH@")
+{  $Env:Path += ";@WIN_BOOST_PATH@" }
+
+#####     Environment variables for Python    
+if ("@WIN_PYTHON_DEST@")
+{
+  $Env:PYTHONPATH="@WIN_PYTHON_DEST@" + ";" + $Env:PYTHONPATH
+  $Env:SIRF_PYTHON_EXECUTABLE="@WIN_PYTHON_EXECUTABLE@"
+}
+
+#####     Environment variables for Matlab    
+if ("@WIN_MATLAB_DEST@")
+{
+  Env:MATLABPATH="@WIN_MATLAB_DEST@";"@WIN_SPM_DIR@;" + $Env:MATLABPATH
+  $Env:SIRF_MATLAB_EXECUTABLE="@WIN_Matlab_MAIN_PROGRAM@"
+}

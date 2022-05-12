@@ -85,7 +85,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
  else()
     if(${USE_SYSTEM_${externalProjName}})
-      find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
+      # Note: include at least one component, such that Boost_LIBRARY_DIR_RELEASE is set
+      find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} COMPONENTS system REQUIRED)
       set(Boost_CMAKE_ARGS -DBOOST_INCLUDEDIR:PATH=${Boost_INCLUDE_DIR})
       if (Boost_LIBRARY_DIR_RELEASE)
         # TODO might need to use Boost_LIBRARY_DIR_Debug for Debug builds

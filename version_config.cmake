@@ -2,7 +2,7 @@
 # Author: Edoardo Pasca
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
-# Copyright 2017-2021 University College London
+# Copyright 2017-2021, 2022 University College London
 # Copyright 2017-2021 Science Technology Facilities Council
 #
 # This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
@@ -74,7 +74,12 @@ if (BUILD_MATLAB)
   # but it's been stuck on 1.8.12 for a long time
   set(DEFAULT_HDF5_TAG hdf5-1_8_12)
 else()
-  set(DEFAULT_HDF5_TAG hdf5-1_10_1)
+  if (WIN32)
+    # need a recent version of HDF5 for ITK, see https://github.com/SyneRBI/SIRF-SuperBuild/issues/680
+    set(DEFAULT_HDF5_TAG hdf5-1_13_1)
+  else()
+    set(DEFAULT_HDF5_TAG hdf5-1_10_1)
+  endif()
 endif()
 
 ## SWIG
