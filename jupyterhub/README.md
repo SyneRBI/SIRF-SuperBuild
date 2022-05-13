@@ -90,7 +90,7 @@ Notice that CIL is now installed via conda so the SuperBuild is set not to build
 
 ```
 cd SIRF-SuperBuild/docker
-docker build --build-arg BASE_IMAGE=paskino/jupyter:datascience-notebook-cuda10-ubuntu18.04 -f ../jupyterhub/Dockerfile .
+docker build --build-arg BASE_IMAGE=paskino/jupyter:datascience-notebook-cuda10-cudnn8-devel-ubuntu18.04 -f ../jupyterhub/Dockerfile .
 docker tag 4970647d72ea paskino/sirfcil:service-gpu
 ```
 
