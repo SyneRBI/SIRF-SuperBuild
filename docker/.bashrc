@@ -26,7 +26,7 @@ export PS1='sirf$ '
 
 # Need to add this as we have built using some of these shared libraries
 # See https://github.com/SyneRBI/SIRF-SuperBuild/issues/573
-# export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:PYTHON_INSTALL_DIR/lib
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:PYTHON_INSTALL_DIR/lib
 
 # .local/bin (used by pip for instance)
 export PATH="${PATH}":~/.local/bin
