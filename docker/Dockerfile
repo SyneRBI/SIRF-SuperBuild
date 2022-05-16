@@ -12,6 +12,8 @@ LABEL \
 
 USER root
 ENV DEBIAN_FRONTEND noninteractive
+# https://developer.nvidia.com/blog/updating-the-cuda-linux-gpg-repository-key/
+RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub
 
 COPY raw-ubuntu.sh .
 RUN bash raw-ubuntu.sh
