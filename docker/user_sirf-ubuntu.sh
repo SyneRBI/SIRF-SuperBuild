@@ -18,4 +18,6 @@ echo $COMPILER_FLAGS
 echo $BUILD_FLAGS $EXTRA_BUILD_FLAGS
 cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS $COMPILER_FLAGS .
 
-cmake --build . -j ${NUM_PARALLEL_BUILDS}
+cmake --build . -j ${NUM_PARALLEL_BUILDS} --target Gadgetron
+
+#cmake --build . -j ${NUM_PARALLEL_BUILDS}
