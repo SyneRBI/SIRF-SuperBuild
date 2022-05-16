@@ -60,7 +60,7 @@ git clone git@github.com:SyneRBI/SIRF-SuperBuild.git
 cd SIRF-SuperBuild/docker
 
 # build standard SIRF docker
-docker build --build-arg BASE_IMAGE=nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04 --build-arg PYTHON_INSTALL_DIR=/opt/conda --build-arg EXTRA_BUILD_FLAGS="-DGadgetron_USE_CUDA=OFF -DBUILD_CIL=ON -DIPP_LIBRARY=/opt/conda/lib -DIPP_INCLUDE=/opt/conda/include"--target sirf .
+docker build --build-arg BASE_IMAGE=nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04 --build-arg PYTHON_INSTALL_DIR=/opt/conda --build-arg EXTRA_BUILD_FLAGS="-DGadgetron_USE_CUDA=OFF -DBUILD_CIL=ON -DIPP_LIBRARY=/opt/conda/lib -DIPP_INCLUDE=/opt/conda/include" --target sirf .
 
 ```
 
