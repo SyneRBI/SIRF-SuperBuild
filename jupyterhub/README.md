@@ -62,6 +62,8 @@ cd SIRF-SuperBuild/docker
 # build standard SIRF docker
 docker build --build-arg BASE_IMAGE=nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04 --build-arg PYTHON_INSTALL_DIR=/opt/conda --build-arg EXTRA_BUILD_FLAGS="-DGadgetron_USE_CUDA=OFF -DBUILD_CIL=ON -DIPP_LIBRARY=/opt/conda/lib -DIPP_INCLUDE=/opt/conda/include" --target sirf .
 
+
+ nohup docker build --build-arg BASE_IMAGE=nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04 --build-arg PYTHON_INSTALL_DIR=/opt/conda --build-arg EXTRA_BUILD_FLAGS="-DBUILD_CIL=ON -DIPP_LIBRARY=/opt/conda/lib -DIPP_INCLUDE=/opt/conda/include -DSIRF_TAG=origin/master" --build-arg SIRF_SB_URL="https://github.com/paskino/SIRF-SuperBuild" --build-arg SIRF_SB_TAG="fix_Gadgetron_link"  --target sirf . > build_all_hdf5.log &
 ```
 
 #### Installing CIL via conda
@@ -90,7 +92,7 @@ Notice that CIL is now installed via conda so the SuperBuild is set not to build
 
 ```
 cd SIRF-SuperBuild/docker
-docker build --build-arg BASE_IMAGE=paskino/jupyter:datascience-notebook-cuda10-cudnn8-devel-ubuntu18.04 -f ../jupyterhub/Dockerfile .
+docker build --build-arg BASE_IMAGE=paskino/jupyter:datascience-notebook-cuda10-cudnn7-devel-ubuntu18.04 -f ../jupyterhub/Dockerfile .
 docker tag 4970647d72ea paskino/sirfcil:service-gpu
 ```
 
