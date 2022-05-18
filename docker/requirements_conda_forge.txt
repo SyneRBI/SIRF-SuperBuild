@@ -18,3 +18,8 @@ six          # CIL
 olefile      # CIL
 pywavelets   # CIL
 h5py
+nose
+docopt
+nibabel
+deprecation
+nose

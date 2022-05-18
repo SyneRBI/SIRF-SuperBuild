@@ -147,6 +147,7 @@ RUN bash user_sirf-ubuntu.sh \
     && rm user_sirf-ubuntu.sh \
     && chmod -R go+rwX /opt/SIRF-SuperBuild/INSTALL
 
+
 ENV DEBIAN_FRONTEND ''
 
 # go back to root (entrypoint.sh will switch users)
