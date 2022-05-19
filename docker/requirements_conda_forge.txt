@@ -17,6 +17,7 @@ wget         # CIL
 six          # CIL
 olefile      # CIL
 pywavelets   # CIL
+dxchange
 h5py
 nose
 docopt

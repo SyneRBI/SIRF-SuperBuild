@@ -2,11 +2,6 @@ ARG BASE_IMAGE=ubuntu:18.04
 # paskino/jupyter   datascience-notebook-cuda11
 FROM ${BASE_IMAGE} as base
 
-# Install CIL with all packages from conda: https://github.com/TomographicImaging/CIL#installation
-COPY requirements_conda_forge.txt . 
-RUN conda install -c conda-forge -c intel -c ccpi -c astra-toolbox --file requirements_conda_forge.txt
-
-
 # https://docs.docker.com/develop/develop-images/multistage-build/#use-an-external-image-as-a-stage
 # not documented in https://docs.docker.com/engine/reference/builder/#copy
 # FROM --from=nginx:latest /etc/nginx/nginx.conf /nginx.conf
@@ -42,9 +37,11 @@ RUN cp /tini /usr/bin
 RUN chmod +x /usr/bin/tini
 
 # install requirements skipping CIL ones that are taken care of by conda
-RUN conda install deprecation nibabel nose docopt -c conda-forge -c intel -c astra-toolbox/label/dev -c ccpi
+COPY requirements_conda_forge.txt .
+RUN conda install -c conda-forge -c intel -c astra-toolbox -c ccpi --file requirements_conda_forge.txt
 RUN python -m pip install git+https://github.com/ismrmrd/ismrmrd-python-tools.git@master#egg=ismrmrd-python-tools
 
+RUN python -m pip install torch==1.7.1 scikit-image
 
 # Switch back to jovyan to avoid accidental container runs as root
 # From https://github.com/paskino/SIRF-SuperBuild/blob/301c2274621e4729cadbd2a1705d8c4d9e3b7e50/docker/Dockerfile#L212-L219
