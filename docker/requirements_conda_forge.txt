@@ -17,8 +17,11 @@ wget         # CIL
 six          # CIL
 olefile      # CIL
 pywavelets   # CIL
-dxchange
-h5py
+olefile>=0.46      # CIL
+dxchange     # CIL
+h5py         # CIL
+tqdm         # CIL
+numba        # CIL
 nose
 docopt
 nibabel
