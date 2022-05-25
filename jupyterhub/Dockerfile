@@ -41,6 +41,7 @@ RUN python -m pip install torch==1.7.1 scikit-image
 # not documented in https://docs.docker.com/engine/reference/builder/#copy
 # FROM --from=nginx:latest /etc/nginx/nginx.conf /nginx.conf
 COPY --from=synerbi/sirf:sirf-core /opt/SIRF-SuperBuild/INSTALL/ /opt/SIRF-SuperBuild/INSTALL
+COPY --from=synerbi/sirf:sirf-core /opt/SIRF-SuperBuild/sources/SIRF/ /opt/SIRF-SuperBuild/sources/SIRF/
 
 # Switch back to jovyan to avoid accidental container runs as root
 # From https://github.com/paskino/SIRF-SuperBuild/blob/301c2274621e4729cadbd2a1705d8c4d9e3b7e50/docker/Dockerfile#L212-L219
