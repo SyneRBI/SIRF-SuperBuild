@@ -211,7 +211,7 @@ else()
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG release_5.0)
+  set(DEFAULT_STIR_TAG 40ede282ad39f87faaef015c92901db25796aa6c) # almost 5.1
 
   # ismrmrd
   set(DEFAULT_ISMRMRD_TAG v1.7.0)
