@@ -1,5 +1,6 @@
 # ChangeLog
 # v3.x.x
+- Windows Boost build add regex and random
 - VM: 
   - set BUILD_CIL=ON
 - updated versions:
