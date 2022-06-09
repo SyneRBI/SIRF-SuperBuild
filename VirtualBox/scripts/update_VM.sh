@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "Updating..."
-cd ~/devel/SyneRBI_VM
+cd ~/devel/SIRF-SuperBuild/VirtualBox
 git pull
 cd scripts
 
