@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-set -ev
+set -e
 # SIRF external dependencies
+add-apt-repository -y universe # needed for hdf5 for instance
 apt-get update -qq
 APT_GET_INSTALL="apt-get install -yq --no-install-recommends"
 
