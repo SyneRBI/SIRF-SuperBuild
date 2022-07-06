@@ -207,11 +207,11 @@ if (DEVEL_BUILD)
   set(DEFAULT_CCPi-Regularisation-Toolkit_TAG origin/master)
 
 else()
-  set(DEFAULT_SIRF_TAG v3.2.0)
+  set(DEFAULT_SIRF_TAG v3.3.0)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG release_5.0)
+  set(DEFAULT_STIR_TAG rel_5.0.2)
 
   # ismrmrd
   set(DEFAULT_ISMRMRD_TAG v1.7.0)

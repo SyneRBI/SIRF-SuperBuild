@@ -4,11 +4,12 @@
 - VM: 
   - set BUILD_CIL=ON
 - updated versions:
-  - STIR: 5.0.1
+  - SIRF: 3.3.0
+  - STIR: 5.0.2
   - parallelproj: v1.0
 
 ## v3.2.0
-- Moved the VM to this repo
+- Moved the VM scripts etc to this repo
 - CMake: removed USE_SYSTEM_siemens_to_ismrmrd
 - CMake: added required versions for STIR, NIFTYREG, ISMRMRD.
 - Drop Python 2 support
