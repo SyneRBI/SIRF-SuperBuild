@@ -7,3 +7,4 @@ ipp-include
 tigre 
 tomophantom=1.4.10
 python-wget
+dxchange
