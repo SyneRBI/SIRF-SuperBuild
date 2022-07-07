@@ -9,6 +9,7 @@
   - parallelproj: v0.8
   - CCPi Regularisation: v21.0.0
 
+
 ## v3.2.0
 - Moved the VM scripts etc to this repo
 - CMake: removed USE_SYSTEM_siemens_to_ismrmrd
