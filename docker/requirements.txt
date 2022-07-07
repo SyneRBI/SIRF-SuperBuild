@@ -10,6 +10,8 @@ wget         # CIL
 six          # CIL
 olefile      # CIL
 git+https://github.com/data-exchange/dxchange.git  # CIL
+pandas
+tifffile
 nibabel
 deprecation
 nose
