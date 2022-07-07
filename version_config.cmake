@@ -159,7 +159,7 @@ set(DEFAULT_CIL_TAG "v21.4.1")
 set(DEFAULT_CIL-ASTRA_URL https://github.com/TomographicImaging/CIL-ASTRA.git)
 set(DEFAULT_CIL-ASTRA_TAG "v21.4.0")
 set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
-set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v21.00")
+set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v21.0.0")
 
 # CERN ROOT
 set(DEFAULT_ROOT_URL https://github.com/root-project/root)
