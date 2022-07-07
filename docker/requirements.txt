@@ -9,6 +9,7 @@ Pillow       # CIL
 wget         # CIL
 six          # CIL
 olefile      # CIL
+dxchange     # CIL
 nibabel
 deprecation
 nose
