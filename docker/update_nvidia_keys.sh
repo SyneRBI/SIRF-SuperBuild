@@ -1,7 +1,13 @@
 #! /bin/bash
+if [ -n "${BASE_IMAGE}" ]; then 
+  bm=$BASE_IMAGE
+else
+  bm="ubuntu:18.04"
+fi
 
-if [ "${PYTHON_EXECUTABLE}" = "ubuntu:18.04" ]; then 
-  apt-get install -yq gnupg
+if [ ${bm} = "ubuntu:18.04" ]; then 
+  apt-get update -y
+  apt-get install -yq gnupg wget
 fi
 
 # https://developer.nvidia.com/blog/updating-the-cuda-linux-gpg-repository-key/
