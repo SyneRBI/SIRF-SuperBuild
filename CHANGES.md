@@ -6,7 +6,8 @@
 - updated versions:
   - SIRF: 3.3.0
   - STIR: 5.0.2
-  - parallelproj: v1.0
+  - parallelproj: v0.8
+  - CCPi Regularisation: v21.0.0
 
 ## v3.2.0
 - Moved the VM scripts etc to this repo
