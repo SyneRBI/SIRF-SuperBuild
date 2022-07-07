@@ -36,6 +36,7 @@ RUN conda install -c conda-forge -c intel -c astra-toolbox -c ccpi --file requir
 RUN python -m pip install git+https://github.com/ismrmrd/ismrmrd-python-tools.git@master#egg=ismrmrd-python-tools
 
 RUN python -m pip install torch==1.7.1 scikit-image
+RUN python -m pip install brainweb
 
 # https://docs.docker.com/develop/develop-images/multistage-build/#use-an-external-image-as-a-stage
 # not documented in https://docs.docker.com/engine/reference/builder/#copy
@@ -53,6 +54,8 @@ ENV PYTHONPATH "/opt/SIRF-SuperBuild/INSTALL/python"
 ENV SIRF_INSTALL_PATH "/opt/SIRF-SuperBuild/INSTALL"
 ENV SIRF_EXERCISES_DATA_PATH "/mnt/materials/SIRF/Fully3D/SIRF/"
 ENV SIRF_PATH "/opt/SIRF-SuperBuild/sources/SIRF"
+#Suppress output from Gadgetron which gives some problems on notebooks (QUIERO)
+ENV GADGETRON_LOG_MASK ""
 RUN echo $PATH
 
 # switch back to 

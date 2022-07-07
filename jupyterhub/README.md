@@ -51,6 +51,13 @@ docker tag 5c63287f0aee paskino/jupyter:datascience-notebook-cuda10-cudnn8-devel
 
 Finally we have the base `datascience-notebook` with the `nvidia/cuda:11.5.0-cudnn8-devel-ubuntu18.04` base image.
 
+
+Possible fix for plotting.
+```
+conda update -c conda-forge jupyterlab ipympl
+%matplotlib widget
+```
+
 ### Start building SIRF
 
 Build the `sirf` target of the SIRF Dockerfile with the `nvidia/cuda:11.5.0-cudnn8-devel-ubuntu18.04` base image.
@@ -75,7 +82,7 @@ docker build --build-arg BASE_IMAGE=nvidia/cuda:10.2-cudnn8-devel-ubuntu18.04 --
 ```
 # build for PSMRTBP2022
 ```
- nohup docker build --build-arg BASE_IMAGE=nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04 --build-arg PYTHON_INSTALL_DIR=/opt/conda --build-arg EXTRA_BUILD_FLAGS="-DBUILD_CIL=ON -DIPP_LIBRARY=/opt/conda/lib -DIPP_INCLUDE=/opt/conda/include -DSTIR_URL=https://github.com/UCL/STIR.git -DSTIR_TAG=origin/master -DSIRF_URL=https://github.com/paskino/SIRF.git -DSIRF_TAG=edo_lm-recon -Dparallelproj_TAG=v0.8.0" --build-arg SIRF_SB_URL="https://github.com/paskino/SIRF-SuperBuild.git" --build-arg SIRF_SB_TAG="jupyterhub_env" --build-arg NUM_PARALLEL_BUILDS=6 --target sirf . > build_jupyterhub_env.log &
+ nohup docker build --build-arg BASE_IMAGE=nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04 --build-arg PYTHON_INSTALL_DIR=/opt/conda --build-arg EXTRA_BUILD_FLAGS="-DBUILD_CIL=ON -DIPP_LIBRARY=/opt/conda/lib -DIPP_INCLUDE=/opt/conda/include -DSTIR_URL=https://github.com/UCL/STIR.git -DSTIR_TAG=master -DBUILD_STIR_EXECUTABLES=ON -DSIRF_URL=https://github.com/SyneRBI/SIRF.git -DSIRF_TAG=lm-recon -Dparallelproj_TAG=v0.8" --build-arg SIRF_SB_URL="https://github.com/paskino/SIRF-SuperBuild.git" --build-arg SIRF_SB_TAG="jupyterhub_env" --build-arg NUM_PARALLEL_BUILDS=6 --target sirf . > build_jupyterhub_lm.log &
 
 # tag as synerbi/sirf:sirf-core
 docker tag cd1ed7d07d11 synerbi/sirf:sirf-core
