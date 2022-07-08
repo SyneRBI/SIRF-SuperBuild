@@ -20,7 +20,8 @@ apt-get clean
 pushd $INSTALL_DIR
 
 # CMake
-curl -o cmake.tgz -L https://github.com/Kitware/CMake/releases/download/v3.17.5/cmake-3.17.5-Linux-x86_64.tar.gz
+echo "Installing CMake 3.22.5 in $INSTALL_DIR"
+curl -o cmake.tgz -L https://github.com/Kitware/CMake/releases/download/v3.22.5/cmake-3.22.5-linux-x86_64.tar.gz
 tar xzf cmake.tgz && rm cmake.tgz
 ln -s cmake-*x86_64 cmake
 export PATH="$PWD/cmake/bin:$PATH"
