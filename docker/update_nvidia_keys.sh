@@ -1,8 +1,10 @@
 #! /bin/bash
 
 # similar to try/catch
-# this line is required for the ubuntu:18.04 base image
-apt-get update -y && apt-get install -yq gnupg wget || true
+# these lines are required for the ubuntu:18.04 base image, 
+# but we allow them to fail as they can on a GPU image before the keys as added.
+apt-get update -y  || true
+apt-get install -yq gnupg wget || true
     
 
 # https://developer.nvidia.com/blog/updating-the-cuda-linux-gpg-repository-key/
