@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 set -e
 # SIRF external dependencies
-add-apt-repository -y universe # needed for hdf5 for instance
 apt-get update -qq
 APT_GET_INSTALL="apt-get install -yq --no-install-recommends"
+
+${APT_GET_INSTALL} software-properties-common # needed for add-apt-repository
+add-apt-repository -y universe # needed for hdf5 for instance
 
 # echo "Installing boost 1.65 or later"
 # first find current boost version (if any)
