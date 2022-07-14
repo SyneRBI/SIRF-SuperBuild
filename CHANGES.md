@@ -1,6 +1,7 @@
 # ChangeLog
 # v3.x.x
 - Windows Boost build add regex and random
+- Update to the ASTRA build script
 - VM: 
   - set BUILD_CIL=ON
 - updated versions:
