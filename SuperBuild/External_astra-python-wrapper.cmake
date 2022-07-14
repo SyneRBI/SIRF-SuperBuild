@@ -112,7 +112,9 @@ cp -rv ${${astra}_SOURCE_DIR}/python/build/$build_dir/astra ${${proj}_INSTALL_DI
     file(COPY ${${proj}_BINARY_DIR}/python_install
          DESTINATION ${${proj}_BINARY_DIR}/python
          FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
-    
+    # remove the files in the repo directory that give troubles to git
+    file(REMOVE ${${proj}_BINARY_DIR}/python_build)
+    file(REMOVE ${${proj}_BINARY_DIR}/python_install)
 
     # SetCanonicalDirectoryNames("${proj}")
     SetGitTagAndRepo("${proj}")
