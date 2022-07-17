@@ -50,12 +50,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
     # in case of PYTHONPATH it is sufficient to copy the files to the
     # $PYTHONPATH directory
+    find_package(Git)
     ExternalProject_Add(${proj}
       ${${proj}_EP_ARGS}
       ${${proj}_EP_ARGS_GIT}
       ${${proj}_EP_ARGS_DIRS}
 
-      CONFIGURE_COMMAND ""
+      CONFIGURE_COMMAND ${CMAKE_COMMAND} -E rm -f ${${proj}}_SOURCE_DIR}/Wrappers/Python/cil/plugins/astra/version.py && ${GIT_EXECUTABLE} checkout ${${proj}_TAG} && ${GIT_EXECUTABLE} pull 
       BUILD_COMMAND ""
       INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/Wrappers/Python/cil/plugins ${PYTHON_DEST}/cil/plugins && ${CMAKE_COMMAND} -E rm -f ${${proj}}_SOURCE_DIR}/Wrappers/Python/cil/plugins/astra/version.py
       CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
