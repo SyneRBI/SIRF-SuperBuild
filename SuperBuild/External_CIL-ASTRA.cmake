@@ -56,7 +56,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       ${${proj}_EP_ARGS_GIT}
       ${${proj}_EP_ARGS_DIRS}
 
-      UPDATE_COMMAND ${CMAKE_COMMAND} -E rm -f ${${proj}}_SOURCE_DIR}/Wrappers/Python/cil/plugins/astra/version.py && ${CMAKE_EXECUTABLE} ${proj}_TMP_DIR/${proj}-gitupdate.cmake
+      UPDATE_COMMAND ${CMAKE_COMMAND} -E rm -f ${${proj}}_SOURCE_DIR}/Wrappers/Python/cil/plugins/astra/version.py && ${CMAKE_COMMAND} ${proj}_TMP_DIR/${proj}-gitupdate.cmake
       BUILD_COMMAND ""
       INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/Wrappers/Python/cil/plugins ${PYTHON_DEST}/cil/plugins && ${CMAKE_COMMAND} -E rm -f ${${proj}}_SOURCE_DIR}/Wrappers/Python/cil/plugins/astra/version.py
       CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
