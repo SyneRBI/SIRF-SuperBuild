@@ -278,7 +278,7 @@ build_and_install()
     cmake $* $SIRF_SRC_PATH/$repo
   fi
   echo "======================  Installing $repo"
-  make -j${num_parallel} install VERBOSE=1
+  make -j${num_parallel} install
 }
 
 # function to do everything
