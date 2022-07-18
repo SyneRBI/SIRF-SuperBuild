@@ -70,6 +70,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       
 
       # This build is Unix specific
+      UPDATE_COMMAND ${CMAKE_COMMAND} -E rm -f ${${proj}_SOURCE_DIR}/python/python_build && ${CMAKE_COMMAND} -E rm -f ${${proj}_SOURCE_DIR}/python/python_install
       CONFIGURE_COMMAND
         ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ./autogen.sh
       BUILD_COMMAND
