@@ -1,0 +1,50 @@
+name: Docker build test devek, service, service-devel
+
+on:
+  pull_request:
+    branches: [ master_test ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install docker and pre-reqs
+        shell: bash -l {0}
+        run: |
+         # make the file runnable
+         chmod +x ".github/workflows/install_docker.sh"
+         .github/workflows/install_docker.sh
+    
+      
+      - name: Build docker devel image
+        # Builds docker image from Docker file.
+        shell: bash -l {0}
+        run: |
+          docker-compose -f docker/docker-compose.yml -f docker/docker-compose.devel.yml pull core
+          docker-compose -f docker/docker-compose.yml -f docker/docker-compose.devel.yml build sirf
+
+      - name: Run docker devel container with tests
+        shell: bash -l {0}
+        run: |
+          docker-compose -f docker/docker-compose.yml -f docker/docker-compose.devel.yml run --rm -u jovyan --entrypoint /bin/bash sirf --login -c /devel/test.sh 1
+      
+      - name: Build docker service-devel image
+        # Builds docker image from Docker file.
+        shell: bash -l {0}
+        run: |
+          docker-compose -f docker/docker-compose.yml -f docker/docker-compose.devel.yml -f docker/docker-compose.srv.yml pull core
+          docker-compose -f docker/docker-compose.yml -f docker/docker-compose.devel.yml -f docker/docker-compose.srv.yml build sirf
+
+      - name: Run docker service-devel container with tests
+        shell: bash -l {0}
+        run: |
+          docker-compose -f docker/docker-compose.yml -f docker/docker-compose.devel.yml -f docker/docker-compose.srv.yml run --rm -u jovyan --entrypoint /bin/bash sirf --login -c /devel/test.sh 1
+          
+      - name: List images 2
+        shell: bash -l {0}
+        run: |
+          docker image list
+    # TODO: publish to come later
+    # TODO: use matrix for tag names, yml names, etc.
