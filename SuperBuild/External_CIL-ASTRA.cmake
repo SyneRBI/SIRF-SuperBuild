@@ -1,6 +1,6 @@
 #========================================================================
 # Author: Edoardo Pasca
-# Copyright 2019 UKRI STFC
+# Copyright 2019-2022 UKRI STFC
 #
 # This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -37,11 +37,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   SetGitTagAndRepo("${proj}")
 
   ### --- Project specific additions here
-  # set(libcilreg_Install_Dir ${SUPERBUILD_INSTALL_DIR})
-
-  # #message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
-  # set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
-  # set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
 
   message("${proj} URL " ${${proj}_URL}  )
@@ -50,6 +45,10 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
     # in case of PYTHONPATH it is sufficient to copy the files to the
     # $PYTHONPATH directory
+    # However, we need to remove some files that are created by the ASTRA install in the source directory
+    # but are neither version-tracked nor git-ignored. Otherwise, an update will fail.
+    # Unfortunately, we rely on internal mechanisms of ExternalProject_Add to use the normal update mechanism.
+    # Maybe there's a better way...
     find_package(Git)
     ExternalProject_Add(${proj}
       ${${proj}_EP_ARGS}
