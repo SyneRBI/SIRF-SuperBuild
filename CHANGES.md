@@ -1,9 +1,20 @@
 # ChangeLog
-# v3.x.x
-- Windows Boost build add regex and random
-- Update to the ASTRA build script
+# v3.3.0
+- known problems:
+   - VM and jupyterhub scripts need merging various fixes
+- gemeric *.cmake fixes:
+   - update to the ASTRA build script
+   - fix/add minimum versions for various packages
+   - improve finding GTest
+- Windows
+   - Boost build add regex and random
+   - install emv_sirf.PS1 and .bat files (as the .sh and .csh files)
+- docker:
+   - fix problems with CUDA repo keys
+   - minor fixes to scripts for use elsewhere (including preparation for more recent Ubuntu)
 - VM: 
   - set BUILD_CIL=ON
+- add CITATION.cff (and remove .zenodo.json)
 - updated versions:
   - SIRF: 3.3.0
   - STIR: 5.0.2
