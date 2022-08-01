@@ -20,6 +20,7 @@
   - STIR: 5.0.2
   - parallelproj: v0.8
   - CCPi Regularisation: v21.0.0
+  - CIL: v21.4.1 (CIL devel build to commit hash ef66083de231492f9571f5512b33068f6950e877 )
 
 
 ## v3.2.0
