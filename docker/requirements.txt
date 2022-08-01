@@ -10,6 +10,7 @@ wget         # CIL
 six          # CIL
 olefile      # CIL
 git+https://github.com/data-exchange/dxchange.git  # CIL
+numba        # CIL
 pandas
 tifffile
 nibabel

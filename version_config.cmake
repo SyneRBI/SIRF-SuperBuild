@@ -200,7 +200,7 @@ if (DEVEL_BUILD)
 
   # CCPi CIL
   set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
-  set(DEFAULT_CIL_TAG origin/master)
+  set(DEFAULT_CIL_TAG ef66083de231492f9571f5512b33068f6950e877 )
   set(DEFAULT_CIL-ASTRA_URL https://github.com/TomographicImaging/CIL-ASTRA.git)
   set(DEFAULT_CIL-ASTRA_TAG origin/master)
 
