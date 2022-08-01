@@ -15,6 +15,7 @@
 - VM: 
   - set BUILD_CIL=ON
 - add CITATION.cff (and remove .zenodo.json)
+- added numba as dependency in docker files
 - updated versions:
   - SIRF: 3.3.0
   - STIR: 5.0.2
