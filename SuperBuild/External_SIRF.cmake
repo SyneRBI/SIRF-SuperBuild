@@ -106,6 +106,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DOPENMP_LIBRARIES:PATH=${OPENMP_LIBRARIES}
 		  ${extra_args}
       -DGadgetron_USE_CUDA=${Gadgetron_USE_CUDA}
+      -DDISABLE_Gadgetron=(NOT ${BUILD_Gadgetron})
       ${${proj}_EXTRA_CMAKE_ARGS}
     DEPENDS
         ${${proj}_DEPENDENCIES}
