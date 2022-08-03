@@ -79,4 +79,4 @@ bash $userHOME/devel/SIRF-SuperBuild/VirtualBox/scripts/INSTALL_python_packages.
 # Therefore no browser is installed on the VM
 
 chown -R $SIRFUSERNAME:users $userHOME
-sudo -u $SIRFUSERNAME -H bash $userHOME/devel/SIRF-SuperBuild/VirtualBox/scripts/UPDATE.sh
+sudo -u $SIRFUSERNAME -H bash $userHOME/devel/SIRF-SuperBuild/VirtualBox/scripts/UPDATE.sh -t VM_3.3.0
