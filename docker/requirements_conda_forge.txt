@@ -1,11 +1,4 @@
-cil
-cil-astra
-ccpi-regulariser 
 ipp
 ipp-devel
 ipp-include
 tigre 
-tomophantom=1.4.10
-python-wget
-dxchange
-numba
