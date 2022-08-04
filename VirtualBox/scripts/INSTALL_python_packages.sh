@@ -65,6 +65,11 @@ while (( "$#" )); do
   esac
 done
 
+export DEBIAN_FRONTEND=noninteractive
+SUDO=sudo
+APT_GET_INSTALL="$SUDO apt-get install -y --no-install-recommends"
+${APT_GET_INSTALL} ${PYTHON}-pip
+
 $PYTHON -m pip install $PIPOPTIONS --upgrade pip wheel setuptools
 $PYTHON -m pip install $PIPOPTIONS --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib nose coverage docopt deprecation nibabel pytest tqdm
 $PYTHON -m pip install $PIPOPTIONS jupyter spyder
