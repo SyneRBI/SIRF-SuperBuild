@@ -68,7 +68,7 @@ done
 export DEBIAN_FRONTEND=noninteractive
 SUDO=sudo
 APT_GET_INSTALL="$SUDO apt-get install -y --no-install-recommends"
-${APT_GET_INSTALL} ${PYTHON}-pip
+${APT_GET_INSTALL} ${PYTHON}-pip ${PYTHON}-dev  
 
 $PYTHON -m pip install $PIPOPTIONS --upgrade pip wheel setuptools
 $PYTHON -m pip install $PIPOPTIONS --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib nose coverage docopt deprecation nibabel pytest tqdm
