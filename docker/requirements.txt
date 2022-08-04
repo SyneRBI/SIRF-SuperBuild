@@ -16,3 +16,4 @@ tifffile
 nibabel
 deprecation
 nose
+setuptools
