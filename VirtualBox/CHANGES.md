@@ -1,5 +1,9 @@
 # ChangeLog
 
+Up to v3.1.0, these files were part of a separate repository. The log
+entries below only apply up to that version therefore.
+See the [main CHANGES.md](../CHANGES.md) for changes since then.
+
 # 3.1.0
 - update to SIRF 3.1.0
 - `update_VM_to_full_CIL.sh` is preferred way to install CIL. `CIL_LITE` is set to `ON` during SuperBuild.

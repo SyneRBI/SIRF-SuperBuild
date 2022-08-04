@@ -10,6 +10,11 @@ other packages useful for PET/MR data processing.
 Note that there is still a small number of libraries that are not installed
 by the SuperBuild, [see below for more info for your operating system](#os-specific-information).
 
+In addition, this repository also contains the files for [creating docker images](docker/README.md),
+a [VirtualBox VM](VirtualBox/README.md) as well as (probably outdated) files for creating [cloud instances
+on Azure via TerraForm](cloud/terraform/azure/README.md). See their respective READMEs. The rest of this README
+describes how to build via CMake.
+
 ## Table of Contents
 
 1. [Dependencies](#Dependencies)

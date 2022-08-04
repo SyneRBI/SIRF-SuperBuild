@@ -51,6 +51,10 @@ authors:
     affiliation: University College London
     given-names: Alexander
     family-names: Whitehead
+  - given-names: Georg
+    family-names: Schramm
+    affiliation: Katholieke Universiteit Leuven
+    orcid: 'https://orcid.org/0000-0002-2251-3195'
   - given-names: David
     family-names: Atkinson
     affiliation: University College London
