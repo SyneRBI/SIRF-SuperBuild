@@ -14,8 +14,7 @@ jobs:
         shell: bash -l {0}
         run: |
          # make the file runnable
-         chmod +x ".github/workflows/install_docker.sh"
-         .github/workflows/install_docker.sh
+         sudo bash .github/workflows/install_docker.sh
          
       - name: Build docker core image
         # Builds docker image from Docker file.
