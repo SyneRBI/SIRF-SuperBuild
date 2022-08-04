@@ -69,13 +69,15 @@ export DEBIAN_FRONTEND=noninteractive
 SUDO=sudo
 APT_GET_INSTALL="$SUDO apt-get install -y --no-install-recommends"
 ${APT_GET_INSTALL} ${PYTHON}-pip ${PYTHON}-dev  
+# TODO would be better to guarantee absolute path for SCRIPTS
+SCRIPTS="$(dirname $0)/../../docker"
 
-$PYTHON -m pip install $PIPOPTIONS --upgrade pip wheel setuptools
-$PYTHON -m pip install $PIPOPTIONS --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib nose coverage docopt deprecation nibabel pytest tqdm
-$PYTHON -m pip install $PIPOPTIONS jupyter spyder
-$PYTHON -m pip uninstall $PIPOPTIONS -y spyder-kernels
+${PYTHON} -m pip install $PIPOPTIONS -y -U -r ${SCRIPTS}/requirements.txt
+# $PYTHON -m pip install $PIPOPTIONS --upgrade pip wheel setuptools
+# $PYTHON -m pip install $PIPOPTIONS --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib nose coverage docopt deprecation nibabel pytest tqdm
+# $PYTHON -m pip install $PIPOPTIONS jupyter spyder
+# $PYTHON -m pip uninstall $PIPOPTIONS -y spyder-kernels
 
 # otherwise Jupyter uses py 2 even when you choose py3: https://github.com/jupyter/jupyter/issues/270
 $PYTHON -m ipykernel install --user  
-# CIL
-$PYTHON -m pip install $PIPOPTIONS pillow olefile
+
