@@ -14,6 +14,9 @@ SUDO=sudo
 
 # TODO would be better to guarantee absolute path for SCRIPTS
 SCRIPTS="$(dirname $0)/../../docker"
+# uninstall pexpect which is preinstalled in the VM
+# https://github.com/SyneRBI/SIRF-SuperBuild/issues/742#issuecomment-1205090681
+$SUDO apt remove -y python3-pexpect
 
 $SUDO "$SCRIPTS/build_essential-ubuntu.sh"
 
