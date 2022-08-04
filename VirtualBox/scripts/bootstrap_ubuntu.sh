@@ -64,9 +64,13 @@ cd $userHOME/devel
 if [ ! -d $userHOME/devel/SIRF-SuperBuild ]; then
   git clone https://github.com/SyneRBI/SIRF-SuperBuild.git
   cd SIRF-SuperBuild
+  git checkout VM_3.3.0
 else
   cd SIRF-SuperBuild
   # git pull
+  git fetch -a
+  git checkout VM_3.3.0
+  git pull --rebase origin VM_3.3.0
 fi
 
 
