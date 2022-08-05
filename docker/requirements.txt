@@ -1,3 +1,4 @@
+setuptools
 docopt
 matplotlib
 git+https://github.com/ismrmrd/ismrmrd-python-tools.git@master#egg=ismrmrd-python-tools
@@ -16,4 +17,3 @@ tifffile
 nibabel
 deprecation
 nose
-setuptools
