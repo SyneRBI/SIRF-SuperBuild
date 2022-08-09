@@ -72,7 +72,7 @@ ${APT_GET_INSTALL} ${PYTHON}-pip ${PYTHON}-dev
 # TODO would be better to guarantee absolute path for SCRIPTS
 SCRIPTS="$(dirname $0)/../../docker"
 
-${PYTHON} -m pip install $PIPOPTIONS -U setuptools
+${PYTHON} -m pip install $PIPOPTIONS -U setuptools wheel
 ${PYTHON} -m pip install $PIPOPTIONS -U -r ${SCRIPTS}/requirements.txt
 # $PYTHON -m pip install $PIPOPTIONS --upgrade pip wheel setuptools
 # $PYTHON -m pip install $PIPOPTIONS --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib nose coverage docopt deprecation nibabel pytest tqdm

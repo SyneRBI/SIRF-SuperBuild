@@ -70,7 +70,7 @@ else
   # git pull
   git fetch -a
   git checkout VM_3.3.0
-  git pull --rebase origin VM_3.3.0
+  git pull origin VM_3.3.0
 fi
 
 
