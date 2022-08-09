@@ -1,11 +1,11 @@
 setuptools
 wheel
+numpy        # CIL
+scipy        # CIL
 docopt
 matplotlib
 git+https://github.com/ismrmrd/ismrmrd-python-tools.git@master#egg=ismrmrd-python-tools
 Cython       # CIL
-numpy        # CIL
-scipy        # CIL
 h5py         # CIL
 Pillow       # CIL
 wget         # CIL
