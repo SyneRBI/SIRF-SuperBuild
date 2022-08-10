@@ -22,8 +22,9 @@ message(STATUS "CYTHON_EXECUTABLES ${CYTHON_EXECUTABLES}")
 
 set(Cython_FOUND FALSE)
 foreach(cy_exe IN LISTS ${CYTHON_EXECUTABLES})
+    message(STATUS "Trying with ${cy_exe}!")
     IF (cy_exe)
-        message(STATUS "Trying with ${cy_exe}")
+        
         # Try to run Cython, to make sure it works:
         execute_process(
             COMMAND ${cy_exe} "--version"
