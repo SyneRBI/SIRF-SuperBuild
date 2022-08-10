@@ -11,7 +11,6 @@
 SET(CYTHON_EXECUTABLE cython CACHE STRING "Cython executable name")
 SET(CYTHON_FLAGS --cplus --fast-fail)
 
-set(SEARCH_CYTHON_PATH "")
 if (CYTHON_ROOT)
   set(CYTHON_EXECUTABLES "${CYTHON_EXECUTABLE};${CYTHON_ROOT}/cython")
 else()
