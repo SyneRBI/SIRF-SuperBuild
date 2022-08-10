@@ -22,23 +22,26 @@ message(STATUS "Looking for Cython among ${CYTHON_EXECUTABLES}")
 
 set(Cython_FOUND FALSE)
 foreach(CYTHON_EXECUTABLE IN LISTS CYTHON_EXECUTABLES)
-    IF (CYTHON_EXECUTABLE)
+    message(status "Trying with ${cy_exe}")
+    IF (cy_exe)
         # Try to run Cython, to make sure it works:
         execute_process(
-            COMMAND ${CYTHON_EXECUTABLE} "--version"
+            COMMAND ${cy_exe} "--version"
             RESULT_VARIABLE CYTHON_RESULT
-            OUTPUT_QUIET
+            OUTPUT_VARIABLE cython_version
             ERROR_QUIET
             )
         if (CYTHON_RESULT EQUAL 0)
             # Only if cython exits with the return code 0, we know that all is ok:
             SET(Cython_FOUND TRUE)
             SET(Cython_Compilation_Failed FALSE)
+            set(CYTHON_EXECUTABLE ${cy_exe})
+            message(status "YAS! ${cy_exe} ${CYTHON_EXECUTABLE} ${cython_version}")
             break()
         else (CYTHON_RESULT EQUAL 0)
             SET(Cython_Compilation_Failed TRUE)
         endif (CYTHON_RESULT EQUAL 0)
-    endif (CYTHON_EXECUTABLE)
+    endif (cy_exe)
 endforeach()
 
 
@@ -46,7 +49,7 @@ endforeach()
 
 IF (Cython_FOUND)
 	IF (NOT Cython_FIND_QUIETLY)
-		MESSAGE(STATUS "Found CYTHON version ${OUTPUT_QUIET}: ${CYTHON_EXECUTABLE}")
+		MESSAGE(STATUS "Found CYTHON version ${cython_version}: ${CYTHON_EXECUTABLE}")
 	ENDIF (NOT Cython_FIND_QUIETLY)
 ELSE (Cython_FOUND)
     message(WARNING "Cython not found!")
