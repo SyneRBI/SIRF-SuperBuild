@@ -29,7 +29,7 @@ foreach(cy_exe IN LISTS CYTHON_EXECUTABLES)
             COMMAND ${cy_exe} "--version"
             RESULT_VARIABLE CYTHON_RESULT
             OUTPUT_QUIET 
-            ERROR_QUIET cython_version
+            ERROR_VARIABLE cython_version
             )
         if (CYTHON_RESULT EQUAL 0)
             # Only if cython exits with the return code 0, we know that all is ok:
