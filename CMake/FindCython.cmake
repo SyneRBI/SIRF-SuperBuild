@@ -15,13 +15,13 @@ set(SEARCH_CYTHON_PATH "")
 if (CYTHON_ROOT)
   set(CYTHON_EXECUTABLES "${CYTHON_EXECUTABLE};${CYTHON_ROOT}/cython")
 else()
-set(CYTHON_EXECUTABLES "${CYTHON_EXECUTABLE}")
+  set(CYTHON_EXECUTABLES "${CYTHON_EXECUTABLE}")
 endif()
 
 message(STATUS "CYTHON_EXECUTABLES ${CYTHON_EXECUTABLES}")
 
 set(Cython_FOUND FALSE)
-foreach(cy_exe IN LISTS ${CYTHON_EXECUTABLES})
+foreach(cy_exe IN LISTS CYTHON_EXECUTABLES)
     message(STATUS "Trying with ${cy_exe}!")
     IF (cy_exe)
         
