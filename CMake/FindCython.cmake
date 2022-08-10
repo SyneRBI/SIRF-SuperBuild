@@ -12,8 +12,8 @@ SET(CYTHON_EXECUTABLE cython CACHE STRING "Cython executable name")
 SET(CYTHON_FLAGS --cplus --fast-fail)
 
 set(SEARCH_CYTHON_PATH "")
-if (CYTHON_PATH)
-  set(CYTHON_EXECUTABLES "${CYTHON_EXECUTABLE};${CYTHON_PATH}/cython")
+if (CYTHON_ROOT)
+  set(CYTHON_EXECUTABLES "${CYTHON_EXECUTABLE};${CYTHON_ROOT}/cython")
 else()
 set(CYTHON_EXECUTABLES "${CYTHON_EXECUTABLE}")
 endif()
@@ -21,6 +21,7 @@ endif()
 set(Cython_FOUND FALSE)
 foreach(cy_exe IN LISTS ${CYTHON_EXECUTABLES})
     IF (cy_exe)
+        message(STATUS "Trying with ${cy_exe}")
         # Try to run Cython, to make sure it works:
         execute_process(
             COMMAND ${cy_exe} "--version"
@@ -32,9 +33,11 @@ foreach(cy_exe IN LISTS ${CYTHON_EXECUTABLES})
             # Only if cython exits with the return code 0, we know that all is ok:
             SET(Cython_FOUND TRUE)
             SET(Cython_Compilation_Failed FALSE)
+            message(STATUS "${cy_exe} works"
             break()
         else (CYTHON_RESULT EQUAL 0)
             SET(Cython_Compilation_Failed TRUE)
+            message(STATUS "${cy_exe} does not work")
         endif (CYTHON_RESULT EQUAL 0)
     endif (cy_exe)
 endforeach()
