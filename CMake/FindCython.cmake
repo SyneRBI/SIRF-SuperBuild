@@ -18,6 +18,8 @@ else()
 set(CYTHON_EXECUTABLES "${CYTHON_EXECUTABLE}")
 endif()
 
+message(STATUS "CYTHON_EXECUTABLES ${CYTHON_EXECUTABLES}")
+
 set(Cython_FOUND FALSE)
 foreach(cy_exe IN LISTS ${CYTHON_EXECUTABLES})
     IF (cy_exe)
