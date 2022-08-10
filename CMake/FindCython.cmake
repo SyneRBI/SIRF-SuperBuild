@@ -18,16 +18,14 @@ else()
   set(CYTHON_EXECUTABLES "${CYTHON_EXECUTABLE}")
 endif()
 
-message(STATUS "CYTHON_EXECUTABLES ${CYTHON_EXECUTABLES}")
+message(STATUS "Looking for Cython among ${CYTHON_EXECUTABLES}")
 
 set(Cython_FOUND FALSE)
-foreach(cy_exe IN LISTS CYTHON_EXECUTABLES)
-    message(STATUS "Trying with ${cy_exe}!")
-    IF (cy_exe)
-        
+foreach(CYTHON_EXECUTABLE IN LISTS CYTHON_EXECUTABLES)
+    IF (CYTHON_EXECUTABLE)
         # Try to run Cython, to make sure it works:
         execute_process(
-            COMMAND ${cy_exe} "--version"
+            COMMAND ${CYTHON_EXECUTABLE} "--version"
             RESULT_VARIABLE CYTHON_RESULT
             OUTPUT_QUIET
             ERROR_QUIET
@@ -36,13 +34,11 @@ foreach(cy_exe IN LISTS CYTHON_EXECUTABLES)
             # Only if cython exits with the return code 0, we know that all is ok:
             SET(Cython_FOUND TRUE)
             SET(Cython_Compilation_Failed FALSE)
-            message(STATUS "${cy_exe} works")
             break()
         else (CYTHON_RESULT EQUAL 0)
             SET(Cython_Compilation_Failed TRUE)
-            message(STATUS "${cy_exe} does not work")
         endif (CYTHON_RESULT EQUAL 0)
-    endif (cy_exe)
+    endif (CYTHON_EXECUTABLE)
 endforeach()
 
 
