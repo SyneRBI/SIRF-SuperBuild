@@ -21,7 +21,7 @@ endif()
 message(STATUS "Looking for Cython among ${CYTHON_EXECUTABLES}")
 
 set(Cython_FOUND FALSE)
-foreach(CYTHON_EXECUTABLE IN LISTS CYTHON_EXECUTABLES)
+foreach(cy_exe IN LISTS CYTHON_EXECUTABLES)
     message(status "Trying with ${cy_exe}")
     IF (cy_exe)
         # Try to run Cython, to make sure it works:
