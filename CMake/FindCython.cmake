@@ -28,8 +28,8 @@ foreach(cy_exe IN LISTS CYTHON_EXECUTABLES)
         execute_process(
             COMMAND ${cy_exe} "--version"
             RESULT_VARIABLE CYTHON_RESULT
-            OUTPUT_VARIABLE cython_version
-            ERROR_QUIET
+            OUTPUT_QUIET 
+            ERROR_QUIET cython_version
             )
         if (CYTHON_RESULT EQUAL 0)
             # Only if cython exits with the return code 0, we know that all is ok:
