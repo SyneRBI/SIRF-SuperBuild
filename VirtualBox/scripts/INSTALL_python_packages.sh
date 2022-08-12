@@ -72,7 +72,7 @@ ${APT_GET_INSTALL} ${PYTHON}-pip ${PYTHON}-dev
 # TODO would be better to guarantee absolute path for SCRIPTS
 SCRIPTS="$(dirname $0)/../../docker"
 
-${SUDO} -u sirfuser ${PYTHON} -m pip install $PIPOPTIONS -U setuptools wheel
+${PYTHON} -m pip install $PIPOPTIONS -U setuptools wheel
 ${PYTHON} -u sirfuser -m pip install $PIPOPTIONS -U -r ${SCRIPTS}/requirements.txt
 ${PYTHON} -u sirfuser -m pip install $PIPOPTIONS -U -r ${SCRIPTS}/requirements-service.txt
 # $PYTHON -m pip install $PIPOPTIONS --upgrade pip wheel setuptools
