@@ -3,6 +3,18 @@ name: Build all of the sirf docker images
 on:
   pull_request:
     branches: [ master ]
+    paths-ignore:
+    - '**.md'
+    - 'jupyterhub/**'
+    - 'VirtualBox/**'
+    - '.github/workflows/c-cpp.yml'
+  push:
+    branches: [ master ]
+    paths-ignore:
+    - '**.md'
+    - 'jupyterhub/**'
+    - 'VirtualBox/**'
+    - '.github/workflows/c-cpp.yml'
 
 jobs:
   build-core:

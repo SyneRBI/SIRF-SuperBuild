@@ -3,8 +3,24 @@ name: run superbuild and test
 on:
   push:
     branches: [ master ]
+    paths-ignore:
+    - 'docker/Dockerfile'
+    - 'docker/*yml'
+    - '**.md'
+    - 'jupyterhub/**'
+    - 'VirtualBox/**'
+    - '.github/workflows/*docker*'
+    
   pull_request:
     branches: [ master ]
+    paths-ignore:
+    - 'docker/Dockerfile'
+    - 'docker/*yml'
+    - '**.md'
+    - 'jupyterhub/**'
+    - 'VirtualBox/**'
+    - '.github/workflows/*docker*'
+    
 
 jobs:
   build:
