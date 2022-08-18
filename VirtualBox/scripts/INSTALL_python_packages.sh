@@ -68,9 +68,13 @@ done
 export DEBIAN_FRONTEND=noninteractive
 SUDO=sudo
 APT_GET_INSTALL="$SUDO apt-get install -y --no-install-recommends"
-${APT_GET_INSTALL} ${PYTHON}-pip ${PYTHON}-dev  
+${APT_GET_INSTALL} ${PYTHON}-dev  
 # TODO would be better to guarantee absolute path for SCRIPTS
 SCRIPTS="$(dirname $0)/../../docker"
+# installs pip
+curl $($PYTHON ${SCRIPTS}/get_pip_download_link.py) > get-pip.py
+${PYTHON} get-pip.py
+rm get-pip.py
 
 ${PYTHON} -m pip install $PIPOPTIONS -U setuptools wheel
 ${PYTHON} -m pip install $PIPOPTIONS -U -r ${SCRIPTS}/requirements.txt
