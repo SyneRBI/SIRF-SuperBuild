@@ -1,4 +1,5 @@
 #!/bin/bash
+# Taken from: https://github.com/vais-ral/CILViewer/blob/master/.github/workflows/docker_build_test_publish.yml
 apt-get update -y
 apt-get install ca-certificates curl gnupg lsb-release -y
 mkdir -p /etc/apt/keyrings
