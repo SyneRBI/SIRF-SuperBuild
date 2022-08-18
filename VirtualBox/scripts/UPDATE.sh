@@ -9,8 +9,8 @@
 #
 # Authors: Kris Thielemans, Evgueni Ovtchinnikov, Edoardo Pasca,
 # Casper da Costa-Luis
-# Copyright 2016-2021 University College London
-# Copyright 2016-2021 Rutherford Appleton Laboratory STFC
+# Copyright 2016-2022 University College London
+# Copyright 2016-2022 Rutherford Appleton Laboratory STFC
 #
 # This is software developed for the Collaborative Computational
 # Project in Synergistic Reconstruction for Biomedical Imaging (formerly PETMR)
@@ -100,18 +100,21 @@ else
   if [ -r /usr/local/bin/update_VM.sh ]
   then
     # we are on the very first VM
-    SIRF_VM_VERSION=0.1
-    echo virtual | sudo -S apt-get -y install python-scipy python-docopt python-matplotlib
     echo '======================================================'
-    echo 'You have a very old VM. This update is likely to fail.'
+    echo 'You have a very old VM. Aborting'
     echo '======================================================'
+    exit 1
   else
     if [ -r ~/.sirfrc ]; then
       SIRF_VM_VERSION=0.9
       echo '======================================================'
-      echo 'You have a very old VM.'
-      echo 'You will probably have to update system files and re-run the update.'
-      echo 'Check the INSTALL_* files.'
+      if [ $apt_install == 1 ]; then
+        echo 'You have a very old VM. This update might fail.'
+        echo 'You probably will have to "rm -rf ~/devel/buildVM" first.'
+      else
+        echo 'You have a very old VM. You have to run with -s (but the update might fail anyway).'
+        exit 1
+      fi
       echo '======================================================'
     else
       SIRF_VM_VERSION=new_VM
@@ -129,15 +132,16 @@ then
   mkdir -p $SIRF_SRC_PATH
 fi
 
-# cope with CCP-PETMR renaming
+# old VM repos
 if [ -d $SIRF_SRC_PATH/CCPPETMR_VM ]; then
-  if [ ! -h $SIRF_SRC_PATH/SyneRBI_VM ]; then
-    ln -s $SIRF_SRC_PATH/CCPPETMR_VM $SIRF_SRC_PATH/SyneRBI_VM
-    if [ $update_remote == 1 ]; then
-        cd $SIRF_SRC_PATH/CCPPETMR_VM
-        git remote set-url origin https://github.com/SyneRBI/SyneRBI_VM.git
-    fi
-  fi
+    echo '======================================================'
+    echo "$SIRF_SRC_PATH/CCPPETMR_VM is no longer used. We recommend removing it."
+    echo '======================================================'
+fi
+if [ -d $SIRF_SRC_PATH/SyneRBI_VM ]; then
+    echo '======================================================'
+    echo "$SIRF_SRC_PATH/SyneRBI_VM is no longer used. We recommend removing it."
+    echo '======================================================'
 fi
 
 SIRF_INSTALL_PATH=$SIRF_SRC_PATH/install
@@ -149,7 +153,6 @@ if which python3; then
 else
   PYTHON_EXECUTABLE=$(which python)
 fi
-PYTHON_EXECUTABLE=/usr/bin/python3
 
 if which cython3; then
     CYTHON_EXECUTABLE=$(which cython3)
@@ -157,20 +160,20 @@ else
   CYTHON_EXECUTABLE=$(which cython)
 fi
 
-# ignore notebook keys, https://github.com/CCPPETMR/SIRF-Exercises/issues/20
-"$PYTHON_EXECUTABLE" -m pip install -U --user nbstripout
-git config --global filter.nbstripout.extrakeys '
-  metadata.celltoolbar metadata.language_info.codemirror_mode.version
-  metadata.language_info.pygments_lexer metadata.language_info.version'
-
 # Optionally install pre-requisites
 if [ $apt_install == 1 ]; then
-  cd ~/devel/SIRF-SuperBuild/VirtualBox/scripts
+  cd "$SIRF_SRC_PATH"/SIRF-SuperBuild/VirtualBox/scripts
   sudo -H ./INSTALL_prerequisites_with_apt-get.sh
   sudo -H ./INSTALL_python_packages.sh --python "$PYTHON_EXECUTABLE"
   sudo -H ./INSTALL_CMake.sh
   ./configure_gnome.sh
 fi
+
+# ignore notebook keys, https://github.com/CCPPETMR/SIRF-Exercises/issues/20
+"$PYTHON_EXECUTABLE" -m pip install -U --user nbstripout
+git config --global filter.nbstripout.extrakeys '
+  metadata.celltoolbar metadata.language_info.codemirror_mode.version
+  metadata.language_info.pygments_lexer metadata.language_info.version'
 
 # SuperBuild
 SuperBuild(){
@@ -215,30 +218,9 @@ SuperBuild(){
         -DBUILD_CIL=ON\
         -DCYTHON_EXECUTABLE="$CYTHON_EXECUTABLE"\
         -DPYTHON_EXECUTABLE="$PYTHON_EXECUTABLE"\
-        -DBUILD_pet_rd_tools=ON\
-        -DCYTHON_ROOT="${HOME}/.local/bin"
+        -DBUILD_pet_rd_tools=ON
   cmake --build . -j${num_parallel}
 
-  if [ ! -f ${SIRF_INSTALL_PATH}/share/gadgetron/config/gadgetron.xml ]
-  then
-      if [ -f ${SIRF_INSTALL_PATH}/share/gadgetron/config/gadgetron.xml.example ]
-      then
-          cp ${SIRF_INSTALL_PATH}/share/gadgetron/config/gadgetron.xml.example ${SIRF_INSTALL_PATH}/share/gadgetron/config/gadgetron.xml
-      fi
-  fi
-
-  if [ $SIRF_VM_VERSION = "0.9" ] 
-  then 
-    echo "*********************************************************"
-    echo "We recommend to delete old files and directories:"
-    echo ""
-    echo "rm -rf $SIRF_SRC_PATH/build"
-    echo "rm -rf $SIRF_SRC_PATH/gadgetron"
-    echo "rm -rf $SIRF_SRC_PATH/ismrmrd"
-    echo "rm -rf $SIRF_SRC_PATH/SIRF"
-    echo "rm -rf $SIRF_SRC_PATH/STIR"
-    echo "*********************************************************"
-  fi
 }
 
 # define a function to get the source
@@ -348,7 +330,7 @@ if [ -r ~/.sirfc ]; then
   mv -v ~/.sirfc ~/.sirfc.old
 fi
 echo "export SIRF_SRC_PATH=$SIRF_SRC_PATH" > ~/.sirfrc
-echo "source ${SIRF_INSTALL_PATH}/bin/env_ccppetmr.sh" >> ~/.sirfrc
+echo "source ${SIRF_INSTALL_PATH}/bin/env_sirf.sh" >> ~/.sirfrc
 echo "export EDITOR=nano" >> ~/.sirfrc
 if [ ! -z "$STIR_exercises_PATH" ]; then
     echo "export STIR_exercises_PATH=$SIRF_SRC_PATH/STIR-exercises" >> ~/.sirfrc
