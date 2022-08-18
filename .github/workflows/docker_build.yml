@@ -111,8 +111,8 @@ jobs:
         # Builds docker image from Docker file.
         shell: bash -l {0}
         run: |
-          export compose_command="docker-compose -f docker/docker-compose.yml" 
-          if [[ ${{ matrix.tag }} == 'devel' ]]; then export compose_command="$compose_command -f docker/docker-compose.devel.yml"; fi
+          compose_command="docker-compose -f docker/docker-compose.yml" 
+          if [[ ${{ matrix.tag }} == 'devel' ]]; then compose_command="$compose_command -f docker/docker-compose.devel.yml"; fi
           # $compose_command pull core
           $compose_command build --pull sirf
           echo "compose_command=$compose_command" >> $GITHUB_ENV
@@ -200,17 +200,17 @@ jobs:
       - name: setup variables
         shell: bash -l {0}
         run: |
-          export compose_command="docker-compose -f docker/docker-compose.yml"
+          compose_command="docker-compose -f docker/docker-compose.yml"
            
           if [[ ${{ matrix.tag }} == 'service' ]]; 
           then
             echo "prereq_image_name="latest"" >> $GITHUB_ENV
-            export compose_command="$compose_command -f docker/docker-compose.srv.yml"
+            compose_command="$compose_command -f docker/docker-compose.srv.yml"
           fi
           if [[ ${{ matrix.tag }} == 'devel-service' ]]
           then
             echo "prereq_image_name="devel"" >> $GITHUB_ENV
-            export compose_command="$compose_command -f docker/docker-compose.devel.yml -f docker/docker-compose.srv.yml"
+            compose_command="$compose_command -f docker/docker-compose.devel.yml -f docker/docker-compose.srv.yml"
           fi    
           echo "compose_command=$compose_command" >> $GITHUB_ENV
           
