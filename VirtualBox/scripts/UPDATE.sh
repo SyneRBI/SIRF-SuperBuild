@@ -153,7 +153,7 @@ if [ $apt_install == 1 ]; then
   sudo -H ./INSTALL_CMake.sh
 fi
 
-# best to use full path for python3/cython
+# best to use full path for python3
 PYTHON_EXECUTABLE=$(which python3)
 if which python3; then
   PYTHON_EXECUTABLE=$(which python3)
@@ -168,12 +168,6 @@ export PATH=${PY_USER_BIN}:${PATH}
 # Optionally install/update python packages
 if [ $apt_install == 1 ]; then
   ./INSTALL_python_packages.sh --python "$PYTHON_EXECUTABLE"
-fi
-
-if which cython3; then
-  CYTHON_EXECUTABLE=$(which cython3)
-else
-  CYTHON_EXECUTABLE=$(which cython)
 fi
 
 # ignore notebook keys, https://github.com/CCPPETMR/SIRF-Exercises/issues/20
@@ -223,7 +217,6 @@ SuperBuild(){
         -DDEVEL_BUILD=OFF\
         -DNIFTYREG_USE_CUDA=OFF\
         -DBUILD_CIL=ON\
-        -DCYTHON_EXECUTABLE="$CYTHON_EXECUTABLE"\
         -DPYTHON_EXECUTABLE="$PYTHON_EXECUTABLE"\
         -DBUILD_pet_rd_tools=ON
   cmake --build . -j${num_parallel}
