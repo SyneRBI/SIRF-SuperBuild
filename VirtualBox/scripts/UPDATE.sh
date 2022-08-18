@@ -161,6 +161,10 @@ else
   PYTHON_EXECUTABLE=$(which python)
 fi
 
+# Add ~/.local/bin (or whatever it has to be) to the PATH as this is where pip installs executables
+PY_USER_BIN=`"$PYTHON_EXECUTABLE" -c 'import site; import os; print ( os.path.join(site.USER_BASE , "bin") )'`
+export PATH=${PY_USER_BIN}:${PATH}
+
 # Optionally install/update python packages
 if [ $apt_install == 1 ]; then
   ./INSTALL_python_packages.sh --python "$PYTHON_EXECUTABLE"
@@ -306,8 +310,6 @@ if [ -f requirements.txt ]; then
   "$PYTHON_EXECUTABLE" -m pip install -U -r requirements.txt
 fi
 
-PY_USER_BIN=`"$PYTHON_EXECUTABLE" -c 'import site; import os; print ( os.path.join(site.USER_BASE , "bin") )'`
-export PATH=${PY_USER_BIN}:${PATH}
 nbstripout --install
 
 # check STIR-exercises
@@ -334,6 +336,8 @@ if [ -r ~/.sirfc ]; then
 fi
 echo "export SIRF_SRC_PATH=$SIRF_SRC_PATH" > ~/.sirfrc
 echo "source ${SIRF_INSTALL_PATH}/bin/env_sirf.sh" >> ~/.sirfrc
+# add local python-bin to PATH
+echo "export PATH=${PY_USER_BIN}:\${PATH}" >> ~/.sirfrc
 echo "export EDITOR=nano" >> ~/.sirfrc
 if [ ! -z "$STIR_exercises_PATH" ]; then
     echo "export STIR_exercises_PATH=$SIRF_SRC_PATH/STIR-exercises" >> ~/.sirfrc
