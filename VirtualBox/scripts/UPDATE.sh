@@ -163,21 +163,13 @@ fi
 
 # Optionally install/update python packages
 if [ $apt_install == 1 ]; then
-  sudo -H ./INSTALL_python_packages.sh --python "$PYTHON_EXECUTABLE"
+  ./INSTALL_python_packages.sh --python "$PYTHON_EXECUTABLE"
 fi
 
 if which cython3; then
-    CYTHON_EXECUTABLE=$(which cython3)
+  CYTHON_EXECUTABLE=$(which cython3)
 else
   CYTHON_EXECUTABLE=$(which cython)
-fi
-
-# Optionally install pre-requisites
-if [ $apt_install == 1 ]; then
-  cd "$SIRF_SRC_PATH"/SIRF-SuperBuild/VirtualBox/scripts
-  sudo -H ./INSTALL_prerequisites_with_apt-get.sh
-  sudo -H ./INSTALL_python_packages.sh --python "$PYTHON_EXECUTABLE"
-  sudo -H ./INSTALL_CMake.sh
 fi
 
 # ignore notebook keys, https://github.com/CCPPETMR/SIRF-Exercises/issues/20
