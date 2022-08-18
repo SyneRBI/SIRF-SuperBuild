@@ -79,4 +79,5 @@ bash $userHOME/devel/SIRF-SuperBuild/VirtualBox/scripts/INSTALL_python_packages.
 # Therefore no browser is installed on the VM
 
 chown -R $SIRFUSERNAME:users $userHOME
+export PATH=${userHOME}/.local/bin:${PATH}
 sudo -u $SIRFUSERNAME -H bash $userHOME/devel/SIRF-SuperBuild/VirtualBox/scripts/UPDATE.sh
