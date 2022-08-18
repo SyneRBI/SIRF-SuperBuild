@@ -84,4 +84,4 @@ bash $userHOME/devel/SIRF-SuperBuild/VirtualBox/scripts/INSTALL_python_packages.
 
 chown -R $SIRFUSERNAME:users $userHOME
 export PATH=${userHOME}/.local/bin:${PATH}
-sudo -u $SIRFUSERNAME -H bash $userHOME/devel/SIRF-SuperBuild/VirtualBox/scripts/UPDATE.sh -t VM_3.3.0 -j 1
+sudo -u $SIRFUSERNAME -H bash $userHOME/devel/SIRF-SuperBuild/VirtualBox/scripts/UPDATE.sh
