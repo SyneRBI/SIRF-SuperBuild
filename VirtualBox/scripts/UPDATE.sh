@@ -143,14 +143,18 @@ fi
 SIRF_INSTALL_PATH=$SIRF_SRC_PATH/install
 
 # best to use full path for python3/cython
-PYTHON_EXECUTABLE=`which python3`
-if [ -z "$PYTHON_EXECUTABLE" ]; then
-  PYTHON_EXECUTABLE=`which python`
+PYTHON_EXECUTABLE=$(which python3)
+if which python3; then
+  PYTHON_EXECUTABLE=$(which python3)
+else
+  PYTHON_EXECUTABLE=$(which python)
 fi
 PYTHON_EXECUTABLE=/usr/bin/python3
-CYTHON_EXECUTABLE=`which cython3`
-if [ -z "$CYTHON_EXECUTABLE" ]; then
-  CYTHON_EXECUTABLE=`which cython`
+
+if which cython3; then
+    CYTHON_EXECUTABLE=$(which cython3)
+else
+  CYTHON_EXECUTABLE=$(which cython)
 fi
 
 # ignore notebook keys, https://github.com/CCPPETMR/SIRF-Exercises/issues/20
