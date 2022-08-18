@@ -1,6 +1,7 @@
 # ChangeLog
 ## v3.3.1
 - VM: 
+   - "update_VM.sh -s" (i.e. "UPDATE.sh -s") no longer runs configure_gnome.sh. If you have a very old VM, run it manually instead.
    - Updates to run using docker scripts
    - installs custom pip and all python prerequisites with pip
    - Bugfix in finding cython and python in UPDATE.sh
