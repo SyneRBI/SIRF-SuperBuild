@@ -1,9 +1,9 @@
 #========================================================================
-# Author: Edoardo Pasca, Ben Thomas
-# Copyright 2018 University College London
-# Copyright 2018-2019 Science Technology Facilities Council
+# Author: Edoardo Pasca, Kris Thielemans, Ben Thomas
+# Copyright 2017-2022 University College London
+# Copyright 2018-2022 Science Technology Facilities Council
 #
-# This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) virtual machine.
+# This file is part of the CCP SyneRBI Synergistic Image Reconstruction Framework (SIRF) virtual machine.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
