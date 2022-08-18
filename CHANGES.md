@@ -1,5 +1,15 @@
 # ChangeLog
-# v3.3.0
+## v3.3.1
+- VM: 
+   - Updates to run using docker scripts
+   - installs custom pip and all python prerequisites with pip
+   - Bugfix in finding cython and python in UPDATE.sh
+- CMake:
+   - FindCython allows hints
+- updated versions:
+   - numba < 0.51, due to incompatibilities with python 3.6 (which is installed in the GHA and VM)
+   
+## v3.3.0
 - known problems:
    - VM and jupyterhub scripts need merging various fixes
 - gemeric *.cmake fixes:
