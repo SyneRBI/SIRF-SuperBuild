@@ -5,6 +5,7 @@
    - Updates to run using docker scripts
    - installs custom pip and all python prerequisites with pip
    - Bugfix in finding cython and python in UPDATE.sh
+   - general refresh of scripts etc
 - CMake:
    - FindCython allows hints
 - updated versions:
