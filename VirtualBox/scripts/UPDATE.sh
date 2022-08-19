@@ -39,41 +39,13 @@ trap 'echo An error occurred in $0 at line $LINENO. Current working-dir: $PWD' E
 script_loc="$(dirname -- "$(readlink -f "${BASH_SOURCE}")")"
 source "${script_loc}/UPDATE_functions.sh"
 
-SB_TAG='default'
-num_parallel=2
-update_remote=0
-apt_install=0
-while getopts hrst:j: option
- do
- case "${option}"
- in
-  r) update_remote=1;;
-  s) apt_install=1;;
-  t) SB_TAG=$OPTARG;;
-  j) num_parallel=$OPTARG;;
-  h)
-   print_usage $0
-   exit 
-   ;;
-  *)
-   echo "Wrong option passed. Use the -h option to get some help." >&2
-   exit 1
-  ;;
- esac
-done
-# get rid of processed options
-shift $((OPTIND-1))
+# process command line options
+process_options $0 $*
 
-if [ $# -ne 0 ]
-then
-  echo "Wrong command line format. Use the -h option to get some help." >&2
-  exit 1
-fi
+# set environment variables from files, defaults etc
+initialise_environment
 
-if [ -r ~/.sirfrc ]
-then
-  source ~/.sirfrc
-else
+if [ ! -r ~/.sirfrc ]; then
   if [ ! -e ~/.bashrc ]
   then 
     touch ~/.bashrc
@@ -89,44 +61,7 @@ else
   fi
 fi
 
-# check current version (if any) to take into account later on
-# (the new VM version will be saved at the end of the script)
-if [ -r ~/.sirf_VM_version ]
-then
-  source ~/.sirf_VM_version
-else
-  if [ -r /usr/local/bin/update_VM.sh ]
-  then
-    # we are on the very first VM
-    echo '======================================================'
-    echo 'You have a very old VM. Aborting'
-    echo '======================================================'
-    exit 1
-  else
-    if [ -r ~/.sirfrc ]; then
-      SIRF_VM_VERSION=0.9
-      echo '======================================================'
-      if [ $apt_install == 1 ]; then
-        echo 'You have a very old VM. This update might fail.'
-        echo 'You probably will have to "rm -rf ~/devel/buildVM" first.'
-      else
-        echo 'You have a very old VM. You have to run with -s (but the update might fail anyway).'
-        exit 1
-      fi
-      echo '======================================================'
-    else
-      SIRF_VM_VERSION=new_VM
-    fi
-  fi
-fi
-
-# location of sources
-if [ -z $SIRF_SRC_PATH ]
-then
-  export SIRF_SRC_PATH=~/devel
-fi
-if [ ! -d $SIRF_SRC_PATH ]
-then
+if [ ! -d $SIRF_SRC_PATH ]; then
   mkdir -p $SIRF_SRC_PATH
 fi
 
@@ -141,8 +76,6 @@ if [ -d $SIRF_SRC_PATH/SyneRBI_VM ]; then
     echo "$SIRF_SRC_PATH/SyneRBI_VM is no longer used. We recommend removing it."
     echo '======================================================'
 fi
-
-SIRF_INSTALL_PATH=$SIRF_SRC_PATH/install
 
 # Checkout correct version of the SuperBuild
 install_SuperBuild_source $SB_TAG
