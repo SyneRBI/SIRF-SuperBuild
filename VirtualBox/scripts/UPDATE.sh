@@ -1,11 +1,16 @@
 #!/bin/bash
 #
 # Script to install/update the SyneRBI VM. It could also be used for any
-# other system but will currently change your .sirfrc.
+# other system but will currently change your .bashrc.
 # This is to be avoided later on.
+#
+# Check the process_options function in UPDATE_functions.sh for usage.
 #
 # Warning: if you use a local branch (as opposed to a remote branch or a tag), this
 # script will merge remote updates automatically, without asking.
+#
+# See also update_VM.sh. That script is the one you would normally call.
+# Calling the current script is only safe to create a new SIRF-SuperBuild.
 #
 # Authors: Kris Thielemans, Evgueni Ovtchinnikov, Edoardo Pasca,
 # Casper da Costa-Luis
@@ -78,7 +83,7 @@ if [ -d $SIRF_SRC_PATH/SyneRBI_VM ]; then
 fi
 
 # Checkout correct version of the SuperBuild
-install_SuperBuild_source $SB_TAG
+SuperBuild_git_update "$SB_TAG"
 
 # Optionally install/update pre-requisites
 if [ $apt_install == 1 ]; then

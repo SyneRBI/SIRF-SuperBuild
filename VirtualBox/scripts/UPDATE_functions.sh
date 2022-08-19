@@ -125,7 +125,7 @@ initialise_environment(){
 }
 
 # SuperBuild software (checkout appropriate version)
-install_SuperBuild_source(){
+SuperBuild_git_update(){
   echo "==================== SuperBuild checkout ====================="
   cd $SIRF_SRC_PATH
   SB_repo=https://github.com/SyneRBI/SIRF-SuperBuild.git
