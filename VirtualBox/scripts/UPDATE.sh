@@ -117,11 +117,6 @@ SuperBuild_install
 # copy scripts into the path
 cp -vp $SIRF_SRC_PATH/SIRF-SuperBuild/VirtualBox/scripts/update*sh $SIRF_INSTALL_PATH/bin
 
-# Get extra python tools
-clone_or_pull  https://github.com/SyneRBI/ismrmrd-python-tools.git
-cd $SIRF_SRC_PATH/ismrmrd-python-tools
-"$PYTHON_EXECUTABLE" setup.py install --user
-
 # install the SIRF-Exercises
 cd $SIRF_SRC_PATH
 clone_or_pull  https://github.com/SyneRBI/SIRF-Exercises.git
@@ -130,7 +125,6 @@ cd $SIRF_SRC_PATH/SIRF-Exercises
 if [ -f requirements.txt ]; then
   "$PYTHON_EXECUTABLE" -m pip install -U -r requirements.txt
 fi
-
 nbstripout --install
 
 # check STIR-exercises
@@ -139,17 +133,6 @@ if [ -d STIR-exercises ]; then
   cd STIR-exercises
   git pull
 fi
-
-# copy help file to Desktop
-if [ ! -d ~/Desktop ]
-then
-  if [ -e ~/Desktop ]
-    then 
-	mv ~/Desktop ~/Desktop.file
-  fi
-  mkdir ~/Desktop 
-fi 
-cp -vp $SIRF_SRC_PATH/SIRF-SuperBuild/VirtualBox/HELP.txt ~/Desktop/
 
 if [ -r ~/.sirfc ]; then
   echo "Moving existing ~/.sirfc to a backup copy"
