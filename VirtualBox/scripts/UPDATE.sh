@@ -30,7 +30,18 @@
 #
 #=========================================================================
 
-# first some functions definitions
+#### first some functions definitions
+
+# print usage (taking script name as first argument)
+print_usage(){
+  echo "Usage: $1 [-t tag] [-j n] [-s]"
+  echo "Use the tag option to checkout a specific version of the SIRF-SuperBuild."
+  echo "   Otherwise the most recent release will be used."
+  echo "Use the -j option to change the number of parallel builds from the default ${num_parallel}"
+  echo "Use the -s option to update and install necessary system and Python components."
+  echo "  We recommend to do this once when upgrading between major versions."
+}
+
 # SuperBuild software (checkout appropriate version)
 install_SuperBuild_source(){
   echo "==================== SuperBuild checkout ====================="
@@ -165,13 +176,7 @@ while getopts hrst:j: option
   t) SB_TAG=$OPTARG;;
   j) num_parallel=$OPTARG;;
   h)
-   echo "Usage: $0 [-t tag] [-j n] [-r] [-s]"
-   echo "Use the tag option to checkout a specific version of the SIRF-SuperBuild."
-   echo "   Otherwise the most recent release will be used."
-   echo "Use the -j option to change the number of parallel builds from the default ${num_parallel}"
-   echo "Use the -r option to reset your git remotes to default SyneRBI sources."
-   echo "  We recommend to do this once when upgrading a CCPPETMR_VM."
-   echo "Use the -s option to update and install necessary system and Python components (use with caution)."
+   print_usage $0
    exit 
    ;;
   *)
