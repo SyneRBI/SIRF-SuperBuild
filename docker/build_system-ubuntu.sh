@@ -70,4 +70,8 @@ ${APT_GET_INSTALL} \
   autoconf             \
   libtool
 
+# ROOT external dependencies
+${APT_GET_INSTALL} \
+  uuid-dev
+
 apt-get clean
