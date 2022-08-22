@@ -62,7 +62,7 @@ If you see a dialog box about "starting in scaled mode", you can press OK to all
 In the menu-bar of the window that contains your VM, click on "Devices" and then "Insert Guest Additions CD". (On a Mac, with the VM window selected, this menu bar is at the top of the screen). If this generates a window inside your VM to run the software on this "CD", say OK. Otherwise, type
 
   ```
-   sudo /home/sirfuser/devel/SyneRBI_VM/scripts/update_VGA.sh
+   sudo /home/sirfuser/devel/SIRF-SuperBuild/VirtualBox/scripts/update_VGA.sh
    sudo shutdown -r now
   ```
 The VM will reboot. (You will have to do this again if you upgrade your VirtualBox version).
@@ -70,7 +70,7 @@ The VM will reboot. (You will have to do this again if you upgrade your VirtualB
 5. On old VM versions (e.g. 20 April 2018, SIRF_1.0.0) people were reporting problems after the VM is shutdown or rebooted, but this problem no longer seems to exist. The VM windows system may fail to start and you are left with a flashing VM terminal window that stabilises after a few minutes. If your cursor has gone, it may be "in" this terminal window and can be released (press the Host Key (on most systems, right-ctrl, on a Mac the Apple command key). To restore proper functionality, follow the instructions in point 5 above, even if you already had the correct VGA installed. If you have previously 'inserted' the CD you may get an error message that you need to ignore. Then reboot.
 
 ## Usage 
-Check our [wiki](https://github.com/SyneRBI/SyneRBI_VM/wiki) for usage instructions.
+Check our [documentation](documentation/README.md) for usage instructions.
 
 ## How to shut down the VM
 
@@ -107,6 +107,6 @@ If you want you can unmount the folder by typing
 
         sudo umount -t vboxsf MyLaptop
 
-## Using the VM as server
+## Using the VM as a Gadgetron server
 
-See [here](https://github.com/SyneRBI/SyneRBI_VM/blob/master/Using_VM_as_server.md)
+See [here](documentation/Using-VM-as-a-Gadgetron-server.md)
