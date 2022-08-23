@@ -12,9 +12,7 @@ wget         # CIL
 six          # CIL
 olefile      # CIL
 git+https://github.com/data-exchange/dxchange.git  # CIL
-# https://numba.discourse.group/t/numba-0-50-0-and-llvmlite-0-33-0-released/19
-# https://github.com/numba/llvmlite/issues/621
-numba<0.51        # CIL
+numba        # CIL
 pandas
 tifffile
 nibabel
