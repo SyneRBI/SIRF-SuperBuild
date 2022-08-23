@@ -29,9 +29,13 @@ Log into the VM, open a terminal and type
 ```
 1. changes some settings of the gnome desktop environment
 2. configures Jupyter
-3. compacts the size of the appliance. This step involves filling the virtual hard drive with an enormous file followed by its removal.
+```
+If you want to export the VM, we recommend running
+```sh
+~/devel/SIRF-SuperBuild/VirtualBox/scripts/clean_before_VM_export.sh
+```
 
-In fact, if you do not intend to export the VM, you could skip the `zero_fill.sh` step.
+See the [scripts/README.md](../scripts/README.md) for more information.
 
 ## Other useful vagrant commands
 The following can be done via the VirtualBox interface, but you can use `vagrant` as well.

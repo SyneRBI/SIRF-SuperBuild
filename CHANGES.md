@@ -6,6 +6,7 @@
    - installs custom pip and all python prerequisites with pip
    - Bugfix in finding cython and python in UPDATE.sh
    - general refresh of scripts etc
+   - move `zero_fill.sh` from `first_run.sh` and move it to a new `clean_before_VM_export.sh` script, which also removes build files to make the exported VM smaller.
 - CMake:
    - FindCython allows hints
    
