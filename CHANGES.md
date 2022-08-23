@@ -8,8 +8,6 @@
    - general refresh of scripts etc
 - CMake:
    - FindCython allows hints
-- updated versions:
-   - numba < 0.51, due to incompatibilities with python 3.6 (which is installed in the GHA and VM)
    
 ## v3.3.0
 - known problems:
