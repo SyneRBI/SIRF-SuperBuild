@@ -7,6 +7,9 @@
    - Bugfix in finding cython and python in UPDATE.sh
    - general refresh of scripts etc
    - move `zero_fill.sh` from `first_run.sh` and move it to a new `clean_before_VM_export.sh` script, which also removes build files to make the exported VM smaller.
+- docker and VM:
+   - install `uuid-dev` such that we're prepared for installing ROOT
+   - no longer force numpy<=1.20
 - CMake:
    - FindCython allows hints
    
