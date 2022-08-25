@@ -36,8 +36,8 @@ ${APT_GET_INSTALL} libpugixml-dev
 echo "Installing expect"
 ${APT_GET_INSTALL} expect
 
-echo "Installing python-dev APT package"
+echo "Installing python-dev and python3-tk APT package"
 # we will use pip for everything else
-${APT_GET_INSTALL} python3-dev
+${APT_GET_INSTALL} python3-dev python3-tk
 
 echo "Run INSTALL_python_packages.sh after this."
