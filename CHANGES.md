@@ -22,7 +22,7 @@
    - improve finding GTest
 - Windows
    - Boost build add regex and random
-   - install emv_sirf.PS1 and .bat files (as the .sh and .csh files)
+   - install `env_sirf.PS1` and `.bat` files (similar to the existing `.sh` and `.csh` files)
 - docker:
    - fix problems with CUDA repo keys
    - minor fixes to scripts for use elsewhere (including preparation for more recent Ubuntu)
