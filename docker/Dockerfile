@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=ubuntu:18.04
+ARG BASE_IMAGE=ubuntu:20.04
 FROM ${BASE_IMAGE} as base
 
 LABEL \
@@ -197,6 +197,7 @@ RUN apt-get update --yes && \
     wget \
     ca-certificates \
     sudo \
+    tini \
     locales \
     fonts-liberation \
     run-one && \
@@ -207,10 +208,11 @@ RUN echo "auth requisite pam_deny.so" >> /etc/pam.d/su && \
     sed -i.bak -e 's/^%admin/#%admin/' /etc/sudoers && \
     sed -i.bak -e 's/^%sudo/#%sudo/' /etc/sudoers
 
-# Add Tini (note: no tini apt-package yet in Ubuntu 18.04)
-ENV TINI_VERSION v0.19.0
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
-RUN chmod +x /tini
+## Add Tini (note: no tini apt-package yet in Ubuntu 18.04)
+## but now commented out as we've moved to more recent Ubuntu
+#ENV TINI_VERSION v0.19.0
+#ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
+#RUN chmod +x /tini
 
 # TODO install jupyterhub requirements
 

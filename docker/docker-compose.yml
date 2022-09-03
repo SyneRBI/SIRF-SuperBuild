@@ -34,13 +34,13 @@ services:
    context: .
    target: core
    cache_from:
-    - ubuntu:18.04
+    - ubuntu:20.04
     - synerbi/sirf:core
    args:
     EXTRA_BUILD_FLAGS: "-DBUILD_CIL=OFF"
  gadgetron:
   container_name: gadgetron
-  image: gadgetron/ubuntu_1804_no_cuda:latest
+  image: gadgetron/ubuntu_2004_no_cuda:latest
   restart: unless-stopped
   environment:
    GADGETRON_RELAY_HOST: 0.0.0.0

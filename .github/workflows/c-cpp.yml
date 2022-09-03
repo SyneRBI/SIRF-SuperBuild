@@ -109,7 +109,8 @@ jobs:
           fi
           if test 'XX${{ matrix.compiler_version }}' != 'XX'; then
             CC=${CC}-${{ matrix.compiler_version }}
-            CXX=${CXX}-${{ matrix.compiler_version }}   
+            CXX=${CXX}-${{ matrix.compiler_version }}
+            sudo apt install -yq ${CXX} ${CC}
           fi
 
           export CC CXX

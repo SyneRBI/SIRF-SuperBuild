@@ -8,8 +8,8 @@ apt-get install -yq --no-install-recommends \
   bash-completion      \
   build-essential      \
   git                  \
-  g++-8                \
-  gcc-8                \
+  g++                \
+  gcc                \
   man                  \
   make                 \
   ccache               \
@@ -30,9 +30,7 @@ mkdir -p bin
 pushd bin
 # ccache compiler override
 ln -s "$(which ccache)" g++ || true
-ln -s "$(which ccache)" g++-8 || true
 ln -s "$(which ccache)" gcc || true
-ln -s "$(which ccache)" gcc-8 || true
 export PATH="$PWD:$PATH"
 popd
 
