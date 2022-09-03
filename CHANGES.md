@@ -2,7 +2,6 @@
 ## vx.x.x
 - docker images updates
   - Ubuntu: 20.04
-  - CMake: 3.24.1
 
 ## v3.3.1
 - VM: 
