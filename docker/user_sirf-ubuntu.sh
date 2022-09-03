@@ -13,9 +13,12 @@ cd $INSTALL_DIR/SIRF-SuperBuild
 git checkout "$SIRF_SB_TAG"
 
 COMPILER_FLAGS="-DCMAKE_C_COMPILER='$(which gcc)' -DCMAKE_CXX_COMPILER='$(which g++)'"
-echo $PATH
-echo $COMPILER_FLAGS
-echo $BUILD_FLAGS $EXTRA_BUILD_FLAGS
+g++ --version
+cmake --version
+echo "PATH: $PATH"
+echo "COMPILER_FLAGS: $COMPILER_FLAGS"
+echo "BUILD+EXTRA FLAGS: $BUILD_FLAGS $EXTRA_BUILD_FLAGS"
+
 cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS $COMPILER_FLAGS .
 
 cmake --build . -j ${NUM_PARALLEL_BUILDS}
