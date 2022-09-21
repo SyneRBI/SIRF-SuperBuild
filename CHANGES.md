@@ -1,6 +1,7 @@
 # ChangeLog
 ## vx.x.x
 - Removed CIL-ASTRA as it has been merged into CIL code base.
+- Added python-opencv to docker requirements.txt
 - docker images updates
   - Ubuntu: 20.04
 - updated versions:

@@ -11,6 +11,7 @@ Pillow       # CIL
 wget         # CIL
 six          # CIL
 olefile      # CIL
+opencv-python # CIL
 git+https://github.com/data-exchange/dxchange.git  # CIL
 numba        # CIL
 pandas
