@@ -1,7 +1,10 @@
 # ChangeLog
 ## vx.x.x
+- Removed CIL-ASTRA as it has been merged into CIL code base.
 - docker images updates
   - Ubuntu: 20.04
+- updated versions:
+  - CIL: 22.1.0
 
 ## v3.3.1
 - VM: 
