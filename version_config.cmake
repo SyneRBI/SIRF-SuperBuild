@@ -154,11 +154,13 @@ set(DEFAULT_JSON_URL https://github.com/nlohmann/json.git )
 set(DEFAULT_JSON_TAG v3.10.4)
 
 # CCPi CIL
-# minimum supported version of CIL supported is 22.0.0 or from commit acf3ddf5c61b8e216fe7891d7720f9bbd436c9b3
-# due to a change in CIL's building mechanism
-set(DEFAULT_CIL_URL https://github.com/paskino/CIL.git)
-set(DEFAULT_CIL_TAG "accuracy_tests")
 # CIL-ASTRA has been merged into CIL from acf3ddf5c61b8e216fe7891d7720f9bbd436c9b3
+
+# minimum supported version of CIL supported is 22.0.0 or from commit acf3ddf5c61b8e216fe7891d7720f9bbd436c9b3
+# due to a change in CIL's building mechanism, however due to a unit test failure the minimum CIL required
+# commit is a6062410028c9872c5b355be40b96ed1497fed2a
+set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
+set(DEFAULT_CIL_TAG a6062410028c9872c5b355be40b96ed1497fed2a)
 
 set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
 set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v21.0.0")
@@ -201,8 +203,8 @@ if (DEVEL_BUILD)
   set(DEFAULT_pet_rd_tools_TAG origin/master)
 
   # CCPi CIL
-  # set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
-  # set(DEFAULT_CIL_TAG origin/master )
+  set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
+  set(DEFAULT_CIL_TAG origin/master )
   
 
 else()
