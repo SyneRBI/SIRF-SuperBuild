@@ -343,10 +343,12 @@ Notice that other packages may look for a blas implementation issuing CMake's [`
 
 ### Building CCPi CIL
 
-It is possible to build the [CCPi Core Imaging Library CIL](https://www.ccpi.ac.uk/CIL) as part of the SuperBuild. The functionality of `CIL` can be expanded by plugins. Currently available: [`CCPi-Regularisation`](https://github.com/vais-ral/CCPi-Regularisation-Toolkit), [`CIL-ASTRA`](https://github.com/TomographicImaging/CIL-ASTRA), [`TomoPhantom`](https://github.com/dkazanc/TomoPhantom) and [`TIGRE`](https://github.com/CERN/TIGRE)). There are 2 options: 
+It is possible to build the [CCPi Core Imaging Library CIL](https://www.ccpi.ac.uk/CIL) as part of the SuperBuild. The functionality of `CIL` can be expanded by plugins. Currently available: [`CCPi-Regularisation`](https://github.com/vais-ral/CCPi-Regularisation-Toolkit), [`TomoPhantom`](https://github.com/dkazanc/TomoPhantom) and [`TIGRE`](https://github.com/CERN/TIGRE)). There is one mandatory flag and 2 optional: 
 
-1. `BUILD_CIL` will build `CIL` and all the following plugins: `CIL-ASTRA`, `CCPi-Regularisation`, [ASTRA-toolbox](https://github.com/astra-toolbox/astra-toolbox) and `TomoPhantom`
-2. `BUILD_CIL_LITE` will build `CIL` with the `CCPi-Regularisation` plugins.
+
+- `BUILD_CIL=ON`, will build `CIL` and all the following plugins: `CCPi-Regularisation` and `TomoPhantom`
+ - Optional `IPP_LIBRARY=<location of IPP shared libraries>` and `IPP_INCLUDE=<location of IPP includes>` if you want to build CIL with [IPP](https://www.intel.com/content/www/us/en/developer/tools/oneapi/ipp.html#gs.dnfk5r) support for optimised [FBP/FDK](https://github.com/TomographicImaging/CIL#dependency) . 
+ - Optional `BUILD_ASTRA=ON`, if you want to use CIL for CT reconstruction with the ASTRA-toolbox engine. 
 
 ### Passing CMAKE arguments to specific projects
 

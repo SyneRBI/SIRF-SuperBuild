@@ -66,10 +66,8 @@ docker build --build-arg BASE_IMAGE=nvidia/cuda:10.2-cudnn8-devel-ubuntu18.04 --
 
 #### Building CIL
 
-If you want to build CIL as part of the SuperBuild, you need to pass some flags to CMake:
- - `BUILD_CIL=ON`
- - Optional `IPP_LIBRARY=<location of IPP shared libraries>` and `IPP_INCLUDE=<location of IPP includes>` if you want to build CIL with IPP support for optimised [FBP/FDK](https://github.com/TomographicImaging/CIL#dependency) . 
- - Optional `BUILD_ASTRA=ON`, if you want to use CIL for CT reconstruction with the ASTRA-toolbox engine. 
+Please see [here](https://github.com/SyneRBI/SIRF-SuperBuild#building-ccpi-cil) for detailed info on the command below.
+
 
 ```
 
