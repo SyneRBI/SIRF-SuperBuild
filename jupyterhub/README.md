@@ -64,17 +64,17 @@ docker build --build-arg BASE_IMAGE=nvidia/cuda:10.2-cudnn8-devel-ubuntu18.04 --
 
 ```
 
-#### Installing CIL via conda
-The command above will install cil via conda (using requirements_conda-forge.txt) and will install the latest stable release. 
+#### Building CIL
 
-
-#### Building CIL as part of the SIRF SuperBuild
-If you want to build the image with CIL using Intel IPP library one needs to pass the location of the IPP library down to CIL's CMake, this can be done with the following command. 
+If you want to build CIL as part of the SuperBuild, you need to pass some flags to CMake:
+ - `BUILD_CIL=ON`
+ - Optional `IPP_LIBRARY=<location of IPP shared libraries>` and `IPP_INCLUDE=<location of IPP includes>` if you want to build CIL with IPP support for optimised [FBP/FDK](https://github.com/TomographicImaging/CIL#dependency) . 
+ - Optional `BUILD_ASTRA=ON`, if you want to use CIL for CT reconstruction with the ASTRA-toolbox engine. 
 
 ```
 
-docker build --build-arg BASE_IMAGE=nvidia/cuda:10.2-cudnn8-devel-ubuntu18.04 --build-arg PYTHON_INSTALL_DIR=/opt/conda --build-arg EXTRA_BUILD_FLAGS="-DBUILD_CIL_LITE=ON -DIPP_LIBRARY=/opt/conda/lib -DIPP_INCLUDE=/opt/conda/include" --build-arg SIRF_SB_URL="https://github.com/paskino/SIRF-SuperBuild.git" --build-arg SIRF_SB_TAG="CIL_pass_IPP_library" --target sirf . 
-```
+docker build --build-arg BASE_IMAGE=nvidia/cuda:10.2-cudnn8-devel-ubuntu18.04 --build-arg PYTHON_INSTALL_DIR=/opt/conda --build-arg EXTRA_BUILD_FLAGS="-DBUILD_CIL=ON -DIPP_LIBRARY=/opt/conda/lib -DIPP_INCLUDE=/opt/conda/include -DBUILD_ASTRA=ON" --target sirf . 
+
 
 # tag as synerbi/sirf:sirf-core
 docker tag cd1ed7d07d11 synerbi/sirf:sirf-core
@@ -85,8 +85,6 @@ docker tag cd1ed7d07d11 synerbi/sirf:sirf-core
 
 
 To install SIRF we can literally _copy_ the SIRF INSTALL directory to the `datascience-notebook` image and set the required environment variables.
-
-Notice that CIL is now installed via conda so the SuperBuild is set not to build it.
 
 ```
 cd SIRF-SuperBuild/docker
