@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 #=========================================================================
-
 #This needs to be unique globally
 set(proj CIL)
 
@@ -43,6 +42,15 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
   SetGitTagAndRepo("${proj}")
 
+  # Pass IPP_INCLUDE And IPP_LIBRARY if they exist
+  
+  if (IPP_LIBRARY)
+    set(DIPP_LIBRARY "-DIPP_LIBRARY:STRING=${IPP_LIBRARY}")
+  endif()
+  if (IPP_INCLUDE)
+    set(DIPP_INCLUDE "-DIPP_INCLUDE:STRING=${IPP_INCLUDE}")
+  endif()
+
   # conda build should never get here
   if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
     # in case of PYTHONPATH it is sufficient to copy the files to the 
@@ -53,6 +61,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       ${${proj}_EP_ARGS_DIRS}
       # apparently this is the only way to pass environment variables to
       # external projects
+      PATCH_COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/patches/cil-patch.py ${${proj}_SOURCE_DIR}/Wrappers/Python/cil/utilities/dataexample.py
+      UPDATE_COMMAND ""
       CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG}
         ${CMAKE_COMMAND} ${${proj}_SOURCE_DIR}
           -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
@@ -60,7 +70,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
           -DPYTHON_DEST_DIR:PATH=${PYTHON_DEST}
           -DOPENMP_INCLUDES:PATH=${OPENMP_INCLUDES}
           -DCIL_VERSION:STRING=${${proj}_TAG}
-      INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install && ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/Wrappers/Python/data ${SUPERBUILD_INSTALL_DIR}/share/cil/ && ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/patches/cil-patch.py ${${proj}_SOURCE_DIR}/Wrappers/Python/cil/utilities/dataexample.py ${PYTHON_DEST}/cil/utilities/dataexample.py
+          ${DIPP_INCLUDE}
+          ${DIPP_LIBRARY}
+      INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install && ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/Wrappers/Python/data ${SUPERBUILD_INSTALL_DIR}/share/cil/
       DEPENDS ${${proj}_DEPENDENCIES}
     )
 
@@ -83,20 +95,18 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   add_test(NAME CIL_FRAMEWORK_TESTS_3
            COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_run_*.py
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
-  add_test(NAME CIL_SIRF_TESTS
-	   COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_SIRF*.py
-           WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
+  # add_test(NAME CIL_SIRF_TESTS
+	#    COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_SIRF*.py
+  #          WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   add_test(NAME CIL_FRAMEWORK_TESTS_4
            COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_Block_*.py
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   add_test(NAME CIL_FRAMEWORK_TESTS_5
            COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_dataexample.py
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
-  # disabling this test so that CI builds are happy as in the release version 21.1.0 there is a bug
-  # which is fixed in master. Test to be reinstated after new tag of CIL
-  #add_test(NAME CIL_FRAMEWORK_TESTS_6
-  #         COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_functions.py
-  #         WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
+  add_test(NAME CIL_FRAMEWORK_TESTS_6
+           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_functions.py
+           WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   add_test(NAME CIL_FRAMEWORK_TESTS_7
            COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_Gradient.py
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)

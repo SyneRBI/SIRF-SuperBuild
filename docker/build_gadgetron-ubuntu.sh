@@ -3,6 +3,7 @@ set -ev
 # Gadgetron requirements
 # from https://github.com/gadgetron/gadgetron/blob/master/docker/base/ubuntu_1804/Dockerfile#L8
 apt-get update -qq
+# boost is handled in build_system-ubuntu.sh
 apt-get install -yq --no-install-recommends \
   libhdf5-serial-dev     \
   libboost-dev libboost-chrono-dev \
@@ -14,7 +15,7 @@ apt-get install -yq --no-install-recommends \
   h5utils                \
   jq                     \
   hdf5-tools             \
-  libatlas-base-dev      \
+  libopenblas-dev      \
   libxml2-dev            \
   libfreetype6-dev       \
   libxslt-dev            \
@@ -36,3 +37,11 @@ apt-get install gcc-9 g++-9 -y
 # apt-get install -y librocksdb-dev
 
 apt-get clean
+
+# install libgmock-dev if in the apt packages https://github.com/SyneRBI/SIRF-SuperBuild/issues/647#issuecomment-1042841986
+if apt-cache show libgmock-dev >& /dev/null; then
+  apt install -yq libgmock-dev libgtest-dev
+else
+  apt install -yq libgtest-dev
+fi
+

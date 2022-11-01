@@ -2,7 +2,7 @@
 
 #========================================================================
 # Author: Kris Thielemans
-# Copyright 2018 University College London
+# Copyright 2022 University College London
 #
 # This is software developed for the Collaborative Computational
 # Project in Synergistic Reconstruction for Biomedical Imaging (formerly PETMR)
@@ -25,10 +25,9 @@
 
 location=`dirname $0`
 
-# script to adjust gnome settings and other bits to be run only once 
-# after VM is created
-"$location/configure_gnome.sh"
+# remove build files
+"$location/rm_build_files.sh"
 
-#configure jupyter notebook
-"$location/configure_jupyter.sh"
+# free space on the virtual disk
+"$location/zero_fill.sh"
 

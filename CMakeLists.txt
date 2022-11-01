@@ -19,16 +19,15 @@
 #
 #=========================================================================
 if (WIN32)
-  cmake_minimum_required( VERSION 3.10.0 FATAL_ERROR)
+  # need really recent CMake, for instance for cmake_path
+  cmake_minimum_required( VERSION 3.20.0 FATAL_ERROR)
 else()
-  cmake_minimum_required( VERSION 3.10.0 FATAL_ERROR)
+  cmake_minimum_required( VERSION 3.16.2 FATAL_ERROR)
 endif()
 
-if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.13")
-  # define how to behave with option when a variable of the same name exists
-  # https://cmake.org/cmake/help/latest/policy/CMP0077.html#policy:CMP0077
-  cmake_policy(SET CMP0077 OLD)
-endif()
+# define how to behave with option when a variable of the same name exists
+# https://cmake.org/cmake/help/latest/policy/CMP0077.html#policy:CMP0077
+cmake_policy(SET CMP0077 OLD)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMake" ${CMAKE_MODULE_PATH})
 include(ExternalProject)

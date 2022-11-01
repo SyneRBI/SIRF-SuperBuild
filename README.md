@@ -10,6 +10,11 @@ other packages useful for PET/MR data processing.
 Note that there is still a small number of libraries that are not installed
 by the SuperBuild, [see below for more info for your operating system](#os-specific-information).
 
+In addition, this repository also contains the files for [creating docker images](docker/README.md),
+a [VirtualBox VM](VirtualBox/README.md) as well as (probably outdated) files for creating [cloud instances
+on Azure via TerraForm](cloud/terraform/azure/README.md). See their respective READMEs. The rest of this README
+describes how to build via CMake.
+
 ## Table of Contents
 
 1. [Dependencies](#Dependencies)
@@ -28,15 +33,17 @@ by the SuperBuild, [see below for more info for your operating system](#os-speci
    2. [Installation instructions for Mac OS](#OSX-install)
    3. [Installation instructions for Docker](#Docker-install)
 4. [Advanced installation](#Advanced-installation)
-   1. [use a different compiler than the system default](use-a-different-compiler-than-the-system-default)
-   2. [Compiling against your own packages](#Compiling-packages)
-   3. [Python and MATLAB installation locations](#Python-and-MATLAB-installation-locations)
-   4. [Building with specific versions of dependencies](#Building-with-specific-versions-of-dependencies)
-   5. [Building from your own source](#Building-from-your-own-source)
-   6. [Building with Intel Math Kernel Library](#Building-with-Intel-Math-Kernel-Library)
-   7. [Building CCPi CIL](#Building-CCPi-CIL)
-   8. [Passing CMAKE arguments to specific projects](#Passing-CMAKE-arguments-to-specific-projects)
-
+    1. [Optional libraries](optional-libraries)
+    2. [use a different compiler than the system default](use-a-different-compiler-than-the-system-default)
+    3. [Compiling against your own packages](#Compiling-packages)
+    4. [Python and MATLAB installation locations](#Python-and-MATLAB-installation-locations)
+    5. [Building with specific versions of dependencies](#Building-with-specific-versions-of-dependencies)
+    6. [Building from your own source](#Building-from-your-own-source)
+    7. [Building with Intel Math Kernel Library](#Building-with-Intel-Math-Kernel-Library)
+    8. [Building CCPi CIL](#Building-CCPi-CIL)
+    9. [Passing CMAKE arguments to specific projects](#Passing-CMAKE-arguments-to-specific-projects)
+   10. [Building with CUDA](#Building-with-CUDA)
+5. [Notes](#Notes)
 
 ## Dependencies
 
@@ -225,6 +232,26 @@ They can be found [here](docker/README.md)
 
 ## Advanced installation
 
+## Optional libraries
+STIR can use other libraries to add extra IO capabilities. At present, the SuperBuild supports the following:
+- ITK: the [Insight Toolkit](https://itk.org/). STIR will use this to read in images in file formats supported by ITK,
+including DICOM, Nifty, MetaIO, NRRD.
+- ROOT: the [CERN framework for data handling](https://root.cern.ch/). STIR will use this to read ROOT files produced
+by Open GATE, the Monte Carlo simulator.
+
+Each of these has 2 CMake variables. For example, for ITK:
+- `USE_ITK`: enable ITK support
+- `USE_SYSTEM_ITK` (defaults `OFF`): if `USE_ITK=ON` and `USE_SYSTEM_ITK=ON`, do not build ITK, but let CMake find it on your system. If it cannot, you can set `ITK_DIR` to the path where `ITKConfig.cmake` was installed. See also [this section](#Compiling-packages).
+
+Currently, `USE_ITK` defaults to `ON` and `USE_ROOT` defaults to `OFF`.
+
+Each of these projects has many CMake variables when you build it directly. In this SuperBuild, we set them to build a minimal (?) set of libraries sufficient for STIR support.
+You can enable more features by using other CMake variables (e.g. `ROOT_X11` defaults to `OFF`), but see also [this section](#passing-cmake-arguments-to-specific-projects).
+
+**WARNINGS**:<br />
+- ROOT insert its own error handler for when a program crashes, which at first sight claims that there is a problem with ROOT. More than likely however, the problem is elsewhere. The stack trace printed on the console might help.
+- Building these libraries takes quite a long time. You could try to install them in other ways, but might encounter problems then. Let us know if that is the case.
+
 ## Use a different compiler than the system default
 You can tell CMake to use a different compiler than what it finds by default. You will need to specify both C and C++ compilers. For instance, to use `gcc8`, use
 ```sh
@@ -233,7 +260,7 @@ CXX=g++8
 export CC CXX
 ccmake normal-options
 ```
-This needs to be done the very first time you run CMake for that build.
+This needs to be done the **very first time** you run CMake for that build.
 
 ### Compiling against your own packages <a name="Compiling-packages"></a>
 SIRF depends on many packages. By default, these packages are installed by the Superbuild. However, the user can decide to compile SIRF against their own versions of certain packages. This can be done via the `USE_SYSTEM_*` options in `CMake`. For example, if you wish to compile SIRF against a version of Boost that is already on your machine, you could set `USE_SYSTEM_BOOST` to `ON`.
@@ -248,6 +275,30 @@ For this reason, we advise new SIRF users to compile with all the `USE_SYSTEM_*`
 By default, Python and MATLAB executables and libraries are installed under `CMAKE_INSTALL_PREFIX/python` and `CMAKE_INSTALL_PREFIX/matlab`, respectively. If you wish for them to be installed elsewhere, you can simply cut and paste these folders to their desired locations.
 
 In this case, you would then need to ensure that `PYTHONPATH` and `MATLABPATH` are updated accordingly. This is because the sourced `env_ccppetmr` will point to the original (old) location.
+
+### Package specific information
+
+For default versions built, see [version_config.cmake](version_config.cmake) and 
+[below on how to change them](#Building-with-specific-versions-of-dependencies).
+
+The SuperBuild allows building many packages and sets dependencies correctly. However, the
+emphasis is on building SIRF. Its dependent packages are therefore by default built in a
+minimal configuration. We provide some CMake variables to change that behaviour, and also
+set some main options of some packages. Most of these are "advanced" CMake options so as not to
+confuse the new user. Naming of these options is generally the same as in the original package
+but prefixed. We list main examples here, but you can check with CMake (or the `External*.cmake` files).
+(See [below](#Passing-CMAKE-arguments-to-specific-projects) for information
+on how to set other options).
+
+#### STIR
+- `STIR_BUILD_EXECUTABLES` defaults to `OFF`
+- `STIR_BUILD_SWIG_PYTHON` defaults to `OFF`, meaning that the STIR Python interface will not be built, i.e. you have to use the SIRF Python interface to STIR.
+- `STIR_DISABLE_LLN_MATRIX` defaults to `ON`, you might want to set this to `OFF` if you have GATE and use its output to ECAT sinograms (although this is not recommended).
+- `STIR_ENABLE_EXPERIMENTAL` defaults to `OFF`
+
+#### ITK
+- `ITK_MINIMAL_LIBS` defaults to `ON`. For the list of modules (concentrated on IO) built, check [External_ITK.cmake](SuperBuild/External_ITK.cmake).
+- `ITK_USE_SYSTEM_HDF5` defaults to `ON`, i.e. tell ITK to use same HDF5 library as other software built here. Note that this would normally be the HDF5 version built by the SuperBuild. Set this variables `OFF` if ITK has problems with HDF5.
 
 ### Building with specific versions of dependencies
 By default, the SuperBuild will build the latest stable release of SIRF and associated versions of the dependencies. However, the SuperBuild allows the user to change the versions of the projects it's building. The current default values can be found in [version_config.cmake](version_config.cmake).
@@ -292,10 +343,14 @@ Notice that other packages may look for a blas implementation issuing CMake's [`
 
 ### Building CCPi CIL
 
-It is possible to build the [CCPi Core Imaging Library CIL](https://www.ccpi.ac.uk/CIL) as part of the SuperBuild. The functionality of `CIL` can be expanded by plugins. Currently available: [`CCPi-Regularisation`](https://github.com/vais-ral/CCPi-Regularisation-Toolkit), [`CIL-ASTRA`](https://github.com/TomographicImaging/CIL-ASTRA), [`TomoPhantom`](https://github.com/dkazanc/TomoPhantom) and [`TIGRE`](https://github.com/CERN/TIGRE)). There are 2 options: 
+It is possible to build the [CCPi Core Imaging Library CIL](https://www.ccpi.ac.uk/CIL) as part of the SuperBuild. The functionality of `CIL` can be expanded by plugins. Currently available: [`CCPi-Regularisation`](https://github.com/vais-ral/CCPi-Regularisation-Toolkit), [`TomoPhantom`](https://github.com/dkazanc/TomoPhantom) [ASTRA-toolbox](https://github.com/astra-toolbox/astra-toolbox) and [`TIGRE`](https://github.com/CERN/TIGRE)). 
 
-1. `BUILD_CIL` will build `CIL` and all the following plugins: `CIL-ASTRA`, `CCPi-Regularisation`, [ASTRA-toolbox](https://github.com/astra-toolbox/astra-toolbox) and `TomoPhantom`
-2. `BUILD_CIL_LITE` will build `CIL` with the `CCPi-Regularisation` plugins.
+There is one mandatory flag and 2 optional: 
+
+
+- `BUILD_CIL=ON`, will build `CIL` and all the following plugins: `CCPi-Regularisation` and `TomoPhantom`; default `OFF`
+ - Optional `IPP_LIBRARY=<location of IPP shared libraries>` and `IPP_INCLUDE=<location of IPP includes>` if you want to build CIL with [IPP](https://www.intel.com/content/www/us/en/developer/tools/oneapi/ipp.html#gs.dnfk5r) support for optimised [FBP/FDK](https://github.com/TomographicImaging/CIL#dependency) . 
+ - Optional `BUILD_ASTRA=ON`, if you want to use CIL for CT reconstruction with the ASTRA-toolbox engine. Default `OFF` 
 
 ### Passing CMAKE arguments to specific projects
 
@@ -308,6 +363,7 @@ cmake ../SIRF-SuperBuild -D${proj}_EXTRA_CMAKE_ARGS:STRING="-Dflag1:BOOL=ON;-Dfl
 All the flags from the following projects can be set using this technique:
 
 - ITK
+- ROOT
 - STIR
 - Gadgetron
 - SIRF

@@ -1,14 +1,21 @@
+setuptools
+wheel
+numpy        # CIL
+scipy        # CIL
 docopt
 matplotlib
 git+https://github.com/ismrmrd/ismrmrd-python-tools.git@master#egg=ismrmrd-python-tools
 Cython       # CIL
-numpy<=1.18  # CIL
-scipy        # CIL
 h5py         # CIL
 Pillow       # CIL
 wget         # CIL
 six          # CIL
 olefile      # CIL
+opencv-python # CIL
+git+https://github.com/data-exchange/dxchange.git  # CIL
+numba        # CIL
+pandas
+tifffile
 nibabel
 deprecation
 nose

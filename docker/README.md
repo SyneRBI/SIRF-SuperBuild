@@ -120,7 +120,7 @@ regarding setting up Xserver/VNCserver and other UNIX-for-Windows-users tips.
 A brief list of everything important to know for a basic working knowledge of docker.
 
 - *Base image*: the starting point for building a Docker image
-    + analogous to a clean OS (in this case `ubuntu:18.04`)
+    + analogous to a clean OS (in this case `ubuntu:20.04`)
 - *Layer*: a single build step
     + usually represented by a single line in a `Dockerfile` (e.g. `apt-get install cmake`)
 - *Image*: a sequence of *layers* (applied on top of a *base image*)

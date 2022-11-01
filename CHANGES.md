@@ -3,6 +3,10 @@
 - Build Gadgetron master. Requires new packages libdcmtk-dev libpugixml-dev libgflags-dev. Added SuperBuild project dependency: range-v3;JSON;RocksDB
 - moved the VM repository to the `VirtualBox` subdirectory
 - fix usage of `proj_EXTRA_CMAKE_ARGS` facility (it was broken for all projects except ITK) [#616](https://github.com/SyneRBI/SIRF-SuperBuild/issues/616)
+- Removed CIL-ASTRA as it has been merged into CIL code base.
+- Added python-opencv to docker requirements.txt
+- docker images updates
+  - Ubuntu: 20.04
 - updated versions:
   - Gadgetron: master
   - Boost 1.78.0 beta 1
@@ -12,6 +16,75 @@
   - range-v3: 0.11.0
   - ACE : ACE_version_6.5.9 
   - siemens_to_ismrmrd: 8bb8b08f53ce73c2de9ba5f47f1532f96292d92b
+  - CIL: a6062410028c9872c5b355be40b96ed1497fed2a > 22.1.0
+
+## v3.3.1
+- VM: 
+   - "update_VM.sh -s" (i.e. "UPDATE.sh -s") no longer runs configure_gnome.sh. If you have a very old VM, run it manually instead.
+   - Updates to run using docker scripts
+   - installs custom pip and all python prerequisites with pip
+   - Bugfix in finding cython and python in UPDATE.sh
+   - general refresh of scripts etc
+   - move `zero_fill.sh` from `first_run.sh` and move it to a new `clean_before_VM_export.sh` script, which also removes build files to make the exported VM smaller.
+- docker and VM:
+   - install `uuid-dev` such that we're prepared for installing ROOT
+   - no longer force numpy<=1.20
+- CMake:
+   - FindCython allows hints
+   
+## v3.3.0
+- known problems:
+   - VM and jupyterhub scripts need merging various fixes
+- gemeric *.cmake fixes:
+   - update to the ASTRA build script
+   - fix/add minimum versions for various packages
+   - improve finding GTest
+- Windows
+   - Boost build add regex and random
+   - install `env_sirf.PS1` and `.bat` files (similar to the existing `.sh` and `.csh` files)
+- docker:
+   - fix problems with CUDA repo keys
+   - minor fixes to scripts for use elsewhere (including preparation for more recent Ubuntu)
+- VM: 
+  - set BUILD_CIL=ON
+- add CITATION.cff (and remove .zenodo.json)
+- added numba as dependency in docker files
+- updated versions:
+  - SIRF: 3.3.0
+  - STIR: 5.0.2
+  - parallelproj: v0.8
+  - CCPi Regularisation: v21.0.0
+  - CIL: v21.4.1 (CIL devel build to commit hash ef66083de231492f9571f5512b33068f6950e877 )
+
+
+## v3.2.0
+- Moved the VM scripts etc to this repo
+- CMake: removed USE_SYSTEM_siemens_to_ismrmrd
+- CMake: added required versions for STIR, NIFTYREG, ISMRMRD.
+- Drop Python 2 support
+- CMake minimum required version is set to 3.16.2, as it supports Boost 1.72
+- VirtualBox VM is created from the SIRF-SuperBuild repository
+- Docker images install CIL via conda, so setting `BUILD_CIL=OFF` in the docker build
+- Added jupyterhub Dockerfile and documentation to build the jupyterhub image used in training on top of SIRF docker images and jupyter datascience-notebook image with GPU access.
+- Adds Boost random for ISMRMRD 1.5.0 [#636](https://github.com/SyneRBI/SIRF-SuperBuild/issues/636)
+- moved the VM repository to the `VirtualBox` subdirectory
+- fix usage of `proj_EXTRA_CMAKE_ARGS` facility (it was broken for all projects except ITK) [#616](https://github.com/SyneRBI/SIRF-SuperBuild/issues/616)
+- Boost: fix cases where the wrong version of boost could be found [#627](https://github.com/SyneRBI/SIRF-SuperBuild/issues/627)
+- GTest: if USE_SYSTEM_GTest=OFF, attempt to force finding our version, otherwise, pass GTest_DIR or GTEST_ROOT on to dependent projects.
+- add the CERN ROOT library (if USE_ROOT=ON, but defaults to OFF), which can be used by STIR to read GATE ROOT files.
+- updated versions:
+  - CMake: 3.16.2
+  - ISMRMRD: 1.7.0 if siemens_to_ismrmrd is built, 1.4.2.1 otherwise
+  - siemens_to_ismrmrd: [6d0ab3d3d0c8ade5c0526db1c6af9825008425ad](https://github.com/ismrmrd/siemens_to_ismrmrd/commit/6d0ab3d3d0c8ade5c0526db1c6af9825008425ad) > 1.2.2 with bug-fix for boost/foreach.hpp
+  - ITK: 5.2.1 However, we now build a smaller set of modules,
+     most (but not all) of IO, and Filtering. See SuperBuild/External_ITK.cmake)
+  - NiftyReg: 99d584e2b8ea0bffe7e65e40c8dc818751782d92 ) (fixes gcc-9 OpenMP problems)
+  - CIL: v21.4.0
+  - GTest: 1.11.0
+  - Boost: 1.72.0
+  - JSON: 3.10.4
+  - ACE: 6.5.9
+  - parallelproj: v0.8
 
 ## v3.1.1
 

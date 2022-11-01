@@ -2,7 +2,7 @@
 # Author: Richard Brown
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
-# Copyright 2017, 2020 University College London
+# Copyright 2017, 2020, 2022 University College London
 #
 # This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -23,8 +23,12 @@
 #This needs to be unique globally
 set(proj ITK)
 
+option(ITK_USE_SYSTEM_HDF5 "ITK to use same HDF5 library as other software (set to OFF if ITK has problems with HDF5)" ON)
+
 # Set dependency list
-set(${proj}_DEPENDENCIES "HDF5")
+if (ITK_USE_SYSTEM_HDF5)
+  set(${proj}_DEPENDENCIES "HDF5")
+endif()
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
@@ -51,16 +55,44 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   OPTION(ITK_MINIMAL_LIBS "Only build ITK IO libraries" ON)
   if (ITK_MINIMAL_LIBS)
+    # Currently we only build some of the IO Modules. In fact, we don't even enable all
+    # IO modules as this minimises size and compilation time, and also
+    # increases chances of success of compilation.
+    # For example, ITKIOMINC fails to build with system HDF5 1.10.0 - 1.10.1,
+    # while sadly Ubuntu 18.04 comes with HDF 1.10.0.
 
     # -DModule_ITKReview:BOOL=ON # should be ON for PETPVC, but not for others
+    # ITKImageGrid is ON as it contains itkOrientImageFilter, used by STIR
+    # ITKGroup_Filtering is ON as used by pet_rd_tools, PETPVC
     set(ITK_CMAKE_FLAGS
       -DITK_BUILD_DEFAULT_MODULES:BOOL=OFF
-      -DITKGroup_IO:BOOL=ON
+      -DITKGroup_IO:BOOL=OFF
+      -DModule_ITKIOBMP:BOOL=ON
+      -DModule_ITKIOGDCM:BOOL=ON
+      -DModule_ITKIOGIPL:BOOL=ON
+      -DModule_ITKIOJPEG:BOOL=ON
+      -DModule_ITKIOJPEG2000:BOOL=ON
+      -DModule_ITKIOMeta:BOOL=ON
+      -DModule_ITKIONIFTI:BOOL=ON
+      -DModule_ITKIONRRD:BOOL=ON
+      -DModule_ITKIOPNG:BOOL=ON
+      -DModule_ITKIORAW:BOOL=ON
+      -DModule_ITKIOTIFF:BOOL=ON
+      -DModule_ITKImageGrid:BOOL=ON
+      -DITKGroup_Filtering=ON
       )
   else()
 
     set(ITK_CMAKE_FLAGS
       -DITK_BUILD_DEFAULT_MODULES:BOOL=ON
+      )
+  endif()
+
+  set(ITK_CMAKE_FLAGS ${ITK_CMAKE_FLAGS}
+    -DITK_USE_SYSTEM_HDF5:BOOL=${ITK_USE_SYSTEM_HDF5})
+  if (ITK_USE_SYSTEM_HDF5)
+    set(ITK_CMAKE_FLAGS ${ITK_CMAKE_FLAGS}
+      ${HDF5_CMAKE_ARGS}
       )
   endif()
 
@@ -75,8 +107,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DCMAKE_INCLUDE_PATH:PATH=${SUPERBUILD_INSTALL_DIR}
       -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
 	    -DBUILD_SHARED_LIBS:BOOL=${ITK_SHARED_LIBS}
-      ${HDF5_CMAKE_ARGS}
-      -DITK_USE_SYSTEM_HDF5:BOOL=ON
       -DBUILD_TESTING:BOOL=${BUILD_TESTING_${proj}}
       -DBUILD_EXAMPLES:BOOL=OFF
       -DITK_SKIP_PATH_LENGTH_CHECKS:BOOL=${ITK_SKIP_PATH_LENGTH_CHECKS}

@@ -61,23 +61,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
     # in case of PYTHONPATH it is sufficient to copy the files to the
     # $PYTHONPATH directory
-    set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
-    if (BUILD_PYTHON)
-      set(PYTHON_DEST_DIR "" CACHE PATH "Directory of the ${proj} Python modules")
-      if (PYTHON_DEST_DIR)
-        set(PYTHON_DEST "${PYTHON_DEST_DIR}")
-      else()
-        set(PYTHON_DEST "${CMAKE_INSTALL_PREFIX}/python")
-      endif()
-      message(STATUS "Python libraries found")
-      message(STATUS "${proj} Python modules will be installed in " ${PYTHON_DEST})
-    endif()
-    set(PYTHON_STRATEGY "PYTHONPATH" CACHE STRING "\
-      PYTHONPATH: prefix PYTHONPATH \n\
-      SETUP_PY:   execute ${PYTHON_EXECUTABLE} setup.py install \n\
-      CONDA:      do nothing")
-    set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
-
 
     set(cmd "${${proj}_SOURCE_DIR}/build/linux/configure")
     list(APPEND cmd "CPPFLAGS=-I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib")
@@ -129,7 +112,9 @@ cp -rv ${${astra}_SOURCE_DIR}/python/build/$build_dir/astra ${${proj}_INSTALL_DI
     file(COPY ${${proj}_BINARY_DIR}/python_install
          DESTINATION ${${proj}_BINARY_DIR}/python
          FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ)
-    
+    # remove the files in the repo directory that give troubles to git
+    file(REMOVE ${${proj}_BINARY_DIR}/python_build)
+    file(REMOVE ${${proj}_BINARY_DIR}/python_install)
 
     # SetCanonicalDirectoryNames("${proj}")
     SetGitTagAndRepo("${proj}")

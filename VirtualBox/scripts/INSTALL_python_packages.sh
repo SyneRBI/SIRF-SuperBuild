@@ -2,12 +2,13 @@
 
 # Script to install Python packages for SIRF via pip.
 #
-# Authors: Kris Thielemans
-# Copyright 2018 University College London
+# Authors: Kris Thielemans, Edoardo Pasca
+# Copyright 2018-2022 University College London
+# Copyright 2022 Rutherford Appleton Laboratory STFC
 #
 # This is software developed for the Collaborative Computational
-# Project in Positron Emission Tomography and Magnetic Resonance imaging
-# (http://www.ccppetmr.ac.uk/).
+# Project in Synergistic Reconstruction for Biomedical Imaging (formerly PETMR)
+# (http://www.ccpsynerbi.ac.uk/).
 
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -65,12 +66,16 @@ while (( "$#" )); do
   esac
 done
 
-$PYTHON -m pip install $PIPOPTIONS --upgrade pip wheel setuptools
-$PYTHON -m pip install $PIPOPTIONS --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib nose coverage docopt deprecation nibabel pytest tqdm
-$PYTHON -m pip install $PIPOPTIONS jupyter spyder
-$PYTHON -m pip uninstall $PIPOPTIONS -y spyder-kernels
+# TODO would be better to guarantee absolute path for SCRIPTS
+SCRIPTS="$(dirname $0)/../../docker"
+# installs pip
+curl $($PYTHON ${SCRIPTS}/get_pip_download_link.py) > get-pip.py
+${PYTHON} get-pip.py
+rm get-pip.py
+
+${PYTHON} -m pip install $PIPOPTIONS -U setuptools wheel
+${PYTHON} -m pip install $PIPOPTIONS -U -r ${SCRIPTS}/requirements.txt
+${PYTHON} -m pip install $PIPOPTIONS -U -r ${SCRIPTS}/requirements-service.txt
 
 # otherwise Jupyter uses py 2 even when you choose py3: https://github.com/jupyter/jupyter/issues/270
 $PYTHON -m ipykernel install --user  
-# CIL
-$PYTHON -m pip install $PIPOPTIONS pillow olefile

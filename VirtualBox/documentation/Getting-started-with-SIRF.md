@@ -21,9 +21,14 @@ python3 fully_sampled_recon.py --help
 ```
 
 ## Using Spyder
-Spyder is installed with `pip` using the python that has been used to build SIRF, i.e. python3.
+You will want to see what the demos are doing. One way is to use [Spyder](https://pythonhosted.org/spyder/#).
+Spyder is no longer installed by default, but you can do this yourself with `pip` using the python that has been used to build SIRF, i.e. python3.
+```bash
+python3 -m pip install spyder
+```
+Of course, feel free to install another Python IDE instead.
 
-You will want to see what the demos are doing. The easiest way is to use [Spyder](https://pythonhosted.org/spyder/#). You can start this from a terminal like this
+You can then start it from a terminal like this
 ```bash
 cd $SIRF_PATH
 cd examples/Python/MR
@@ -43,7 +48,7 @@ The Spyder Integrated Development Environment (IDE) has of course lots of parame
 ## Running the SIRF Exercises
 The VM also contains the [SIRF exercises](https://github.com/SyneRBI/SIRF-Exercises/). Please check the [README](https://github.com/SyneRBI/SIRF-Exercises/blob/master/README.md).
 
-SIRF-Exercises contain also jupyter notebooks. The official VM contains a jupyter notebook server. To start you need to issue the following two commands in two separate terminal windows. 
+SIRF-Exercises uses jupyter notebooks. The SIRF VM contains a jupyter notebook server. To start you need to issue the following two commands in two separate terminal windows.
 
 ```
 gadgetron
@@ -51,6 +56,7 @@ jupyter notebook
 ```
 
 The jupyter notebook will be accessible with a browser on the host machine pointing to `http://localhost:8888` The password is `virtual`.
+More info is available in the links above.
 
 ## Basic Python info
 

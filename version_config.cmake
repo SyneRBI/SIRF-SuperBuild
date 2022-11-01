@@ -2,7 +2,7 @@
 # Author: Edoardo Pasca
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
-# Copyright 2017-2021 University College London
+# Copyright 2017-2021, 2022 University College London
 # Copyright 2017-2021 Science Technology Facilities Council
 #
 # This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
@@ -29,7 +29,7 @@ if (APPLE) # really should be checking for CLang
     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_68_0.zip)
     set(Boost_MD5 f4096c4583947b0eb103c8539f1623a3)
 else()
-     # Use version in Ubuntu 18.04
+     # Use version 1.78.0 version
      set(Boost_VERSION 1.78.0)
      if (BUILD_GADGETRON)
      # https://github.com/gadgetron/gadgetron/blob/12ffc43debb9bad2e170713006d29dea78d966bf/CMakeLists.txt#L205-L209
@@ -80,7 +80,12 @@ if (BUILD_MATLAB)
   # but it's been stuck on 1.8.12 for a long time
   set(DEFAULT_HDF5_TAG hdf5-1_8_12)
 else()
-  set(DEFAULT_HDF5_TAG hdf5-1_10_1)
+  if (WIN32)
+    # need a recent version of HDF5 for ITK, see https://github.com/SyneRBI/SIRF-SuperBuild/issues/680
+    set(DEFAULT_HDF5_TAG hdf5-1_13_1)
+  else()
+    set(DEFAULT_HDF5_TAG hdf5-1_10_1)
+  endif()
 endif()
 
 ## SWIG
@@ -105,12 +110,12 @@ set(DEFAULT_glog_TAG v0.3.5)
 
 ## ITK
 set(DEFAULT_ITK_URL https://github.com/InsightSoftwareConsortium/ITK.git)
-set(DEFAULT_ITK_TAG v4.13.1)
+set(DEFAULT_ITK_TAG v5.2.1)
 
 ## NIFTYREG
 set(DEFAULT_NIFTYREG_URL https://github.com/KCL-BMEIS/niftyreg.git )
-set(DEFAULT_NIFTYREG_TAG 99d584e2b8ea0bffe7e65e40c8dc818751782d92 )
-set(DEFAULT_NIFTYREG_REQUIRED_VERSION 1.5.68)
+set(DEFAULT_NIFTYREG_TAG 8ad2f11507ddedb09ed74a9bd97377b70532ee75)
+set(NIFTYREG_REQUIRED_VERSION 1.5.68)
 
 ## ISMRMRD
 set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
@@ -141,7 +146,7 @@ set(DEFAULT_NiftyPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
 
 ## parallelproj
 set(DEFAULT_parallelproj_URL https://github.com/gschramm/parallelproj )
-set(DEFAULT_parallelproj_TAG v0.7)
+set(DEFAULT_parallelproj_TAG v0.8)
 
 ## SIRF-Contribs
 set(DEFAULT_SIRF-Contribs_URL https://github.com/SyneRBI/SIRF-Contribs )
@@ -155,12 +160,24 @@ set(DEFAULT_JSON_URL https://github.com/nlohmann/json.git )
 set(DEFAULT_JSON_TAG v3.10.4)
 
 # CCPi CIL
+# CIL-ASTRA has been merged into CIL from acf3ddf5c61b8e216fe7891d7720f9bbd436c9b3
+
+# minimum supported version of CIL supported is 22.0.0 or from commit acf3ddf5c61b8e216fe7891d7720f9bbd436c9b3
+# due to a change in CIL's building mechanism, however due to a unit test failure the minimum CIL required
+# commit is a6062410028c9872c5b355be40b96ed1497fed2a
 set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
-set(DEFAULT_CIL_TAG "v21.2.0")
-set(DEFAULT_CIL-ASTRA_URL https://github.com/TomographicImaging/CIL-ASTRA.git)
-set(DEFAULT_CIL-ASTRA_TAG "v21.2.0")
+set(DEFAULT_CIL_TAG a6062410028c9872c5b355be40b96ed1497fed2a)
+
 set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
-set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v20.09")
+set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v21.0.0")
+
+# CERN ROOT
+set(DEFAULT_ROOT_URL https://github.com/root-project/root)
+set(DEFAULT_ROOT_TAG "v6-24-06")
+
+# ACE
+set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
+set(DEFAULT_ACE_TAG v6.5.9)
 
 # range-v3
 set(DEFAULT_range-v3_URL https://github.com/ericniebler/range-v3.git )
@@ -184,10 +201,16 @@ if (DEVEL_BUILD)
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
   set(DEFAULT_STIR_TAG origin/master)
+  set(STIR_REQUIRED_VERSION "5.0.0")
 
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd )
-  set(DEFAULT_siemens_to_ismrmrd_TAG origin/master)
+  set(DEFAULT_siemens_to_ismrmrd_TAG b87759e49e53dab4939147eb52b7a0e6465f3d04)
+  if (BUILD_siemens_to_ismrmrd)
+    set(ISMRMRD_REQUIRED_VERSION "1.7")
+  else()
+    set(ISMRMRD_REQUIRED_VERSION "1.4.2.1")
+  endif()
 
   ## pet-rd-tools
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
@@ -198,22 +221,21 @@ if (DEVEL_BUILD)
 
   # CCPi CIL
   set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
-  set(DEFAULT_CIL_TAG origin/master)
-  set(DEFAULT_CIL-ASTRA_URL https://github.com/TomographicImaging/CIL-ASTRA.git)
-  set(DEFAULT_CIL-ASTRA_TAG origin/master)
-  set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
-  set(DEFAULT_CCPi-Regularisation-Toolkit_TAG origin/master)
+  set(DEFAULT_CIL_TAG origin/master )
+  
 
 else()
-  set(DEFAULT_SIRF_TAG v3.1.0)
+  set(DEFAULT_SIRF_TAG v3.3.0)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG rel_4.1.1)
+  set(DEFAULT_STIR_TAG rel_5.0.2)
 
+  # ismrmrd
+  set(DEFAULT_ISMRMRD_TAG v1.7.0)
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
-  set(DEFAULT_siemens_to_ismrmrd_TAG 8bb8b08f53ce73c2de9ba5f47f1532f96292d92b)
+  set(DEFAULT_siemens_to_ismrmrd_TAG b87759e49e53dab4939147eb52b7a0e6465f3d04)
 
   ## pet-rd-tools
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
@@ -263,14 +285,15 @@ set(CCPi-Regularisation-Toolkit_URL ${DEFAULT_CCPi-Regularisation-Toolkit_URL} C
 set(CCPi-Regularisation-Toolkit_TAG ${DEFAULT_CCPi-Regularisation-Toolkit_TAG} CACHE STRING ON)
 set(CIL_URL ${DEFAULT_CIL_URL} CACHE STRING ON)
 set(CIL_TAG ${DEFAULT_CIL_TAG} CACHE STRING ON)
-set(CIL-ASTRA_URL ${DEFAULT_CIL-ASTRA_URL} CACHE STRING ON)
-set(CIL-ASTRA_TAG ${DEFAULT_CIL-ASTRA_TAG} CACHE STRING ON)
 set(astra-toolbox_URL ${DEFAULT_astra-toolbox_URL} CACHE STRING ON)
 set(astra-toolbox_TAG ${DEFAULT_astra-toolbox_TAG} CACHE STRING ON)
 set(astra-python-wrapper_URL ${DEFAULT_astra-toolbox_URL} CACHE STRING ON)
 set(astra-python-wrapper_TAG ${DEFAULT_astra-toolbox_TAG} CACHE STRING ON)
 set(TomoPhantom_URL ${DEFAULT_TomoPhantom_URL} CACHE STRING ON)
 set(TomoPhantom_TAG ${DEFAULT_TomoPhantom_TAG} CACHE STRING ON)
+
+set(ROOT_URL ${DEFAULT_ROOT_URL} CACHE STRING ON)
+set(ROOT_TAG ${DEFAULT_ROOT_TAG} CACHE STRING ON)
 
 set(NIFTYREG_URL ${DEFAULT_NIFTYREG_URL} CACHE STRING ON)
 set(NIFTYREG_TAG ${DEFAULT_NIFTYREG_TAG} CACHE STRING ON)
@@ -280,6 +303,7 @@ set(NiftyPET_TAG ${DEFAULT_NiftyPET_TAG} CACHE STRING ON)
 
 set(parallelproj_URL ${DEFAULT_parallelproj_URL} CACHE STRING ON)
 set(parallelproj_TAG ${DEFAULT_parallelproj_TAG} CACHE STRING ON)
+set(parallelproj_REQUIRED_VERSION "1.0")
 
 set(SIRF-Contribs_URL ${DEFAULT_SIRF-Contribs_URL} CACHE STRING ON)
 set(SIRF-Contribs_TAG ${DEFAULT_SIRF-Contribs_TAG} CACHE STRING ON)
@@ -310,7 +334,6 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   glog_URL glog_TAG
   NIFTYREG_URL NIFTYREG_TAG
   CIL_URL CIL_TAG
-  CIL-ASTRA_URL CIL-ASTRA_TAG
   CCPi-Regularisation-Toolkit_URL CCPi-Regularisation-Toolkit_TAG
   NiftyPET_URL NiftyPET_TAG
   parallelproj_URL parallelproj_TAG
@@ -319,6 +342,7 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   SPM_URL SPM_TAG
   JSON_URL JSON_TAG
   range-v3_URL range-v3_TAG
+  ROOT_URL ROOT_TAG
   astra-toolbox_URL astra-toolbox_TAG
   astra-python-wrapper_URL astra-python-wrapper_TAG
   ACE_URL ACE_TAG

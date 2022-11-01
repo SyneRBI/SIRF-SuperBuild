@@ -1,2 +1,4 @@
-pywavelets   # CIL
-dxchange     # CIL
+ipp
+ipp-devel
+ipp-include
+tigre 

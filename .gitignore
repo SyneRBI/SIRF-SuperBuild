@@ -32,6 +32,9 @@ WIN32/
 *.db
 *.opend
 
+# Visual Studio Code
+.vscode
+
 # Terraform
 *.tfvars
 *.tfstate

@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=ubuntu:18.04
+ARG BASE_IMAGE=ubuntu:20.04
 FROM ${BASE_IMAGE} as base
 
 LABEL \
@@ -10,7 +10,11 @@ LABEL \
   licence="MPLv2.0 (https://www.mozilla.org/en-GB/MPL/2.0/)"  \
   description="CCP SyneRBI Ubuntu"
 
+USER root
 ENV DEBIAN_FRONTEND noninteractive
+
+COPY update_nvidia_keys.sh .
+RUN bash update_nvidia_keys.sh && rm update_nvidia_keys.sh
 
 COPY raw-ubuntu.sh .
 RUN bash raw-ubuntu.sh
@@ -70,6 +74,8 @@ ARG NB_UID="22222"
 # standard guid for users
 ARG NB_GID="100"
 ARG HOME="/home/${NB_USER}"
+ARG PYTHON_INSTALL_DIR="/opt/conda"
+ARG PYTHON_EXECUTABLE="miniconda"
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -91,16 +97,19 @@ WORKDIR ${HOME}
 COPY .bashrc .
 COPY .profile .
 RUN chmod 644 .bashrc .profile && chown -R "${NB_USER}":"${NB_GROUP}" "${HOME}"
+# update bashrc with the location of PYTHON_INSTALL_DIR
+RUN sed -i s:PYTHON_INSTALL_DIR:${PYTHON_INSTALL_DIR}:g .bashrc
 
 # run user scripts as NB_USER
 USER ${NB_USER}:${NB_GROUP}
 
-# Python (virtualenv)
+# Python (virtualenv or conda)
 COPY requirements.txt .
 COPY requirements_conda_forge.txt .
 COPY user_python-ubuntu.sh .
-RUN bash user_python-ubuntu.sh && \
+RUN PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} PYTHON_INSTALL_DIR=${PYTHON_INSTALL_DIR} bash user_python-ubuntu.sh  && \
     rm user_python-ubuntu.sh requirements.txt requirements_conda_forge.txt
+
 
 # ccache
 USER root
@@ -124,12 +133,13 @@ ARG NUM_PARALLEL_BUILDS="2"
 ARG BUILD_FLAGS="\
  -DCMAKE_BUILD_TYPE=Release\
  -DSTIR_ENABLE_OPENMP=ON -DUSE_SYSTEM_ACE=ON\
- -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DBUILD_CIL=ON\
+ -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON\
  -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_ITK=ON\
+ -DGadgetron_USE_CUDA=OFF\
  -DUSE_SYSTEM_SWIG=ON\
  -DUSE_NiftyPET=OFF\
  -DBUILD_siemens_to_ismrmrd=ON -DBUILD_pet_rd_tools=ON"
-ARG EXTRA_BUILD_FLAGS=""
+ARG EXTRA_BUILD_FLAGS="-DBUILD_CIL=OFF"
 RUN bash user_sirf-ubuntu.sh
 RUN rm user_sirf-ubuntu.sh
 
@@ -187,6 +197,7 @@ RUN apt-get update --yes && \
     wget \
     ca-certificates \
     sudo \
+    tini \
     locales \
     fonts-liberation \
     run-one && \
@@ -197,10 +208,11 @@ RUN echo "auth requisite pam_deny.so" >> /etc/pam.d/su && \
     sed -i.bak -e 's/^%admin/#%admin/' /etc/sudoers && \
     sed -i.bak -e 's/^%sudo/#%sudo/' /etc/sudoers
 
-# Add Tini (note: no tini apt-package yet in Ubuntu 18.04)
-ENV TINI_VERSION v0.19.0
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
-RUN chmod +x /tini
+## Add Tini (note: no tini apt-package yet in Ubuntu 18.04)
+## but now commented out as we've moved to more recent Ubuntu
+#ENV TINI_VERSION v0.19.0
+#ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
+#RUN chmod +x /tini
 
 # TODO install jupyterhub requirements
 
