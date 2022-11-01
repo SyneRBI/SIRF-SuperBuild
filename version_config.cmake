@@ -130,7 +130,7 @@ set(DEFAULT_ISMRMRD_TAG origin/master)
 
 ## Gadgetron
 set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
-set(DEFAULT_Gadgetron_TAG origin/master)
+set(DEFAULT_Gadgetron_TAG v4.1)
 
 ## ASTRA
 set(DEFAULT_astra-toolbox_URL https://github.com/astra-toolbox/astra-toolbox )
@@ -186,6 +186,8 @@ set(DEFAULT_range-v3_TAG 0.11.0)
 set(DEFAULT_RocksDB_URL https://github.com/facebook/rocksdb.git )
 set(DEFAULT_RocksDB_TAG v6.26.0)
 
+set(DEFAULT_CPR_URL https://github.com/libcpr/cpr.git)
+set(DEFAULT_CPR_TAG origin/master)
 
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
@@ -326,6 +328,9 @@ set(range-v3_TAG ${DEFAULT_range-v3_TAG} CACHE STRING ON)
 set(RocksDB_URL ${DEFAULT_RocksDB_URL} CACHE STRING ON)
 set(RocksDB_TAG ${DEFAULT_RocksDB_TAG} CACHE STRING ON)
 
+set(CPR_URL ${DEFAULT_CPR_URL} CACHE STRING ON)
+set(CPR_TAG ${DEFAULT_CPR_TAG} CACHE STRING ON)
+
 mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   Gadgetron_URL Gadgetron_TAG
   siemens_to_ismrmrd_URL siemens_to_ismrmrd_TAG
@@ -347,5 +352,5 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   astra-python-wrapper_URL astra-python-wrapper_TAG
   ACE_URL ACE_TAG
   RocksDB_URL RocksDB_TAG
-  
+  CPR_URL CPR_TAG
 )
