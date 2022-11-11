@@ -47,7 +47,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       ${${proj}_EP_ARGS}
       ${${proj}_EP_ARGS_GIT}
       ${${proj}_EP_ARGS_DIRS}
-    #   CMAKE_ARGS -DCPR_USE_SYSTEM_CURL:BOOL=ON
+      CMAKE_ARGS -DCMAKE_INSTALL_INCLUDEDIR:PATH=${SUPERBUILD_INSTALL_DIR}/include
       DEPENDS ${${proj}_DEPENDENCIES}
     )
 
