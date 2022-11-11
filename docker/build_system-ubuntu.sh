@@ -7,7 +7,7 @@ APT_GET_INSTALL="apt-get install -yq --no-install-recommends"
 ${APT_GET_INSTALL} software-properties-common # needed for add-apt-repository
 add-apt-repository -y universe # needed for hdf5 for instance
 
-# echo "Installing boost 1.65 or later"
+# echo "Installing boost 1.71 or later (required for gadgetron)
 # first find current boost version (if any)
 function find_boost_version() {
   tmp=$(apt-cache search libboost|egrep 'libboost[1-9].*-dev'|tail -n 1)
@@ -18,7 +18,7 @@ function find_boost_version() {
 find_boost_version
 
 # echo "Found Boost major version ${boost_major}, minor ${boost_minor}"
-if [ "$boost_major" -gt 1 -o "$boost_minor" -gt 64 ]
+if [ "$boost_major" -gt 1 -o "$boost_minor" -gt 70 ]
 then
     echo "installing Boost ${boost_major}.${boost_minor} from system apt"
     ${APT_GET_INSTALL} libboost-dev libboost-chrono-dev \
@@ -26,7 +26,7 @@ then
         libboost-date-time-dev libboost-regex-dev \
         libboost-program-options-dev libboost-atomic-dev \
         libboost-test-dev libboost-timer-dev \
-        libboost-random-dev
+        libboost-coroutine libboost-context libboost-random-dev
 else
     # packaged boost is too old
     # we need to find a ppa that has it. This is unsafe and likely prone to falling over
