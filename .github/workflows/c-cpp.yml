@@ -134,10 +134,9 @@ jobs:
           cmake -S ${GITHUB_WORKSPACE} ${BUILD_FLAGS} ${EXTRA_BUILD_FLAGS} ${DEVEL_BUILD};
     - name: build
       shell: bash
-      run: 
+      run: | 
           cd ${GITHUB_WORKSPACE}/build;
           source ~/virtualenv/bin/activate;
-          # cmake --build . -j 1 --target Gadgetron;
           cmake --build . -j 1;
     - name: tests
       shell: bash
