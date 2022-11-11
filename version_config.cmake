@@ -132,6 +132,9 @@ set(DEFAULT_ISMRMRD_TAG origin/master)
 set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
 set(DEFAULT_Gadgetron_TAG master)
 
+set(DEFAULT_Date_URL https://github.com/HowardHinnant/date.git )
+set(DEFAULT_Date_TAG master)
+
 ## ASTRA
 set(DEFAULT_astra-toolbox_URL https://github.com/astra-toolbox/astra-toolbox )
 set(DEFAULT_astra-toolbox_TAG origin/master)
@@ -331,6 +334,9 @@ set(RocksDB_TAG ${DEFAULT_RocksDB_TAG} CACHE STRING ON)
 set(CPR_URL ${DEFAULT_CPR_URL} CACHE STRING ON)
 set(CPR_TAG ${DEFAULT_CPR_TAG} CACHE STRING ON)
 
+set(Date_URL ${DEFAULT_CPR_URL} CACHE STRING ON)
+set(Date_TAG ${DEFAULT_CPR_TAG} CACHE STRING ON)
+
 mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   Gadgetron_URL Gadgetron_TAG
   siemens_to_ismrmrd_URL siemens_to_ismrmrd_TAG
@@ -353,4 +359,5 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   ACE_URL ACE_TAG
   RocksDB_URL RocksDB_TAG
   CPR_URL CPR_TAG
+  Date_URL Date_TAG
 )
