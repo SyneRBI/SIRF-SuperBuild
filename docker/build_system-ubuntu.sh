@@ -26,7 +26,7 @@ then
         libboost-date-time-dev libboost-regex-dev \
         libboost-program-options-dev libboost-atomic-dev \
         libboost-test-dev libboost-timer-dev \
-        libboost-coroutine libboost-context libboost-random-dev
+        libboost-coroutine-dev libboost-context-dev libboost-random-dev
 else
     # packaged boost is too old
     # we need to find a ppa that has it. This is unsafe and likely prone to falling over
