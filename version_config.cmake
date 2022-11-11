@@ -130,7 +130,7 @@ set(DEFAULT_ISMRMRD_TAG origin/master)
 
 ## Gadgetron
 set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
-set(DEFAULT_Gadgetron_TAG v4.1)
+set(DEFAULT_Gadgetron_TAG master)
 
 ## ASTRA
 set(DEFAULT_astra-toolbox_URL https://github.com/astra-toolbox/astra-toolbox )
