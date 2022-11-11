@@ -130,7 +130,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DUSE_MKL:BOOL=${${proj}_USE_MKL}
       -DUSE_CUDA:BOOL=${${proj}_USE_CUDA}
       -DUSE_OPENMP:BOOL=${${proj}_ENABLE_OPENMP}
-      -DBUILD_TESTING:BOOL=OFF
+      -DBUILD_TESTING:BOOL=ON
       )
 
   if (CBLAS_INCLUDE_DIR)

@@ -6,11 +6,7 @@ apt-get update -qq
 # boost is handled in build_system-ubuntu.sh
 apt-get install -yq --no-install-recommends \
   libhdf5-serial-dev     \
-  libboost-dev libboost-chrono-dev \
-  libboost-filesystem-dev libboost-thread-dev \
-  libboost-date-time-dev libboost-regex-dev \
-  libboost-program-options-dev libboost-atomic-dev \
-  libboost-test-dev libboost-timer-dev libboost-optional-dev\
+  libboost-dev libboost-all-dev \
   libfftw3-dev           \
   h5utils                \
   jq                     \
