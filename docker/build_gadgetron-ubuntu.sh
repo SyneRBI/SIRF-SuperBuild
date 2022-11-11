@@ -27,7 +27,8 @@ apt-get install -yq --no-install-recommends \
   libdcmtk-dev           \
   libpugixml-dev         \
   libgflags-dev          \
-  libssl-dev
+  libssl-dev             \
+  libcurl4-openssl-dev
 
 # install GCC9 required by Gadgetron
 apt-get install software-properties-common -y && \
