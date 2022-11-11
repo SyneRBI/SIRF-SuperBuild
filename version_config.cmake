@@ -132,9 +132,6 @@ set(DEFAULT_ISMRMRD_TAG origin/master)
 set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
 set(DEFAULT_Gadgetron_TAG master)
 
-set(DEFAULT_Date_URL https://github.com/HowardHinnant/date.git )
-set(DEFAULT_Date_TAG master)
-
 ## ASTRA
 set(DEFAULT_astra-toolbox_URL https://github.com/astra-toolbox/astra-toolbox )
 set(DEFAULT_astra-toolbox_TAG origin/master)
@@ -191,6 +188,9 @@ set(DEFAULT_RocksDB_TAG v6.26.0)
 
 set(DEFAULT_CPR_URL https://github.com/libcpr/cpr.git)
 set(DEFAULT_CPR_TAG origin/master)
+
+set(DEFAULT_Date_URL https://github.com/HowardHinnant/date.git )
+set(DEFAULT_Date_TAG master)
 
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
@@ -334,8 +334,8 @@ set(RocksDB_TAG ${DEFAULT_RocksDB_TAG} CACHE STRING ON)
 set(CPR_URL ${DEFAULT_CPR_URL} CACHE STRING ON)
 set(CPR_TAG ${DEFAULT_CPR_TAG} CACHE STRING ON)
 
-set(Date_URL ${DEFAULT_CPR_URL} CACHE STRING ON)
-set(Date_TAG ${DEFAULT_CPR_TAG} CACHE STRING ON)
+set(Date_URL ${DEFAULT_Date_URL} CACHE STRING ON)
+set(Date_TAG ${DEFAULT_Date_TAG} CACHE STRING ON)
 
 mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   Gadgetron_URL Gadgetron_TAG
