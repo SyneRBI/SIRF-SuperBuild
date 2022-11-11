@@ -237,7 +237,8 @@ else()
   set(DEFAULT_STIR_TAG rel_5.0.2)
 
   # ismrmrd
-  set(DEFAULT_ISMRMRD_TAG v1.7.0)
+  set(DEFAULT_ISMRMRD_TAG master)
+
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
   set(DEFAULT_siemens_to_ismrmrd_TAG b87759e49e53dab4939147eb52b7a0e6465f3d04)
