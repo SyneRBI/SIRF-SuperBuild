@@ -230,7 +230,8 @@ if (DEVEL_BUILD)
   
 
 else()
-  set(DEFAULT_SIRF_TAG v3.3.0)
+  # need this to enable c++-17 (and other fixes)
+  set(DEFAULT_SIRF_TAG cf384b18ef5f000f9509457e6cb928971660ae2f)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
