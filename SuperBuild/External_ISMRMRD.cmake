@@ -76,7 +76,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   if (BUILD_TESTING_${proj})
     add_test(NAME ${proj}_TESTS
-         COMMAND ${CMAKE_COMMAND} --build . --config $<CONFIGURATION> --target check
+          # this was for before ISMRMRD 1.11.1
+          # COMMAND ${CMAKE_COMMAND} --build . --config $<CONFIGURATION> --target check
+          COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION> --output-on-failure
          WORKING_DIRECTORY ${${proj}_BINARY_DIR})
   endif()
 
