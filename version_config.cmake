@@ -186,11 +186,16 @@ set(DEFAULT_range-v3_TAG 0.11.0)
 set(DEFAULT_RocksDB_URL https://github.com/facebook/rocksdb.git )
 set(DEFAULT_RocksDB_TAG v6.26.0)
 
-set(DEFAULT_CPR_URL https://github.com/libcpr/cpr.git)
-set(DEFAULT_CPR_TAG origin/master)
+set(DEFAULT_mrd_storage_server_URL https://github.com/ismrmrd/mrd-storage-server.git)
+set(DEFAULT_mrd_storage_server_TAG origin/main)
 
 set(DEFAULT_Date_URL https://github.com/HowardHinnant/date.git )
 set(DEFAULT_Date_TAG master)
+
+# works only for Linux
+set(Go_URL https://go.dev/dl/go1.19.3.linux-amd64.tar.gz)
+set(Go_SHA256 74b9640724fd4e6bb0ed2a1bc44ae813a03f1e72a4c76253e2d5c015494430ba)
+
 
 option (DEVEL_BUILD "Developer Build" OFF)
 mark_as_advanced(DEVEL_BUILD)
@@ -333,8 +338,8 @@ set(range-v3_TAG ${DEFAULT_range-v3_TAG} CACHE STRING ON)
 set(RocksDB_URL ${DEFAULT_RocksDB_URL} CACHE STRING ON)
 set(RocksDB_TAG ${DEFAULT_RocksDB_TAG} CACHE STRING ON)
 
-set(CPR_URL ${DEFAULT_CPR_URL} CACHE STRING ON)
-set(CPR_TAG ${DEFAULT_CPR_TAG} CACHE STRING ON)
+set(mrd_storage_server_URL ${DEFAULT_mrd_storage_server_URL} CACHE STRING ON)
+set(mrd_storage_server_TAG ${DEFAULT_mrd_storage_server_TAG} CACHE STRING ON)
 
 set(Date_URL ${DEFAULT_Date_URL} CACHE STRING ON)
 set(Date_TAG ${DEFAULT_Date_TAG} CACHE STRING ON)
@@ -360,6 +365,6 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   astra-python-wrapper_URL astra-python-wrapper_TAG
   ACE_URL ACE_TAG
   RocksDB_URL RocksDB_TAG
-  CPR_URL CPR_TAG
+  mrd_storage_server_URL mrd_storage_server_TAG
   Date_URL Date_TAG
 )
