@@ -52,7 +52,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       PATCH_COMMAND ""
       UPDATE_COMMAND ""
       CONFIGURE_COMMAND ""
-      BUILD_COMMAND ${CMAKE_COMMAND} -E make_directory "${SUPERBUILD_INSTALL_DIR}/bin/mrd-storage-server" && go install -i github.com/alecthomas/kong && go install -i github.com/rs/zerolog
+      BUILD_COMMAND ${CMAKE_COMMAND} -E make_directory "${SUPERBUILD_INSTALL_DIR}/bin/mrd-storage-server" && go install -i github.com/alecthomas/kong@latest && go install -i github.com/rs/zerolog@latest
       INSTALL_COMMAND ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR} go build -o "${SUPERBUILD_INSTALL_DIR}/bin/mrd-storage-server" .
     )
 
