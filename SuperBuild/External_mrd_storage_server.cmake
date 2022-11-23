@@ -1,6 +1,6 @@
 #========================================================================
 # Author: Edoardo Pasca
-# Copyright 2018 UKRI STFC
+# Copyright 2022 UKRI STFC
 #
 # This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -52,8 +52,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       PATCH_COMMAND ""
       UPDATE_COMMAND ""
       CONFIGURE_COMMAND ""
-      BUILD_COMMAND ${CMAKE_COMMAND} -E make_directory "${SUPERBUILD_INSTALL_DIR}/bin/mrd-storage-server" && go install -i github.com/alecthomas/kong@latest && go install -i github.com/rs/zerolog@latest
-      INSTALL_COMMAND ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR} go build -o "${SUPERBUILD_INSTALL_DIR}/bin/mrd-storage-server" .
+      BUILD_COMMAND ""
+      INSTALL_COMMAND ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}; env GOPATH=${proj}_INSTALL_DIR} go install
     )
 
   else()
