@@ -53,7 +53,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       UPDATE_COMMAND ""
       CONFIGURE_COMMAND ""
       BUILD_COMMAND ""
-      INSTALL_COMMAND ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}; env GOPATH=${proj}_INSTALL_DIR} go install
+      INSTALL_COMMAND ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}; env GOPATH=${${proj}_INSTALL_DIR} go install
     )
 
   else()
