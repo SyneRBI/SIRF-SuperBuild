@@ -6,6 +6,8 @@
   - Ubuntu: 20.04
 - updated versions:
   - CIL: a6062410028c9872c5b355be40b96ed1497fed2a > 22.1.0
+  - GTest: 1.12.1
+  - glog: 0.6.0
 
 ## v3.3.1
 - VM: 
