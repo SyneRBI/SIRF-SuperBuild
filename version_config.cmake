@@ -186,8 +186,8 @@ set(DEFAULT_range-v3_TAG 0.11.0)
 set(DEFAULT_RocksDB_URL https://github.com/facebook/rocksdb.git )
 set(DEFAULT_RocksDB_TAG v6.26.0)
 
-set(DEFAULT_mrd_storage_server_URL https://github.com/ismrmrd/mrd-storage-server.git)
-set(DEFAULT_mrd_storage_server_TAG origin/main)
+set(DEFAULT_mrd-storage-server_URL https://github.com/ismrmrd/mrd-storage-server.git)
+set(DEFAULT_mrd-storage-server_TAG origin/main)
 
 set(DEFAULT_Date_URL https://github.com/HowardHinnant/date.git )
 set(DEFAULT_Date_TAG master)
@@ -338,8 +338,8 @@ set(range-v3_TAG ${DEFAULT_range-v3_TAG} CACHE STRING ON)
 set(RocksDB_URL ${DEFAULT_RocksDB_URL} CACHE STRING ON)
 set(RocksDB_TAG ${DEFAULT_RocksDB_TAG} CACHE STRING ON)
 
-set(mrd_storage_server_URL ${DEFAULT_mrd_storage_server_URL} CACHE STRING ON)
-set(mrd_storage_server_TAG ${DEFAULT_mrd_storage_server_TAG} CACHE STRING ON)
+set(mrd-storage-server_URL ${DEFAULT_mrd-storage-server_URL} CACHE STRING ON)
+set(mrd-storage-server_TAG ${DEFAULT_mrd-storage-server_TAG} CACHE STRING ON)
 
 set(Date_URL ${DEFAULT_Date_URL} CACHE STRING ON)
 set(Date_TAG ${DEFAULT_Date_TAG} CACHE STRING ON)
@@ -365,6 +365,6 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   astra-python-wrapper_URL astra-python-wrapper_TAG
   ACE_URL ACE_TAG
   RocksDB_URL RocksDB_TAG
-  mrd_storage_server_URL mrd_storage_server_TAG
+  mrd-storage-server_URL mrd-storage-server_TAG
   Date_URL Date_TAG
 )

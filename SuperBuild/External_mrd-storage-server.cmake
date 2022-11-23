@@ -18,7 +18,7 @@
 #
 #=========================================================================
 #This needs to be unique globally
-set(proj mrd_storage_server)
+set(proj mrd-storage-server)
 
 # Set dependency list
 set(${proj}_DEPENDENCIES "")
