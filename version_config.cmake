@@ -100,7 +100,7 @@ set(GTest_TAG release-1.12.1)
 
 ## glog
 set(DEFAULT_glog_URL https://github.com/google/glog )
-set(DEFAULT_glog_TAG v0.3.5)
+set(DEFAULT_glog_TAG v0.6.0)
 
 ## ITK
 set(DEFAULT_ITK_URL https://github.com/InsightSoftwareConsortium/ITK.git)
