@@ -19,3 +19,4 @@ tifffile
 nibabel
 deprecation
 nose
+pytest
