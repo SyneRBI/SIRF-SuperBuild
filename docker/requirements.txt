@@ -20,3 +20,5 @@ nibabel
 deprecation
 nose
 pytest
+pytest-cov
+coverage
