@@ -183,7 +183,8 @@ mark_as_advanced(DEVEL_BUILD)
 set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF )
 if (DEVEL_BUILD)
 
-  set (DEFAULT_SIRF_TAG origin/master)
+  #set (DEFAULT_SIRF_TAG origin/master)
+  set (DEFAULT_SIRF_TAG 93f280fbfc95f914642d1a532a65882d83938eb5)
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
   set(DEFAULT_STIR_TAG origin/master)
