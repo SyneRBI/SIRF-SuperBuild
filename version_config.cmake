@@ -102,11 +102,11 @@ option(DEVEL_BUILD "Use current versions of major packages" OFF)
 
 ## Googletest
 set(GTest_URL https://github.com/google/googletest )
-set(GTest_TAG release-1.11.0)
+set(GTest_TAG release-1.12.1)
 
 ## glog
 set(DEFAULT_glog_URL https://github.com/google/glog )
-set(DEFAULT_glog_TAG v0.3.5)
+set(DEFAULT_glog_TAG v0.6.0)
 
 ## ITK
 set(DEFAULT_ITK_URL https://github.com/InsightSoftwareConsortium/ITK.git)
@@ -235,9 +235,15 @@ if (DEVEL_BUILD)
   
 
 else()
-  # need this to enable c++-17 (and other fixes)
-  set(DEFAULT_SIRF_TAG cf384b18ef5f000f9509457e6cb928971660ae2f)
 
+  # this was the previous tag of SIRF required because of the following reason
+  # need this to enable c++-17 (and other fixes)
+  # set(DEFAULT_SIRF_TAG cf384b18ef5f000f9509457e6cb928971660ae2f)
+
+  # this is probably a tag after the one at the above commented out line
+  #set(DEFAULT_SIRF_TAG v3.3.0)
+  set (DEFAULT_SIRF_TAG 93f280fbfc95f914642d1a532a65882d83938eb5)
+  
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
   set(DEFAULT_STIR_TAG rel_5.0.2)

@@ -17,6 +17,8 @@
   - ACE : ACE_version_6.5.9 
   - siemens_to_ismrmrd: 8bb8b08f53ce73c2de9ba5f47f1532f96292d92b
   - CIL: a6062410028c9872c5b355be40b96ed1497fed2a > 22.1.0
+  - GTest: 1.12.1
+  - glog: 0.6.0
 
 ## v3.3.1
 - VM: 
