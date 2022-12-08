@@ -149,7 +149,7 @@ jobs:
       uses: actions/upload-artifact@v3
       if: failure()
       with:
-        name: build_log_files-${{ matrix.os }}-${{ matrix.compiler }}${{ matrix.compiler_version }}-${{ matrix.BUILD_TYPE }}-DEVEL=${{ matrix.DEVEL_BUILD }}-EXTRA=${{ matrix.EXTRA_BUILD_FLAGS }}
+        name: build_log_files-${{ matrix.os }}-${{ matrix.compiler }}${{ matrix.compiler_version }}-${{ matrix.BUILD_TYPE }}-DEVEL=${{ matrix.DEVEL_BUILD }}-run=${{ github.run_number }}-id=${{ github.run_id }}
         path: ${{ github.workspace }}/build/**/*.log
         retention-days: 7
 
