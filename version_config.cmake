@@ -236,13 +236,8 @@ if (DEVEL_BUILD)
 
 else()
 
-  # this was the previous tag of SIRF required because of the following reason
-  # need this to enable c++-17 (and other fixes)
-  # set(DEFAULT_SIRF_TAG cf384b18ef5f000f9509457e6cb928971660ae2f)
-
-  # this is probably a tag after the one at the above commented out line
   #set(DEFAULT_SIRF_TAG v3.3.0)
-  set (DEFAULT_SIRF_TAG 93f280fbfc95f914642d1a532a65882d83938eb5)
+  set (DEFAULT_SIRF_TAG 95c748104578efcf73cb7894cf989cd7ae5879b5)
   
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
