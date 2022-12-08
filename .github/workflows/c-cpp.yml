@@ -140,6 +140,13 @@ jobs:
           cd ${GITHUB_WORKSPACE}/build;
           source ~/virtualenv/bin/activate;
           cmake --build . -j 1;
+    - name: Upload build log files for debugging
+      uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: build_log_files-${{ matrix.os }}-${{ matrix.compiler }}${{ matrix.compiler_version }}-${{ matrix.BUILD_TYPE }}-DEVEL=${{ matrix.DEVEL_BUILD }}-EXTRA=${{ matrix.EXTRA_BUILD_FLAGS }}
+        path: ${{ github.workspace }}/build/**/*.log
+        retention-days: 7
     - name: tests
       shell: bash
       run: 
