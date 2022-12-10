@@ -181,7 +181,7 @@ set(DEFAULT_ACE_TAG v6.5.9)
 
 # range-v3
 set(DEFAULT_range-v3_URL https://github.com/ericniebler/range-v3.git )
-set(DEFAULT_range-v3_TAG 0.11.0)
+set(DEFAULT_range-v3_TAG 0.12.0)
 
 set(DEFAULT_RocksDB_URL https://github.com/facebook/rocksdb.git )
 set(DEFAULT_RocksDB_TAG v6.26.0)
