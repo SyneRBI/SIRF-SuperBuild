@@ -93,7 +93,7 @@ jobs:
           sudo bash build_system-ubuntu.sh;
           PYTHON_EXECUTABLE=python3 PYTHON_INSTALL_DIR=~/virtualenv bash user_python-ubuntu.sh;
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1
+      uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ matrix.os }}-${{ matrix.compiler }}-${{ matrix.compiler_version }}-${{ matrix.BUILD_TYPE }}
     - name: set_compiler_variables
