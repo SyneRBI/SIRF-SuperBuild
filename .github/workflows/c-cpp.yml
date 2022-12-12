@@ -55,11 +55,11 @@ jobs:
           DEVEL_BUILD: "OFF"
         - os: ubuntu-latest
           compiler: gcc
-          compiler_version: 9
+          compiler_version: 11
           BUILD_TYPE: "Release"
           EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_ROOT:BOOL=ON"
           DEVEL_BUILD: "ON"
-        - os: ubuntu-latest
+        - os: ubuntu-20.04
           compiler: gcc
           compiler_version: 8
           BUILD_TYPE: "Release"
@@ -93,7 +93,7 @@ jobs:
           sudo bash build_system-ubuntu.sh;
           PYTHON_EXECUTABLE=python3 PYTHON_INSTALL_DIR=~/virtualenv bash user_python-ubuntu.sh;
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1
+      uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ matrix.os }}-${{ matrix.compiler }}-${{ matrix.compiler_version }}-${{ matrix.BUILD_TYPE }}
     - name: set_compiler_variables
@@ -144,6 +144,14 @@ jobs:
       uses: mxschmitt/action-tmate@v3
       timeout-minutes: 15
       if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled }}
+
+    - name: Upload build log files for debugging
+      uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: build_log_files-${{ matrix.os }}-${{ matrix.compiler }}${{ matrix.compiler_version }}-${{ matrix.BUILD_TYPE }}-DEVEL=${{ matrix.DEVEL_BUILD }}-run=${{ github.run_number }}-id=${{ github.run_id }}
+        path: ${{ github.workspace }}/build/**/*.log
+        retention-days: 7
 
     - name: tests
       shell: bash
