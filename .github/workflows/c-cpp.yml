@@ -139,8 +139,9 @@ jobs:
       run: | 
           cd ${GITHUB_WORKSPACE}/build;
           source ~/virtualenv/bin/activate;
-          cmake --build . --target GTest -j 2;
-          cmake --build . --target range-v3 -j 2;
+          #cmake --build . --target GTest -j 2;
+          #cmake --build . --target range-v3 -j 2;
+          cmake --build . -j 2;
     - name: Upload build log files for debugging
       uses: actions/upload-artifact@v3
       if: failure()
@@ -155,6 +156,15 @@ jobs:
       if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled }}
     - name: tests
       shell: bash
-      run: 
+      run: |
           cd ${GITHUB_WORKSPACE}/build/builds/range-v3/build;
+          ctest -VVV
+          export INSTALL_DIR=~/install
+          source ${INSTALL_DIR}/bin/env_sirf.sh
+          ctest -VVV
+
+          # append the path of virtualenv
+          export PATH=~/.local/bin:$PATH
+          ctest -VVV
+          source ~/virtualenv/bin/activate 
           ctest -VVV
