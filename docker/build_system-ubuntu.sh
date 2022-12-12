@@ -7,6 +7,12 @@ APT_GET_INSTALL="apt-get install -yq --no-install-recommends"
 ${APT_GET_INSTALL} software-properties-common # needed for add-apt-repository
 add-apt-repository -y universe # needed for hdf5 for instance
 
+# Fix a problem on Ubuntu 22.04 (or at least the one on GitHub Actions)
+# of a pinned version of libunwind that then creates problems later
+# (we allow the remove/install to failthough)
+apt-get remove libunwind-14 -y || true
+${APT_GET_INSTALL} libunwind || true
+
 # echo "Installing boost 1.71 or later (required for gadgetron)
 # first find current boost version (if any)
 function find_boost_version() {

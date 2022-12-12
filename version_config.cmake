@@ -173,7 +173,7 @@ set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v21.0.0")
 
 # CERN ROOT
 set(DEFAULT_ROOT_URL https://github.com/root-project/root)
-set(DEFAULT_ROOT_TAG "v6-24-06")
+set(DEFAULT_ROOT_TAG "v6-26-10")
 
 # ACE
 set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
@@ -235,8 +235,8 @@ if (DEVEL_BUILD)
   
 
 else()
-  # need this to enable c++-17 (and other fixes)
-  set(DEFAULT_SIRF_TAG cf384b18ef5f000f9509457e6cb928971660ae2f)
+  #set(DEFAULT_SIRF_TAG v3.3.0)
+  set (DEFAULT_SIRF_TAG 2ed708bb8c8dc4ac6e1b081a1f9800754621b5fd)
 
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
