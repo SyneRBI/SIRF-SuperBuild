@@ -96,6 +96,8 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1.2
       with:
         key: ${{ matrix.os }}-${{ matrix.compiler }}-${{ matrix.compiler_version }}-${{ matrix.BUILD_TYPE }}
+        max-size: "900M"
+
     - name: set_compiler_variables
       shell: bash
       run: |
