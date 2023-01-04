@@ -105,11 +105,10 @@ USER ${NB_USER}:${NB_GROUP}
 
 # Python (virtualenv or conda)
 COPY requirements.txt .
-COPY requirements_conda_forge.txt .
 COPY requirements.yml .
 COPY user_python-ubuntu.sh .
 RUN PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} PYTHON_INSTALL_DIR=${PYTHON_INSTALL_DIR} bash user_python-ubuntu.sh  && \
-    rm user_python-ubuntu.sh requirements.txt requirements_conda_forge.txt
+    rm user_python-ubuntu.sh requirements.txt requirements.yml
 
 
 # ccache
