@@ -124,8 +124,8 @@ RUN ccache -o cache_dir=/opt/ccache
 COPY user_sirf-ubuntu.sh .
 
 # SIRF-SuperBuild version
-ARG SIRF_SB_URL="https://github.com/SyneRBI/SIRF-SuperBuild"
-ARG SIRF_SB_TAG="master"
+ARG SIRF_SB_URL="https://github.com/paskino/SIRF-SuperBuild"
+ARG SIRF_SB_TAG="fix_prerelease3.4"
 # speeding up the cmake build
 # (implementation note: changing this in your environment will invalidate the docker cache sadly)
 ARG NUM_PARALLEL_BUILDS="2"
