@@ -209,7 +209,7 @@ if (DEVEL_BUILD)
 
 else()
   #set(DEFAULT_SIRF_TAG v3.3.0)
-  set (DEFAULT_SIRF_TAG 2ed708bb8c8dc4ac6e1b081a1f9800754621b5fd)
+  set (DEFAULT_SIRF_TAG f40e9d8cf1166eb001a7782a4082f94f67d9a8f4)
   
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
