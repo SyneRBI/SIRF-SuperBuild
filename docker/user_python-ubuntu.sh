@@ -52,11 +52,13 @@ miniconda)
 esac
 
 if [ "$PYTHON" = "miniconda" ]; then
+  # updates the various packages
+  conda update -c conda-forge -y --all
   if [ -f requirements.yml ]; then
-    # conda install --yes -c conda-forge -c intel -c ccpi -c astra-toolbox --file requirements_conda_forge.txt
+    # installs the required packages in the environment with requirements.yml. 
+    # Notice that SciPy is set to 1.7.3 to prevent `GLIBCXX_3.4.30' not found
     conda env update --file requirements.yml 
   fi
-  conda update -c conda-forge -y --all
   conda clean -y --all
 # Python (runtime)
 else
