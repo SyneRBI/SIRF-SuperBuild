@@ -381,6 +381,9 @@ cmake ../SIRF-SuperBuild -DGadgetron_EXTRA_CMAKE_ARGS:STRING="-DBUILD_PYTHON_SUP
 
 Some dependencies like Gadgetron, NiftyPET and Parallelproj require building parts of their code base with CUDA. It has been found that version [10.1 update 1](https://github.com/gadgetron/gadgetron/issues/792#issuecomment-786481256) works, but following updates of 10.1 and 10.2 do not build Gadgetron. It is reported that version CUDA toolkit version 11 works. We have not tested lower versions of the toolkit yet.
 
+Note that if you want to use the `clang` compiler and CUDA, you likely will have to set the `CUDAHOSTCXX` environment variable (before calling CMake), see also
+https://cmake.org/cmake/help/latest/variable/CMAKE_CUDA_HOST_COMPILER.html.
+
 ## Notes
 
 ### FFTW3 issues
