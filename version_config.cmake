@@ -140,7 +140,7 @@ set(DEFAULT_NiftyPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
 
 ## parallelproj
 set(DEFAULT_parallelproj_URL https://github.com/gschramm/parallelproj )
-set(DEFAULT_parallelproj_TAG v0.8)
+set(DEFAULT_parallelproj_TAG v1.2.11)
 
 ## SIRF-Contribs
 set(DEFAULT_SIRF-Contribs_URL https://github.com/SyneRBI/SIRF-Contribs )
@@ -213,7 +213,7 @@ else()
   
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG rel_5.0.2)
+  set(DEFAULT_STIR_TAG 86602ab219c309e917de9979a7bf1117c9833494)
 
   # ismrmrd
   set(DEFAULT_ISMRMRD_TAG v1.7.0)
