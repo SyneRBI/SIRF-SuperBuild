@@ -8,6 +8,7 @@ dependencies:
   - setuptools
   - wheel
   - pytest
+  - pytest-cov
   - numpy        # CIL
   - scipy=1.7.3  # CIL prevents `GLIBCXX_3.4.30' not found
   - docopt
