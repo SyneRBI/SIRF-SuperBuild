@@ -121,6 +121,7 @@ RUN chmod -R go+w /opt/ccache
 USER "${NB_USER}"
 
 RUN ccache -o cache_dir=/opt/ccache
+
 COPY user_sirf-ubuntu.sh .
 
 # SIRF-SuperBuild version
