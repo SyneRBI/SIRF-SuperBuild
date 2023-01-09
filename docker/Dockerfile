@@ -117,9 +117,6 @@ COPY devel/.ccache/ /opt/ccache/
 # give everyone write permisions
 RUN chmod -R go+w /opt/ccache
 
-# install libcurl4-openssl-dev
-RUN apt-get install -y libcurl4-openssl-dev
-RUN apt-get update && apt-get upgrade -y
 
 # SIRF
 USER "${NB_USER}"
@@ -139,7 +136,7 @@ ARG BUILD_FLAGS="\
  -DCMAKE_BUILD_TYPE=Release\
  -DSTIR_ENABLE_OPENMP=ON -DUSE_SYSTEM_ACE=ON\
  -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON\
- -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_ITK=ON\
+ -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_ITK=ON\
  -DGadgetron_USE_CUDA=OFF\
  -DUSE_SYSTEM_SWIG=ON\
  -DUSE_NiftyPET=OFF\
