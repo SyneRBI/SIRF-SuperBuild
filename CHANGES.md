@@ -11,7 +11,7 @@
   - GTest: 1.12.1
   - glog: 0.6.0
   - CMake: v3.25.1
-  - parallelproj: v1.2.11
+  - parallelproj: v1.2.12
   - STIR: 86602ab219c309e917de9979a7bf1117c9833494 about 5.1
 
 ## v3.3.1
