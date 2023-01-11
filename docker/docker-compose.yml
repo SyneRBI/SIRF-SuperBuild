@@ -34,7 +34,7 @@ services:
    context: .
    target: core
    cache_from:
-    - ubuntu:20.04
+    - ubuntu:22.04
     - synerbi/sirf:core
    args:
     EXTRA_BUILD_FLAGS: "-DBUILD_CIL=OFF"
