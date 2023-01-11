@@ -22,5 +22,5 @@ dependencies:
   - imageio
   - tqdm
   - nbstripout
-  pip:
+  - pip:
     - brainweb>=1.5.1
