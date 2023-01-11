@@ -2,6 +2,11 @@
 [ -f .bashrc ] && . .bashrc
 set -ev
 INSTALL_DIR="${1:-/opt}"
+if [ -n "${PYTHON_EXECUTABLE}" ]; then 
+  PYTHON=$PYTHON_EXECUTABLE
+else
+  PYTHON='miniconda'
+fi
 
 # SIRF-Exercises
 git clone https://github.com/SyneRBI/SIRF-Exercises --recursive -b master $INSTALL_DIR/SIRF-Exercises
@@ -13,11 +18,6 @@ if [ "$PYTHON" = "miniconda" ]; then
     # installs the required packages in the environment with requirements.yml. 
     # Notice that SciPy is set to 1.7.3 to prevent `GLIBCXX_3.4.30' not found
     conda env update --file requirements-service.yml 
-  fi
-  #install SIRF-Exercises requirements
-  cd $INSTALL_DIR/SIRF-Exercises
-  if [ -f requirements.yml ]; then
-    conda env update --file requirements.yml 
   fi
   conda clean -y --all
 # Python (runtime)
