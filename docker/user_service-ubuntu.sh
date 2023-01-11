@@ -6,17 +6,34 @@ INSTALL_DIR="${1:-/opt}"
 # SIRF-Exercises
 git clone https://github.com/SyneRBI/SIRF-Exercises --recursive -b master $INSTALL_DIR/SIRF-Exercises
 
-if [ -f requirements-service.txt ]; then
-  conda install -c conda-forge -y --file requirements-service.txt || \
-  pip install -U -r requirements-service.txt
+if [ "$PYTHON" = "miniconda" ]; then
+  # updates the various packages
+  conda update -c conda-forge -y --all
+  if [ -f requirements-service.yml ]; then
+    # installs the required packages in the environment with requirements.yml. 
+    # Notice that SciPy is set to 1.7.3 to prevent `GLIBCXX_3.4.30' not found
+    conda env update --file requirements-service.yml 
+  fi
+  #install SIRF-Exercises requirements
+  cd $INSTALL_DIR/SIRF-Exercises
+  if [ -f requirements.yml ]; then
+    conda env update --file requirements.yml 
+  fi
+  conda clean -y --all
+# Python (runtime)
+else
+  if [ -f requirements-service.txt ]; then
+    conda install -c conda-forge -y --file requirements-service.txt || \
+    pip install -U -r requirements-service.txt
+  fi
+  #install SIRF-Exercises requirements
+  cd $INSTALL_DIR/SIRF-Exercises
+  if [ -f requirements.txt ]; then
+    conda install -c conda-forge -y --file requirements.txt || \
+    pip install -U -r requirements.txt
+  fi
 fi
 
-#install SIRF-Exercises requirements
-cd $INSTALL_DIR/SIRF-Exercises
-if [ -f requirements.txt ]; then
-  conda install -c conda-forge -y --file requirements.txt || \
-  pip install -U -r requirements.txt
-fi
 
 # configure nbstripout
 git config --global filter.nbstripout.extrakeys '

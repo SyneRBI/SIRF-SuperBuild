@@ -165,9 +165,11 @@ ARG HOME="/home/${NB_USER}"
 USER "${NB_USER}"
 
 COPY requirements-service.txt .
+COPY requirements-service.yml .
+COPY requirements.yml .
 COPY user_service-ubuntu.sh .
-RUN bash user_service-ubuntu.sh
-RUN rm user_service-ubuntu.sh requirements-service.txt
+RUN PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} PYTHON_INSTALL_DIR=${PYTHON_INSTALL_DIR} bash user_service-ubuntu.sh
+RUN rm user_service-ubuntu.sh requirements-service.txt requirements-service.yml
 
 USER root
 COPY download_data.sh /usr/local/bin/
