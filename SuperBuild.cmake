@@ -196,6 +196,7 @@ option(USE_SYSTEM_SIRF "Build using an external version of SIRF" OFF)
 option(USE_SYSTEM_NIFTYREG "Build using an external version of NIFTYREG" OFF)
 option(USE_SYSTEM_GTest "Build using an external version of GTest" OFF)
 option(USE_SYSTEM_ACE "Build using an external version of ACE" ON)
+option(USE_SYSTEM_RocksDB "Build using an external version of RocksDB" ON)
 
 # SPM requires matlab
 if (BUILD_MATLAB)

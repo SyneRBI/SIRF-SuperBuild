@@ -5,7 +5,7 @@ import sys
 def copy_if_not_exists(src, dst):
     from_file = os.path.abspath(src)
     to_file = os.path.abspath(dst)
-    if not os.path.exists(to_file):
+    if not os.path.exists(to_file) and os.path.exists(from_file):
         shutil.copyfile(from_file, to_file)
 
 if __name__ == '__main__':
