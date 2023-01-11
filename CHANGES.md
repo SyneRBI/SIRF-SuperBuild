@@ -57,7 +57,7 @@
 - add CITATION.cff (and remove .zenodo.json)
 - added numba as dependency in docker files
 - updated versions:
-  - SIRF: 3.3.0
+  - SIRF: f40e9d8cf1166eb001a7782a4082f94f67d9a8f4
   - STIR: 5.0.2
   - parallelproj: v0.8
   - CCPi Regularisation: v21.0.0
