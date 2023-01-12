@@ -5,6 +5,7 @@ channels:
   - ccpi
   - defaults
 dependencies:
+  - mamba
   - setuptools
   - wheel
   - pytest

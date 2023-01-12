@@ -17,20 +17,19 @@ if [ "$PYTHON" = "miniconda" ]; then
   if [ -f requirements-service.yml ]; then
     # installs the required packages in the environment with requirements-service.yml. 
     # Notice that these requirements TEMPORARILY contains also the packages for SIRF-Exercises
-    conda env update --file requirements-service.yml 
+    mamba env update --file requirements-service.yml 
   fi
   conda clean -y --all
 
 # Python (runtime)
 else
   if [ -f requirements-service.txt ]; then
-    conda install -c conda-forge -y --file requirements-service.txt || \
     pip install -U -r requirements-service.txt
   fi
   #install SIRF-Exercises requirements
   cd $INSTALL_DIR/SIRF-Exercises
   if [ -f requirements.txt ]; then
-    conda install -c conda-forge -y --file requirements.txt || \
+    mamba install -c conda-forge -y --file requirements.txt || \
     pip install -U -r requirements.txt
   fi
 fi

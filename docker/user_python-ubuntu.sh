@@ -34,7 +34,7 @@ miniconda)
   conda config --add channels conda-forge
   # https://github.com/conda/conda/issues/6030
   #conda update -c conda-forge -y conda
-  conda update -c conda-forge -y setuptools pip
+  mamba update -c conda-forge -y setuptools pip
   ;;
 *python*)
   # virtualenv
@@ -52,12 +52,10 @@ miniconda)
 esac
 
 if [ "$PYTHON" = "miniconda" ]; then
-  # updates the various packages
-  conda update -c conda-forge -y --all
   if [ -f requirements.yml ]; then
     # installs the required packages in the environment with requirements.yml. 
     # Notice that SciPy is set to 1.7.3 to prevent `GLIBCXX_3.4.30' not found
-    conda env update --file requirements.yml 
+    mamba env update --file requirements.yml 
   fi
   conda clean -y --all
 # Python (runtime)
