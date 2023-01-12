@@ -29,8 +29,9 @@ else
   #install SIRF-Exercises requirements
   cd $INSTALL_DIR/SIRF-Exercises
   if [ -f requirements.txt ]; then
-    mamba install -c conda-forge -y --file requirements.txt || \
-    pip install -U -r requirements.txt
+    python ~/install-sirf-exercises-dep.py requirements.txt
+    # mamba install -c conda-forge -y --file requirements.txt || \
+    # pip install -U -r requirements.txt
   fi
 fi
 
