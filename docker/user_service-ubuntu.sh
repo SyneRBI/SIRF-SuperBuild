@@ -12,8 +12,6 @@ fi
 git clone https://github.com/SyneRBI/SIRF-Exercises --recursive -b master $INSTALL_DIR/SIRF-Exercises
 
 if [ "$PYTHON" = "miniconda" ]; then
-  # updates the various packages
-  conda update -c conda-forge -y --all
   if [ -f requirements-service.yml ]; then
     # installs the required packages in the environment with requirements-service.yml. 
     # Notice that these requirements TEMPORARILY contains also the packages for SIRF-Exercises
@@ -26,15 +24,16 @@ else
   if [ -f requirements-service.txt ]; then
     pip install -U -r requirements-service.txt
   fi
-  #install SIRF-Exercises requirements
-  cd $INSTALL_DIR/SIRF-Exercises
-  if [ -f requirements.txt ]; then
-    python ~/install-sirf-exercises-dep.py requirements.txt
-    # mamba install -c conda-forge -y --file requirements.txt || \
-    # pip install -U -r requirements.txt
-  fi
 fi
 
+#install SIRF-Exercises requirements
+cd $INSTALL_DIR/SIRF-Exercises
+if [ -f requirements.txt ]; then
+  cat requirements.txt
+  python ~/install-sirf-exercises-dep.py requirements.txt
+  # mamba install -c conda-forge -y --file requirements.txt || \
+  # pip install -U -r requirements.txt
+fi
 
 # configure nbstripout
 git config --global filter.nbstripout.extrakeys '
