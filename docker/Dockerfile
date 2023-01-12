@@ -168,8 +168,9 @@ COPY requirements-service.txt .
 COPY requirements-service.yml .
 COPY requirements.yml .
 COPY user_service-ubuntu.sh .
+COPY install-sirf-exercises-dep.py .
 RUN PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} PYTHON_INSTALL_DIR=${PYTHON_INSTALL_DIR} bash user_service-ubuntu.sh
-RUN rm user_service-ubuntu.sh requirements-service.txt requirements-service.yml
+RUN rm user_service-ubuntu.sh requirements-service.txt requirements-service.yml install-sirf-exercises-dep.py
 
 USER root
 COPY download_data.sh /usr/local/bin/
