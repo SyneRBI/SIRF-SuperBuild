@@ -44,7 +44,7 @@ jobs:
           ls -l
           
       - name: Upload artifact of the core image.
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: sirf-core
           path: core.tar.gz
@@ -74,7 +74,7 @@ jobs:
           ls -l
           
       - name: Upload artifact of the core image.
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: sirf-core-gpu
           path: core-gpu.tar.gz
@@ -125,7 +125,7 @@ jobs:
           docker save  synerbi/sirf:${{ matrix.tag }} | gzip > ${{ matrix.tag }}.tar.gz
           
       - name: Upload artifact of image.
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: sirf-${{ matrix.tag }}
           path: ${{ matrix.tag }}.tar.gz
@@ -169,7 +169,7 @@ jobs:
             docker save synerbi/sirf:service-gpu | gzip > service-gpu.tar.gz 
           
         - name: Upload artifact of image.
-          uses: actions/upload-artifact@v2
+          uses: actions/upload-artifact@v3.1.2
           with:
             name: sirf-service-gpu
             path: service-gpu.tar.gz
@@ -240,7 +240,7 @@ jobs:
           docker save synerbi/sirf:service | gzip > ${{ matrix.tag }}.tar.gz 
           
       - name: Upload artifact of image.
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: sirf-${{ matrix.tag }}
           path: ${{ matrix.tag }}.tar.gz
