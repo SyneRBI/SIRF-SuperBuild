@@ -13,6 +13,7 @@
   - CMake: v3.25.1
   - parallelproj: v1.2.12
   - STIR: 86602ab219c309e917de9979a7bf1117c9833494 about 5.1
+  - Boost: 1.78.0
 
 ## v3.3.1
 - VM: 
