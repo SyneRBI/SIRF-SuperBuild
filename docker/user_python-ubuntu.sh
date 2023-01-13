@@ -34,7 +34,8 @@ miniconda)
   conda config --add channels conda-forge
   # https://github.com/conda/conda/issues/6030
   #conda update -c conda-forge -y conda
-  conda update -c conda-forge -y setuptools pip mamba
+  conda install -c conda-forge -y mamba
+  mamba update -c conda-forge -y setuptools pip
   ;;
 *python*)
   # virtualenv
