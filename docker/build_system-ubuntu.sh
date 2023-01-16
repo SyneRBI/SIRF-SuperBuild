@@ -56,6 +56,7 @@ fi
 ${APT_GET_INSTALL} \
   libfftw3-dev         \
   libhdf5-serial-dev   \
+  hdf5-helpers         \
   swig
 
 # doxygen related packages

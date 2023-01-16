@@ -38,12 +38,8 @@ else()
        # Ubutnu 16.04 version should be fine
        set(Boost_REQUIRED_VERSION 1.58.0)
      endif()
-     # set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_71_0.zip)
-     # https://github.com/boostorg/math/pull/676
-     # https://github.com/boostorg/math/commit/720536a08e4e33639869e1b7a99d9ec923409c0b
-     # seems the bugfix entered Boost 1.78.0 which is not yet released, but probably 1.71.0 is patched on Ubuntu
-     set (Boost_URL https://sourceforge.net/projects/boost/files/boost/1.78.0.beta1/boost_1_78_0_b1.zip)
-     set(Boost_MD5 40ad9e539f6f26fab0b3d314eb6c0290)
+     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_78_0.zip)
+     set(Boost_MD5 e193e5089060ed6ce5145c8eb05e67e3)
 endif()
 
 ## Armadillo
@@ -146,7 +142,7 @@ set(DEFAULT_NiftyPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
 
 ## parallelproj
 set(DEFAULT_parallelproj_URL https://github.com/gschramm/parallelproj )
-set(DEFAULT_parallelproj_TAG v1.2.12)
+set(DEFAULT_parallelproj_TAG v1.2.13)
 
 ## SIRF-Contribs
 set(DEFAULT_SIRF-Contribs_URL https://github.com/SyneRBI/SIRF-Contribs )
@@ -237,9 +233,10 @@ if (DEVEL_BUILD)
 else()
   #set(DEFAULT_SIRF_TAG v3.3.0)
   set (DEFAULT_SIRF_TAG f40e9d8cf1166eb001a7782a4082f94f67d9a8f4)
+  
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG 86602ab219c309e917de9979a7bf1117c9833494)
+  set(DEFAULT_STIR_TAG rel_5.1.0)
 
   # ismrmrd
   set(DEFAULT_ISMRMRD_TAG master)

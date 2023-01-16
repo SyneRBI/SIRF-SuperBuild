@@ -11,19 +11,20 @@
 - updated versions:
   - SIRF: f40e9d8cf1166eb001a7782a4082f94f67d9a8f4
   - Gadgetron: master
-  - Boost 1.78.0 beta 1
   - RocksDB: 6.26.0
-  - GoogleTest: 1.11.0
   - JSON: 3.10.4
   - range-v3: 0.11.0
   - ACE : ACE_version_6.5.9 
   - siemens_to_ismrmrd: 8bb8b08f53ce73c2de9ba5f47f1532f96292d92b
+  - added requirements.yml and requirements-service.yml to handle dependencies for conda python
+  - updates to use mamba
   - CIL: a6062410028c9872c5b355be40b96ed1497fed2a > 22.1.0
   - GTest: 1.12.1
   - glog: 0.6.0
   - CMake: v3.25.1
-  - parallelproj: v1.2.12
-  - STIR: 86602ab219c309e917de9979a7bf1117c9833494 about 5.1
+  - parallelproj: v1.2.13
+  - STIR: rel_5.1.0
+  - Boost: 1.78.0
 
 ## v3.3.1
 - VM: 
