@@ -5,6 +5,8 @@
 - fix usage of `proj_EXTRA_CMAKE_ARGS` facility (it was broken for all projects except ITK) [#616](https://github.com/SyneRBI/SIRF-SuperBuild/issues/616)
 - Removed CIL-ASTRA as it has been merged into CIL code base.
 - Added python-opencv to docker requirements.txt
+  - added requirements.yml and requirements-service.yml to handle dependencies for conda python
+  - updates to use mamba
 - docker images updates
   - Ubuntu: 22.04
   - use requirements.yml for conda python
@@ -16,8 +18,6 @@
   - range-v3: 0.11.0
   - ACE : ACE_version_6.5.9 
   - siemens_to_ismrmrd: 8bb8b08f53ce73c2de9ba5f47f1532f96292d92b
-  - added requirements.yml and requirements-service.yml to handle dependencies for conda python
-  - updates to use mamba
   - CIL: a6062410028c9872c5b355be40b96ed1497fed2a > 22.1.0
   - GTest: 1.12.1
   - glog: 0.6.0
