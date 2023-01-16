@@ -41,7 +41,7 @@ if __name__ == '__main__':
         print ("Installing from conda-forge:", install_by_conda)
         subprocess.run(conda_install(install_by_conda), shell=True, check=True)
         print ("Installing from PyPI:", install_by_pip)
-        subprocess.run(pip_install(install_by_pip), shell=True, check=True)
+        subprocess.run([sys.executable,  "-m", pip_install(install_by_pip)], shell=True, check=True)
         
     except subprocess.CalledProcessError as cpe:
         print (cpe)

@@ -17,12 +17,12 @@ if [ "$PYTHON" = "miniconda" ]; then
     # Notice that these requirements TEMPORARILY contains also the packages for SIRF-Exercises
     mamba env update --file requirements-service.yml 
   fi
-  conda clean -y --all
+  mamba clean -y --all
 
 # Python (runtime)
 else
   if [ -f requirements-service.txt ]; then
-    pip install -U -r requirements-service.txt
+    ${PYTHON} -m pip install -U -r requirements-service.txt
   fi
 fi
 
@@ -30,9 +30,16 @@ fi
 cd $INSTALL_DIR/SIRF-Exercises
 if [ -f requirements.txt ]; then
   cat requirements.txt
-  python ~/install-sirf-exercises-dep.py requirements.txt
-  # mamba install -c conda-forge -y --file requirements.txt || \
-  # pip install -U -r requirements.txt
+  if [ "$PYTHON" = "miniconda" ]; then
+  # installing the requirements.txt with mamba requires some cleaning of the requirements.txt
+  # Also the requirements.txt contains some packages that are not found on conda-forge, i.e. brainweb
+  # Therefore, these need to be installed by pip. 
+  # This is handled by the install-sirf-exercises-dep.py script
+    python ~/install-sirf-exercises-dep.py requirements.txt
+  else
+  # Otherwise, just install the requirements.txt with pip
+    ${PYTHON} -m pip install -U -r requirements.txt
+  fi
 fi
 
 # configure nbstripout

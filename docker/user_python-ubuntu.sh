@@ -62,6 +62,6 @@ if [ "$PYTHON" = "miniconda" ]; then
 # Python (runtime)
 else
   if [ -f requirements.txt ]; then
-    pip install -U -r requirements.txt
+    ${PYTHON} -m pip install -U -r requirements.txt
   fi
 fi
