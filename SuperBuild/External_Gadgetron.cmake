@@ -24,9 +24,6 @@
 #This needs to be unique globally
 set(proj Gadgetron)
 
-if ((NOT CC_9) OR (NOT CXX_9))
-  message(FATAL_ERROR "Please set the flag -DCC_9 and -DCXX_9 to point to the location of gcc-9 and g++-9")
-endif()
 # Set dependency list
 set(${proj}_DEPENDENCIES "ACE;Boost;HDF5;ISMRMRD;FFTW3double;Armadillo;GTest;range-v3;JSON;RocksDB;Date;mrd-storage-server")
 
@@ -154,7 +151,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     CMAKE_ARGS ${${proj}_CMAKE_ARGS}
     DEPENDS
         ${${proj}_DEPENDENCIES}
-    CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CC=${CC_9} CXX=${CXX_9} ${CMAKE_COMMAND} ${${proj}_SOURCE_DIR} ${${proj}_CMAKE_ARGS}
+    CONFIGURE_COMMAND ${CMAKE_COMMAND} ${${proj}_SOURCE_DIR} ${${proj}_CMAKE_ARGS}
     BUILD_COMMAND ${CMAKE_COMMAND} -E env CPATH=$ENV{CPATH}:${SUPERBUILD_INSTALL_DIR}/include LD_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib/
       ${CMAKE_COMMAND} --build .
     INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install 
