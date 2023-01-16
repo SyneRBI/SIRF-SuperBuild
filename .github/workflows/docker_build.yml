@@ -44,7 +44,7 @@ jobs:
           ls -l
           
       - name: Upload artifact of the core image.
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: sirf-core
           path: core.tar.gz
@@ -74,7 +74,7 @@ jobs:
           ls -l
           
       - name: Upload artifact of the core image.
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: sirf-core-gpu
           path: core-gpu.tar.gz
@@ -93,7 +93,7 @@ jobs:
          .github/workflows/install_docker.sh
           
       - name: Download artifact of core image
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: sirf-core
           path: /tmp
@@ -125,7 +125,7 @@ jobs:
           docker save  synerbi/sirf:${{ matrix.tag }} | gzip > ${{ matrix.tag }}.tar.gz
           
       - name: Upload artifact of image.
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: sirf-${{ matrix.tag }}
           path: ${{ matrix.tag }}.tar.gz
@@ -141,7 +141,7 @@ jobs:
            .github/workflows/install_docker.sh
 
         - name: Download artifact of core image
-          uses: actions/download-artifact@v2
+          uses: actions/download-artifact@v3
           with:
             name: sirf-core-gpu
             path: /tmp
@@ -169,7 +169,7 @@ jobs:
             docker save synerbi/sirf:service-gpu | gzip > service-gpu.tar.gz 
           
         - name: Upload artifact of image.
-          uses: actions/upload-artifact@v2
+          uses: actions/upload-artifact@v3.1.2
           with:
             name: sirf-service-gpu
             path: service-gpu.tar.gz
@@ -207,7 +207,7 @@ jobs:
           echo "compose_command=$compose_command" >> $GITHUB_ENV
           
       - name: Download artifact of image
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: sirf-${{ env.prereq_image_name }}
           path: /tmp
@@ -240,7 +240,7 @@ jobs:
           docker save synerbi/sirf:service | gzip > ${{ matrix.tag }}.tar.gz 
           
       - name: Upload artifact of image.
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: sirf-${{ matrix.tag }}
           path: ${{ matrix.tag }}.tar.gz
@@ -259,7 +259,7 @@ jobs:
          .github/workflows/install_docker.sh
           
       - name: Download artifact of image
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: sirf-${{ matrix.tag }}
           path: /tmp

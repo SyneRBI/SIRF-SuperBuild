@@ -1,0 +1,12 @@
+name: base
+channels:
+  - conda-forge
+  - intel
+  - ccpi
+  - defaults
+dependencies:
+  - jupyterlab
+  - jupyter
+  - ipywidgets
+  - widgetsnbextension
+  - nodejs
