@@ -29,15 +29,15 @@ if (APPLE) # really should be checking for CLang
     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_68_0.zip)
     set(Boost_MD5 f4096c4583947b0eb103c8539f1623a3)
 else()
-     set(Boost_VERSION 1.72.0)
+     set(Boost_VERSION 1.78.0)
      if (BUILD_GADGETRON)
-       set(Boost_REQUIRED_VERSION 1.65.1)
+       set(Boost_REQUIRED_VERSION 1.71.0)
      else()
        # Ubutnu 16.04 version should be fine
        set(Boost_REQUIRED_VERSION 1.58.0)
      endif()
-     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_72_0.zip)
-     set(Boost_MD5 93cf8511f2e9b4456e5178cb07fc829d)
+     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_78_0.zip)
+     set(Boost_MD5 e193e5089060ed6ce5145c8eb05e67e3)
 endif()
 
 ## Armadillo
@@ -140,7 +140,7 @@ set(DEFAULT_NiftyPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
 
 ## parallelproj
 set(DEFAULT_parallelproj_URL https://github.com/gschramm/parallelproj )
-set(DEFAULT_parallelproj_TAG v0.8)
+set(DEFAULT_parallelproj_TAG v1.2.13)
 
 ## SIRF-Contribs
 set(DEFAULT_SIRF-Contribs_URL https://github.com/SyneRBI/SIRF-Contribs )
@@ -209,11 +209,11 @@ if (DEVEL_BUILD)
 
 else()
   #set(DEFAULT_SIRF_TAG v3.3.0)
-  set (DEFAULT_SIRF_TAG 2ed708bb8c8dc4ac6e1b081a1f9800754621b5fd)
+  set (DEFAULT_SIRF_TAG f40e9d8cf1166eb001a7782a4082f94f67d9a8f4)
   
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG rel_5.0.2)
+  set(DEFAULT_STIR_TAG rel_5.1.0)
 
   # ismrmrd
   set(DEFAULT_ISMRMRD_TAG v1.7.0)

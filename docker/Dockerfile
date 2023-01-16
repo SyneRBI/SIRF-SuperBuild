@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=ubuntu:20.04
+ARG BASE_IMAGE=ubuntu:22.04
 FROM ${BASE_IMAGE} as base
 
 LABEL \
@@ -105,10 +105,10 @@ USER ${NB_USER}:${NB_GROUP}
 
 # Python (virtualenv or conda)
 COPY requirements.txt .
-COPY requirements_conda_forge.txt .
+COPY requirements.yml .
 COPY user_python-ubuntu.sh .
 RUN PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} PYTHON_INSTALL_DIR=${PYTHON_INSTALL_DIR} bash user_python-ubuntu.sh  && \
-    rm user_python-ubuntu.sh requirements.txt requirements_conda_forge.txt
+    rm user_python-ubuntu.sh requirements.txt requirements.yml
 
 
 # ccache
@@ -117,10 +117,12 @@ COPY devel/.ccache/ /opt/ccache/
 # give everyone write permisions
 RUN chmod -R go+w /opt/ccache
 
+
 # SIRF
 USER "${NB_USER}"
 
 RUN ccache -o cache_dir=/opt/ccache
+
 COPY user_sirf-ubuntu.sh .
 
 # SIRF-SuperBuild version
@@ -134,7 +136,7 @@ ARG BUILD_FLAGS="\
  -DCMAKE_BUILD_TYPE=Release\
  -DSTIR_ENABLE_OPENMP=ON -DUSE_SYSTEM_ACE=ON\
  -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON\
- -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DUSE_ITK=ON\
+ -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_ITK=ON\
  -DGadgetron_USE_CUDA=OFF\
  -DUSE_SYSTEM_SWIG=ON\
  -DUSE_NiftyPET=OFF\
@@ -163,9 +165,12 @@ ARG HOME="/home/${NB_USER}"
 USER "${NB_USER}"
 
 COPY requirements-service.txt .
+COPY requirements-service.yml .
+COPY requirements.yml .
 COPY user_service-ubuntu.sh .
-RUN bash user_service-ubuntu.sh
-RUN rm user_service-ubuntu.sh requirements-service.txt
+COPY install-sirf-exercises-dep.py .
+RUN PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} PYTHON_INSTALL_DIR=${PYTHON_INSTALL_DIR} bash user_service-ubuntu.sh
+RUN rm user_service-ubuntu.sh requirements-service.txt requirements-service.yml install-sirf-exercises-dep.py
 
 USER root
 COPY download_data.sh /usr/local/bin/
