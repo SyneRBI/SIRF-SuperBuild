@@ -18,73 +18,11 @@ stages:
 - name: docker
   if: NOT type = pull_request
 
-# Currently commented out as set with environment flags
-# Both clang and gcc can be tested. More is the better.
-#compiler:
-# - clang
-# - gcc
-
 # Compilation dependencies
 addons:
- apt:
-  sources: &addons_apt_sources
-  - ubuntu-toolchain-r-test
-  packages: &addons_apt_packages
-  - git-core
-  - build-essential
-  - g++-7
-  - libboost-all-dev
-  - libhdf5-serial-dev
-  - libfftw3-dev
-  - python3-dev
-  - python3-tk
-  - libopenblas-dev
-  - libatlas-base-dev
-  - liblapack-dev
-  - libxml2-dev
-  - libarmadillo-dev
-  - libgtest-dev
-  - libplplot-dev
-  - swig
-  - ccache
-  # not in whitelist
-  - libxslt-dev
-  - libace-dev
-  # - root-system-bin
-  # dependencies for ASTRA toolbox
-  - autotools-dev
-  - automake
-  - autogen
-  - autoconf
-  - libtool
-  - python3-olefile
 
-# Environment variables
-# Note: On trusty we need to build Armadillo and boost ourselves (the system versions are too old)
-# Note: On OSX we can't test SYSTEM_Boost=OFF due to excessive log size (https://github.com/CCPPETMR/SIRF-SuperBuild/issues/167)
-# Note: currently ACE is not building correctly, so ACE is not built on any configuration https://github.com/CCPPETMR/SIRF-SuperBuild/issues/#174
-# Note: on Trusty, g++-7 causes errors with the system ACE, so cannot use g++-7 or later https://github.com/CCPPETMR/SIRF-SuperBuild/issues/169
-# Note: altering the matrix here will cause re-building of caches,
-# so try to keep this concise to avoid need to update
-# Note: the `name:` key contains a resume of the parameters passed to cmake/docker
-#       + or - refer to the value of the parameter affecting the specific package is passed to cmake:
-#       i.e. -boost == -DUSE_SYSTEM_Boost=OFF, which means that Boost will be built.
-
-env:
- global:
- - BUILD_FLAGS="-DCMAKE_BUILD_TYPE=Release"
- - MAKEFLAGS="-j 2"  # too many threads may crash
 jobs:
  include:
- #- os: linux
- #  python: 3.6
- #  name: py36 +DEVEL -boost -hdf5 -fftw3 +ace +siemens_to_ismrmrd +itk +cil
- #  env: EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_HDF5=OFF -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_ACE=ON -DBUILD_si#emens_to_ismrmrd=ON  -DBUILD_CIL=ON -DUSE_ITK=OFF" PYMVER=3
- #- os: linux
- #  python: 3.6
- #  name: py36 +boost +itk +fftw3 +hdf5 +cil_lite
- #  env: EXTRA_BUILD_FLAGS="-DUSE_SYSTEM_Boost=ON -DUSE_ITK=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON  -DBUILD_CIL_LITE=ON" PYMVER=3
-
  # docker
  - os: linux
    stage: docker-core
@@ -97,14 +35,6 @@ jobs:
      packages:
    before_install: &docker_before_install
    - |
-      # for counting clones, excluding ours
-      if [[ -n "$GITHUB_API_TOKEN" ]]; then
-        git clone https://$GITHUB_API_TOKEN@github.com/ccp-petmr-codebot/github-stats --branch $TRAVIS_REPO_SLUG
-        # update with last fortnight's clones from GitHub API
-        source github-stats/setup.sh
-        # count unique clones, excluding travis, and print total
-        gh_stats_count -k uniques
-      fi
       # login required early to increase pull rate limits
       if [[ "$TRAVIS_SECURE_ENV_VARS" == true ]]; then
         echo "$DOCKER_PWD" | docker login -u $DOCKER_USR --password-stdin
@@ -121,11 +51,6 @@ jobs:
    - if [[ "$DOCKER_BUILD" == *"GPU"* ]]; then export DCC="$DCC -f $PWD/docker-compose.srv-gpu.yml"; fi
    # pull previous base image for its layer cache
    - $DCC pull core
-   # count the docker pull (prefix `d`)
-   - |
-      if [[ -n "$GITHUB_API_TOKEN" ]]; then
-        gh_stats_count -k uniques --decrement -pd
-      fi
    # rebuild base image (using above docker cache)
    - |
       if [[ "$DOCKER_BUILD" == *"CORE"* ]]; then ( set -ev
@@ -140,9 +65,6 @@ jobs:
           sudo chown -R $USER:$(id -g) ~/.ccache
           mv ~/.ccache devel/
         fi
-        # don't count the extra clone we're about to do
-        # TODO: Do we need this? Is docker a distinct cloner from travis?
-        # cloners_count_decrement
         $DCC build sirf
         # extract updated ccache
         # sudo rm -rf devel/.ccache/*
@@ -286,136 +208,3 @@ jobs:
    install: *docker_install
    script: *docker_script
    after_success: *docker_after_success
-
-before_install:
-# Set C and C++ compiler etc using trick from
-# https://docs.travis-ci.com/user/languages/cpp/#c11c11-and-beyond-and-toolchain-versioning
-- eval "${MATRIX_EVAL}"
-- export CC="${CC:-gcc}"
-- export CXX="${CXX:-g++}"
-- $CC --version
-- $CXX --version
-- mkdir -p ~/.local/bin
-- pushd ~/.local/bin
-# Note: use ( set -ev; ... ) to echo commands and exit immediately on failure
-# in compounds statements (note that export/cd etc won't persist).
-- |
-   if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-     # Update and upgrade brew
-     brew update
-     brew upgrade
-
-     BUILD_FLAGS="$BUILD_FLAGS -DSHARED_LIBS_ABS_PATH=ON"
-     brew install openblas
-     # Let CMake find this blas version (note: we use /usr/local/opt/openblas symlink to get the most recent brew version)
-     EXTRA_BUILD_FLAGS="$EXTRA_BUILD_FLAGS -DCBLAS_INCLUDE_DIR=/usr/local/opt/openblas/include -DCBLAS_LIBRARY=/usr/local/opt/openblas/lib/libblas.dylib"
-     PY_EXE=$(which python${PYMVER})
-     if [[ $EXTRA_BUILD_FLAGS == *"-DUSE_VTK=ON"* ]] && [[ $EXTRA_BUILD_FLAGS == *"-DUSE_SYSTEM_VTK=ON"* ]]; then
-       brew install vtk
-     fi
-     BUILD_FLAGS="$BUILD_FLAGS -DPYTHON_EXECUTABLE=$PY_EXE"
-     ( set -ev
-       # boost is already installed but 1.65 doesn't work so update
-       brew reinstall boost
-       # we currently need boost-python
-       # brew install boost-python
-       brew install ace
-       brew install swig
-       brew install ccache
-       if [[ $EXTRA_BUILD_FLAGS == *"SYSTEM_FFTW3=ON"* ]]; then
-           brew install fftw
-       else
-           echo "Not installing FFTW as we are building it"
-       fi
-       # need curl to get pip and more recent cmake
-       brew install curl
-       #brew install cmake # already present
-       # alternative: get our own
-       #curl -L -O https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Darwin-x86_64.tar.gz
-       #tar xzf cmake-*.tar.gz
-       #mv cmake-*/CMake.app/Contents/* cmake
-       #export PATH="$PWD/cmake/bin:$PATH"
-     )
-   elif [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-     PY_EXE=python$PYMVER
-     if [[ -z "$DOCKER_BUILD" ]]; then
-       curl -o cmake.tgz -L https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.tar.gz
-       tar xzf cmake.tgz && rm cmake.tgz
-       ln -s cmake-*x86_64 cmake
-       export PATH="$PWD/cmake/bin:$PATH"
-     fi
-   fi
-- echo "Using Python executable $PY_EXE"
-- $PY_EXE --version
-# get pip
-- curl -0 https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-- $PY_EXE get-pip.py --user
-# setuptools may be out of date on osx
-- $PY_EXE -m pip install --user -U pip setuptools wheel
-- $PY_EXE -m pip --version
-# ensure python bin dir exists (and coverage dependencies installed)
-- $PY_EXE -m pip install --user -U nose codecov coveralls requests
-# additional python deps
-- $PY_EXE -m pip install --user -U Cython  # first install Cython separately
-- $PY_EXE -m pip install --user -U numpy deprecation nibabel
-- |
-   if [[ "$EXTRA_BUILD_FLAGS" == *"-DBUILD_CIL=ON"* || "$EXTRA_BUILD_FLAGS" == *"-DBUILD_CIL_LITE=ON"* ]]; then
-     $PY_EXE -m pip install --user -U scipy h5py Pillow wget
-   fi
-# for counting clones, excluding ours
-- |
-   if [[ -n "$GITHUB_API_TOKEN" ]]; then
-     git clone https://$GITHUB_API_TOKEN@github.com/ccp-petmr-codebot/github-stats --branch $TRAVIS_REPO_SLUG
-     # update with last fortnight's clones from GitHub API
-     source github-stats/setup.sh
-     # count unique clones, excluding travis, and print total
-     gh_stats_count -k uniques
-   fi
-- $PY_EXE -m pip freeze
-# ccache compiler override
-- ln -s "$(which ccache)" g++
-- ln -s "$(which ccache)" g++-7
-- ln -s "$(which ccache)" gcc
-- ln -s "$(which ccache)" gcc-7
-- export PATH="$PWD:$PATH"
-- popd
-# N.B.: don't put into build matrix to allow caching.
-- BUILD_FLAGS="$BUILD_FLAGS"
-- BUILD_FLAGS="$BUILD_FLAGS -DCMAKE_C_COMPILER='$(which $CC)' -DCMAKE_CXX_COMPILER='$(which $CXX)'"
-- cmake --version
-- echo "cmake flags $BUILD_FLAGS $EXTRA_BUILD_FLAGS"
-
-install:
-- $PY_EXE -m pip install --user --only-binary=numpy,scipy,matplotlib numpy scipy matplotlib
-- cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS .
-# Job may timeout (>50min) if no ccache, otherwise should be <1min:
-- make
-- |
-   if [[ -f INSTALL/share/gadgetron/config/gadgetron.xml.example ]]; then
-     mv INSTALL/share/gadgetron/config/gadgetron.xml.example INSTALL/share/gadgetron/config/gadgetron.xml
-   fi
-- source $PWD/INSTALL/bin/env_ccppetmr.sh
-
-script:
-- ./INSTALL/bin/gadgetron >& gadgetron.log&
-# print for debugging
-- cat builds/SIRF/build/CMakeCache.txt
-- |
-   travis_wait 20 ctest --output-on-failure; test_fail=$?
-   # echo "----------- Killing gadgetron server"
-   # killall gadgetron
-   if [[ $test_fail -ne 0 ]]; then
-     #echo "----------- Test output"
-     # cat builds/SIRF/build/Testing/Temporary/LastTest.log
-     echo "----------- Last 70 lines of gadgetron.log"
-     tail -n 70 gadgetron.log
-     travis_terminate $test_fail
-   fi
-
-# post to slack.com
-notifications:
- slack:
-  rooms:
-   - secure: "ZSBIUaNNQ7925etI0EtB+S5DnU++htNPUQYr78Lv8chhpx/2wTjFCxc7nVLhUHuqAblTnL2UkJj/f6rPecd+StgUBZcZboEIxYxju53xvi3pW7IdkzSNPYcFMQvyRpk562d9VUzK+iaOxdQaXyqEttCHTJNP4P2AcSILuRZPiNVk673lFXq8s8Hkhui64WzGkA5rPh1H6DObDoynME4MyuBRjygslCKBn5DiejTq2xhKdyIe6q+Nd1Vd456shcUNCgnbsrpq6Ik1tIUDBs+lCYvBN/ST6HfisL1cUNOqM0rVhNJBVNWVMOpGwkoKMfN5ZFl90HXiB9MGI7WDU7tzvdvFN/nsjfXBPAEYIvdHx6RkIIn2GeoAO9S9UZiyUNThjxs9jg7TJdLPaow1PIbLRrNi4WXpE4PYYzc7krGsZgIlhBx4SfMOXT7PLUevGOumRVetyddbVRIhJ6v92h29joQuwSKim2bVsOyznbTyLqn0ysIkqTD7aLov09Sh7Ni8VzVN/sWtlinzk1jIzpL4NxEzWKHL58q2lddyE6kD7FZCxw7dIdIMy3V84zt9oRzGNXETgzi5ClHXkHyYjoOGBbySG4v3Letlai0m0vhFvPGHhk8KZzyR9OUPJ6XZcmIdr5QJb4Nlc1b8r4INn7BNOiRAo4GSk1NJKze1gjdV6Ig="
-  on_success: change
-  on_failure: always
