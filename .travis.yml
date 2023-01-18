@@ -9,7 +9,7 @@ branches:
 os:
 - linux
 language: cpp
-dist: bionic  # Ubuntu 18.04 LTS
+dist: focal  # Ubuntu 20.04 LTS
 cache:  # cache C/C++/pip (shared between builds)
 - ccache
 - pip
