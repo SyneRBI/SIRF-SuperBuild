@@ -158,21 +158,24 @@ jobs:
             # docker-compose -f docker/docker-compose.yml -f docker/docker-compose.srv-gpu.yml pull core 
             docker-compose -f docker/docker-compose.yml -f docker/docker-compose.srv-gpu.yml build --pull sirf
             
-        - name : docker save image
-          # https://docs.docker.com/engine/reference/commandline/save/
-          shell: bash -l {0}
-          run: |
-            # first we must delete image that is no longer needed, to save space:
-            docker rmi synerbi/sirf:core-gpu
-            yes | docker system prune
-            docker image ls
-            docker save synerbi/sirf:service-gpu | gzip > service-gpu.tar.gz 
+        # Temporarily disabling the save and upload of the image as it is too big.
+        # see https://github.com/SyneRBI/SIRF-SuperBuild/issues/770
+         
+        # - name : docker save image
+        #   # https://docs.docker.com/engine/reference/commandline/save/
+        #   shell: bash -l {0}
+        #   run: |
+        #     # first we must delete image that is no longer needed, to save space:
+        #     docker rmi synerbi/sirf:core-gpu
+        #     yes | docker system prune
+        #     docker image ls
+        #     docker save synerbi/sirf:service-gpu | gzip > service-gpu.tar.gz 
           
-        - name: Upload artifact of image.
-          uses: actions/upload-artifact@v3.1.2
-          with:
-            name: sirf-service-gpu
-            path: service-gpu.tar.gz
+        # - name: Upload artifact of image.
+        #   uses: actions/upload-artifact@v3.1.2
+        #   with:
+        #     name: sirf-service-gpu
+        #     path: service-gpu.tar.gz
             
         
             
