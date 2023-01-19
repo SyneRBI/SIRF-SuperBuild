@@ -160,7 +160,7 @@ jobs:
             
         # Temporarily disabling the save and upload of the image as it is too big.
         # see https://github.com/SyneRBI/SIRF-SuperBuild/issues/770
-         
+
         # - name : docker save image
         #   # https://docs.docker.com/engine/reference/commandline/save/
         #   shell: bash -l {0}
@@ -253,7 +253,9 @@ jobs:
     needs: [build-service-images, build-service-gpu]
     strategy:
       matrix:
-        tag: ['core', 'latest', 'devel', 'service', 'devel-service', 'core-gpu', 'service-gpu']
+        # core-gpu and service-gpu are temporarily disabled
+        # tag: ['core', 'latest', 'devel', 'service', 'devel-service', 'core-gpu', 'service-gpu']
+        tag: ['core', 'latest', 'devel', 'service', 'devel-service']
     steps:
       - uses: actions/checkout@v3
       - name: Install docker and pre-reqs
