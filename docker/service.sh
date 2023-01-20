@@ -51,7 +51,7 @@ fi
 
 echo "start jupyter"
 if [ ! -f ~/.jupyter/jupyter_notebook_config.py ]; then
-  jupyter notebook --generate-config
+  jupyter lab --generate-config
   echo "c.NotebookApp.password = u'sha1:cbf03843d2bb:8729d2fbec60cacf6485758752789cd9989e756c'" \
   >> ~/.jupyter/jupyter_notebook_config.py
 fi

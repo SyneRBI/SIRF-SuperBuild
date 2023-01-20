@@ -52,7 +52,7 @@ SIRF-Exercises uses jupyter notebooks. The SIRF VM contains a jupyter notebook s
 
 ```
 gadgetron
-jupyter notebook
+jupyter lab
 ```
 
 The jupyter notebook will be accessible with a browser on the host machine pointing to `http://localhost:8888` The password is `virtual`.
