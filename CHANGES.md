@@ -1,5 +1,6 @@
 # ChangeLog
 ## v3.4.0
+- Install python-is-python3 deb package in docker/VM.
 - Removed CIL-ASTRA as it has been merged into CIL code base.
 - Added python-opencv to docker requirements.txt
 - docker images updates
