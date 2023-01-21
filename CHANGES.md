@@ -6,13 +6,17 @@
   - Ubuntu: 22.04
   - added requirements.yml and requirements-service.yml to handle dependencies for conda python
   - updates to use mamba
-  - added 
+  - use jupyterlab as opposed to notebook in the "service" images
+  - CMake: v3.25.1
+- VM updates
+  - Ubuntu: 22.04
+  - update configuration and documentation to use jupyterlab as opposed to the notebook server
+  - CMake: 3.21.3
 - updated versions:
   - SIRF: f40e9d8cf1166eb001a7782a4082f94f67d9a8f4
   - CIL: a6062410028c9872c5b355be40b96ed1497fed2a > 22.1.0
   - GTest: 1.12.1
   - glog: 0.6.0
-  - CMake: v3.25.1
   - parallelproj: v1.2.13
   - STIR: rel_5.1.0
   - Boost: 1.78.0
