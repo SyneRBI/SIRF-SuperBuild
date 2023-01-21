@@ -32,6 +32,5 @@ location=`dirname $0`
 #configure jupyter notebook
 "$location/configure_jupyter.sh"
 
-# zero fill the disk trick to compact the image
-"$location/zero_fill.sh"
+echo "Before exporting the VM, please run either $location/zero_fill.sh or $location/clean_before_VM_export.sh."
 
