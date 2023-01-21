@@ -51,12 +51,18 @@ The VM also contains the [SIRF exercises](https://github.com/SyneRBI/SIRF-Exerci
 SIRF-Exercises uses jupyter notebooks. The SIRF VM contains a jupyter notebook server. To start you need to issue the following two commands in two separate terminal windows.
 
 ```
-gadgetron
-jupyter lab
+gadgetron&
+jupyter lab --no-browser
 ```
 
-The jupyter notebook will be accessible with a browser on the host machine pointing to `http://localhost:8888` The password is `virtual`.
+The jupyter notebook will be accessible with a browser on the host machine pointing to `http://localhost:8888` The password is `virtual` (although you might not have to enter it).
 More info is available in the links above.
+
+Note that you can choose to install a browser inside the VM and access the server directly
+from there. In this case, you will have to do for instance
+```
+jupyter lab --browser firefox
+```
 
 ## Basic Python info
 
