@@ -208,8 +208,7 @@ if (DEVEL_BUILD)
   
 
 else()
-  #set(DEFAULT_SIRF_TAG v3.3.0)
-  set (DEFAULT_SIRF_TAG f40e9d8cf1166eb001a7782a4082f94f67d9a8f4)
+  set(DEFAULT_SIRF_TAG v3.4.0)
   
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )

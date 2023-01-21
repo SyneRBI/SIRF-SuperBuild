@@ -1,7 +1,7 @@
 # ChangeLog
 ## v3.4.0
 - Removed CIL-ASTRA as it has been merged into CIL code base.
-- Added python-opencv to docker requirements.txt
+- Added python-opencv , pytest, pytest-cov and coverage to docker requirements.txt
 - docker images updates
   - Ubuntu: 22.04
   - added requirements.yml and requirements-service.yml to handle dependencies for conda python
@@ -12,8 +12,10 @@
   - Ubuntu: 22.04
   - update configuration and documentation to use jupyterlab as opposed to the notebook server
   - CMake: 3.21.3
+  - fixes documentation
+  - use the VMSVGA graphics controller
 - updated versions:
-  - SIRF: f40e9d8cf1166eb001a7782a4082f94f67d9a8f4
+  - SIRF: v3.4.0
   - CIL: a6062410028c9872c5b355be40b96ed1497fed2a > 22.1.0
   - GTest: 1.12.1
   - glog: 0.6.0
