@@ -14,6 +14,7 @@
   - CMake: 3.21.3
   - fixes documentation
   - use the VMSVGA graphics controller
+  - use environment variables in Vagrantfile for easier building
 - updated versions:
   - SIRF: v3.4.0
   - CIL: a6062410028c9872c5b355be40b96ed1497fed2a > 22.1.0
