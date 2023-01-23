@@ -51,12 +51,6 @@ docker build --build-arg BASE_CONTAINER=paskino/jupyter:scipy-notebook-cuda11-cu
 Finally we have the base `datascience-notebook` with the `nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04` base image.
 
 
-Possible fix for plotting.
-```
-conda update -c conda-forge jupyterlab ipympl
-%matplotlib widget
-```
-
 ### Start building SIRF
 
 Build the `sirf` target of the SIRF Dockerfile with the `nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04` base image.
