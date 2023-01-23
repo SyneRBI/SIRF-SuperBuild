@@ -63,7 +63,7 @@ Build the `sirf` target of the SIRF Dockerfile with the `nvidia/cuda:11.7.1-cudn
 
 ```
 git clone git@github.com:SyneRBI/SIRF-SuperBuild.git
-cd SIRF-SuperBuild/docker
+cd SIRF-SuperBuild/
 
 # build standard SIRF docker
 docker build --build-arg BASE_IMAGE=nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04 --build-arg PYTHON_INSTALL_DIR=/opt/conda --target sirf .
