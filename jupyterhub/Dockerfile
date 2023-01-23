@@ -5,38 +5,33 @@ FROM ${BASE_IMAGE} as base
 # Make sure the image has the same libraries as the standard SIRF docker image
 # Add to the docker image the appropriate stuff
 user root
-COPY build_essential-ubuntu.sh .
+COPY docker/build_essential-ubuntu.sh .
 RUN bash build_essential-ubuntu.sh
 RUN rm build_essential-ubuntu.sh
 
 # Python (build)
-COPY build_python-ubuntu.sh .
+COPY docker/build_python-ubuntu.sh .
 RUN bash build_python-ubuntu.sh
 RUN rm build_python-ubuntu.sh
 
 # Gadgetron
-COPY build_gadgetron-ubuntu.sh .
+COPY docker/build_gadgetron-ubuntu.sh .
 RUN bash build_gadgetron-ubuntu.sh
 RUN rm build_gadgetron-ubuntu.sh
 
 # SIRF external deps
-COPY build_system-ubuntu.sh .
+COPY docker/build_system-ubuntu.sh .
 RUN bash build_system-ubuntu.sh
 RUN rm build_system-ubuntu.sh 
 
-# copy tini in /usr/bin because I installed tini in / rather than in the path
-# in the base-notebook, see
-# https://github.com/paskino/docker-stacks/blob/8d4c9922710debc22e229dbcdc91f8fcd613db52/base-notebook/Dockerfile#L22-L27
-RUN cp /tini /usr/bin
-RUN chmod +x /usr/bin/tini
 
 # install requirements skipping CIL ones that are taken care of by conda
-COPY requirements_conda_forge.txt .
-RUN conda install -c conda-forge -c intel -c astra-toolbox -c ccpi --file requirements_conda_forge.txt
-RUN python -m pip install git+https://github.com/ismrmrd/ismrmrd-python-tools.git@master#egg=ismrmrd-python-tools
+# COPY requirements_conda_forge.txt .
+# RUN conda install -c conda-forge -c intel -c astra-toolbox -c ccpi --file requirements_conda_forge.txt
 
-RUN python -m pip install torch==1.7.1 scikit-image
-RUN python -m pip install brainweb
+USER root
+COPY jupyterhub/requirements.yml .
+RUN mamba env update -n base -f requirements.yml
 
 # https://docs.docker.com/develop/develop-images/multistage-build/#use-an-external-image-as-a-stage
 # not documented in https://docs.docker.com/engine/reference/builder/#copy

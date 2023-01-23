@@ -54,6 +54,9 @@
   - fixes documentation
   - use the VMSVGA graphics controller
   - use environment variables in Vagrantfile for easier building
+- jupyterhub updates:
+  - Ubuntu: 22.04 and nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04
+  - added requirements.yml for jupyterhub
 - updated versions:
   - SIRF: v3.4.0
   - CIL: a6062410028c9872c5b355be40b96ed1497fed2a > 22.1.0
