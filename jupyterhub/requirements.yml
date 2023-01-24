@@ -3,11 +3,15 @@ channels:
   - conda-forge
   - intel
   - ccpi
+  - astra-toolbox
   - defaults
 dependencies:
   - scikit-image
   - pytorch
   - torchvision
+  - cil
+  - astra-toolbox
+  - tigre
   - pip:
     - brainweb  # CIL
     - git+https://github.com/ismrmrd/ismrmrd-python-tools.git@master#egg=ismrmrd-python-tools
