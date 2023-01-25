@@ -25,9 +25,16 @@ RUN bash build_system-ubuntu.sh
 RUN rm build_system-ubuntu.sh 
 
 
-# install requirements skipping CIL ones that are taken care of by conda
-# COPY requirements_conda_forge.txt .
-# RUN conda install -c conda-forge -c intel -c astra-toolbox -c ccpi --file requirements_conda_forge.txt
+# install requirements from docker/requirements.yml and additional requirements from jupyterhub/requirements.yml
+# and requirements for SIRF exercises
+ARG PYTHON_INSTALL_DIR="/opt/conda"
+ARG PYTHON_EXECUTABLE="miniconda"
+COPY docker/user_service-ubuntu.sh .
+COPY docker/install-sirf-exercises-dep.py .
+RUN PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} PYTHON_INSTALL_DIR=${PYTHON_INSTALL_DIR} bash user_service-ubuntu.sh
+RUN rm user_service-ubuntu.sh install-sirf-exercises-dep.py
+# remove the SIRF-Exercises and CIL-Demos that get installed by user_service-ubuntu.sh
+RUN rm -rf /opt/SIRF-Exercises; rm -rf /opt/CIL-Demos
 
 USER root
 COPY jupyterhub/requirements.yml .

@@ -86,7 +86,7 @@ To install SIRF we can literally _copy_ the SIRF INSTALL directory to the `datas
 
 ```
 cd SIRF-SuperBuild
-docker build --build-arg BASE_IMAGE=paskino/jupyter:datascience-notebook-cuda11-cudnn8-devel-ubuntu22.04 -f jupyterhub/Dockerfile -t paskino/sirfcil:service-gpu .
+docker build --build-arg BASE_IMAGE=paskino/jupyter:datascience-notebook-cuda11-cudnn8-devel-ubuntu22.04 -f jupyterhub/Dockerfile -t harbor.stfc.ac.uk/imaging-tomography/test:sirfcil-jupyterhub-gpu .
 ```
 
 ### Testing
