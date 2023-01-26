@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=ubuntu:18.04
+ARG BASE_IMAGE=nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04
 # paskino/jupyter   datascience-notebook-cuda11
 FROM ${BASE_IMAGE} as base
 
