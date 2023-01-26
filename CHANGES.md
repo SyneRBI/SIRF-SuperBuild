@@ -1,9 +1,9 @@
 # ChangeLog
 ## v3.4.0
 - Removed CIL-ASTRA as it has been merged into CIL code base.
-- Added python-opencv , pytest, pytest-cov and coverage to docker requirements.txt
 - docker images updates
   - Ubuntu: 22.04
+  - added dependencies to python-opencv , pytest, pytest-cov and coverage
   - added requirements.yml and requirements-service.yml to handle dependencies for conda python
   - updates to use mamba
   - use jupyterlab as opposed to notebook in the "service" images
