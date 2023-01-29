@@ -1,4 +1,10 @@
 # ChangeLog
+
+## vx.x.x
+- docker image updates
+   - introduce `REMOVE_BUILD_FILES` variable. If set to 1 (which is the default),
+     most build files will be removed in the docker image.
+
 ## v3.4.0
 - Removed CIL-ASTRA as it has been merged into CIL code base.
 - Added python-opencv , pytest, pytest-cov and coverage to docker requirements.txt
