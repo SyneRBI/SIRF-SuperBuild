@@ -114,11 +114,6 @@ jobs:
           # $compose_command pull core
           $compose_command build --pull sirf
           echo "compose_command=$compose_command" >> $GITHUB_ENV
-
-      - name: Run docker container with tests
-        shell: bash -l {0}
-        run: |
-          ${{ env.compose_command }} run --rm -u jovyan --entrypoint /bin/bash sirf --login -c /devel/test.sh 1
           
       - name : docker save image
         # https://docs.docker.com/engine/reference/commandline/save/

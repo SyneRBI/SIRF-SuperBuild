@@ -129,8 +129,10 @@ COPY user_sirf-ubuntu.sh .
 ARG SIRF_SB_URL="https://github.com/SyneRBI/SIRF-SuperBuild"
 ARG SIRF_SB_TAG="master"
 
-# check if we want to remove the build files
+# set if we want to remove the build files
 ARG REMOVE_BUILD_FILES=1
+# set if we want to run the tests during build
+ARG RUN_CTEST=1
 
 # speeding up the cmake build
 # (implementation note: changing this in your environment will invalidate the docker cache sadly)

@@ -162,8 +162,12 @@ files and notebooks in `/devel` will be persistent between sessions and
 even docker-image upgrades. You should therefore remove the contents of
 `SIRF-SuperBuild/docker/devel` if you want to really start afresh.
 
+### Build settings
+
 By default, most build files will be removed in the docker image. If you are a developer, you can set
 the environment variable `REMOVE_BUILD_FILES` to 1 before building the image to prevent this.
+
+When building a new configuration, you would want to run  `ctest`. However, if you have set `REMOVE_BUILD_FILES=1`, this is not possible after building the docker image, as the build files will not be present. Therefore, the CTests are normally run while building the docker image. You can switch this off by setting `RUN_CTEST=0` before building the image.
 
 ### Creating a container providing a Linux *CLI* with SIRF
 The default "CLI" images provide an Ubuntu environment with the SuperBuild built (see [Tags](#tags)) as a convenient environment.

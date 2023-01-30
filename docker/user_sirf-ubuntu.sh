@@ -14,6 +14,8 @@ INSTALL_DIR="${1:-/opt}"
 : ${NUM_PARALLEL_BUILDS:=2}
 # set default for cleaning up
 : ${REMOVE_BUILD_FILES:=0}
+# set default for running ctest during the build
+: ${RUN_CTEST:=0}
 
 git clone "$SIRF_SB_URL" --recursive "$INSTALL_DIR"/SIRF-SuperBuild
 cd $INSTALL_DIR/SIRF-SuperBuild
@@ -27,15 +29,24 @@ echo "COMPILER_FLAGS: $COMPILER_FLAGS"
 echo "BUILD+EXTRA FLAGS: $BUILD_FLAGS $EXTRA_BUILD_FLAGS"
 
 cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS $COMPILER_FLAGS .
+# save installation location for below
+CMAKE_INSTALL_PREFIX="${INSTALL_DIR}/SIRF-SuperBuild/INSTALL"
 
 cmake --build . -j ${NUM_PARALLEL_BUILDS}
 
-if [  "$REMOVE_BUILD_FILES" = 1 ]; then
+if [ "$RUN_CTEST" = 1 ]; then
+    source "$CMAKE_INSTALL_PREFIX"/bin/env_sirf.sh
+    # start gadgetron
+    [ -f "$CMAKE_INSTALL_PREFIX"/bin/gadgetron ] && "$CMAKE_INSTALL_PREFIX"/bin/gadgetron >& gadgetron.log&
+    ctest --output-on-failure
+    [ -n "$(pidof gadgetron)" ] && kill -n 15 $(pidof gadgetron)
+fi
+
+if [ "$REMOVE_BUILD_FILES" = 1 ]; then
     echo  "Removing most build files"
-    rm -rf builds
+    rm -rf builds gadgetron.log
     for s in sources/*/.git; do
         cd $s/..
-        pwd
         git clean -fdx
         cd ../..
     done

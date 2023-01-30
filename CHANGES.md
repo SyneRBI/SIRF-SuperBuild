@@ -4,6 +4,8 @@
 - docker image updates
    - introduce `REMOVE_BUILD_FILES` variable. If set to 1 (which is the default),
      most build files will be removed in the docker image.
+   - introduce `RUN_CTESTS` variable. If set to 1 (which is the default),
+     the CTests will be run while building the image.
 
 ## v3.4.0
 - Removed CIL-ASTRA as it has been merged into CIL code base.
