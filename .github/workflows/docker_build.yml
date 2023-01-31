@@ -120,6 +120,9 @@ jobs:
         # https://docs.docker.com/engine/reference/commandline/save/
         shell: bash -l {0}
         run: |
+          echo "info on layers and their sizes from docker history:"
+          sirf_image=`docker image ls | grep ${{ matrix.tag }} | awk '/sirf/ { print $3}'`
+          docker history "$sirf_image"
           docker save  synerbi/sirf:${{ matrix.tag }} | gzip > ${{ matrix.tag }}.tar.gz
           
       - name: Upload artifact of image.
