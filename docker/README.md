@@ -122,7 +122,7 @@ A brief list of everything important to know for a basic working knowledge of do
 - *Base image*: the starting point for building a Docker image
     + analogous to a clean OS (in this case `ubuntu:20.04`)
 - *Layer*: a single build step
-    + usually represented by a single line in a `Dockerfile` (e.g. `apt-get install cmake`)
+    + usually represented by a single `RUN` or `COPY` line in a `Dockerfile` (e.g. `RUN apt-get install cmake`)
 - *Image*: a sequence of *layers* (applied on top of a *base image*)
     + analogous to a clean OS with `SIRF` installed (in this case *tagged* `synerbi/sirf`)
 - *Container*: a sandboxed workspace derived from an *image*
@@ -161,13 +161,6 @@ When using a `service*` image, the container will copy
 files and notebooks in `/devel` will be persistent between sessions and
 even docker-image upgrades. You should therefore remove the contents of
 `SIRF-SuperBuild/docker/devel` if you want to really start afresh.
-
-### Build settings
-
-By default, most build files will be removed in the docker image. If you are a developer, you can set
-the environment variable `REMOVE_BUILD_FILES` to 1 before building the image to prevent this.
-
-When building a new configuration, you would want to run  `ctest`. However, if you have set `REMOVE_BUILD_FILES=1`, this is not possible after building the docker image, as the build files will not be present. Therefore, the CTests are normally run while building the docker image. You can switch this off by setting `RUN_CTEST=0` before building the image.
 
 ### Creating a container providing a Linux *CLI* with SIRF
 The default "CLI" images provide an Ubuntu environment with the SuperBuild built (see [Tags](#tags)) as a convenient environment.
@@ -319,9 +312,10 @@ docker rmi <IMAGEID>
 
 ## Notes
 
-- Tests of SIRF and other installed packages can be run as follows:
+- Since SIRF 3.5, by default the build files are removed on the docker image. This can be changed by [setting an environment variable](./DocForDevelopers.md#Useful-environment-variables).
+If you have built the image while keeping all build files (or re-build them in an existing container), tests of SIRF and other installed packages can be run as follows:
 ```bash
-(py2) sirf:~$ sudo -Hu jovyan bash --login -c /devel/test.sh
+sudo -Hu jovyan bash --login -c /devel/test.sh
 ```
 - Currently all `compose` files call the container `sirf`. You could edit the `.yml` file if you
 want to run different versions.

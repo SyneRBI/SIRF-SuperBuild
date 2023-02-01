@@ -13,9 +13,9 @@ INSTALL_DIR="${1:-/opt}"
 # set default number of parallel builds
 : ${NUM_PARALLEL_BUILDS:=2}
 # set default for cleaning up
-: ${REMOVE_BUILD_FILES:=0}
+: ${REMOVE_BUILD_FILES:=1}
 # set default for running ctest during the build
-: ${RUN_CTEST:=0}
+: ${RUN_CTEST:=1}
 
 git clone "$SIRF_SB_URL" --recursive "$INSTALL_DIR"/SIRF-SuperBuild
 cd $INSTALL_DIR/SIRF-SuperBuild

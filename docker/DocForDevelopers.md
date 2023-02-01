@@ -15,10 +15,17 @@ export NUM_PARALLEL_BUILDS=9
 ```
 This will be passed to `cmake --build -j`.
 
+By default, most build files will be removed while building the docker image to save some space. If you are a developer, you can set
+the environment variable `REMOVE_BUILD_FILES` to 0 before building the image to prevent this.
+
+By default, the CTests are normally run while building the docker image. Note that this takes some time. You can switch this off by setting the environment variable `RUN_CTEST=0` before building the image.
+Note however that if you have set `REMOVE_BUILD_FILES=1`, you cannot run the CTests on an existing image (unless you rebuild from source of course).
+
 Of course, if you are using `bash`, you can specify any of these for a specific run, e.g.
 ```
 NUM_PARALLEL_BUILDS=9 ./sirf-compose build sirf
 ```
+
 
 ## `ccache`
 
