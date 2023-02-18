@@ -79,7 +79,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   else()
     # if SETUP_PY one can launch the conda build.sh script setting 
     # the appropriate variables.
-    message(FATAL_ERROR "Only PYTHONPATH install method is currently supported")
+    message(FATAL_ERROR "Only PYTHONPATH install method is currently supported. Got ${PYTHON_STRATEGY}")
   endif()
 
 

@@ -23,6 +23,6 @@ This will enable you to run SIRF MR demos on your computer.
 A [jupyter notebook](https://jupyter.org/) server is installed in the VM it can be started as:
 
 1. open a terminal in the VM
-2. type `jupyter notebook`
+2. type `jupyter lab`
 3. in the host, open a browser and point to `http://127.0.0.1:8888`
 4. (optional) you may need to start Gadgetron, as above

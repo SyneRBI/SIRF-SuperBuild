@@ -10,6 +10,8 @@ on:
     - 'jupyterhub/**'
     - 'VirtualBox/**'
     - '.github/workflows/*docker*'
+    - 'CITATION.cff'
+    - '.mailmap'
     
   pull_request:
     branches: [ master ]

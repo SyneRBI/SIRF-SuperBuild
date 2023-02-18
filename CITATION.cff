@@ -25,10 +25,18 @@ authors:
     family-names: Brown
     affiliation: University College London
     orcid: 'https://orcid.org/0000-0001-6989-9200'
+  - given-names: Laura
+    family-names: Murgatroyd
+    affiliation: UK Research & Innovation
+    orcid: 'https://orcid.org/0000-0002-3271-3625'
   - given-names: Ander
     family-names: Biguri
     orcid: 'https://orcid.org/0000-0002-2636-3032'
     affiliation: University College London
+  - given-names: David
+    family-names: Atkinson
+    affiliation: University College London
+    orcid: 'https://orcid.org/0000-0003-1124-6666'
   - given-names: Evgueni
     family-names: Ovtchinnikov
     orcid: 'https://orcid.org/0000-0002-9359-6514'
@@ -55,10 +63,6 @@ authors:
     family-names: Schramm
     affiliation: Katholieke Universiteit Leuven
     orcid: 'https://orcid.org/0000-0002-2251-3195'
-  - given-names: David
-    family-names: Atkinson
-    affiliation: University College London
-    orcid: 'https://orcid.org/0000-0003-1124-6666'
   - orcid: 'https://orcid.org/0000-0002-5514-199X'
     affiliation: University College London
     family-names: Thielemans

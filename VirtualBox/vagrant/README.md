@@ -14,6 +14,19 @@ vagrant plugin install vagrant-vbguest
 
 Make sure there is no other SIRF VM running (as it will mean vagrant aborts due to a port forwarding conflict)
 
+### Set environment variables used in the Vagrantfile
+We currently have the following:
+- `VB_CPUS` (defaults to 4): number of virtual CPUs used by the VM
+- `VB_RAM` (defaults to 6096): system RAM to be used by the VM
+- `VB_NAME` (defaults to "SIRF 3.4.0")
+- `UPDATE_ARGS` (defaults to "-j `nproc`"): any arguments to be passed to the `UPDATE.sh` script.
+
+For example in Windows Powershell:
+```ps
+$Env:UPDATE_ARGS="-t origin/master -j 4"
+```
+will make sure we use current `master` (as opposed to the latest release), with a parallel build of max 4 processes.
+
 ### Start the machine
 
 ```
