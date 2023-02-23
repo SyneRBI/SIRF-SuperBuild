@@ -25,6 +25,7 @@ apt-get install -yq --no-install-recommends \
   libgflags-dev          \
   libssl-dev             \
   libcurl4-openssl-dev   \
+  pkg-config             \
   golang
 
 # install GCC9 required by Gadgetron
