@@ -25,7 +25,6 @@
   - use the VMSVGA graphics controller
   - use environment variables in Vagrantfile for easier building
 - updated versions:
-  <!-- - SIRF: f40e9d8cf1166eb001a7782a4082f94f67d9a8f4 -->
   - Gadgetron: master
   - RocksDB: 6.26.0
   - JSON: 3.10.4
