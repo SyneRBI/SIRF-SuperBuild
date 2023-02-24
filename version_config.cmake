@@ -125,8 +125,8 @@ set(DEFAULT_ISMRMRD_TAG origin/master)
 #endif()
 
 ## Gadgetron
-set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
-set(DEFAULT_Gadgetron_TAG master)
+set(DEFAULT_Gadgetron_URL https://github.com/SyneRBI/gadgetron )
+set(DEFAULT_Gadgetron_TAG remove_build_warning)
 
 ## ASTRA
 set(DEFAULT_astra-toolbox_URL https://github.com/astra-toolbox/astra-toolbox )
