@@ -27,8 +27,13 @@ location=`dirname $0`
 
 # script to adjust gnome settings and other bits to be run only once 
 # after VM is created
+
+echo "Configuring GNOME"
 "$location/configure_gnome.sh"
 
-#configure jupyter notebook
+echo "configuring jupyter server"
 "$location/configure_jupyter.sh"
+
+echo "Done"
+echo "Before exporting the VM, please run either $location/zero_fill.sh or $location/clean_before_VM_export.sh."
 

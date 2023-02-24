@@ -363,6 +363,23 @@ Note that if you have python 2 and python 3 installed you may need to use `pip` 
 pip3 uninstall docker-compose
 pip3 install docker-compose 
 ```
+
+### Building problems related to gpg
+When building a new docker image, you could see errors such as
+```
+W: http://archive.ubuntu.com/ubuntu/dists/jammy/InRelease: The key(s) in the keyring /etc/apt/trusted.gpg.d/ubuntu-keyring-2012-cdimage.gpg are ignored as the file is not readable by user '_apt' executing apt-key.
+W: http://archive.ubuntu.com/ubuntu/dists/jammy/InRelease: The key(s) in the keyring /etc/apt/trusted.gpg.d/ubuntu-keyring-2018-archive.gpg are ignored as the file is not readable by user '_apt' executing apt-key.
+W: GPG error: http://archive.ubuntu.com/ubuntu jammy InRelease: The following signatures couldn't be verified because the public key is not available: NO_PUBKEY 871920D1991BC93C
+E: The repository 'http://archive.ubuntu.com/ubuntu jammy InRelease' is not signed.
+```
+or
+```
+E: Problem executing scripts DPkg::Post-Invoke 'rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb /var/cache/apt/*.bin || true'
+E: Sub-process returned an error code
+```
+This likely means that your docker version is too old. Try upgrading it.
+
+
 #### MacOS: Cannot connect to the Docker daemon
 ```
 % ./sirf-compose-server up -d sirf

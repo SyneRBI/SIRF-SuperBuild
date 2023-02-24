@@ -10,18 +10,32 @@
 - docker images updates
   - Ubuntu: 22.04
   - use requirements.yml for conda python
+- docker images updates
+  - Ubuntu: 22.04
+  - added dependencies to python-opencv , pytest, pytest-cov and coverage
+  - added requirements.yml and requirements-service.yml to handle dependencies for conda python
+  - updates to use mamba
+  - use jupyterlab as opposed to notebook in the "service" images
+  - CMake: v3.25.1
+- VM updates
+  - Ubuntu: 22.04
+  - update configuration and documentation to use jupyterlab as opposed to the notebook server
+  - CMake: 3.21.3
+  - fixes documentation
+  - use the VMSVGA graphics controller
+  - use environment variables in Vagrantfile for easier building
 - updated versions:
-  - SIRF: f40e9d8cf1166eb001a7782a4082f94f67d9a8f4
+  <!-- - SIRF: f40e9d8cf1166eb001a7782a4082f94f67d9a8f4 -->
   - Gadgetron: master
   - RocksDB: 6.26.0
   - JSON: 3.10.4
   - range-v3: 0.11.0
   - ACE : ACE_version_6.5.9 
   - siemens_to_ismrmrd: 8bb8b08f53ce73c2de9ba5f47f1532f96292d92b
+  - SIRF: v3.4.0
   - CIL: a6062410028c9872c5b355be40b96ed1497fed2a > 22.1.0
   - GTest: 1.12.1
   - glog: 0.6.0
-  - CMake: v3.25.1
   - parallelproj: v1.2.13
   - STIR: rel_5.1.0
   - Boost: 1.78.0

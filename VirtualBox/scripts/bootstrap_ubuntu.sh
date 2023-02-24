@@ -1,6 +1,7 @@
 #!/bin/bash    
 #
 # Script to create the SyneRBI VM. Do not use for your own system!
+# Any arguments will be passed through to UPDATE.sh -s
 #
 # Authors: Kris Thielemans, Evgueni Ovtchinnikov, Edoardo Pasca,
 # Casper da Costa-Luis
@@ -95,4 +96,4 @@ else
 fi
 
 chown -R $SIRFUSERNAME:users $userHOME
-sudo -u $SIRFUSERNAME -H bash $userHOME/devel/SIRF-SuperBuild/VirtualBox/scripts/UPDATE.sh -s
+sudo -u $SIRFUSERNAME -H bash $userHOME/devel/SIRF-SuperBuild/VirtualBox/scripts/UPDATE.sh -s $*
