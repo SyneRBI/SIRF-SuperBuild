@@ -246,9 +246,6 @@ else()
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
   set(DEFAULT_pet_rd_tools_TAG v2.0.1)
 
-  # range-v3
-  set(DEFAULT_range-v3_TAG origin/master)
-  
 endif()
 
 
