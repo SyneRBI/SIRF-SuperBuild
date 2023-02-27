@@ -67,13 +67,21 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         these variables do not exist in your CMake, create them manually. CBLAS_LIBRARY
         and CBLAS_INCLUDE_DIR should be FILEPATH and PATH, respectively, and live in
         /usr/local/Cellar/openblas/ if installed with \"brew install openblas\".")   
-      set(CBLAS_CMAKE_ARGS "-DCBLAS_INCLUDE_DIR:PATH=${CBLAS_INCLUDE_DIR} -DCBLAS_LIBRARY:FILEPATH=${CBLAS_LIBRARY}")
-    else()
-      set(CBLAS_CMAKE_ARGS "")
     endif()
-  else()
-    set(CBLAS_CMAKE_ARGS "-DCBLAS_INCLUDE_DIR:PATH=${CBLAS_INCLUDE_DIR} -DCBLAS_LIBRARY:FILEPATH=${CBLAS_LIBRARY}")
   endif()
+
+if (CBLAS_INCLUDE_DIR)
+  message(STATUS "Adding CBLAS_INCLUDE_DIR to Gadgetron_CMAKE_ARGS: ${CBLAS_INCLUDE_DIR}")
+  list (APPEND ${proj}_CMAKE_ARGS "-DCBLAS_INCLUDE_DIR:PATH=${CBLAS_INCLUDE_DIR}")
+else()
+  message(STATUS "CBLAS_INCLUDE_DIR will be found (probably) by Gadgetron")
+endif()
+if (CBLAS_LIBRARY)
+  message(STATUS "Adding CBLAS_LIBRARY to Gadgetron_CMAKE_ARGS: ${CBLAS_LIBRARY}")
+  list(APPEND ${proj}_CMAKE_ARGS "-DCBLAS_LIBRARY:FILEPATH=${CBLAS_LIBRARY}")
+else()
+    message(STATUS "CBLAS_LIBRARY will be found (probably) by Gadgetron")
+endif()
 
   #option(Gadgetron_BUILD_PYTHON_SUPPORT
   #  "Build Gadgetron Python gadgets (not required for SIRF)" OFF)
@@ -135,18 +143,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DBUILD_TESTING:BOOL=ON
       )
 
-  if (CBLAS_INCLUDE_DIR)
-    message(STATUS "Adding CBLAS_INCLUDE_DIR to Gadgetron_CMAKE_ARGS: ${CBLAS_INCLUDE_DIR}")
-    list (APPEND ${proj}_CMAKE_ARGS "-DCBLAS_INCLUDE_DIR:PATH=${CBLAS_INCLUDE_DIR}")
-  else()
-    message(STATUS "CBLAS_INCLUDE_DIR will be found (probably) by Gadgetron")
-  endif()
-  if (CBLAS_LIBRARY)
-    message(STATUS "Adding CBLAS_LIBRARY to Gadgetron_CMAKE_ARGS: ${CBLAS_LIBRARY}")
-    list(APPEND ${proj}_CMAKE_ARGS "-DCBLAS_LIBRARY:FILEPATH=${CBLAS_LIBRARY}")
-  else()
-      message(STATUS "CBLAS_LIBRARY will be found (probably) by Gadgetron")
-  endif()
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
