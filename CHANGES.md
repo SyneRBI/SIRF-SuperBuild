@@ -1,13 +1,15 @@
 # ChangeLog
 
 ## Next
-- Build Gadgetron master. Requires new packages libdcmtk-dev. 
+- Build Gadgetron master. Requires new Ubuntu packages: libdcmtk-dev, libpugixml-dev, libgflags-dev, 
+  libssl-dev, libcurl4-openssl-dev, pkg-config, golang, libboost-coroutine-dev, libboost-context-dev, libboost-random-dev. 
 - Added SuperBuild project dependency: range-v3, RocksDB.
 - updated versions:
   - Gadgetron: 42f11bf14b77b16f1ca5bcfbfa435d5ee8cb22a6 (master)
   - RocksDB: 6.26.0
-  - range-v3: 0.11.0
+  - range-v3: 0.12.0
   - siemens_to_ismrmrd: 8bb8b08f53ce73c2de9ba5f47f1532f96292d92b
+  - ISMRMRD: v1.13.2
   
 ## v3.4.0
 - Removed CIL-ASTRA as it has been merged into CIL code base.
@@ -66,7 +68,7 @@
 - add CITATION.cff (and remove .zenodo.json)
 - added numba as dependency in docker files
 - updated versions:
-  - SIRF: f40e9d8cf1166eb001a7782a4082f94f67d9a8f4
+  - SIRF: 3.3.0
   - STIR: 5.0.2
   - parallelproj: v0.8
   - CCPi Regularisation: v21.0.0
