@@ -228,10 +228,10 @@ if (DEVEL_BUILD)
   set(DEFAULT_CIL_TAG origin/master )
 
   # Gadgetron
-  set(DEFAULT_Gadgetron_URL master)
+  set(DEFAULT_Gadgetron_TAG origin/master)
   
   # ismrmrd
-  set(DEFAULT_ISMRMRD_TAG master)
+  set(DEFAULT_ISMRMRD_TAG origin/master)
 
   
 
@@ -246,10 +246,6 @@ else()
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
   set(DEFAULT_pet_rd_tools_TAG v2.0.1)
 
-  # ACE
-  set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
-  set(DEFAULT_ACE_TAG origin/master)
-  
   # range-v3
   set(DEFAULT_range-v3_TAG origin/master)
   
