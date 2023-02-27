@@ -122,7 +122,7 @@ jobs:
       run: | 
           cd ${GITHUB_WORKSPACE}/build;
           source ~/virtualenv/bin/activate;
-          cmake --build . -j 1;
+          cmake --build . -j 2;
 
     # Enable tmate debugging of manually-triggered workflows if the input option was provided
     - name: Setup tmate session if triggered
