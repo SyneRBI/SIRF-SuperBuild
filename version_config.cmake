@@ -115,7 +115,8 @@ set(NIFTYREG_REQUIRED_VERSION 1.5.68)
 
 ## ISMRMRD
 set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
-set(DEFAULT_ISMRMRD_TAG origin/master)
+set(DEFAULT_ISMRMRD_TAG v1.13.2)
+
 #if (WIN32)
 #  set(DEFAULT_ISMRMRD_URL https://github.com/SyneRBI/ismrmrd )
 #  set(DEFAULT_ISMRMRD_TAG program_options_fix)
@@ -123,6 +124,10 @@ set(DEFAULT_ISMRMRD_TAG origin/master)
 #  set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
 #  set(DEFAULT_ISMRMRD_TAG v1.4.1)
 #endif()
+
+## siemens_to_ismrmrd
+set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
+set(DEFAULT_siemens_to_ismrmrd_TAG b87759e49e53dab4939147eb52b7a0e6465f3d04)
 
 ## Gadgetron
 set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
@@ -156,11 +161,7 @@ set(DEFAULT_JSON_URL https://github.com/nlohmann/json.git )
 set(DEFAULT_JSON_TAG v3.10.4)
 
 # CCPi CIL
-# CIL-ASTRA has been merged into CIL from acf3ddf5c61b8e216fe7891d7720f9bbd436c9b3
-
-# minimum supported version of CIL supported is 22.0.0 or from commit acf3ddf5c61b8e216fe7891d7720f9bbd436c9b3
-# due to a change in CIL's building mechanism, however due to a unit test failure the minimum CIL required
-# commit is a6062410028c9872c5b355be40b96ed1497fed2a
+# minimum supported version of CIL supported is > 22.1.0 or from commit a6062410028c9872c5b355be40b96ed1497fed2a
 set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
 set(DEFAULT_CIL_TAG a6062410028c9872c5b355be40b96ed1497fed2a)
 
@@ -222,12 +223,13 @@ if (DEVEL_BUILD)
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
   set(DEFAULT_pet_rd_tools_TAG origin/master)
 
-  set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
-  set(DEFAULT_ACE_TAG origin/ACE_version_6.5.9)
-
   # CCPi CIL
   set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
   set(DEFAULT_CIL_TAG origin/master )
+
+   # ismrmrd
+   set(DEFAULT_ISMRMRD_TAG master)
+
   
 
 else()
@@ -236,13 +238,6 @@ else()
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
   set(DEFAULT_STIR_TAG rel_5.1.0)
-
-  # ismrmrd
-  set(DEFAULT_ISMRMRD_TAG master)
-
-  ## siemens_to_ismrmrd
-  set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
-  set(DEFAULT_siemens_to_ismrmrd_TAG b87759e49e53dab4939147eb52b7a0e6465f3d04)
 
   ## pet-rd-tools
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
