@@ -59,13 +59,15 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   message(STATUS "CBLAS ${CBLAS_LIBRARY} ${CBLAS_INCLUDE_DIR}")
   if (NOT (CBLAS_LIBRARY AND CBLAS_INCLUDE_DIR))
-    # if the variables don't exist, let the user set them.
-    SET(CBLAS_LIBRARY "" CACHE FILEPATH "CBLAS library")
-    SET(CBLAS_INCLUDE_DIR "" CACHE PATH "CBLAS include directory")
-    message(FATAL_ERROR "Gadgetron needs CBLAS_LIBRARY and CBLAS_INCLUDE_DIR. If
-      these variables do not exist in your CMake, create them manually. CBLAS_LIBRARY
-      and CBLAS_INCLUDE_DIR should be FILEPATH and PATH.")   
-
+    if (APPLE)
+      # if the variables don't exist, let the user set them.
+      SET(CBLAS_LIBRARY "" CACHE FILEPATH "CBLAS library")
+      SET(CBLAS_INCLUDE_DIR "" CACHE PATH "CBLAS include directory")
+      message(FATAL_ERROR "Gadgetron needs CBLAS_LIBRARY and CBLAS_INCLUDE_DIR. If
+        these variables do not exist in your CMake, create them manually. CBLAS_LIBRARY
+        and CBLAS_INCLUDE_DIR should be FILEPATH and PATH.")   
+    
+    endif()
   endif()
 
   #option(Gadgetron_BUILD_PYTHON_SUPPORT
