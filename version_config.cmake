@@ -131,7 +131,7 @@ set(DEFAULT_siemens_to_ismrmrd_TAG b87759e49e53dab4939147eb52b7a0e6465f3d04)
 
 ## Gadgetron
 set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
-set(DEFAULT_Gadgetron_TAG master)
+set(DEFAULT_Gadgetron_TAG 42f11bf14b77b16f1ca5bcfbfa435d5ee8cb22a6)
 
 ## ASTRA
 set(DEFAULT_astra-toolbox_URL https://github.com/astra-toolbox/astra-toolbox )
@@ -227,8 +227,11 @@ if (DEVEL_BUILD)
   set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
   set(DEFAULT_CIL_TAG origin/master )
 
-   # ismrmrd
-   set(DEFAULT_ISMRMRD_TAG master)
+  # Gadgetron
+  set(DEFAULT_Gadgetron_URL master)
+  
+  # ismrmrd
+  set(DEFAULT_ISMRMRD_TAG master)
 
   
 
