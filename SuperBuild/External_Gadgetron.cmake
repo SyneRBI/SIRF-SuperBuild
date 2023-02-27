@@ -135,7 +135,6 @@ endif()
       ${GTest_CMAKE_ARGS}
       ${HDF5_CMAKE_ARGS}
       ${FFTW3_CMAKE_ARGS}
-      ${CBLAS_CMAKE_ARGS}
       -DISMRMRD_DIR:PATH=${ISMRMRD_DIR}
       -DUSE_MKL:BOOL=${${proj}_USE_MKL}
       -DUSE_CUDA:BOOL=${${proj}_USE_CUDA}
