@@ -1,15 +1,16 @@
 # ChangeLog
+
+## Next
+- Build Gadgetron master. Requires new packages libdcmtk-dev. 
+- Added SuperBuild project dependency: range-v3, RocksDB.
+- updated versions:
+  - Gadgetron: 42f11bf14b77b16f1ca5bcfbfa435d5ee8cb22a6 (master)
+  - RocksDB: 6.26.0
+  - range-v3: 0.11.0
+  - siemens_to_ismrmrd: 8bb8b08f53ce73c2de9ba5f47f1532f96292d92b
+  
 ## v3.4.0
-- Build Gadgetron master. Requires new packages libdcmtk-dev libpugixml-dev libgflags-dev. Added SuperBuild project dependency: range-v3;JSON;RocksDB
-- moved the VM repository to the `VirtualBox` subdirectory
-- fix usage of `proj_EXTRA_CMAKE_ARGS` facility (it was broken for all projects except ITK) [#616](https://github.com/SyneRBI/SIRF-SuperBuild/issues/616)
 - Removed CIL-ASTRA as it has been merged into CIL code base.
-- Added python-opencv to docker requirements.txt
-  - added requirements.yml and requirements-service.yml to handle dependencies for conda python
-  - updates to use mamba
-- docker images updates
-  - Ubuntu: 22.04
-  - use requirements.yml for conda python
 - docker images updates
   - Ubuntu: 22.04
   - added dependencies to python-opencv , pytest, pytest-cov and coverage
@@ -25,12 +26,6 @@
   - use the VMSVGA graphics controller
   - use environment variables in Vagrantfile for easier building
 - updated versions:
-  - Gadgetron: master
-  - RocksDB: 6.26.0
-  - JSON: 3.10.4
-  - range-v3: 0.11.0
-  - ACE : ACE_version_6.5.9 
-  - siemens_to_ismrmrd: 8bb8b08f53ce73c2de9ba5f47f1532f96292d92b
   - SIRF: v3.4.0
   - CIL: a6062410028c9872c5b355be40b96ed1497fed2a > 22.1.0
   - GTest: 1.12.1
