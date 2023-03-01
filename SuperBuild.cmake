@@ -300,6 +300,7 @@ if (BUILD_Gadgetron)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES Gadgetron)
   set(Armadillo_REQUIRED_VERSION 4.600)
 endif()
+option(DISABLE_range-v3_TESTING "Disable range-v3 testing" ON)
 
 if (BUILD_siemens_to_ismrmrd)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES siemens_to_ismrmrd)

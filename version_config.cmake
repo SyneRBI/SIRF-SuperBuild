@@ -35,7 +35,7 @@ else()
      # https://github.com/gadgetron/gadgetron/blob/12ffc43debb9bad2e170713006d29dea78d966bf/CMakeLists.txt#L205-L209
        set(Boost_REQUIRED_VERSION 1.71.0)
      else()
-       # Ubutnu 16.04 version should be fine
+       # Ubutnu 22.04 version should be fine
        set(Boost_REQUIRED_VERSION 1.58.0)
      endif()
      set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_78_0.zip)

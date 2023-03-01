@@ -52,10 +52,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
   set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
 
-  add_test(NAME range_TESTS_
-           COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION> --output-on-failure
-           WORKING_DIRECTORY ${${proj}_BINARY_DIR})
-     
+  if (NOT DISABLE_${proj}_TESTING)
+    add_test(NAME range_TESTS_
+            COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION> --output-on-failure
+            WORKING_DIRECTORY ${${proj}_BINARY_DIR})
+  endif()
+
   else()
     ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
       SOURCE_DIR ${${proj}_SOURCE_DIR}
