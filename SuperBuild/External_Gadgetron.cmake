@@ -145,10 +145,7 @@ endif()
     ${${proj}_EP_ARGS_DIRS}
 
     CMAKE_ARGS ${${proj}_CMAKE_ARGS}
-    DEPENDS
-        ${${proj}_DEPENDENCIES}
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install 
-      COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/patches/copy_file_if_not_exists.py ${SUPERBUILD_INSTALL_DIR}/share/gadgetron/config/gadgetron.xml.example ${SUPERBUILD_INSTALL_DIR}/share/gadgetron/config/gadgetron.xml
+    DEPENDS ${${proj}_DEPENDENCIES}
   )
 
     set(Gadgetron_ROOT        ${Gadgetron_SOURCE_DIR})
