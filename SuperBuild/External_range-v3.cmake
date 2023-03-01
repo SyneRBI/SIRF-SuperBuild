@@ -36,10 +36,16 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   
   ### --- Project specific additions here
   SetGitTagAndRepo("${proj}")
-
+  # enable test build only if tests not disabled
+  if (DISABLE_${proj}_TESTING)
+    set(${proj}_DISABLE_TESTS -DRANGE_V3_TESTS=OFF)
+  else()
+    set(${proj}_DISABLE_TESTS -DRANGE_V3_TESTS=ON)
+  endif()
   # conda build should never get here
   set (${proj}_CMAKE_ARGS 
     -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
+    ${${proj}_DISABLE_TESTS}
   )
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
