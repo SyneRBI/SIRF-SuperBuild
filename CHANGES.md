@@ -3,7 +3,7 @@
 ## Next
 - Build Gadgetron master. Requires new Ubuntu packages: libdcmtk-dev, libpugixml-dev, libgflags-dev, 
   libssl-dev, libcurl4-openssl-dev, pkg-config, golang, libboost-coroutine-dev, libboost-context-dev, libboost-random-dev. 
-- Added SuperBuild project dependency: range-v3, RocksDB.
+- Added SuperBuild project dependency: range-v3, RocksDB, Date, mrd-storage-server
 - updated versions:
   - Gadgetron: 42f11bf14b77b16f1ca5bcfbfa435d5ee8cb22a6 (master)
   - RocksDB: 6.26.0
