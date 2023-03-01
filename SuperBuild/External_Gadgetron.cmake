@@ -94,11 +94,7 @@ endif()
 
   
   if (USE_CUDA)
-    option(${proj}_USE_CUDA "Enable ${proj} CUDA (if cuda libraries are present and SDK is compatible with GCC9)" ${USE_CUDA})
-    if (${CUDA_VERSION} VERSION_LESS "11")
-      message(WARNING "Your CUDA Tookit version ${CUDA_VERSION} is incompatible with GCC9, so we'll disable Gadgetron CUDA support.")
-      set (${proj}_USE_CUDA OFF)
-    endif()
+    option(${proj}_USE_CUDA "Enable ${proj} CUDA" ${USE_CUDA})
   else()
     set (${proj}_USE_CUDA OFF)
   endif()
