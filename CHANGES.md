@@ -6,12 +6,21 @@
      most build files will be removed in the docker image.
    - introduce `RUN_CTESTS` variable. If set to 1 (which is the default),
      the CTests will be run while building the image.
-
+- Build Gadgetron master. Requires new Ubuntu packages: libdcmtk-dev, libpugixml-dev, libgflags-dev, 
+  libssl-dev, libcurl4-openssl-dev, pkg-config, golang, libboost-coroutine-dev, libboost-context-dev, libboost-random-dev. 
+- Added SuperBuild project dependency: range-v3, RocksDB, Date, mrd-storage-server
+- updated versions:
+  - Gadgetron: 42f11bf14b77b16f1ca5bcfbfa435d5ee8cb22a6 (master)
+  - RocksDB: 6.26.0
+  - range-v3: 0.12.0
+  - siemens_to_ismrmrd: 8bb8b08f53ce73c2de9ba5f47f1532f96292d92b
+  - ISMRMRD: v1.13.2
+  
 ## v3.4.0
 - Removed CIL-ASTRA as it has been merged into CIL code base.
-- Added python-opencv , pytest, pytest-cov and coverage to docker requirements.txt
 - docker images updates
   - Ubuntu: 22.04
+  - added dependencies to python-opencv , pytest, pytest-cov and coverage
   - added requirements.yml and requirements-service.yml to handle dependencies for conda python
   - updates to use mamba
   - use jupyterlab as opposed to notebook in the "service" images
@@ -22,6 +31,7 @@
   - CMake: 3.21.3
   - fixes documentation
   - use the VMSVGA graphics controller
+  - use environment variables in Vagrantfile for easier building
 - updated versions:
   - SIRF: v3.4.0
   - CIL: a6062410028c9872c5b355be40b96ed1497fed2a > 22.1.0
