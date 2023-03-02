@@ -114,6 +114,7 @@ set(DEFAULT_NIFTYREG_TAG 8ad2f11507ddedb09ed74a9bd97377b70532ee75)
 set(NIFTYREG_REQUIRED_VERSION 1.5.68)
 
 ## ISMRMRD
+set(ISMRMRD_REQUIRED_VERSION "1.11.1")
 set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
 set(DEFAULT_ISMRMRD_TAG v1.13.2)
 
@@ -213,11 +214,6 @@ if (DEVEL_BUILD)
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd )
   set(DEFAULT_siemens_to_ismrmrd_TAG b87759e49e53dab4939147eb52b7a0e6465f3d04)
-  if (BUILD_siemens_to_ismrmrd)
-    set(ISMRMRD_REQUIRED_VERSION "1.7")
-  else()
-    set(ISMRMRD_REQUIRED_VERSION "1.4.2.1")
-  endif()
 
   ## pet-rd-tools
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
