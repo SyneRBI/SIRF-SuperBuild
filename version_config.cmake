@@ -118,14 +118,6 @@ set(ISMRMRD_REQUIRED_VERSION "1.11.1")
 set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
 set(DEFAULT_ISMRMRD_TAG v1.13.2)
 
-#if (WIN32)
-#  set(DEFAULT_ISMRMRD_URL https://github.com/SyneRBI/ismrmrd )
-#  set(DEFAULT_ISMRMRD_TAG program_options_fix)
-#else()
-#  set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
-#  set(DEFAULT_ISMRMRD_TAG v1.4.1)
-#endif()
-
 ## siemens_to_ismrmrd
 set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
 set(DEFAULT_siemens_to_ismrmrd_TAG b87759e49e53dab4939147eb52b7a0e6465f3d04)
