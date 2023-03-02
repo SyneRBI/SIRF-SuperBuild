@@ -1,7 +1,9 @@
 #========================================================================
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
+# Author: Edoardo Pasca
 # Copyright 2017, 2020 University College London
+# Copyright 2023 United Kingdom Research and Innovation
 #
 # This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -65,7 +67,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DCMAKE_INSTALL_PREFIX:PATH=${ISMRMRD_INSTALL_DIR}
       -DCMAKE_PREFIX_PATH:PATH=${SUPERBUILD_INSTALL_DIR}
       -DCMAKE_LIBRARY_PATH:PATH=${SUPERBUILD_INSTALL_DIR}/lib
-      # -DCMAKE_EXE_LINKER_FLAGS:STRING="-lcurl"
       ${HDF5_CMAKE_ARGS}
       ${FFTW3_CMAKE_ARGS}
       ${Boost_CMAKE_ARGS}
@@ -77,7 +78,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   if (BUILD_TESTING_${proj})
     add_test(NAME ${proj}_TESTS
-         COMMAND ${CMAKE_COMMAND} --build . --config $<CONFIGURATION> --target check
+          COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION> --output-on-failure
          WORKING_DIRECTORY ${${proj}_BINARY_DIR})
   endif()
 

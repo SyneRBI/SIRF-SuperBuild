@@ -1,4 +1,16 @@
 # ChangeLog
+
+## Next
+- Build Gadgetron master. Requires new Ubuntu packages: libdcmtk-dev, libpugixml-dev, libgflags-dev, 
+  libssl-dev, libcurl4-openssl-dev, pkg-config, golang, libboost-coroutine-dev, libboost-context-dev, libboost-random-dev. 
+- Added SuperBuild project dependency: range-v3, RocksDB, Date, mrd-storage-server
+- updated versions:
+  - Gadgetron: 42f11bf14b77b16f1ca5bcfbfa435d5ee8cb22a6 (master)
+  - RocksDB: 6.26.0
+  - range-v3: 0.12.0
+  - siemens_to_ismrmrd: 8bb8b08f53ce73c2de9ba5f47f1532f96292d92b
+  - ISMRMRD: v1.13.2
+  
 ## v3.4.0
 - Removed CIL-ASTRA as it has been merged into CIL code base.
 - docker images updates

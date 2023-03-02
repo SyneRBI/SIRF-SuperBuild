@@ -142,8 +142,7 @@ ARG BUILD_FLAGS="\
  -DUSE_NiftyPET=OFF\
  -DBUILD_siemens_to_ismrmrd=ON -DBUILD_pet_rd_tools=ON"
 ARG EXTRA_BUILD_FLAGS="-DBUILD_CIL=OFF"
-RUN bash user_sirf-ubuntu.sh
-RUN rm user_sirf-ubuntu.sh
+RUN bash user_sirf-ubuntu.sh && rm user_sirf-ubuntu.sh
 
 # give everyone write and execute permission
 RUN chmod -R go+rwX /opt/SIRF-SuperBuild/INSTALL
