@@ -128,6 +128,12 @@ COPY user_sirf-ubuntu.sh .
 # SIRF-SuperBuild version
 ARG SIRF_SB_URL="https://github.com/SyneRBI/SIRF-SuperBuild"
 ARG SIRF_SB_TAG="master"
+
+# set if we want to remove the build files
+ARG REMOVE_BUILD_FILES=1
+# set if we want to run the tests during build
+ARG RUN_CTEST=1
+
 # speeding up the cmake build
 # (implementation note: changing this in your environment will invalidate the docker cache sadly)
 ARG NUM_PARALLEL_BUILDS="2"
@@ -142,10 +148,11 @@ ARG BUILD_FLAGS="\
  -DUSE_NiftyPET=OFF\
  -DBUILD_siemens_to_ismrmrd=ON -DBUILD_pet_rd_tools=ON"
 ARG EXTRA_BUILD_FLAGS="-DBUILD_CIL=OFF"
-RUN bash user_sirf-ubuntu.sh && rm user_sirf-ubuntu.sh
 
-# give everyone write and execute permission
-RUN chmod -R go+rwX /opt/SIRF-SuperBuild/INSTALL
+# build it, run ctest if required, and give everyone write and execute permission
+RUN bash user_sirf-ubuntu.sh \
+    && rm user_sirf-ubuntu.sh \
+    && chmod -R go+rwX /opt/SIRF-SuperBuild/INSTALL
 
 ENV DEBIAN_FRONTEND ''
 

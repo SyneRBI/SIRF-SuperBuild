@@ -109,21 +109,20 @@ jobs:
         # Builds docker image from Docker file.
         shell: bash -l {0}
         run: |
+          set -ex;
           compose_command="docker-compose -f docker/docker-compose.yml" 
           if [[ ${{ matrix.tag }} == 'devel' ]]; then compose_command="$compose_command -f docker/docker-compose.devel.yml"; fi
           # $compose_command pull core
           $compose_command build --pull sirf
           echo "compose_command=$compose_command" >> $GITHUB_ENV
-
-      - name: Run docker container with tests
-        shell: bash -l {0}
-        run: |
-          ${{ env.compose_command }} run --rm -u jovyan --entrypoint /bin/bash sirf --login -c /devel/test.sh 1
           
       - name : docker save image
         # https://docs.docker.com/engine/reference/commandline/save/
         shell: bash -l {0}
         run: |
+          echo "info on layers and their sizes from docker history:"
+          sirf_image=`docker image ls | grep ${{ matrix.tag }} | awk '/sirf/ { print $3}'`
+          docker history "$sirf_image"
           docker save  synerbi/sirf:${{ matrix.tag }} | gzip > ${{ matrix.tag }}.tar.gz
           
       - name: Upload artifact of image.
@@ -157,6 +156,7 @@ jobs:
           # Builds docker image from Docker file.
           shell: bash -l {0}
           run: |
+            set -ex;
             # docker-compose -f docker/docker-compose.yml -f docker/docker-compose.srv-gpu.yml pull core 
             docker-compose -f docker/docker-compose.yml -f docker/docker-compose.srv-gpu.yml build --pull sirf
             
@@ -226,13 +226,9 @@ jobs:
         # Builds docker image from Docker file.
         shell: bash -l {0}
         run: |
+          set -ex;
           # ${{ env.compose_command }} pull sirf
           ${{ env.compose_command }} build --pull sirf
-
-      - name: Run docker service container with tests
-        shell: bash -l {0}
-        run: |
-          ${{ env.compose_command }} run --rm -u jovyan --entrypoint /bin/bash sirf --login -c /devel/test.sh 1
           
       - name : docker save image
         # https://docs.docker.com/engine/reference/commandline/save/

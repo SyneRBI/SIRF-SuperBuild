@@ -15,6 +15,8 @@ services:
     SIRF_SB_URL: ${SIRF_SB_URL:-https://github.com/SyneRBI/SIRF-SuperBuild}
     SIRF_SB_TAG: ${SIRF_SB_TAG:-master}
     NUM_PARALLEL_BUILDS: ${NUM_PARALLEL_BUILDS:-2}
+    REMOVE_BUILD_FILES: ${REMOVE_BUILD_FILES:-1}
+    RUN_CTEST: ${RUN_CTEST:-1}
    cache_from:
     - synerbi/sirf:core
     - synerbi/sirf:latest
