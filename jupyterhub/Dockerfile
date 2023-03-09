@@ -5,36 +5,40 @@ FROM ${BASE_IMAGE} as base
 # Make sure the image has the same libraries as the standard SIRF docker image
 # Add to the docker image the appropriate stuff
 user root
-COPY docker/build_essential-ubuntu.sh .
-RUN bash build_essential-ubuntu.sh
-RUN rm build_essential-ubuntu.sh
+COPY docker/*.sh ./scripts/
+RUN bash ./scripts/build_essential-ubuntu.sh &&\
+    bash ./scripts/build_python-ubuntu.sh &&\
+    bash ./scripts/build_gadgetron-ubuntu.sh &&\
+    bash ./scripts/build_system-ubuntu.sh
 
 # Python (build)
-COPY docker/build_python-ubuntu.sh .
-RUN bash build_python-ubuntu.sh
-RUN rm build_python-ubuntu.sh
+# COPY docker/build_python-ubuntu.sh .
+# RUN bash build_python-ubuntu.sh
+# RUN rm build_python-ubuntu.sh
 
-# Gadgetron
-COPY docker/build_gadgetron-ubuntu.sh .
-RUN bash build_gadgetron-ubuntu.sh
-RUN rm build_gadgetron-ubuntu.sh
+# # Gadgetron
+# COPY docker/build_gadgetron-ubuntu.sh .
+# RUN bash build_gadgetron-ubuntu.sh
+# RUN rm build_gadgetron-ubuntu.sh
 
-# SIRF external deps
-COPY docker/build_system-ubuntu.sh .
-RUN bash build_system-ubuntu.sh
-RUN rm build_system-ubuntu.sh 
+# # SIRF external deps
+# COPY docker/build_system-ubuntu.sh .
+# RUN bash build_system-ubuntu.sh
+# RUN rm build_system-ubuntu.sh 
 
 
 # install requirements from docker/requirements.yml and additional requirements from jupyterhub/requirements.yml
 # and requirements for SIRF exercises
 ARG PYTHON_INSTALL_DIR="/opt/conda"
 ARG PYTHON_EXECUTABLE="miniconda"
-COPY docker/user_service-ubuntu.sh .
-COPY docker/install-sirf-exercises-dep.py .
-RUN PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} PYTHON_INSTALL_DIR=${PYTHON_INSTALL_DIR} bash user_service-ubuntu.sh
-RUN rm user_service-ubuntu.sh install-sirf-exercises-dep.py
+# COPY docker/user_service-ubuntu.sh .
 # remove the SIRF-Exercises and CIL-Demos that get installed by user_service-ubuntu.sh
-RUN rm -rf /opt/SIRF-Exercises; rm -rf /opt/CIL-Demos
+COPY docker/install-sirf-exercises-dep.py .
+RUN PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} PYTHON_INSTALL_DIR=${PYTHON_INSTALL_DIR} bash ./scripts/user_service-ubuntu.sh &&\
+    rm install-sirf-exercises-dep.py &&\
+    rm -rf ./scripts &&\
+    rm -rf /opt/SIRF-Exercises&&\
+    rm -rf /opt/CIL-Demos
 
 USER root
 COPY jupyterhub/requirements.yml .
