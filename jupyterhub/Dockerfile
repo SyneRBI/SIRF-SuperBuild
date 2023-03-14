@@ -5,44 +5,11 @@ FROM ${BASE_IMAGE} as base
 # Make sure the image has the same libraries as the standard SIRF docker image
 # Add to the docker image the appropriate stuff
 user root
-COPY docker/*.sh ./scripts/
+COPY --chown=jovyan:users docker/build_essential-ubuntu.sh docker/build_gadgetron-ubuntu.sh docker/build_system-ubuntu.sh docker/install-sirf-exercises-dep.py ./scripts/
 RUN bash ./scripts/build_essential-ubuntu.sh &&\
-    bash ./scripts/build_python-ubuntu.sh &&\
     bash ./scripts/build_gadgetron-ubuntu.sh &&\
     bash ./scripts/build_system-ubuntu.sh
 
-# Python (build)
-# COPY docker/build_python-ubuntu.sh .
-# RUN bash build_python-ubuntu.sh
-# RUN rm build_python-ubuntu.sh
-
-# # Gadgetron
-# COPY docker/build_gadgetron-ubuntu.sh .
-# RUN bash build_gadgetron-ubuntu.sh
-# RUN rm build_gadgetron-ubuntu.sh
-
-# # SIRF external deps
-# COPY docker/build_system-ubuntu.sh .
-# RUN bash build_system-ubuntu.sh
-# RUN rm build_system-ubuntu.sh 
-
-
-# install requirements from docker/requirements.yml and additional requirements from jupyterhub/requirements.yml
-# and requirements for SIRF exercises
-ARG PYTHON_INSTALL_DIR="/opt/conda"
-ARG PYTHON_EXECUTABLE="miniconda"
-# COPY docker/user_service-ubuntu.sh .
-# remove the SIRF-Exercises and CIL-Demos that get installed by user_service-ubuntu.sh
-COPY docker/install-sirf-exercises-dep.py .
-RUN PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} PYTHON_INSTALL_DIR=${PYTHON_INSTALL_DIR} bash ./scripts/user_service-ubuntu.sh &&\
-    rm install-sirf-exercises-dep.py &&\
-    rm -rf ./scripts &&\
-    rm -rf /opt/SIRF-Exercises&&\
-    rm -rf /opt/CIL-Demos
-
-USER root
-COPY jupyterhub/requirements.yml .
-RUN mamba env update -n base -f requirements.yml
 
 # https://docs.docker.com/develop/develop-images/multistage-build/#use-an-external-image-as-a-stage
 # not documented in https://docs.docker.com/engine/reference/builder/#copy
@@ -50,10 +17,35 @@ RUN mamba env update -n base -f requirements.yml
 COPY --from=synerbi/sirf:sirf-core /opt/SIRF-SuperBuild/INSTALL/ /opt/SIRF-SuperBuild/INSTALL
 COPY --from=synerbi/sirf:sirf-core /opt/SIRF-SuperBuild/sources/SIRF/ /opt/SIRF-SuperBuild/sources/SIRF/
 
+from base as jup
+# remove the SIRF-Exercises and CIL-Demos that get installed by user_service-ubuntu.sh
+USER jovyan
+ARG NB_USER="jovyan"
+ARG NB_GROUP="users"
+
+
+COPY --chown=jovyan:users docker/requirements.yml docker/
+COPY --chown=jovyan:users jupyterhub/requirements.yml docker/requirements-service.yml jupyterhub/
+
+
+# RUN mamba env update -n base -f docker/requirements.yml
+# RUN mamba env update -n base -f jupyterhub/requirements.yml
+
+# RUN bash ./scripts/user_service-ubuntu.sh &&\
+RUN mamba env update -n base -f docker/requirements.yml &&\
+    mamba env update -n base -f jupyterhub/requirements.yml &&\
+    git clone https://github.com/SyneRBI/SIRF-Exercises --recursive -b master SIRF-Exercises &&\
+    python scripts/install-sirf-exercises-dep.py SIRF-Exercises/requirements.txt &&\
+    mamba env update --file jupyterhub/requirements-service.yml &&\
+    mamba env update -n base -f jupyterhub/requirements.yml &&\
+    rm -rf docker && rm -rf jupyterhub &&\
+    rm -rf ./scripts
+
 # Switch back to jovyan to avoid accidental container runs as root
 # From https://github.com/paskino/SIRF-SuperBuild/blob/301c2274621e4729cadbd2a1705d8c4d9e3b7e50/docker/Dockerfile#L212-L219
 # Set environment variables for SIRF
 USER jovyan 
+COPY docker/.bashrc /home/jovyan
 ENV PATH "/opt/conda/bin:/opt/SIRF-SuperBuild/INSTALL/bin:$PATH"
 ENV LD_LIBRARY_PATH "/opt/SIRF-SuperBuild/INSTALL/lib:/opt/SIRF-SuperBuild/INSTALL/lib64:$LD_LIBRARY_PATH"
 ENV PYTHONPATH "/opt/SIRF-SuperBuild/INSTALL/python"

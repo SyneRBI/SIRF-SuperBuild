@@ -7,6 +7,6 @@ channels:
 dependencies:
   - jupyterlab
   - jupyter
-  - ipywidgets
+  - ipywidgets<8
   - widgetsnbextension
   - nodejs

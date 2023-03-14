@@ -28,11 +28,15 @@ git clone git@github.com:jupyter/docker-stacks.git
 #### Build the images
 
 ```
+pushd ../../docker-stacks/docker-stacks-foundations
+# docker-stacks-foundations
+docker build --build-arg PYTHON_VERSION=3.9 --build-arg ROOT_CONTAINER=nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04 -t paskino/jupyter:docker-stacks-foundations-cuda11-cudnn8-devel-ubuntu22.04 .
+
 # base notebook
-cd docker-stacks/base-notebook
+cd ../base-notebook
 # change the base class with the ROOT_CONTAINER argument
 # build and tag
-docker build --build-arg ROOT_CONTAINER=nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04 -t paskino/jupyter:base-notebook-cuda11-cudnn8-devel-ubuntu22.04 .
+docker build --build-arg ROOT_CONTAINER=paskino/jupyter:docker-stacks-foundations-cuda11-cudnn8-devel-ubuntu22.04 -t paskino/jupyter:base-notebook-cuda11-cudnn8-devel-ubuntu22.04 .
 
 # minimal notebook
 cd ../minimal-notebook
@@ -46,6 +50,9 @@ docker build --build-arg BASE_CONTAINER=paskino/jupyter:minimal-notebook-cuda11-
 # datascience-notebook
 cd ../datascience-notebook
 docker build --build-arg BASE_CONTAINER=paskino/jupyter:scipy-notebook-cuda11-cudnn8-devel-ubuntu22.04 -t paskino/jupyter:datascience-notebook-cuda11-cudnn8-devel-ubuntu22.04 .
+
+popd
+
 ```
 
 Finally we have the base `datascience-notebook` with the `nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04` base image.

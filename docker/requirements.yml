@@ -27,10 +27,10 @@ dependencies:
   - nibabel
   - deprecation
   - nose
-  - ipp
-  - ipp-devel
-  - ipp-include
-  - tigre
+  - ipp          # CIL
+  - ipp-devel    # CIL
+  - ipp-include  # CIL
+  - tigre=2.4    # CIL
   - pip
   - pip:
     - git+https://github.com/data-exchange/dxchange.git  # CIL
