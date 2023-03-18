@@ -79,7 +79,8 @@ jobs:
       # TODO: GPU tests are failing even with nvidia run-time https://github.com/SyneRBI/SIRF-SuperBuild/issues/553
       if [[ "$DOCKER_BUILD" != *"CORE"* && "$DOCKER_BUILD" != *"GPU"* ]]; then
         # Need to run as jovyan to be able to write to build directory (needed by ctest)
-        $DCC run --rm -u jovyan --entrypoint /bin/bash sirf --login -c /devel/test.sh 1
+        # Disabled as we no longer have ctest files in the container
+        # $DCC run --rm -u jovyan --entrypoint /bin/bash sirf --login -c /devel/test.sh 1
       fi
    after_success: &docker_after_success
    - |
