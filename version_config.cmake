@@ -21,26 +21,18 @@
 #
 #=========================================================================
 
-## BOOST  # Gadgetron needs at least 1.65
-if (APPLE) # really should be checking for CLang
-	# Boost 1.65 contains a bug for recent Clang https://github.com/SyneRBI/SIRF-SuperBuild/issues/170
-    set(Boost_VERSION 1.68.0)
-    set(Boost_REQUIRED_VERSION 1.66.0)
-    set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_68_0.zip)
-    set(Boost_MD5 f4096c4583947b0eb103c8539f1623a3)
+## BOOST
+if (BUILD_GADGETRON)
+# https://github.com/gadgetron/gadgetron/blob/12ffc43debb9bad2e170713006d29dea78d966bf/CMakeLists.txt#L205-L209
+  set(Boost_REQUIRED_VERSION 1.71.0)
 else()
-     # Use version 1.78.0 version
-     set(Boost_VERSION 1.78.0)
-     if (BUILD_GADGETRON)
-     # https://github.com/gadgetron/gadgetron/blob/12ffc43debb9bad2e170713006d29dea78d966bf/CMakeLists.txt#L205-L209
-       set(Boost_REQUIRED_VERSION 1.71.0)
-     else()
-       # Ubutnu 22.04 version should be fine
-       set(Boost_REQUIRED_VERSION 1.58.0)
-     endif()
-     set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_78_0.zip)
-     set(Boost_MD5 e193e5089060ed6ce5145c8eb05e67e3)
+  # ISMRMRD needs more recent 1.68.0 so let's just say 1.71.0 as well
+  set(Boost_REQUIRED_VERSION 1.71.0)
 endif()
+set(Boost_VERSION 1.78.0)
+set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_78_0.zip)
+set(Boost_MD5 e193e5089060ed6ce5145c8eb05e67e3)
+
 
 ## Armadillo
 set(Armadillo_URL https://downloads.sourceforge.net/project/arma/armadillo-9.800.2.tar.xz)
