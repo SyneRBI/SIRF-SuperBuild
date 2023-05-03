@@ -174,6 +174,9 @@ set(DEFAULT_mrd-storage-server_TAG origin/main)
 set(DEFAULT_Date_URL https://github.com/HowardHinnant/date.git )
 set(DEFAULT_Date_TAG master)
 
+set(DEFAULT_pugixml_URL https://github.com/zeux/pugixml.git )
+set(DEFAULT_pugixml_TAG v1.13)
+
 # works only for Linux
 set(Go_URL https://go.dev/dl/go1.19.3.linux-amd64.tar.gz)
 set(Go_SHA256 74b9640724fd4e6bb0ed2a1bc44ae813a03f1e72a4c76253e2d5c015494430ba)
@@ -309,6 +312,9 @@ set(mrd-storage-server_TAG ${DEFAULT_mrd-storage-server_TAG} CACHE STRING ON)
 
 set(Date_URL ${DEFAULT_Date_URL} CACHE STRING ON)
 set(Date_TAG ${DEFAULT_Date_TAG} CACHE STRING ON)
+
+set(pugixml_URL ${DEFAULT_pugixml_URL} CACHE STRING ON)
+set(pugixml_TAG ${DEFAULT_pugixml_TAG} CACHE STRING ON)
 
 mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   Gadgetron_URL Gadgetron_TAG
