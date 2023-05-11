@@ -25,7 +25,7 @@
 set(proj ISMRMRD)
 
 # Set dependency list
-set(${proj}_DEPENDENCIES "HDF5;Boost;FFTW3")
+set(${proj}_DEPENDENCIES "HDF5;Boost;FFTW3;pugixml")
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)

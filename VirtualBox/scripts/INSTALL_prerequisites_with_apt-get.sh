@@ -31,7 +31,6 @@ $SUDO "$SCRIPTS/build_system-ubuntu.sh"
 
 echo "Installing Gadgetron pre-requisites..."
 $SUDO "$SCRIPTS/build_gadgetron-ubuntu.sh"
-${APT_GET_INSTALL} libpugixml-dev
 
 echo "Installing expect"
 ${APT_GET_INSTALL} expect
