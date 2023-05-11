@@ -300,6 +300,7 @@ endif()
 
 if (BUILD_Gadgetron)
   list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES Gadgetron)
+  list(APPEND ${PRIMARY_PROJECT_NAME}_DEPENDENCIES mrd-storage-server)
   set(Armadillo_REQUIRED_VERSION 4.600)
 endif()
 option(DISABLE_range-v3_TESTING "Disable range-v3 testing" ON)
