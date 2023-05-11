@@ -197,7 +197,7 @@ option(USE_SYSTEM_NIFTYREG "Build using an external version of NIFTYREG" OFF)
 option(USE_SYSTEM_GTest "Build using an external version of GTest" OFF)
 option(USE_SYSTEM_ACE "Build using an external version of ACE" ON)
 option(USE_SYSTEM_RocksDB "Build using an external version of RocksDB" ON)
-option(USE_SYSTEM_Date "Build using an external version of Data" ON)
+option(USE_SYSTEM_Date "Build using an external version of Date" OFF)
 option(USE_SYSTEM_pugixml "Build using an external version of pugixml" ON)
 
 # SPM requires matlab
