@@ -72,6 +72,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
+    - name: disk space
+      shell: bash
+      run: |
+          case ${{matrix.os}} in
+            (ubuntu* | macOS*)
+              sudo .github/workflows/GHA_increase_disk_space.sh
+              ;;
+            (windows*)
+              # no idea what to do here
+              ;;
+           esac
+
     - name: install_dependencies
       run: 
           cd docker;
