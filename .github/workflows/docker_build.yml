@@ -24,11 +24,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       
-      - name: Install docker and pre-reqs
+      - name: Install docker and pre-reqs and clean some disk-space
         shell: bash -l {0}
         run: |
-         # make the file runnable
-         sudo bash .github/workflows/install_docker.sh
+         sudo .github/workflows/install_docker.sh
+         sudo .github/workflows/GHA_increase_disk_space.sh
          
       - name: Build docker core image
         # Builds docker image from Docker file.
@@ -56,10 +56,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install docker and pre-reqs
+      - name: Install docker and pre-reqs and clean some disk-space
         shell: bash -l {0}
         run: |
-         .github/workflows/install_docker.sh
+         sudo .github/workflows/install_docker.sh
+         sudo .github/workflows/GHA_increase_disk_space.sh
           
       - name: Build docker core-gpu image
         # Builds docker image from Docker file.
@@ -89,10 +90,11 @@ jobs:
         tag: ['latest', 'devel']
     steps:
       - uses: actions/checkout@v3
-      - name: Install docker and pre-reqs
+      - name: Install docker and pre-reqs and clean some disk-space
         shell: bash -l {0}
         run: |
-         .github/workflows/install_docker.sh
+         sudo .github/workflows/install_docker.sh
+         sudo .github/workflows/GHA_increase_disk_space.sh
           
       - name: Download artifact of core image
         uses: actions/download-artifact@v3
@@ -136,10 +138,11 @@ jobs:
       needs: build-core-gpu
       steps:
         - uses: actions/checkout@v3
-        - name: Install docker and pre-reqs
+        - name: Install docker and pre-reqs and clean some disk-space
           shell: bash -l {0}
           run: |
-           .github/workflows/install_docker.sh
+           sudo .github/workflows/install_docker.sh
+           sudo .github/workflows/GHA_increase_disk_space.sh
 
         - name: Download artifact of core image
           uses: actions/download-artifact@v3
@@ -189,10 +192,11 @@ jobs:
         tag: ['service', 'devel-service']
     steps:
       - uses: actions/checkout@v3
-      - name: Install docker and pre-reqs
+      - name: Install docker and pre-reqs and clean some disk-space
         shell: bash -l {0}
         run: |
-         .github/workflows/install_docker.sh
+         sudo .github/workflows/install_docker.sh
+         sudo .github/workflows/GHA_increase_disk_space.sh
          
       - name: setup variables
         shell: bash -l {0}
@@ -256,10 +260,11 @@ jobs:
   #       tag: ['core', 'latest', 'devel', 'service', 'devel-service', 'core-gpu', 'service-gpu']
   #   steps:
   #     - uses: actions/checkout@v3
-  #     - name: Install docker and pre-reqs
+  #     - name: Install docker and pre-reqs and clean some disk-space
   #       shell: bash -l {0}
   #       run: |
-  #        .github/workflows/install_docker.sh
+  #        sudo .github/workflows/install_docker.sh
+  #        sudo .github/workflows/GHA_increase_disk_space.sh
           
   #     - name: Download artifact of image
   #       uses: actions/download-artifact@v3
