@@ -6,6 +6,7 @@
      most build files will be removed in the docker image.
    - introduce `RUN_CTESTS` variable. If set to 1 (which is the default),
      the CTests will be run while building the image.
+   - remove obsolete copying of gadgetron.xml
 - Build Gadgetron master. Requires new Ubuntu packages: libdcmtk-dev, libpugixml-dev, libgflags-dev, 
   libssl-dev, libcurl4-openssl-dev, pkg-config, golang, libboost-coroutine-dev, libboost-context-dev, libboost-random-dev. 
 - Added SuperBuild project dependency: range-v3, RocksDB, Date, mrd-storage-server
