@@ -240,7 +240,8 @@ jobs:
         run: |
           # first we must delete image that is no longer needed, to save space:
           docker rmi synerbi/sirf:${{ env.prereq_image_name }}
-          yes | docker system prune
+          # get rid of everything over 2 days old
+          docker system prune -a --filter "until=2d"
           docker image ls
           docker save synerbi/sirf:service | gzip > ${{ matrix.tag }}.tar.gz 
           
