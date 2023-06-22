@@ -31,8 +31,6 @@ stop_service()
 pushd $SIRF_PATH/../..
 
 echo "start gadgetron"
-GCONFIG=./INSTALL/share/gadgetron/config/gadgetron.xml
-[ -f "$GCONFIG" ] || cp "$GCONFIG".example "$GCONFIG"
 [ -f ./INSTALL/bin/gadgetron ] \
   && ./INSTALL/bin/gadgetron >& ~/gadgetron.log&
 
