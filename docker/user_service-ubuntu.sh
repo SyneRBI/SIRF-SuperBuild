@@ -28,17 +28,27 @@ fi
 
 #install SIRF-Exercises requirements
 cd $INSTALL_DIR/SIRF-Exercises
-if [ -f requirements.txt ]; then
-  cat requirements.txt
-  if [ "$PYTHON" = "miniconda" ]; then
-  # installing the requirements.txt with mamba requires some cleaning of the requirements.txt
-  # Also the requirements.txt contains some packages that are not found on conda-forge, i.e. brainweb
-  # Therefore, these need to be installed by pip. 
-  # This is handled by the install-sirf-exercises-dep.py script
-    python ~/install-sirf-exercises-dep.py requirements.txt
+if [ "$PYTHON" = "miniconda" ]; then
+  if [ -f environment.yml ]; then
+    mamba env update --file environment.yml
   else
-  # Otherwise, just install the requirements.txt with pip
+    if [ -f requirements.txt ]; then
+      cat requirements.txt
+      # installing the requirements.txt with mamba requires some cleaning of the requirements.txt
+      # Also the requirements.txt contains some packages that are not found on conda-forge, i.e. brainweb
+      # Therefore, these need to be installed by pip. 
+      # This is handled by the install-sirf-exercises-dep.py script
+      python ~/install-sirf-exercises-dep.py requirements.txt
+    else
+      echo "SIRF-Exercises requirements: did not find requirements.txt nor environment.yml. Skipping"
+    fi
+  fi
+else
+  if [ -f requirements.txt ]; then
+    # just install the requirements.txt with pip
     ${PYTHON} -m pip install -U -r requirements.txt
+  else
+    echo "SIRF-Exercises requirements: did not find requirements.txt. Skipping"
   fi
 fi
 
