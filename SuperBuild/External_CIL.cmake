@@ -134,6 +134,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   add_test(NAME CIL_FRAMEWORK_TESTS_15
            COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_TranslateFunction.py
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
+  add_test(NAME CIL_SIRF_INTEGRATION_TESTS
+           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_SIRF.py
+           WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   # add_test(NAME CIL_FRAMEWORK_TESTS_ALL
   #          COMMAND ${PYTHON_EXECUTABLE} -m unittest discover
   #          WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
