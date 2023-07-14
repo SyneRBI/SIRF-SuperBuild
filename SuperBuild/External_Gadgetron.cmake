@@ -47,7 +47,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   # Gadgetron only adds tests if (GTEST_FOUND AND ARMADILLO_FOUND)
   # but that's currently always the case.
-  # Default to on, as we cannot disable it, and they're quite fast
+  # Default to on, as they're quite fast
   option(BUILD_TESTING_${proj} "Build tests for ${proj}" ON)
 
   #message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
@@ -135,7 +135,7 @@ endif()
       -DUSE_MKL:BOOL=${${proj}_USE_MKL}
       -DUSE_CUDA:BOOL=${${proj}_USE_CUDA}
       -DUSE_OPENMP:BOOL=${${proj}_ENABLE_OPENMP}
-      -DBUILD_TESTING:BOOL=ON
+      -DBUILD_TESTING:BOOL=${BUILD_TESTING_${proj}}
       )
 
 
