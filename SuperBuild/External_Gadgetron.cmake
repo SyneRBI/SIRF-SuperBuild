@@ -107,16 +107,6 @@ endif()
     set(${proj}_ENABLE_OPENMP OFF)
   endif()
 
-  # require to have access to Python for patching
-  if (NOT PYTHON_EXECUTABLE)
-    if (${CMAKE_VERSION} VERSION_LESS "3.12")
-      find_package(PythonInterp REQUIRED)
-    else()
-      find_package(Python COMPONENTS Interpreter REQUIRED)
-      set (PYTHON_EXECUTABLE ${Python_EXECUTABLE})
-    endif()
-  endif()
-
   # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
   SetGitTagAndRepo("${proj}")
   set (${proj}_CMAKE_ARGS 
