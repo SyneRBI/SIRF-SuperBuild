@@ -47,12 +47,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   # Gadgetron only adds tests if (GTEST_FOUND AND ARMADILLO_FOUND)
   # but that's currently always the case.
-  # Default to on, as we cannot disable it, and they're quite fast
+  # Default to on, as they're quite fast
   option(BUILD_TESTING_${proj} "Build tests for ${proj}" ON)
-
-  #message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
-  set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} ${SUPERBUILD_INSTALL_DIR})
-  set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} ${SUPERBUILD_INSTALL_DIR})
 
   # BLAS
   find_package(BLAS)
@@ -107,24 +103,12 @@ endif()
     set(${proj}_ENABLE_OPENMP OFF)
   endif()
 
-  # require to have access to Python for patching
-  if (NOT PYTHON_EXECUTABLE)
-    if (${CMAKE_VERSION} VERSION_LESS "3.12")
-      find_package(PythonInterp REQUIRED)
-    else()
-      find_package(Python COMPONENTS Interpreter REQUIRED)
-      set (PYTHON_EXECUTABLE ${Python_EXECUTABLE})
-    endif()
-  endif()
-
   # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
   SetGitTagAndRepo("${proj}")
   set (${proj}_CMAKE_ARGS 
       -DBUILD_PYTHON_SUPPORT:BOOL=${${proj}_BUILD_PYTHON_SUPPORT}
       -DBUILD_MATLAB_SUPPORT:BOOL=${${proj}_BUILD_MATLAB_SUPPORT}
       -DCMAKE_PREFIX_PATH:PATH=${SUPERBUILD_INSTALL_DIR}
-      -DCMAKE_LIBRARY_PATH:PATH=${SUPERBUILD_INSTALL_DIR}/lib
-      -DCMAKE_INCLUDE_PATH:PATH=${SUPERBUILD_INSTALL_DIR}/include
       -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
       ${Boost_CMAKE_ARGS}
       ${PYTHONLIBS_CMAKE_ARGS}
@@ -135,7 +119,7 @@ endif()
       -DUSE_MKL:BOOL=${${proj}_USE_MKL}
       -DUSE_CUDA:BOOL=${${proj}_USE_CUDA}
       -DUSE_OPENMP:BOOL=${${proj}_ENABLE_OPENMP}
-      -DBUILD_TESTING:BOOL=ON
+      -DBUILD_TESTING:BOOL=${BUILD_TESTING_${proj}}
       )
 
 
