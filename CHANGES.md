@@ -1,6 +1,6 @@
 # ChangeLog
 
-## vx.x.x
+## v3.5.0
 - docker image updates
    - introduce `REMOVE_BUILD_FILES` variable. If set to 1 (which is the default),
      most build files will be removed in the docker image.
@@ -17,6 +17,7 @@
   - range-v3: 0.12.0
   - siemens_to_ismrmrd: 8bb8b08f53ce73c2de9ba5f47f1532f96292d92b
   - ISMRMRD: v1.13.2
+  - SIRF: v3.5.0
   
 ## v3.4.0
 - Removed CIL-ASTRA as it has been merged into CIL code base.
