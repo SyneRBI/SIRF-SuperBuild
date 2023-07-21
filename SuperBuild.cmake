@@ -147,7 +147,7 @@ else()
 endif()
 
 #### MATLAB support
-option(DISABLE_Matlab "Disable building MATLAB support" OFF)
+option(DISABLE_Matlab "Disable building MATLAB support" ON)
 if (DISABLE_Matlab)
   message(STATUS "Matlab support disabled")
 else()

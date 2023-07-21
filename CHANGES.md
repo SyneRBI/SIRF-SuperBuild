@@ -2,6 +2,9 @@
 
 ## v3.5.0
 - Temporarily disable CCPi-Regularisation due to #832
+- CMake/building:
+  - default `DISABLE_MATLAB` to `ON` as SIRF Matlab support is out-of-date and enabling it could
+    generate conflicts with Python shared libraries.
 - docker image updates
    - introduce `REMOVE_BUILD_FILES` variable. If set to 1 (which is the default),
      most build files will be removed in the docker image.
@@ -11,7 +14,7 @@
    - Installing requirements for SIRF-Exercises uses its environment.yml or requirements.txt depending on settings.
 - Build Gadgetron master. Requires new Ubuntu packages: libdcmtk-dev, libpugixml-dev, libgflags-dev, 
   libssl-dev, libcurl4-openssl-dev, pkg-config, golang, libboost-coroutine-dev, libboost-context-dev, libboost-random-dev. 
-- Added SuperBuild project dependency: range-v3, RocksDB, Date, mrd-storage-server
+- Added SuperBuild project dependencies for Gadgetron: range-v3, RocksDB, Date, mrd-storage-server
 - updated versions:
   - Gadgetron: 42f11bf14b77b16f1ca5bcfbfa435d5ee8cb22a6 (master)
   - RocksDB: 6.26.0
