@@ -26,16 +26,16 @@ fi
 # Python
 case "$PYTHON" in
 miniconda)
-  # miniconda
-  curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh > miniconda.sh
+  #curl -L https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh > miniconda.sh
+  curl -L https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-x86_64.sh > miniconda.sh
   echo -e "\nyes\n${INSTALL_DIR}\nno" | bash miniconda.sh
   rm miniconda.sh
   source "$INSTALL_DIR"/bin/activate
-  conda config --add channels conda-forge
+  #conda config --add channels conda-forge
   # https://github.com/conda/conda/issues/6030
   #conda update -c conda-forge -y conda
-  conda install -c conda-forge -y mamba
-  mamba update -c conda-forge -y setuptools pip
+  # https://github.com/SyneRBI/SIRF-SuperBuild/issues/826
+  #conda install -c conda-forge -c defaults -y mamba
   ;;
 *python*)
   # virtualenv
