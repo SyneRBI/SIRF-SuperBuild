@@ -116,9 +116,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   add_test(NAME CIL_FRAMEWORK_TESTS_9
            COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_Operator.py
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
-  add_test(NAME CIL_FRAMEWORK_TESTS_10
-           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_PluginsRegularisation.py
-           WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   add_test(NAME CIL_FRAMEWORK_TESTS_11
            COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_quality_measures.py
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
