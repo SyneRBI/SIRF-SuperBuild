@@ -22,7 +22,7 @@
   - siemens_to_ismrmrd: 8bb8b08f53ce73c2de9ba5f47f1532f96292d92b
   - ISMRMRD: v1.13.2
   - SIRF: v3.5.0
-  - CIL: e7e137b97d403576502ffc768e596ec1f66e038a
+  - CIL: 0ba2f8e2935db66ec3dfe8c88e407e8d0eb5609f
   
 ## v3.4.0
 - Removed CIL-ASTRA as it has been merged into CIL code base.
