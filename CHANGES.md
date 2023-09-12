@@ -23,6 +23,8 @@
   - ISMRMRD: v1.13.2
   - SIRF: v3.5.0
   - CIL: 0ba2f8e2935db66ec3dfe8c88e407e8d0eb5609f
+  - CCPi-Regularisation: v22.0.0
+  - TomoPhantom: v2.0.0
   
 ## v3.4.0
 - Removed CIL-ASTRA as it has been merged into CIL code base.
