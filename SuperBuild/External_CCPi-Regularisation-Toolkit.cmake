@@ -98,8 +98,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
     set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
     set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
-    add_test(NAME CIL_REGULARISATION_TEST_1
-             COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -s test -p test_*.py
+    add_test(NAME CIL_REGULARISATION_TEST_CPU
+             COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -s test -p test_CPU_*.py
     WORKING_DIRECTORY ${${proj}_SOURCE_DIR})
 
   else()

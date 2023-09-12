@@ -124,7 +124,7 @@ set(DEFAULT_astra-toolbox_TAG origin/master)
 
 ## TomoPhantom
 set(DEFAULT_TomoPhantom_URL https://github.com/dkazanc/TomoPhantom )
-set(DEFAULT_TomoPhantom_TAG v1.4)
+set(DEFAULT_TomoPhantom_TAG v2.0.0)
 
 ## NiftyPET
 set(DEFAULT_NiftyPET_URL https://github.com/pjmark/NIPET )
@@ -151,7 +151,7 @@ set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
 set(DEFAULT_CIL_TAG 0ba2f8e2935db66ec3dfe8c88e407e8d0eb5609f)
 
 set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
-set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v21.0.0")
+set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v22.0.0")
 
 # CERN ROOT
 set(DEFAULT_ROOT_URL https://github.com/root-project/root)
