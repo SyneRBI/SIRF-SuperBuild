@@ -4,7 +4,7 @@ import subprocess
 import functools
 
 def conda_install(package):
-    return f'mamba install -y -c conda-forge {package}'.rstrip()
+    return f'conda install -y -c conda-forge {package}'.rstrip()
 
 def pip_install(package):
     return f'pip install -U {package}'.rstrip()
@@ -30,18 +30,18 @@ if __name__ == '__main__':
                     else:
                         print (f'Not on conda-forge: {line.rstrip()}')
                         install_by_pip.append(line.rstrip())
-    
+
     install_by_conda = functools.reduce(lambda x, y: x + ' ' + y, install_by_conda, '')
-    
+
 
     install_by_pip = functools.reduce(lambda x, y: x + ' ' + y, install_by_pip, '')
-    
+
 
     try:
         print ("Installing from conda-forge:", install_by_conda)
         subprocess.run(conda_install(install_by_conda), shell=True, check=True)
         print ("Installing from PyPI:", install_by_pip)
         subprocess.run([sys.executable,  "-m", pip_install(install_by_pip)], shell=True, check=True)
-        
+
     except subprocess.CalledProcessError as cpe:
         print (cpe)

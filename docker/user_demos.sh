@@ -22,11 +22,11 @@ if [ "$PYTHON" = "miniconda" ]; then
       # delete GPU deps
       sed -r -e '/^\s*- (astra-toolbox|tigre).*/d' -e '/^\s*- \S+.*#.*GPU/d' environment.yml > environment-sirf.yml
     fi
-    mamba env update --file environment-sirf.yml
+    conda env update --file environment-sirf.yml
   else
     if [ -f requirements.txt ]; then
       cat requirements.txt
-      # installing the requirements.txt with mamba requires some cleaning of the requirements.txt
+      # installing the requirements.txt with conda requires some cleaning of the requirements.txt
       # Also the requirements.txt contains some packages that are not found on conda-forge, i.e. brainweb
       # Therefore, these need to be installed by pip.
       # This is handled by the install-sirf-exercises-dep.py script
