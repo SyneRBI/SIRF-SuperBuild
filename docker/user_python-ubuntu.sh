@@ -32,8 +32,6 @@ miniconda)
   source "$INSTALL_DIR"/bin/activate
   conda config --add channels conda-forge
   conda update -c conda-forge -y conda
-  conda install conda-libmamba-solver
-  conda config --set solver libmamba
   ;;
 *python*)
   # virtualenv
