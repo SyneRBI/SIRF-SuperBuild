@@ -240,7 +240,9 @@ jobs:
           set -ex;
           mkdir cil_sirf_test
           touch cil_sirf_test/__init__.py
-          curl -fsSL https://raw.githubusercontent.com/TomographicImaging/CIL/master/Wrappers/Python/test/test_SIRF.py > cil_sirf_test/test_SIRF.py
+          # DEFAULT_CIL_TAG=$(sed -nr 's/^\s*set\(DEFAULT_CIL_TAG (\w+)\)/\1/p' version_config.cmake)
+          DEFAULT_CIL_TAG=$(docker run --rm synerbi/sirf:service python -c 'import cil; print(cil.version.commit_hash[1:])')
+          curl -fsSL https://raw.githubusercontent.com/TomographicImaging/CIL/$DEFAULT_CIL_TAG/Wrappers/Python/test/test_SIRF.py > cil_sirf_test/test_SIRF.py
           docker run --rm -v cil_sirf_test:/cil_sirf_test synerbi/sirf:service python -m unittest discover /cil_sirf_test
 
       - name : docker save image
