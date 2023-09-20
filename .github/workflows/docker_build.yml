@@ -241,7 +241,7 @@ jobs:
           mkdir cil_sirf_test
           touch cil_sirf_test/__init__.py
           # DEFAULT_CIL_TAG=$(sed -nr 's/^\s*set\(DEFAULT_CIL_TAG (\w+)\)/\1/p' version_config.cmake)
-          DEFAULT_CIL_TAG=$(docker run --rm synerbi/sirf:service /opt/conda/bin/python -c 'import cil; print(cil.version.commit_hash[1:])')
+          DEFAULT_CIL_TAG=$(docker run --rm synerbi/sirf:service /opt/conda/bin/python -c 'import cil; print(cil.version.commit_hash[1:])' | tail -n1)
           TEST_SRC=https://raw.githubusercontent.com/TomographicImaging/CIL/$DEFAULT_CIL_TAG/Wrappers/Python/test
           curl -fsSL $TEST_SRC/test_SIRF.py > cil_sirf_test/test_SIRF.py
           curl -fsSL $TEST_SRC/utils.py > cil_sirf_test/utils.py
