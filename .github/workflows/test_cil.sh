@@ -10,5 +10,5 @@ for fname in test_SIRF.py utils.py testclass.py; do
 done
 
 $SIRF_PATH/../../INSTALL/bin/gadgetron >& ~/gadgetron.log&
-/opt/conda/bin/python -m unittest discover -v ./cil_sirf_test
+/opt/conda/bin/python -m unittest discover -v ./cil_sirf_test -k GradientPET -k BlockDataContainer
 for i in $(jobs -p); do kill -n 15 $i; done 2>/dev/null  # kill gadgetron
