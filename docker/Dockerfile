@@ -85,6 +85,7 @@ RUN chmod go+rwx /opt
 # copy to $WORKDIR (i.e. /home-away) as this is where entrypoint.sh will pick them up
 COPY .bashrc .
 COPY .profile .
+RUN sed -i s:PYTHON_INSTALL_DIR:${PYTHON_INSTALL_DIR}:g .bashrc
 
 # Create NB_GROUP and NB_USER
 RUN (addgroup --gid ${NB_GID} "${NB_GROUP}" || true) && \
