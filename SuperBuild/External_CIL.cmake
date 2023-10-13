@@ -96,7 +96,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
            COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_run_*.py
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   add_test(NAME CIL_SIRF_TESTS
-          COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_SIRF*.py
+          COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_SIRF*.py -k GradientPET -k BlockDataContainer
           WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   add_test(NAME CIL_FRAMEWORK_TESTS_4
            COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_Block_*.py

@@ -54,7 +54,6 @@ if [ ! -f ~/.jupyter/jupyter_server_config.py ]; then
   > ~/.jupyter/jupyter_server_config.py
 fi
 
-
 # serve a master notebook
 jupyter notebook --ip 0.0.0.0 --port $JUPYTER_PORT --no-browser \
   --notebook-dir /devel/ &

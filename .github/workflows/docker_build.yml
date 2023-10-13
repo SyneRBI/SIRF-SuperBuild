@@ -23,19 +23,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Install docker and pre-reqs and clean some disk-space
         shell: bash -l {0}
         run: |
          sudo .github/workflows/install_docker.sh
          sudo .github/workflows/GHA_increase_disk_space.sh
-         
+
       - name: Build docker core image
         # Builds docker image from Docker file.
         shell: bash -l {0}
         run: |
-          docker-compose -f docker/docker-compose.yml build --pull core 
-          
+          docker-compose -f docker/docker-compose.yml build --pull core
+
       - name : docker save core
         # https://docs.docker.com/engine/reference/commandline/save/
         shell: bash -l {0}
@@ -44,14 +44,14 @@ jobs:
           docker image ls
           docker save synerbi/sirf:core | gzip > core.tar.gz
           ls -l
-          
+
       - name: Upload artifact of the core image.
         uses: actions/upload-artifact@v3.1.2
         with:
           name: sirf-core
           path: core.tar.gz
-          
-          
+
+
   build-core-gpu:
     runs-on: ubuntu-latest
     steps:
@@ -61,13 +61,13 @@ jobs:
         run: |
          sudo .github/workflows/install_docker.sh
          sudo .github/workflows/GHA_increase_disk_space.sh
-          
+
       - name: Build docker core-gpu image
         # Builds docker image from Docker file.
         shell: bash -l {0}
         run: |
           docker-compose -f docker/docker-compose.yml -f docker/docker-compose.srv-gpu.yml build --pull core
-          
+
       - name : docker save core-gpu
         # https://docs.docker.com/engine/reference/commandline/save/
         shell: bash -l {0}
@@ -75,13 +75,13 @@ jobs:
           docker image ls
           docker save synerbi/sirf:core-gpu | gzip > core-gpu.tar.gz
           ls -l
-          
+
       - name: Upload artifact of the core image.
         uses: actions/upload-artifact@v3.1.2
         with:
           name: sirf-core-gpu
           path: core-gpu.tar.gz
-      
+
   build-devel-and-latest:
     runs-on: ubuntu-latest
     needs: build-core
@@ -95,7 +95,7 @@ jobs:
         run: |
          sudo .github/workflows/install_docker.sh
          sudo .github/workflows/GHA_increase_disk_space.sh
-          
+
       - name: Download artifact of core image
         uses: actions/download-artifact@v3
         with:
@@ -106,18 +106,18 @@ jobs:
         shell: bash -l {0}
         run: |
           docker load --input /tmp/core.tar.gz
-      
+
       - name: Build docker image
         # Builds docker image from Docker file.
         shell: bash -l {0}
         run: |
           set -ex;
-          compose_command="docker-compose -f docker/docker-compose.yml" 
+          compose_command="docker-compose -f docker/docker-compose.yml"
           if [[ ${{ matrix.tag }} == 'devel' ]]; then compose_command="$compose_command -f docker/docker-compose.devel.yml"; fi
           # $compose_command pull core
           $compose_command build --pull sirf
           echo "compose_command=$compose_command" >> $GITHUB_ENV
-          
+
       - name : docker save image
         # https://docs.docker.com/engine/reference/commandline/save/
         shell: bash -l {0}
@@ -126,13 +126,13 @@ jobs:
           sirf_image=`docker image ls | grep ${{ matrix.tag }} | awk '/sirf/ { print $3}'`
           docker history "$sirf_image"
           docker save  synerbi/sirf:${{ matrix.tag }} | gzip > ${{ matrix.tag }}.tar.gz
-          
+
       - name: Upload artifact of image.
         uses: actions/upload-artifact@v3.1.2
         with:
           name: sirf-${{ matrix.tag }}
           path: ${{ matrix.tag }}.tar.gz
-          
+
   build-service-gpu:
       runs-on: ubuntu-latest
       needs: build-core-gpu
@@ -160,9 +160,9 @@ jobs:
           shell: bash -l {0}
           run: |
             set -ex;
-            # docker-compose -f docker/docker-compose.yml -f docker/docker-compose.srv-gpu.yml pull core 
+            # docker-compose -f docker/docker-compose.yml -f docker/docker-compose.srv-gpu.yml pull core
             docker-compose -f docker/docker-compose.yml -f docker/docker-compose.srv-gpu.yml build --pull sirf
-            
+
         # Temporarily disabling the save and upload of the image as it is too big.
         # see https://github.com/SyneRBI/SIRF-SuperBuild/issues/770
 
@@ -174,16 +174,16 @@ jobs:
         #     docker rmi synerbi/sirf:core-gpu
         #     yes | docker system prune
         #     docker image ls
-        #     docker save synerbi/sirf:service-gpu | gzip > service-gpu.tar.gz 
-          
+        #     docker save synerbi/sirf:service-gpu | gzip > service-gpu.tar.gz
+
         # - name: Upload artifact of image.
         #   uses: actions/upload-artifact@v3.1.2
         #   with:
         #     name: sirf-service-gpu
         #     path: service-gpu.tar.gz
-            
-        
-            
+
+
+
   build-service-images:
     runs-on: ubuntu-latest
     needs: build-devel-and-latest
@@ -197,13 +197,13 @@ jobs:
         run: |
          sudo .github/workflows/install_docker.sh
          sudo .github/workflows/GHA_increase_disk_space.sh
-         
+
       - name: setup variables
         shell: bash -l {0}
         run: |
           compose_command="docker-compose -f docker/docker-compose.yml"
-           
-          if [[ ${{ matrix.tag }} == 'service' ]]; 
+
+          if [[ ${{ matrix.tag }} == 'service' ]];
           then
             echo "prereq_image_name="latest"" >> $GITHUB_ENV
             compose_command="$compose_command -f docker/docker-compose.srv.yml"
@@ -212,9 +212,9 @@ jobs:
           then
             echo "prereq_image_name="devel"" >> $GITHUB_ENV
             compose_command="$compose_command -f docker/docker-compose.devel.yml -f docker/docker-compose.srv.yml"
-          fi    
+          fi
           echo "compose_command=$compose_command" >> $GITHUB_ENV
-          
+
       - name: Download artifact of image
         uses: actions/download-artifact@v3
         with:
@@ -225,7 +225,7 @@ jobs:
         shell: bash -l {0}
         run: |
           docker load --input /tmp/${{ env.prereq_image_name }}.tar.gz
-      
+
       - name: Build docker image
         # Builds docker image from Docker file.
         shell: bash -l {0}
@@ -233,7 +233,13 @@ jobs:
           set -ex;
           # ${{ env.compose_command }} pull sirf
           ${{ env.compose_command }} build --pull sirf
-          
+
+      - name: Test CIL
+        shell: bash -l {0}
+        run: |
+          set -ex;
+          docker run --rm -v ./.github/workflows:/gh synerbi/sirf:service /gh/test_cil.sh
+
       - name : docker save image
         # https://docs.docker.com/engine/reference/commandline/save/
         shell: bash -l {0}
@@ -243,14 +249,14 @@ jobs:
           # get rid of everything over 2 days old
           docker system prune -a --filter "until=2d"
           docker image ls
-          docker save synerbi/sirf:service | gzip > ${{ matrix.tag }}.tar.gz 
-          
+          docker save synerbi/sirf:service | gzip > ${{ matrix.tag }}.tar.gz
+
       - name: Upload artifact of image.
         uses: actions/upload-artifact@v3.1.2
         with:
           name: sirf-${{ matrix.tag }}
           path: ${{ matrix.tag }}.tar.gz
-      
+
   # Docker images are not currently uploaded with this action.
   # Disable it for now as it would just waste time.
   # upload-images:
@@ -266,7 +272,7 @@ jobs:
   #       run: |
   #        sudo .github/workflows/install_docker.sh
   #        sudo .github/workflows/GHA_increase_disk_space.sh
-          
+
   #     - name: Download artifact of image
   #       uses: actions/download-artifact@v3
   #       with:
@@ -277,14 +283,14 @@ jobs:
   #       shell: bash -l {0}
   #       run: |
   #         docker load --input /tmp/${{ matrix.tag }}.tar.gz
-      
+
   #     - name: Upload docker image
   #       # Builds docker image from Docker file.
   #       shell: bash -l {0}
   #       run: |
-  #         # TODO requirement to 
+  #         # TODO requirement to
   #         docker image ls
   #         echo "Here we would upload image with name: ${{ matrix.tag }}"
-          
-          
+
+
     # TODO: publish to come later
