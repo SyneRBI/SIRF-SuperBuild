@@ -1,5 +1,9 @@
 # ChangeLog
 
+## x.x.x
+- updated versions:
+  - STIR: v5.2.0
+
 ## v3.5.0
 - Temporarily disable CCPi-Regularisation due to #832
 - CMake/building:

@@ -196,7 +196,6 @@ if (DEVEL_BUILD)
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
   set(DEFAULT_STIR_TAG origin/master)
-  set(STIR_REQUIRED_VERSION "5.0.0")
 
   ## siemens_to_ismrmrd
   set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd )
@@ -223,7 +222,7 @@ else()
   
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG rel_5.1.0)
+  set(DEFAULT_STIR_TAG rel_5.2.0)
 
   ## pet-rd-tools
   set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
@@ -239,6 +238,7 @@ SET(SIRF_TAG ${DEFAULT_SIRF_TAG} CACHE STRING ON)
  
 SET(STIR_TAG ${DEFAULT_STIR_TAG} CACHE STRING ON)
 SET(STIR_URL ${DEFAULT_STIR_URL} CACHE STRING ON)
+set(STIR_REQUIRED_VERSION "5.0.0")
 
 SET(Gadgetron_TAG ${DEFAULT_Gadgetron_TAG} CACHE STRING ON)
 SET(Gadgetron_URL ${DEFAULT_Gadgetron_URL} CACHE STRING ON)
