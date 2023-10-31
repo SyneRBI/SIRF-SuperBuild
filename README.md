@@ -174,14 +174,6 @@ cmake -DDISABLE_PYTHON:BOOL=ON  <other-args> ../SIRF-SuperBuild
 make -j3
 ```
 
-### Gadgetron include patch
-The installed Gadgetron include files contain some spurious `..` which prevent correct compilation of code with it. For this reason we patch the include file after it's installed. To patch we use Python as it is probably the most portable tool.
-
-The include has been fixed in more recent versions of Gadgetron and our patch should not do anything in such case.
-
-### Example Gadgetron configuration file
-Gadgetron requires a configuration file. An example is supplied and copied by the installation procedure (unless one exists).
-
 ### Set Environment variables
 Source a script with the environment variables appropriate for your shell
 
