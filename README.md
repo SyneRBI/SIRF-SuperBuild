@@ -87,7 +87,7 @@ For building docker containers, see [`docker/README.md`](docker/README.md)
 
 ## Dependencies
 
-The SuperBuild depends on CMake >= 3.16 on Linux and 3.20 on Windows.
+The SuperBuild depends on CMake >= 3.16.2 on Linux and 3.20 on Windows.
 
 If you are building Gadgetron there are a series of [additional dependencies](https://github.com/gadgetron/gadgetron/wiki/List-of-Dependencies), which must be met.
 
@@ -105,7 +105,8 @@ mkdir ~/devel
 ```
 
 ### Install CMake
-If you do not have CMake >= 3.16 on Linux and 3.20 on Windows, install it first. We suggest to follow the [official CMake instructions](https://cmake.org/download).
+
+If you do not have CMake >= 3.16.2 on Linux and 3.20 on Windows, install it first. We suggest to follow the [official CMake instructions](https://cmake.org/download).
 
 If you use a CMake installer, you will be asked to read and accept CMake's license. If you answered the last question during the CMake installation with yes, then on Linux you should use
 
@@ -154,8 +155,8 @@ By default, this will select stable configurations of the various projects. See 
 Then use your build environment to build and install the project. On Linux/OSX etc, you would normally use
 
 ```sh
-make -jN
-# alternatively: sudo make -jN
+cmake --build . --parallel N
+# alternatively: sudo cmake --build . --parallel N
 ```
 
 where `N` are the number of cores you want to use for the compilation. You will only need the `sudo` command if you set `CMAKE_INSTALL_PREFIX` to a system folder (e.g., `/usr/local`). Note that the default location is `<your-build>/INSTALL`.
@@ -181,8 +182,7 @@ make -j3
 cd ../
 mkdir build_Matlab
 cd build_Matlab
-export CC=gcc7 # or whatever the appropriate compiler is for MATLAB
-export CXX=g++7
+export CC=gcc9 CXX=g++9 # or whatever the appropriate compiler is for MATLAB
 cmake -DDISABLE_PYTHON:BOOL=ON  <other-args> ../SIRF-SuperBuild
 make -j3
 ```
@@ -318,8 +318,7 @@ You can enable more features by using other CMake variables (e.g. `ROOT_X11` def
 You can tell CMake to use a different compiler than what it finds by default. You will need to specify both C and C++ compilers. For instance, to use `gcc8`, use
 
 ```sh
-export CC=gcc8
-export CXX=g++8
+export CC=gcc9 CXX=g++9
 ccmake normal-options
 ```
 
