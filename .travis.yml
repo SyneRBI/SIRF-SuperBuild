@@ -53,6 +53,7 @@ jobs:
    - $DCC pull core
    # rebuild base image (using above docker cache)
    - |
+      export DOCKER_BUILDKIT=1
       if [[ "$DOCKER_BUILD" == *"CORE"* ]]; then ( set -ev
         $DCC build --pull core
       ); else ( set -ev
