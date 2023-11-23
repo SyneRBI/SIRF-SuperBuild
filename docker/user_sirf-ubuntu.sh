@@ -4,7 +4,7 @@
 # outside of the "docker build" setting
 
 [ -f .bashrc ] && . .bashrc
-set -ev
+set -v
 # set default installation location
 INSTALL_DIR="${1:-/opt}"
 # set default URL/tag
