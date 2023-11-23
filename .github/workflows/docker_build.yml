@@ -10,6 +10,10 @@ on:
     - '.github/workflows/c-cpp.yml'
     - 'CITATION.cff'
     - '.mailmap'
+    - '.travis.yml'
+    - 'NOTICE.txt'
+    - 'LICENSE.txt'
+
   push:
     branches: [ master ]
     paths-ignore:
@@ -17,6 +21,11 @@ on:
     - 'jupyterhub/**'
     - 'VirtualBox/**'
     - '.github/workflows/c-cpp.yml'
+    - 'CITATION.cff'
+    - '.mailmap'
+    - '.travis.yml'
+    - 'NOTICE.txt'
+    - 'LICENSE.txt'
 
 jobs:
   build-core:

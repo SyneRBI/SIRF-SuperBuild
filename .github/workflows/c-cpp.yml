@@ -12,6 +12,9 @@ on:
     - '.github/workflows/*docker*'
     - 'CITATION.cff'
     - '.mailmap'
+    - '.travis.yml'
+    - 'NOTICE.txt'
+    - 'LICENSE.txt'
     
   pull_request:
     branches: [ master ]
@@ -22,6 +25,11 @@ on:
     - 'jupyterhub/**'
     - 'VirtualBox/**'
     - '.github/workflows/*docker*'
+    - 'CITATION.cff'
+    - '.mailmap'
+    - '.travis.yml'
+    - 'NOTICE.txt'
+    - 'LICENSE.txt'
     
 
 jobs:
