@@ -103,17 +103,14 @@ Service images are intended to be run in the background, and expose:
 
 ### Windows specific notes
 
-Note that Docker for Windows uses the 
-[Hyper-V backend][hyper-vbox]. Unfortunately, this conflicts with VirtualBox (last checked start 2021) so you would
-have to en/disable Hyper-V and reboot.
-You can use the older VirtualBox backend instead by using [Docker Machine].
+Note that Docker for Windows uses either WSL or Hyper-V backend (the latter might be incompatible with VirtualBox),
+see its [documentation for more information][docker-windows].
 
 You may want to consult [SIRF on Windows Subsystem for Linux][wiki-wsl]
 regarding setting up Xserver/VNCserver and other UNIX-for-Windows-users tips.
 
 [wiki-wsl]: https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-on-Bash-on-Ubuntu-on-Windows-10
-[hyper-vbox]: https://docs.docker.com/docker-for-windows/install/#what-to-know-before-you-install
-[Docker Machine]: https://docs.docker.com/machine/overview/#whats-the-difference-between-docker-engine-and-docker-machine
+[docker-windows]: https://docs.docker.com/docker-for-windows/install/
 
 ## Glossary
 
@@ -313,7 +310,7 @@ docker rmi <IMAGEID>
 ## Notes
 
 - Since SIRF 3.5, by default the build files are removed on the docker image. This can be changed by [setting an environment variable](./DocForDevelopers.md#Useful-environment-variables).
-If you have built the image while keeping all build files (or re-build them in an existing container), tests of SIRF and other installed packages can be run as follows:
+If you have built the image while keeping all build files (or re-build them in an existing container), tests of SIRF and other installed packages can be run (on the docker image) as follows:
 ```bash
 sudo -Hu jovyan bash --login -c /devel/test.sh
 ```
@@ -350,7 +347,7 @@ Solutions:
 
 
 
-Problem: When trying to run `/sirf-compose-server-gpu up -d sirf` I get:
+Problem: When trying to run `./sirf-compose-server-gpu up -d sirf` I get:
 ```
 ERROR: The Compose file './docker-compose.srv-gpu.yml' is invalid because:
 Unsupported config option for services.gadgetron: 'runtime'
@@ -364,8 +361,18 @@ Note that if you have python 2 and python 3 installed you may need to use `pip` 
 pip3 uninstall docker-compose
 pip3 install docker-compose 
 ```
+#### docker build fails with "unknown flag"
+If you see an error likely
+```
+Error response from daemon: dockerfile parse error line 58: Unknown flag: link
+```
+Your docker might default to an older version (this happens on Ubuntu 20.04 for instance). It might be resolved by doing
+```bash
+export DOCKER_BUILDKIT=1
+```
+(or the equivalent for your shell). If not, try to upgrade your docker daemon.
 
-### Building problems related to gpg
+#### Building problems related to gpg
 When building a new docker image, you could see errors such as
 ```
 W: http://archive.ubuntu.com/ubuntu/dists/jammy/InRelease: The key(s) in the keyring /etc/apt/trusted.gpg.d/ubuntu-keyring-2012-cdimage.gpg are ignored as the file is not readable by user '_apt' executing apt-key.
