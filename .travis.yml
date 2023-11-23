@@ -1,9 +1,3 @@
-branches:
-  only:
-  - master
-  # version
-  - /^v\d.*/
-
 # Note: with `language: cpp`, `cache: ccache` works
 # but `cache: pip` and `python:` is ignored
 os:
@@ -53,6 +47,7 @@ jobs:
    - $DCC pull core
    # rebuild base image (using above docker cache)
    - |
+      export DOCKER_BUILDKIT=1
       if [[ "$DOCKER_BUILD" == *"CORE"* ]]; then ( set -ev
         $DCC build --pull core
       ); else ( set -ev
