@@ -34,9 +34,9 @@ docker build --build-arg PYTHON_VERSION=3.9 --build-arg ROOT_CONTAINER=nvidia/cu
 
 # base notebook
 cd ../base-notebook
-# change the base class with the ROOT_CONTAINER argument
+# change the base class with the BASE_CONTAINER argument
 # build and tag
-docker build --build-arg ROOT_CONTAINER=paskino/jupyter:docker-stacks-foundations-cuda11-cudnn8-devel-ubuntu22.04 -t paskino/jupyter:base-notebook-cuda11-cudnn8-devel-ubuntu22.04 .
+docker build --build-arg BASE_CONTAINER=paskino/jupyter:docker-stacks-foundations-cuda11-cudnn8-devel-ubuntu22.04 -t paskino/jupyter:base-notebook-cuda11-cudnn8-devel-ubuntu22.04 .
 
 # minimal notebook
 cd ../minimal-notebook
