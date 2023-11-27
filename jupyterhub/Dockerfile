@@ -1,10 +1,11 @@
+# syntax=docker/dockerfile:1
 ARG BASE_IMAGE=nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04
 # paskino/jupyter   datascience-notebook-cuda11
 FROM ${BASE_IMAGE} as base
 
 # Make sure the image has the same libraries as the standard SIRF docker image
 # Add to the docker image the appropriate stuff
-user root
+USER root
 COPY --chown=jovyan:users docker/build_essential-ubuntu.sh docker/build_gadgetron-ubuntu.sh docker/build_system-ubuntu.sh docker/install-sirf-exercises-dep.py ./scripts/
 RUN bash ./scripts/build_essential-ubuntu.sh &&\
     bash ./scripts/build_gadgetron-ubuntu.sh &&\
@@ -14,10 +15,10 @@ RUN bash ./scripts/build_essential-ubuntu.sh &&\
 # https://docs.docker.com/develop/develop-images/multistage-build/#use-an-external-image-as-a-stage
 # not documented in https://docs.docker.com/engine/reference/builder/#copy
 # FROM --from=nginx:latest /etc/nginx/nginx.conf /nginx.conf
-COPY --from=synerbi/sirf:sirf-core /opt/SIRF-SuperBuild/INSTALL/ /opt/SIRF-SuperBuild/INSTALL
-COPY --from=synerbi/sirf:sirf-core /opt/SIRF-SuperBuild/sources/SIRF/ /opt/SIRF-SuperBuild/sources/SIRF/
+COPY --from=synerbi/sirf:latest --link /opt/SIRF-SuperBuild/INSTALL/ /opt/SIRF-SuperBuild/INSTALL
+COPY --from=synerbi/sirf:latest --link /opt/SIRF-SuperBuild/sources/SIRF/ /opt/SIRF-SuperBuild/sources/SIRF/
 
-from base as jup
+FROM base AS jup
 # remove the SIRF-Exercises and CIL-Demos that get installed by user_service-ubuntu.sh
 USER jovyan
 ARG NB_USER="jovyan"
@@ -44,7 +45,7 @@ RUN mamba env update -n base -f docker/requirements.yml &&\
 # Switch back to jovyan to avoid accidental container runs as root
 # From https://github.com/paskino/SIRF-SuperBuild/blob/301c2274621e4729cadbd2a1705d8c4d9e3b7e50/docker/Dockerfile#L212-L219
 # Set environment variables for SIRF
-USER jovyan 
+USER jovyan
 COPY docker/.bashrc /home/jovyan
 ENV PATH "/opt/conda/bin:/opt/SIRF-SuperBuild/INSTALL/bin:$PATH"
 ENV LD_LIBRARY_PATH "/opt/SIRF-SuperBuild/INSTALL/lib:/opt/SIRF-SuperBuild/INSTALL/lib64:$LD_LIBRARY_PATH"
@@ -58,7 +59,7 @@ RUN echo $PATH
 USER root
 RUN echo "export OMP_NUM_THREADS=\$(python -c 'import multiprocessing as mc; print(mc.cpu_count() // 2)')" > /usr/local/bin/before-notebook.d/omp_num_threads.sh
 
-# switch back to 
+# switch back to
 USER jovyan
 
 #/opt/SIRF-SuperBuild/INSTALL/lib:/opt/SIRF-SuperBuild/INSTALL/lib64:/usr/local/nvidia/lib:/usr/local/nvidia/lib64::/opt/conda/lib
