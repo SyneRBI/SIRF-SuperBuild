@@ -55,6 +55,8 @@ ENV SIRF_PATH "/opt/SIRF-SuperBuild/sources/SIRF"
 #Suppress output from Gadgetron which gives some problems on notebooks (QUIERO)
 ENV GADGETRON_LOG_MASK ""
 RUN echo $PATH
+USER root
+RUN echo "export OMP_NUM_THREADS=\$(python -c 'import multiprocessing as mc; print(mc.cpu_count() // 2)')" > /usr/local/bin/before-notebook.d/omp_num_threads.sh
 
 # switch back to 
 USER jovyan
