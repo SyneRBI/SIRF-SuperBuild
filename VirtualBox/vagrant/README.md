@@ -42,7 +42,7 @@ Log into the VM, open a terminal and type
 ```
 1. changes some settings of the gnome desktop environment
 2. configures Jupyter
-```
+
 If you want to export the VM, we recommend running
 ```sh
 ~/devel/SIRF-SuperBuild/VirtualBox/scripts/clean_before_VM_export.sh
