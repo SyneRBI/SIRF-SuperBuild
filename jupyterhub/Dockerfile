@@ -1,6 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04
-# paskino/jupyter   datascience-notebook-cuda11
+ARG BASE_CONTAINER=nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04
 FROM ${BASE_IMAGE} as base
 
 # Make sure the image has the same libraries as the standard SIRF docker image
