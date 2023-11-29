@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG BASE_CONTAINER=nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04
-FROM ${BASE_IMAGE} as base
+FROM ${BASE_CONTAINER} as base
 
 # Make sure the image has the same libraries as the standard SIRF docker image
 # Add to the docker image the appropriate stuff
