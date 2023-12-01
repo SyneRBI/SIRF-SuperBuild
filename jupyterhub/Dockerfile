@@ -1,5 +1,7 @@
 # syntax=docker/dockerfile:1
+ARG SIRF_IMAGE="synerbi/sirf:latest"
 ARG BASE_CONTAINER=nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04
+FROM ${SIRF_IMAGE} as sirf_image
 FROM ${BASE_CONTAINER} as base
 
 # Make sure the image has the same libraries as the standard SIRF docker image
@@ -10,13 +12,11 @@ RUN bash ./scripts/build_essential-ubuntu.sh &&\
     bash ./scripts/build_gadgetron-ubuntu.sh &&\
     bash ./scripts/build_system-ubuntu.sh
 
-
-ARG SIRF_IMAGE="synerbi/sirf:latest"
 # https://docs.docker.com/develop/develop-images/multistage-build/#use-an-external-image-as-a-stage
 # not documented in https://docs.docker.com/engine/reference/builder/#copy
 # FROM --from=nginx:latest /etc/nginx/nginx.conf /nginx.conf
-COPY --from=${SIRF_IMAGE} --link /opt/SIRF-SuperBuild/INSTALL/ /opt/SIRF-SuperBuild/INSTALL
-COPY --from=${SIRF_IMAGE} --link /opt/SIRF-SuperBuild/sources/SIRF/ /opt/SIRF-SuperBuild/sources/SIRF/
+COPY --from=sirf_image --link /opt/SIRF-SuperBuild/INSTALL/ /opt/SIRF-SuperBuild/INSTALL
+COPY --from=sirf_image --link /opt/SIRF-SuperBuild/sources/SIRF/ /opt/SIRF-SuperBuild/sources/SIRF/
 
 FROM base AS jup
 # remove the SIRF-Exercises and CIL-Demos that get installed by user_service-ubuntu.sh
