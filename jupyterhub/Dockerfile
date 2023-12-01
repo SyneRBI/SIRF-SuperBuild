@@ -11,11 +11,12 @@ RUN bash ./scripts/build_essential-ubuntu.sh &&\
     bash ./scripts/build_system-ubuntu.sh
 
 
+ARG SIRF_IMAGE="synerbi/sirf:latest"
 # https://docs.docker.com/develop/develop-images/multistage-build/#use-an-external-image-as-a-stage
 # not documented in https://docs.docker.com/engine/reference/builder/#copy
 # FROM --from=nginx:latest /etc/nginx/nginx.conf /nginx.conf
-COPY --from=synerbi/sirf:latest --link /opt/SIRF-SuperBuild/INSTALL/ /opt/SIRF-SuperBuild/INSTALL
-COPY --from=synerbi/sirf:latest --link /opt/SIRF-SuperBuild/sources/SIRF/ /opt/SIRF-SuperBuild/sources/SIRF/
+COPY --from=${SIRF_IMAGE} --link /opt/SIRF-SuperBuild/INSTALL/ /opt/SIRF-SuperBuild/INSTALL
+COPY --from=${SIRF_IMAGE} --link /opt/SIRF-SuperBuild/sources/SIRF/ /opt/SIRF-SuperBuild/sources/SIRF/
 
 FROM base AS jup
 # remove the SIRF-Exercises and CIL-Demos that get installed by user_service-ubuntu.sh
@@ -36,7 +37,6 @@ RUN mamba env update -n base -f docker/requirements.yml &&\
     mamba env update -n base -f jupyterhub/requirements.yml &&\
     git clone https://github.com/SyneRBI/SIRF-Exercises --recursive -b master SIRF-Exercises &&\
     python scripts/install-sirf-exercises-dep.py SIRF-Exercises/requirements.txt &&\
-    mamba env update --file jupyterhub/requirements-service.yml &&\
     mamba env update -n base -f jupyterhub/requirements.yml &&\
     rm -rf docker && rm -rf jupyterhub &&\
     rm -rf ./scripts
