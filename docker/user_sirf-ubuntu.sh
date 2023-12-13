@@ -4,7 +4,7 @@
 # outside of the "docker build" setting
 
 [ -f .bashrc ] && . .bashrc
-set -v
+set -ev
 # set default installation location
 INSTALL_DIR="${1:-/opt}"
 # set default URL/tag
@@ -53,4 +53,3 @@ if [ "$REMOVE_BUILD_FILES" = 1 ]; then
 else
     echo  "Keeping build files"
 fi
-

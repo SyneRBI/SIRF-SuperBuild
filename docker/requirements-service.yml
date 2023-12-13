@@ -7,6 +7,6 @@ channels:
 dependencies:
   - jupyterlab
   - jupyter
-  - ipywidgets<8
+  - ipywidgets<8 # vis. https://github.com/TomographicImaging/CIL/pull/1599
   - widgetsnbextension
   - nodejs
