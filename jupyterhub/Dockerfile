@@ -1,64 +1,102 @@
 # syntax=docker/dockerfile:1
-ARG SIRF_IMAGE="synerbi/sirf:latest"
 ARG BASE_CONTAINER=nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04
-FROM ${SIRF_IMAGE} as sirf_image
 FROM ${BASE_CONTAINER} as base
 
-# Make sure the image has the same libraries as the standard SIRF docker image
-# Add to the docker image the appropriate stuff
 USER root
-COPY --chown=jovyan:users docker/build_essential-ubuntu.sh docker/build_gadgetron-ubuntu.sh docker/build_system-ubuntu.sh docker/install-sirf-exercises-dep.py ./scripts/
-RUN bash ./scripts/build_essential-ubuntu.sh &&\
-    bash ./scripts/build_gadgetron-ubuntu.sh &&\
-    bash ./scripts/build_system-ubuntu.sh
 
-# https://docs.docker.com/develop/develop-images/multistage-build/#use-an-external-image-as-a-stage
-# not documented in https://docs.docker.com/engine/reference/builder/#copy
-# FROM --from=nginx:latest /etc/nginx/nginx.conf /nginx.conf
-COPY --from=sirf_image --link /opt/SIRF-SuperBuild/INSTALL/ /opt/SIRF-SuperBuild/INSTALL
-COPY --from=sirf_image --link /opt/SIRF-SuperBuild/sources/SIRF/ /opt/SIRF-SuperBuild/sources/SIRF/
+# suppress warnings
+ENV DEBIAN_FRONTEND noninteractive
+COPY docker/raw-ubuntu.sh /opt/scripts/
+RUN bash /opt/scripts/raw-ubuntu.sh
+#ENV LC_ALL en_GB.UTF-8
+ENV LANG en_GB.UTF-8
+ENV LANGUAGE en_GB:en
 
-FROM base AS jup
-# remove the SIRF-Exercises and CIL-Demos that get installed by user_service-ubuntu.sh
-USER jovyan
-ARG NB_USER="jovyan"
-ARG NB_GROUP="users"
+FROM base as build
 
+COPY docker/update_nvidia_keys.sh /opt/scripts/
+RUN bash /opt/scripts/update_nvidia_keys.sh
 
-COPY --chown=jovyan:users docker/requirements.yml docker/
-COPY --chown=jovyan:users jupyterhub/requirements.yml docker/requirements-service.yml jupyterhub/
+COPY docker/build_essential-ubuntu.sh /opt/scripts/
+RUN bash /opt/scripts/build_essential-ubuntu.sh
 
+COPY docker/build_gadgetron-ubuntu.sh /opt/scripts/
+RUN bash /opt/scripts/build_gadgetron-ubuntu.sh
 
-# RUN mamba env update -n base -f docker/requirements.yml
-# RUN mamba env update -n base -f jupyterhub/requirements.yml
+COPY docker/build_system-ubuntu.sh /opt/scripts/
+RUN bash /opt/scripts/build_system-ubuntu.sh
+ENV PATH="/opt/cmake/bin:${PATH}"
 
-# RUN bash ./scripts/user_service-ubuntu.sh &&\
-RUN mamba env update -n base -f docker/requirements.yml &&\
-    mamba env update -n base -f jupyterhub/requirements.yml &&\
-    git clone https://github.com/SyneRBI/SIRF-Exercises --recursive -b master SIRF-Exercises &&\
-    python scripts/install-sirf-exercises-dep.py SIRF-Exercises/requirements.txt &&\
-    mamba env update -n base -f jupyterhub/requirements.yml &&\
-    rm -rf docker && rm -rf jupyterhub &&\
-    rm -rf ./scripts
+# ccache
+COPY --link docker/devel/.ccache/ /opt/ccache/
+RUN ccache -o cache_dir=/opt/ccache
+ENV PATH="/usr/lib/ccache:${PATH}"
 
-# Switch back to jovyan to avoid accidental container runs as root
-# From https://github.com/paskino/SIRF-SuperBuild/blob/301c2274621e4729cadbd2a1705d8c4d9e3b7e50/docker/Dockerfile#L212-L219
-# Set environment variables for SIRF
-USER jovyan
-COPY docker/.bashrc /home/jovyan
-ENV PATH "/opt/conda/bin:/opt/SIRF-SuperBuild/INSTALL/bin:$PATH"
-ENV LD_LIBRARY_PATH "/opt/SIRF-SuperBuild/INSTALL/lib:/opt/SIRF-SuperBuild/INSTALL/lib64:$LD_LIBRARY_PATH"
-ENV PYTHONPATH "/opt/SIRF-SuperBuild/INSTALL/python"
-ENV SIRF_INSTALL_PATH "/opt/SIRF-SuperBuild/INSTALL"
-ENV SIRF_EXERCISES_DATA_PATH "/mnt/materials/SIRF/Fully3D/SIRF/"
-ENV SIRF_PATH "/opt/SIRF-SuperBuild/sources/SIRF"
-#Suppress output from Gadgetron which gives some problems on notebooks (QUIERO)
-ENV GADGETRON_LOG_MASK ""
-RUN echo $PATH
-USER root
+# SIRF-SuperBuild config
+ARG SIRF_SB_URL="https://github.com/SyneRBI/SIRF-SuperBuild"
+ARG SIRF_SB_TAG="master"
+ARG REMOVE_BUILD_FILES=1
+ARG RUN_CTEST=1
+ARG NUM_PARALLEL_BUILDS=" "
+ARG BUILD_FLAGS="\
+ -DCMAKE_BUILD_TYPE=Release\
+ -DSTIR_ENABLE_OPENMP=ON -DUSE_SYSTEM_ACE=ON\
+ -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON\
+ -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_ITK=ON\
+ -DUSE_SYSTEM_SWIG=ON\
+ -DUSE_NiftyPET=OFF\
+ -DBUILD_siemens_to_ismrmrd=ON -DBUILD_pet_rd_tools=ON"
+ARG EXTRA_BUILD_FLAGS="-DGadgetron_USE_CUDA=OFF -DBUILD_CIL=OFF"
+
+# build, install in /opt/SIRF-SuperBuild/{INSTALL,sources/SIRF}, test (if RUN_CTEST)
+COPY docker/user_sirf-ubuntu.sh /opt/scripts/
+RUN bash /opt/scripts/user_sirf-ubuntu.sh \
+ && fix-permissions /opt/SIRF-SuperBuild \
+ && fix-permissions /opt/ccache
+
+FROM base as sirf
+
+# X11 forwarding
+RUN apt update -qq && apt install -yq --no-install-recommends \
+  libx11-xcb1 \
+  && apt clean
+RUN mkdir -p /usr/share/X11/xkb
+RUN [ -e /usr/bin/X ] || ln -s /usr/bin/Xorg /usr/bin/X
+
 RUN echo "export OMP_NUM_THREADS=\$(python -c 'import multiprocessing as mc; print(mc.cpu_count() // 2)')" > /usr/local/bin/before-notebook.d/omp_num_threads.sh
 
-# switch back to
-USER jovyan
+COPY --chown=${NB_USER} --chmod=644 --link docker/.bashrc /home/${NB_USER}/
+# RUN sed -i s:PYTHON_INSTALL_DIR:${CONDA_DIR}:g /home/${NB_USER}/.bashrc
 
-#/opt/SIRF-SuperBuild/INSTALL/lib:/opt/SIRF-SuperBuild/INSTALL/lib64:/usr/local/nvidia/lib:/usr/local/nvidia/lib64::/opt/conda/lib
+# install /opt/{SIRF-Exercises,CIL-Demos}
+COPY docker/user_service-ubuntu.sh /opt/scripts/
+RUN bash /opt/scripts/user_service-ubuntu.sh \
+ && fix-permissions /opt/SIRF-Exercises \
+ && fix-permissions /opt/CIL-Demos
+
+USER ${NB_UID}
+COPY --chown=${NB_USER} docker/requirements.yml /opt/scripts/docker-requirements.yaml
+RUN mamba env update -n base -f /opt/scripts/docker-requirements.yaml
+
+COPY --chown=${NB_USER} jupyterhub/requirements.yml /opt/scripts/jupyterhub-requirements.yaml
+RUN mamba env update -n base -f /opt/scripts/jupyterhub-requirements.yaml
+
+# install from build
+COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/INSTALL/ /opt/SIRF-SuperBuild/INSTALL/
+COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/sources/SIRF/ /opt/SIRF-SuperBuild/sources/SIRF/
+# TODO: COPY --from=build /usr/local/{bin,lib} ?
+
+# Set environment variables for SIRF
+ENV PATH "/opt/conda/bin:/opt/SIRF-SuperBuild/INSTALL/bin:$PATH"
+ENV LD_LIBRARY_PATH "/opt/SIRF-SuperBuild/INSTALL/lib:/opt/SIRF-SuperBuild/INSTALL/lib64:$LD_LIBRARY_PATH"
+#/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/opt/conda/lib
+ENV PYTHONPATH "/opt/SIRF-SuperBuild/INSTALL/python"
+ENV SIRF_INSTALL_PATH "/opt/SIRF-SuperBuild/INSTALL"
+ENV SIRF_PATH "/opt/SIRF-SuperBuild/sources/SIRF"
+#ENV SIRF_EXERCISES_DATA_PATH "/mnt/materials/SIRF/Fully3D/SIRF/"
+# Suppress output from Gadgetron which gives some problems on notebooks (QUIERO)
+ENV GADGETRON_LOG_MASK ""
+
+ENV DEBIAN_FRONTEND ''
+
+# TODO: CMD ["jupyterhub/service.sh"]
