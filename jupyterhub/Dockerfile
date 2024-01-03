@@ -46,13 +46,12 @@ ARG BUILD_FLAGS="\
  -DUSE_SYSTEM_SWIG=ON\
  -DUSE_NiftyPET=OFF\
  -DBUILD_siemens_to_ismrmrd=ON -DBUILD_pet_rd_tools=ON"
-ARG EXTRA_BUILD_FLAGS="-DGadgetron_USE_CUDA=OFF -DBUILD_CIL=OFF"
+ARG EXTRA_BUILD_FLAGS="-DGadgetron_USE_CUDA=ON -DBUILD_CIL=OFF"
 
 # build, install in /opt/SIRF-SuperBuild/{INSTALL,sources/SIRF}, test (if RUN_CTEST)
 COPY docker/user_sirf-ubuntu.sh /opt/scripts/
 RUN bash /opt/scripts/user_sirf-ubuntu.sh \
- && fix-permissions /opt/SIRF-SuperBuild \
- && fix-permissions /opt/ccache
+ && fix-permissions /opt/SIRF-SuperBuild /opt/ccache
 
 FROM base as sirf
 
@@ -71,15 +70,14 @@ COPY --chown=${NB_USER} --chmod=644 --link docker/.bashrc /home/${NB_USER}/
 # install /opt/{SIRF-Exercises,CIL-Demos}
 COPY docker/user_service-ubuntu.sh /opt/scripts/
 RUN bash /opt/scripts/user_service-ubuntu.sh \
- && fix-permissions /opt/SIRF-Exercises \
- && fix-permissions /opt/CIL-Demos
+ && fix-permissions /opt/SIRF-Exercises /opt/CIL-Demos "${CONDA_DIR}" /home/${NB_USER}
 
-USER ${NB_UID}
-COPY --chown=${NB_USER} docker/requirements.yml /opt/scripts/docker-requirements.yaml
-RUN mamba env update -n base -f /opt/scripts/docker-requirements.yaml
-
-COPY --chown=${NB_USER} jupyterhub/requirements.yml /opt/scripts/jupyterhub-requirements.yaml
-RUN mamba env update -n base -f /opt/scripts/jupyterhub-requirements.yaml
+COPY docker/requirements.yml /opt/scripts/docker-requirements.yaml
+RUN mamba env update -n base -f /opt/scripts/docker-requirements.yaml \
+ && fix-permissions "${CONDA_DIR}" /home/${NB_USER}
+COPY jupyterhub/requirements.yml /opt/scripts/jupyterhub-requirements.yaml
+RUN mamba env update -n base -f /opt/scripts/jupyterhub-requirements.yaml \
+ && fix-permissions "${CONDA_DIR}" /home/${NB_USER}
 
 # install from build
 COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/INSTALL/ /opt/SIRF-SuperBuild/INSTALL/
@@ -97,6 +95,7 @@ ENV SIRF_PATH "/opt/SIRF-SuperBuild/sources/SIRF"
 # Suppress output from Gadgetron which gives some problems on notebooks (QUIERO)
 ENV GADGETRON_LOG_MASK ""
 
+USER ${NB_UID}
 ENV DEBIAN_FRONTEND ''
 
 # TODO: CMD ["jupyterhub/service.sh"]

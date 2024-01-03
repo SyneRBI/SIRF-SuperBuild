@@ -24,6 +24,13 @@ cd ../datascience-notebook
 docker build --build-arg BASE_CONTAINER=synerbi/jupyter:scipy -t synerbi/jupyter:datascience .
 
 cd ../../../..
-docker build --build-arg BASE_CONTAINER=synerbi/jupyter:datascience --build-arg SIRF_IMAGE=${SIRF_IMAGE} -t synerbi/jupyter:sirf -f jupyterhub/Dockerfile .
+SIRF_BUILD_ARGS=(
+  --build-arg BASE_CONTAINER=synerbi/jupyter:datascience -f jupyterhub/Dockerfile .
+  --build-arg EXTRA_BUILD_FLAGS="-DGadgetron_USE_CUDA=ON -DBUILD_CIL=OFF -DUSE_SYSTEM_Boost=OFF")
+# ccache build
+docker build -t synerbi/sirf:jupyter-build --target build "${SIRF_BUILD_ARGS[@]}"
+docker run --rm -it -v ./docker/devel/.ccache:/opt/ccache synerbi/sirf:jupyter-build echo copied ccache
+# full build
+docker build -t synerbi/sirf:jupyter "${SIRF_BUILD_ARGS[@]}"
 
 popd
