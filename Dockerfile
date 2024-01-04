@@ -98,8 +98,8 @@ COPY --chown=${NB_USER} --chmod=644 --link docker/.bashrc /home/${NB_USER}/
 
 # install {SIRF-Exercises,CIL-Demos}
 COPY docker/user_service-ubuntu.sh /opt/scripts/
-RUN INSTALL_DIR=. bash /opt/scripts/user_service-ubuntu.sh \
- && fix-permissions SIRF-Exercises CIL-Demos "${CONDA_DIR}" /home/${NB_USER}
+RUN bash /opt/scripts/user_service-ubuntu.sh \
+ && fix-permissions /opt/SIRF-Exercises /opt/CIL-Demos "${CONDA_DIR}" /home/${NB_USER}
 
 # install from build
 COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/INSTALL/ /opt/SIRF-SuperBuild/INSTALL/
@@ -126,4 +126,5 @@ ENV DEBIAN_FRONTEND ''
 ENV DOCKER_STACKS_JUPYTER_CMD="notebook"
 ENV RESTARTABLE="yes"
 
-# TODO: CMD ["jupyterhub/service.sh"]
+COPY --link --chown=${NB_USER} docker/start-gadgetron-notebook.sh /opt/scripts/
+CMD ["/opt/scripts/start-gadgetron-notebook.sh"]
