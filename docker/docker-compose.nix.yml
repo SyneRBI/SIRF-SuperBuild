@@ -1,8 +1,7 @@
-version: '2.3'
+version: '3.2'
 services:
  sirf:
-  environment:
-   - DISPLAY
+  environment: [DISPLAY]
   volumes:
-   - /tmp/.X11-unix:/tmp/.X11-unix
-   - /tmp/.docker.xauth:/tmp/.docker.xauth
+  - /tmp/.X11-unix:/tmp/.X11-unix
+  - /tmp/.docker.xauth:/tmp/.docker.xauth

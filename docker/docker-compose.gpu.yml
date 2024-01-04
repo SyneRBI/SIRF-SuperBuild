@@ -1,0 +1,36 @@
+
+version: '3.2'
+services:
+ foundation:
+  image: synerbi/jupyter:foundation-gpu
+  build:
+   args:
+    ROOT_CONTAINER: nvidia/cuda:11.7.1-cudnn8-runtime-ubuntu22.04
+    PYTHON_VERSION: 3.9
+ base:
+  image: synerbi/jupyter:base-gpu
+  build:
+   args: {BASE_CONTAINER: synerbi/jupyter:foundation-gpu}
+ minimal:
+  image: synerbi/jupyter:minimal-gpu
+  build:
+   args: {BASE_CONTAINER: synerbi/jupyter:base-gpu}
+ scipy:
+  image: synerbi/jupyter:scipy-gpu
+  build:
+   args: {BASE_CONTAINER: synerbi/jupyter:minimal-gpu}
+ sirf-build:
+  image: synerbi/jupyter:sirf-build-gpu
+  build:
+   target: build
+   args:
+    BASE_CONTAINER: synerbi/jupyter:scipy-gpu
+    Gadgetron_USE_CUDA: "ON"
+ sirf:
+  deploy: {resources: {reservations: {devices: [{driver: nvidia, count: all, capabilities: [gpu]}]}}}
+  image: synerbi/sirf:jupyter-gpu
+  build:
+   args:
+    BASE_CONTAINER: synerbi/jupyter:scipy-gpu
+    Gadgetron_USE_CUDA: "ON"
+   cache_from: [synerbi/jupyter:sirf-build-gpu]

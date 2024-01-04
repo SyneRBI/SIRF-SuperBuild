@@ -1,0 +1,63 @@
+version: '3.2'
+services:
+ foundation:
+  image: synerbi/jupyter:foundation-cpu
+  build:
+   context: docker/docker-stacks/images/docker-stacks-foundation
+   args:
+    ROOT_CONTAINER: ubuntu:22.04
+    PYTHON_VERSION: 3.9
+ base:
+  image: synerbi/jupyter:base-cpu
+  build:
+   context: docker/docker-stacks/images/base-notebook
+   args: {BASE_CONTAINER: synerbi/jupyter:foundation-cpu}
+ minimal:
+  image: synerbi/jupyter:minimal-cpu
+  build:
+   context: docker/docker-stacks/images/minimal-notebook
+   args: {BASE_CONTAINER: synerbi/jupyter:base-cpu}
+ scipy:
+  image: synerbi/jupyter:scipy-cpu
+  build:
+   context: docker/docker-stacks/images/scipy-notebook
+   args: {BASE_CONTAINER: synerbi/jupyter:minimal-cpu}
+ sirf-build:
+  image: synerbi/jupyter:sirf-build-cpu
+  build:
+   context: .
+   target: build
+   args:
+    BASE_CONTAINER: synerbi/jupyter:scipy-cpu
+    Gadgetron_USE_CUDA: "OFF"
+    EXTRA_BUILD_FLAGS: >
+     -DGadgetron_TAG=6202fb7352a14fb82817b57a97d928c988eb0f4b
+     -DISMRMRD_TAG=v1.13.7
+     -Dsiemens_to_ismrmrd_TAG=v1.2.11
+ sirf:
+  container_name: sirf  # for scaling, comment this out https://github.com/docker/compose/issues/3729
+  image: synerbi/sirf:jupyter
+  build:
+   context: .
+   args:
+    BASE_CONTAINER: synerbi/jupyter:scipy-cpu
+    Gadgetron_USE_CUDA: "OFF"
+    EXTRA_BUILD_FLAGS: >
+     -DGadgetron_TAG=6202fb7352a14fb82817b57a97d928c988eb0f4b
+     -DISMRMRD_TAG=v1.13.7
+     -Dsiemens_to_ismrmrd_TAG=v1.2.11
+   cache_from: [synerbi/jupyter:sirf-build-cpu]
+  stdin_open: true
+  tty: true
+  user: ${USER_ID:-1000}
+  group_add: [users]
+  volumes: [./devel:/home/jovyan/work]
+  restart: unless-stopped
+  environment: {GADGETRON_RELAY_HOST: 0.0.0.0}
+  ports:
+  - "9002:9002"  # gadgetron
+  - "9999:8888"  # jupyter
+  # for scaling, use this instead for random port assignment
+  # (https://github.com/docker/compose/issues/2260):
+  #- "9000-9099:9002"
+  #- "8800-8899:8888"

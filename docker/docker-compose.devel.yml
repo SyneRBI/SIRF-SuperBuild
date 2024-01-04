@@ -1,10 +1,23 @@
-version: '2.3'
+version: '3.2'
 services:
- sirf:
-  image: synerbi/sirf:devel
+ sirf-build:
+  image: synerbi/jupyter:sirf-build-devel-cpu
   build:
    args:
-    EXTRA_BUILD_FLAGS: "-DDEVEL_BUILD=ON -DBUILD_CIL=OFF"
-   cache_from:
-    - synerbi/sirf:core
-    - synerbi/sirf:devel
+    EXTRA_BUILD_FLAGS: >
+     -DGadgetron_TAG=6202fb7352a14fb82817b57a97d928c988eb0f4b
+     -DISMRMRD_TAG=v1.13.7
+     -Dsiemens_to_ismrmrd_TAG=v1.2.11
+     -DDEVEL_BUILD=ON
+ sirf:
+  container_name: sirf  # for scaling, comment this out https://github.com/docker/compose/issues/3729
+  image: synerbi/sirf:jupyter-devel
+  build:
+   context: .
+   args:
+    EXTRA_BUILD_FLAGS: >
+     -DGadgetron_TAG=6202fb7352a14fb82817b57a97d928c988eb0f4b
+     -DISMRMRD_TAG=v1.13.7
+     -Dsiemens_to_ismrmrd_TAG=v1.2.11
+     -DDEVEL_BUILD=ON
+   cache_from: [synerbi/jupyter:sirf-build-devel-cpu]
