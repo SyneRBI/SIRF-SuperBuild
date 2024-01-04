@@ -26,7 +26,6 @@ RUN bash /opt/scripts/build_gadgetron-ubuntu.sh
 # SIRF external deps
 COPY docker/build_system-ubuntu.sh /opt/scripts/
 RUN bash /opt/scripts/build_system-ubuntu.sh
-ENV PATH="/opt/cmake/bin:${PATH}"
 
 # SIRF python deps
 COPY docker/requirements.yml /opt/scripts/docker-requirements.yaml
