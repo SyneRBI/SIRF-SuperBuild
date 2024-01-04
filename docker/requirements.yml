@@ -1,37 +1,27 @@
 name: base
 channels:
   - conda-forge
-  - intel
-  - ccpi
+  - intel # cil
+  - ccpi  # cil
   - defaults
 dependencies:
-  - mamba
   - setuptools
   - wheel
   - pytest
   - pytest-cov
-  - numpy        # CIL
   - scipy
   - docopt
   - matplotlib
-  - Cython       # CIL
-  - h5py         # CIL
-  - Pillow       # CIL
-  - wget         # CIL
-  - six          # CIL
-  - olefile      # CIL
-  - opencv       # CIL
-  - numba        # CIL
   - pandas
   - tifffile
   - nibabel
   - deprecation
   - nose
-  - ipp          # CIL
-  - ipp-devel    # CIL
-  - ipp-include  # CIL
-  - tigre=2.4    # CIL
   - pip
+  - cil
+  - ccpi-regulariser # cil
+  # - tigre          # cil (GPU)
+  # - astra-toolbox  # cil (GPU)
   - pip:
-    - git+https://github.com/data-exchange/dxchange.git  # CIL
+    - git+https://github.com/data-exchange/dxchange.git # cil
     - git+https://github.com/ismrmrd/ismrmrd-python-tools.git@master#egg=ismrmrd-python-tools

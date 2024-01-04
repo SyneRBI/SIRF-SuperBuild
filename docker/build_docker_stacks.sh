@@ -29,10 +29,12 @@ SIRF_BUILD_ARGS=(
 SIRF_CPU_BUILD_ARGS=(
   --build-arg BASE_CONTAINER=synerbi/jupyter:scipy-cpu
   --build-arg Gadgetron_USE_CUDA=OFF
+  --build-arg BUILD_GPU=0
 )
 SIRF_GPU_BUILD_ARGS=(
   --build-arg BASE_CONTAINER=synerbi/jupyter:scipy-gpu
   --build-arg Gadgetron_USE_CUDA=ON
+  --build-arg BUILD_GPU=1
 )
 # build
 docker "${SIRF_BUILD_ARGS[@]}" "${SIRF_CPU_BUILD_ARGS[@]}" --target build -t synerbi/jupyter:sirf-build-cpu

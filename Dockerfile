@@ -28,9 +28,14 @@ COPY docker/build_system-ubuntu.sh /opt/scripts/
 RUN bash /opt/scripts/build_system-ubuntu.sh
 
 # SIRF python deps
+ARG BUILD_GPU=0
 COPY docker/requirements.yml /opt/scripts/docker-requirements.yaml
 # https://jupyter-docker-stacks.readthedocs.io/en/latest/using/common.html#conda-environments
-RUN mamba env update -n base -f /opt/scripts/docker-requirements.yaml \
+RUN if test "$BUILD_GPU" != 0; then \
+  echo "  - tigre" >> /opt/scripts/docker-requirements.yaml; \
+  echo "  - astra-toolbox" >> /opt/scripts/docker-requirements.yaml; \
+ fi \
+ && mamba env update -n base -f /opt/scripts/docker-requirements.yaml \
  && mamba clean --all -f -y && fix-permissions "${CONDA_DIR}" /home/${NB_USER}
 
 # ccache
@@ -63,7 +68,7 @@ ARG EXTRA_BUILD_FLAGS=""
 
 # build, install in /opt/SIRF-SuperBuild/{INSTALL,sources/SIRF}, test (if RUN_CTEST)
 COPY docker/user_sirf-ubuntu.sh /opt/scripts/
-RUN BUILD_FLAGS="\
+RUN BUILD_FLAGS="-G Ninja\
  -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}\
  -DSTIR_ENABLE_OPENMP=${STIR_ENABLE_OPENMP}\
  -DUSE_SYSTEM_ACE=${USE_SYSTEM_ACE}\

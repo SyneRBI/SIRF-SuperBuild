@@ -30,6 +30,7 @@ services:
    args:
     BASE_CONTAINER: synerbi/jupyter:scipy-cpu
     Gadgetron_USE_CUDA: "OFF"
+    BUILD_GPU: 0
     EXTRA_BUILD_FLAGS: >
      -DGadgetron_TAG=6202fb7352a14fb82817b57a97d928c988eb0f4b
      -DISMRMRD_TAG=v1.13.7
@@ -42,6 +43,7 @@ services:
    args:
     BASE_CONTAINER: synerbi/jupyter:scipy-cpu
     Gadgetron_USE_CUDA: "OFF"
+    BUILD_GPU: 0
     EXTRA_BUILD_FLAGS: >
      -DGadgetron_TAG=6202fb7352a14fb82817b57a97d928c988eb0f4b
      -DISMRMRD_TAG=v1.13.7
