@@ -96,15 +96,16 @@ RUN echo "export OMP_NUM_THREADS=\$(python -c 'import multiprocessing as mc; pri
 COPY --chown=${NB_USER} --chmod=644 --link docker/.bashrc /home/${NB_USER}/
 # RUN sed -i s:PYTHON_INSTALL_DIR:${CONDA_DIR}:g /home/${NB_USER}/.bashrc
 
-# install /opt/{SIRF-Exercises,CIL-Demos}
+# install {SIRF-Exercises,CIL-Demos}
 COPY docker/user_service-ubuntu.sh /opt/scripts/
-RUN bash /opt/scripts/user_service-ubuntu.sh \
- && fix-permissions /opt/SIRF-Exercises /opt/CIL-Demos "${CONDA_DIR}" /home/${NB_USER}
+RUN INSTALL_DIR=. bash /opt/scripts/user_service-ubuntu.sh \
+ && fix-permissions SIRF-Exercises CIL-Demos "${CONDA_DIR}" /home/${NB_USER}
 
 # install from build
 COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/INSTALL/ /opt/SIRF-SuperBuild/INSTALL/
 #COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/sources/SIRF/ /opt/SIRF-SuperBuild/sources/SIRF/
 #COPY --from=build --link /opt/conda/ /opt/conda/
+# SIRF python deps
 COPY docker/requirements.yml /opt/scripts/docker-requirements.yaml
 RUN mamba env update -n base -f /opt/scripts/docker-requirements.yaml \
  && mamba clean --all -f -y && fix-permissions "${CONDA_DIR}" /home/${NB_USER}
