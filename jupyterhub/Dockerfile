@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_CONTAINER=nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04
+ARG BASE_CONTAINER=quay.io/jupyter/scipy-notebook:latest
 FROM ${BASE_CONTAINER} as base
 
 USER root
@@ -23,9 +23,16 @@ RUN bash /opt/scripts/build_essential-ubuntu.sh
 COPY docker/build_gadgetron-ubuntu.sh /opt/scripts/
 RUN bash /opt/scripts/build_gadgetron-ubuntu.sh
 
+# SIRF external deps
 COPY docker/build_system-ubuntu.sh /opt/scripts/
 RUN bash /opt/scripts/build_system-ubuntu.sh
 ENV PATH="/opt/cmake/bin:${PATH}"
+
+# SIRF python deps
+COPY docker/requirements.yml /opt/scripts/docker-requirements.yaml
+# https://jupyter-docker-stacks.readthedocs.io/en/latest/using/common.html#conda-environments
+RUN mamba env update -n base -f /opt/scripts/docker-requirements.yaml \
+ && mamba clean --all -f -y && fix-permissions "${CONDA_DIR}" /home/${NB_USER}
 
 # ccache
 COPY --link docker/devel/.ccache/ /opt/ccache/
@@ -35,7 +42,7 @@ ENV PATH="/usr/lib/ccache:${PATH}"
 # SIRF-SuperBuild config
 ARG SIRF_SB_URL="https://github.com/SyneRBI/SIRF-SuperBuild"
 ARG SIRF_SB_TAG="master"
-ARG REMOVE_BUILD_FILES=1
+ARG REMOVE_BUILD_FILES=0
 ARG RUN_CTEST=1
 ARG NUM_PARALLEL_BUILDS=" "
 # CMake options
@@ -95,17 +102,13 @@ COPY docker/user_service-ubuntu.sh /opt/scripts/
 RUN bash /opt/scripts/user_service-ubuntu.sh \
  && fix-permissions /opt/SIRF-Exercises /opt/CIL-Demos "${CONDA_DIR}" /home/${NB_USER}
 
-COPY docker/requirements.yml /opt/scripts/docker-requirements.yaml
-RUN mamba env update -n base -f /opt/scripts/docker-requirements.yaml \
- && fix-permissions "${CONDA_DIR}" /home/${NB_USER}
-COPY jupyterhub/requirements.yml /opt/scripts/jupyterhub-requirements.yaml
-RUN mamba env update -n base -f /opt/scripts/jupyterhub-requirements.yaml \
- && fix-permissions "${CONDA_DIR}" /home/${NB_USER}
-
 # install from build
 COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/INSTALL/ /opt/SIRF-SuperBuild/INSTALL/
-COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/sources/SIRF/ /opt/SIRF-SuperBuild/sources/SIRF/
-# TODO: COPY --from=build /usr/local/{bin,lib} ?
+#COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/sources/SIRF/ /opt/SIRF-SuperBuild/sources/SIRF/
+#COPY --from=build --link /opt/conda/ /opt/conda/
+COPY docker/requirements.yml /opt/scripts/docker-requirements.yaml
+RUN mamba env update -n base -f /opt/scripts/docker-requirements.yaml \
+ && mamba clean --all -f -y && fix-permissions "${CONDA_DIR}" /home/${NB_USER}
 
 # Set environment variables for SIRF
 ENV PATH "/opt/conda/bin:/opt/SIRF-SuperBuild/INSTALL/bin:$PATH"
@@ -120,5 +123,7 @@ ENV GADGETRON_LOG_MASK ""
 
 USER ${NB_UID}
 ENV DEBIAN_FRONTEND ''
+ENV DOCKER_STACKS_JUPYTER_CMD="notebook"
+ENV RESTARTABLE="yes"
 
 # TODO: CMD ["jupyterhub/service.sh"]
