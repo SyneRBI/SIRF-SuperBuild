@@ -5,7 +5,6 @@ on:
     branches: [ master ]
     paths-ignore:
     - '**.md'
-    - 'jupyterhub/**'
     - 'VirtualBox/**'
     - '.github/workflows/c-cpp.yml'
     - 'CITATION.cff'
@@ -18,7 +17,6 @@ on:
     branches: [ master ]
     paths-ignore:
     - '**.md'
-    - 'jupyterhub/**'
     - 'VirtualBox/**'
     - '.github/workflows/c-cpp.yml'
     - 'CITATION.cff'

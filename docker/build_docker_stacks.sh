@@ -21,7 +21,7 @@ done
 
 cd ../../../..
 SIRF_BUILD_ARGS=(
-  build -f jupyterhub/Dockerfile .
+  build .
   --build-arg EXTRA_BUILD_FLAGS="-DGadgetron_TAG=6202fb7352a14fb82817b57a97d928c988eb0f4b -DISMRMRD_TAG=v1.13.7 -Dsiemens_to_ismrmrd_TAG=v1.2.11"
 )
 SIRF_CPU_BUILD_ARGS=(
