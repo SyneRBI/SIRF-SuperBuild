@@ -38,19 +38,42 @@ ARG SIRF_SB_TAG="master"
 ARG REMOVE_BUILD_FILES=1
 ARG RUN_CTEST=1
 ARG NUM_PARALLEL_BUILDS=" "
-ARG BUILD_FLAGS="\
- -DCMAKE_BUILD_TYPE=Release\
- -DSTIR_ENABLE_OPENMP=ON -DUSE_SYSTEM_ACE=ON\
- -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON\
- -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=OFF -DUSE_ITK=ON\
- -DUSE_SYSTEM_SWIG=ON\
- -DUSE_NiftyPET=OFF\
- -DBUILD_siemens_to_ismrmrd=ON -DBUILD_pet_rd_tools=ON"
-ARG EXTRA_BUILD_FLAGS="-DGadgetron_USE_CUDA=ON -DBUILD_CIL=OFF"
+# CMake options
+ARG CMAKE_BUILD_TYPE="Release"
+ARG STIR_ENABLE_OPENMP="ON"
+ARG USE_SYSTEM_ACE="ON"
+ARG USE_SYSTEM_Armadillo="ON"
+ARG USE_SYSTEM_Boost="ON"
+ARG USE_SYSTEM_FFTW3="ON"
+ARG USE_SYSTEM_HDF5="OFF"
+ARG USE_ITK="ON"
+ARG USE_SYSTEM_SWIG="ON"
+ARG USE_NiftyPET="OFF"
+ARG BUILD_siemens_to_ismrmrd="ON"
+ARG BUILD_pet_rd_tools="ON"
+ARG Gadgetron_USE_CUDA="ON"
+ARG BUILD_CIL="OFF"
+ARG EXTRA_BUILD_FLAGS=""
 
 # build, install in /opt/SIRF-SuperBuild/{INSTALL,sources/SIRF}, test (if RUN_CTEST)
 COPY docker/user_sirf-ubuntu.sh /opt/scripts/
-RUN bash /opt/scripts/user_sirf-ubuntu.sh \
+RUN BUILD_FLAGS="\
+ -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}\
+ -DSTIR_ENABLE_OPENMP=${STIR_ENABLE_OPENMP}\
+ -DUSE_SYSTEM_ACE=${USE_SYSTEM_ACE}\
+ -DUSE_SYSTEM_Armadillo=${USE_SYSTEM_Armadillo}\
+ -DUSE_SYSTEM_Boost=${USE_SYSTEM_Boost}\
+ -DUSE_SYSTEM_FFTW3=${USE_SYSTEM_FFTW3}\
+ -DUSE_SYSTEM_HDF5=${USE_SYSTEM_HDF5}\
+ -DUSE_ITK=${USE_ITK}\
+ -DUSE_SYSTEM_SWIG=${USE_SYSTEM_SWIG}\
+ -DUSE_NiftyPET=${USE_NiftyPET}\
+ -DBUILD_siemens_to_ismrmrd=${BUILD_siemens_to_ismrmrd}\
+ -DBUILD_pet_rd_tools=${BUILD_pet_rd_tools}\
+ -DGadgetron_USE_CUDA=${Gadgetron_USE_CUDA}\
+ -DBUILD_CIL=${BUILD_CIL}" \
+ EXTRA_BUILD_FLAGS="${EXTRA_BUILD_FLAGS}" \
+ bash /opt/scripts/user_sirf-ubuntu.sh \
  && fix-permissions /opt/SIRF-SuperBuild /opt/ccache
 
 FROM base as sirf

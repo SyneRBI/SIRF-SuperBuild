@@ -26,7 +26,10 @@ docker build --build-arg BASE_CONTAINER=synerbi/jupyter:scipy -t synerbi/jupyter
 cd ../../../..
 SIRF_BUILD_ARGS=(
   --build-arg BASE_CONTAINER=synerbi/jupyter:datascience -f jupyterhub/Dockerfile .
-  --build-arg EXTRA_BUILD_FLAGS="-DGadgetron_USE_CUDA=ON -DBUILD_CIL=OFF -DUSE_SYSTEM_Boost=OFF")
+  --build-arg Gadgetron_USE_CUDA=ON
+  --build-arg BUILD_CIL=OFF
+  --build-arg USE_SYSTEM_Boost=OFF
+)
 # ccache build
 docker build -t synerbi/sirf:jupyter-build --target build "${SIRF_BUILD_ARGS[@]}"
 docker run --rm -it -v ./docker/devel/.ccache:/opt/ccache synerbi/sirf:jupyter-build echo copied ccache
