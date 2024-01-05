@@ -28,14 +28,13 @@ stop_service(){
   exit 0
 }
 
-pushd $SIRF_PATH/../..
-
 echo "start gadgetron"
-[ -f ./INSTALL/bin/gadgetron ] \
-  && ./INSTALL/bin/gadgetron >& ~/gadgetron.log&
+pushd $SIRF_PATH/../..
+test -x ./INSTALL/bin/gadgetron && ./INSTALL/bin/gadgetron >& ~/gadgetron.log&
+popd
 
 echo "make sure the SIRF-Exercises and CIL-Demos are in the expected location (~/work in the container)"
-cd ~/work
+pushd ~/work
 for notebooks in SIRF-Exercises CIL-Demos; do
   test -d ${notebooks} || cp -a $SIRF_PATH/../../../${notebooks} .
 done
@@ -45,14 +44,13 @@ if test ! -r SIRF-contrib; then
   echo "Creating link to SIRF-contrib"
   ln -s "$SIRF_INSTALL_PATH"/python/sirf/contrib SIRF-contrib
 fi
+popd
 
 echo "start jupyter"
-test -w /etc/jupyter/jupyter_server_config.py \
-  && echo "c.ServerApp.password = u'sha1:cbf03843d2bb:8729d2fbec60cacf6485758752789cd9989e756c'" \
-  >> /etc/jupyter/jupyter_server_config.py
+#test -w /etc/jupyter/jupyter_server_config.py \
+#  && echo "c.ServerApp.password = u'sha1:cbf03843d2bb:8729d2fbec60cacf6485758752789cd9989e756c'" \
+#  >> /etc/jupyter/jupyter_server_config.py
 start-notebook.py "$@"
-
-popd
 
 trap "stop_service" EXIT INT TERM
 wait

@@ -58,11 +58,9 @@ services:
   tty: true
   user: ${USER_ID:-1000}
   group_add: [users]
-  volumes: [./devel:/home/jovyan/work]
+  volumes: [./docker/devel:/home/jovyan/work]
   restart: unless-stopped
   environment:
-   GADGETRON_RELAY_HOST: 0.0.0.0
-   USE_HTTPS: "yes"
    PASSWORD: ${SIRFPASS:-virtual}
   ports:
   - "9002:9002"  # gadgetron

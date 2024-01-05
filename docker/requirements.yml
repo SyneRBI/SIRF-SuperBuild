@@ -18,7 +18,7 @@ dependencies:
   - deprecation
   - nose
   - pip
-  - cil
+  - cil              # cil
   - ccpi-regulariser # cil
   # - tigre          # cil (GPU)
   # - astra-toolbox  # cil (GPU)

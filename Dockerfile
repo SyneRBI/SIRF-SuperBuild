@@ -21,13 +21,12 @@ RUN bash /opt/scripts/build_system-ubuntu.sh
 
 # SIRF python deps
 ARG BUILD_GPU=0
-COPY docker/requirements.yml /opt/scripts/docker-requirements.yaml
+COPY docker/requirements.yml /opt/scripts/
 # https://jupyter-docker-stacks.readthedocs.io/en/latest/using/common.html#conda-environments
 RUN if test "$BUILD_GPU" != 0; then \
-  echo "  - tigre" >> /opt/scripts/docker-requirements.yaml; \
-  echo "  - astra-toolbox" >> /opt/scripts/docker-requirements.yaml; \
+  sed -ri 's/^(\s*)#\s*(- \S+.*#.*GPU.*)$/\1\2/' /opt/scripts/requirements.yml; \
  fi \
- && mamba env update -n base -f /opt/scripts/docker-requirements.yaml \
+ && mamba env update -n base -f /opt/scripts/requirements.yml \
  && mamba clean --all -f -y && fix-permissions "${CONDA_DIR}" /home/${NB_USER}
 
 FROM base as build
@@ -108,25 +107,20 @@ COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/INSTALL/ /opt/S
 #COPY --from=build --link /opt/conda/ /opt/conda/
 
 # install {SIRF-Exercises,CIL-Demos}
-COPY docker/user_service-ubuntu.sh /opt/scripts/
-RUN bash /opt/scripts/user_service-ubuntu.sh \
+COPY docker/user_demos.sh /opt/scripts/
+RUN bash /opt/scripts/user_demos.sh \
  && fix-permissions /opt/SIRF-Exercises /opt/CIL-Demos "${CONDA_DIR}" /home/${NB_USER}
 
-# Set environment variables for SIRF
-ENV PATH "/opt/conda/bin:/opt/SIRF-SuperBuild/INSTALL/bin:$PATH"
-ENV LD_LIBRARY_PATH "/opt/SIRF-SuperBuild/INSTALL/lib:/opt/SIRF-SuperBuild/INSTALL/lib64:$LD_LIBRARY_PATH"
-#/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/opt/conda/lib
-ENV PYTHONPATH "/opt/SIRF-SuperBuild/INSTALL/python"
-ENV SIRF_INSTALL_PATH "/opt/SIRF-SuperBuild/INSTALL"
-ENV SIRF_PATH "/opt/SIRF-SuperBuild/sources/SIRF"
-#ENV SIRF_EXERCISES_DATA_PATH "/mnt/materials/SIRF/Fully3D/SIRF/"
-# Suppress output from Gadgetron which gives some problems on notebooks (QUIERO)
-ENV GADGETRON_LOG_MASK ""
-
+# docker-stacks notebook
 USER ${NB_UID}
 ENV DEBIAN_FRONTEND ''
 ENV DOCKER_STACKS_JUPYTER_CMD="notebook"
 ENV RESTARTABLE="yes"
+#ENV USE_HTTPS="yes"
+# gadgetron
+EXPOSE 9002
+ENV GADGETRON_RELAY_HOST="0.0.0.0"
 
+# run gadgetron in the background before start-notebook.py
 COPY --link --chown=${NB_USER} docker/start-gadgetron-notebook.sh /opt/scripts/
 CMD ["/opt/scripts/start-gadgetron-notebook.sh"]

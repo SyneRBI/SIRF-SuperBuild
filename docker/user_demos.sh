@@ -2,7 +2,7 @@
 [ -f .bashrc ] && . .bashrc
 set -ev
 INSTALL_DIR="${1:-/opt}"
-if [ -n "${PYTHON_EXECUTABLE}" ]; then 
+if [ -n "${PYTHON_EXECUTABLE}" ]; then
   PYTHON=$PYTHON_EXECUTABLE
 else
   PYTHON='miniconda'
@@ -10,21 +10,6 @@ fi
 
 # SIRF-Exercises
 git clone https://github.com/SyneRBI/SIRF-Exercises --recursive -b master $INSTALL_DIR/SIRF-Exercises
-
-if [ "$PYTHON" = "miniconda" ]; then
-  if [ -f requirements-service.yml ]; then
-    # installs the required packages in the environment with requirements-service.yml. 
-    # Notice that these requirements TEMPORARILY contains also the packages for SIRF-Exercises
-    mamba env update --file requirements-service.yml 
-  fi
-  mamba clean -y --all
-
-# Python (runtime)
-else
-  if [ -f requirements-service.txt ]; then
-    ${PYTHON} -m pip install -U -r requirements-service.txt
-  fi
-fi
 
 #install SIRF-Exercises requirements
 cd $INSTALL_DIR/SIRF-Exercises
@@ -36,7 +21,7 @@ if [ "$PYTHON" = "miniconda" ]; then
       cat requirements.txt
       # installing the requirements.txt with mamba requires some cleaning of the requirements.txt
       # Also the requirements.txt contains some packages that are not found on conda-forge, i.e. brainweb
-      # Therefore, these need to be installed by pip. 
+      # Therefore, these need to be installed by pip.
       # This is handled by the install-sirf-exercises-dep.py script
       python ~/install-sirf-exercises-dep.py requirements.txt
     else
@@ -58,7 +43,7 @@ git config --global filter.nbstripout.extrakeys '
   metadata.language_info.pygments_lexer metadata.language_info.version'
 
 #install nbstripout in the SIRF-Exercises repo
-cd $INSTALL_DIR/SIRF-Exercises  
+cd $INSTALL_DIR/SIRF-Exercises
 nbstripout --install
 # jupyter labextension install @jupyter-widgets/jupyterlab-manager
 
