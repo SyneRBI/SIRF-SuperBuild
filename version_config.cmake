@@ -36,19 +36,19 @@ set(Boost_MD5 e193e5089060ed6ce5145c8eb05e67e3)
 
 ## Armadillo
 set(Armadillo_URL https://downloads.sourceforge.net/project/arma/armadillo-9.800.2.tar.xz)
-set(Armadillo_MD5 c2fa488ea069b9972363ebad16e51ab5 )
+set(Armadillo_MD5 c2fa488ea069b9972363ebad16e51ab5)
 
 ## FFTW3
 if(WIN32)
   # Just use precompiled version
   # TODO would prefer the next zip file but for KT using an ftp URL times-out (firewall?)
-  set(FFTW3_URL https://github.com/SyneRBI/assets/releases/download/latest/fftw-3.3.5-dll64.zip )
-  set(FFTW3_MD5 cb3c5ad19a89864f036e7a2dd5be168c )
-  #set(FFTW3_URL https://s3.amazonaws.com/install-gadgetron-vs2013/Dependencies/FFTW/zip/FFTW3.zip )
-  #set(FFTW3_MD5 a42eac92d9ad06d7c53fb82b09df2b6e )
+  set(FFTW3_URL https://github.com/SyneRBI/assets/releases/download/latest/fftw-3.3.5-dll64.zip)
+  set(FFTW3_MD5 cb3c5ad19a89864f036e7a2dd5be168c)
+  #set(FFTW3_URL https://s3.amazonaws.com/install-gadgetron-vs2013/Dependencies/FFTW/zip/FFTW3.zip)
+  #set(FFTW3_MD5 a42eac92d9ad06d7c53fb82b09df2b6e)
 else(WIN32)
-  set(FFTW3_URL http://www.fftw.org/fftw-3.3.5.tar.gz ) 
-  set(FFTW3_MD5 6cc08a3b9c7ee06fdd5b9eb02e06f569 )
+  set(FFTW3_URL http://www.fftw.org/fftw-3.3.5.tar.gz)
+  set(FFTW3_MD5 6cc08a3b9c7ee06fdd5b9eb02e06f569)
 endif(WIN32)
 
 set(FFTW3double_URL ${FFTW3_URL})
@@ -79,21 +79,21 @@ endif()
 ## SWIG
 set (SWIG_REQUIRED_VERSION 2)
 if (WIN32)
-  set(SWIG_URL http://downloads.sourceforge.net/swig/swigwin-4.0.2.zip  )
-  set(SWIG_MD5 009926b512aee9318546bdd4c7eab6f9 )
+  set(SWIG_URL http://downloads.sourceforge.net/swig/swigwin-4.0.2.zip)
+  set(SWIG_MD5 009926b512aee9318546bdd4c7eab6f9)
 else(WIN32)
-  set(SWIG_URL http://downloads.sourceforge.net/swig/swig-4.0.2.tar.gz )
-  set(SWIG_MD5 7c3e46cb5af2b469722cafa0d91e127b )
+  set(SWIG_URL http://downloads.sourceforge.net/swig/swig-4.0.2.tar.gz)
+  set(SWIG_MD5 7c3e46cb5af2b469722cafa0d91e127b)
 endif(WIN32)
 
 option(DEVEL_BUILD "Use current versions of major packages" OFF)
 
 ## Googletest
-set(GTest_URL https://github.com/google/googletest )
+set(GTest_URL https://github.com/google/googletest)
 set(GTest_TAG release-1.12.1)
 
 ## glog
-set(DEFAULT_glog_URL https://github.com/google/glog )
+set(DEFAULT_glog_URL https://github.com/google/glog)
 set(DEFAULT_glog_TAG v0.6.0)
 
 ## ITK
@@ -101,13 +101,13 @@ set(DEFAULT_ITK_URL https://github.com/InsightSoftwareConsortium/ITK.git)
 set(DEFAULT_ITK_TAG v5.2.1)
 
 ## NIFTYREG
-set(DEFAULT_NIFTYREG_URL https://github.com/KCL-BMEIS/niftyreg.git )
+set(DEFAULT_NIFTYREG_URL https://github.com/KCL-BMEIS/niftyreg.git)
 set(DEFAULT_NIFTYREG_TAG 8ad2f11507ddedb09ed74a9bd97377b70532ee75)
 set(NIFTYREG_REQUIRED_VERSION 1.5.68)
 
 ## ISMRMRD
 set(ISMRMRD_REQUIRED_VERSION "1.11.1")
-set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
+set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd)
 set(DEFAULT_ISMRMRD_TAG v1.13.7)
 
 ## siemens_to_ismrmrd
@@ -115,46 +115,46 @@ set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd
 set(DEFAULT_siemens_to_ismrmrd_TAG v1.2.11)
 
 ## Gadgetron
-set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
+set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron)
 set(DEFAULT_Gadgetron_TAG 6202fb7352a14fb82817b57a97d928c988eb0f4b)
 
 ## ASTRA
-set(DEFAULT_astra-toolbox_URL https://github.com/astra-toolbox/astra-toolbox )
+set(DEFAULT_astra-toolbox_URL https://github.com/astra-toolbox/astra-toolbox)
 set(DEFAULT_astra-toolbox_TAG origin/master)
 
 ## TomoPhantom
-set(DEFAULT_TomoPhantom_URL https://github.com/dkazanc/TomoPhantom )
+set(DEFAULT_TomoPhantom_URL https://github.com/dkazanc/TomoPhantom)
 set(DEFAULT_TomoPhantom_TAG v2.0.0)
 
 ## NiftyPET
-set(DEFAULT_NiftyPET_URL https://github.com/pjmark/NIPET )
+set(DEFAULT_NiftyPET_URL https://github.com/pjmark/NIPET)
 set(DEFAULT_NiftyPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
 
 ## parallelproj
-set(DEFAULT_parallelproj_URL https://github.com/gschramm/parallelproj )
+set(DEFAULT_parallelproj_URL https://github.com/gschramm/parallelproj)
 set(DEFAULT_parallelproj_TAG v1.7.3)
 
 ## STIR
-set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
+set(DEFAULT_STIR_URL https://github.com/UCL/STIR)
 set(DEFAULT_STIR_TAG rel_5.2.0)
 
 ## SIRF
-set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF )
+set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF)
 set(DEFAULT_SIRF_TAG f17f050d86c6e2b249f48a43795986a7aa7a54ea) # pre 3.6.0
 
 ## pet-rd-tools
-set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
+set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools)
 set(DEFAULT_pet_rd_tools_TAG v2.0.1)
 
 ## SIRF-Contribs
-set(DEFAULT_SIRF-Contribs_URL https://github.com/SyneRBI/SIRF-Contribs )
-set(DEFAULT_SIRF-Contribs_TAG origin/master )
+set(DEFAULT_SIRF-Contribs_URL https://github.com/SyneRBI/SIRF-Contribs)
+set(DEFAULT_SIRF-Contribs_TAG origin/master)
 
 ## SPM
-set(DEFAULT_SPM_URL https://github.com/spm/SPM12.git )
+set(DEFAULT_SPM_URL https://github.com/spm/SPM12.git)
 set(DEFAULT_SPM_TAG r7771)
 
-set(DEFAULT_JSON_URL https://github.com/nlohmann/json.git )
+set(DEFAULT_JSON_URL https://github.com/nlohmann/json.git)
 set(DEFAULT_JSON_TAG v3.10.4)
 
 # CCPi CIL
@@ -205,24 +205,24 @@ if (DEVEL_BUILD)
 
   set (DEFAULT_SIRF_TAG origin/master)
   ## STIR
-  set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
+  set(DEFAULT_STIR_URL https://github.com/UCL/STIR)
   set(DEFAULT_STIR_TAG origin/master)
 
   ## siemens_to_ismrmrd
-  # set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd )
+  # set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
   # set(DEFAULT_siemens_to_ismrmrd_TAG b87759e49e53dab4939147eb52b7a0e6465f3d04)
 
   ## pet-rd-tools
-  # set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
+  # set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools)
   # set(DEFAULT_pet_rd_tools_TAG origin/master)
 
   # CCPi CIL
   set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
-  set(DEFAULT_CIL_TAG origin/master )
+  set(DEFAULT_CIL_TAG origin/master)
 
   # Gadgetron
   # set(DEFAULT_Gadgetron_TAG origin/master)
-  
+
   # ismrmrd
   # set(DEFAULT_ISMRMRD_TAG origin/master)
 
@@ -233,7 +233,7 @@ endif()
 # these can be overridden by the user
 SET(SIRF_URL ${DEFAULT_SIRF_URL} CACHE STRING ON)
 SET(SIRF_TAG ${DEFAULT_SIRF_TAG} CACHE STRING ON)
- 
+
 SET(STIR_TAG ${DEFAULT_STIR_TAG} CACHE STRING ON)
 SET(STIR_URL ${DEFAULT_STIR_URL} CACHE STRING ON)
 set(STIR_REQUIRED_VERSION "5.1.0")
