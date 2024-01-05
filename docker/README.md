@@ -4,20 +4,33 @@ The image contains SIRF & all dependencies required by JupyterHub.
 
 ## Usage
 
+### Docker
+
 ```sh
 # CPU version
-docker run --rm -it -p 8888:8888 synerbi/sirf:jupyter
+docker run --rm -it -p 9999:8888 synerbi/sirf:jupyter
 # GPU version
-docker run --rm -it -p 8888:8888 --gpus all synerbi/sirf:jupyter-gpu
+docker run --rm -it -p 9999:8888 --gpus all synerbi/sirf:jupyter-gpu
 ```
 
 To make the container user same as host user (useful when sharing folders), use `--user` and `--group-add`:
 
 ```sh
-docker run --rm -it -p 8888:8888 --user $(id -u) --group-add users -v ./docker/devel:/home/jovyan/work synerbi/sirf:jupyter
+docker run --rm -it -p 9999:8888 --user $(id -u) --group-add users -v ./docker/devel:/home/jovyan/work synerbi/sirf:jupyter
 ```
 
+The Jupyter notebook should be accessible at <https://localhost:9999>.
+
 More config: https://jupyter-docker-stacks.readthedocs.io/en/latest/using/common.html#user-related-configurations
+
+### Docker Compose
+
+```sh
+# CPU version
+docker compose up sirf
+# GPU version
+docker compose -f docker-compose.yml -f docker/docker-compose.gpu.yml up sirf
+```
 
 ## Build the image
 

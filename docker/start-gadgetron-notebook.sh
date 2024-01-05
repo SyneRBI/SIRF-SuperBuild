@@ -36,9 +36,10 @@ popd
 
 echo "make sure the SIRF-Exercises and CIL-Demos are in the expected location (~/work in the container)"
 pushd ~/work
-for notebooks in SIRF-Exercises CIL-Demos; do
-  test -d ${notebooks} || cp -a "${SB_PATH}/../${notebooks}" .
+for repo in SIRF-Exercises CIL-Demos; do
+  test -d ${repo} || cp -dR "${SB_PATH}/../${repo}" .
 done
+./SIRF-Exercises/scripts/download_data.sh
 
 echo "link SIRF-Contrib into ~/work"
 if test ! -r SIRF-contrib; then

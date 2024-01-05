@@ -8,11 +8,8 @@
 ##
 
 DEBUG="${1:-0}"
-this=$(dirname "${BASH_SOURCE[0]}")
 
-pip install -U -r "$this"/requirements-test.txt
-
-pushd $SIRF_PATH/../..
+pushd $(dirname "$(dirname "$SIRF_PATH")")
 
 # start gadgetron
 [ -f ./INSTALL/bin/gadgetron ] && ./INSTALL/bin/gadgetron >& gadgetron.log&
