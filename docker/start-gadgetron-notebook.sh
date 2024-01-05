@@ -28,29 +28,29 @@ stop_service(){
   exit 0
 }
 
+SB_PATH=$(dirname "$(dirname "$SIRF_PATH")")
 echo "start gadgetron"
-pushd $SIRF_PATH/../..
+pushd "${SB_PATH}"
 test -x ./INSTALL/bin/gadgetron && ./INSTALL/bin/gadgetron >& ~/gadgetron.log&
 popd
 
 echo "make sure the SIRF-Exercises and CIL-Demos are in the expected location (~/work in the container)"
 pushd ~/work
 for notebooks in SIRF-Exercises CIL-Demos; do
-  test -d ${notebooks} || cp -a $SIRF_PATH/../../../${notebooks} .
+  test -d ${notebooks} || cp -a "${SB_PATH}/../${notebooks}" .
 done
 
 echo "link SIRF-Contrib into ~/work"
 if test ! -r SIRF-contrib; then
   echo "Creating link to SIRF-contrib"
-  ln -s "$SIRF_INSTALL_PATH"/python/sirf/contrib SIRF-contrib
+  ln -s "${SIRF_INSTALL_PATH}/python/sirf/contrib" SIRF-contrib
 fi
 popd
 
 echo "start jupyter"
-#test -w /etc/jupyter/jupyter_server_config.py \
-#  && echo "c.ServerApp.password = u'sha1:cbf03843d2bb:8729d2fbec60cacf6485758752789cd9989e756c'" \
-#  >> /etc/jupyter/jupyter_server_config.py
-start-notebook.py "$@"
+start-notebook.py \
+  --PasswordIdentityProvider.hashed_password='sha1:cbf03843d2bb:8729d2fbec60cacf6485758752789cd9989e756c' \
+  "$@"
 
 trap "stop_service" EXIT INT TERM
 wait

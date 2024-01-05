@@ -27,7 +27,8 @@ services:
    context: docker/docker-stacks/images/scipy-notebook
    args: {BASE_CONTAINER: synerbi/jupyter:minimal-cpu}
  sirf-build:
-  command: echo nop
+  volumes: [./docker/devel/.ccache:/ccache]
+  command: "bash -c 'cp -r /opt/ccache/* /ccache/'"
   image: synerbi/jupyter:sirf-build-cpu
   build:
    context: .
@@ -60,8 +61,6 @@ services:
   group_add: [users]
   volumes: [./docker/devel:/home/jovyan/work]
   restart: unless-stopped
-  environment:
-   PASSWORD: ${SIRFPASS:-virtual}
   ports:
   - "9002:9002"  # gadgetron
   - "9999:8888"  # jupyter
