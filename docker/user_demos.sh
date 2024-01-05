@@ -9,7 +9,7 @@ else
 fi
 
 # SIRF-Exercises
-git clone https://github.com/SyneRBI/SIRF-Exercises --recursive -b master $INSTALL_DIR/SIRF-Exercises
+git clone https://github.com/SyneRBI/SIRF-Exercises --recursive $INSTALL_DIR/SIRF-Exercises
 
 #install SIRF-Exercises requirements
 cd $INSTALL_DIR/SIRF-Exercises
@@ -48,6 +48,6 @@ nbstripout --install
 # jupyter labextension install @jupyter-widgets/jupyterlab-manager
 
 # CIL-Demos
-git clone https://github.com/TomographicImaging/CIL-Demos.git --recursive -b main $INSTALL_DIR/CIL-Demos
+git clone https://github.com/TomographicImaging/CIL-Demos --recursive $INSTALL_DIR/CIL-Demos
 cd $INSTALL_DIR/CIL-Demos
 nbstripout --install

@@ -57,7 +57,9 @@ services:
    cache_from: [synerbi/jupyter:sirf-build-cpu]
   stdin_open: true
   tty: true
-  user: ${USER_ID:-1000}
+  # Probably requires `export USER_ID UID` to work.
+  # Alternatively replace with the output of `id -u`.
+  user: ${USER_ID:-${UID:-${USER:-1000}}}
   group_add: [users]
   volumes: [./docker/devel:/home/jovyan/work]
   restart: unless-stopped
