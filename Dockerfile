@@ -12,14 +12,6 @@ RUN bash /opt/scripts/raw-ubuntu.sh
 ENV LANG en_GB.UTF-8
 ENV LANGUAGE en_GB:en
 
-FROM base as build
-
-COPY docker/update_nvidia_keys.sh /opt/scripts/
-RUN bash /opt/scripts/update_nvidia_keys.sh
-
-COPY docker/build_essential-ubuntu.sh /opt/scripts/
-RUN bash /opt/scripts/build_essential-ubuntu.sh
-
 COPY docker/build_gadgetron-ubuntu.sh /opt/scripts/
 RUN bash /opt/scripts/build_gadgetron-ubuntu.sh
 
@@ -37,6 +29,14 @@ RUN if test "$BUILD_GPU" != 0; then \
  fi \
  && mamba env update -n base -f /opt/scripts/docker-requirements.yaml \
  && mamba clean --all -f -y && fix-permissions "${CONDA_DIR}" /home/${NB_USER}
+
+FROM base as build
+
+COPY docker/update_nvidia_keys.sh /opt/scripts/
+RUN bash /opt/scripts/update_nvidia_keys.sh
+
+COPY docker/build_essential-ubuntu.sh /opt/scripts/
+RUN bash /opt/scripts/build_essential-ubuntu.sh
 
 # ccache
 COPY --link docker/devel/.ccache/ /opt/ccache/
@@ -101,19 +101,15 @@ RUN echo "export OMP_NUM_THREADS=\$(python -c 'import multiprocessing as mc; pri
 COPY --chown=${NB_USER} --chmod=644 --link docker/.bashrc /home/${NB_USER}/
 # RUN sed -i s:PYTHON_INSTALL_DIR:${CONDA_DIR}:g /home/${NB_USER}/.bashrc
 
-# install {SIRF-Exercises,CIL-Demos}
-COPY docker/user_service-ubuntu.sh /opt/scripts/
-RUN bash /opt/scripts/user_service-ubuntu.sh \
- && fix-permissions /opt/SIRF-Exercises /opt/CIL-Demos "${CONDA_DIR}" /home/${NB_USER}
-
 # install from build
 COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/INSTALL/ /opt/SIRF-SuperBuild/INSTALL/
 #COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/sources/SIRF/ /opt/SIRF-SuperBuild/sources/SIRF/
 #COPY --from=build --link /opt/conda/ /opt/conda/
-# SIRF python deps
-COPY docker/requirements.yml /opt/scripts/docker-requirements.yaml
-RUN mamba env update -n base -f /opt/scripts/docker-requirements.yaml \
- && mamba clean --all -f -y && fix-permissions "${CONDA_DIR}" /home/${NB_USER}
+
+# install {SIRF-Exercises,CIL-Demos}
+COPY docker/user_service-ubuntu.sh /opt/scripts/
+RUN bash /opt/scripts/user_service-ubuntu.sh \
+ && fix-permissions /opt/SIRF-Exercises /opt/CIL-Demos "${CONDA_DIR}" /home/${NB_USER}
 
 # Set environment variables for SIRF
 ENV PATH "/opt/conda/bin:/opt/SIRF-SuperBuild/INSTALL/bin:$PATH"
