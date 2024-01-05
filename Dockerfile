@@ -24,12 +24,16 @@ ARG BUILD_GPU=0
 COPY docker/requirements.yml /opt/scripts/
 # https://jupyter-docker-stacks.readthedocs.io/en/latest/using/common.html#conda-environments
 # https://github.com/TomographicImaging/CIL/blob/master/Dockerfile
+# Also fix labextension @jupyter-widgets/jupyterlab-manager
+# by updating jupyterlab_widgets ipywidgets ipympl
 RUN if test "$BUILD_GPU" != 0; then \
   sed -ri 's/^(\s*)#\s*(- \S+.*#.*GPU.*)$/\1\2/' /opt/scripts/requirements.yml; \
  fi \
  && conda config --env --set channel_priority strict \
  && for ch in defaults ccpi intel conda-forge; do conda config --env --add channels $ch; done \
  && mamba env update -n base -f /opt/scripts/requirements.yml \
+ && mamba uninstall -y jupyterlab_widgets \
+ && mamba install -y jupyterlab_widgets ipywidgets ipympl \
  && mamba clean --all -f -y && fix-permissions "${CONDA_DIR}" /home/${NB_USER}
 
 FROM base as build
@@ -117,7 +121,7 @@ RUN bash /opt/scripts/user_demos.sh \
 # docker-stacks notebook
 USER ${NB_UID}
 ENV DEBIAN_FRONTEND ''
-ENV DOCKER_STACKS_JUPYTER_CMD="notebook"
+#ENV DOCKER_STACKS_JUPYTER_CMD="notebook"
 ENV RESTARTABLE="yes"
 #ENV USE_HTTPS="yes"
 # gadgetron
