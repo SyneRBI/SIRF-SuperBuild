@@ -92,9 +92,9 @@ FROM base as sirf
 # X11 forwarding
 RUN apt update -qq && apt install -yq --no-install-recommends \
   libx11-xcb1 \
-  && apt clean
-RUN mkdir -p /usr/share/X11/xkb
-RUN [ -e /usr/bin/X ] || ln -s /usr/bin/Xorg /usr/bin/X
+  && apt clean \
+  && mkdir -p /usr/share/X11/xkb \
+  && test -e /usr/bin/X || ln -s /usr/bin/Xorg /usr/bin/X
 
 RUN echo "export OMP_NUM_THREADS=\$(python -c 'import multiprocessing as mc; print(mc.cpu_count() // 2)')" > /usr/local/bin/before-notebook.d/omp_num_threads.sh
 

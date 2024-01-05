@@ -1,6 +1,7 @@
 version: '3.2'
 services:
  foundation:
+  command: echo nop
   image: synerbi/jupyter:foundation-cpu
   build:
    context: docker/docker-stacks/images/docker-stacks-foundation
@@ -8,21 +9,25 @@ services:
     ROOT_CONTAINER: ubuntu:22.04
     PYTHON_VERSION: 3.9
  base:
+  command: echo nop
   image: synerbi/jupyter:base-cpu
   build:
    context: docker/docker-stacks/images/base-notebook
    args: {BASE_CONTAINER: synerbi/jupyter:foundation-cpu}
  minimal:
+  command: echo nop
   image: synerbi/jupyter:minimal-cpu
   build:
    context: docker/docker-stacks/images/minimal-notebook
    args: {BASE_CONTAINER: synerbi/jupyter:base-cpu}
  scipy:
+  command: echo nop
   image: synerbi/jupyter:scipy-cpu
   build:
    context: docker/docker-stacks/images/scipy-notebook
    args: {BASE_CONTAINER: synerbi/jupyter:minimal-cpu}
  sirf-build:
+  command: echo nop
   image: synerbi/jupyter:sirf-build-cpu
   build:
    context: .
@@ -55,7 +60,10 @@ services:
   group_add: [users]
   volumes: [./devel:/home/jovyan/work]
   restart: unless-stopped
-  environment: {GADGETRON_RELAY_HOST: 0.0.0.0}
+  environment:
+   GADGETRON_RELAY_HOST: 0.0.0.0
+   USE_HTTPS: "yes"
+   PASSWORD: ${SIRFPASS:-virtual}
   ports:
   - "9002:9002"  # gadgetron
   - "9999:8888"  # jupyter

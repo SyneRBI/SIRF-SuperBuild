@@ -1,3 +1,4 @@
 devel/**
 !devel/.ccache
 devel/.ccache/.gitignore
+docker-stacks/**

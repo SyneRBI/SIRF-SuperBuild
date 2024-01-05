@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Release images: synerbi/sirf:jupyter, synerbi/sirf:jupyter-gpu
+# Creates images: synerbi/sirf:jupyter, synerbi/sirf:jupyter-gpu
 # Also creates intermediate (temp) images: synerbi/jupyter
 set -exuo pipefail
 
