@@ -44,8 +44,9 @@ RUN ccache -o cache_dir=/opt/ccache
 ENV PATH="/usr/lib/ccache:${PATH}"
 
 # SIRF-SuperBuild config
-ARG SIRF_SB_URL="https://github.com/SyneRBI/SIRF-SuperBuild"
-ARG SIRF_SB_TAG="master"
+COPY ./.git /opt/SIRF-SuperBuild.git
+ARG SIRF_SB_URL="file:///opt/SIRF-SuperBuild.git"
+ARG SIRF_SB_TAG="HEAD"
 ARG REMOVE_BUILD_FILES=0
 ARG RUN_CTEST=1
 ARG NUM_PARALLEL_BUILDS=" "
