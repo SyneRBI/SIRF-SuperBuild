@@ -38,6 +38,12 @@ DCC_GPU="docker compose -f docker-compose.yml -f docker/docker-compose.gpu.yml"
 pushd "$(dirname "$(dirname "${BASH_SOURCE[0]}")")"
 git submodule update --init --recursive
 
+echo build base stack
+for image in foundation base minimal scipy; do
+  test $build_cpu = 1 && $DCC_CPU build "$@" $image
+  test $build_gpu = 1 && $DCC_GPU build "$@" $image
+done
+
 echo build ccache
 test $build_cpu = 1 && $DCC_CPU build "$@" sirf-build
 test $build_gpu = 1 && $DCC_GPU build "$@" sirf-build
