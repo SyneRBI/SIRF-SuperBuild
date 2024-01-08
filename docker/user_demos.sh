@@ -15,7 +15,14 @@ git clone https://github.com/SyneRBI/SIRF-Exercises --recursive $INSTALL_DIR/SIR
 cd $INSTALL_DIR/SIRF-Exercises
 if [ "$PYTHON" = "miniconda" ]; then
   if [ -f environment.yml ]; then
-    mamba env update --file environment.yml
+    if test "${BUILD_GPU:-0}" != 0; then
+      # uncomment GPU deps
+      sed -r 's/^(\s*)#\s*(- \S+.*#.*GPU.*)$/\1\2/' environment.yml > environment-sirf.yml
+    else
+      # delete GPU deps
+      sed -r -e '/^\s*- (astra-toolbox|tigre).*/d' -e '/^\s*- \S+.*#.*GPU/d' environment.yml > environment-sirf.yml
+    fi
+    mamba env update --file environment-sirf.yml
   else
     if [ -f requirements.txt ]; then
       cat requirements.txt
