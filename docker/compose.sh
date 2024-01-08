@@ -5,7 +5,8 @@ build_cpu=1
 build_gpu=1
 run_cpu=0
 run_gpu=0
-while getopts :hCGcg option; do
+regen_ccache=0
+while getopts :hCGcgr option; do
   case "${option}" in
   h) cat <<EOF
 Creates images: synerbi/sirf:jupyter, synerbi/sirf:jupyter-gpu
@@ -16,6 +17,8 @@ Usage: $0 [-hCGcg] [-- [build options]]
   -G: disable GPU build
   -c: start CPU container
   -g: start GPU container
+  -r: regenerate (rather than append to) docker/devel/.ccache
+      (default true iff neither -C nor -G are specified)
   build options: passed to 'docker compose build'
 EOF
       exit 0 ;;
@@ -23,13 +26,16 @@ EOF
   G) build_gpu=0 ;;
   c) run_cpu=1 ;;
   g) run_gpu=1 ;;
+  r) regen_ccache=1 ;;
   *) ;;
   esac
 done
 # remove processed options
 shift $((OPTIND-1))
 
-echo "build_cpu: $build_cpu, build_gpu: $build_gpu, run_cpu: $run_cpu, run_gpu: $run_gpu"
+test $build_cpu$build_gpu = 11 && regen_ccache = 1
+echo "build_cpu: $build_cpu, build_gpu: $build_gpu, regen ccache: $regen_ccache"
+echo "run_cpu: $run_cpu, run_gpu: $run_gpu"
 echo "build args: $@"
 
 DCC_CPU="docker compose"
@@ -53,7 +59,7 @@ test $build_cpu = 1 && $DCC_CPU build "$@"
 test $build_gpu = 1 && $DCC_GPU build "$@"
 
 echo copy ccache
-test $build_cpu$build_gpu = 11 && sudo rm -r ./docker/devel/.ccache/*
+test $regen_ccache = 1 && sudo rm -r ./docker/devel/.ccache/*
 export USER_ID UID
 test $build_cpu = 1 && $DCC_CPU up sirf-build && $DCC_CPU down sirf-build
 test $build_gpu = 1 && $DCC_GPU up sirf-build && $DCC_GPU down sirf-build
