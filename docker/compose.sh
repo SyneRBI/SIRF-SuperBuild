@@ -49,11 +49,11 @@ test $build_gpu = 1 && $DCC_GPU build "$@"
 echo copy ccache
 test $build_cpu$build_gpu = 11 && sudo rm -r ./docker/devel/.ccache/*
 export USER_ID UID
-test $build_cpu = 1 && $DCC_CPU up sirf-build
-test $build_gpu = 1 && $DCC_GPU up sirf-build
+test $build_cpu = 1 && $DCC_CPU up sirf-build && $DCC_CPU down sirf-build
+test $build_gpu = 1 && $DCC_GPU up sirf-build && $DCC_GPU down sirf-build
 
 echo start
-test $run_cpu = 1 && $DCC_CPU up -d sirf
-test $run_gpu = 1 && $DCC_GPU up -d sirf
+test $run_cpu = 1 && $DCC_CPU up -d sirf && $DCC_CPU down sirf
+test $run_gpu = 1 && $DCC_GPU up -d sirf && $DCC_GPU down sirf
 
 popd
