@@ -1,0 +1,45 @@
+name: docker
+on:
+  pull_request:
+    branches: [master]
+    paths-ignore:
+    - '**.md'
+    - 'VirtualBox/**'
+    - '.github/workflows/c-cpp.yml'
+    - 'CITATION.cff'
+    - '.mailmap'
+  push:
+    branches: [master]
+    paths-ignore:
+    - '**.md'
+    - 'VirtualBox/**'
+    - '.github/workflows/c-cpp.yml'
+    - 'CITATION.cff'
+    - '.mailmap'
+defaults:
+  run:
+    shell: bash -l {0}
+jobs:
+  build-test-push:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        type: [gpu, cpu]
+    steps:
+    - uses: actions/checkout@v3
+    - run: sudo .github/workflows/install_docker.sh
+    - run: sudo .github/workflows/GHA_increase_disk_space.sh
+    - name: cache
+      uses: actions/cache@v3
+      with:
+        key: ccache-${{ matrix.type }}
+        path: docker/devel/.ccache
+    - id: build
+      name: build
+      run: |
+        ./docker/compose.sh ${{ matrix.type == 'gpu' && '-C' || '-G' }}
+        echo "image=synerbi/sirf:jupyter${{ matrix.type == 'gpu' && '-gpu' || '' }}" >> $GITHUB_OUTPUT
+    - name: test CIL
+      run: >
+        docker run --rm -v ./.github/workflows:/gh --user $(id -u) --group-add users
+        ${{ steps.build.outputs.image }} /gh/test_cil.sh
