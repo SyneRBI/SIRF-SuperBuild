@@ -63,7 +63,7 @@ mkdir ~/devel
 ```
 
 ### Install CMake
-If you do not have CMake >= 3.10, install it first. You can probably use a package manager on your OS. Alternatively, you can do that either by following the official instructions ([download link](https://cmake.org/download/)) or running your own shell sript to do so (see an example [here](https://github.com/SyneRBI/SyneRBI_VM/blob/master/scripts/INSTALL_CMake.sh)). 
+If you do not have CMake >= 3.10, install it first. You can probably use a package manager on your OS. Alternatively, you can do that either by following the official instructions ([download link](https://cmake.org/download/)) or running your own shell sript to do so (see an example [here](https://github.com/SyneRBI/SyneRBI_VM/blob/master/scripts/INSTALL_CMake.sh)).
 
 If you use a CMake installer, you will be asked to read and accept CMake's license. If you answered the last question during the CMake installation with yes, then you should use
 
@@ -74,7 +74,7 @@ Note that the above `PATH` statements won't work if you are running csh. The equ
 ```csh
 set path = ( /usr/local/cmake/bin $path )
 ```
-NOTE: change `/usr/local/` to your chosen installation path, if different. 
+NOTE: change `/usr/local/` to your chosen installation path, if different.
 
 You might want to add the `PATH` line to your start-up file e.g. `.profile`, `.bashrc` or `.cshrc`.
 
@@ -278,7 +278,7 @@ In this case, you would then need to ensure that `PYTHONPATH` and `MATLABPATH` a
 
 ### Package specific information
 
-For default versions built, see [version_config.cmake](version_config.cmake) and 
+For default versions built, see [version_config.cmake](version_config.cmake) and
 [below on how to change them](#Building-with-specific-versions-of-dependencies).
 
 The SuperBuild allows building many packages and sets dependencies correctly. However, the
@@ -339,18 +339,18 @@ cmake ../SIRF-SuperBuild -DDISABLE_GIT_CHECKOUT_SIRF=ON -DSIRF_SOURCE_DIR=~/wher
 2. Gadgetron's [FindMKL.cmake](https://github.com/gadgetron/gadgetron/blob/master/cmake/FindMKL.cmake#L23) will try to look for MKL libraries in `/opt/intel` on Unix/Apple and in `C:/Program Files (x86)/Intel/Composer XE` in Windows. Make sure that this is the location of the library or pass the vatiable `MKLROOT_PATH` (Unix/Apple) or set the environment variable `MKLROOT_PATH` on Windows.
 3. Configure the SuperBuild to pass `Gadgetron_USE_MKL=ON`.
 
-Notice that other packages may look for a blas implementation issuing CMake's [`find_package(BLAS)`](https://github.com/Kitware/CMake/blob/master/Modules/FindBLAS.cmake#L142L148). This will look for MKL taking hint directories from the environment variable `LD_LIBRARY_PATH`, `DYLD_LIBRARY_PATH` and `LIB`, on Unix, Apple and Windows respectively. 
+Notice that other packages may look for a blas implementation issuing CMake's [`find_package(BLAS)`](https://github.com/Kitware/CMake/blob/master/Modules/FindBLAS.cmake#L142L148). This will look for MKL taking hint directories from the environment variable `LD_LIBRARY_PATH`, `DYLD_LIBRARY_PATH` and `LIB`, on Unix, Apple and Windows respectively.
 
 ### Building CCPi CIL
 
-It is possible to build the [CCPi Core Imaging Library CIL](https://www.ccpi.ac.uk/CIL) as part of the SuperBuild. The functionality of `CIL` can be expanded by plugins. Currently available: [`CCPi-Regularisation`](https://github.com/vais-ral/CCPi-Regularisation-Toolkit), [`TomoPhantom`](https://github.com/dkazanc/TomoPhantom) [ASTRA-toolbox](https://github.com/astra-toolbox/astra-toolbox) and [`TIGRE`](https://github.com/CERN/TIGRE)). 
+It is possible to build the [CCPi Core Imaging Library CIL](https://www.ccpi.ac.uk/CIL) as part of the SuperBuild. The functionality of `CIL` can be expanded by plugins. Currently available: [`CCPi-Regularisation`](https://github.com/vais-ral/CCPi-Regularisation-Toolkit), [`TomoPhantom`](https://github.com/dkazanc/TomoPhantom) [ASTRA-toolbox](https://github.com/astra-toolbox/astra-toolbox) and [`TIGRE`](https://github.com/CERN/TIGRE)).
 
-There is one mandatory flag and 2 optional: 
+There is one mandatory flag and 2 optional:
 
 
 - `BUILD_CIL=ON`, will build `CIL` and all the following plugins: `CCPi-Regularisation` and `TomoPhantom`; default `OFF`
- - Optional `IPP_LIBRARY=<location of IPP shared libraries>` and `IPP_INCLUDE=<location of IPP includes>` if you want to build CIL with [IPP](https://www.intel.com/content/www/us/en/developer/tools/oneapi/ipp.html#gs.dnfk5r) support for optimised [FBP/FDK](https://github.com/TomographicImaging/CIL#dependency) . 
- - Optional `BUILD_ASTRA=ON`, if you want to use CIL for CT reconstruction with the ASTRA-toolbox engine. Default `OFF` 
+ - Optional `IPP_LIBRARY=<location of IPP shared libraries>` and `IPP_INCLUDE=<location of IPP includes>` if you want to build CIL with [IPP](https://www.intel.com/content/www/us/en/developer/tools/oneapi/ipp.html#gs.dnfk5r) support for optimised [FBP/FDK](https://github.com/TomographicImaging/CIL#dependency) .
+ - Optional `BUILD_ASTRA=ON`, if you want to use CIL for CT reconstruction with the ASTRA-toolbox engine. Default `OFF`
 
 ### Passing CMAKE arguments to specific projects
 
@@ -358,7 +358,7 @@ You may want to change the CMAKE arguments used to build some of the projects. Y
 
 ```sh
 cmake ../SIRF-SuperBuild -D${proj}_EXTRA_CMAKE_ARGS:STRING="-Dflag1:BOOL=ON;-Dflag2:STRING=\"your_string\""
-``` 
+```
 
 All the flags from the following projects can be set using this technique:
 
@@ -370,13 +370,13 @@ All the flags from the following projects can be set using this technique:
 - NIFTYREG
 - NiftyPET
 - CCPi-Regularisation-Toolkit
-- TomoPhantom  
+- TomoPhantom
 
 As an example, the following changes some Gadgetron and NiftyReg flags
 
 ```sh
 cmake ../SIRF-SuperBuild -DGadgetron_EXTRA_CMAKE_ARGS:STRING="-DBUILD_PYTHON_SUPPORT:BOOL=ON;" -DNIFTYREG_EXTRA_CMAKE_ARGS:STRING="-DCUDA_FAST_MATH:BOOL=OFF;-DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF"
-``` 
+```
 ### Building with CUDA
 
 Some dependencies like Gadgetron, NiftyPET and Parallelproj require building parts of their code base with CUDA. It has been found that version [10.1 update 1](https://github.com/gadgetron/gadgetron/issues/792#issuecomment-786481256) works, but following updates of 10.1 and 10.2 do not build Gadgetron. It is reported that version CUDA toolkit version 11 works. We have not tested lower versions of the toolkit yet.
@@ -397,8 +397,10 @@ By the way, if you build with `USE_SYSTEM_FFTW3=OFF` (the default except on Wind
 ### Armadillo issues
 CMake does come with `FindArmadillo.cmake` but it currently (at least up to CMake 3.12) has no variable to specify its location at all. This implies that when using `USE_SYSTEM_ARMADILLO=On`, you have to install armadillo in a system location, unless some extra work is done. See [this post on stackoverflow](https://stackoverflow.com/questions/35304513/cmake-find-armadillo-library-installed-in-a-custom-location) for some suggestions, which we haven't tried.
 
-[CI-badge]: https://travis-ci.org/SyneRBI/SIRF-SuperBuild.svg?branch=master
-[CI-link]: https://travis-ci.org/SyneRBI/SIRF-SuperBuild
+[gh-action-badge]: https://github.com/SyneRBI/SIRF-SuperBuild/actions/workflows/c-cpp.yml/badge.svg
+[gh-action-link]: https://github.com/SyneRBI/SIRF-SuperBuild/actions/workflows/c-cpp.yml
+[CI-badge]: https://github.com/SyneRBI/SIRF-SuperBuild/actions/workflows/docker.yml/badge.svg
+[CI-link]: https://github.com/SyneRBI/SIRF-SuperBuild/actions/workflows/docker.yml
 [style-badge]: https://api.codacy.com/project/badge/Grade/eefea1a2f11148fabd9a4ec9b822701f
 [style-link]: https://www.codacy.com/gh/SyneRBI/SIRF-SuperBuild?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SyneRBI/SIRF-SuperBuild&amp;utm_campaign=Badge_Grade
 [docker-badge]: https://img.shields.io/docker/pulls/synerbi/sirf.svg
@@ -406,5 +408,3 @@ CMake does come with `FindArmadillo.cmake` but it currently (at least up to CMak
 [install-badge]: https://img.shields.io/badge/dynamic/json.svg?label=users&uri=https%3A//raw.githubusercontent.com/ccp-petmr-codebot/github-stats/SyneRBI/SIRF-SuperBuild/SyneRBI_SIRF_SuperBuild.json&query=total&colorB=8000f0&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAD0ElEQVR4nMSXS2ic5RfGf5lL/pPMZP7JjB0ba53axkvRegGhpFaxVkqjOxetoi6UUjG4ELdVFy50I6gLtfUCFilUiwheilZXIm1FiZSCpYmYRppoUpvRJONMOpmJnOT54DBtxk4CmQPDl/d85z3vc55zeb%2BEWJr0AE8uxcFSAWwE7mwkgE7gqkYCWAGkGwkgBVQaCSACFBsJwPaXgGijAJhMAonlAvAc0OHWlv8pB8BS8hLQtFhAtaRFdD%2BodQz4BngbuEm624BZ4MYFfFwUcD0MdAGjeqKojf4Jx8B1wAhwwwI%2BLuqYegBkgePAKq2Tot9AtEln744Bay7XaS0Are4wk6uBPmCl1gkByDsGMrLx%2B1L61Q3gBeBTt7axe9I5C1LgGcjIxo/nvcC%2BhQ6J1ACwWREmlWeLfNBVeELR5x0AA/czcKXzE6SjSQV6SQbiwLdAt9bNMu5zFZ5REXoAU6F5u4TTjcgfAvI78AuwVrprge%2BB1R7Aw0Leq7VV82mgX3%2BbXAGcd1G0J0Ik18foSoVply4MFFyA64ABpSUI5HEFNndW5NEo2c9LPNQT5fkS7IxBdqDCXRUY6wpxtgKZKGS/KNH6QJTV09D3P1hzqkznvRl2b2%2Bj8P4Qr8%2BGyB6ZoXlbhGwRfjA//RXuaIKJtSFOV6DD/BwuseX%2BKE8VYHcLZJuOZ3hr1zjbDqb5%2BAK0hGFm7xTd6yMM3hNj2HQxyO88zyMfpjkwDfEoFF6bZOPdGTZvbeOfE6McWgVju3Ls2J/ioyLEm6HwTp7udWGGt8YYsn3lWSq9OXr2p%2BbPCkHZWPgAeFr0GC1PAJ%2Bokls17ez5tWz2aRi9uCnOm70reKMzwgHR/6VsrPI3yHaD3h0FtgCvyGY7cMi64DfgXSnN6Bn1/IgrrE4Vk8lfug/ix/IcPFWkmCuzB/i/WhLZrtTwGmI%2B0gv6hjwqm6%2BA260I97g7/QRwq4omkBngGgfobytAa71ZOJcrz%2B1JCEBONsMKol0tbHIEeEyMomJ%2BuXoOmHIHMO50Z4FNYgod0uFG8bQuprTYCfZ0K/JAXgU%2Bc4Dm5FKTcEDtFki/qBvUekLRJsUGmg1Jl4JfgfuAM85PoYrZBQFUy0/69D7pGEi5uyCQtGPOANyifq8ptUZxIFbZz4pWXBGG3fVaUb6DFMyomA//l/PLYaCg/AUyrmj93mmNVl8777nOWRKAavlT94L/uLCauV7v6pLFABhXf09WgboZGFsOAEG%2BR53uDzEwuhwA0HQbdOszOrzuf1LCiwRg7fedi/icfj/W6%2BjfAAAA///cZAAN8LSlZAAAAABJRU5ErkJggg%3D%3D
 [zenodo-badge]: https://zenodo.org/badge/DOI/10.5281/zenodo.4408776.svg
 [zenodo-link]: https://doi.org/10.5281/zenodo.4408776
-[gh-action-badge]: https://github.com/SyneRBI/SIRF-SuperBuild/actions/workflows/c-cpp.yml/badge.svg
-[gh-action-link]: https://github.com/SyneRBI/SIRF-SuperBuild/actions/workflows/c-cpp.yml/

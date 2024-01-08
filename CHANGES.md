@@ -2,6 +2,12 @@
 
 ## v3.6.0
 - build the STIR native Python interface by default (STIR_BUILD_SWIG_PYTHON=ON). You can still switch this off.
+- docker image updates:
+  - uses `docker-stacks`
+  - CPU: ubuntu:22.04
+  - GPU: nvidia/cuda:11.7.1-cudnn8-runtime-ubuntu22.04
+  - added requirements.yml
+- Drop Travis
 - updated versions:
   - SIRF: v3.6.0
   - STIR: v6.0.0
