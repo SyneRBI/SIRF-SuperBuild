@@ -36,7 +36,7 @@ jobs:
       with:
         images: |
           synerbi/sirf
-          ghcr.io/${{ github.repository }}
+          ghcr.io/synerbi/sirf
         flavor: |
           latest=auto
           suffix=${{ matrix.type == 'gpu' && 'gpu,onlatest=true' || '' }}
@@ -63,17 +63,22 @@ jobs:
     - name: cache
       uses: actions/cache@v3
       with:
-        key: ccache-${{ matrix.type }}
+        key: ccache-docker-${{ matrix.type }}-${{ github.ref_name }}-${{ github.run_id }}
+        restore-keys: |
+          ccache-docker-${{ matrix.type }}-${{ github.ref_name }}
+          ccache-docker-${{ matrix.type }}
+          ccache-docker
+          ccache
         path: docker/devel/.ccache
     - id: build
       name: build
       run: |
         suffix=${{ matrix.type == 'gpu' && '-gpu' || '' }}
         # pull base image
-        base_image=ghcr.io/${{ github.repository }}:scipy$suffix
+        base_image=ghcr.io/synerbi/sirf:scipy$suffix
         docker pull $base_image || :
         # pull sirf image
-        docker pull ghcr.io/${{ github.repository }}:${{ fromJSON(steps.meta.outputs.json).tags[0] }} || :
+        docker pull ghcr.io/synerbi/sirf:${{ fromJSON(steps.meta.outputs.json).tags[0] }} || :
         # rebuild sirf image
         ./docker/compose.sh -r ${{ matrix.type == 'gpu' && '-C' || '-G' }}
         image=synerbi/sirf:jupyter$suffix
