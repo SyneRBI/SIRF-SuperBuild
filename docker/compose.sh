@@ -59,7 +59,7 @@ test $build_cpu = 1 && $DCC_CPU build "$@"
 test $build_gpu = 1 && $DCC_GPU build "$@"
 
 echo copy ccache
-test $regen_ccache = 1 && sudo rm -r ./docker/devel/.ccache/*
+test $regen_ccache = 1 && sudo rm -rf ./docker/devel/.ccache/*
 export USER_ID UID
 test $build_cpu = 1 && $DCC_CPU up sirf-build && $DCC_CPU down sirf-build
 test $build_gpu = 1 && $DCC_GPU up sirf-build && $DCC_GPU down sirf-build
