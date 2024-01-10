@@ -75,7 +75,7 @@ jobs:
       run: |
         suffix=${{ matrix.type == 'gpu' && '-gpu' || '' }}
         # pull base image
-        base_image=ghcr.io/synerbi/sirf:scipy$suffix
+        base_image=ghcr.io/synerbi/sirf:core$suffix
         docker pull $base_image || :
         # pull sirf image
         docker pull ghcr.io/synerbi/sirf:${{ fromJSON(steps.meta.outputs.json).tags[0] }} || :
@@ -84,7 +84,7 @@ jobs:
         image=synerbi/sirf:jupyter$suffix
         echo "image=$image" >> "$GITHUB_OUTPUT"
         # tag potentially newer base image
-        docker tag synerbi/sirf:scipy$suffix $base_image
+        docker tag synerbi/jupyter:scipy-${{ matrix.type }} $base_image
         echo "base_image=$base_image" >> "$GITHUB_OUTPUT"
         # make a dummy Dockerfile to use with build-push-action
         context=$(mktemp -d)

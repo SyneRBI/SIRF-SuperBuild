@@ -33,7 +33,7 @@ done
 # remove processed options
 shift $((OPTIND-1))
 
-test $build_cpu$build_gpu = 11 && regen_ccache = 1
+test $build_cpu$build_gpu = 11 && regen_ccache=1
 echo "build_cpu: $build_cpu, build_gpu: $build_gpu, regen ccache: $regen_ccache"
 echo "run_cpu: $run_cpu, run_gpu: $run_gpu"
 echo "build args: $@"
