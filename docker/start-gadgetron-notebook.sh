@@ -39,7 +39,7 @@ pushd ~/work
 for repo in SIRF-Exercises CIL-Demos; do
   test -d ${repo} || cp -dR "${SB_PATH}/../${repo}" .
 done
-./SIRF-Exercises/scripts/download_data.sh
+./SIRF-Exercises/scripts/download_data.sh ${SIRF_DOWNLOAD_DATA_ARGS:-}
 
 echo "link SIRF-Contrib into ~/work"
 if test ! -r SIRF-contrib; then
