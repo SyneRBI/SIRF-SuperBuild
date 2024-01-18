@@ -5,6 +5,7 @@ build_cpu=1
 build_gpu=1
 run_cpu=0
 run_gpu=0
+update_ccache=1
 regen_ccache=0
 while getopts :hCGcgr option; do
   case "${option}" in
@@ -17,8 +18,9 @@ Usage: $0 [-hCGcg] [-- [build options]]
   -G: disable GPU build
   -c: start CPU container
   -g: start GPU container
+  -U: disable updating docker/devel/.ccache
   -r: regenerate (rather than append to) docker/devel/.ccache
-      (default true iff neither -C nor -G are specified)
+      (true if neither -C nor -G are specified)
   build options: passed to 'docker compose build'
 EOF
       exit 0 ;;
@@ -26,6 +28,7 @@ EOF
   G) build_gpu=0 ;;
   c) run_cpu=1 ;;
   g) run_gpu=1 ;;
+  U) update_ccache=0 ;;
   r) regen_ccache=1 ;;
   *) ;;
   esac
@@ -34,7 +37,7 @@ done
 shift $((OPTIND-1))
 
 test $build_cpu$build_gpu = 11 && regen_ccache=1
-echo "build_cpu: $build_cpu, build_gpu: $build_gpu, regen ccache: $regen_ccache"
+echo "build_cpu: $build_cpu, build_gpu: $build_gpu, update ccache: $update_ccache, regen ccache: $regen_ccache"
 echo "run_cpu: $run_cpu, run_gpu: $run_gpu"
 echo "build args: $@"
 
@@ -59,10 +62,10 @@ test $build_cpu = 1 && $DCC_CPU build "$@"
 test $build_gpu = 1 && $DCC_GPU build "$@"
 
 echo copy ccache
-test $regen_ccache = 1 && sudo rm -rf ./docker/devel/.ccache/*
+test $update_ccache$regen_ccache = 11 && sudo rm -rf ./docker/devel/.ccache/*
 export USER_ID UID
-test $build_cpu = 1 && $DCC_CPU up sirf-build && $DCC_CPU down sirf-build
-test $build_gpu = 1 && $DCC_GPU up sirf-build && $DCC_GPU down sirf-build
+test $build_cpu = 1 && $DCC_CPU up sirf-build && test $update_ccache = 1 && $DCC_CPU down sirf-build
+test $build_gpu = 1 && $DCC_GPU up sirf-build && test $update_ccache = 1 && $DCC_GPU down sirf-build
 
 echo start
 test $run_cpu = 1 && $DCC_CPU up -d sirf && $DCC_CPU down sirf
