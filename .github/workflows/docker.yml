@@ -82,7 +82,7 @@ jobs:
         # pull sirf image
         docker pull ghcr.io/synerbi/sirf:${{ fromJSON(steps.meta.outputs.json).tags[0] }} || :
         # rebuild sirf image
-        ./docker/compose.sh -r ${{ matrix.type == 'gpu' && '-C' || '-G' }}
+        ./docker/compose.sh -bR${{ matrix.type == 'gpu' && 'g' || 'c' }}
         image=synerbi/sirf:jupyter$suffix
         echo "image=$image" >> "$GITHUB_OUTPUT"
         # tag potentially newer core image
@@ -155,7 +155,7 @@ jobs:
         suffix=${{ matrix.type == 'gpu' && '-gpu' || '' }}
         core_image=ghcr.io/synerbi/sirf:core$suffix
         # rebuild sirf image
-        ./docker/compose.sh -r ${{ matrix.type == 'gpu' && '-C' || '-G' }} \
+        ./docker/compose.sh -bR${{ matrix.type == 'gpu' && 'g' || 'c' }} \
         -- --build-arg EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON -Dsiemens_to_ismrmrd_TAG=origin/master"
         # TODO: remove *_TAG after https://github.com/SyneRBI/SIRF-SuperBuild/issues/851
         image=synerbi/sirf:jupyter$suffix

@@ -1,45 +1,49 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-build_cpu=1
-build_gpu=1
-run_cpu=0
-run_gpu=0
-update_ccache=1
-regen_ccache=0
-while getopts :hCGcgr option; do
-  case "${option}" in
-  h) cat <<EOF
+print_help(){
+  cat <<EOF
 Creates images: synerbi/sirf:jupyter, synerbi/sirf:jupyter-gpu
 Also creates intermediate (temp) images: synerbi/jupyter
-Usage: $0 [-hCGcg] [-- [build options]]
+
+Usage: $0 [options] [-- [docker compose options]]
+Options:
   -h: print this help
-  -C: disable CPU build
-  -G: disable GPU build
-  -c: start CPU container
-  -g: start GPU container
+  -b: build
+  -r: run
+  -c: enable CPU
+  -g: enable GPU
   -U: disable updating docker/devel/.ccache
-  -r: regenerate (rather than append to) docker/devel/.ccache
-      (true if neither -C nor -G are specified)
-  build options: passed to 'docker compose build'
+  -R: regenerate (rather than append to) docker/devel/.ccache
+      (always true if both -c and -g are specified)
 EOF
-      exit 0 ;;
-  C) build_cpu=0 ;;
-  G) build_gpu=0 ;;
-  c) run_cpu=1 ;;
-  g) run_gpu=1 ;;
+}
+
+build=0
+run=0
+cpu=0
+gpu=0
+update_ccache=1
+regen_ccache=0
+while getopts :hbrcgUR option; do
+  case "${option}" in
+  h) print_help; exit 0 ;;
+  b) build=1 ;;
+  r) run=1 ;;
+  c) cpu=1 ;;
+  g) gpu=1 ;;
   U) update_ccache=0 ;;
-  r) regen_ccache=1 ;;
+  R) regen_ccache=1 ;;
   *) ;;
   esac
 done
-# remove processed options
-shift $((OPTIND-1))
+shift $((OPTIND-1)) # remove processed options
 
-test $build_cpu$build_gpu = 11 && regen_ccache=1
-echo "build_cpu: $build_cpu, build_gpu: $build_gpu, update ccache: $update_ccache, regen ccache: $regen_ccache"
-echo "run_cpu: $run_cpu, run_gpu: $run_gpu"
-echo "build args: $@"
+test $build$run = 00 && echo >&2 "WARNING: neither -b nor -r specified"
+test $cpu$gpu = 00 && echo >&2 "WARNING: neither -c nor -g specified"
+test $build$cpu$gpu = 111 && regen_ccache=1 # force rebuild ccache
+echo "cpu: $cpu, gpu: $gpu, update ccache: $update_ccache, regen ccache: $regen_ccache"
+echo "docker compose options: $@"
 
 DCC_CPU="docker compose"
 DCC_GPU="docker compose -f docker-compose.yml -f docker/docker-compose.gpu.yml"
@@ -47,28 +51,32 @@ DCC_GPU="docker compose -f docker-compose.yml -f docker/docker-compose.gpu.yml"
 pushd "$(dirname "$(dirname "${BASH_SOURCE[0]}")")"
 git submodule update --init --recursive
 
-echo build base stack
-for image in foundation base minimal scipy; do
-  test $build_cpu = 1 && $DCC_CPU build "$@" $image
-  test $build_gpu = 1 && $DCC_GPU build "$@" $image
-done
+if test $build = 1; then
+  echo build base stack
+  for image in foundation base minimal scipy; do
+    test $cpu = 1 && $DCC_CPU build "$@" $image
+    test $gpu = 1 && $DCC_GPU build "$@" $image
+  done
 
-echo build ccache
-test $build_cpu = 1 && $DCC_CPU build "$@" sirf-build
-test $build_gpu = 1 && $DCC_GPU build "$@" sirf-build
+  echo build ccache
+  test $cpu = 1 && $DCC_CPU build "$@" sirf-build
+  test $gpu = 1 && $DCC_GPU build "$@" sirf-build
 
-echo build
-test $build_cpu = 1 && $DCC_CPU build "$@"
-test $build_gpu = 1 && $DCC_GPU build "$@"
+  echo build
+  test $cpu = 1 && $DCC_CPU build "$@"
+  test $gpu = 1 && $DCC_GPU build "$@"
 
-echo copy ccache
-test $update_ccache$regen_ccache = 11 && sudo rm -rf ./docker/devel/.ccache/*
-export USER_ID UID
-test $build_cpu = 1 && $DCC_CPU up sirf-build && test $update_ccache = 1 && $DCC_CPU down sirf-build
-test $build_gpu = 1 && $DCC_GPU up sirf-build && test $update_ccache = 1 && $DCC_GPU down sirf-build
+  echo copy ccache
+  test $update_ccache$regen_ccache = 11 && sudo rm -rf ./docker/devel/.ccache/*
+  export USER_ID UID
+  test $cpu = 1 && $DCC_CPU up --no-build sirf-build && test $update_ccache = 1 && $DCC_CPU down sirf-build
+  test $gpu = 1 && $DCC_GPU up --no-build sirf-build && test $update_ccache = 1 && $DCC_GPU down sirf-build
+fi
 
-echo start
-test $run_cpu = 1 && $DCC_CPU up -d sirf && $DCC_CPU down sirf
-test $run_gpu = 1 && $DCC_GPU up -d sirf && $DCC_GPU down sirf
+if test $run = 1; then
+  echo start
+  test $cpu = 1 && $DCC_CPU up --no-build -d "$@" sirf && $DCC_CPU down sirf
+  test $gpu = 1 && $DCC_GPU up --no-build -d "$@" sirf && $DCC_GPU down sirf
+fi
 
 popd

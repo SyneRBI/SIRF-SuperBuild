@@ -21,3 +21,5 @@ services:
      -Dsiemens_to_ismrmrd_TAG=v1.2.11
      -DDEVEL_BUILD=ON
    cache_from: [synerbi/jupyter:sirf-build-devel-cpu]
+  cap_add: [SYS_PTRACE]
+  security_opt: [seccomp=unconfined]

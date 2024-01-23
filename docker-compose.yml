@@ -27,6 +27,8 @@ services:
    context: docker/docker-stacks/images/scipy-notebook
    args: {BASE_CONTAINER: synerbi/jupyter:minimal-cpu}
  sirf-build:
+  # convenience volume & command to copy image::/opt/ccache to localhost::./docker/devel/.ccache
+  # (executed in ./docker/compose.sh by `docker compose up sirf-build`)
   volumes: [./docker/devel/.ccache:/ccache]
   command: "bash -c 'cp -r /opt/ccache/* /ccache/'"
   image: synerbi/jupyter:sirf-build-cpu
