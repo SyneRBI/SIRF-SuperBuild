@@ -1,0 +1,8 @@
+version: '3.2'
+services:
+ sirf-build:
+  image: synerbi/jupyter:sirf-build-devel-gpu
+ sirf:
+  image: synerbi/sirf:jupyter-devel-gpu
+  build:
+   cache_from: [synerbi/jupyter:sirf-build-devel-gpu]

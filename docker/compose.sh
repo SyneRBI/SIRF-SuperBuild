@@ -48,10 +48,15 @@ test $build$cpu$gpu = 111 && regen_ccache=1 # force rebuild ccache
 echo "cpu: $cpu, gpu: $gpu, update ccache: $update_ccache, regen ccache: $regen_ccache, devel: $devel"
 echo "docker compose options: $@"
 
-DCC_CPU="docker compose -f docker-compose.yml"
-DCC_GPU="$DCC_CPU -f docker/docker-compose.gpu.yml"
+# compose binary
+DCC="${DCC:-docker compose}"
+which docker-compose && DCC=$(which docker-compose)
+# CPU config
+DCC_CPU="$DCC -f docker-compose.yml"
 test $devel = 1 && DCC_CPU+=" -f docker/docker-compose.devel.yml"
-test $devel$gpu = 11 && echo >&2 "WARNING: devel gpu not supported"
+# GPU config
+DCC_GPU="$DCC_CPU -f docker/docker-compose.gpu.yml"
+test $devel = 1 && DCC_CPU+=" -f docker/docker-compose.devel-gpu.yml"
 
 pushd "$(dirname "$(dirname "${BASH_SOURCE[0]}")")"
 git submodule update --init --recursive
