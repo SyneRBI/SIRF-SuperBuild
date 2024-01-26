@@ -8,15 +8,7 @@ Also creates intermediate (temp) images: synerbi/jupyter
 
 Usage: $0 [options] [-- [docker compose options]]
 Options:
-  -h: print this help
-  -b: build
-  -r: run
-  -d: use development (main/master) repo branches
-  -c: enable CPU
-  -g: enable GPU
-  -U: disable updating docker/devel/.ccache
-  -R: regenerate (rather than append to) docker/devel/.ccache
-      (always true if both -c and -g are specified)
+$(sed -rn 's/^\s*(\w)\) .*;; # (.*)$/  -\1: \2/p' "$0")
 EOF
 }
 
@@ -29,14 +21,14 @@ update_ccache=1
 regen_ccache=0
 while getopts :hbrdcgUR option; do
   case "${option}" in
-  h) print_help; exit 0 ;;
-  b) build=1 ;;
-  r) run=1 ;;
-  d) devel=1 ;;
-  c) cpu=1 ;;
-  g) gpu=1 ;;
-  U) update_ccache=0 ;;
-  R) regen_ccache=1 ;;
+  h) print_help; exit 0 ;; # print this help
+  b) build=1 ;; # build
+  r) run=1 ;; # run
+  d) devel=1 ;; # use development (main/master) repo branches
+  c) cpu=1 ;; # enable CPU
+  g) gpu=1 ;; # enable GPU
+  U) update_ccache=0 ;; # disable updating docker/devel/.ccache
+  R) regen_ccache=1 ;; # regenerate (rather than append to) docker/devel/.ccache (always true if both -c and -g are specified)
   *) ;;
   esac
 done
