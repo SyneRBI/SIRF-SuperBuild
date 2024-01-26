@@ -11,6 +11,7 @@ Options:
   -h: print this help
   -b: build
   -r: run
+  -d: use development (main/master) repo branches
   -c: enable CPU
   -g: enable GPU
   -U: disable updating docker/devel/.ccache
@@ -21,15 +22,17 @@ EOF
 
 build=0
 run=0
+devel=0
 cpu=0
 gpu=0
 update_ccache=1
 regen_ccache=0
-while getopts :hbrcgUR option; do
+while getopts :hbrdcgUR option; do
   case "${option}" in
   h) print_help; exit 0 ;;
   b) build=1 ;;
   r) run=1 ;;
+  d) devel=1 ;;
   c) cpu=1 ;;
   g) gpu=1 ;;
   U) update_ccache=0 ;;
@@ -42,11 +45,13 @@ shift $((OPTIND-1)) # remove processed options
 test $build$run = 00 && echo >&2 "WARNING: neither -b nor -r specified"
 test $cpu$gpu = 00 && echo >&2 "WARNING: neither -c nor -g specified"
 test $build$cpu$gpu = 111 && regen_ccache=1 # force rebuild ccache
-echo "cpu: $cpu, gpu: $gpu, update ccache: $update_ccache, regen ccache: $regen_ccache"
+echo "cpu: $cpu, gpu: $gpu, update ccache: $update_ccache, regen ccache: $regen_ccache, devel: $devel"
 echo "docker compose options: $@"
 
-DCC_CPU="docker compose"
-DCC_GPU="docker compose -f docker-compose.yml -f docker/docker-compose.gpu.yml"
+DCC_CPU="docker compose -f docker-compose.yml"
+DCC_GPU="$DCC_CPU -f docker/docker-compose.gpu.yml"
+test $devel = 1 && DCC_CPU+=" -f docker/docker-compose.devel.yml"
+test $devel$gpu = 11 && echo >&2 "WARNING: devel gpu not supported"
 
 pushd "$(dirname "$(dirname "${BASH_SOURCE[0]}")")"
 git submodule update --init --recursive
@@ -75,8 +80,9 @@ fi
 
 if test $run = 1; then
   echo start
-  test $cpu = 1 && $DCC_CPU up --no-build -d "$@" sirf && $DCC_CPU down sirf
-  test $gpu = 1 && $DCC_GPU up --no-build -d "$@" sirf && $DCC_GPU down sirf
+  export USER_ID UID
+  test $cpu = 1 && $DCC_CPU up --no-build "$@" sirf; $DCC_CPU down sirf
+  test $gpu = 1 && $DCC_GPU up --no-build "$@" sirf; $DCC_GPU down sirf
 fi
 
 popd

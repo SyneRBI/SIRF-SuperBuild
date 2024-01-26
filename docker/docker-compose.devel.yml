@@ -9,6 +9,7 @@ services:
      -DISMRMRD_TAG=v1.13.7
      -Dsiemens_to_ismrmrd_TAG=v1.2.11
      -DDEVEL_BUILD=ON
+     -DBUILD_CIL=ON
  sirf:
   container_name: sirf  # for scaling, comment this out https://github.com/docker/compose/issues/3729
   image: synerbi/sirf:jupyter-devel
@@ -20,6 +21,7 @@ services:
      -DISMRMRD_TAG=v1.13.7
      -Dsiemens_to_ismrmrd_TAG=v1.2.11
      -DDEVEL_BUILD=ON
+     -DBUILD_CIL=ON
    cache_from: [synerbi/jupyter:sirf-build-devel-cpu]
   cap_add: [SYS_PTRACE]
   security_opt: [seccomp=unconfined]
