@@ -48,7 +48,7 @@ DCC_CPU="$DCC -f docker-compose.yml"
 test $devel = 1 && DCC_CPU+=" -f docker/docker-compose.devel.yml"
 # GPU config
 DCC_GPU="$DCC_CPU -f docker/docker-compose.gpu.yml"
-test $devel = 1 && DCC_CPU+=" -f docker/docker-compose.devel-gpu.yml"
+test $devel = 1 && DCC_GPU+=" -f docker/docker-compose.devel-gpu.yml"
 
 pushd "$(dirname "$(dirname "${BASH_SOURCE[0]}")")"
 git submodule update --init --recursive
