@@ -137,6 +137,9 @@ endif()
 
   # Gadgetron only adds tests if (GTEST_FOUND AND ARMADILLO_FOUND)
   if (BUILD_TESTING_${proj})
+    if(CMAKE_VERSION VERSION_LESS "3.23") 
+       message(FATAL_ERROR "You need at least CMake 3.23 to build Gadgetron tests.")
+    endif()
     add_test(NAME ${proj}_TESTS
          COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION> --output-on-failure
          WORKING_DIRECTORY ${${proj}_BINARY_DIR}/test)
