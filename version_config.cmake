@@ -167,7 +167,7 @@ set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "71f8d304d804b54d378f0ed05539f01aaaf
 
 # CERN ROOT
 set(DEFAULT_ROOT_URL https://github.com/root-project/root)
-set(DEFAULT_ROOT_TAG "v6-26-10")
+set(DEFAULT_ROOT_TAG "v6-28-12")
 
 # ACE
 set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
