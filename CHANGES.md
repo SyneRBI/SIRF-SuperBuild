@@ -1,6 +1,7 @@
 # ChangeLog
 
 ## x.x.x
+- build the STIR native Python interface by default (STIR_BUILD_SWIG_PYTHON=ON). You can still switch this off.
 - updated versions:
   - STIR: v5.2.0
   - parallelproj: v1.7.3
