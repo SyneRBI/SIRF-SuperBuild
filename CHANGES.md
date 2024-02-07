@@ -3,6 +3,7 @@
 ## x.x.x
 - updated versions:
   - STIR: v5.2.0
+  - parallelproj: v1.7.3
 
 ## v3.5.0
 - Temporarily disable CCPi-Regularisation due to #832

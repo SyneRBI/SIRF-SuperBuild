@@ -132,7 +132,7 @@ set(DEFAULT_NiftyPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
 
 ## parallelproj
 set(DEFAULT_parallelproj_URL https://github.com/gschramm/parallelproj )
-set(DEFAULT_parallelproj_TAG v1.2.13)
+set(DEFAULT_parallelproj_TAG v1.7.3)
 
 ## SIRF-Contribs
 set(DEFAULT_SIRF-Contribs_URL https://github.com/SyneRBI/SIRF-Contribs )
@@ -284,7 +284,7 @@ set(NiftyPET_TAG ${DEFAULT_NiftyPET_TAG} CACHE STRING ON)
 
 set(parallelproj_URL ${DEFAULT_parallelproj_URL} CACHE STRING ON)
 set(parallelproj_TAG ${DEFAULT_parallelproj_TAG} CACHE STRING ON)
-set(parallelproj_REQUIRED_VERSION "1.0")
+set(parallelproj_REQUIRED_VERSION "1.3.4")
 
 set(SIRF-Contribs_URL ${DEFAULT_SIRF-Contribs_URL} CACHE STRING ON)
 set(SIRF-Contribs_TAG ${DEFAULT_SIRF-Contribs_TAG} CACHE STRING ON)

@@ -1,7 +1,7 @@
 #========================================================================
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
-# Copyright 2017, 2020 University College London
+# Copyright 2017, 2020-2024 University College London
 #
 # This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -38,10 +38,6 @@ if (${BUILD_SPM})
   set(${proj}_DEPENDENCIES "${${proj}_DEPENDENCIES};SPM")
 endif()
 
-message(STATUS "Matlab_ROOT_DIR=" ${Matlab_ROOT_DIR})
-message(STATUS "STIR_DIR=" ${STIR_DIR})
-message(STATUS "NIFTYREG_DIR=" ${NIFTYREG_DIR})
-
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
 
@@ -71,7 +67,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   endif()
 
   if (BUILD_SPM)
-    set(extra_args "-DSPM_DIR:PATH=${SPM_DIR}")
+    set(extra_args ${extra_args} "-DSPM_DIR:PATH=${SPM_DIR}")
   endif()
 
   # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
@@ -85,13 +81,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     CMAKE_ARGS
       -DCMAKE_PREFIX_PATH:PATH=${SUPERBUILD_INSTALL_DIR}
       -DCMAKE_LIBRARY_PATH:PATH=${SUPERBUILD_INSTALL_DIR}/lib
-      -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
       ${Boost_CMAKE_ARGS}
       -DDISABLE_Matlab:BOOL=${DISABLE_Matlab}
       -DMatlab_ROOT_DIR:PATH=${Matlab_ROOT_DIR}
       -DMATLAB_ROOT:PATH=${Matlab_ROOT_DIR} # pass this for compatibility with old SIRF
       -DMATLAB_DEST_DIR:PATH=${MATLAB_DEST_DIR}
-      -DSTIR_DIR:PATH=${STIR_DIR}
+      ${STIR_CMAKE_ARGS}
       ${HDF5_CMAKE_ARGS}
       ${FFTW3_CMAKE_ARGS}
       -DISMRMRD_DIR:PATH=${ISMRMRD_DIR}
@@ -119,7 +114,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
    else()
       if(${USE_SYSTEM_${externalProjName}})
-        find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
+        find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED CONFIG)
         message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
    endif()
     ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
