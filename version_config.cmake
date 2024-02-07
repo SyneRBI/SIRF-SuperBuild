@@ -155,7 +155,7 @@ set(DEFAULT_SPM_URL https://github.com/spm/SPM12)
 set(DEFAULT_SPM_TAG r7771)
 
 set(DEFAULT_JSON_URL https://github.com/nlohmann/json)
-set(DEFAULT_JSON_TAG v3.10.4)
+set(DEFAULT_JSON_TAG v3.11.3)
 
 # CCPi CIL
 # minimum supported version of CIL supported is > 22.1.0 or from commit a6062410028c9872c5b355be40b96ed1497fed2a
