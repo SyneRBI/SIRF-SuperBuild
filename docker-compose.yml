@@ -7,7 +7,7 @@ services:
    context: docker/docker-stacks/images/docker-stacks-foundation
    args:
     ROOT_CONTAINER: ubuntu:22.04
-    PYTHON_VERSION: 3.9
+    PYTHON_VERSION: 3.10
  base:
   command: echo nop
   image: synerbi/jupyter:base-cpu
