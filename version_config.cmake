@@ -108,15 +108,15 @@ set(NIFTYREG_REQUIRED_VERSION 1.5.68)
 ## ISMRMRD
 set(ISMRMRD_REQUIRED_VERSION "1.11.1")
 set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd )
-set(DEFAULT_ISMRMRD_TAG v1.13.2)
+set(DEFAULT_ISMRMRD_TAG v1.13.7)
 
 ## siemens_to_ismrmrd
 set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
-set(DEFAULT_siemens_to_ismrmrd_TAG b87759e49e53dab4939147eb52b7a0e6465f3d04)
+set(DEFAULT_siemens_to_ismrmrd_TAG v1.2.11)
 
 ## Gadgetron
 set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron )
-set(DEFAULT_Gadgetron_TAG 0670db847aca8df629b2005c1b23512dda84f175)
+set(DEFAULT_Gadgetron_TAG 6202fb7352a14fb82817b57a97d928c988eb0f4b)
 
 ## ASTRA
 set(DEFAULT_astra-toolbox_URL https://github.com/astra-toolbox/astra-toolbox )
@@ -134,6 +134,18 @@ set(DEFAULT_NiftyPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
 set(DEFAULT_parallelproj_URL https://github.com/gschramm/parallelproj )
 set(DEFAULT_parallelproj_TAG v1.7.3)
 
+## STIR
+set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
+set(DEFAULT_STIR_TAG rel_5.2.0)
+
+## SIRF
+set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF )
+set(DEFAULT_SIRF_TAG f17f050d86c6e2b249f48a43795986a7aa7a54ea) # pre 3.6.0
+
+## pet-rd-tools
+set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
+set(DEFAULT_pet_rd_tools_TAG v2.0.1)
+
 ## SIRF-Contribs
 set(DEFAULT_SIRF-Contribs_URL https://github.com/SyneRBI/SIRF-Contribs )
 set(DEFAULT_SIRF-Contribs_TAG origin/master )
@@ -148,10 +160,10 @@ set(DEFAULT_JSON_TAG v3.10.4)
 # CCPi CIL
 # minimum supported version of CIL supported is > 22.1.0 or from commit a6062410028c9872c5b355be40b96ed1497fed2a
 set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
-set(DEFAULT_CIL_TAG v23.1.0)
+set(DEFAULT_CIL_TAG db5a2a6cd3bddfbbf53e65f0549ac206096e5b44) # 13 Feb 2024
 
 set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
-set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v22.0.0")
+set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "71f8d304d804b54d378f0ed05539f01aaaf13758")
 
 # CERN ROOT
 set(DEFAULT_ROOT_URL https://github.com/root-project/root)
@@ -189,7 +201,6 @@ mark_as_advanced(DEVEL_BUILD)
 # with devel build it uses latest version of upstream packages
 # otherwise uses the versions for current SIRF
 
-set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF )
 if (DEVEL_BUILD)
 
   set (DEFAULT_SIRF_TAG origin/master)
@@ -198,35 +209,22 @@ if (DEVEL_BUILD)
   set(DEFAULT_STIR_TAG origin/master)
 
   ## siemens_to_ismrmrd
-  set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd )
-  set(DEFAULT_siemens_to_ismrmrd_TAG b87759e49e53dab4939147eb52b7a0e6465f3d04)
+  # set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd )
+  # set(DEFAULT_siemens_to_ismrmrd_TAG b87759e49e53dab4939147eb52b7a0e6465f3d04)
 
   ## pet-rd-tools
-  set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
-  set(DEFAULT_pet_rd_tools_TAG origin/master)
+  # set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
+  # set(DEFAULT_pet_rd_tools_TAG origin/master)
 
   # CCPi CIL
   set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
   set(DEFAULT_CIL_TAG origin/master )
 
   # Gadgetron
-  set(DEFAULT_Gadgetron_TAG origin/master)
+  # set(DEFAULT_Gadgetron_TAG origin/master)
   
   # ismrmrd
-  set(DEFAULT_ISMRMRD_TAG origin/master)
-
-  
-
-else()
-  set(DEFAULT_SIRF_TAG v3.5.0)
-  
-  ## STIR
-  set(DEFAULT_STIR_URL https://github.com/UCL/STIR )
-  set(DEFAULT_STIR_TAG rel_5.2.0)
-
-  ## pet-rd-tools
-  set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools )
-  set(DEFAULT_pet_rd_tools_TAG v2.0.1)
+  # set(DEFAULT_ISMRMRD_TAG origin/master)
 
 endif()
 
@@ -238,7 +236,7 @@ SET(SIRF_TAG ${DEFAULT_SIRF_TAG} CACHE STRING ON)
  
 SET(STIR_TAG ${DEFAULT_STIR_TAG} CACHE STRING ON)
 SET(STIR_URL ${DEFAULT_STIR_URL} CACHE STRING ON)
-set(STIR_REQUIRED_VERSION "5.0.0")
+set(STIR_REQUIRED_VERSION "5.1.0")
 
 SET(Gadgetron_TAG ${DEFAULT_Gadgetron_TAG} CACHE STRING ON)
 SET(Gadgetron_URL ${DEFAULT_Gadgetron_URL} CACHE STRING ON)
