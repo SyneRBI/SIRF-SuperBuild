@@ -17,8 +17,9 @@ describes how to build via CMake.
 
 ## Table of Contents
 
-1. [Dependencies](#Dependencies)
-2. [Generic instructions](#Generic-instructions)
+1. [Running SIRF on Docker](#Running-SIRF-on-Docker)
+2. [Dependencies](#Dependencies)
+3. [Generic instructions](#Generic-instructions)
     1. [Create the SuperBuild directory](#Create-the-SuperBuild-directory)
     2. [Install CMake](#Install-CMake)
     3. [Clone the SIRF-SuperBuild project](#Clone-the-SIRF-SuperBuild-project)
@@ -28,11 +29,11 @@ describes how to build via CMake.
     7. [Open a terminal and start Gadgetron](#Open-a-terminal-and-start-Gadgetron)
     8. [Testing](#Testing)
     9. [Running examples](#Running-examples)
-3. [OS specific information](#OS-specific-information)
+4. [OS specific information](#OS-specific-information)
    1. [Installation instructions for Ubuntu](#Ubuntu-install)
    2. [Installation instructions for Mac OS](#OSX-install)
    3. [Installation instructions for Docker](#Docker-install)
-4. [Advanced installation](#Advanced-installation)
+5. [Advanced installation](#Advanced-installation)
     1. [Optional libraries](optional-libraries)
     2. [use a different compiler than the system default](use-a-different-compiler-than-the-system-default)
     3. [Compiling against your own packages](#Compiling-packages)
@@ -43,7 +44,40 @@ describes how to build via CMake.
     8. [Building CCPi CIL](#Building-CCPi-CIL)
     9. [Passing CMAKE arguments to specific projects](#Passing-CMAKE-arguments-to-specific-projects)
    10. [Building with CUDA](#Building-with-CUDA)
-5. [Notes](#Notes)
+6. [Notes](#Notes)
+
+## Running SIRF on Docker
+
+The easiest way to run SIRF is to use Docker. We provide a script which will build a docker image with SIRF and all dependencies pre-installed. You can run it with the `docker/compose.sh` command 
+that accepts the following flags, which can be checked [here](https://github.com/SyneRBI/SIRF-SuperBuild/blob/c21a2a45591550a6e257fc6f3dc343294b2c3127/docker/compose.sh#L24-L31). Additional parameters are available in the 
+[`docker-compose.yml`](https://github.com/paskino/SIRF-SuperBuild/blob/jupyterhub_env/docker-compose.yml) file.
+
+
+```
+  h) print_help; exit 0 ;; # print this help
+  b) build=1 ;; # build
+  r) run=1 ;; # run
+  d) devel=1 ;; # use development (main/master) repo branches
+  c) cpu=1 ;; # enable CPU
+  g) gpu=1 ;; # enable GPU
+  U) update_ccache=0 ;; # disable updating docker/devel/.ccache
+  R) regen_ccache=1 ;; # regenerate (rather than append to) docker/devel/.ccache (always true if both -c and -g are specified)
+```
+
+The following example command will build the development branches of SIRF and dependencies, it will build the GPU code, 
+it specifies some version of dependencies and will not run the tests after the build is complete. 
+You can pass additional build parameters to `docker/compose.sh` with `--build-arg`. The actual parameters that can be 
+passed can be found in the `Dockerfile`.
+
+
+```bash
+
+docker/compose.sh -dgb -- --build-arg EXTRA_BUILD_FLAGS='-DGadgetron_TAG=6202fb7352a14fb82817b57a97d928c988eb0f4b -DISMRMRD_TAG=v1.13.7 -Dsiemens_to_ismrmrd_TAG=v1.2.11 -DDEVEL_BUILD=ON -DBUILD_CIL=ON -DCCPi-Regularisation-Toolkit_TAG=origin/master' --build-arg RUN_CTEST=0
+
+```
+where `-dgb` tells to `b`uild the `g`pu and `d`evelopment branches. To run an image you would use the flags `-dgr`.
+
+Notice that a fairly recent version of docker is required. Install it following the instructions [here](https://docs.docker.com/engine/install/ubuntu/).
 
 ## Dependencies
 
