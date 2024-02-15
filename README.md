@@ -81,7 +81,7 @@ Notice that a fairly recent version of docker is required. Install it following 
 
 ## Dependencies
 
-The SuperBuild depends on CMake >= 3.10.
+The SuperBuild depends on CMake >= 3.16 on Linux and 3.20 on Windows.
 
 If you are building Gadgetron there are a series of [additional dependencies](https://github.com/gadgetron/gadgetron/wiki/List-of-Dependencies), which must be met.
 
@@ -97,9 +97,9 @@ mkdir ~/devel
 ```
 
 ### Install CMake
-If you do not have CMake >= 3.10, install it first. You can probably use a package manager on your OS. Alternatively, you can do that either by following the official instructions ([download link](https://cmake.org/download/)) or running your own shell sript to do so (see an example [here](https://github.com/SyneRBI/SyneRBI_VM/blob/master/scripts/INSTALL_CMake.sh)).
+If you do not have CMake >= 3.16 on Linux and 3.20 on Windows, install it first. We suggest to follow the [official CMake instructions](https://cmake.org/download/).
 
-If you use a CMake installer, you will be asked to read and accept CMake's license. If you answered the last question during the CMake installation with yes, then you should use
+If you use a CMake installer, you will be asked to read and accept CMake's license. If you answered the last question during the CMake installation with yes, then on Linux you should use
 
 ```
 export PATH=/usr/local/cmake/bin:$PATH
@@ -131,11 +131,11 @@ cd ~/devel/build
 cmake ../SIRF-SuperBuild
 ```
 You can of course use the GUI version of CMake (called `cmake-gui` on Linux/OSX), or the
-terminal version `ccmake` to check and set various variables. See the [CMake tutorial on how to run CMake](https://cmake.org/runningcmake/).
+terminal version `ccmake` to check and set various variables. See the [CMake tutorial on how to run CMake](https://cmake.org/cmake/help/latest/guide/tutorial/index.html).
 
 By default, this will select stable configurations of the various projects. See [the advanced installation section](#advanced-installation).
 
-*Important*: it is currently not recommended to build both MATLAB and Python support, see [below](#matlab-and-python-conflicts).
+*Important*: we have currently dropped the support for MATLAB. It is currently not recommended to build both MATLAB and Python support, see [below](#matlab-and-python-conflicts).
 
 Then use your build environment to build and install the project. On Linux/OSX etc, you would normally use
 ```bash
