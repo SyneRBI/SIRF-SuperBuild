@@ -68,7 +68,7 @@ services:
   environment:
     # CLI arguments for https://github.com/SyneRBI/SIRF-Exercises/blob/master/scripts/download_data.sh
     SIRF_DOWNLOAD_DATA_ARGS: ''
-  volumes: [/home/ubuntu/devel:/home/jovyan/work]
+  volumes: [./docker/devel:/home/jovyan/work]
   restart: unless-stopped
   ports:
   - "9002:9002"  # gadgetron
