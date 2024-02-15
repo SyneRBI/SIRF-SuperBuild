@@ -174,19 +174,19 @@ set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
 set(DEFAULT_ACE_TAG v6.5.9)
 
 # range-v3
-set(DEFAULT_range-v3_URL https://github.com/ericniebler/range-v3.git )
+set(DEFAULT_range-v3_URL https://github.com/ericniebler/range-v3.git)
 set(DEFAULT_range-v3_TAG 0.12.0)
 
-set(DEFAULT_RocksDB_URL https://github.com/facebook/rocksdb.git )
+set(DEFAULT_RocksDB_URL https://github.com/facebook/rocksdb.git)
 set(DEFAULT_RocksDB_TAG v6.26.0)
 
 set(DEFAULT_mrd-storage-server_URL https://github.com/ismrmrd/mrd-storage-server.git)
 set(DEFAULT_mrd-storage-server_TAG origin/main)
 
-set(DEFAULT_Date_URL https://github.com/HowardHinnant/date.git )
+set(DEFAULT_Date_URL https://github.com/HowardHinnant/date.git)
 set(DEFAULT_Date_TAG master)
 
-set(DEFAULT_pugixml_URL https://github.com/zeux/pugixml.git )
+set(DEFAULT_pugixml_URL https://github.com/zeux/pugixml.git)
 set(DEFAULT_pugixml_TAG v1.13)
 
 # works only for Linux
