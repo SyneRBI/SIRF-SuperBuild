@@ -1,10 +1,16 @@
 # ChangeLog
 
-## x.x.x
+## v3.6.0
 - build the STIR native Python interface by default (STIR_BUILD_SWIG_PYTHON=ON). You can still switch this off.
 - updated versions:
-  - STIR: v5.2.0
+  - SIRF: v3.6.0
+  - STIR: v6.0.0
   - parallelproj: v1.7.3
+  - Gadgetron: 6202fb7352a14fb82817b57a97d928c988eb0f4b (version of Oct 13, 2023)
+  - ISMRMRD: v1.13.7
+  - siemens_to_ismrmrd: v1.2.11
+  - CIL: db5a2a6cd3bddfbbf53e65f0549ac206096e5b44 (version of Feb 13, 2024)
+  - CCPi-Regularisation-Toolkit: 71f8d304d804b54d378f0ed05539f01aaaf13758 (version of Dec 3. 2023)
 
 ## v3.5.0
 - Temporarily disable CCPi-Regularisation due to #832
