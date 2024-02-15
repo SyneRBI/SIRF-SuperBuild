@@ -7,7 +7,7 @@ services:
    context: docker/docker-stacks/images/docker-stacks-foundation
    args:
     ROOT_CONTAINER: ubuntu:22.04
-    PYTHON_VERSION: 3.10
+    PYTHON_VERSION: "3.10"
  base:
   command: echo nop
   image: synerbi/jupyter:base-cpu
@@ -68,7 +68,7 @@ services:
   environment:
     # CLI arguments for https://github.com/SyneRBI/SIRF-Exercises/blob/master/scripts/download_data.sh
     SIRF_DOWNLOAD_DATA_ARGS: ''
-  volumes: [./docker/devel:/home/jovyan/work]
+  volumes: [/home/ubuntu/devel:/home/jovyan/work]
   restart: unless-stopped
   ports:
   - "9002:9002"  # gadgetron
