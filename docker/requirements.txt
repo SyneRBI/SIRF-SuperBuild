@@ -15,6 +15,7 @@ opencv-python # CIL
 git+https://github.com/data-exchange/dxchange.git  # CIL
 numba        # CIL
 pywavelets   # CIL
+scikit-image # CIL
 pandas
 tifffile
 nibabel
