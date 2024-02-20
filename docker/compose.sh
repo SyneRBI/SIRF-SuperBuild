@@ -9,9 +9,15 @@ Also creates intermediate (temp) images: synerbi/jupyter
 Usage: $0 [options] [-- [docker compose options]]
 Options:
 $(sed -rn 's/^\s*(\w)\) .*;; # (.*)$/  -\1: \2/p' "$0")
+Docker Compose Options:
+  Forwarded to 'docker compose build/run', e.g.:
+    $0 -b -- --build-arg BUILD_CIL=ON --build-arg EXTRA_BUILD_FLAGS="-DCIL_TAG=origin/master"
+Detected config files:
+  Dockerfile docker-compose.yml $(echo docker/docker-compose.*.yml)
 EOF
 }
 
+verbose=0
 build=0
 run=0
 devel=0
@@ -19,9 +25,10 @@ cpu=0
 gpu=0
 update_ccache=1
 regen_ccache=0
-while getopts :hbrdcgUR option; do
+while getopts :hvbrdcgUR option; do
   case "${option}" in
   h) print_help; exit 0 ;; # print this help
+  v) verbose=1 ;; # verbose
   b) build=1 ;; # build
   r) run=1 ;; # run
   d) devel=1 ;; # use development (main/master) repo branches
@@ -34,15 +41,13 @@ while getopts :hbrdcgUR option; do
 done
 shift $((OPTIND-1)) # remove processed options
 
-test $build$run = 00 && echo >&2 "WARNING: neither -b nor -r specified"
-test $cpu$gpu = 00 && echo >&2 "WARNING: neither -c nor -g specified"
+test $verbose = 1 && set -x
 test $build$cpu$gpu = 111 && regen_ccache=1 # force rebuild ccache
 echo "cpu: $cpu, gpu: $gpu, update ccache: $update_ccache, regen ccache: $regen_ccache, devel: $devel"
-echo "docker compose options: $@"
 
 # compose binary
 DCC="${DCC:-docker compose}"
-which docker-compose && DCC=$(which docker-compose)
+which docker-compose 2>&1 >> /dev/null && DCC=$(which docker-compose)
 # CPU config
 DCC_CPU="$DCC -f docker-compose.yml"
 test $devel = 1 && DCC_CPU+=" -f docker/docker-compose.devel.yml"
@@ -50,7 +55,12 @@ test $devel = 1 && DCC_CPU+=" -f docker/docker-compose.devel.yml"
 DCC_GPU="$DCC_CPU -f docker/docker-compose.gpu.yml"
 test $devel = 1 && DCC_GPU+=" -f docker/docker-compose.devel-gpu.yml"
 
-pushd "$(dirname "$(dirname "${BASH_SOURCE[0]}")")"
+test $cpu$gpu = 00 && echo >&2 "WARNING: neither -c nor -g specified"
+test $cpu = 1 && echo "docker compose command: $DCC_CPU"
+test $gpu = 1 && echo "docker compose command: $DCC_GPU"
+echo "docker compose options: $@"
+
+pushd "$(dirname "$(dirname "${BASH_SOURCE[0]}")")" >> /dev/null
 git submodule update --init --recursive
 
 if test $build = 1; then
@@ -82,4 +92,4 @@ if test $run = 1; then
   test $gpu = 1 && $DCC_GPU up --no-build "$@" sirf; $DCC_GPU down sirf
 fi
 
-popd
+popd >> /dev/null
