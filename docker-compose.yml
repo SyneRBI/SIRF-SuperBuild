@@ -39,11 +39,6 @@ services:
     BASE_CONTAINER: synerbi/jupyter:scipy-cpu
     Gadgetron_USE_CUDA: "OFF"
     BUILD_GPU: 0
-    # TODO: remove after https://github.com/SyneRBI/SIRF-SuperBuild/issues/851
-    EXTRA_BUILD_FLAGS: >
-     -DGadgetron_TAG=6202fb7352a14fb82817b57a97d928c988eb0f4b
-     -DISMRMRD_TAG=v1.13.7
-     -Dsiemens_to_ismrmrd_TAG=v1.2.11
  sirf:
   container_name: sirf  # for scaling, comment this out https://github.com/docker/compose/issues/3729
   image: synerbi/sirf:jupyter
@@ -53,11 +48,6 @@ services:
     BASE_CONTAINER: synerbi/jupyter:scipy-cpu
     Gadgetron_USE_CUDA: "OFF"
     BUILD_GPU: 0
-    # TODO: remove after https://github.com/SyneRBI/SIRF-SuperBuild/issues/851
-    EXTRA_BUILD_FLAGS: >
-     -DGadgetron_TAG=6202fb7352a14fb82817b57a97d928c988eb0f4b
-     -DISMRMRD_TAG=v1.13.7
-     -Dsiemens_to_ismrmrd_TAG=v1.2.11
    cache_from: [synerbi/jupyter:sirf-build-cpu]
   stdin_open: true
   tty: true

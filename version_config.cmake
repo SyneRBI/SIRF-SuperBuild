@@ -97,11 +97,11 @@ set(DEFAULT_glog_URL https://github.com/google/glog)
 set(DEFAULT_glog_TAG v0.6.0)
 
 ## ITK
-set(DEFAULT_ITK_URL https://github.com/InsightSoftwareConsortium/ITK.git)
+set(DEFAULT_ITK_URL https://github.com/InsightSoftwareConsortium/ITK)
 set(DEFAULT_ITK_TAG v5.2.1)
 
 ## NIFTYREG
-set(DEFAULT_NIFTYREG_URL https://github.com/KCL-BMEIS/niftyreg.git)
+set(DEFAULT_NIFTYREG_URL https://github.com/KCL-BMEIS/niftyreg)
 set(DEFAULT_NIFTYREG_TAG 8ad2f11507ddedb09ed74a9bd97377b70532ee75)
 set(NIFTYREG_REQUIRED_VERSION 1.5.68)
 
@@ -151,18 +151,18 @@ set(DEFAULT_SIRF-Contribs_URL https://github.com/SyneRBI/SIRF-Contribs)
 set(DEFAULT_SIRF-Contribs_TAG origin/master)
 
 ## SPM
-set(DEFAULT_SPM_URL https://github.com/spm/SPM12.git)
+set(DEFAULT_SPM_URL https://github.com/spm/SPM12)
 set(DEFAULT_SPM_TAG r7771)
 
-set(DEFAULT_JSON_URL https://github.com/nlohmann/json.git)
+set(DEFAULT_JSON_URL https://github.com/nlohmann/json)
 set(DEFAULT_JSON_TAG v3.10.4)
 
 # CCPi CIL
 # minimum supported version of CIL supported is > 22.1.0 or from commit a6062410028c9872c5b355be40b96ed1497fed2a
-set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
+set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL)
 set(DEFAULT_CIL_TAG db5a2a6cd3bddfbbf53e65f0549ac206096e5b44) # 13 Feb 2024
 
-set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit.git)
+set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit)
 set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "71f8d304d804b54d378f0ed05539f01aaaf13758")
 
 # CERN ROOT
@@ -174,19 +174,19 @@ set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
 set(DEFAULT_ACE_TAG v6.5.9)
 
 # range-v3
-set(DEFAULT_range-v3_URL https://github.com/ericniebler/range-v3.git)
+set(DEFAULT_range-v3_URL https://github.com/ericniebler/range-v3)
 set(DEFAULT_range-v3_TAG 0.12.0)
 
-set(DEFAULT_RocksDB_URL https://github.com/facebook/rocksdb.git)
+set(DEFAULT_RocksDB_URL https://github.com/facebook/rocksdb)
 set(DEFAULT_RocksDB_TAG v6.26.0)
 
-set(DEFAULT_mrd-storage-server_URL https://github.com/ismrmrd/mrd-storage-server.git)
+set(DEFAULT_mrd-storage-server_URL https://github.com/ismrmrd/mrd-storage-server)
 set(DEFAULT_mrd-storage-server_TAG origin/main)
 
-set(DEFAULT_Date_URL https://github.com/HowardHinnant/date.git)
+set(DEFAULT_Date_URL https://github.com/HowardHinnant/date)
 set(DEFAULT_Date_TAG master)
 
-set(DEFAULT_pugixml_URL https://github.com/zeux/pugixml.git)
+set(DEFAULT_pugixml_URL https://github.com/zeux/pugixml)
 set(DEFAULT_pugixml_TAG v1.13)
 
 # works only for Linux
@@ -217,7 +217,7 @@ if (DEVEL_BUILD)
   # set(DEFAULT_pet_rd_tools_TAG origin/master)
 
   # CCPi CIL
-  set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL.git)
+  set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL)
   set(DEFAULT_CIL_TAG origin/master)
 
   # Gadgetron
