@@ -48,34 +48,43 @@ describes how to build via CMake.
 
 ## Running SIRF on Docker
 
-The easiest way to run SIRF is to use Docker. We provide a script which will build a docker image with SIRF and all dependencies pre-installed. You can run it with the `docker/compose.sh` command
-that accepts the following flags, which can be checked [here](https://github.com/SyneRBI/SIRF-SuperBuild/blob/c21a2a45591550a6e257fc6f3dc343294b2c3127/docker/compose.sh#L24-L31). Additional parameters are available in the
-[`docker-compose.yml`](https://github.com/paskino/SIRF-SuperBuild/blob/jupyterhub_env/docker-compose.yml) file.
+The easiest way to run [SIRF](https://github.com/SyneRBI/SIRF) & all its dependencies is to use Docker.
 
+1. [Install the latest docker version](https://docs.docker.com/engine/install/)
+2. (optional) For GPU support (NVIDIA CUDA on Linux or Windows Subsystem for Linux 2 only)
+   - [Install NVIDIA drivers](https://developer.nvidia.com/cuda-downloads)
+   - [Install NVIDIA container toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
 
-```
-  h) print_help; exit 0 ;; # print this help
-  b) build=1 ;; # build
-  r) run=1 ;; # run
-  d) devel=1 ;; # use development (main/master) repo branches
-  c) cpu=1 ;; # enable CPU
-  g) gpu=1 ;; # enable GPU
-  U) update_ccache=0 ;; # disable updating docker/devel/.ccache
-  R) regen_ccache=1 ;; # regenerate (rather than append to) docker/devel/.ccache (always true if both -c and -g are specified)
+```sh
+# CPU version
+docker run --rm -it -p 9999:8888 ghcr.io/synerbi/sirf:jupyter
+# GPU version
+docker run --rm -it -p 9999:8888 --gpus all ghcr.io/synerbi/sirf:jupyter-gpu
 ```
 
-The following example command will build the development branches of SIRF and dependencies, it will build the GPU code,
-it specifies some version of dependencies and will not run the tests after the build is complete.
-You can pass additional build parameters to `docker/compose.sh` with `--build-arg`. The actual parameters that can be
-passed can be found in the `Dockerfile`.
+The Jupyter notebook should be accessible at <https://localhost:9999>.
 
-```bash
-docker/compose.sh -dgb -- --build-arg EXTRA_BUILD_FLAGS='-DDEVEL_BUILD=ON -DBUILD_CIL=ON -DCCPi-Regularisation-Toolkit_TAG=origin/master' --build-arg RUN_CTEST=0
-```
+> [!WARNING]
+> To sync the container user & host user permissions (useful when sharing folders), use `--user` and `--group-add`.
+>
+> ```sh
+> docker run --rm -it -p 9999:8888 --user $(id -u) --group-add users \
+>   -v ./docker/devel:/home/jovyan/work \
+>   ghcr.io/synerbi/sirf:jupyter
+> ```
 
-where `-dgb` tells to `b`uild the `g`pu and `d`evelopment branches. To run an image you would use the flags `-dgr`.
+More config: <https://jupyter-docker-stacks.readthedocs.io/en/latest/using/common.html#user-related-configurations>.
 
-Notice that a fairly recent version of docker is required. Install it following the instructions [here](https://docs.docker.com/engine/install/ubuntu/).
+> [!TIP]
+> To pass arguments to [`SIRF-Exercises/scripts/download_data.sh`](https://github.com/SyneRBI/SIRF-Exercises/blob/master/scripts/download_data.sh), use the docker environment variable `SIRF_DOWNLOAD_DATA_ARGS`.
+>
+> ```sh
+> docker run --rm -it -p 9999:8888 --user $(id -u) --group-add users \
+>   -v /mnt/data:/share -e SIRF_DOWNLOAD_DATA_ARGS="-pm -D /share" \
+>   ghcr.io/synerbi/sirf:jupyter
+> ```
+
+For building docker containers, see [`docker/README.md`](docker/README.md)
 
 ## Dependencies
 
@@ -113,7 +122,7 @@ You might want to add the `PATH` line to your start-up file e.g. `.profile`, `.b
 ### Clone the SIRF-SuperBuild project
 ```bash
 cd ~/devel
-git clone https://github.com/SyneRBI/SIRF-SuperBuild.git
+git clone https://github.com/SyneRBI/SIRF-SuperBuild
 ```
 
 ### Build and Install
