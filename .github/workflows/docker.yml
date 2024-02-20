@@ -153,10 +153,13 @@ jobs:
       name: build
       run: |
         suffix=${{ matrix.type == 'gpu' && '-gpu' || '' }}
+        # pull core image
         core_image=ghcr.io/synerbi/sirf:core$suffix
+        docker pull $core_image || :
+        # pull sirf image
+        docker pull ghcr.io/synerbi/sirf:${{ fromJSON(steps.meta.outputs.json).tags[0] }} || :
         # rebuild sirf image
-        ./docker/compose.sh -bR${{ matrix.type == 'gpu' && 'g' || 'c' }} \
-        -- --build-arg EXTRA_BUILD_FLAGS="-DDEVEL_BUILD=ON"
+        ./docker/compose.sh -dbR${{ matrix.type == 'gpu' && 'g' || 'c' }}
         image=synerbi/sirf:jupyter$suffix
         echo "image=$image" >> "$GITHUB_OUTPUT"
         # tag potentially newer core image
