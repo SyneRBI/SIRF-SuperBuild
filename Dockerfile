@@ -99,7 +99,7 @@ RUN apt update -qq && apt install -yq --no-install-recommends \
   && mkdir -p /usr/share/X11/xkb \
   && test -e /usr/bin/X || ln -s /usr/bin/Xorg /usr/bin/X
 
-RUN echo "export OMP_NUM_THREADS=\$(python -c 'import multiprocessing as mc; print(mc.cpu_count() // 2)')" > /usr/local/bin/before-notebook.d/omp_num_threads.sh
+RUN echo 'test -z "$OMP_NUM_THREADS" && export OMP_NUM_THREADS=$(python -c "import multiprocessing as mc; print(mc.cpu_count() // 2)")' > /usr/local/bin/before-notebook.d/omp_num_threads.sh
 
 COPY --chown=${NB_USER} --chmod=644 --link docker/.bashrc /home/${NB_USER}/
 # RUN sed -i s:PYTHON_INSTALL_DIR:${CONDA_DIR}:g /home/${NB_USER}/.bashrc
