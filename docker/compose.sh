@@ -81,8 +81,8 @@ if test $build = 1; then
   echo copy ccache
   test $update_ccache$regen_ccache = 11 && sudo rm -rf ./docker/devel/.ccache/*
   export USER_ID UID
-  test $cpu = 1 && $DCC_CPU up --no-build sirf-build && test $update_ccache = 1 && $DCC_CPU down sirf-build
-  test $gpu = 1 && $DCC_GPU up --no-build sirf-build && test $update_ccache = 1 && $DCC_GPU down sirf-build
+  test $cpu$update_ccache = 11 && $DCC_CPU up --no-build sirf-build && $DCC_CPU down sirf-build
+  test $gpu$update_ccache = 11 && $DCC_GPU up --no-build sirf-build && $DCC_GPU down sirf-build
 fi
 
 if test $run = 1; then
