@@ -53,4 +53,3 @@ if [ "$REMOVE_BUILD_FILES" = 1 ]; then
 else
     echo  "Keeping build files"
 fi
-

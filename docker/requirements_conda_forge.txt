@@ -1,4 +1,0 @@
-ipp
-ipp-devel
-ipp-include
-tigre 

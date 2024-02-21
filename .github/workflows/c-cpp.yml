@@ -7,31 +7,24 @@ on:
     - 'docker/Dockerfile'
     - 'docker/*yml'
     - '**.md'
-    - 'jupyterhub/**'
     - 'VirtualBox/**'
     - '.github/workflows/*docker*'
     - 'CITATION.cff'
     - '.mailmap'
-    - '.travis.yml'
     - 'NOTICE.txt'
     - 'LICENSE.txt'
-    
   pull_request:
     branches: [ master ]
     paths-ignore:
     - 'docker/Dockerfile'
     - 'docker/*yml'
     - '**.md'
-    - 'jupyterhub/**'
     - 'VirtualBox/**'
     - '.github/workflows/*docker*'
     - 'CITATION.cff'
     - '.mailmap'
-    - '.travis.yml'
     - 'NOTICE.txt'
     - 'LICENSE.txt'
-    
-
 jobs:
   build:
 
@@ -94,7 +87,7 @@ jobs:
            esac
 
     - name: install_dependencies
-      run: 
+      run:
           cd docker;
           sudo bash raw-ubuntu.sh;
           sudo bash build_essential-ubuntu.sh;
@@ -146,7 +139,7 @@ jobs:
           cmake -S ${GITHUB_WORKSPACE} ${BUILD_FLAGS} ${EXTRA_BUILD_FLAGS} ${DEVEL_BUILD};
     - name: build
       shell: bash
-      run: | 
+      run: |
           cd ${GITHUB_WORKSPACE}/build;
           source ~/virtualenv/bin/activate;
           cmake --build . -j 2;
@@ -167,5 +160,5 @@ jobs:
 
     - name: tests
       shell: bash
-      run: 
+      run:
           bash docker/ctest_sirf.sh

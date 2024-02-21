@@ -1,37 +1,34 @@
 name: base
 channels:
   - conda-forge
-  - intel
-  - ccpi
+  - intel # cil
+  - ccpi  # cil
   - defaults
 dependencies:
-  - mamba
   - setuptools
   - wheel
   - pytest
   - pytest-cov
-  - numpy        # CIL
   - scipy
   - docopt
   - matplotlib
-  - Cython       # CIL
-  - h5py         # CIL
-  - Pillow       # CIL
-  - wget         # CIL
-  - six          # CIL
-  - olefile      # CIL
-  - opencv       # CIL
-  - numba        # CIL
   - pandas
   - tifffile
   - nibabel
   - deprecation
   - nose
-  - ipp
-  - ipp-devel
-  - ipp-include
-  - tigre
   - pip
+  - cil              # cil
+  - ccpi-regulariser # cil
+  - dxchange         # cil
+  # - tigre          # cil (GPU)
+  # - astra-toolbox  # cil (GPU)
   - pip:
-    - git+https://github.com/data-exchange/dxchange.git  # CIL
     - git+https://github.com/ismrmrd/ismrmrd-python-tools.git@master#egg=ismrmrd-python-tools
+    # TODO: labextension @jupyter-widgets/jupyterlab-manager (jupyterlab_widgets ipywidgets ipympl)
+    # is broken because `conda-forge::cil` downgrades `ipywidgets<8` -> breaks `%matplotlib widgets`.
+    # - temp fix: install upgraded versions via pip (not conda)
+    # - proper fix: remove after https://github.com/TomographicImaging/CIL/issues/1600
+    - jupyterlab_widgets
+    - ipywidgets>=8
+    - ipympl

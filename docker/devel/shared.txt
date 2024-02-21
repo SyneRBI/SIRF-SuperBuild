@@ -4,9 +4,9 @@ Host:
 
 `SIRF-SuperBuild/docker/devel`
 
-Docker container (synerbi/sirf:latest):
+Docker container (synerbi/sirf:jupyter):
 
-`/devel`
+`/home/jovyan/work`
 
 This means you can use editors & tools on the host machine with files in the
 container and vice versa.

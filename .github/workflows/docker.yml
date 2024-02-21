@@ -1,0 +1,177 @@
+name: docker
+on:
+  pull_request:
+    branches: [master]
+    paths-ignore:
+    - '**.md'
+    - 'VirtualBox/**'
+    - '.github/workflows/c-cpp.yml'
+    - 'CITATION.cff'
+    - '.mailmap'
+  push:
+    branches: [master]
+    tags: ['v**']
+    paths-ignore:
+    - '**.md'
+    - 'VirtualBox/**'
+    - '.github/workflows/c-cpp.yml'
+    - 'CITATION.cff'
+    - '.mailmap'
+  schedule: [{cron: '37 13 * * SUN'}] # Sunday at 13:37
+defaults:
+  run:
+    shell: bash -l {0}
+jobs:
+  build:
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        type: [gpu, cpu]
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        ref: ${{ github.event.pull_request.head.sha || github.ref }} # fix SHA
+    - uses: docker/metadata-action@v5
+      id: meta
+      with:
+        images: |
+          synerbi/sirf
+          ghcr.io/synerbi/sirf
+        flavor: |
+          latest=auto
+          suffix=${{ matrix.type == 'gpu' && 'gpu,onlatest=true' || '' }}
+        tags: |
+          type=edge
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=semver,pattern={{major}}
+        labels: |
+          org.opencontainers.image.licenses=Apache-2.0${{ matrix.type == 'gpu' && ' AND BSD-3-Clause AND GPL-3.0' || '' }}
+    - uses: docker/login-action@v3
+      if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags')
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    - uses: docker/login-action@v3
+      if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags')
+      with:
+        username: ${{ secrets.DOCKER_USR }}
+        password: ${{ secrets.DOCKER_PWD }}
+    - name: increase disk space
+      run: ./.github/workflows/GHA_increase_disk_space.sh
+    - name: cache
+      uses: actions/cache@v3
+      with:
+        key: ccache-docker-${{ matrix.type }}-${{ github.ref_name }}-${{ github.run_id }}
+        restore-keys: |
+          ccache-docker-${{ matrix.type }}-${{ github.ref_name }}
+          ccache-docker-${{ matrix.type }}
+          ccache-docker
+          ccache
+        path: docker/devel/.ccache
+    - id: pull
+      name: pull
+      run: |
+        suffix=${{ matrix.type == 'gpu' && '-gpu' || '' }}
+        # pull core image
+        core_image=ghcr.io/synerbi/sirf:core$suffix
+        docker pull $core_image || :
+        # pull sirf image
+        docker pull ghcr.io/synerbi/sirf:${{ fromJSON(steps.meta.outputs.json).tags[0] }} || :
+        echo "suffix=$suffix" >> "$GITHUB_OUTPUT"
+        echo "core_image=$core_image" >> "$GITHUB_OUTPUT"
+    - id: build
+      name: build
+      run: |
+        # rebuild sirf image
+        ./docker/compose.sh -bR${{ matrix.type == 'gpu' && 'g' || 'c' }}
+        image=synerbi/sirf:jupyter${{ steps.pull.outputs.suffix }}
+        echo "image=$image" >> "$GITHUB_OUTPUT"
+        # tag potentially newer core image
+        docker tag synerbi/jupyter:scipy-${{ matrix.type }} ${{ steps.pull.outputs.core_image }}
+        # make a dummy Dockerfile to use with build-push-action
+        context=$(mktemp -d)
+        echo "FROM $image" >> "$context/Dockerfile"
+        echo "context=$context" >> "$GITHUB_OUTPUT"
+    - name: test CIL
+      run: >
+        docker run --rm -v ./.github/workflows:/gh --user $(id -u) --group-add users
+        ${{ steps.build.outputs.image }} /gh/test_cil.sh
+    - uses: docker/build-push-action@v5
+      with:
+        context: ${{ steps.build.outputs.context }}
+        push: ${{ github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags') }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+    - if: github.ref == 'refs/heads/master'
+      name: push core image
+      run: docker push ${{ steps.build.outputs.core_image }}
+  devel:
+    if: github.event_name == 'schedule' || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        type: [gpu, cpu]
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        ref: ${{ github.event.pull_request.head.sha || github.ref }} # fix SHA
+    - uses: docker/metadata-action@v5
+      id: meta
+      with:
+        images: |
+          synerbi/sirf
+          ghcr.io/synerbi/sirf
+        flavor: |
+          latest=false
+          suffix=${{ matrix.type == 'gpu' && 'gpu,onlatest=true' || '' }}
+        tags: devel
+        labels: |
+          org.opencontainers.image.licenses=Apache-2.0${{ matrix.type == 'gpu' && ' AND BSD-3-Clause AND GPL-3.0' || '' }}
+    - uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    - uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USR }}
+        password: ${{ secrets.DOCKER_PWD }}
+    - name: increase disk space
+      run: ./.github/workflows/GHA_increase_disk_space.sh
+    - name: cache
+      uses: actions/cache@v3
+      with:
+        key: ccache-docker-${{ matrix.type }}-${{ github.ref_name }}-${{ github.run_id }}
+        restore-keys: |
+          ccache-docker-${{ matrix.type }}-${{ github.ref_name }}
+          ccache-docker-${{ matrix.type }}
+          ccache-docker
+          ccache
+        path: docker/devel/.ccache
+    - id: pull
+      name: pull
+      run: |
+        suffix=${{ matrix.type == 'gpu' && '-gpu' || '' }}
+        # pull core image
+        core_image=ghcr.io/synerbi/sirf:core$suffix
+        docker pull $core_image || :
+        # pull sirf image
+        docker pull ghcr.io/synerbi/sirf:${{ fromJSON(steps.meta.outputs.json).tags[0] }} || :
+        echo "suffix=$suffix" >> "$GITHUB_OUTPUT"
+        echo "core_image=$core_image" >> "$GITHUB_OUTPUT"
+    - id: build
+      name: build
+      run: |
+        # rebuild sirf image
+        ./docker/compose.sh -dbR${{ matrix.type == 'gpu' && 'g' || 'c' }}
+        image=synerbi/sirf:jupyter${{ steps.pull.outputs.suffix }}
+        echo "image=$image" >> "$GITHUB_OUTPUT"
+    - name: test CIL
+      run: >
+        docker run --rm -v ./.github/workflows:/gh --user $(id -u) --group-add users
+        ${{ steps.build.outputs.image }} /gh/test_cil.sh

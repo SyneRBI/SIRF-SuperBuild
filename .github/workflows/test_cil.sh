@@ -11,4 +11,6 @@ done
 
 $SIRF_PATH/../../INSTALL/bin/gadgetron >& ~/gadgetron.log&
 /opt/conda/bin/python -m unittest discover -v ./cil_sirf_test -k GradientPET -k BlockDataContainer
-for i in $(jobs -p); do kill -n 15 $i; done 2>/dev/null  # kill gadgetron
+ret=$?
+for i in $(jobs -p); do kill -n 15 $i || : ; done 2>/dev/null  # kill gadgetron
+exit $ret

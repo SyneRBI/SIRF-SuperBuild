@@ -1,0 +1,69 @@
+version: '3.2'
+services:
+ foundation:
+  command: echo nop
+  image: synerbi/jupyter:foundation-cpu
+  build:
+   context: docker/docker-stacks/images/docker-stacks-foundation
+   args:
+    ROOT_CONTAINER: ubuntu:22.04
+    PYTHON_VERSION: "3.10"
+ base:
+  command: echo nop
+  image: synerbi/jupyter:base-cpu
+  build:
+   context: docker/docker-stacks/images/base-notebook
+   args: {BASE_CONTAINER: synerbi/jupyter:foundation-cpu}
+ minimal:
+  command: echo nop
+  image: synerbi/jupyter:minimal-cpu
+  build:
+   context: docker/docker-stacks/images/minimal-notebook
+   args: {BASE_CONTAINER: synerbi/jupyter:base-cpu}
+ scipy:
+  command: echo nop
+  image: synerbi/jupyter:scipy-cpu
+  build:
+   context: docker/docker-stacks/images/scipy-notebook
+   args: {BASE_CONTAINER: synerbi/jupyter:minimal-cpu}
+ sirf-build:
+  # convenience volume & command to copy image::/opt/ccache to localhost::./docker/devel/.ccache
+  # (executed in ./docker/compose.sh by `docker compose up sirf-build`)
+  volumes: [./docker/devel/.ccache:/ccache]
+  command: "bash -c 'cp -r /opt/ccache/* /ccache/'"
+  image: synerbi/jupyter:sirf-build-cpu
+  build:
+   context: .
+   target: build
+   args:
+    BASE_CONTAINER: synerbi/jupyter:scipy-cpu
+    Gadgetron_USE_CUDA: "OFF"
+    BUILD_GPU: 0
+ sirf:
+  container_name: sirf  # for scaling, comment this out https://github.com/docker/compose/issues/3729
+  image: synerbi/sirf:jupyter
+  build:
+   context: .
+   args:
+    BASE_CONTAINER: synerbi/jupyter:scipy-cpu
+    Gadgetron_USE_CUDA: "OFF"
+    BUILD_GPU: 0
+   cache_from: [synerbi/jupyter:sirf-build-cpu]
+  stdin_open: true
+  tty: true
+  # Probably requires `export USER_ID UID` to work.
+  # Alternatively replace with the output of `id -u`.
+  user: ${USER_ID:-${UID:-${USER:-1000}}}
+  group_add: [users]
+  environment:
+    # CLI arguments for https://github.com/SyneRBI/SIRF-Exercises/blob/master/scripts/download_data.sh
+    SIRF_DOWNLOAD_DATA_ARGS: ''
+  volumes: [./docker/devel:/home/jovyan/work]
+  restart: unless-stopped
+  ports:
+  - "9002:9002"  # gadgetron
+  - "9999:8888"  # jupyter
+  # for scaling, use this instead for random port assignment
+  # (https://github.com/docker/compose/issues/2260):
+  #- "9000-9099:9002"
+  #- "8800-8899:8888"

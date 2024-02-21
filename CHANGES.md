@@ -2,6 +2,12 @@
 
 ## v3.6.0
 - build the STIR native Python interface by default (STIR_BUILD_SWIG_PYTHON=ON). You can still switch this off.
+- docker image updates:
+  - uses `docker-stacks`
+  - CPU: ubuntu:22.04
+  - GPU: nvidia/cuda:11.7.1-cudnn8-runtime-ubuntu22.04
+  - added requirements.yml
+- Drop Travis
 - updated versions:
   - SIRF: v3.6.0
   - STIR: v6.0.0
@@ -24,8 +30,8 @@
      the CTests will be run while building the image.
    - remove obsolete copying of gadgetron.xml
    - Installing requirements for SIRF-Exercises uses its environment.yml or requirements.txt depending on settings.
-- Build Gadgetron master. Requires new Ubuntu packages: libdcmtk-dev, libpugixml-dev, libgflags-dev, 
-  libssl-dev, libcurl4-openssl-dev, pkg-config, golang, libboost-coroutine-dev, libboost-context-dev, libboost-random-dev. 
+- Build Gadgetron master. Requires new Ubuntu packages: libdcmtk-dev, libpugixml-dev, libgflags-dev,
+  libssl-dev, libcurl4-openssl-dev, pkg-config, golang, libboost-coroutine-dev, libboost-context-dev, libboost-random-dev.
 - Added SuperBuild project dependencies for Gadgetron: range-v3, RocksDB, Date, mrd-storage-server
 - updated versions:
   - Gadgetron: 42f11bf14b77b16f1ca5bcfbfa435d5ee8cb22a6 (master)
@@ -37,7 +43,7 @@
   - CIL: v23.1.0
   - CCPi-Regularisation: v22.0.0
   - TomoPhantom: v2.0.0
-  
+
 ## v3.4.0
 - Removed CIL-ASTRA as it has been merged into CIL code base.
 - docker images updates
@@ -54,6 +60,9 @@
   - fixes documentation
   - use the VMSVGA graphics controller
   - use environment variables in Vagrantfile for easier building
+- jupyterhub updates:
+  - Ubuntu: 22.04 and nvidia/cuda:11.7.1-cudnn8-runtime-ubuntu22.04
+  - added requirements.yml for jupyterhub
 - updated versions:
   - SIRF: v3.4.0
   - CIL: a6062410028c9872c5b355be40b96ed1497fed2a > 22.1.0
@@ -64,7 +73,7 @@
   - Boost: 1.78.0
 
 ## v3.3.1
-- VM: 
+- VM:
    - "update_VM.sh -s" (i.e. "UPDATE.sh -s") no longer runs configure_gnome.sh. If you have a very old VM, run it manually instead.
    - Updates to run using docker scripts
    - installs custom pip and all python prerequisites with pip
@@ -76,7 +85,7 @@
    - no longer force numpy<=1.20
 - CMake:
    - FindCython allows hints
-   
+
 ## v3.3.0
 - known problems:
    - VM and jupyterhub scripts need merging various fixes
@@ -90,7 +99,7 @@
 - docker:
    - fix problems with CUDA repo keys
    - minor fixes to scripts for use elsewhere (including preparation for more recent Ubuntu)
-- VM: 
+- VM:
   - set BUILD_CIL=ON
 - add CITATION.cff (and remove .zenodo.json)
 - added numba as dependency in docker files
