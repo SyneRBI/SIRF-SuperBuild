@@ -72,8 +72,8 @@ jobs:
           ccache-docker
           ccache
         path: docker/devel/.ccache
-    - id: build
-      name: build
+    - id: pull
+      name: pull
       run: |
         suffix=${{ matrix.type == 'gpu' && '-gpu' || '' }}
         # pull core image
@@ -81,13 +81,17 @@ jobs:
         docker pull $core_image || :
         # pull sirf image
         docker pull ghcr.io/synerbi/sirf:${{ fromJSON(steps.meta.outputs.json).tags[0] }} || :
+        echo "suffix=$suffix" >> "$GITHUB_OUTPUT"
+        echo "core_image=$core_image" >> "$GITHUB_OUTPUT"
+    - id: build
+      name: build
+      run: |
         # rebuild sirf image
         ./docker/compose.sh -bR${{ matrix.type == 'gpu' && 'g' || 'c' }}
-        image=synerbi/sirf:jupyter$suffix
+        image=synerbi/sirf:jupyter${{ steps.pull.outputs.suffix }}
         echo "image=$image" >> "$GITHUB_OUTPUT"
         # tag potentially newer core image
-        docker tag synerbi/jupyter:scipy-${{ matrix.type }} $core_image
-        echo "core_image=$core_image" >> "$GITHUB_OUTPUT"
+        docker tag synerbi/jupyter:scipy-${{ matrix.type }} ${{ steps.pull.outputs.core_image }}
         # make a dummy Dockerfile to use with build-push-action
         context=$(mktemp -d)
         echo "FROM $image" >> "$context/Dockerfile"
@@ -149,8 +153,8 @@ jobs:
           ccache-docker
           ccache
         path: docker/devel/.ccache
-    - id: build
-      name: build
+    - id: pull
+      name: pull
       run: |
         suffix=${{ matrix.type == 'gpu' && '-gpu' || '' }}
         # pull core image
@@ -158,26 +162,16 @@ jobs:
         docker pull $core_image || :
         # pull sirf image
         docker pull ghcr.io/synerbi/sirf:${{ fromJSON(steps.meta.outputs.json).tags[0] }} || :
+        echo "suffix=$suffix" >> "$GITHUB_OUTPUT"
+        echo "core_image=$core_image" >> "$GITHUB_OUTPUT"
+    - id: build
+      name: build
+      run: |
         # rebuild sirf image
         ./docker/compose.sh -dbR${{ matrix.type == 'gpu' && 'g' || 'c' }}
-        image=synerbi/sirf:jupyter$suffix
+        image=synerbi/sirf:jupyter${{ steps.pull.outputs.suffix }}
         echo "image=$image" >> "$GITHUB_OUTPUT"
-        # tag potentially newer core image
-        docker tag synerbi/jupyter:scipy-${{ matrix.type }} $core_image
-        echo "core_image=$core_image" >> "$GITHUB_OUTPUT"
-        # make a dummy Dockerfile to use with build-push-action
-        context=$(mktemp -d)
-        echo "FROM $image" >> "$context/Dockerfile"
-        echo "context=$context" >> "$GITHUB_OUTPUT"
     - name: test CIL
       run: >
         docker run --rm -v ./.github/workflows:/gh --user $(id -u) --group-add users
         ${{ steps.build.outputs.image }} /gh/test_cil.sh
-    - uses: docker/build-push-action@v5
-      with:
-        context: ${{ steps.build.outputs.context }}
-        push: true
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-    - name: push core image
-      run: docker push ${{ steps.build.outputs.core_image }}
