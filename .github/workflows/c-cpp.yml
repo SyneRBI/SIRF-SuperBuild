@@ -80,6 +80,11 @@ jobs:
         sudo ./build_essential-ubuntu.sh
         sudo ./build_gadgetron-ubuntu.sh
         sudo ./build_python-ubuntu.sh
+        echo "python-version=$(python3 --version | awk '{print $2}')" >> $GITHUB_OUTPUT
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '${{ steps.deps.outputs.python-version }}'
+        cache: pip
     - name: pip install
       env:
         PYTHON_EXECUTABLE: python3
