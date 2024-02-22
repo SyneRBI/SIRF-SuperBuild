@@ -140,7 +140,7 @@ jobs:
       name: Upload build log files for debugging
       uses: actions/upload-artifact@v4
       with:
-        name: build_log_files-${{ matrix.os }}-${{ env.COMPILER }}${{ matrix.compiler_version }}-${{ env.BUILD_TYPE }}-DEVEL=${{ matrix.DEVEL_BUILD }}-run=${{ github.run_number }}-id=${{ github.run_id }}
+        name: build_log_files-${{ matrix.os }}-${{ env.COMPILER }}${{ matrix.compiler_version }}-${{ env.BUILD_TYPE }}-DEVEL=${{ matrix.DEVEL_BUILD }}
         path: ${{ github.workspace }}/build/**/*.log
         retention-days: 7
     - name: ctest
