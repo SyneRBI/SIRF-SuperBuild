@@ -183,8 +183,10 @@ set(DEFAULT_RocksDB_TAG v6.26.0)
 set(DEFAULT_mrd-storage-server_URL https://github.com/ismrmrd/mrd-storage-server)
 set(DEFAULT_mrd-storage-server_TAG origin/main)
 
-set(DEFAULT_Date_URL https://github.com/HowardHinnant/date)
-set(DEFAULT_Date_TAG master)
+#set(DEFAULT_Date_URL https://github.com/HowardHinnant/date )
+#set(DEFAULT_Date_TAG master)
+set(DEFAULT_Date_URL https://github.com/SyneRBI/date )
+set(DEFAULT_Date_TAG fixgitattributes)
 
 set(DEFAULT_pugixml_URL https://github.com/zeux/pugixml)
 set(DEFAULT_pugixml_TAG v1.13)
