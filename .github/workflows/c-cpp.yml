@@ -1,5 +1,4 @@
-name: run superbuild and test
-
+name: native
 on:
   push:
     branches: [ master ]
@@ -26,46 +25,36 @@ on:
     - 'NOTICE.txt'
     - 'LICENSE.txt'
 jobs:
-  build:
-
+  build-test:
     runs-on: ${{ matrix.os }}
+    env:
+      COMPILER: gcc
+      BUILD_TYPE: Release
     strategy:
       matrix:
         include:
         - os: ubuntu-latest
-          compiler: gcc
           compiler_version: 9
-          BUILD_TYPE: "Release"
           EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
           DEVEL_BUILD: "OFF"
         - os: ubuntu-latest
-          compiler: gcc
           compiler_version: 9
-          BUILD_TYPE: "Release"
           EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=OFF"
           DEVEL_BUILD: "OFF"
         #- os: ubuntu-latest
-        #  compiler: gcc
         #  compiler_version: 9
-        #  BUILD_TYPE: "Release"
         #  EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
         #  DEVEL_BUILD: "OFF"
         - os: ubuntu-latest
-          compiler: gcc
           compiler_version: 9
-          BUILD_TYPE: "Release"
           EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_GTest=OFF"
           DEVEL_BUILD: "OFF"
         - os: ubuntu-latest
-          compiler: gcc
           compiler_version: 11
-          BUILD_TYPE: "Release"
           EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_ROOT:BOOL=ON"
           DEVEL_BUILD: "ON"
         - os: ubuntu-latest
-          compiler: gcc
           compiler_version: 11
-          BUILD_TYPE: "Release"
           EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_ROOT:BOOL=ON"
           DEVEL_BUILD: "OFF"
       # let's run all of them, as opposed to aborting when one fails
@@ -98,17 +87,17 @@ jobs:
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
-        key: ${{ matrix.os }}-${{ matrix.compiler }}-${{ matrix.compiler_version }}-${{ matrix.BUILD_TYPE }}
+        key: ${{ matrix.os }}-${{ env.COMPILER }}-${{ matrix.compiler_version }}-${{ env.BUILD_TYPE }}
         max-size: "900M"
 
     - name: set_compiler_variables
       shell: bash
       run: |
           set -ex
-          if test 'XX${{ matrix.compiler }}' = 'XXclang'; then
+          if test 'XX${{ env.COMPILER }}' = 'XXclang'; then
             CC="clang"
             CXX="clang++"
-          elif test 'XX${{ matrix.compiler }}' = 'XXgcc'; then
+          elif test 'XX${{ env.COMPILER }}' = 'XXgcc'; then
             CC="gcc"
             CXX="g++"
           fi
@@ -126,7 +115,7 @@ jobs:
       shell: bash
       env:
           EXTRA_BUILD_FLAGS: ${{ matrix.EXTRA_BUILD_FLAGS }}
-          CMAKE_BUILD_TYPE: ${{ matrix.CMAKE_BUILD_TYPE }}
+          CMAKE_BUILD_TYPE: ${{ env.BUILD_TYPE }}
           DEVEL_BUILD: "-DDEVEL_BUILD=${{ matrix.DEVEL_BUILD }}"
       run: |
           set -ex;
@@ -154,7 +143,7 @@ jobs:
       uses: actions/upload-artifact@v3
       if: failure()
       with:
-        name: build_log_files-${{ matrix.os }}-${{ matrix.compiler }}${{ matrix.compiler_version }}-${{ matrix.BUILD_TYPE }}-DEVEL=${{ matrix.DEVEL_BUILD }}-run=${{ github.run_number }}-id=${{ github.run_id }}
+        name: build_log_files-${{ matrix.os }}-${{ env.COMPILER }}${{ matrix.compiler_version }}-${{ env.BUILD_TYPE }}-DEVEL=${{ matrix.DEVEL_BUILD }}-run=${{ github.run_number }}-id=${{ github.run_id }}
         path: ${{ github.workspace }}/build/**/*.log
         retention-days: 7
 
