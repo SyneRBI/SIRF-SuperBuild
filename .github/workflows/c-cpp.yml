@@ -93,8 +93,11 @@ jobs:
       run: ./user_python-ubuntu.sh
     - uses: hendrikmuhs/ccache-action@v1
       with:
-        key: ${{ matrix.os }}-${{ env.COMPILER }}-${{ matrix.compiler_version }}-${{ env.BUILD_TYPE }}
-        max-size: "900M"
+        key: ${{ matrix.os }}-${{ env.COMPILER }}-${{ matrix.compiler_version }}-${{ env.BUILD_TYPE }}-${{ github.ref_name }}-${{ github.run_id }}
+        restore-keys: |
+          ${{ matrix.os }}-${{ env.COMPILER }}-${{ matrix.compiler_version }}-${{ env.BUILD_TYPE }}-${{ github.ref_name }}
+          ${{ matrix.os }}-${{ env.COMPILER }}-${{ matrix.compiler_version }}-${{ env.BUILD_TYPE }}
+        append-timestamp: false
     - name: export CC CXX
       run: |
         set -ex
