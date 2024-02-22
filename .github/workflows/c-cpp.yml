@@ -34,6 +34,7 @@ on:
 jobs:
   build-test:
     runs-on: ${{ matrix.os }}
+    defaults: {run: {shell: bash}}
     env:
       COMPILER: gcc
       BUILD_TYPE: Release
@@ -64,82 +65,65 @@ jobs:
           compiler_version: 11
           EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_ROOT:BOOL=ON"
           DEVEL_BUILD: "OFF"
-      # let's run all of them, as opposed to aborting when one fails
-      fail-fast: false
-
+      fail-fast: false # don't terminate matrix if one job fails
     steps:
     - uses: actions/checkout@v4
-
-    - name: disk space
-      shell: bash
+    - if: contains(matrix.os, fromJSON('["ubuntu","macos"]'))
+      name: increase disk space
+      run: sudo .github/workflows/GHA_increase_disk_space.sh
+    - id: deps
+      name: install dependencies
+      working-directory: docker
       run: |
-          case ${{matrix.os}} in
-            (ubuntu* | macOS*)
-              sudo .github/workflows/GHA_increase_disk_space.sh
-              ;;
-            (windows*)
-              # no idea what to do here
-              ;;
-           esac
-
-    - name: install_dependencies
-      run:
-          cd docker;
-          sudo bash raw-ubuntu.sh;
-          sudo bash build_essential-ubuntu.sh;
-          sudo bash build_python-ubuntu.sh;
-          sudo bash build_gadgetron-ubuntu.sh;
-          sudo bash build_system-ubuntu.sh;
-          PYTHON_EXECUTABLE=python3 PYTHON_INSTALL_DIR=~/virtualenv bash user_python-ubuntu.sh;
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1
+        sudo ./raw-ubuntu.sh
+        sudo ./build_system-ubuntu.sh
+        sudo ./build_essential-ubuntu.sh
+        sudo ./build_gadgetron-ubuntu.sh
+        sudo ./build_python-ubuntu.sh
+    - name: pip install
+      env:
+        PYTHON_EXECUTABLE: python3
+        PYTHON_INSTALL_DIR: ~/virtualenv
+      working-directory: docker
+      run: ./user_python-ubuntu.sh
+    - uses: hendrikmuhs/ccache-action@v1
       with:
         key: ${{ matrix.os }}-${{ env.COMPILER }}-${{ matrix.compiler_version }}-${{ env.BUILD_TYPE }}
         max-size: "900M"
-
-    - name: set_compiler_variables
-      shell: bash
+    - name: export CC CXX
       run: |
-          set -ex
-          if test 'XX${{ env.COMPILER }}' = 'XXclang'; then
-            CC="clang"
-            CXX="clang++"
-          elif test 'XX${{ env.COMPILER }}' = 'XXgcc'; then
-            CC="gcc"
-            CXX="g++"
-          fi
-          if test 'XX${{ matrix.compiler_version }}' != 'XX'; then
-            CC=${CC}-${{ matrix.compiler_version }}
-            CXX=${CXX}-${{ matrix.compiler_version }}
-            sudo apt install -yq ${CXX} ${CC}
-          fi
-
-          export CC CXX
-          # make available to jobs below
-          echo CC="$CC" >> $GITHUB_ENV
-          echo CXX="$CXX" >> $GITHUB_ENV
-    - name: configure
-      shell: bash
+        set -ex
+        if test '${{ env.COMPILER }}' = clang; then
+          CC=clang
+          CXX=clang++
+        elif test '${{ env.COMPILER }}' = gcc; then
+          CC=gcc
+          CXX=g++
+        fi
+        if test -n '${{ matrix.compiler_version }}'; then
+          CC=${CC}-${{ matrix.compiler_version }}
+          CXX=${CXX}-${{ matrix.compiler_version }}
+          sudo apt install -yq ${CXX} ${CC}
+        fi
+        # make available to jobs below
+        echo "CC=$CC" >> $GITHUB_ENV
+        echo "CXX=$CXX" >> $GITHUB_ENV
+    - name: cmake -S .
       env:
-          EXTRA_BUILD_FLAGS: ${{ matrix.EXTRA_BUILD_FLAGS }}
-          CMAKE_BUILD_TYPE: ${{ env.BUILD_TYPE }}
-          DEVEL_BUILD: "-DDEVEL_BUILD=${{ matrix.DEVEL_BUILD }}"
+        EXTRA_BUILD_FLAGS: ${{ matrix.EXTRA_BUILD_FLAGS }}
+        CMAKE_BUILD_TYPE: ${{ env.BUILD_TYPE }}
+        DEVEL_BUILD: "-DDEVEL_BUILD=${{ matrix.DEVEL_BUILD }}"
       run: |
-          set -ex;
-          export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-          export superbuild=`pwd`;
-          export BUILD_FLAGS="-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=~/install -DPYVER=3 -DUSE_SYSTEM_RocksDB=OFF -DBUILD_TESTING_Gadgetron:BOOL=ON";
-          mkdir -p build/;
-          cd build;
-          source ~/virtualenv/bin/activate;
-          cmake -S ${GITHUB_WORKSPACE} ${BUILD_FLAGS} ${EXTRA_BUILD_FLAGS} ${DEVEL_BUILD};
-    - name: build
-      shell: bash
+        set -ex
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+        export superbuild=`pwd`
+        export BUILD_FLAGS="-DCMAKE_INSTALL_PREFIX=~/install -DPYVER=3 -DUSE_SYSTEM_RocksDB=OFF -DBUILD_TESTING_Gadgetron:BOOL=ON"
+        source ~/virtualenv/bin/activate
+        cmake -S ${GITHUB_WORKSPACE} -B ./build ${BUILD_FLAGS} ${EXTRA_BUILD_FLAGS} ${DEVEL_BUILD};
+    - name: cmake --build
       run: |
-          cd ${GITHUB_WORKSPACE}/build;
-          source ~/virtualenv/bin/activate;
-          cmake --build . -j 2;
-
+        source ~/virtualenv/bin/activate
+        cmake --build ./build -j 2
     # tmate ssh debugging
     - if: github.event_name == 'workflow_dispatch' && github.event.inputs.tmate == 'true'
       uses: mxschmitt/action-tmate@v3
@@ -151,8 +135,5 @@ jobs:
         name: build_log_files-${{ matrix.os }}-${{ env.COMPILER }}${{ matrix.compiler_version }}-${{ env.BUILD_TYPE }}-DEVEL=${{ matrix.DEVEL_BUILD }}-run=${{ github.run_number }}-id=${{ github.run_id }}
         path: ${{ github.workspace }}/build/**/*.log
         retention-days: 7
-
-    - name: tests
-      shell: bash
-      run:
-          bash docker/ctest_sirf.sh
+    - name: ctest
+      run: ./docker/ctest_sirf.sh
