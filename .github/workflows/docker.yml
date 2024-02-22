@@ -108,7 +108,7 @@ jobs:
         labels: ${{ steps.meta.outputs.labels }}
     - if: github.ref == 'refs/heads/master'
       name: push core image
-      run: docker push ${{ steps.build.outputs.core_image }}
+      run: docker push ${{ steps.pull.outputs.core_image }}
   devel:
     if: github.event_name == 'schedule' || github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
@@ -169,7 +169,7 @@ jobs:
       run: |
         # rebuild sirf image
         ./docker/compose.sh -dbR${{ matrix.type == 'gpu' && 'g' || 'c' }}
-        image=synerbi/sirf:jupyter${{ steps.pull.outputs.suffix }}
+        image=synerbi/sirf:jupyter-devel${{ steps.pull.outputs.suffix }}
         echo "image=$image" >> "$GITHUB_OUTPUT"
     - name: test CIL
       run: >
