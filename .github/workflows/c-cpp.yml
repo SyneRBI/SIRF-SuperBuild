@@ -34,7 +34,7 @@ on:
 jobs:
   build-test:
     runs-on: ${{ matrix.os }}
-    defaults: {run: {shell: bash}}
+    defaults: {run: {shell: 'bash -el {0}'}}
     env:
       COMPILER: gcc
       BUILD_TYPE: Release

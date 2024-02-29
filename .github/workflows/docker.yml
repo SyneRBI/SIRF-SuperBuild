@@ -18,9 +18,7 @@ on:
     - 'CITATION.cff'
     - '.mailmap'
   schedule: [{cron: '37 13 * * SUN'}] # Sunday at 13:37
-defaults:
-  run:
-    shell: bash -l {0}
+defaults: {run: {shell: 'bash -el {0}'}}
 jobs:
   build:
     if: github.event_name != 'schedule'
