@@ -155,7 +155,7 @@ set(DEFAULT_SPM_URL https://github.com/spm/SPM12)
 set(DEFAULT_SPM_TAG r7771)
 
 set(DEFAULT_JSON_URL https://github.com/nlohmann/json)
-set(DEFAULT_JSON_TAG v3.10.4)
+set(DEFAULT_JSON_TAG v3.11.3)
 
 # CCPi CIL
 # minimum supported version of CIL supported is > 22.1.0 or from commit a6062410028c9872c5b355be40b96ed1497fed2a
@@ -167,7 +167,7 @@ set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "71f8d304d804b54d378f0ed05539f01aaaf
 
 # CERN ROOT
 set(DEFAULT_ROOT_URL https://github.com/root-project/root)
-set(DEFAULT_ROOT_TAG "v6-26-10")
+set(DEFAULT_ROOT_TAG "v6-28-12")
 
 # ACE
 set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
