@@ -86,11 +86,8 @@ jobs:
         python-version: '${{ steps.deps.outputs.python-version }}'
         cache: pip
     - name: pip install
-      env:
-        PYTHON_EXECUTABLE: python3
-        PYTHON_INSTALL_DIR: ~/virtualenv
       working-directory: docker
-      run: ./user_python-ubuntu.sh
+      run: PYTHON_EXECUTABLE=python3 PYTHON_INSTALL_DIR="$HOME/virtualenv" ./user_python-ubuntu.sh
     - uses: hendrikmuhs/ccache-action@v1
       with:
         key: ${{ matrix.os }}-${{ env.COMPILER }}-${{ matrix.compiler_version }}-${{ env.BUILD_TYPE }}-${{ github.ref_name }}-${{ github.run_id }}
