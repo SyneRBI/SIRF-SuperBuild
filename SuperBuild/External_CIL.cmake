@@ -68,7 +68,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
           -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
           ${PYTHONLIBS_CMAKE_ARGS}
           -DPYTHON_DEST_DIR:PATH=${PYTHON_DEST}
-          -DOPENMP_INCLUDES:PATH=${OPENMP_INCLUDES}
           -DCIL_VERSION:STRING=${${proj}_TAG}
           ${DIPP_INCLUDE}
           ${DIPP_LIBRARY}

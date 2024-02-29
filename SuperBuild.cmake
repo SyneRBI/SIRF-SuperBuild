@@ -221,14 +221,22 @@ option(DISABLE_OpenMP "Disable OpenMP support for dependencies" OFF)
 if (NOT DISABLE_OpenMP)
   find_package(OpenMP)
   if (OPENMP_FOUND)
-    MESSAGE(STATUS "OpenMP found, support enabled")
+     message(STATUS "OpenMP found, support enabled. If you get compiler errors saying \"omp.h not found\", set the following CMake variables: OpenMP_CXX_INCLUDE_DIR, OpenMP_C_INCLUDE_DIR. For linking errors, check other \"OpenMP\*\" CMake variables as well.")
+  
     mark_as_superbuild(ALL_PROJECTS VARS 
       OpenMP_CXX_FLAGS:STRING OpenMP_CXX_LIB_NAMES:STRING OpenMP_C_FLAGS:STRING 
       OpenMP_C_LIB_NAMES:STRING OpenMP_CXX_FLAGS:STRING OpenMP_CXX_LIB_NAMES:STRING 
       OpenMP_libomp_LIBRARY:FILEPATH OpenMP_omp_LIBRARY:FILEPATH
       OpenMP_gomp_LIBRARY:FILEPATH OpenMP_pthread_LIBRARY:FILEPATH
-      OPENMP_INCLUDES:PATH OPENMP_LIBRARIES:PATH
       )
+    if (OpenMP_CXX_INCLUDE_DIR)
+      mark_as_superbuild(ALL_PROJECTS VARS 
+        OpenMP_CXX_INCLUDE_DIR:PATH)
+    endif()
+    if (OpenMP_C_INCLUDE_DIR)
+      mark_as_superbuild(ALL_PROJECTS VARS 
+        OpenMP_C_INCLUDE_DIR:PATH)
+    endif()
   else()
     MESSAGE(STATUS "OpenMP not found, support disabled")
     SET(DISABLE_OpenMP ON CACHE BOOL "Disable OpenMP support for dependencies" FORCE)

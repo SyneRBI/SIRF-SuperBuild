@@ -97,8 +97,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DPYTHON_STRATEGY=${PYTHON_STRATEGY}
       -DNIFTYREG_DIR:PATH=${NIFTYREG_DIR}
       -DREG_ENABLE:BOOL=${BUILD_SIRF_Registration}
-      -DOPENMP_INCLUDES:PATH=${OPENMP_INCLUDES}
-      -DOPENMP_LIBRARIES:PATH=${OPENMP_LIBRARIES}
 		  ${extra_args}
       -DGadgetron_USE_CUDA=${Gadgetron_USE_CUDA}
       ${${proj}_EXTRA_CMAKE_ARGS}

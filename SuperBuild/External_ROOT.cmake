@@ -47,9 +47,6 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DPYTHON_EXECUTABLE:FILE=${PYTHON_EXECUTABLE}
       -Dopengl=${ROOT_opengl}
       -Dx11=${ROOT_x11}
-      -DOPENMP_INCLUDES:PATH=${OPENMP_INCLUDES}
-      -DOPENMP_LIBRARIES:PATH=${OPENMP_LIBRARIES}
-  #   -DCMAKE_INSTALL_PREFIX=${${proj}_INSTALL_DIR}
   )
 
   ExternalProject_Add(${proj}
