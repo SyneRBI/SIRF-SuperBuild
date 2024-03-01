@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -ev
 # minor Ubuntu base image updates
 
 # Set locale, suppress warnings

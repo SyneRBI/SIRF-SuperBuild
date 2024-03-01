@@ -18,9 +18,7 @@ on:
     - 'CITATION.cff'
     - '.mailmap'
   schedule: [{cron: '37 13 * * SUN'}] # Sunday at 13:37
-defaults:
-  run:
-    shell: bash -l {0}
+defaults: {run: {shell: 'bash -el {0}'}}
 jobs:
   build:
     if: github.event_name != 'schedule'
@@ -28,6 +26,7 @@ jobs:
     strategy:
       matrix:
         type: [gpu, cpu]
+    permissions: {contents: read, packages: write}
     steps:
     - uses: actions/checkout@v4
       with:
@@ -60,10 +59,12 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USR }}
         password: ${{ secrets.DOCKER_PWD }}
-    - name: increase disk space
-      run: ./.github/workflows/GHA_increase_disk_space.sh
+    - uses: jlumbroso/free-disk-space@v1.3.1
+      with:
+        docker-images: false
+        large-packages: false
     - name: cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         key: ccache-docker-${{ matrix.type }}-${{ github.ref_name }}-${{ github.run_id }}
         restore-keys: |
@@ -115,6 +116,7 @@ jobs:
     strategy:
       matrix:
         type: [gpu, cpu]
+    permissions: {contents: read, packages: write}
     steps:
     - uses: actions/checkout@v4
       with:
@@ -141,10 +143,12 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USR }}
         password: ${{ secrets.DOCKER_PWD }}
-    - name: increase disk space
-      run: ./.github/workflows/GHA_increase_disk_space.sh
+    - uses: jlumbroso/free-disk-space@v1.3.1
+      with:
+        docker-images: false
+        large-packages: false
     - name: cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         key: ccache-docker-${{ matrix.type }}-${{ github.ref_name }}-${{ github.run_id }}
         restore-keys: |
