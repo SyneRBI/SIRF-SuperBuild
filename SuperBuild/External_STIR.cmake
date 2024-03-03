@@ -202,16 +202,14 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
          WORKING_DIRECTORY ${${proj}_BINARY_DIR})
   endif()
 
-   else()
-      if(${USE_SYSTEM_${externalProjName}})
-        find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED CONFIG)
-        message(STATUS "USING the system ${externalProjName} at ${externalProjName}_DIR=${${externalProjName}_DIR}")
-   endif()
-    ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-    ${${proj}_EP_ARGS_DIRS}
-   )
+else()
+  if(${USE_SYSTEM_${externalProjName}})
+    find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED CONFIG)
+    message(STATUS "USING a system ${externalProjName} at ${externalProjName}_DIR=${${externalProjName}_DIR}")
   endif()
+  ExternalProject_Add_Empty(${proj} ${${proj}_EP_ARGS_DIRS})
+endif()
 
-  if (STIR_DIR)
-    set(STIR_CMAKE_ARGS "-DSTIR_DIR:PATH=${STIR_DIR}")
-  endif()
+if (STIR_DIR)
+  set(STIR_CMAKE_ARGS "-DSTIR_DIR:PATH=${STIR_DIR}")
+endif()
