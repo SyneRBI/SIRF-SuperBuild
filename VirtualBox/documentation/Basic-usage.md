@@ -86,9 +86,12 @@ We  provide a script to update an existing VM to a new version of course softwar
 
 If you have decided to upgrade your existing VM, type the following in a terminal
 
+     cd ~/devel
+     rm -rf install/lib install/include
+     rm -rf buildVM
      update_VM.sh -s
 
-The `-s` option will update your system dependencies via APT.
+The `-s` option will update your system dependencies via APT. If you are a developer and have made specific changes to your system, you might not want to execute the steps removing existing files.
 
 The script has some additional options for advanced usage only. For instance, if you
 are a developer and want to use the latest version of the software and want

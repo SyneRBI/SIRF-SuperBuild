@@ -36,7 +36,11 @@ print_usage(){
   echo "   Otherwise the most recent release will be used."
   echo "Use the -j option to change the number of parallel builds from the default ${num_parallel}"
   echo "Use the -s option to update and install necessary system and Python components."
-  echo "  We recommend to do this once when upgrading between major versions."
+  echo "   We recommend to do this once when upgrading between major versions."
+  echo "We also recommend to remove all previously installed files before running this script:"
+  echo "   rm -rf ~/devel/install/lib ~/devel/install/include"
+  echo "If you experience problems, you could even remove previous build files:"
+  echo "   rm -rf ~/devel/buildVM/"
 }
 
 # process any options and set env variables
