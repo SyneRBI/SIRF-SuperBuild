@@ -5,9 +5,6 @@
 
 The SIRF-SuperBuild can download/build/install [SIRF] and its dependencies (including Gadgetron and other packages useful for PET/MR data processing).
 
-> [!NOTE]
-> A few dependencies are not installed by the SuperBuild; see [operating system information](#os-specific-information).
-
 [SIRF]: https://github.com/SyneRBI/SIRF
 
 The SuperBuild can:
@@ -64,6 +61,9 @@ See [`VirtualBox/README.md`](VirtualBox/README.md).
 
 The SuperBuild depends on CMake >= 3.16.2 on Linux and 3.20 on Windows.
 
+> [!NOTE]
+> A few dependencies are not installed by the SuperBuild; see [operating system information](#os-specific-information).
+
 If you are building Gadgetron there are a series of [additional dependencies](https://github.com/gadgetron/gadgetron/wiki/List-of-Dependencies), which must be met.
 
 To compile and install SIRF with the SuperBuild follow these steps:
@@ -87,15 +87,19 @@ If you use a CMake installer, you will be asked to read and accept CMake's licen
 export PATH="/usr/local/cmake/bin:$PATH"
 ```
 
-Note that the above `PATH` statements won't work if you are running csh. The equivalent would be for instance
+Change `/usr/local/` to your chosen installation path (if different).
 
-```csh
-set path = ( /usr/local/cmake/bin $path )
-```
+> [!TIP]
+> You might want to add the `PATH` line to your start-up file e.g. `.profile`, `.bashrc` or `.cshrc`.
 
-NOTE: change `/usr/local/` to your chosen installation path, if different.
+<!-- <br/> -->
 
-You might want to add the `PATH` line to your start-up file e.g. `.profile`, `.bashrc` or `.cshrc`.
+> [!WARNING]
+> `export` statements won't work if you are running `csh`. The equivalent would be:
+>
+> ```csh
+> set path = ( /usr/local/cmake/bin $path )
+> ```
 
 ### Clone the SIRF-SuperBuild project
 
@@ -121,7 +125,8 @@ terminal version `ccmake` to check and set various variables. See the [CMake tut
 
 By default, this will select stable configurations of the various projects. See [the advanced installation section](#advanced-installation).
 
-*Important*: we have currently dropped the support for MATLAB. It is currently not recommended to build both MATLAB and Python support, see [below](#matlab-and-python-conflicts).
+> [!IMPORTANT]
+> we have currently dropped the support for MATLAB. It is currently not recommended to build both MATLAB and Python support, see [below](#matlab-and-python-conflicts).
 
 Then use your build environment to build and install the project. On Linux/OSX etc, you would normally use
 
@@ -413,7 +418,7 @@ Note that if you want to use the `clang` compiler and CUDA, you likely will have
 As CMake doesn't come with FFTW3 support, it is currently necessary to have `FindFFTW3.cmake` reproduced 3 times. sigh.
 
 If you want to use your own FFTW3 library but it is not in a standard location, you have to set an environment variable `FFTW3_ROOT_DIR` before running CMake.
-This is poorly documented in `FindFFTW3.cmake`, which could be fixed by a PR to Gadgetron, ISMRMRD and SIRF. (Note that KT has tried to use `set(ENV{FFTW3_ROOT_DIR} some/location)` in our `External_FindFFTW.cmake`. This however doesn't pass the environment variable to the CMake instances for Gadgetron etc.)
+This is poorly documented in `FindFFTW3.cmake`, which could be fixed by a PR to Gadgetron, ISMRMRD and SIRF. (Note that @KrisThielemans has tried to use `set(ENV{FFTW3_ROOT_DIR} some/location)` in our `External_FindFFTW.cmake`. This however doesn't pass the environment variable to the CMake instances for Gadgetron etc.)
 
 By the way, if you build with `USE_SYSTEM_FFTW3=OFF` (the default except on Windows), the  `FFTW3_ROOT_DIR` env variable is ignored (as find_library etc give precedence to `MAKE_PREFIX_PATH` over `HINTS` ).
 
