@@ -3,23 +3,26 @@
 [![gh-action-badge]][gh-action-link] [![CI-badge]][CI-link] [![style-badge]][style-link] [![docker-badge]][docker-link]
 ![install-badge] [![zenodo-badge]][zenodo-link]
 
-The SIRF-SuperBuild allows the user to download and compile most of the software
-needed to compile SIRF and Gadgetron, and automatically build SIRF and Gadgetron, and
-other packages useful for PET/MR data processing.
+The SIRF-SuperBuild can download/build/install [SIRF] and its dependencies (including Gadgetron and other packages useful for PET/MR data processing).
 
-Note that there is still a small number of libraries that are not installed
-by the SuperBuild, [see below for more info for your operating system](#os-specific-information).
+> [!NOTE]
+> A few dependencies are not installed by the SuperBuild; see [operating system information](#os-specific-information).
 
-In addition, this repository also contains the files for [creating docker images](docker/README.md),
-a [VirtualBox VM](VirtualBox/README.md) as well as (probably outdated) files for creating [cloud instances
-on Azure via TerraForm](cloud/terraform/azure/README.md). See their respective READMEs. The rest of this README
-describes how to build via CMake.
+[SIRF]: https://github.com/SyneRBI/SIRF
 
-## Table of Contents
+The SuperBuild can:
 
-- [Running SIRF on Docker](#running-sirf-on-docker)
-- [Dependencies](#dependencies)
-- [Generic instructions](#generic-instructions)
+- [build & run docker containers](docker/README.md): the easiest way
+- [build & run a VirtualBox VM](VirtualBox/README.md): used to build [SIRF VM](https://zenodo.org/doi/10.5281/zenodo.3228198)
+- [launch cloud instances on Azure via TerraForm](cloud/terraform/azure/README.md): probably outdated
+- [build & run manually using CMake](#building-and-running-sirf-manually): see instructions below
+
+## Contents
+
+- [Running SIRF with Docker](#running-sirf-with-docker)
+- [Running SIRF with VirtualBox](#running-sirf-with-virtualbox)
+- [Building and Running SIRF manually](#building-and-running-sirf-manually)
+  - [Dependencies](#dependencies)
   - [Create the SuperBuild directory](#create-the-superbuild-directory)
   - [Install CMake](#install-cmake)
   - [Clone the SIRF-SuperBuild project](#clone-the-sirf-superbuild-project)
@@ -31,7 +34,6 @@ describes how to build via CMake.
 - [OS specific information](#os-specific-information)
   - [Installation instructions for Ubuntu](#Ubuntu-install)
   - [Installation instructions for Mac OS](#OSX-install)
-  - [Installation instructions for Docker](#Docker-install)
 - [Advanced installation](#advanced-installation)
   - [Optional libraries](#optional-libraries)
   - [use a different compiler than the system default](#use-a-different-compiler-than-the-system-default)
@@ -43,55 +45,26 @@ describes how to build via CMake.
   - [Building CCPi CIL](#building-ccpi-cil)
   - [Passing CMAKE arguments to specific projects](#passing-cmake-arguments-to-specific-projects)
   - [Building with CUDA](#building-with-cuda)
-- [Notes](#notes)
+- [FAQs](#faqs)
 
-## Running SIRF on Docker
-
-The easiest way to run [SIRF](https://github.com/SyneRBI/SIRF) & all its dependencies is to use Docker.
-
-1. [Install the latest docker version](https://docs.docker.com/engine/install/)
-2. (optional) For GPU support (NVIDIA CUDA on Linux or Windows Subsystem for Linux 2 only)
-   - [Install NVIDIA drivers](https://developer.nvidia.com/cuda-downloads)
-   - [Install NVIDIA container toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
-
-```sh
-# CPU version
-docker run --rm -it -p 9999:8888 ghcr.io/synerbi/sirf:jupyter
-# GPU version
-docker run --rm -it -p 9999:8888 --gpus all ghcr.io/synerbi/sirf:jupyter-gpu
-```
-
-The Jupyter notebook should be accessible at <https://localhost:9999>.
-
-> [!WARNING]
-> To sync the container user & host user permissions (useful when sharing folders), use `--user` and `--group-add`.
->
-> ```sh
-> docker run --rm -it -p 9999:8888 --user $(id -u) --group-add users \
->   -v ./docker/devel:/home/jovyan/work \
->   ghcr.io/synerbi/sirf:jupyter
-> ```
-
-More config: <https://jupyter-docker-stacks.readthedocs.io/en/latest/using/common.html#user-related-configurations>.
+## Running SIRF with Docker
 
 > [!TIP]
-> To pass arguments to [`SIRF-Exercises/scripts/download_data.sh`](https://github.com/SyneRBI/SIRF-Exercises/blob/master/scripts/download_data.sh), use the docker environment variable `SIRF_DOWNLOAD_DATA_ARGS`.
->
-> ```sh
-> docker run --rm -it -p 9999:8888 --user $(id -u) --group-add users \
->   -v /mnt/data:/share -e SIRF_DOWNLOAD_DATA_ARGS="-pm -D /share" \
->   ghcr.io/synerbi/sirf:jupyter
-> ```
+> The easiest way to run [SIRF] & all its dependencies is to use Docker.
 
-For building docker containers, see [`docker/README.md`](docker/README.md)
+For running (or even building) docker containers, see [`docker/README.md`](docker/README.md).
 
-## Dependencies
+## Running SIRF with VirtualBox
+
+See [`VirtualBox/README.md`](VirtualBox/README.md).
+
+## Building and Running SIRF manually
+
+### Dependencies
 
 The SuperBuild depends on CMake >= 3.16.2 on Linux and 3.20 on Windows.
 
 If you are building Gadgetron there are a series of [additional dependencies](https://github.com/gadgetron/gadgetron/wiki/List-of-Dependencies), which must be met.
-
-## Generic instructions
 
 To compile and install SIRF with the SuperBuild follow these steps:
 
@@ -278,10 +251,6 @@ They can be found [here](https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-Ub
 
 They can be found [here](https://github.com/SyneRBI/SIRF/wiki/SIRF-SuperBuild-on-MacOS)
 
-### Installation instructions for Docker<a name="Docker-install"></a>
-
-They can be found [here](docker/README.md)
-
 ## Advanced installation
 
 ## Optional libraries
@@ -444,7 +413,7 @@ Some dependencies like Gadgetron, NiftyPET and Parallelproj require building par
 
 Note that if you want to use the `clang` compiler and CUDA, you likely will have to set the `CUDAHOSTCXX` environment variable (before calling CMake), see also [`CMAKE_CUDA_HOST_COMPILER`](https://cmake.org/cmake/help/latest/variable/CMAKE_CUDA_HOST_COMPILER.html).
 
-## Notes
+## FAQs
 
 ### FFTW3 issues
 
