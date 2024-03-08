@@ -140,9 +140,7 @@ and might have to tell CMake where MATLAB is located. Please
 check our [SIRF and MATLAB page](https://github.com/SyneRBI/SIRF/wiki/SIRF-and-MATLAB).
 
 ```sh
-mkdir ~/devel/build
-cd ~/devel/build
-cmake ../SIRF-SuperBuild
+cmake -S ./SIRF-SuperBuild -B ./build
 ```
 
 You can of course use the GUI version of CMake (called `cmake-gui` on Linux/OSX), or the
@@ -155,8 +153,8 @@ By default, this will select stable configurations of the various projects. See 
 Then use your build environment to build and install the project. On Linux/OSX etc, you would normally use
 
 ```sh
-cmake --build . --parallel N
-# alternatively: sudo cmake --build . --parallel N
+cmake --build ./build --parallel N
+# alternatively: sudo cmake --build ./build --parallel N
 ```
 
 where `N` are the number of cores you want to use for the compilation. You will only need the `sudo` command if you set `CMAKE_INSTALL_PREFIX` to a system folder (e.g., `/usr/local`). Note that the default location is `<your-build>/INSTALL`.
@@ -164,7 +162,7 @@ where `N` are the number of cores you want to use for the compilation. You will 
 For Eclipse/XCode/Visual Studio, you could open the project, or build from the command line
 
 ```sh
-cmake --build . --config Release
+cmake --build ./build --config Release
 ```
 
 Note that there is no separate install step.
@@ -175,23 +173,18 @@ We have encountered problems with either running or building SIRF on systems tha
 If you do have both MATLAB and Python, it might therefore be best to build twice. For instance
 
 ```sh
-mkdir ~/devel/build_Python
-cd ~/devel/build_Python
-cmake -DDISABLE_Matlab:BOOL=ON <other-args> ../SIRF-SuperBuild
-make -j3
-cd ../
-mkdir build_Matlab
-cd build_Matlab
+cmake -DDISABLE_Matlab:BOOL=ON <other-args> -S ./SIRF-SuperBuild -B ./build_Python
+cmake --build ./build_Python --parallel
 export CC=gcc9 CXX=g++9 # or whatever the appropriate compiler is for MATLAB
-cmake -DDISABLE_PYTHON:BOOL=ON  <other-args> ../SIRF-SuperBuild
-make -j3
+cmake -DDISABLE_Matlab:BOOL=ON <other-args> -S ./SIRF-SuperBuild -B ./build_Matlab
+cmake --build ./build_Matlab --parallel
 ```
 
 ### Set Environment variables
 
 Source a script with the environment variables appropriate for your shell
 
-For instance, assuming that you set `CMAKE_INSTALL_PREFIX=~/devel/INSTALL`,for `sh`/`bash`/`ksh` etc
+For instance, assuming that you set `CMAKE_INSTALL_PREFIX=~/devel/INSTALL` (for `sh`/`bash`/`ksh` etc.):
 
 ```sh
 source ~/devel/INSTALL/bin/env_sirf.sh
@@ -220,6 +213,7 @@ gadgetron
 N.B.: If you didn't add any of the above statements to your `.bashrc` or `.cshrc`, you will have to source `env_sirf.*` again in this terminal first.
 
 ### Testing
+
 Tests for most SuperBuild projects can be en/disabled projects when configuring the build.
 After setting the environment variables and starting Gadgetron, you can run tests as:
 
@@ -326,11 +320,11 @@ This needs to be done the **very first time** you run CMake for that build.
 
 ### Compiling against your own packages<a name="Compiling-packages"></a>
 
-SIRF depends on many packages. By default, these packages are installed by the Superbuild. However, the user can decide to compile SIRF against their own versions of certain packages. This can be done via the `USE_SYSTEM_*` options in `CMake`. For example, if you wish to compile SIRF against a version of Boost that is already on your machine, you could set `USE_SYSTEM_BOOST` to `ON`.
+SIRF depends on many packages. By default, these packages are installed by the SuperBuild. However, the user can decide to compile SIRF against their own versions of certain packages. This can be done via the `USE_SYSTEM_*` options in `CMake`. For example, if you wish to compile SIRF against a version of Boost that is already on your machine, you could set `USE_SYSTEM_BOOST` to `ON`.
 
 This `USE_SYSTEM_*` function can be used for as many or as few packages as desired. Advantages to building against your own version of certain packages are decreased compilation times and the potential to use newer versions of these packages.
 
-However, we have only tested SIRF with the versions of the required dependencies that are built by default in the Superbuild. If you decide to compile SIRF using system versions of the dependencies, you run a greater risk of something going wrong.
+However, we have only tested SIRF with the versions of the required dependencies that are built by default in the SuperBuild. If you decide to compile SIRF using system versions of the dependencies, you run a greater risk of something going wrong.
 
 For this reason, we advise new SIRF users to compile with all the `USE_SYSTEM_*` options disabled. If you decide to use system versions of certain packages, we would be interested to hear about it any compatibility issues that you may run into.
 
@@ -375,15 +369,13 @@ There is a `DEVEL_BUILD` tag that allows to build the upstream/master versions o
 One may want to use only a specific version of a package. This is achieved by adding the right tag to the command line:
 
 ```sh
-cd ~/devel/build
-cmake ../SIRF-SuperBuild -DSIRF_TAG=<a valid hash>
+cmake -S ./SIRF-SuperBuild -B ./build -DSIRF_TAG=<a valid hash>
 ```
 
 To use the `DEVEL_BUILD` option one may (on the terminal)
 
 ```sh
-cd ~/devel/build
-cmake ../SIRF-SuperBuild -DDEVEL_BUILD=ON -U*_TAG -U*_URL
+cmake -S ./SIRF-SuperBuild -B ./build -DDEVEL_BUILD=ON -U*_TAG -U*_URL
 ```
 
 The `-U` flags will make sure that cached CMake variables are removed such that `DEVEL_BUILD=ON` will
@@ -397,7 +389,7 @@ When developing, you might have a project already checked-out and let the SuperB
 you probably also want to disable any `git` processing. You can achieve this by (using SIRF as an example)
 
 ```sh
-cmake ../SIRF-SuperBuild -DDISABLE_GIT_CHECKOUT_SIRF=ON -DSIRF_SOURCE_DIR=~/wherever/SIRF
+cmake -S ./SIRF-SuperBuild -B ./build -DDISABLE_GIT_CHECKOUT_SIRF=ON -DSIRF_SOURCE_DIR=~/wherever/SIRF
 ```
 
 ### Building with Intel Math Kernel Library
@@ -405,7 +397,7 @@ cmake ../SIRF-SuperBuild -DDISABLE_GIT_CHECKOUT_SIRF=ON -DSIRF_SOURCE_DIR=~/wher
 [Gadgetron](https://github.com/SyneRBI/SIRF/wiki/SIRF,-Gadgetron-and-MKL) and Armadillo can make use of Intel's Math Kernel Library.
 
 1. Install Intel MKL following the instructions at [their](https://software.intel.com/en-us/mkl) website. For debian based linux follow [this link](https://software.intel.com/en-us/articles/installing-intel-free-libs-and-python-apt-repo). The latter will install MKL in `opt/intel`
-2. Gadgetron's [FindMKL.cmake](https://github.com/gadgetron/gadgetron/blob/master/cmake/FindMKL.cmake#L23) will try to look for MKL libraries in `/opt/intel` on Unix/Apple and in `C:/Program Files (x86)/Intel/Composer XE` in Windows. Make sure that this is the location of the library or pass the vatiable `MKLROOT_PATH` (Unix/Apple) or set the environment variable `MKLROOT_PATH` on Windows.
+2. Gadgetron's [FindMKL.cmake](https://github.com/gadgetron/gadgetron/blob/master/cmake/FindMKL.cmake#L23) will try to look for MKL libraries in `/opt/intel` on Unix/Apple and in `C:/Program Files (x86)/Intel/Composer XE` in Windows. Make sure that this is the location of the library or pass the variable `MKLROOT_PATH` (Unix/Apple) or set the environment variable `MKLROOT_PATH` on Windows.
 3. Configure the SuperBuild to pass `Gadgetron_USE_MKL=ON`.
 
 Notice that other packages may look for a blas implementation issuing CMake's [`find_package(BLAS)`](https://github.com/Kitware/CMake/blob/master/Modules/FindBLAS.cmake#L142L148). This will look for MKL taking hint directories from the environment variable `LD_LIBRARY_PATH`, `DYLD_LIBRARY_PATH` and `LIB`, on Unix, Apple and Windows respectively.
@@ -425,7 +417,7 @@ There is one mandatory flag and 2 optional:
 You may want to change the CMAKE arguments used to build some of the projects. You can pass those flags directly to the SuperBuild CMAKE with a semicolon-separated list, using the following notation:
 
 ```sh
-cmake ../SIRF-SuperBuild -D${proj}_EXTRA_CMAKE_ARGS:STRING="-Dflag1:BOOL=ON;-Dflag2:STRING=\"your_string\""
+cmake -S ./SIRF-SuperBuild -B ./build -D${proj}_EXTRA_CMAKE_ARGS:STRING="-Dflag1:BOOL=ON;-Dflag2:STRING=\"your_string\""
 ```
 
 All the flags from the following projects can be set using this technique:
@@ -443,7 +435,7 @@ All the flags from the following projects can be set using this technique:
 As an example, the following changes some Gadgetron and NiftyReg flags
 
 ```sh
-cmake ../SIRF-SuperBuild -DGadgetron_EXTRA_CMAKE_ARGS:STRING="-DBUILD_PYTHON_SUPPORT:BOOL=ON;" -DNIFTYREG_EXTRA_CMAKE_ARGS:STRING="-DCUDA_FAST_MATH:BOOL=OFF;-DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF"
+cmake -S ./SIRF-SuperBuild -B ./build -DGadgetron_EXTRA_CMAKE_ARGS:STRING="-DBUILD_PYTHON_SUPPORT:BOOL=ON;" -DNIFTYREG_EXTRA_CMAKE_ARGS:STRING="-DCUDA_FAST_MATH:BOOL=OFF;-DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF"
 ```
 
 ### Building with CUDA
@@ -459,7 +451,7 @@ Note that if you want to use the `clang` compiler and CUDA, you likely will have
 As CMake doesn't come with FFTW3 support, it is currently necessary to have `FindFFTW3.cmake` reproduced 3 times. sigh.
 
 If you want to use your own FFTW3 library but it is not in a standard location, you have to set an environment variable `FFTW3_ROOT_DIR` before running CMake.
-This is poorely documented in FindFFTW3.cmake, which could be fixed by a PR to Gadgetron, ISMRMRD and SIRF. (Note that KT has tried to use `set(ENV{FFTW3_ROOT_DIR} somelocation)` in our `External_FindFFTW.cmake`. This however doesn't pass the environment variable to the CMake instances for Gadgetron etc.)
+This is poorly documented in `FindFFTW3.cmake`, which could be fixed by a PR to Gadgetron, ISMRMRD and SIRF. (Note that KT has tried to use `set(ENV{FFTW3_ROOT_DIR} some/location)` in our `External_FindFFTW.cmake`. This however doesn't pass the environment variable to the CMake instances for Gadgetron etc.)
 
 By the way, if you build with `USE_SYSTEM_FFTW3=OFF` (the default except on Windows), the  `FFTW3_ROOT_DIR` env variable is ignored (as find_library etc give precedence to `MAKE_PREFIX_PATH` over `HINTS` ).
 
