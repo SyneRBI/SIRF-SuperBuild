@@ -232,14 +232,7 @@ If you see failures, you might not have followed the above steps correctly, or h
 
 ### Running examples
 
-We distribute examples for both Python and MATLAB. You can find them as follows:
-
-```sh
-cd $SIRF_PATH/examples
-ls
-```
-
-See [our related Wiki page](https://github.com/SyneRBI/SIRF/wiki/Examples) for more information.
+Examples are installed in `$SIRF_PATH/examples`. See [our related Wiki page](https://github.com/SyneRBI/SIRF/wiki/Examples) for more information.
 
 ## OS specific information
 
