@@ -112,9 +112,6 @@ git clone https://github.com/SyneRBI/SIRF-SuperBuild
 
 Create a build directory and configure the software.
 
-Note that if you want to use MATLAB, you need to use (and specify) a compiler supported by MATLAB
-and might have to tell CMake where MATLAB is located. Please
-check our [SIRF and MATLAB page](https://github.com/SyneRBI/SIRF/wiki/SIRF-and-MATLAB).
 
 ```sh
 cmake -S ./SIRF-SuperBuild -B ./build
@@ -318,7 +315,7 @@ on how to set other options).
 #### STIR
 
 - `STIR_BUILD_EXECUTABLES` defaults to `OFF`
-- `STIR_BUILD_SWIG_PYTHON` defaults to `OFF`, meaning that the STIR Python interface will not be built, i.e. you have to use the SIRF Python interface to STIR.
+- `STIR_BUILD_SWIG_PYTHON` defaults to `ON`, meaning that the STIR Python interface will be built, i.e. you can use STIR's Python interface as well as the SIRF Python interface to STIR.
 - `STIR_DISABLE_LLN_MATRIX` defaults to `ON`, you might want to set this to `OFF` if you have GATE and use its output to ECAT sinograms (although this is not recommended).
 - `STIR_ENABLE_EXPERIMENTAL` defaults to `OFF`
 
@@ -413,6 +410,10 @@ Note that if you want to use the `clang` compiler and CUDA, you likely will have
 
 ## FAQs
 
+### MATLAB support
+
+Previous versions of SIRF had a MATLAB interface. This is now outdated and probably broken. If you want to try it anyway, check our [SIRF and MATLAB page](https://github.com/SyneRBI/SIRF/wiki/SIRF-and-MATLAB).
+
 ### FFTW3 issues
 
 As CMake doesn't come with FFTW3 support, it is currently necessary to have `FindFFTW3.cmake` reproduced 3 times. sigh.
@@ -420,7 +421,7 @@ As CMake doesn't come with FFTW3 support, it is currently necessary to have `Fin
 If you want to use your own FFTW3 library but it is not in a standard location, you have to set an environment variable `FFTW3_ROOT_DIR` before running CMake.
 This is poorly documented in `FindFFTW3.cmake`, which could be fixed by a PR to Gadgetron, ISMRMRD and SIRF. (Note that @KrisThielemans has tried to use `set(ENV{FFTW3_ROOT_DIR} some/location)` in our `External_FindFFTW.cmake`. This however doesn't pass the environment variable to the CMake instances for Gadgetron etc.)
 
-By the way, if you build with `USE_SYSTEM_FFTW3=OFF` (the default except on Windows), the  `FFTW3_ROOT_DIR` env variable is ignored (as find_library etc give precedence to `MAKE_PREFIX_PATH` over `HINTS` ).
+By the way, if you build with `USE_SYSTEM_FFTW3=OFF` (the default except on Windows), the  `FFTW3_ROOT_DIR` env variable is ignored (as find_library etc give precedence to `CMAKE_PREFIX_PATH` over `HINTS` ).
 
 ### Armadillo issues
 
