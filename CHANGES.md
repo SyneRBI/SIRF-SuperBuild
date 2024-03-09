@@ -23,6 +23,8 @@
   - pass through `OpenMP_CXX_INCLUDE_DIR` and `OpenMP_C_INCLUDE_DIR` to
     dependent projects. For instance, on MacOS the compiler might not find
     omp.h unless these variables are set.
+  - only pass through `OpenMP*LIBRARY` variables if set, and add OpenMP_iomp_LIBRARY to the list (for Intel compiler)
+
 ## v3.5.0
 - Temporarily disable CCPi-Regularisation due to #832
 - CMake/building:
