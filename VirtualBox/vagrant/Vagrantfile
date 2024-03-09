@@ -74,7 +74,7 @@ Vagrant.configure("2") do |config|
        "--medium", "emptydrive"
        ]
 
-	vb.name = ENV["VB_NAME"] || "SIRF 3.5.0"
+	vb.name = ENV["VB_NAME"] || "SIRF 3.6.0"
     vb.customize ["modifyvm", :id, 
 	          "--clipboard", "bidirectional",
                   '--graphicscontroller', 'vmsvga',
