@@ -19,28 +19,28 @@ authors:
     orcid: 'https://orcid.org/0000-0002-9784-1177'
   - given-names: Casper
     family-names: da Costa-Luis
-    affiliation: King's College London
+    affiliation: King's College London, and UK Research & Innovation
     orcid: 'https://orcid.org/0000-0002-7211-1557'
   - given-names: Richard
     family-names: Brown
     affiliation: University College London
     orcid: 'https://orcid.org/0000-0001-6989-9200'
-  - given-names: Laura
-    family-names: Murgatroyd
-    affiliation: UK Research & Innovation
-    orcid: 'https://orcid.org/0000-0002-3271-3625'
-  - given-names: Ander
-    family-names: Biguri
-    orcid: 'https://orcid.org/0000-0002-2636-3032'
-    affiliation: University College London
   - given-names: David
     family-names: Atkinson
     affiliation: University College London
     orcid: 'https://orcid.org/0000-0003-1124-6666'
+  - given-names: Ander
+    family-names: Biguri
+    orcid: 'https://orcid.org/0000-0002-2636-3032'
+    affiliation: University College London
   - given-names: Evgueni
     family-names: Ovtchinnikov
     orcid: 'https://orcid.org/0000-0002-9359-6514'
     affiliation: UK Research & Innovation
+  - given-names: Laura
+    family-names: Murgatroyd
+    affiliation: UK Research & Innovation
+    orcid: 'https://orcid.org/0000-0002-3271-3625'
   - given-names: Ashley
     family-names: Gillman
     orcid: 'https://orcid.org/0000-0001-9130-1092'
