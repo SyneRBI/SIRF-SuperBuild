@@ -2,8 +2,8 @@
 # Author: Edoardo Pasca
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
-# Copyright 2017-2021, 2022 University College London
-# Copyright 2017-2021 Science Technology Facilities Council
+# Copyright 2017-2024 University College London
+# Copyright 2017-2024 Science Technology Facilities Council
 #
 # This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -135,12 +135,13 @@ set(DEFAULT_parallelproj_URL https://github.com/gschramm/parallelproj)
 set(DEFAULT_parallelproj_TAG v1.7.3)
 
 ## STIR
+set(STIR_REQUIRED_VERSION "5.1.0")
 set(DEFAULT_STIR_URL https://github.com/UCL/STIR)
-set(DEFAULT_STIR_TAG rel_5.2.0)
+set(DEFAULT_STIR_TAG rel_6.0.0)
 
 ## SIRF
 set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF)
-set(DEFAULT_SIRF_TAG f17f050d86c6e2b249f48a43795986a7aa7a54ea) # pre 3.6.0
+set(DEFAULT_SIRF_TAG v3.6.0)
 
 ## pet-rd-tools
 set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools)
@@ -238,7 +239,6 @@ SET(SIRF_TAG ${DEFAULT_SIRF_TAG} CACHE STRING ON)
 
 SET(STIR_TAG ${DEFAULT_STIR_TAG} CACHE STRING ON)
 SET(STIR_URL ${DEFAULT_STIR_URL} CACHE STRING ON)
-set(STIR_REQUIRED_VERSION "5.1.0")
 
 SET(Gadgetron_TAG ${DEFAULT_Gadgetron_TAG} CACHE STRING ON)
 SET(Gadgetron_URL ${DEFAULT_Gadgetron_URL} CACHE STRING ON)
