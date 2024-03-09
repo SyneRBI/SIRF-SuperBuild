@@ -14,6 +14,7 @@
   - parallelproj: v1.7.3
   - Gadgetron: 6202fb7352a14fb82817b57a97d928c988eb0f4b (version of Oct 13, 2023)
   - ISMRMRD: v1.13.7
+  - NiftyReg: a328efb3a2f8ea4b47cf0f7b581d983a570a1ffd (version of 8 Mar, 2024, fixing find omp.h problems on MacOS)
   - siemens_to_ismrmrd: v1.2.11
   - CIL: db5a2a6cd3bddfbbf53e65f0549ac206096e5b44 (version of Feb 13, 2024)
   - CCPi-Regularisation-Toolkit: 71f8d304d804b54d378f0ed05539f01aaaf13758 (version of Dec 3. 2023)
