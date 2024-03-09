@@ -19,7 +19,10 @@
   - CCPi-Regularisation-Toolkit: 71f8d304d804b54d378f0ed05539f01aaaf13758 (version of Dec 3. 2023)
   - ROOT: v6-28-12
   - nlohmann/json: 3.11.3
-
+- CMake changes
+  - pass through `OpenMP_CXX_INCLUDE_DIR` and `OpenMP_C_INCLUDE_DIR` to
+    dependent projects. For instance, on MacOS the compiler might not find
+    omp.h unless these variables are set.
 ## v3.5.0
 - Temporarily disable CCPi-Regularisation due to #832
 - CMake/building:
