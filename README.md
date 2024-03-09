@@ -35,7 +35,7 @@ The SuperBuild can:
   - [Optional libraries](#optional-libraries)
   - [use a different compiler than the system default](#use-a-different-compiler-than-the-system-default)
   - [Compiling against your own packages](#Compiling-packages)
-  - [Python and MATLAB installation locations](#python-and-matlab-installation-locations)
+  - [Python installation location](#python-installation-location)
   - [Building with specific versions of dependencies](#building-with-specific-versions-of-dependencies)
   - [Building from your own source](#building-from-your-own-source)
   - [Building with Intel Math Kernel Library](#building-with-intel-math-kernel-library)
@@ -122,9 +122,6 @@ terminal version `ccmake` to check and set various variables. See the [CMake tut
 
 By default, this will select stable configurations of the various projects. See [the advanced installation section](#advanced-installation).
 
-> [!IMPORTANT]
-> we have currently dropped the support for MATLAB. It is currently not recommended to build both MATLAB and Python support, see [below](#matlab-and-python-conflicts).
-
 Then use your build environment to build and install the project. On Linux/OSX etc, you would normally use
 
 ```sh
@@ -141,19 +138,6 @@ cmake --build ./build --config Release
 ```
 
 Note that there is no separate install step.
-
-### MATLAB and Python conflicts
-
-We have encountered problems with either running or building SIRF on systems that have both Python and MATLAB installed due to problems with different versions of the HDF5 libraries (see e.g. [#208](https://github.com/SyneRBI/SIRF-SuperBuild/issues/208)).
-If you do have both MATLAB and Python, it might therefore be best to build twice. For instance
-
-```sh
-cmake -DDISABLE_Matlab:BOOL=ON <other-args> -S ./SIRF-SuperBuild -B ./build_Python
-cmake --build ./build_Python --parallel
-export CC=gcc9 CXX=g++9 # or whatever the appropriate compiler is for MATLAB
-cmake -DDISABLE_Matlab:BOOL=ON <other-args> -S ./SIRF-SuperBuild -B ./build_Matlab
-cmake --build ./build_Matlab --parallel
-```
 
 ### Set Environment variables
 
@@ -292,11 +276,12 @@ However, we have only tested SIRF with the versions of the required dependencies
 
 For this reason, we advise new SIRF users to compile with all the `USE_SYSTEM_*` options disabled. If you decide to use system versions of certain packages, we would be interested to hear about it any compatibility issues that you may run into.
 
-### Python and MATLAB installation locations
+### Python installation location
 
-By default, Python and MATLAB executables and libraries are installed under `CMAKE_INSTALL_PREFIX/python` and `CMAKE_INSTALL_PREFIX/matlab`, respectively. If you wish for them to be installed elsewhere, you can simply cut and paste these folders to their desired locations.
+By default, Python executables and libraries are installed under `CMAKE_INSTALL_PREFIX/python`. If you wish for them to be installed elsewhere, you can set the `PYTHON_DEST` CMake variable.
 
-In this case, you would then need to ensure that `PYTHONPATH` and `MATLABPATH` are updated accordingly. This is because the sourced `env_ccppetmr` will point to the original (old) location.
+Alternatively, you simply cut and paste these folders to their desired locations. In this case, you would then need to ensure
+that `PYTHONPATH` is updated accordingly. This is because the sourced `env_sirf.*` will point to the original (old) location.
 
 ### Package specific information
 
