@@ -67,7 +67,8 @@ while (( "$#" )); do
 done
 
 # TODO would be better to guarantee absolute path for SCRIPTS
-SCRIPTS="$(dirname $0)/../../docker"
+CURDIR="$(dirname $0)"
+SCRIPTS="$CURDIR/../../docker"
 # installs pip
 curl $($PYTHON ${SCRIPTS}/get_pip_download_link.py) > get-pip.py
 ${PYTHON} get-pip.py
@@ -75,7 +76,7 @@ rm get-pip.py
 
 ${PYTHON} -m pip install $PIPOPTIONS -U setuptools wheel
 ${PYTHON} -m pip install $PIPOPTIONS -U -r ${SCRIPTS}/requirements.txt
-${PYTHON} -m pip install $PIPOPTIONS -U -r ${SCRIPTS}/requirements-service.txt
+${PYTHON} -m pip install $PIPOPTIONS -U -r ${CURDIR}/../requirements-jupyter.txt
 
 # otherwise Jupyter uses py 2 even when you choose py3: https://github.com/jupyter/jupyter/issues/270
 $PYTHON -m ipykernel install --user  
