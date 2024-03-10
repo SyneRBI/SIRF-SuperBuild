@@ -24,6 +24,10 @@
   - pass through `OpenMP_CXX_INCLUDE_DIR` and `OpenMP_C_INCLUDE_DIR` to
     dependent projects. For instance, on MacOS the compiler might not find
     omp.h unless these variables are set.
+- VM changes
+  - UPDATE.sh (and hence update_VM.sh) has extra developer options to set the
+    DEVEL_BUILD=ON (-D) and skip the build (-S).
+
 ## v3.5.0
 - Temporarily disable CCPi-Regularisation due to #832
 - CMake/building:

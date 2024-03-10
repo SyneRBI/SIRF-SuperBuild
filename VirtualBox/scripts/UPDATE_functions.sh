@@ -7,7 +7,7 @@
 #
 # Authors: Kris Thielemans, Evgueni Ovtchinnikov, Edoardo Pasca,
 # Casper da Costa-Luis
-# Copyright 2016-2022 University College London
+# Copyright 2016-2022, 2024 University College London
 # Copyright 2016-2022 Rutherford Appleton Laboratory STFC
 #
 # This is software developed for the Collaborative Computational
@@ -31,13 +31,18 @@
 # print usage 
 # takes script name as first and only argument
 print_usage(){
-  echo "Usage: $1 [-t tag] [-j n] [-s]"
-  echo "Use the tag option to checkout a specific version of the SIRF-SuperBuild."
-  echo "   Otherwise the most recent release will be used."
-  echo "Use the -j option to change the number of parallel builds from the default ${num_parallel}"
-  echo "Use the -s option to update and install necessary system and Python components."
+  echo "Usage: $1 [-t tag] [-j n] [-s] [-D] [-S]"
+  echo "User options:"
+  echo "- Use the -j option to change the number of parallel builds from the default ${num_parallel}"
+  echo "- Use the -s option to update and install necessary system and Python components."
   echo "   We recommend to do this once when upgrading between major versions."
-  echo "We also recommend to remove all previously installed files before running this script:"
+  echo "Developer options:"
+  echo "- Use the -t tag option to checkout a specific version of the SIRF-SuperBuild."
+  echo "   Otherwise the most recent release will be used."
+  echo "- Use the -D option to set DEVEL_BUILD=ON."
+  echo "- Use the -S option to skip the building itself (i.e. just run CMake configure."
+  echo ""
+  echo "We recommend to remove all previously installed files before running this script:"
   echo "   rm -rf ~/devel/install/lib ~/devel/install/include"
   echo "If you experience problems, you could even remove previous build files:"
   echo "   rm -rf ~/devel/buildVM/"
@@ -49,17 +54,23 @@ process_options(){
   script_name="$1"
   shift
 
+  SB_build=1
+  SB_repo=https://github.com/SyneRBI/SIRF-SuperBuild.git
   SB_TAG='default'
   num_parallel=2
   update_remote=0
   apt_install=0
-  while getopts hrst:j: option
+  DEVEL_BUILD=OFF
+  while getopts hrsSDt:j: option
    do
    case "${option}"
    in
     r) update_remote=1;;
     s) apt_install=1;;
+    R) SB_REPO=$OPTARG;;
     t) SB_TAG=$OPTARG;;
+    D) DEVEL_BUILD=ON;;
+    S) SB_build=0;;
     j) num_parallel=$OPTARG;;
     h)
      print_usage "$script_name"
@@ -132,7 +143,6 @@ initialise_environment(){
 SuperBuild_git_update(){
   echo "==================== SuperBuild checkout ====================="
   cd $SIRF_SRC_PATH
-  SB_repo=https://github.com/SyneRBI/SIRF-SuperBuild.git
   if [ ! -d SIRF-SuperBuild ] 
   then
     git clone $SB_repo
@@ -162,8 +172,8 @@ SuperBuild_install(){
   mkdir -p $buildVM
   
   cd $buildVM
-  cmake ../SIRF-SuperBuild \
-        -DCMAKE_INSTALL_PREFIX=${SIRF_INSTALL_PATH} \
+  cmake -S ../SIRF-SuperBuild -B . \
+        -DCMAKE_INSTALL_PREFIX="$SIRF_INSTALL_PATH" \
         -U\*_URL -U\*_TAG \
         -DUSE_SYSTEM_SWIG=On \
         -DUSE_SYSTEM_Boost=On \
@@ -172,13 +182,15 @@ SuperBuild_install(){
         -DUSE_SYSTEM_HDF5=ON \
         -DBUILD_siemens_to_ismrmrd=On \
         -DUSE_ITK=ON \
-        -DDEVEL_BUILD=OFF\
+        -DDEVEL_BUILD="$DEVEL_BUILD" \
         -DNIFTYREG_USE_CUDA=OFF\
         -DBUILD_CIL=ON\
         -DPYTHON_EXECUTABLE="$PYTHON_EXECUTABLE"\
         -DBUILD_pet_rd_tools=ON
-  cmake --build . -j${num_parallel}
-
+  if [ "$SB_build" = 1 ]
+  then
+    cmake --build . -j"$num_parallel"
+   fi
 }
 
 # define a function to get the source
