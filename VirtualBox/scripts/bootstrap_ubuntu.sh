@@ -40,6 +40,11 @@ fi
 
 # fail hard on any step
 set -ex
+
+# avoid Ubuntu throwing up dialog boxes about outdated services that need to be restarted
+# see https://github.com/SyneRBI/SIRF-SuperBuild/issues/881
+sudo echo "\$nrconf{restart} = 'a'" >> /etc/needrestart/needrestart.conf
+
 # update the apt-get database
 export DEBIAN_FRONTEND=noninteractive
 apt-get update && apt-get upgrade -y -o Dpkg::Options::=--force-confnew
