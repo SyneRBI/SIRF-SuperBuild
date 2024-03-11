@@ -30,10 +30,24 @@ will make sure we use current `master` (as opposed to the latest release), with 
 ### Start the machine
 
 ```
-cd vagrant
+cd /whereever/SIRF-SuperBuild/VirtualBox/vagrant
 vagrant up
 ```
 This will take a substantial amount of time.
+
+#### Splitting in different steps
+
+Using the [options of the provision script](../scripts/UPDATE_functions.sh), you can split the build process in stages.
+For instance, running from a test branch, skipping the build step first, making a snapshot, and then continue:
+```powershell
+$Env:UPDATE_ARGS="-t origin/prelease -S"
+vagrant up
+vagrant snapshot save initial
+$Env:UPDATE_ARGS="-t origin/prelease"
+vagrant provision
+```
+This allows you to make some changes on GitHub, restore the snapshot and try again. Note that the
+test branch currently has to be in the main SIRF-SuperBuild repo.
 
 ### Final configuration
 Log into the VM, open a terminal and type
