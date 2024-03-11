@@ -260,7 +260,9 @@ You can enable more features by using other CMake variables (e.g. `ROOT_X11` def
 You can tell CMake to use a different compiler than what it finds by default. You will need to specify both C and C++ compilers. For instance, to use `gcc8`, use
 
 ```sh
-export CC=gcc9 CXX=g++9
+CC=gcc-11
+CXX=g++-11
+export CC CXX
 ccmake normal-options
 ```
 
