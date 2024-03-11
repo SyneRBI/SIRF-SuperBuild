@@ -28,11 +28,11 @@ apt-get install -yq --no-install-recommends \
   pkg-config             \
   golang
 
-# install GCC9 required by Gadgetron
-apt-get install software-properties-common -y && \
-add-apt-repository ppa:ubuntu-toolchain-r/test -y && \
-apt-get update -y && \
-apt-get install gcc-9 g++-9 -y
+# old code to install GCC9 as minimum required by Gadgetron, but now disabled as default in 22.04 is now gcc-11
+# apt-get install software-properties-common -y && \
+# add-apt-repository ppa:ubuntu-toolchain-r/test -y && \
+# apt-get update -y && \
+# apt-get install gcc-9 g++-9 -y
 
 # apt-get install -y librocksdb-dev
 
