@@ -4,8 +4,39 @@ The image contains SIRF & all dependencies required by JupyterHub.
 
 ## Usage
 
+1. [Install the latest docker version](https://docs.docker.com/engine/install/)
+2. (optional) For GPU support (NVIDIA CUDA on Linux or Windows Subsystem for Linux 2 only)
+   - [Install NVIDIA drivers](https://developer.nvidia.com/cuda-downloads)
+   - [Install NVIDIA container toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
+
+```sh
+# CPU version
+docker run --rm -it -p 9999:8888 ghcr.io/synerbi/sirf:jupyter
+# GPU version
+docker run --rm -it -p 9999:8888 --gpus all ghcr.io/synerbi/sirf:jupyter-gpu
+```
+
+The Jupyter notebook should be accessible at <https://localhost:9999>.
+
 > [!WARNING]
-> The easiest way to run [SIRF](https://github.com/SyneRBI/SIRF) & all its dependencies is to use Docker. See [../README.md](../README.md#running-sirf-on-docker) instead.
+> To sync the container user & host user permissions (useful when sharing folders), use `--user` and `--group-add`.
+>
+> ```sh
+> docker run --rm -it -p 9999:8888 --user $(id -u) --group-add users \
+>   -v ./devel:/home/jovyan/work \
+>   ghcr.io/synerbi/sirf:jupyter
+> ```
+
+More config: <https://jupyter-docker-stacks.readthedocs.io/en/latest/using/common.html#user-related-configurations>.
+
+> [!TIP]
+> To pass arguments to [`SIRF-Exercises/scripts/download_data.sh`](https://github.com/SyneRBI/SIRF-Exercises/blob/master/scripts/download_data.sh), use the docker environment variable `SIRF_DOWNLOAD_DATA_ARGS`.
+>
+> ```sh
+> docker run --rm -it -p 9999:8888 --user $(id -u) --group-add users \
+>   -v /mnt/data:/share -e SIRF_DOWNLOAD_DATA_ARGS="-pm -D /share" \
+>   ghcr.io/synerbi/sirf:jupyter
+> ```
 
 ### Extending
 
