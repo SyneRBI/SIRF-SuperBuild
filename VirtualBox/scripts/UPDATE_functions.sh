@@ -182,6 +182,7 @@ SuperBuild_install(){
         -DUSE_SYSTEM_HDF5=ON \
         -DBUILD_siemens_to_ismrmrd=On \
         -DUSE_ITK=ON \
+        -DUSE_SYSTEM_ITK=ON \
         -DDEVEL_BUILD="$DEVEL_BUILD" \
         -DNIFTYREG_USE_CUDA=OFF\
         -DBUILD_CIL=ON\

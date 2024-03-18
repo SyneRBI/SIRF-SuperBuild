@@ -7,6 +7,7 @@
   - CPU: ubuntu:22.04
   - GPU: nvidia/cuda:11.7.1-cudnn8-runtime-ubuntu22.04
   - added requirements.yml
+  - use libinsighttoolkit5-dev as opposed to building ITK ourselves
 - Drop Travis
 - updated versions:
   - SIRF: v3.6.0
@@ -27,6 +28,7 @@
 - VM changes
   - UPDATE.sh (and hence update_VM.sh) has extra developer options to set the
     DEVEL_BUILD=ON (-D) and skip the build (-S).
+  - use libinsighttoolkit5-dev as opposed to building ITK ourselves
 
 ## v3.5.0
 - Temporarily disable CCPi-Regularisation due to #832
