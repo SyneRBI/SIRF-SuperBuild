@@ -16,7 +16,7 @@ docker run --rm -it -p 9999:8888 ghcr.io/synerbi/sirf:jupyter
 docker run --rm -it -p 9999:8888 --gpus all ghcr.io/synerbi/sirf:jupyter-gpu
 ```
 
-The Jupyter notebook should be accessible at <https://localhost:9999>.
+The Jupyter notebook should be accessible at <http://localhost:9999>.
 
 > [!WARNING]
 > To sync the container user & host user permissions (useful when sharing folders), use `--user` and `--group-add`.
