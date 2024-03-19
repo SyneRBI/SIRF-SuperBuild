@@ -19,7 +19,7 @@ docker run --rm -it -p 9999:8888 --gpus all ghcr.io/synerbi/sirf:jupyter-gpu
 > [!TIP]
 > docker tag | CIL branch/tag
 > :---|:---
-> `latest`, `latest-gpu` | [latest tag `v*.*.*`](https://github.com/SyneRBI/SIRF-SuperBuild/releases/latest)
+> `latest`, `latest-gpu`, `jupyter`, `jupyter-gpu` | [latest tag `v*.*.*`](https://github.com/SyneRBI/SIRF-SuperBuild/releases/latest)
 > `M`, `M.m`, `M.m.p`, `M-gpu`, `M.m-gpu`, `M.m.p-gpu` | tag `vM.m.p`
 > `edge`, `edge-gpu` | `master`
 > only build & test (no tag) | CI (current commit)
