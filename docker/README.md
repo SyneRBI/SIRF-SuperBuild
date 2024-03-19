@@ -16,6 +16,17 @@ docker run --rm -it -p 9999:8888 ghcr.io/synerbi/sirf:jupyter
 docker run --rm -it -p 9999:8888 --gpus all ghcr.io/synerbi/sirf:jupyter-gpu
 ```
 
+> [!TIP]
+> docker tag | CIL branch/tag
+> :---|:---
+> `latest`, `latest-gpu` | [latest tag `v*.*.*`](https://github.com/SyneRBI/SIRF-SuperBuild/releases/latest)
+> `M`, `M.m`, `M.m.p`, `M-gpu`, `M.m-gpu`, `M.m.p-gpu` | tag `vM.m.p`
+> `edge`, `edge-gpu` | `master`
+> only build & test (no tag) | CI (current commit)
+> `devel`, `devel-gpu` | `master` with `cmake -DDEVEL_BUILD=ON -DBUILD_CIL=ON`
+>
+> See [`ghcr.io/synerbi/sirf`](https://github.com/SyneRBI/SIRF-SuperBuild/pkgs/container/sirf) for a full list of tags.
+
 The Jupyter notebook should be accessible at <http://localhost:9999>.
 
 > [!WARNING]
