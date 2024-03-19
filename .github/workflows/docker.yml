@@ -40,7 +40,7 @@ jobs:
           ghcr.io/synerbi/sirf
         flavor: |
           latest=auto
-          suffix=${{ matrix.type == 'gpu' && 'gpu,onlatest=true' || '' }}
+          suffix=${{ matrix.type == 'gpu' && '-gpu,onlatest=true' || '' }}
         tags: |
           type=edge
           type=semver,pattern={{version}}
@@ -130,7 +130,7 @@ jobs:
           ghcr.io/synerbi/sirf
         flavor: |
           latest=false
-          suffix=${{ matrix.type == 'gpu' && 'gpu,onlatest=true' || '' }}
+          suffix=${{ matrix.type == 'gpu' && '-gpu,onlatest=true' || '' }}
         tags: devel
         labels: |
           org.opencontainers.image.licenses=Apache-2.0${{ matrix.type == 'gpu' && ' AND BSD-3-Clause AND GPL-3.0' || '' }}
