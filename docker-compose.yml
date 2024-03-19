@@ -41,7 +41,7 @@ services:
     BUILD_GPU: 0
  sirf:
   container_name: sirf  # for scaling, comment this out https://github.com/docker/compose/issues/3729
-  image: synerbi/sirf:jupyter
+  image: synerbi/sirf:latest
   build:
    context: .
    args:

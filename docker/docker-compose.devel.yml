@@ -9,7 +9,7 @@ services:
      -DBUILD_CIL=ON
  sirf:
   container_name: sirf  # for scaling, comment this out https://github.com/docker/compose/issues/3729
-  image: synerbi/sirf:jupyter-devel
+  image: synerbi/sirf:devel
   build:
    context: .
    args:

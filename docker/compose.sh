@@ -3,7 +3,7 @@ set -euo pipefail
 
 print_help(){
   cat <<EOF
-Creates images: synerbi/sirf:jupyter, synerbi/sirf:jupyter-gpu
+Creates images: synerbi/sirf:latest, synerbi/sirf:latest-gpu
 Also creates intermediate (temp) images: synerbi/jupyter
 
 Usage: $0 [options] [-- [docker compose options]]

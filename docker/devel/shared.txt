@@ -4,7 +4,7 @@ Host:
 
 `SIRF-SuperBuild/docker/devel`
 
-Docker container (synerbi/sirf:jupyter):
+Docker container (synerbi/sirf:latest):
 
 `/home/jovyan/work`
 
