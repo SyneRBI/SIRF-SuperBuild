@@ -11,12 +11,27 @@ The image contains SIRF & all dependencies required by JupyterHub.
 
 ```sh
 # CPU version
-docker run --rm -it -p 9999:8888 ghcr.io/synerbi/sirf:jupyter
+docker run --rm -it -p 9999:8888 ghcr.io/synerbi/sirf:latest
 # GPU version
-docker run --rm -it -p 9999:8888 --gpus all ghcr.io/synerbi/sirf:jupyter-gpu
+docker run --rm -it -p 9999:8888 --gpus all ghcr.io/synerbi/sirf:latest-gpu
 ```
 
-The Jupyter notebook should be accessible at <https://localhost:9999>.
+> [!TIP]
+> docker tag | git branch/tag
+> :---|:---
+> `latest`, `latest-gpu` | [latest tag `v*.*.*`](https://github.com/SyneRBI/SIRF-SuperBuild/releases/latest)
+> `M`, `M.m`, `M.m.p`, `M-gpu`, `M.m-gpu`, `M.m.p-gpu` | tag `vM.m.p`
+> `edge`, `edge-gpu` | `master`
+> `devel`, `devel-gpu` | `master` with `cmake -DDEVEL_BUILD=ON -DBUILD_CIL=ON`
+>
+> See [`ghcr.io/synerbi/sirf`](https://github.com/SyneRBI/SIRF-SuperBuild/pkgs/container/sirf) for a full list of tags.
+>
+> The [`docker.yml` workflow](../.github/workflows/docker.yml) builds & pushes all the docker tags above.
+> Additionally, `core` & `core-gpu` intermediate (cache) docker tags are built & pushed by the workflow, but are not intended for users.
+
+The workflow will also build & test all PRs (without pushing any new image tags).
+
+The Jupyter notebook should be accessible at <http://localhost:9999>.
 
 > [!WARNING]
 > To sync the container user & host user permissions (useful when sharing folders), use `--user` and `--group-add`.
@@ -24,7 +39,7 @@ The Jupyter notebook should be accessible at <https://localhost:9999>.
 > ```sh
 > docker run --rm -it -p 9999:8888 --user $(id -u) --group-add users \
 >   -v ./devel:/home/jovyan/work \
->   ghcr.io/synerbi/sirf:jupyter
+>   ghcr.io/synerbi/sirf:latest
 > ```
 
 More config: <https://jupyter-docker-stacks.readthedocs.io/en/latest/using/common.html#user-related-configurations>.
@@ -35,7 +50,7 @@ More config: <https://jupyter-docker-stacks.readthedocs.io/en/latest/using/commo
 > ```sh
 > docker run --rm -it -p 9999:8888 --user $(id -u) --group-add users \
 >   -v /mnt/data:/share -e SIRF_DOWNLOAD_DATA_ARGS="-pm -D /share" \
->   ghcr.io/synerbi/sirf:jupyter
+>   ghcr.io/synerbi/sirf:latest
 > ```
 
 ### Extending
@@ -44,9 +59,9 @@ You can build custom images on top of the SIRF ones, likely needing to switch be
 
 ```Dockerfile
 # CPU version
-# FROM synerbi/sirf:jupyter
+# FROM synerbi/sirf:latest
 # GPU version
-FROM synerbi/sirf:jupyter-gpu
+FROM synerbi/sirf:latest-gpu
 USER root
 RUN mamba install pytorch && fix-permissions "${CONDA_DIR}" /home/${NB_USER}
 USER ${NB_UID}
@@ -154,3 +169,6 @@ Note that this cache is different from the "normal" `ccache` of your host. (If y
   + Install [`requirements.yml`](requirements.yml)
   + Clone & setup <https://github.com/SyneRBI/SIRF-Exercises> & <https://github.com/TomographicImaging/CIL-Demos>
   + Set some environment variables (e.g. `PYTHONPATH=/opt/SIRF-SuperBuild/INSTALL/python`, `OMP_NUM_THREADS=$(( cpu_count/2 ))`)
+
+> [!NOTE]
+> `synerbi/jupyter:*` are only intermediate (cache) images not intended for users.

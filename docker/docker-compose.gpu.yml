@@ -29,7 +29,7 @@ services:
     Gadgetron_USE_CUDA: "ON"
  sirf:
   deploy: {resources: {reservations: {devices: [{driver: nvidia, count: all, capabilities: [gpu]}]}}}
-  image: synerbi/sirf:jupyter-gpu
+  image: synerbi/sirf:latest-gpu
   build:
    args:
     BASE_CONTAINER: synerbi/jupyter:scipy-gpu
