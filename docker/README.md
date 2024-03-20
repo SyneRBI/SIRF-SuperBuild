@@ -17,15 +17,19 @@ docker run --rm -it -p 9999:8888 --gpus all ghcr.io/synerbi/sirf:latest-gpu
 ```
 
 > [!TIP]
-> docker tag | CIL branch/tag
+> docker tag | git branch/tag
 > :---|:---
 > `latest`, `latest-gpu` | [latest tag `v*.*.*`](https://github.com/SyneRBI/SIRF-SuperBuild/releases/latest)
 > `M`, `M.m`, `M.m.p`, `M-gpu`, `M.m-gpu`, `M.m.p-gpu` | tag `vM.m.p`
 > `edge`, `edge-gpu` | `master`
-> only build & test (no tag) | CI (current commit)
 > `devel`, `devel-gpu` | `master` with `cmake -DDEVEL_BUILD=ON -DBUILD_CIL=ON`
 >
 > See [`ghcr.io/synerbi/sirf`](https://github.com/SyneRBI/SIRF-SuperBuild/pkgs/container/sirf) for a full list of tags.
+>
+> The [`docker.yml` workflow](../.github/workflows/docker.yml) builds & pushes all the docker tags above.
+> Additionally, `core` & `core-gpu` intermediate (cache) docker tags are built & pushed by the workflow, but are not intended for users.
+
+The workflow will also build & test all PRs (without pushing any new image tags).
 
 The Jupyter notebook should be accessible at <http://localhost:9999>.
 
@@ -165,3 +169,6 @@ Note that this cache is different from the "normal" `ccache` of your host. (If y
   + Install [`requirements.yml`](requirements.yml)
   + Clone & setup <https://github.com/SyneRBI/SIRF-Exercises> & <https://github.com/TomographicImaging/CIL-Demos>
   + Set some environment variables (e.g. `PYTHONPATH=/opt/SIRF-SuperBuild/INSTALL/python`, `OMP_NUM_THREADS=$(( cpu_count/2 ))`)
+
+> [!NOTE]
+> `synerbi/jupyter:*` are only intermediate (cache) images not intended for users.
