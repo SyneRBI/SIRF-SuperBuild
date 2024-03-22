@@ -12,6 +12,7 @@
     - The `devel` tag (for `DEVEL_BUILD=ON` with `master` versions of SIRF, STIR etc) is no longer pushed to DockerHub, and therefore will not be updated.
   - Docker images are now pushed to [DockerHub](https://hub.docker.com/r/synerbi/sirf/tags) and [GHCR](https://github.com/SyneRBI/SIRF-SuperBuild/pkgs/container/sirf)
   - added requirements.yml
+  - revert to `conda` but with `libmamba` solver
 - updated versions:
   - SIRF: v3.6.0
   - STIR: v6.0.0
@@ -41,7 +42,7 @@
 - docker image updates
    - introduce `REMOVE_BUILD_FILES` variable. If set to 1 (which is the default),
      most build files will be removed in the docker image.
-   - introduce `RUN_CTESTS` variable. If set to 1 (which is the default),
+   - introduce `RUN_CTEST` variable. If set to 1 (which is the default),
      the CTests will be run while building the image.
    - remove obsolete copying of gadgetron.xml
    - Installing requirements for SIRF-Exercises uses its environment.yml or requirements.txt depending on settings.
