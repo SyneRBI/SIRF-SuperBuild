@@ -6,8 +6,12 @@
   - uses `docker-stacks`
   - CPU: ubuntu:22.04
   - GPU: nvidia/cuda:11.7.1-cudnn8-runtime-ubuntu22.04
+  - **Important**: Docker tags have now changed, see [docker/README.md](docker/README.md) for a table. Changes w.r.t. previous versions are listed below (note that `-gpu` versions of all tags exist as well, e.g. `latest-gpu` etc).
+    - The `latest` tag now includes the jupyter server etc, so the `service` tag should no longer be used (and corresponding images on DockerHub will not be updated).
+    - The new `edge` tag corresponds to `master` branch of the SIRF-SuperBuild. Note that this will include the "normal" versions of all packages.
+    - The `devel` tag (for `DEVEL_BUILD=ON` with `master` versions of SIRF, STIR etc) is no longer pushed to DockerHub, and therefore will not be updated.
+  - Docker images are now pushed to [DockerHub](https://hub.docker.com/r/synerbi/sirf/tags) and [GHCR](https://github.com/SyneRBI/SIRF-SuperBuild/pkgs/container/sirf)
   - added requirements.yml
-- Drop Travis
 - updated versions:
   - SIRF: v3.6.0
   - STIR: v6.0.0
@@ -27,6 +31,7 @@
 - VM changes
   - UPDATE.sh (and hence update_VM.sh) has extra developer options to set the
     DEVEL_BUILD=ON (-D) and skip the build (-S).
+- Drop Travis
 
 ## v3.5.0
 - Temporarily disable CCPi-Regularisation due to #832
