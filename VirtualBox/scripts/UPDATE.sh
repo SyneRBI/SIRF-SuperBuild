@@ -82,6 +82,11 @@ if [ -d $SIRF_SRC_PATH/SyneRBI_VM ]; then
     echo '======================================================'
 fi
 
+# Remove old installed STIR version
+# See https://github.com/SyneRBI/SIRF-SuperBuild/issues/869
+rm -rf "$SIRF_INSTALL_PATH"/include/stir
+rm -f "$SIRF_INSTALL_PATH"/lib/STIR*.cmake
+
 # Checkout correct version of the SuperBuild
 SuperBuild_git_update "$SB_TAG"
 

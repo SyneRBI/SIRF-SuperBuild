@@ -1,19 +1,30 @@
 # ChangeLog
 
+## vx.x.x
+
+- CMake:
+  - only pass through `OpenMP*LIBRARY` variables if set, and add OpenMP_iomp_LIBRARY to the list (for Intel compiler)
+
 ## v3.6.0
 - build the STIR native Python interface by default (STIR_BUILD_SWIG_PYTHON=ON). You can still switch this off.
 - docker image updates:
   - uses `docker-stacks`
   - CPU: ubuntu:22.04
   - GPU: nvidia/cuda:11.7.1-cudnn8-runtime-ubuntu22.04
+  - **Important**: Docker tags have now changed, see [docker/README.md](docker/README.md) for a table. Changes w.r.t. previous versions are listed below (note that `-gpu` versions of all tags exist as well, e.g. `latest-gpu` etc).
+    - The `latest` tag now includes the jupyter server etc, so the `service` tag should no longer be used (and corresponding images on DockerHub will not be updated).
+    - The new `edge` tag corresponds to `master` branch of the SIRF-SuperBuild. Note that this will include the "normal" versions of all packages.
+    - The `devel` tag (for `DEVEL_BUILD=ON` with `master` versions of SIRF, STIR etc) is no longer pushed to DockerHub, and therefore will not be updated.
+  - Docker images are now pushed to [DockerHub](https://hub.docker.com/r/synerbi/sirf/tags) and [GHCR](https://github.com/SyneRBI/SIRF-SuperBuild/pkgs/container/sirf)
   - added requirements.yml
-- Drop Travis
+  - revert to `conda` but with `libmamba` solver
 - updated versions:
   - SIRF: v3.6.0
   - STIR: v6.0.0
   - parallelproj: v1.7.3
   - Gadgetron: 6202fb7352a14fb82817b57a97d928c988eb0f4b (version of Oct 13, 2023)
   - ISMRMRD: v1.13.7
+  - NiftyReg: a328efb3a2f8ea4b47cf0f7b581d983a570a1ffd (version of 8 Mar, 2024, fixing find omp.h problems on MacOS)
   - siemens_to_ismrmrd: v1.2.11
   - CIL: db5a2a6cd3bddfbbf53e65f0549ac206096e5b44 (version of Feb 13, 2024)
   - CCPi-Regularisation-Toolkit: 71f8d304d804b54d378f0ed05539f01aaaf13758 (version of Dec 3. 2023)
@@ -23,7 +34,10 @@
   - pass through `OpenMP_CXX_INCLUDE_DIR` and `OpenMP_C_INCLUDE_DIR` to
     dependent projects. For instance, on MacOS the compiler might not find
     omp.h unless these variables are set.
-  - only pass through `OpenMP*LIBRARY` variables if set, and add OpenMP_iomp_LIBRARY to the list (for Intel compiler)
+- VM changes
+  - UPDATE.sh (and hence update_VM.sh) has extra developer options to set the
+    DEVEL_BUILD=ON (-D) and skip the build (-S).
+- Drop Travis
 
 ## v3.5.0
 - Temporarily disable CCPi-Regularisation due to #832
@@ -33,7 +47,7 @@
 - docker image updates
    - introduce `REMOVE_BUILD_FILES` variable. If set to 1 (which is the default),
      most build files will be removed in the docker image.
-   - introduce `RUN_CTESTS` variable. If set to 1 (which is the default),
+   - introduce `RUN_CTEST` variable. If set to 1 (which is the default),
      the CTests will be run while building the image.
    - remove obsolete copying of gadgetron.xml
    - Installing requirements for SIRF-Exercises uses its environment.yml or requirements.txt depending on settings.

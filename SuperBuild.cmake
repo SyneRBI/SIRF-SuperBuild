@@ -224,8 +224,8 @@ if (NOT DISABLE_OpenMP)
      message(STATUS "OpenMP found, support enabled. If you get compiler errors saying \"omp.h not found\", set the following CMake variables: OpenMP_CXX_INCLUDE_DIR, OpenMP_C_INCLUDE_DIR. For linking errors, check other \"OpenMP\*\" CMake variables as well.")
   
     mark_as_superbuild(ALL_PROJECTS VARS 
-      OpenMP_CXX_FLAGS:STRING OpenMP_C_FLAGS:STRING 
-      OpenMP_C_LIB_NAMES:STRING OpenMP_CXX_LIB_NAMES:STRING       
+      OpenMP_CXX_FLAGS:STRING OpenMP_C_FLAGS:STRING
+      OpenMP_C_LIB_NAMES:STRING OpenMP_CXX_LIB_NAMES:STRING
       )
     foreach (lib in OpenMP_libomp_LIBRARY OpenMP_omp_LIBRARY OpenMP_gomp_LIBRARY OpenMP_iomp_LIBRARY OpenMP_pthread_LIBRARY)
       if (${lib})

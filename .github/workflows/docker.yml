@@ -40,7 +40,7 @@ jobs:
           ghcr.io/synerbi/sirf
         flavor: |
           latest=auto
-          suffix=${{ matrix.type == 'gpu' && 'gpu,onlatest=true' || '' }}
+          suffix=${{ matrix.type == 'gpu' && '-gpu,onlatest=true' || '' }}
         tags: |
           type=edge
           type=semver,pattern={{version}}
@@ -89,7 +89,7 @@ jobs:
       run: |
         # rebuild sirf image
         ./docker/compose.sh -bR${{ matrix.type == 'gpu' && 'g' || 'c' }}
-        image=synerbi/sirf:jupyter${{ steps.pull.outputs.suffix }}
+        image=synerbi/sirf:latest${{ steps.pull.outputs.suffix }}
         echo "image=$image" >> "$GITHUB_OUTPUT"
         # tag potentially newer core image
         docker tag synerbi/jupyter:scipy-${{ matrix.type }} ${{ steps.pull.outputs.core_image }}
@@ -130,7 +130,7 @@ jobs:
           ghcr.io/synerbi/sirf
         flavor: |
           latest=false
-          suffix=${{ matrix.type == 'gpu' && 'gpu,onlatest=true' || '' }}
+          suffix=${{ matrix.type == 'gpu' && '-gpu,onlatest=true' || '' }}
         tags: devel
         labels: |
           org.opencontainers.image.licenses=Apache-2.0${{ matrix.type == 'gpu' && ' AND BSD-3-Clause AND GPL-3.0' || '' }}
@@ -173,7 +173,7 @@ jobs:
       run: |
         # rebuild sirf image
         ./docker/compose.sh -dbR${{ matrix.type == 'gpu' && 'g' || 'c' }}
-        image=synerbi/sirf:jupyter-devel${{ steps.pull.outputs.suffix }}
+        image=synerbi/sirf:devel${{ steps.pull.outputs.suffix }}
         echo "image=$image" >> "$GITHUB_OUTPUT"
     - name: test CIL
       run: >

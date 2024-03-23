@@ -18,7 +18,7 @@ Make sure there is no other SIRF VM running (as it will mean vagrant aborts due 
 We currently have the following:
 - `VB_CPUS` (defaults to 4): number of virtual CPUs used by the VM
 - `VB_RAM` (defaults to 6096): system RAM to be used by the VM
-- `VB_NAME` (defaults to "SIRF 3.4.0")
+- `VB_NAME` (defaults to "SIRF 3.6.0")
 - `UPDATE_ARGS` (defaults to "-j `nproc`"): any arguments to be passed to the `UPDATE.sh` script.
 
 For example in Windows Powershell:
@@ -30,10 +30,24 @@ will make sure we use current `master` (as opposed to the latest release), with 
 ### Start the machine
 
 ```
-cd vagrant
+cd /whereever/SIRF-SuperBuild/VirtualBox/vagrant
 vagrant up
 ```
 This will take a substantial amount of time.
+
+#### Splitting in different steps
+
+Using the [options of the provision script](../scripts/UPDATE_functions.sh), you can split the build process in stages.
+For instance, running from a test branch, skipping the build step first, making a snapshot, and then continue:
+```powershell
+$Env:UPDATE_ARGS="-t origin/prelease -S"
+vagrant up
+vagrant snapshot save initial
+$Env:UPDATE_ARGS="-t origin/prelease"
+vagrant provision
+```
+This allows you to make some changes on GitHub, restore the snapshot and try again. Note that the
+test branch currently has to be in the main SIRF-SuperBuild repo.
 
 ### Final configuration
 Log into the VM, open a terminal and type

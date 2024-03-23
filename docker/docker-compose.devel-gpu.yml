@@ -3,6 +3,6 @@ services:
  sirf-build:
   image: synerbi/jupyter:sirf-build-devel-gpu
  sirf:
-  image: synerbi/sirf:jupyter-devel-gpu
+  image: synerbi/sirf:devel-gpu
   build:
    cache_from: [synerbi/jupyter:sirf-build-devel-gpu]
