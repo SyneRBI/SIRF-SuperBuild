@@ -1,9 +1,13 @@
 # ChangeLog
 
 ## vx.x.x
-
+- Adds CCPi-Regularisation-Toolkit as prerequisite for CIL and reinstate unit tests
 - CMake:
   - only pass through `OpenMP*LIBRARY` variables if set, and add OpenMP_iomp_LIBRARY to the list (for Intel compiler)
+- Updated Versions:
+  - SIRF (master): d54c4550d1533132c6a281b6cf2159c8fd22f45c
+  - CIL: b066d588dc6de0188fd33dafd8e5e669b7434b7e # 13 May 2024
+  - CCPi-Regularisation-Toolkit: fix_3D_regularisers branch
 
 ## v3.6.0
 - build the STIR native Python interface by default (STIR_BUILD_SWIG_PYTHON=ON). You can still switch this off.
