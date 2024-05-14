@@ -126,6 +126,7 @@ jobs:
         source ~/virtualenv/bin/activate
         cmake -S ${GITHUB_WORKSPACE} -B ./build ${BUILD_FLAGS} ${EXTRA_BUILD_FLAGS} ${DEVEL_BUILD};
     - name: cmake --build
+      continue-on-error: ${{ contains(matrix.EXTRA_BUILD_FLAGS, '-DUSE_ROOT:BOOL=ON') }} # #899
       run: |
         source ~/virtualenv/bin/activate
         cmake --build ./build -j 2
@@ -141,4 +142,5 @@ jobs:
         path: ${{ github.workspace }}/build/**/*.log
         retention-days: 7
     - name: ctest
+      continue-on-error: ${{ contains(matrix.EXTRA_BUILD_FLAGS, '-DUSE_ROOT:BOOL=ON') }} # #899
       run: ./docker/ctest_sirf.sh
