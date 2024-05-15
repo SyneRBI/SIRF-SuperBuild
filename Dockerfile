@@ -111,7 +111,7 @@ COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/INSTALL/ /opt/S
 
 # install {SIRF-Exercises,CIL-Demos}
 COPY docker/user_demos.sh /opt/scripts/
-RUN bash /opt/scripts/user_demos.sh \
+RUN BUILD_CIL="${BUILD_CIL}" bash /opt/scripts/user_demos.sh \
  && fix-permissions /opt/SIRF-Exercises /opt/CIL-Demos "${CONDA_DIR}" /home/${NB_USER}
 
 # docker-stacks notebook

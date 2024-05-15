@@ -25,8 +25,7 @@ if [ "$PYTHON" = "miniconda" ]; then
     # do not install CIL from conda if BUILD_CIL is set
     if test "${BUILD_CIL:-0}" != 0; then
       # delete CIL package from the environment file
-      sed -r -e '/^\s*- (cil).*/d' environment-sirf.yml > tmp
-      mv tmp environment-sirf.yml
+      sed -r -i -e '/^\s*- (cil).*/d' environment-sirf.yml
     fi
     conda env update --file environment-sirf.yml -v
   else
