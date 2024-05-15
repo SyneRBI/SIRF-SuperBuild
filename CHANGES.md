@@ -2,6 +2,8 @@
 
 ## vx.x.x
 - Adds CCPi-Regularisation-Toolkit as prerequisite for CIL and reinstate unit tests
+- Docker:
+  - Handle BUILD_CIL correctly and not install CIL from conda if BUILD_CIL=ON
 - CMake:
   - only pass through `OpenMP*LIBRARY` variables if set, and add OpenMP_iomp_LIBRARY to the list (for Intel compiler)
 - Updated Versions:
