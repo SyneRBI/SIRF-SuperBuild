@@ -4,6 +4,8 @@
 
 - CMake:
   - only pass through `OpenMP*LIBRARY` variables if set, and add OpenMP_iomp_LIBRARY to the list (for Intel compiler)
+- updated versions:
+  - STIR: v6.1.0
 
 ## v3.6.0
 - build the STIR native Python interface by default (STIR_BUILD_SWIG_PYTHON=ON). You can still switch this off.
