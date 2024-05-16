@@ -59,11 +59,11 @@ jobs:
           DEVEL_BUILD: "OFF"
         - os: ubuntu-latest
           compiler_version: 11
-          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_ROOT:BOOL=ON"
+          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_ROOT:BOOL=ON -DUSE_SYSTEM_ROOT=ON"
           DEVEL_BUILD: "ON"
         - os: ubuntu-latest
           compiler_version: 11
-          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_ROOT:BOOL=ON"
+          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_ROOT:BOOL=ON -DUSE_SYSTEM_ROOT=ON"
           DEVEL_BUILD: "OFF"
       fail-fast: false # don't terminate matrix if one job fails
     steps:
@@ -81,6 +81,17 @@ jobs:
         sudo ./build_gadgetron-ubuntu.sh
         sudo ./build_python-ubuntu.sh
         echo "python-version=$(python3 --version | awk '{print $2}')" >> $GITHUB_OUTPUT
+
+    - if: contains(matrix.EXTRA_BUILD_FLAGS, fromJSON('["USE_SYSTEM_ROOT=ON"]'))
+      name: install ROOT
+      run: |
+        # Install ROOT (warning: currently only valid on Ubuntu)
+        ROOT_file=root_v6.28.12.Linux-ubuntu20-x86_64-gcc9.4.tar.gz
+        wget https://root.cern/download/"$ROOT_file"
+        tar -xzvf "$ROOT_file"
+        rm "$ROOT_file"
+        source root/bin/thisroot.sh
+
     - uses: actions/setup-python@v5
       with:
         python-version: '${{ steps.deps.outputs.python-version }}'
