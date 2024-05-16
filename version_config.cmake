@@ -141,7 +141,7 @@ set(DEFAULT_STIR_TAG rel_6.0.0)
 
 ## SIRF
 set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF)
-set(DEFAULT_SIRF_TAG d54c4550d1533132c6a281b6cf2159c8fd22f45c) # #1254
+set(DEFAULT_SIRF_TAG origin/master)
 
 ## pet-rd-tools
 set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools)
@@ -161,7 +161,7 @@ set(DEFAULT_JSON_TAG v3.11.3)
 # CCPi CIL
 # minimum supported version of CIL supported is > 22.1.0 or from commit a6062410028c9872c5b355be40b96ed1497fed2a
 set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL)
-set(DEFAULT_CIL_TAG b066d588dc6de0188fd33dafd8e5e669b7434b7e) # 13 May 2024
+set(DEFAULT_CIL_TAG 501726d8f09c16faef19ceb69b85c212db2eeca6) # 16 May 2024
 
 set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/TomographicImaging/CCPi-Regularisation-Toolkit)
 set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "fix_3D_regularisers")
