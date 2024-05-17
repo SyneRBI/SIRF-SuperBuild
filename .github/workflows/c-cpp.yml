@@ -82,7 +82,7 @@ jobs:
         sudo ./build_python-ubuntu.sh
         echo "python-version=$(python3 --version | awk '{print $2}')" >> $GITHUB_OUTPUT
 
-    - if: contains(matrix.EXTRA_BUILD_FLAGS, fromJSON('["USE_SYSTEM_ROOT=ON"]'))
+    - if: contains(matrix.EXTRA_BUILD_FLAGS, "-DUSE_SYSTEM_ROOT=ON"))
       name: install ROOT
       run: |
         # Install ROOT (warning: currently only valid on Ubuntu)
