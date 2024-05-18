@@ -110,7 +110,8 @@ COPY --chown=${NB_USER} --chmod=644 --link docker/.bashrc /home/${NB_USER}/
 # RUN sed -i s:PYTHON_INSTALL_DIR:${CONDA_DIR}:g /home/${NB_USER}/.bashrc
 
 # install from build
-COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/INSTALL/ /opt/SIRF-SuperBuild/INSTALL/
+COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/ /opt/SIRF-SuperBuild/
+#COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/INSTALL/ /opt/SIRF-SuperBuild/INSTALL/
 #COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/sources/SIRF/ /opt/SIRF-SuperBuild/sources/SIRF/
 #COPY --from=build --link /opt/conda/ /opt/conda/
 
