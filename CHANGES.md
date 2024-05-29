@@ -1,10 +1,11 @@
 # ChangeLog
 
-## vx.x.x
+## v3.7.0
 
 - CMake:
-  - only pass through `OpenMP*LIBRARY` variables if set, and add OpenMP_iomp_LIBRARY to the list (for Intel compiler)
+  - only pass through `OpenMP*LIBRARY` variables if set, and add OpenMP_iomp_LIBRARY to the list (for Intel compiler) https://github.com/SyneRBI/SIRF-SuperBuild/pull/879
 - updated versions:
+  - SIRF: v3.7.0
   - STIR: v6.1.0
 
 ## v3.6.0
