@@ -93,10 +93,13 @@ jobs:
             # Install ROOT (warning: currently only valid on Ubuntu)
             ROOT_file=root_v6.28.12.Linux-ubuntu20-x86_64-gcc9.4.tar.gz
             wget https://root.cern/download/"$ROOT_file"
-            tar -xzvf "$ROOT_file"
+            tar -xzf "$ROOT_file"
             rm "$ROOT_file"
             source root/bin/thisroot.sh
             echo ROOT_DIR="$ROOTSYS/cmake" >> $GITHUB_ENV
+            echo ROOTSYS="$ROOTSYS" >> $GITHUB_ENV
+            # work-around problem with problem with Vdt for ROOT version pre-6.30.04 as per https://github.com/root-project/root/pull/14178
+            echo Vdt_ROOT="$ROOTSYS" >> $GITHUB_ENV
         fi
 
     - uses: actions/setup-python@v5
