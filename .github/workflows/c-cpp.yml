@@ -59,11 +59,11 @@ jobs:
           DEVEL_BUILD: "OFF"
         - os: ubuntu-latest
           compiler_version: 11
-          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_ROOT:BOOL=ON -DUSE_SYSTEM_ROOT=ON"
+          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_ROOT:BOOL=ON -DUSE_SYSTEM_ROOT=ON -DSIRF_EXTRA_CMAKE_ARGS=-DCMAKE_POLICY_DEFAULT_CMP0074=NEW" # note: SIRF needs CMP0074 with older versions of pre-built ROOT (see below)
           DEVEL_BUILD: "ON"
         - os: ubuntu-latest
           compiler_version: 11
-          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_ROOT:BOOL=ON -DUSE_SYSTEM_ROOT=ON"
+          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_ACE=ON -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_ROOT:BOOL=ON -DUSE_SYSTEM_ROOT=ON -DSIRF_EXTRA_CMAKE_ARGS=-DCMAKE_POLICY_DEFAULT_CMP0074=NEW" # note: SIRF needs CMP0074 with older versions of pre-built ROOT (see below)
           DEVEL_BUILD: "OFF"
       fail-fast: false # don't terminate matrix if one job fails
     steps:
@@ -87,7 +87,6 @@ jobs:
         EXTRA_BUILD_FLAGS: ${{ matrix.EXTRA_BUILD_FLAGS }}
       run: |
         sh -ex
-        echo "EXTRA ${EXTRA_BUILD_FLAGS}"
         if expr match "${EXTRA_BUILD_FLAGS}" ".*-DUSE_SYSTEM_ROOT=ON.*" >/dev/null
         then
             # Install ROOT (warning: currently only valid on Ubuntu)
