@@ -82,15 +82,18 @@ jobs:
         sudo ./build_python-ubuntu.sh
         echo "python-version=$(python3 --version | awk '{print $2}')" >> $GITHUB_OUTPUT
 
-    - if: contains(matrix.EXTRA_BUILD_FLAGS, "-DUSE_SYSTEM_ROOT=ON"))
-      name: install ROOT
+    - name: optionally install ROOT
       run: |
-        # Install ROOT (warning: currently only valid on Ubuntu)
-        ROOT_file=root_v6.28.12.Linux-ubuntu20-x86_64-gcc9.4.tar.gz
-        wget https://root.cern/download/"$ROOT_file"
-        tar -xzvf "$ROOT_file"
-        rm "$ROOT_file"
-        source root/bin/thisroot.sh
+        if expr match "${EXTRA_BUILD_FLAGS}" ".*-DUSE_SYSTEM_ROOT=ON.*" >/dev/null
+        then
+            # Install ROOT (warning: currently only valid on Ubuntu)
+            ROOT_file=root_v6.28.12.Linux-ubuntu20-x86_64-gcc9.4.tar.gz
+            wget https://root.cern/download/"$ROOT_file"
+            tar -xzvf "$ROOT_file"
+            rm "$ROOT_file"
+            source root/bin/thisroot.sh
+            echo ROOTSYS="$ROOTSYS" >> $GITHUB_ENV
+        fi
 
     - uses: actions/setup-python@v5
       with:
