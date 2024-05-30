@@ -97,8 +97,23 @@ jobs:
             source root/bin/thisroot.sh
             echo ROOT_DIR="$ROOTSYS/cmake" >> $GITHUB_ENV
             echo ROOTSYS="$ROOTSYS" >> $GITHUB_ENV
+            echo
             # work-around problem with problem with Vdt for ROOT version pre-6.30.04 as per https://github.com/root-project/root/pull/14178
             echo Vdt_ROOT="$ROOTSYS" >> $GITHUB_ENV
+            # thisroot modifies the following
+            case ${{matrix.os}} in
+             (ubuntu*)
+                echo LD_LIBRARY_PATH="${CMAKE_INSTALL_PREFIX}/lib:$LD_LIBRARY_PATH" >> $GITHUB_ENV
+                echo PATH="$PATH" >> $GITHUB_ENV
+                ;;
+              (macOS*) # future-proof
+                echo DYLD_FALLBACK_LIBRARY_PATH="${CMAKE_INSTALL_PREFIX}/lib:$DYLD_FALLBACK_LIBRARY_PATH" >> $GITHUB_ENV
+                echo PATH="$PATH" >> $GITHUB_ENV
+                ;;
+              (windows*) # future-proof
+                echo PATH="${CMAKE_INSTALL_PREFIX}/lib:${CMAKE_INSTALL_PREFIX}/bin:$PATH" >> $GITHUB_ENV
+                ;;
+            esac
         fi
 
     - uses: actions/setup-python@v5
