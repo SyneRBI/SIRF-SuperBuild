@@ -83,6 +83,8 @@ jobs:
         echo "python-version=$(python3 --version | awk '{print $2}')" >> $GITHUB_OUTPUT
 
     - name: optionally install ROOT
+      env:
+        EXTRA_BUILD_FLAGS: ${{ matrix.EXTRA_BUILD_FLAGS }}
       run: |
         sh -ex
         echo "EXTRA ${EXTRA_BUILD_FLAGS}"
