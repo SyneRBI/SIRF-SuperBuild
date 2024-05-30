@@ -84,6 +84,8 @@ jobs:
 
     - name: optionally install ROOT
       run: |
+        sh -ex
+        echo "EXTRA ${EXTRA_BUILD_FLAGS}"
         if expr match "${EXTRA_BUILD_FLAGS}" ".*-DUSE_SYSTEM_ROOT=ON.*" >/dev/null
         then
             # Install ROOT (warning: currently only valid on Ubuntu)
@@ -92,7 +94,7 @@ jobs:
             tar -xzvf "$ROOT_file"
             rm "$ROOT_file"
             source root/bin/thisroot.sh
-            echo ROOTSYS="$ROOTSYS" >> $GITHUB_ENV
+            echo ROOT_DIR="$ROOTSYS/cmake" >> $GITHUB_ENV
         fi
 
     - uses: actions/setup-python@v5
