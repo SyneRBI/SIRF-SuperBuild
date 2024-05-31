@@ -2,6 +2,7 @@
 # Use it like this		
 #    source /path/to/whereever/env_ccppetmr.sh		
 # Preferably add this line to your .basrhc, .profile or whatever file is appropriate for your shell		
+test -n "$SIRF_ENV_SOURCED" && return; SIRF_ENV_SOURCED=1 # pragma once
   		  
 SIRF_PATH=@SIRF_SOURCE_DIR@
 export SIRF_PATH
