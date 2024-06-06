@@ -31,7 +31,7 @@ if test "${BUILD_CIL:-OFF}" != "OFF"; then
     else
       echo "Not deleting CIL from the environment file BUILD_CIL is set to >${BUILD_CIL}<"
     fi
-    conda env update --file environment-sirf.yml -v
+    conda env update --file environment-sirf.yml
   else
     if [ -f requirements.txt ]; then
       cat requirements.txt
