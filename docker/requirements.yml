@@ -18,9 +18,17 @@ dependencies:
   - deprecation
   - nose
   - pip
-  - cil              # cil
-  - ccpi-regulariser # cil
-  - dxchange         # cil
+  - cil               # cil
+  - ccpi-regulariser  # cil
+  - dxchange          # cil
+  - h5py              # cil
+  - pillow            # cil
+  - olefile >=0.46    # cil
+  - pywavelets        # cil
+  - cil-data >=21.3.0 # cil
+  - ipp >=2021.10     # cil
+  - tqdm              # cil
+  - numba             # cil 
   # - tigre          # cil (GPU)
   # - astra-toolbox  # cil (GPU)
   - pip:
