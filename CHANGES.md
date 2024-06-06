@@ -9,7 +9,7 @@
 - Updated Versions:
   - SIRF: v3.7.0
   - CIL: 501726d8f09c16faef19ceb69b85c212db2eeca6 # 16 May 2024
-  - CCPi-Regularisation-Toolkit: fix_3D_regularisers branch
+  - CCPi-Regularisation-Toolkit: v24.0.1
   - STIR: v6.1.0
 
 ## v3.6.0
