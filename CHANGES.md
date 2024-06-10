@@ -8,7 +8,7 @@
   - only pass through `OpenMP*LIBRARY` variables if set, and add OpenMP_iomp_LIBRARY to the list (for Intel compiler) https://github.com/SyneRBI/SIRF-SuperBuild/pull/879
 - Updated Versions:
   - SIRF: v3.7.0
-  - CIL: 501726d8f09c16faef19ceb69b85c212db2eeca6 # 16 May 2024
+  - CIL: ccf17f393ba911d13b74f2327779dde030098fe6 # 28 May 2024
   - CCPi-Regularisation-Toolkit: v24.0.1
   - STIR: v6.1.0
 
