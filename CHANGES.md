@@ -1,11 +1,15 @@
 # ChangeLog
 
 ## v3.7.0
-
+- Adds CCPi-Regularisation-Toolkit as prerequisite for CIL and reinstate unit tests
+- Docker:
+  - Handle BUILD_CIL correctly and not install CIL from conda if BUILD_CIL=ON
 - CMake:
   - only pass through `OpenMP*LIBRARY` variables if set, and add OpenMP_iomp_LIBRARY to the list (for Intel compiler) https://github.com/SyneRBI/SIRF-SuperBuild/pull/879
-- updated versions:
+- Updated Versions:
   - SIRF: v3.7.0
+  - CIL: ccf17f393ba911d13b74f2327779dde030098fe6 # 28 May 2024
+  - CCPi-Regularisation-Toolkit: v24.0.1
   - STIR: v6.1.0
 
 ## v3.6.0

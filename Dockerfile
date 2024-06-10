@@ -21,11 +21,15 @@ RUN bash /opt/scripts/build_system-ubuntu.sh
 
 # SIRF python deps
 ARG BUILD_GPU=0
+ARG BUILD_CIL="OFF"
 COPY docker/requirements.yml /opt/scripts/
 # https://jupyter-docker-stacks.readthedocs.io/en/latest/using/common.html#conda-environments
 # https://github.com/TomographicImaging/CIL/blob/master/Dockerfile
 RUN if test "$BUILD_GPU" != 0; then \
   sed -ri 's/^(\s*)#\s*(- \S+.*#.*GPU.*)$/\1\2/' /opt/scripts/requirements.yml; \
+ fi \
+ && if test "$BUILD_CIL" != "OFF"; then \
+  sed -r -i -e '/^\s*- (cil|ccpi-regulariser).*/d' /opt/scripts/requirements.yml; \
  fi \
  && conda config --env --set channel_priority strict \
  && for ch in defaults ccpi intel conda-forge; do conda config --env --add channels $ch; done \
@@ -66,7 +70,8 @@ ARG USE_NiftyPET="OFF"
 ARG BUILD_siemens_to_ismrmrd="ON"
 ARG BUILD_pet_rd_tools="ON"
 ARG Gadgetron_USE_CUDA="ON"
-ARG BUILD_CIL="OFF"
+# BUILD_CIL is defined in the previous stage
+ARG BUILD_CIL
 ARG EXTRA_BUILD_FLAGS=""
 
 # build, install in /opt/SIRF-SuperBuild/{INSTALL,sources/SIRF}, test (if RUN_CTEST)
@@ -99,7 +104,7 @@ RUN apt update -qq && apt install -yq --no-install-recommends \
   && mkdir -p /usr/share/X11/xkb \
   && test -e /usr/bin/X || ln -s /usr/bin/Xorg /usr/bin/X
 
-RUN echo 'test -z "$OMP_NUM_THREADS" && export OMP_NUM_THREADS=$(python -c "import multiprocessing as mc; print(mc.cpu_count() // 2)")' > /usr/local/bin/before-notebook.d/omp_num_threads.sh
+RUN echo 'test -z "$OMP_NUM_THREADS" && export OMP_NUM_THREADS=$(python -c "import multiprocessing as mc; print(max(1, mc.cpu_count() - 2))")' > /usr/local/bin/before-notebook.d/omp_num_threads.sh
 
 COPY --chown=${NB_USER} --chmod=644 --link docker/.bashrc /home/${NB_USER}/
 # RUN sed -i s:PYTHON_INSTALL_DIR:${CONDA_DIR}:g /home/${NB_USER}/.bashrc
@@ -110,8 +115,9 @@ COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/INSTALL/ /opt/S
 #COPY --from=build --link /opt/conda/ /opt/conda/
 
 # install {SIRF-Exercises,CIL-Demos}
+ARG BUILD_CIL
 COPY docker/user_demos.sh /opt/scripts/
-RUN bash /opt/scripts/user_demos.sh \
+RUN BUILD_CIL="${BUILD_CIL}" bash /opt/scripts/user_demos.sh \
  && fix-permissions /opt/SIRF-Exercises /opt/CIL-Demos "${CONDA_DIR}" /home/${NB_USER}
 
 # docker-stacks notebook
@@ -126,4 +132,6 @@ ENV GADGETRON_RELAY_HOST="0.0.0.0"
 
 # run gadgetron in the background before start-notebook.py
 COPY --link --chown=${NB_USER} docker/start-gadgetron-notebook.sh /opt/scripts/
+# COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/INSTALL/lib /opt/conda/lib
+COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/INSTALL/bin/env_sirf.sh /opt/conda/etc/conda/activate.d
 CMD ["/opt/scripts/start-gadgetron-notebook.sh"]

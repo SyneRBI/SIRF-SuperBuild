@@ -22,6 +22,15 @@ if [ "$PYTHON" = "miniconda" ]; then
       # delete GPU deps
       sed -r -e '/^\s*- (astra-toolbox|tigre).*/d' -e '/^\s*- \S+.*#.*GPU/d' environment.yml > environment-sirf.yml
     fi
+    # do not install CIL from conda if BUILD_CIL is set
+if test "${BUILD_CIL:-OFF}" != "OFF"; then
+      # delete CIL package from the environment file
+      echo "Deleting CIL from the environment file BUILD_CIL is set to >${BUILD_CIL}<"
+      sed -r -i -e '/^\s*- (cil).*/d' environment-sirf.yml
+      cat environment-sirf.yml
+    else
+      echo "Not deleting CIL from the environment file BUILD_CIL is set to >${BUILD_CIL}<"
+    fi
     conda env update --file environment-sirf.yml
   else
     if [ -f requirements.txt ]; then

@@ -161,10 +161,10 @@ set(DEFAULT_JSON_TAG v3.11.3)
 # CCPi CIL
 # minimum supported version of CIL supported is > 22.1.0 or from commit a6062410028c9872c5b355be40b96ed1497fed2a
 set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL)
-set(DEFAULT_CIL_TAG db5a2a6cd3bddfbbf53e65f0549ac206096e5b44) # 13 Feb 2024
+set(DEFAULT_CIL_TAG ccf17f393ba911d13b74f2327779dde030098fe6) # 28 May 2024
 
-set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/vais-ral/CCPi-Regularisation-Toolkit)
-set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "71f8d304d804b54d378f0ed05539f01aaaf13758")
+set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/TomographicImaging/CCPi-Regularisation-Toolkit)
+set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v24.0.1")
 
 # CERN ROOT
 set(DEFAULT_ROOT_URL https://github.com/root-project/root)
