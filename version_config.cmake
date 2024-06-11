@@ -220,8 +220,8 @@ if (DEVEL_BUILD)
   # set(DEFAULT_pet_rd_tools_TAG origin/master)
 
   # CCPi CIL
-  set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL)
-  set(DEFAULT_CIL_TAG origin/master)
+  set(DEFAULT_CIL_URL https://github.com/epapoutsellis/CIL)
+  set(DEFAULT_CIL_TAG origin/test_CIL_SIRF_precond)
 
   # Gadgetron
   # set(DEFAULT_Gadgetron_TAG origin/master)
