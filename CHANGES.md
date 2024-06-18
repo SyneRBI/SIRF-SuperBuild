@@ -1,5 +1,9 @@
 # ChangeLog
 
+## v3.8.0
+- Updated Versions:
+  - parallelproj: 1.9.0 (contains a fix for truncation of the TOF kernel)
+
 ## v3.7.0
 - Adds CCPi-Regularisation-Toolkit as prerequisite for CIL and reinstate unit tests
 - Docker:
