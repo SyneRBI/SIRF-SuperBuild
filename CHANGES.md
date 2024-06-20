@@ -2,7 +2,10 @@
 
 ## v3.8.0
 - Updated Versions:
-  - parallelproj: 1.9.0 (contains a fix for truncation of the TOF kernel)
+  - SIRF: 81f5c0a7878ed60577ee526abf8d0cd2b64e334f (20 June 2024)
+  - STIR: 12bfa873522653936a4818e9bad9b9da41f11706 (20 June 2024)
+  - parallelproj: 1.9.1 (contains a fix for truncation of the TOF kernel)
+  - CIL: 8d111a37cec72756d4b8d80f526ff22333019037 (20 June 2024, numpy 2.0 fix)
 
 ## v3.7.0
 - Adds CCPi-Regularisation-Toolkit as prerequisite for CIL and reinstate unit tests
