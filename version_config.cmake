@@ -132,16 +132,16 @@ set(DEFAULT_NiftyPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
 
 ## parallelproj
 set(DEFAULT_parallelproj_URL https://github.com/gschramm/parallelproj)
-set(DEFAULT_parallelproj_TAG v1.7.3)
+set(DEFAULT_parallelproj_TAG v1.9.1)
 
 ## STIR
 set(STIR_REQUIRED_VERSION "6.0.0")
 set(DEFAULT_STIR_URL https://github.com/UCL/STIR)
-set(DEFAULT_STIR_TAG rel_6.1.0)
+set(DEFAULT_STIR_TAG 12bfa873522653936a4818e9bad9b9da41f11706)
 
 ## SIRF
 set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF)
-set(DEFAULT_SIRF_TAG v3.7.0)
+set(DEFAULT_SIRF_TAG 81f5c0a7878ed60577ee526abf8d0cd2b64e334f)
 
 ## pet-rd-tools
 set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools)
@@ -161,7 +161,7 @@ set(DEFAULT_JSON_TAG v3.11.3)
 # CCPi CIL
 # minimum supported version of CIL supported is > 22.1.0 or from commit a6062410028c9872c5b355be40b96ed1497fed2a
 set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL)
-set(DEFAULT_CIL_TAG ccf17f393ba911d13b74f2327779dde030098fe6) # 28 May 2024
+set(DEFAULT_CIL_TAG 8449f663bb585c3f5744a7aff78937b6f12d7e20) # 21 June 2024
 
 set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/TomographicImaging/CCPi-Regularisation-Toolkit)
 set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v24.0.1")
@@ -284,7 +284,7 @@ set(NiftyPET_TAG ${DEFAULT_NiftyPET_TAG} CACHE STRING ON)
 
 set(parallelproj_URL ${DEFAULT_parallelproj_URL} CACHE STRING ON)
 set(parallelproj_TAG ${DEFAULT_parallelproj_TAG} CACHE STRING ON)
-set(parallelproj_REQUIRED_VERSION "1.3.4")
+set(parallelproj_REQUIRED_VERSION "1.9.0") # needed for TOF kernel fix
 
 set(SIRF-Contribs_URL ${DEFAULT_SIRF-Contribs_URL} CACHE STRING ON)
 set(SIRF-Contribs_TAG ${DEFAULT_SIRF-Contribs_TAG} CACHE STRING ON)

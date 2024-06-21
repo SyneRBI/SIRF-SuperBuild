@@ -17,6 +17,10 @@ dependencies:
   - nibabel
   - deprecation
   - nose
+  - zenodo_get
+  - jupytext
+  - tensorboard
+  - tensorboardx
   - pip
   - cil               # cil
   - ccpi-regulariser  # cil
