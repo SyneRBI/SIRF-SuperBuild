@@ -170,10 +170,6 @@ set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v24.0.1")
 set(DEFAULT_ROOT_URL https://github.com/root-project/root)
 set(DEFAULT_ROOT_TAG "v6-28-12")
 
-# ACE
-set(DEFAULT_ACE_URL https://github.com/paskino/libace-conda)
-set(DEFAULT_ACE_TAG v6.5.9)
-
 # range-v3
 set(DEFAULT_range-v3_URL https://github.com/ericniebler/range-v3)
 set(DEFAULT_range-v3_TAG 0.12.0)
@@ -255,9 +251,6 @@ SET(pet_rd_tools_URL ${DEFAULT_pet_rd_tools_URL} CACHE STRING ON)
 SET(glog_URL ${DEFAULT_glog_URL} CACHE STRING ON)
 SET(glog_TAG ${DEFAULT_glog_TAG} CACHE STRING ON)
 
-set(ACE_URL ${DEFAULT_ACE_URL} CACHE STRING ON)
-set(ACE_TAG ${DEFAULT_ACE_TAG} CACHE STRING ON)
-
 set(JSON_URL ${DEFAULT_JSON_URL} CACHE STRING ON)
 set(JSON_TAG ${DEFAULT_JSON_TAG} CACHE STRING ON)
 
@@ -335,7 +328,6 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   ROOT_URL ROOT_TAG
   astra-toolbox_URL astra-toolbox_TAG
   astra-python-wrapper_URL astra-python-wrapper_TAG
-  ACE_URL ACE_TAG
   RocksDB_URL RocksDB_TAG
   mrd-storage-server_URL mrd-storage-server_TAG
   Date_URL Date_TAG
