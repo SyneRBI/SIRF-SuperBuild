@@ -16,7 +16,6 @@ apt-get install -yq --no-install-recommends \
   libfreetype6-dev       \
   libxslt-dev            \
   libarmadillo-dev       \
-  libace-dev             \
   liblapack-dev          \
   liblapacke-dev         \
   libplplot-dev          \

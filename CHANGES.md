@@ -1,6 +1,7 @@
 # ChangeLog
 
 ## v3.8.0
+- Removed ACE as no longer needed by Gadgetron
 - Updated Versions:
   - SIRF: 81f5c0a7878ed60577ee526abf8d0cd2b64e334f (20 June 2024)
   - STIR: 12bfa873522653936a4818e9bad9b9da41f11706 (20 June 2024)

@@ -25,7 +25,7 @@
 set(proj Gadgetron)
 
 # Set dependency list
-set(${proj}_DEPENDENCIES "ACE;Boost;HDF5;ISMRMRD;FFTW3double;Armadillo;GTest;range-v3;JSON;RocksDB;Date")
+set(${proj}_DEPENDENCIES "Boost;HDF5;ISMRMRD;FFTW3double;Armadillo;GTest;range-v3;JSON;RocksDB;Date")
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
