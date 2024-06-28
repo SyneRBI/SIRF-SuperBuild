@@ -4,18 +4,18 @@ services:
   image: synerbi/jupyter:sirf-build-devel-cpu
   build:
    args:
+    BUILD_CIL: "ON"
     EXTRA_BUILD_FLAGS: >
      -DDEVEL_BUILD=ON
-     -DBUILD_CIL=ON
  sirf:
   container_name: sirf  # for scaling, comment this out https://github.com/docker/compose/issues/3729
   image: synerbi/sirf:devel
   build:
    context: .
    args:
+    BUILD_CIL: "ON"
     EXTRA_BUILD_FLAGS: >
      -DDEVEL_BUILD=ON
-     -DBUILD_CIL=ON
    cache_from: [synerbi/jupyter:sirf-build-devel-cpu]
   cap_add: [SYS_PTRACE]
   security_opt: [seccomp=unconfined]
