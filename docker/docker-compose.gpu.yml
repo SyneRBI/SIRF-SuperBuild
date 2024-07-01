@@ -5,7 +5,7 @@ services:
   image: synerbi/jupyter:foundation-gpu
   build:
    args:
-    ROOT_CONTAINER: nvidia/cuda:11.7.1-cudnn8-runtime-ubuntu22.04
+    ROOT_CONTAINER: nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04
     PYTHON_VERSION: "3.10"
  base:
   image: synerbi/jupyter:base-gpu
