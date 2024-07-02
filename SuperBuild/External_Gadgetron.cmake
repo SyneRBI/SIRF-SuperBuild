@@ -89,11 +89,11 @@ endif()
   option(Gadgetron_USE_MKL "Instruct Gadgetron to build linking to the MKL. The user must be able to install MKL on his own." OFF)
 
   
-  if (USE_CUDA)
-    option(${proj}_USE_CUDA "Enable ${proj} CUDA" ${USE_CUDA})
-  else()
+  #  if (USE_CUDA)
+  #  option(${proj}_USE_CUDA "Enable ${proj} CUDA" ${USE_CUDA})
+  #else()
     set (${proj}_USE_CUDA OFF)
-  endif()
+    #endif()
 
   mark_as_advanced(${proj}_USE_CUDA)
 
