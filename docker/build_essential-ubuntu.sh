@@ -21,7 +21,11 @@ pushd $INSTALL_DIR
 
 # CMake
 curl -o cmake.tgz -L https://github.com/Kitware/CMake/releases/download/v3.29.6/cmake-3.29.6-linux-x86_64.tar.gz
-tar xzf cmake.tgz && rm cmake.tgz
+mkdir -p /usr/local
+pushd /usr/local
+tar xzf $INSTALL_DIR/cmake.tgz --strip 1
+popd
+rm cmake.tgz
 ln -s cmake-*x86_64 cmake || true
 export PATH="$PWD/cmake/bin:$PATH"
 
