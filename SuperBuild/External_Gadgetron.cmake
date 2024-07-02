@@ -88,13 +88,15 @@ endif()
     "Build Gadgetron MATLAB gadgets (not required for SIRF)" ${default_Gadgetron_BUILD_MATLAB_SUPPORT})
   option(Gadgetron_USE_MKL "Instruct Gadgetron to build linking to the MKL. The user must be able to install MKL on his own." OFF)
 
+  # disable Gadgetron GPU code
+  set (${proj}_USE_CUDA OFF)
+  # TODO enable after https://github.com/gadgetron/gadgetron/issues/1231
+  #if (USE_CUDA)
+  #  option(${proj}_USE_CUDA "Enable ${proj} CUDA" ${USE_CUDA})
+  #else()
+  #  set (${proj}_USE_CUDA OFF)
+  #endif()
   
-  if (USE_CUDA)
-    option(${proj}_USE_CUDA "Enable ${proj} CUDA" ${USE_CUDA})
-  else()
-    set (${proj}_USE_CUDA OFF)
-  endif()
-
   mark_as_advanced(${proj}_USE_CUDA)
 
   if (NOT DISABLE_OpenMP)
