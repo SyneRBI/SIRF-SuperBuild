@@ -90,7 +90,7 @@ endif()
 
   # disable Gadgetron GPU code
   set (${proj}_USE_CUDA OFF)
-  # TODO enable it once bug fixed
+  # TODO enable after https://github.com/gadgetron/gadgetron/issues/1231
   #if (USE_CUDA)
   #  option(${proj}_USE_CUDA "Enable ${proj} CUDA" ${USE_CUDA})
   #else()
