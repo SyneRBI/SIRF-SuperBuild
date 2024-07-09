@@ -3,8 +3,8 @@
 ## v3.8.0
 - Removed ACE as no longer needed by Gadgetron
 - Updated Versions:
-  - SIRF: 81f5c0a7878ed60577ee526abf8d0cd2b64e334f (20 June 2024)
-  - STIR: 12bfa873522653936a4818e9bad9b9da41f11706 (20 June 2024)
+  - SIRF: cb8a9981b142006c3b01cf9264f51882afdad12a (9 July 2024)
+  - STIR: a9b18e0f346759ce81ebc0695d9b571079ab48f0 (9 July 2024)
   - parallelproj: 1.9.1 (contains a fix for truncation of the TOF kernel)
   - CIL: b3d8ffeeec9413a3b54264e4097a445d2ef5b88b (29 June 2024)
 
