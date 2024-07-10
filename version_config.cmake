@@ -137,11 +137,11 @@ set(DEFAULT_parallelproj_TAG v1.9.1)
 ## STIR
 set(STIR_REQUIRED_VERSION "6.0.0")
 set(DEFAULT_STIR_URL https://github.com/UCL/STIR)
-set(DEFAULT_STIR_TAG 12bfa873522653936a4818e9bad9b9da41f11706)
+set(DEFAULT_STIR_TAG a9b18e0f346759ce81ebc0695d9b571079ab48f0)
 
 ## SIRF
 set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF)
-set(DEFAULT_SIRF_TAG 81f5c0a7878ed60577ee526abf8d0cd2b64e334f)
+set(DEFAULT_SIRF_TAG a4d8cae6dd014194642d35e7fb9283e8da44a497)
 
 ## pet-rd-tools
 set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools)
