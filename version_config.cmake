@@ -141,7 +141,7 @@ set(DEFAULT_STIR_TAG a9b18e0f346759ce81ebc0695d9b571079ab48f0)
 
 ## SIRF
 set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF)
-set(DEFAULT_SIRF_TAG cb8a9981b142006c3b01cf9264f51882afdad12a)
+set(DEFAULT_SIRF_TAG a4d8cae6dd014194642d35e7fb9283e8da44a497)
 
 ## pet-rd-tools
 set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools)
