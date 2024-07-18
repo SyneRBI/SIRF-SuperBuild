@@ -15,6 +15,8 @@ git clone https://github.com/SyneRBI/SIRF-Exercises --recursive $INSTALL_DIR/SIR
 cd $INSTALL_DIR/SIRF-Exercises
 if [ "$PYTHON" = "miniconda" ]; then
   if [ -f environment.yml ]; then
+    # remove the intel channel
+    sed -r -i -e '/^\s*- (intel).*/d' environment.yml;
     if test "${BUILD_GPU:-0}" != 0; then
       # uncomment GPU deps
       sed -r 's/^(\s*)#\s*(- \S+.*#.*GPU.*)$/\1\2/' environment.yml > environment-sirf.yml

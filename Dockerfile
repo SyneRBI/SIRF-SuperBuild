@@ -32,7 +32,7 @@ RUN if test "$BUILD_GPU" != 0; then \
   sed -r -i -e '/^\s*- (cil|ccpi-regulariser).*/d' /opt/scripts/requirements.yml; \
  fi \
  && conda config --env --set channel_priority strict \
- && for ch in defaults ccpi intel conda-forge; do conda config --env --add channels $ch; done \
+ && for ch in defaults ccpi conda-forge; do conda config --env --add channels $ch; done \
  && mamba env update -n base -f /opt/scripts/requirements.yml \
  && mamba clean --all -f -y && fix-permissions "${CONDA_DIR}" /home/${NB_USER}
 
