@@ -1,7 +1,7 @@
 name: base
 channels:
   - conda-forge
-  - intel # cil
+  - https://software.repos.intel.com/python/conda # cil
   - ccpi  # cil
   - defaults
 dependencies:
