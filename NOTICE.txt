@@ -15,7 +15,7 @@ Main contributors roughly in order of remaining lines
 Kris Thielemans (UCL)
 Edoardo Pasca (UKRI STFC)
 Benjamin A Thomas(UCL)
-Casper da Costa-Luis (UKRI STFC and previously KCL)
+Casper da Costa-Luis (UKRI STFC & previously UCL, KCL)
 Richard Brown (UCL)
 Ander Biguri (UCL)
 David Atkinson (UCL)
