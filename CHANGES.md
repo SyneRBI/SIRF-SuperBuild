@@ -7,6 +7,7 @@
   - STIR: 6.2.0
   - parallelproj: 1.9.1 (contains a fix for truncation of the TOF kernel)
   - CIL: v24.1.0
+  - Armadillo: 12.8.4 (as per latest Gadgetron, see #923)
 - docker image updates:
   - fix CUDA toolkit on GPU image
   - use CMake 3.29.6

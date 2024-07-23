@@ -35,8 +35,8 @@ set(Boost_MD5 e193e5089060ed6ce5145c8eb05e67e3)
 
 
 ## Armadillo
-set(Armadillo_URL https://downloads.sourceforge.net/project/arma/armadillo-9.800.2.tar.xz)
-set(Armadillo_MD5 c2fa488ea069b9972363ebad16e51ab5)
+set(Armadillo_URL https://downloads.sourceforge.net/project/arma/armadillo-12.8.4.tar.xz)
+set(Armadillo_MD5 345f46a1e496d5c5d95acb01a9110f8b)
 
 ## FFTW3
 if(WIN32)
