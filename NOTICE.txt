@@ -13,14 +13,14 @@ Main contributors roughly in order of remaining lines
 (see each file for authors):
 
 Kris Thielemans (UCL)
-Edoardo Pasca (STFC)
+Edoardo Pasca (UKRI STFC)
 Benjamin A Thomas(UCL)
-Casper da Costa-Luis (KCL)
+Casper da Costa-Luis (UKRI STFC and previously KCL)
 Richard Brown (UCL)
 Ander Biguri (UCL)
 David Atkinson (UCL)
-Evgueni Ovtchinnikov (STFC)
-Laura Murgatroyd (STFC)
+Evgueni Ovtchinnikov (UKRI STFC)
+Laura Murgatroyd (UKRI STFC)
 Ashley Gillman (CSIRO)
 Christoph Kolbitsch (PTB)
 Johannes Mayer (PTB)
