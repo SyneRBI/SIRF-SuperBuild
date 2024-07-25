@@ -150,7 +150,7 @@ set(DEFAULT_pet_rd_tools_TAG v2.0.1)
 
 ## SIRF-Contribs
 set(DEFAULT_SIRF-Contribs_URL https://github.com/SyneRBI/SIRF-Contribs)
-set(DEFAULT_SIRF-Contribs_TAG origin/master)
+set(DEFAULT_SIRF-Contribs_TAG v3.8.0)
 
 ## SPM
 set(DEFAULT_SPM_URL https://github.com/spm/SPM12)
@@ -207,7 +207,7 @@ if (DEVEL_BUILD)
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR)
   set(DEFAULT_STIR_TAG origin/master)
-
+  set(DEFAULT_SIRF-Contribs_TAG origin/master)
   ## siemens_to_ismrmrd
   # set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
   # set(DEFAULT_siemens_to_ismrmrd_TAG b87759e49e53dab4939147eb52b7a0e6465f3d04)
