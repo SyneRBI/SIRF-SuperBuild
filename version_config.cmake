@@ -146,7 +146,7 @@ set(DEFAULT_SIRF_TAG v3.8.0)
 
 ## pet-rd-tools
 set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools)
-set(DEFAULT_pet_rd_tools_TAG v2.0.1)
+set(DEFAULT_pet_rd_tools_TAG v2.0.2)
 
 ## SIRF-Contribs
 set(DEFAULT_SIRF-Contribs_URL https://github.com/SyneRBI/SIRF-Contribs)
