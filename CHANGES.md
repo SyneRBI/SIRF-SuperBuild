@@ -1,5 +1,9 @@
 # ChangeLog
 
+## v3.x.x
+- Udated Versions:
+  - CIL: 4f6e3cfb0648d08071974eba35c1369a892d4924
+
 ## v3.8.0
 - Removed ACE as no longer needed by Gadgetron
 - Updated Versions:
