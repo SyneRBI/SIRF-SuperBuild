@@ -112,7 +112,7 @@ else()
   endif()
 
   # Set destinations for Python files
-  set (BUILD_PYTHON = ${Python3_FOUND})
+  set (BUILD_PYTHON ${Python3_FOUND})
   if (BUILD_PYTHON)
     set(PYTHON_DEST_DIR "" CACHE PATH "Directory of the Python modules (if not set, use ${CMAKE_INSTALL_PREFIX}/python)")
     if (PYTHON_DEST_DIR)
