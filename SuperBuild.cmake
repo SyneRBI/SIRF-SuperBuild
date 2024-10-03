@@ -47,7 +47,7 @@ endif()
 # Find CUDA
 option(DISABLE_CUDA "Disable CUDA" OFF)
 if (NOT DISABLE_CUDA)
-  find_package(CUDAToolkit REQUIRED)
+  find_package(CUDA)
 endif()
 if (NOT DISABLE_CUDA AND CUDA_FOUND)
   message(STATUS "<<<<<<<<<<<<<<<<< CUDA FOUND >>>>>>>>>>>>>>>>>>>>>")
