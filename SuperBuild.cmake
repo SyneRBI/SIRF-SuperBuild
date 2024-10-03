@@ -96,15 +96,15 @@ if (DISABLE_PYTHON)
 else()
 
   # only Python 3 is supported
-  find_package(PythonInterp 3)
+  find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
   
-  if (PYTHONINTERP_FOUND)
+  # Check if Python3 was found and output the details
+  if (Python3_FOUND)
     set(Python_ADDITIONAL_VERSIONS ${PYTHON_VERSION_STRING})
-    message(STATUS "Found PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}")
+    message(STATUS "Found PYTHON_EXECUTABLE=${Python3_EXECUTABLE}")
+    set(PYTHON_EXECUTABLE ${Python3_EXECUTABLE})
     message(STATUS "Python version ${PYTHON_VERSION_STRING}")
   endif()
-  
-  find_package(PythonLibs 3)
   
   if (PYTHONLIBS_FOUND)
     message(STATUS "Found PYTHON_INCLUDE_DIRS=${PYTHON_INCLUDE_DIRS}")
@@ -112,7 +112,7 @@ else()
   endif()
 
   # Set destinations for Python files
-  set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
+  set (BUILD_PYTHON ${Python3_FOUND})
   if (BUILD_PYTHON)
     set(PYTHON_DEST_DIR "" CACHE PATH "Directory of the Python modules (if not set, use ${CMAKE_INSTALL_PREFIX}/python)")
     if (PYTHON_DEST_DIR)
