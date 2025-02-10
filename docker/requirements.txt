@@ -25,3 +25,4 @@ nose
 pytest
 pytest-cov
 coverage
+zenodo_get # CIL
