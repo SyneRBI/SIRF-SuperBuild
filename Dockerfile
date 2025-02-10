@@ -69,6 +69,7 @@ ARG USE_NiftyPET="OFF"
 ARG BUILD_siemens_to_ismrmrd="ON"
 ARG BUILD_pet_rd_tools="ON"
 ARG Gadgetron_USE_CUDA="ON"
+ARG BUILD_TomoPhantom="ON"
 # BUILD_CIL is defined in the previous stage
 ARG BUILD_CIL
 ARG EXTRA_BUILD_FLAGS=""
@@ -88,7 +89,8 @@ RUN BUILD_FLAGS="-G Ninja\
  -DBUILD_siemens_to_ismrmrd=${BUILD_siemens_to_ismrmrd}\
  -DBUILD_pet_rd_tools=${BUILD_pet_rd_tools}\
  -DGadgetron_USE_CUDA=${Gadgetron_USE_CUDA}\
- -DBUILD_CIL=${BUILD_CIL}" \
+ -DBUILD_CIL=${BUILD_CIL}\
+ -DBUILD_TomoPhantom=${BUILD_TomoPhantom}" \
  EXTRA_BUILD_FLAGS="${EXTRA_BUILD_FLAGS}" \
  bash /opt/scripts/user_sirf-ubuntu.sh \
  && fix-permissions /opt/SIRF-SuperBuild /opt/ccache

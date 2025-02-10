@@ -318,6 +318,7 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   NIFTYREG_URL NIFTYREG_TAG
   CIL_URL CIL_TAG
   CCPi-Regularisation-Toolkit_URL CCPi-Regularisation-Toolkit_TAG
+  TomoPhantom_URL TomoPhantom_TAG
   NiftyPET_URL NiftyPET_TAG
   parallelproj_URL parallelproj_TAG
   SIRF-Contribs_URL SIRF-Contribs_TAG
