@@ -25,11 +25,16 @@ ARG BUILD_CIL="OFF"
 COPY docker/requirements.yml /opt/scripts/
 # https://jupyter-docker-stacks.readthedocs.io/en/latest/using/common.html#conda-environments
 # https://github.com/TomographicImaging/CIL/blob/master/Dockerfile
+# if BUILD_CIL is on we remove the run dependencies as they install hdf5 and CMake gets confused 
+# these will be installed later by user_demos.sh
+# https://github.com/SyneRBI/SIRF-SuperBuild/issues/935
 RUN if test "$BUILD_GPU" != 0; then \
   sed -ri 's/^(\s*)#\s*(- \S+.*#.*GPU.*)$/\1\2/' /opt/scripts/requirements.yml; \
  fi \
  && if test "$BUILD_CIL" != "OFF"; then \
-  sed -r -i -e '/^\s*- (cil|ccpi-regulariser).*/d' /opt/scripts/requirements.yml; \
+  sed -r -i -e '/^\s*- (cil|ccpi-regulariser|h5py|dxchange).*/d' /opt/scripts/requirements.yml; \
+  else \
+    sed -r -i -e '/^\s*- (h5py|dxchange|cil|ccpi-regulariser|pillow|olefile|pywavelets|cil-data|tqdm|numba).*/d' /opt/scripts/requirements.yml; \
  fi \
  && conda config --env --set channel_priority strict \
  && for ch in defaults ccpi conda-forge; do conda config --env --add channels $ch; done \
@@ -69,7 +74,7 @@ ARG USE_NiftyPET="OFF"
 ARG BUILD_siemens_to_ismrmrd="ON"
 ARG BUILD_pet_rd_tools="ON"
 ARG Gadgetron_USE_CUDA="ON"
-# BUILD_CIL is defined in the previous stage
+# Build arguments defined in the previous stage
 ARG BUILD_CIL
 ARG EXTRA_BUILD_FLAGS=""
 
