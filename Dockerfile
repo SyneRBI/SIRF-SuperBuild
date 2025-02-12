@@ -34,7 +34,7 @@ RUN if test "$BUILD_GPU" != 0; then \
  && if test "$BUILD_CIL" != "OFF"; then \
   sed -r -i -e '/^\s*- (cil|ccpi-regulariser|h5py|dxchange).*/d' /opt/scripts/requirements.yml; \
   else \
-    sed -r -i -e '/^\s*- (h5py|dxchange|cil|ccpi-regulariser|pillow|olefile|pywavelets|cil-data|tqdm|numba).*/d' /opt/scripts/requirements.yml; \
+    sed -r -i -e '/^\s*- (h5py|dxchange|cil|ccpi-regulariser|pillow|olefile|pywavelets|cil-data|tqdm|numba|zenodo_get).*/d' /opt/scripts/requirements.yml; \
  fi \
  && conda config --env --set channel_priority strict \
  && for ch in defaults ccpi conda-forge; do conda config --env --add channels $ch; done \

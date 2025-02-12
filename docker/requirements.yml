@@ -33,6 +33,7 @@ dependencies:
   - ipp >=2021.10     # cil
   - tqdm              # cil
   - numba             # cil 
+  - zenodo_get        # cil
   # - tigre          # cil (GPU)
   # - astra-toolbox  # cil (GPU)
   - pip:
