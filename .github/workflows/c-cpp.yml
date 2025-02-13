@@ -116,7 +116,20 @@ jobs:
             esac
         fi
 
-    
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '${{ steps.deps.outputs.python-version }}'
+        cache: pip
+    - name: pip install
+      working-directory: docker
+      run: PYTHON_EXECUTABLE=python3 PYTHON_INSTALL_DIR="$HOME/virtualenv" ./user_python-ubuntu.sh
+    - uses: hendrikmuhs/ccache-action@v1
+      with:
+        key: ${{ matrix.os }}-${{ env.COMPILER }}-${{ matrix.compiler_version }}-${{ env.BUILD_TYPE }}-${{ github.ref_name }}-${{ github.run_id }}
+        restore-keys: |
+          ${{ matrix.os }}-${{ env.COMPILER }}-${{ matrix.compiler_version }}-${{ env.BUILD_TYPE }}-${{ github.ref_name }}
+          ${{ matrix.os }}-${{ env.COMPILER }}-${{ matrix.compiler_version }}-${{ env.BUILD_TYPE }}
+        append-timestamp: false
     - name: export CC CXX
       run: |
         set -ex
@@ -162,19 +175,5 @@ jobs:
         name: build_log_files-${{ matrix.os }}-${{ env.COMPILER }}${{ matrix.compiler_version }}-${{ env.BUILD_TYPE }}-DEVEL=${{ matrix.DEVEL_BUILD }}
         path: ${{ github.workspace }}/build/**/*.log
         retention-days: 7
-    - uses: actions/setup-python@v5
-      with:
-        python-version: '${{ steps.deps.outputs.python-version }}'
-        cache: pip
-    - name: pip install
-      working-directory: docker
-      run: PYTHON_EXECUTABLE=python3 PYTHON_INSTALL_DIR="$HOME/virtualenv" ./user_python-ubuntu.sh
-    - uses: hendrikmuhs/ccache-action@v1
-      with:
-        key: ${{ matrix.os }}-${{ env.COMPILER }}-${{ matrix.compiler_version }}-${{ env.BUILD_TYPE }}-${{ github.ref_name }}-${{ github.run_id }}
-        restore-keys: |
-          ${{ matrix.os }}-${{ env.COMPILER }}-${{ matrix.compiler_version }}-${{ env.BUILD_TYPE }}-${{ github.ref_name }}
-          ${{ matrix.os }}-${{ env.COMPILER }}-${{ matrix.compiler_version }}-${{ env.BUILD_TYPE }}
-        append-timestamp: false
     - name: ctest
       run: ./docker/ctest_sirf.sh
