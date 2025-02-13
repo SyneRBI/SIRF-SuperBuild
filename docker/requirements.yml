@@ -26,6 +26,7 @@ dependencies:
   - ccpi-regulariser  # cil
   - dxchange          # cil
   - h5py              # cil
+  - hdf5 ==1.10.7     # match system ubuntu 22.04
   - pillow            # cil
   - olefile >=0.46    # cil
   - pywavelets        # cil
@@ -33,7 +34,6 @@ dependencies:
   - ipp >=2021.10     # cil
   - tqdm              # cil
   - numba             # cil 
-  - zenodo_get        # cil
   # - tigre          # cil (GPU)
   # - astra-toolbox  # cil (GPU)
   - pip:

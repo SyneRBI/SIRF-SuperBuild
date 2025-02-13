@@ -25,16 +25,18 @@ ARG BUILD_CIL="OFF"
 COPY docker/requirements.yml /opt/scripts/
 # https://jupyter-docker-stacks.readthedocs.io/en/latest/using/common.html#conda-environments
 # https://github.com/TomographicImaging/CIL/blob/master/Dockerfile
-# if BUILD_CIL is on we remove the run dependencies as they install hdf5 and CMake gets confused 
-# these will be installed later by user_demos.sh
+# First remove the CIL run-dependencies from requirements.yml as they install hdf5 and CMake gets confused
+# All CIL run dependencies will be installed later by user_demos.sh
+# If BUILD_CIL is OFF, remove the IPP dependency
 # https://github.com/SyneRBI/SIRF-SuperBuild/issues/935
 RUN if test "$BUILD_GPU" != 0; then \
   sed -ri 's/^(\s*)#\s*(- \S+.*#.*GPU.*)$/\1\2/' /opt/scripts/requirements.yml; \
- fi \
- && if test "$BUILD_CIL" != "OFF"; then \
-  sed -r -i -e '/^\s*- (cil|ccpi-regulariser|h5py|dxchange).*/d' /opt/scripts/requirements.yml; \
-  else \
-    sed -r -i -e '/^\s*- (h5py|dxchange|cil|ccpi-regulariser|pillow|olefile|pywavelets|cil-data|tqdm|numba|zenodo_get).*/d' /opt/scripts/requirements.yml; \
+ fi && \
+ sed -r -i -e '/^\s*- (h5py|hdf5|dxchange|cil|ccpi-regulariser|pillow|olefile|pywavelets|cil-data).*/d' /opt/scripts/requirements.yml; \
+ && if test "$BUILD_CIL" != "OFF"; then \ 
+   echo "" ;\
+ else \ 
+   sed -r -i -e '/^\s*- (ipp).*/d' /opt/scripts/requirements.yml; \
  fi \
  && conda config --env --set channel_priority strict \
  && for ch in defaults ccpi conda-forge; do conda config --env --add channels $ch; done \
