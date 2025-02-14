@@ -58,6 +58,6 @@ if [ "$PYTHON" = "miniconda" ]; then
 # Python (runtime)
 else
   if [ -f requirements.txt ]; then
-    ${PYTHON} -m pip install -U -r requirements.txt
+    ${PYTHON} -m pip install --no-cache-dir -U -r requirements.txt
   fi
 fi
