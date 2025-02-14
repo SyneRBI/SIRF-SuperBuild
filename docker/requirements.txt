@@ -7,7 +7,7 @@ matplotlib
 git+https://github.com/ismrmrd/ismrmrd-python-tools.git@master#egg=ismrmrd-python-tools
 Cython       # CIL
 h5py         # CIL
-hdf5 == 1.10.7 # CIL
+hdf5 == 1.10 # CIL
 Pillow       # CIL
 wget         # CIL
 six          # CIL
