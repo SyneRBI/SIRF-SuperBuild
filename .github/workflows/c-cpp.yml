@@ -163,7 +163,7 @@ jobs:
     - name: cmake --build
       run: |
         source ~/virtualenv/bin/activate
-        cmake --build ./build -j 2
+        cmake --build ./build -j 1
     # tmate ssh debugging
     - if: github.event_name == 'workflow_dispatch' && github.event.inputs.tmate == 'true'
       uses: mxschmitt/action-tmate@v3
