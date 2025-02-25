@@ -29,22 +29,23 @@ COPY docker/requirements.yml /opt/scripts/
 # All CIL run dependencies will be installed later by user_demos.sh
 # If BUILD_CIL is OFF, remove the IPP dependency
 # https://github.com/SyneRBI/SIRF-SuperBuild/issues/935
+
+FROM base as temp
 RUN if test "$BUILD_GPU" != 0; then \
   sed -ri 's/^(\s*)#\s*(- \S+.*#.*GPU.*)$/\1\2/' /opt/scripts/requirements.yml; \
- fi && \
- sed -r -i -e '/^\s*- (h5py|hdf5|dxchange|cil|ccpi-regulariser|pillow|olefile|pywavelets|cil-data).*/d' /opt/scripts/requirements.yml; \
+ fi\
  && if test "$BUILD_CIL" != "OFF"; then \ 
-   echo "" ;\
- else \ 
-   sed -r -i -e '/^\s*- (ipp).*/d' /opt/scripts/requirements.yml; \
- fi \
- && conda config --env --set channel_priority strict \
+   sed -r -i -e '/^\s*- (cil|ccpi-regulariser).*/d' /opt/scripts/requirements.yml \
+ fi
+FROM temp as temp2
+
+RUN conda config --env --set channel_priority strict \
  && for ch in defaults ccpi conda-forge; do conda config --env --add channels $ch; done \
  && mamba env update -n base -f /opt/scripts/requirements.yml \
  && mamba clean --all -f -y && fix-permissions "${CONDA_DIR}" /home/${NB_USER}
 
-FROM base as build
 
+FROM temp2 as build
 COPY docker/update_nvidia_keys.sh /opt/scripts/
 RUN bash /opt/scripts/update_nvidia_keys.sh
 
@@ -66,7 +67,7 @@ ARG NUM_PARALLEL_BUILDS=" "
 # CMake options
 ARG CMAKE_BUILD_TYPE="Release"
 ARG STIR_ENABLE_OPENMP="ON"
-ARG USE_SYSTEM_Armadillo="ON"
+ARG USE_SYSTEM_Armadillo="OFF"
 ARG USE_SYSTEM_Boost="ON"
 ARG USE_SYSTEM_FFTW3="ON"
 ARG USE_SYSTEM_HDF5="ON"

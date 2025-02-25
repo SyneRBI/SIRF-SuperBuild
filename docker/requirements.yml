@@ -3,7 +3,6 @@ channels:
   - conda-forge
   - https://software.repos.intel.com/python/conda # cil
   - ccpi  # cil
-  - defaults
 dependencies:
   - setuptools
   - wheel
@@ -25,8 +24,6 @@ dependencies:
   - cil               # cil
   - ccpi-regulariser  # cil
   - dxchange          # cil
-  - h5py              # cil
-  - hdf5 ==1.10.7     # match system ubuntu 22.04
   - pillow            # cil
   - olefile >=0.46    # cil
   - pywavelets        # cil
@@ -34,6 +31,8 @@ dependencies:
   - ipp >=2021.10     # cil
   - tqdm              # cil
   - numba             # cil 
+  - h5py        # gadgetron and CIL
+  - hdf5        # gadgetron and CIL
   # - tigre          # cil (GPU)
   # - astra-toolbox  # cil (GPU)
   - pip:
