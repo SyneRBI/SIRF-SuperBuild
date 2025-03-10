@@ -10,7 +10,7 @@ dependencies:
   - pytest-cov
   - scipy
   - docopt
-  - matplotlib
+  - matplotlib-base
   - pandas
   - tifffile
   - nibabel
@@ -31,8 +31,12 @@ dependencies:
   - ipp >=2021.10     # cil
   - tqdm              # cil
   - numba             # cil 
-  - h5py        # gadgetron and CIL
-  - hdf5        # gadgetron and CIL
+  - h5py         # gadgetron and CIL
+  - hdf5         # Gadgetron, STIR and CIL
+  - armadillo    # Gadgetron 
+  - cxx-compiler # compiler which built hdf5 from conda-forge
+  - libstdcxx-ng
+  - libgcc-ng
   # - tigre          # cil (GPU)
   # - astra-toolbox  # cil (GPU)
   - pip:
