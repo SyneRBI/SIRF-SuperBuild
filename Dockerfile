@@ -25,8 +25,6 @@ ARG BUILD_CIL="OFF"
 COPY docker/requirements.yml /opt/scripts/
 # https://jupyter-docker-stacks.readthedocs.io/en/latest/using/common.html#conda-environments
 # https://github.com/TomographicImaging/CIL/blob/master/Dockerfile
-# First remove the CIL run-dependencies from requirements.yml as they install hdf5 and CMake gets confused
-# All CIL run dependencies will be installed later by user_demos.sh
 # If BUILD_CIL is OFF, remove the IPP dependency
 # https://github.com/SyneRBI/SIRF-SuperBuild/issues/935
 
@@ -35,7 +33,7 @@ RUN if test "$BUILD_GPU" != 0; then \
   sed -ri 's/^(\s*)#\s*(- \S+.*#.*GPU.*)$/\1\2/' /opt/scripts/requirements.yml; \
  fi\
  && if test "$BUILD_CIL" != "OFF"; then \ 
-   sed -r -i -e '/^\s*- (cil|ccpi-regulariser).*/d' /opt/scripts/requirements.yml \
+   sed -r -i -e '/^\s*- (cil|ccpi-regulariser).*/d' /opt/scripts/requirements.yml; \
  fi
 FROM temp as temp2
 
@@ -44,8 +42,8 @@ RUN conda config --env --set channel_priority strict \
  && mamba env update -n base -f /opt/scripts/requirements.yml \
  && mamba clean --all -f -y && fix-permissions "${CONDA_DIR}" /home/${NB_USER}
 
+RUN conda list
 
-FROM temp2 as build
 COPY docker/update_nvidia_keys.sh /opt/scripts/
 RUN bash /opt/scripts/update_nvidia_keys.sh
 
@@ -55,7 +53,7 @@ RUN bash /opt/scripts/build_essential-ubuntu.sh
 # ccache
 COPY --link docker/devel/.ccache/ /opt/ccache/
 RUN ccache -o cache_dir=/opt/ccache
-ENV PATH="/usr/lib/ccache:${PATH}"
+# ENV PATH="/usr/lib/ccache:${PATH}"
 
 # SIRF-SuperBuild config
 COPY ./.git /opt/SIRF-SuperBuild.git
@@ -67,15 +65,24 @@ ARG NUM_PARALLEL_BUILDS=" "
 # CMake options
 ARG CMAKE_BUILD_TYPE="Release"
 ARG STIR_ENABLE_OPENMP="ON"
-ARG USE_SYSTEM_Armadillo="OFF"
+ARG USE_SYSTEM_Armadillo="ON"
+ARG USE_SYSTEM_ACE="OFF"
 ARG USE_SYSTEM_Boost="ON"
-ARG USE_SYSTEM_FFTW3="ON"
+ARG USE_SYSTEM_FFTW3="OFF"
 ARG USE_SYSTEM_HDF5="ON"
 ARG USE_ITK="ON"
 ARG USE_SYSTEM_SWIG="ON"
 ARG USE_NiftyPET="OFF"
+ARG USE_SYSTEM_ITK="ON"
+ARG USE_SYSTEM_parallelproj="ON"
+ARG USE_SYSTEM_SWIG="ON"
+ARG USE_SYSTEM_NIFTYREG="ON"
+ARG USE_SYSTEM_GTest="ON"
+ARG USE_SYSTEM_range-v3="ON"
+ARG USE_SYSTEM_Date="ON"
 ARG BUILD_siemens_to_ismrmrd="ON"
 ARG BUILD_pet_rd_tools="ON"
+ARG Gadgetron_USE_MKL="ON"
 ARG Gadgetron_USE_CUDA="ON"
 # Build arguments defined in the previous stage
 ARG BUILD_CIL
@@ -83,20 +90,32 @@ ARG EXTRA_BUILD_FLAGS=""
 
 # build, install in /opt/SIRF-SuperBuild/{INSTALL,sources/SIRF}, test (if RUN_CTEST)
 COPY docker/user_sirf-ubuntu.sh /opt/scripts/
+
+FROM temp2 as build
+
+
 RUN BUILD_FLAGS="-G Ninja\
  -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}\
  -DSTIR_ENABLE_OPENMP=${STIR_ENABLE_OPENMP}\
+ -DUSE_ITK=${USE_ITK}\
+ -DBUILD_siemens_to_ismrmrd=${BUILD_siemens_to_ismrmrd}\
+ -DBUILD_pet_rd_tools=${BUILD_pet_rd_tools}\
+ -DGadgetron_USE_CUDA=${Gadgetron_USE_CUDA}\
+ -DBUILD_CIL=${BUILD_CIL}\
  -DUSE_SYSTEM_Armadillo=${USE_SYSTEM_Armadillo}\
  -DUSE_SYSTEM_Boost=${USE_SYSTEM_Boost}\
  -DUSE_SYSTEM_FFTW3=${USE_SYSTEM_FFTW3}\
  -DUSE_SYSTEM_HDF5=${USE_SYSTEM_HDF5}\
- -DUSE_ITK=${USE_ITK}\
  -DUSE_SYSTEM_SWIG=${USE_SYSTEM_SWIG}\
  -DUSE_NiftyPET=${USE_NiftyPET}\
- -DBUILD_siemens_to_ismrmrd=${BUILD_siemens_to_ismrmrd}\
- -DBUILD_pet_rd_tools=${BUILD_pet_rd_tools}\
- -DGadgetron_USE_CUDA=${Gadgetron_USE_CUDA}\
- -DBUILD_CIL=${BUILD_CIL}" \
+ -DUSE_SYSTEM_ITK=${USE_SYSTEM_ITK}\
+ -DUSE_SYSTEM_parallelproj=${USE_SYSTEM_parallelproj}\
+ -DUSE_SYSTEM_SWIG=${USE_SYSTEM_SWIG}\
+ -DUSE_SYSTEM_NIFTYREG=${USE_SYSTEM_NIFTYREG}\
+ -DUSE_SYSTEM_GTest=${USE_SYSTEM_GTest}\
+ -DUSE_SYSTEM_range-v3=${USE_SYSTEM_range-v3}\
+ -DUSE_SYSTEM_Date=${USE_SYSTEM_Date}\
+ -DGadgetron_USE_MKL=${Gadgetron_USE_MKL}"\
  EXTRA_BUILD_FLAGS="${EXTRA_BUILD_FLAGS}" \
  bash /opt/scripts/user_sirf-ubuntu.sh \
  && fix-permissions /opt/SIRF-SuperBuild /opt/ccache

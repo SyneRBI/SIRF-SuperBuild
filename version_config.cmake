@@ -116,7 +116,7 @@ set(DEFAULT_siemens_to_ismrmrd_TAG v1.2.11)
 
 ## Gadgetron
 set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron)
-set(DEFAULT_Gadgetron_TAG 846ed3fb57b235390ab0fb953edd17af86935d61) #22/11/2024
+set(DEFAULT_Gadgetron_TAG 6202fb7352a14fb82817b57a97d928c988eb0f4b)
 
 ## ASTRA
 set(DEFAULT_astra-toolbox_URL https://github.com/astra-toolbox/astra-toolbox)
