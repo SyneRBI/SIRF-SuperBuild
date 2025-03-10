@@ -23,11 +23,14 @@ apt-get install -yq --no-install-recommends \
   pkg-config             \
   golang
 
-# libarmadillo-dev       \
-# libhdf5-serial-dev     \
-#   h5utils                \
-#   hdf5-tools             \
-  
+if USE_UBUNTU_SYSTEM_LIBRARIES=1; then
+  apt-get install -yq --no-install-recommends \
+    libarmadillo-dev       \
+    libhdf5-serial-dev     \
+    h5utils                \
+    hdf5-tools
+fi
+
 # old code to install GCC9 as minimum required by Gadgetron, but now disabled as default in 22.04 is now gcc-11
 # apt-get install software-properties-common -y && \
 # add-apt-repository ppa:ubuntu-toolchain-r/test -y && \
