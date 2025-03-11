@@ -57,7 +57,7 @@ ${APT_GET_INSTALL} \
   libfftw3-dev     \
   swig
 
-if USE_UBUNTU_SYSTEM_LIBRARIES=1; then  
+if [ ${USE_UBUNTU_SYSTEM_LIBRARIES} == "1" ]; then  
   ${APT_GET_INSTALL} libhdf5-serial-dev   \
   hdf5-helpers
 fi

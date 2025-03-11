@@ -20,15 +20,15 @@ apt-get install -yq --no-install-recommends \
   libgflags-dev          \
   libssl-dev             \
   libcurl4-openssl-dev   \
-  pkg-config             \
-  golang
+  pkg-config             
 
-if USE_UBUNTU_SYSTEM_LIBRARIES=1; then
+if [ ${USE_UBUNTU_SYSTEM_LIBRARIES} == "1"; then
   apt-get install -yq --no-install-recommends \
     libarmadillo-dev       \
     libhdf5-serial-dev     \
     h5utils                \
-    hdf5-tools
+    hdf5-tools             \
+    golang
 fi
 
 # old code to install GCC9 as minimum required by Gadgetron, but now disabled as default in 22.04 is now gcc-11
