@@ -3,6 +3,7 @@ channels:
   - conda-forge
   - https://software.repos.intel.com/python/conda # cil
   - ccpi  # cil
+  - defaults
 dependencies:
   - setuptools
   - wheel
@@ -10,7 +11,7 @@ dependencies:
   - pytest-cov
   - scipy
   - docopt
-  - matplotlib-base
+  - matplotlib
   - pandas
   - tifffile
   - nibabel
@@ -21,54 +22,19 @@ dependencies:
   - tensorboard
   - tensorboardx
   - pip
-  - ninja 
-  - swig 
-  - pip 
-  - wheel
-  - python-wget 
-  - cython 
-  - six 
-  - pillow 
-  - boost 
-  - pugixml 
-  - libitk-devel 
-  - libitk 
-  - nlohmann_json 
-  - libparallelproj 
-  - fftw 
-  - docopt 
-  - deprecation 
-  - niftyreg
-  - cil                 # cil
-  - ccpi-regulariser    # cil
-  - dxchange            # cil
-  - pillow              # cil
-  - olefile >=0.46      # cil
-  - pywavelets          # cil
-  - cil-data >=21.3.0   # cil
-  - ipp >=2021.10       # cil
-  - tqdm                # cil
-  - numba               # cil 
-  - h5py                # gadgetron and CIL
-  - hdf5                # Gadgetron, STIR and CIL
-  - armadillo =12.8.4   # Gadgetron 
-  - cxx-compiler        # compiler which built hdf5 from conda-forge
-  - libstdcxx-ng        # Gadgetron
-  - libgcc-ng           # Gadgetron
-  - dcmtk               # Gadgetron
-  - howardhinnant_date  # Gadgetron
-  - eigen               # Gadgetron
-  - libcurl             # Gadgetron
-  - mkl                 # Gadgetron
-  - mkl-include         # Gadgetron
-  - range-v3            # Gadgetron
-  - libblas=*=*mkl      # Gadgetron
-  - gtest               # Gadgetron
-  - gmock               # Gadgetron
-  - plplot              # Gadgetron
-  - go                  # Gadgetron
-  # - tigre               # cil (GPU)
-  # - astra-toolbox       # cil (GPU)
+  - cil               # cil
+  - ccpi-regulariser  # cil
+  - dxchange          # cil
+  - h5py              # cil
+  - pillow            # cil
+  - olefile >=0.46    # cil
+  - pywavelets        # cil
+  - cil-data >=21.3.0 # cil
+  - ipp >=2021.10     # cil
+  - tqdm              # cil
+  - numba             # cil 
+  # - tigre          # cil (GPU)
+  # - astra-toolbox  # cil (GPU)
   - pip:
     - git+https://github.com/ismrmrd/ismrmrd-python-tools.git@master#egg=ismrmrd-python-tools
     # TODO: labextension @jupyter-widgets/jupyterlab-manager (jupyterlab_widgets ipywidgets ipympl)
