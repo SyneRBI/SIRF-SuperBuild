@@ -22,7 +22,8 @@ apt-get install -yq --no-install-recommends \
   libcurl4-openssl-dev   \
   pkg-config             
 
-if [ ${USE_UBUNTU_SYSTEM_LIBRARIES} == "1"; then
+if [ ${USE_UBUNTU_SYSTEM_LIBRARIES} ] ; then
+  echo "Installing Armadillo and go from system apt"
   apt-get install -yq --no-install-recommends \
     libarmadillo-dev       \
     libhdf5-serial-dev     \
