@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -ev
+set -evx
 # Gadgetron requirements
 # from https://github.com/gadgetron/gadgetron/blob/master/docker/base/ubuntu_1804/Dockerfile#L8
 apt-get update -qq

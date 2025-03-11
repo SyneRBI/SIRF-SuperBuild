@@ -76,9 +76,9 @@ jobs:
       working-directory: docker
       run: |
         sudo ./raw-ubuntu.sh
-        USE_UBUNTU_SYSTEM_LIBRARIES=1 sudo ./build_system-ubuntu.sh
+        USE_UBUNTU_SYSTEM_LIBRARIES=1 sudo -E ./build_system-ubuntu.sh
         sudo ./build_essential-ubuntu.sh
-        USE_UBUNTU_SYSTEM_LIBRARIES=1 sudo ./build_gadgetron-ubuntu.sh
+        USE_UBUNTU_SYSTEM_LIBRARIES=1 sudo -E ./build_gadgetron-ubuntu.sh
         sudo ./build_python-ubuntu.sh
         echo "python-version=$(python3 --version | awk '{print $2}')" >> $GITHUB_OUTPUT
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -ev
+set -evx
 # SIRF external dependencies
 apt-get update -qq
 APT_GET_INSTALL="apt-get install -yq --no-install-recommends"
