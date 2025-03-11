@@ -21,6 +21,24 @@ dependencies:
   - tensorboard
   - tensorboardx
   - pip
+  - ninja 
+  - swig 
+  - pip 
+  - wheel
+  - python-wget 
+  - cython 
+  - six 
+  - pillow 
+  - boost 
+  - pugixml 
+  - libitk-devel 
+  - libitk 
+  - nlohmann_json 
+  - libparallelproj 
+  - fftw 
+  - docopt 
+  - deprecation 
+  - niftyreg
   - cil               # cil
   - ccpi-regulariser  # cil
   - dxchange          # cil
@@ -33,10 +51,22 @@ dependencies:
   - numba             # cil 
   - h5py         # gadgetron and CIL
   - hdf5         # Gadgetron, STIR and CIL
-  - armadillo    # Gadgetron 
+  - armadillo =12.8.4   # Gadgetron 
   - cxx-compiler # compiler which built hdf5 from conda-forge
-  - libstdcxx-ng
-  - libgcc-ng
+  - libstdcxx-ng # Gadgetron
+  - libgcc-ng # Gadgetron
+  - dcmtk  # Gadgetron
+  - howardhinnant_date  # Gadgetron
+  - eigen  # Gadgetron
+  - libcurl  # Gadgetron
+  - mkl  # Gadgetron
+  - mkl-include  # Gadgetron
+  - range-v3  # Gadgetron
+  - libblas=*=*mkl  # Gadgetron
+  - gtest  # Gadgetron
+  - gmock  # Gadgetron
+  - plplot  # Gadgetron
+  - go # Gadgetron
   # - tigre          # cil (GPU)
   # - astra-toolbox  # cil (GPU)
   - pip:
