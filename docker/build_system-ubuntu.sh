@@ -54,10 +54,13 @@ else
 fi
 
 ${APT_GET_INSTALL} \
-  libfftw3-dev         \
-  libhdf5-serial-dev   \
-  hdf5-helpers         \
+  libfftw3-dev     \
   swig
+
+if USE_UBUNTU_SYSTEM_LIBRARIES=1; then  
+  ${APT_GET_INSTALL} libhdf5-serial-dev   \
+  hdf5-helpers
+fi
 
 # doxygen related packages
 ${APT_GET_INSTALL} doxygen graphviz

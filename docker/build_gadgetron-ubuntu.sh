@@ -5,17 +5,13 @@ set -ev
 apt-get update -qq
 # boost is handled in build_system-ubuntu.sh
 apt-get install -yq --no-install-recommends \
-  libhdf5-serial-dev     \
   libboost-dev libboost-all-dev \
   libfftw3-dev           \
-  h5utils                \
   jq                     \
-  hdf5-tools             \
   libopenblas-dev      \
   libxml2-dev            \
   libfreetype6-dev       \
   libxslt-dev            \
-  libarmadillo-dev       \
   liblapack-dev          \
   liblapacke-dev         \
   libplplot-dev          \
@@ -26,6 +22,14 @@ apt-get install -yq --no-install-recommends \
   libcurl4-openssl-dev   \
   pkg-config             \
   golang
+
+if USE_UBUNTU_SYSTEM_LIBRARIES=1; then
+  apt-get install -yq --no-install-recommends \
+    libarmadillo-dev       \
+    libhdf5-serial-dev     \
+    h5utils                \
+    hdf5-tools
+fi
 
 # old code to install GCC9 as minimum required by Gadgetron, but now disabled as default in 22.04 is now gcc-11
 # apt-get install software-properties-common -y && \

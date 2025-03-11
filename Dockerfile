@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_CONTAINER=quay.io/jupyter/scipy-notebook:latest
+ARG BASE_CONTAINER=quay.io/jupyter/scipy-notebook:ubuntu-22.04
 FROM ${BASE_CONTAINER} as base
 
 USER root
@@ -58,19 +58,32 @@ ARG RUN_CTEST=1
 ARG NUM_PARALLEL_BUILDS=" "
 # CMake options
 ARG CMAKE_BUILD_TYPE="Release"
+# STIR specific arguments
 ARG STIR_ENABLE_OPENMP="ON"
-ARG USE_SYSTEM_Armadillo="ON"
-ARG USE_SYSTEM_Boost="ON"
-ARG USE_SYSTEM_FFTW3="ON"
-ARG USE_SYSTEM_HDF5="ON"
 ARG USE_ITK="ON"
-ARG USE_SYSTEM_SWIG="ON"
-ARG USE_NiftyPET="OFF"
+# Gadgetron specific arguments
 ARG BUILD_siemens_to_ismrmrd="ON"
 ARG BUILD_pet_rd_tools="ON"
+ARG Gadgetron_USE_MKL="ON"
 ARG Gadgetron_USE_CUDA="ON"
 # BUILD_CIL is defined in the previous stage
 ARG BUILD_CIL
+# System libraries
+ARG USE_SYSTEM_Armadillo="ON"
+ARG USE_SYSTEM_ACE="OFF"
+ARG USE_SYSTEM_Boost="ON"
+ARG USE_SYSTEM_FFTW3="OFF"
+ARG USE_SYSTEM_HDF5="ON"
+ARG USE_SYSTEM_SWIG="ON"
+ARG USE_NiftyPET="OFF"
+ARG USE_SYSTEM_ITK="ON"
+ARG USE_SYSTEM_parallelproj="ON"
+ARG USE_SYSTEM_SWIG="ON"
+ARG USE_SYSTEM_NIFTYREG="ON"
+ARG USE_SYSTEM_GTest="ON"
+ARG USE_SYSTEM_range-v3="ON"
+ARG USE_SYSTEM_Date="ON"
+# Extra arguments
 ARG EXTRA_BUILD_FLAGS=""
 
 # build, install in /opt/SIRF-SuperBuild/{INSTALL,sources/SIRF}, test (if RUN_CTEST)
@@ -78,17 +91,24 @@ COPY docker/user_sirf-ubuntu.sh /opt/scripts/
 RUN BUILD_FLAGS="-G Ninja\
  -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}\
  -DSTIR_ENABLE_OPENMP=${STIR_ENABLE_OPENMP}\
+ -DUSE_ITK=${USE_ITK}\
+ -DUSE_NiftyPET=${USE_NiftyPET}\
+ -DBUILD_siemens_to_ismrmrd=${BUILD_siemens_to_ismrmrd}\
+ -DBUILD_pet_rd_tools=${BUILD_pet_rd_tools}\
+ -DBUILD_CIL=${BUILD_CIL}\
+ -DGadgetron_USE_CUDA=${Gadgetron_USE_CUDA}\
+ -DGadgetron_USE_MKL=${Gadgetron_USE_MKL}\
+ -DUSE_SYSTEM_parallelproj=${USE_SYSTEM_parallelproj}\
+ -DUSE_SYSTEM_SWIG=${USE_SYSTEM_SWIG}\
+ -DUSE_SYSTEM_NIFTYREG=${USE_SYSTEM_NIFTYREG}\
+ -DUSE_SYSTEM_GTest=${USE_SYSTEM_GTest}\
+ -DUSE_SYSTEM_range-v3=${USE_SYSTEM_range-v3}\
+ -DUSE_SYSTEM_Date=${USE_SYSTEM_Date}\
  -DUSE_SYSTEM_Armadillo=${USE_SYSTEM_Armadillo}\
  -DUSE_SYSTEM_Boost=${USE_SYSTEM_Boost}\
  -DUSE_SYSTEM_FFTW3=${USE_SYSTEM_FFTW3}\
  -DUSE_SYSTEM_HDF5=${USE_SYSTEM_HDF5}\
- -DUSE_ITK=${USE_ITK}\
- -DUSE_SYSTEM_SWIG=${USE_SYSTEM_SWIG}\
- -DUSE_NiftyPET=${USE_NiftyPET}\
- -DBUILD_siemens_to_ismrmrd=${BUILD_siemens_to_ismrmrd}\
- -DBUILD_pet_rd_tools=${BUILD_pet_rd_tools}\
- -DGadgetron_USE_CUDA=${Gadgetron_USE_CUDA}\
- -DBUILD_CIL=${BUILD_CIL}" \
+ -DUSE_SYSTEM_SWIG=${USE_SYSTEM_SWIG}" \
  EXTRA_BUILD_FLAGS="${EXTRA_BUILD_FLAGS}" \
  bash /opt/scripts/user_sirf-ubuntu.sh \
  && fix-permissions /opt/SIRF-SuperBuild /opt/ccache
