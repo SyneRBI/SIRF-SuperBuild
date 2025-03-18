@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -evx
+set -ev
 # SIRF external dependencies
 apt-get update -qq
 APT_GET_INSTALL="apt-get install -yq --no-install-recommends"
@@ -54,14 +54,10 @@ else
 fi
 
 ${APT_GET_INSTALL} \
-  libfftw3-dev     \
+  libfftw3-dev         \
+  libhdf5-serial-dev   \
+  hdf5-helpers         \
   swig
-
-if [ ${USE_UBUNTU_SYSTEM_LIBRARIES} ]; then  
-  echo "Installing HDF5 from system apt"
-  ${APT_GET_INSTALL} libhdf5-serial-dev   \
-  hdf5-helpers
-fi
 
 # doxygen related packages
 ${APT_GET_INSTALL} doxygen graphviz
