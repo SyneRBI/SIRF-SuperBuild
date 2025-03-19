@@ -74,7 +74,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       CONFIGURE_COMMAND
         ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ./autogen.sh
       BUILD_COMMAND
-        ${CMAKE_COMMAND} -E env ${cmd} ${ASTRA_BUILD_OPTIONS} --prefix=${${proj}_INSTALL_DIR} --with-install-type=prefix --with-python=${PYTHON_EXECUTABLE}
+        ${CMAKE_COMMAND} -E env ${cmd} ${ASTRA_BUILD_OPTIONS} --prefix=${${proj}_INSTALL_DIR} --with-install-type=prefix --with-python=${Python3_EXECUTABLE}
       INSTALL_COMMAND
         ${CMAKE_COMMAND} -E chdir ${${proj}_BINARY_DIR}/ make -j2 install-libraries
       DEPENDS

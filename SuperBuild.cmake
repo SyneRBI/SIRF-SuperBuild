@@ -98,11 +98,9 @@ else()
   # only Python 3 is supported
   find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
   
-  # Check if Python3 was found and output the details
   if (Python3_FOUND)
     set(Python_ADDITIONAL_VERSIONS ${PYTHON_VERSION_STRING})
-    message(STATUS "Found PYTHON_EXECUTABLE=${Python3_EXECUTABLE}")
-    set(PYTHON_EXECUTABLE ${Python3_EXECUTABLE})
+    message(STATUS "Found Python3_EXECUTABLE=${Python3_EXECUTABLE}")
     message(STATUS "Python version ${PYTHON_VERSION_STRING}")
   endif()
   
@@ -125,14 +123,14 @@ else()
 
     set(PYTHON_STRATEGY "PYTHONPATH" CACHE STRING "\
       PYTHONPATH: prefix PYTHONPATH \n\
-      SETUP_PY:   execute ${PYTHON_EXECUTABLE} setup.py install \n\
+      SETUP_PY:   execute ${Python3_EXECUTABLE} setup.py install \n\
       CONDA:      do nothing")
     set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
   endif()
 
   # set PYTHONLIBS_CMAKE_ARGS to be used in the ExternalProject_add calls
   # note: Find_package(PythonLibs) takes PYTHON_INCLUDE_DIR and PYTHON_LIBRARY as input
-  set (PYTHONLIBS_CMAKE_ARGS -DPYTHON_EXECUTABLE:FILEPATH=${PYTHON_EXECUTABLE})
+  set (PYTHONLIBS_CMAKE_ARGS -DPython3_EXECUTABLE:FILEPATH=${Python3_EXECUTABLE})
   if (EXISTS "${PYTHON_INCLUDE_DIR}")
     set (PYTHONLIBS_CMAKE_ARGS ${PYTHONLIBS_CMAKE_ARGS}
       -DPYTHON_INCLUDE_DIR:PATH=${PYTHON_INCLUDE_DIR})
@@ -377,12 +375,12 @@ if(PYTHONINTERP_FOUND)
     ${COMMENT_OUT_PREFIX}  setenv PYTHONPATH ${PYTHON_DEST}:$PYTHONPATH \n\
     ${COMMENT_OUT_PREFIX}else \n\
     ${COMMENT_OUT_PREFIX}  setenv PYTHONPATH ${PYTHON_DEST} \n\
-    setenv SIRF_PYTHON_EXECUTABLE ${PYTHON_EXECUTABLE} \n\
+    setenv SIRF_PYTHON_EXECUTABLE ${Python3_EXECUTABLE} \n\
     ${COMMENT_OUT_PREFIX}endif")
 
   set (ENV_PYTHON_BASH "\
     ${COMMENT_OUT_PREFIX}export PYTHONPATH=\"${PYTHON_DEST}\${PYTHONPATH:+:\${PYTHONPATH}}\" \n\
-    export SIRF_PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}")
+    export SIRF_PYTHON_EXECUTABLE=${Python3_EXECUTABLE}")
 endif()
 
 set(ENV_MATLAB_BASH "#####     Matlab not found     #####")
@@ -431,7 +429,7 @@ if (WIN32)
   endif()
   if (PYTHONINTERP_FOUND)
     cmake_path(NATIVE_PATH PYTHON_DEST WIN_PYTHON_DEST)
-    cmake_path(NATIVE_PATH PYTHON_EXECUTABLE WIN_PYTHON_EXECUTABLE)
+    cmake_path(NATIVE_PATH Python3_EXECUTABLE WIN_PYTHON_EXECUTABLE)
   endif()
   configure_file(env_sirf.PS1.in ${SyneRBI_INSTALL}/bin/env_sirf.PS1)
 endif()

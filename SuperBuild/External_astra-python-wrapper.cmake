@@ -74,7 +74,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 #! /bin/bash
 set -ex
 
-CPPFLAGS=\"-DASTRA_CUDA -DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib -I${${astra}_SOURCE_DIR}/include\" CC=${CMAKE_C_COMPILER} ${PYTHON_EXECUTABLE} ${${astra}_SOURCE_DIR}/python/builder.py build
+CPPFLAGS=\"-DASTRA_CUDA -DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib -I${${astra}_SOURCE_DIR}/include\" CC=${CMAKE_C_COMPILER} ${Python3_EXECUTABLE} ${${astra}_SOURCE_DIR}/python/builder.py build
 ")
 
     else()
@@ -88,7 +88,7 @@ CPPFLAGS=\"-DASTRA_CUDA -DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${S
 #! /bin/bash
 set -ex
 
-CPPFLAGS=\"-DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib -I${${astra}_SOURCE_DIR}/include\" CC=${CMAKE_C_COMPILER} ${PYTHON_EXECUTABLE} ${${astra}_SOURCE_DIR}/python/builder.py build
+CPPFLAGS=\"-DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib -I${${astra}_SOURCE_DIR}/include\" CC=${CMAKE_C_COMPILER} ${Python3_EXECUTABLE} ${${astra}_SOURCE_DIR}/python/builder.py build
 ")
 
 
@@ -151,11 +151,11 @@ cp -rv ${${astra}_SOURCE_DIR}/python/build/$build_dir/astra ${${proj}_INSTALL_DI
   set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
   set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
   add_test(NAME ASTRA_BASIC_TEST
-           COMMAND ${PYTHON_EXECUTABLE} -c "import astra; astra.test_noCUDA()"
+           COMMAND ${Python3_EXECUTABLE} -c "import astra; astra.test_noCUDA()"
            WORKING_DIRECTORY ${${astra}_SOURCE_DIR})
   if (${${proj}_USE_CUDA})
     add_test(NAME ASTRA_BASIC_GPU_TEST
-             COMMAND ${PYTHON_EXECUTABLE} -c "import astra; astra.test_CUDA()"
+             COMMAND ${Python3_EXECUTABLE} -c "import astra; astra.test_CUDA()"
              WORKING_DIRECTORY ${${astra}_SOURCE_DIR})
   endif()
 
