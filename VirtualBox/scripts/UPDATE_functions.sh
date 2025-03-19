@@ -28,7 +28,7 @@
 #
 #=========================================================================
 
-# print usage 
+# print usage
 # takes script name as first and only argument
 print_usage(){
   echo "Usage: $1 [-t tag] [-j n] [-s] [-D] [-S]"
@@ -143,7 +143,7 @@ initialise_environment(){
 SuperBuild_git_update(){
   echo "==================== SuperBuild checkout ====================="
   cd $SIRF_SRC_PATH
-  if [ ! -d SIRF-SuperBuild ] 
+  if [ ! -d SIRF-SuperBuild ]
   then
     git clone $SB_repo
     cd SIRF-SuperBuild
@@ -152,7 +152,7 @@ SuperBuild_git_update(){
     git fetch --tags --all
   fi
   # go to SB_TAG
-  if [ $1 = 'default' ] 
+  if [ $1 = 'default' ]
   then
    # get the latest tag matching v
    #SB_TAG=`git fetch; git for-each-ref refs/tags/v* --sort=-taggerdate --format='%(refname:short)' --count=1`
@@ -170,7 +170,7 @@ SuperBuild_install(){
   cd $SIRF_SRC_PATH
   buildVM=buildVM
   mkdir -p $buildVM
-  
+
   cd $buildVM
   cmake -S ../SIRF-SuperBuild -B . \
         -DCMAKE_INSTALL_PREFIX="$SIRF_INSTALL_PATH" \
@@ -185,7 +185,8 @@ SuperBuild_install(){
         -DDEVEL_BUILD="$DEVEL_BUILD" \
         -DNIFTYREG_USE_CUDA=OFF\
         -DBUILD_CIL=ON\
-        -DPYTHON_EXECUTABLE="$PYTHON_EXECUTABLE"\
+        -DPython_EXECUTABLE="$PYTHON_EXECUTABLE"\
+        -DPython3_EXECUTABLE="$PYTHON_EXECUTABLE"\
         -DBUILD_pet_rd_tools=ON
   if [ "$SB_build" = 1 ]
   then
