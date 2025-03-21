@@ -1,8 +1,15 @@
 # ChangeLog
 
 ## v3.x.x
-- Udated Versions:
+- Docker image updates:
+  - explicitly build on Ubuntu 22.04
+  - default to USE_SYSTEM_Armadillo=OFF
+  - do not install hdf5 and armadillo from system ubuntu as they conflict with the versions installed by conda
+- GHA:
+  - use `ubuntu-22.04` instead of `ubuntu-latest`
+- Updated Versions:
   - CIL: 4f6e3cfb0648d08071974eba35c1369a892d4924
+  - Gadgetron: 846ed3fb57b235390ab0fb953edd17af86935d61 #22/11/2024
 
 ## v3.8.0
 - Removed ACE as no longer needed by Gadgetron
