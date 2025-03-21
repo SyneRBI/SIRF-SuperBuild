@@ -28,7 +28,7 @@ if [ "$PYTHON" = "miniconda" ]; then
 if test "${BUILD_CIL:-OFF}" != "OFF"; then
       # delete CIL package from the environment file
       echo "Deleting CIL from the environment file BUILD_CIL is set to >${BUILD_CIL}<"
-      sed -r -i -e '/^\s*- (cil).*/d' environment-sirf.yml
+      sed -r -i -e '/^\s*- (cil|ccpi-regulariser).*/d' environment-sirf.yml
       cat environment-sirf.yml
     else
       echo "Not deleting CIL from the environment file BUILD_CIL is set to >${BUILD_CIL}<"
