@@ -186,7 +186,7 @@ SuperBuild_install(){
         -DNIFTYREG_USE_CUDA=OFF\
         -DBUILD_CIL=ON\
         -DPython_EXECUTABLE="$PYTHON_EXECUTABLE"\
-        -DPython3_EXECUTABLE="$PYTHON_EXECUTABLE"\
+        -DPYTHON_EXECUTABLE="$PYTHON_EXECUTABLE"\
         -DBUILD_pet_rd_tools=ON
   if [ "$SB_build" = 1 ]
   then

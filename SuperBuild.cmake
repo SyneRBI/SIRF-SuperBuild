@@ -104,9 +104,9 @@ else()
     message(STATUS "Python version ${PYTHON_VERSION_STRING}")
   endif()
 
-  if (PYTHONLIBS_FOUND)
-    message(STATUS "Found PYTHON_INCLUDE_DIRS=${PYTHON_INCLUDE_DIRS}")
-    message(STATUS "Found PYTHON_LIBRARIES=${PYTHON_LIBRARIES}")
+  if (Python_Development_FOUND)
+    message(STATUS "Found Python_LIBRARIES=${Python_INCLUDE_DIRS}")
+    message(STATUS "Found Python_LIBRARIES=${Python_LIBRARIES}")
   endif()
 
   # Set destinations for Python files
@@ -129,20 +129,17 @@ else()
   endif()
 
   # set PYTHONLIBS_CMAKE_ARGS to be used in the ExternalProject_add calls
-  # note: Find_package(PythonLibs) takes PYTHON_INCLUDE_DIR and PYTHON_LIBRARY as input
   set (PYTHONLIBS_CMAKE_ARGS
-       -DPython_EXECUTABLE:FILEPATH=${Python_EXECUTABLE}
-       -DPython3_EXECUTABLE:FILEPATH=${Python_EXECUTABLE})
-  if (EXISTS "${PYTHON_INCLUDE_DIR}")
+    -DPython_EXECUTABLE:FILEPATH=${Python_EXECUTABLE}
+    -DPython3_EXECUTABLE:FILEPATH=${Python_EXECUTABLE}
+    -DPYTHON_EXECUTABLE:FILEPATH=${Python_EXECUTABLE})
+  if (Python_Development_FOUND)
     set (PYTHONLIBS_CMAKE_ARGS ${PYTHONLIBS_CMAKE_ARGS}
-      -DPYTHON_INCLUDE_DIR:PATH=${PYTHON_INCLUDE_DIR})
+      -DPython_INCLUDE_DIRS=${Python_INCLUDE_DIRS}
+      -DPython_LIBRARIES=${Python_LIBRARIES}
+      -DPYTHON_INCLUDE_DIR=${Python_INCLUDE_DIRS}
+      -DPYTHON_LIBRARY=${Python_LIBRARIES})
   endif()
-  if (EXISTS "${PYTHON_LIBRARY}")
-    set (PYTHONLIBS_CMAKE_ARGS ${PYTHONLIBS_CMAKE_ARGS}
-      -DPYTHON_LIBRARY:FILEPATH=${PYTHON_LIBRARY})
-  endif()
-
-
   message(STATUS "PYTHONLIBS_CMAKE_ARGS= " "${PYTHONLIBS_CMAKE_ARGS}")
 endif()
 
@@ -365,7 +362,7 @@ endif()
 
 set(ENV_PYTHON_BASH "#####    Python not found    #####")
 set(ENV_PYTHON_CSH  "#####    Python not found    #####")
-if(PYTHONINTERP_FOUND)
+if(Python_Interpreter_FOUND)
   if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
     set(COMMENT_OUT_PREFIX "")
   else()
@@ -429,7 +426,7 @@ if (WIN32)
     endif()
     cmake_path(NATIVE_PATH Matlab_MAIN_PROGRAM WIN_Matlab_MAIN_PROGRAM)
   endif()
-  if (PYTHONINTERP_FOUND)
+  if (Python_Interpreter_FOUND)
     cmake_path(NATIVE_PATH PYTHON_DEST WIN_PYTHON_DEST)
     cmake_path(NATIVE_PATH Python_EXECUTABLE WIN_PYTHON_EXECUTABLE)
   endif()
