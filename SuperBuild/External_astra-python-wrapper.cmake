@@ -50,10 +50,10 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message(STATUS "${__indent}Adding project ${proj}")
   SetGitTagAndRepo("${proj}")
   ### --- Project specific additions here
-  
+
   set(${proj}_URL ${astra}_URL)
   set(${proj}_TAG ${astra}_TAG)
-    
+
   message("${proj} URL " ${${proj}_URL}  )
   message("${proj} TAG " ${${proj}_TAG}  )
 
@@ -74,7 +74,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 #! /bin/bash
 set -ex
 
-CPPFLAGS=\"-DASTRA_CUDA -DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib -I${${astra}_SOURCE_DIR}/include\" CC=${CMAKE_C_COMPILER} ${PYTHON_EXECUTABLE} ${${astra}_SOURCE_DIR}/python/builder.py build
+CPPFLAGS=\"-DASTRA_CUDA -DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib -I${${astra}_SOURCE_DIR}/include\" CC=${CMAKE_C_COMPILER} ${Python_EXECUTABLE} ${${astra}_SOURCE_DIR}/python/builder.py build
 ")
 
     else()
@@ -88,13 +88,13 @@ CPPFLAGS=\"-DASTRA_CUDA -DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${S
 #! /bin/bash
 set -ex
 
-CPPFLAGS=\"-DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib -I${${astra}_SOURCE_DIR}/include\" CC=${CMAKE_C_COMPILER} ${PYTHON_EXECUTABLE} ${${astra}_SOURCE_DIR}/python/builder.py build
+CPPFLAGS=\"-DASTRA_PYTHON -I${SUPERBUILD_INSTALL_DIR}/include -L${SUPERBUILD_INSTALL_DIR}/lib -I${${astra}_SOURCE_DIR}/include\" CC=${CMAKE_C_COMPILER} ${Python_EXECUTABLE} ${${astra}_SOURCE_DIR}/python/builder.py build
 ")
 
 
     endif()
-    
-    
+
+
 
     #create an install script
     file(WRITE ${${proj}_BINARY_DIR}/python_install
@@ -136,7 +136,7 @@ cp -rv ${${astra}_SOURCE_DIR}/python/build/$build_dir/astra ${${proj}_INSTALL_DI
         BUILD_COMMAND
           ${CMAKE_COMMAND} -E chdir ${${astra}_SOURCE_DIR}/python ${${proj}_BINARY_DIR}/python/python_build
         INSTALL_COMMAND
-          ${CMAKE_COMMAND} -E chdir ${${astra}_SOURCE_DIR}/python ${${proj}_BINARY_DIR}/python/python_install 
+          ${CMAKE_COMMAND} -E chdir ${${astra}_SOURCE_DIR}/python ${${proj}_BINARY_DIR}/python/python_install
         DEPENDS
           ${${proj}_DEPENDENCIES}
       )
@@ -151,11 +151,11 @@ cp -rv ${${astra}_SOURCE_DIR}/python/build/$build_dir/astra ${${proj}_INSTALL_DI
   set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
   set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
   add_test(NAME ASTRA_BASIC_TEST
-           COMMAND ${PYTHON_EXECUTABLE} -c "import astra; astra.test_noCUDA()"
+           COMMAND ${Python_EXECUTABLE} -c "import astra; astra.test_noCUDA()"
            WORKING_DIRECTORY ${${astra}_SOURCE_DIR})
   if (${${proj}_USE_CUDA})
     add_test(NAME ASTRA_BASIC_GPU_TEST
-             COMMAND ${PYTHON_EXECUTABLE} -c "import astra; astra.test_CUDA()"
+             COMMAND ${Python_EXECUTABLE} -c "import astra; astra.test_CUDA()"
              WORKING_DIRECTORY ${${astra}_SOURCE_DIR})
   endif()
 

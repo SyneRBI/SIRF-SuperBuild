@@ -49,7 +49,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   message(STATUS "${__indent}Adding project ${proj}")
   SetGitTagAndRepo("${proj}")
   ### --- Project specific additions here
-  
+
   message("astra-toolkit URL " ${${proj}_URL}  )
   message("astra-toolkit TAG " ${${proj}_TAG}  )
 
@@ -67,21 +67,21 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       ${${proj}_EP_ARGS}
       ${${proj}_EP_ARGS_GIT}
       ${${proj}_EP_ARGS_DIRS}
-      
+
 
       # This build is Unix specific
       UPDATE_COMMAND ${CMAKE_COMMAND} -E rm -f ${${proj}_SOURCE_DIR}/python/python_build && ${CMAKE_COMMAND} -E rm -f ${${proj}_SOURCE_DIR}/python/python_install
       CONFIGURE_COMMAND
         ${CMAKE_COMMAND} -E chdir ${${proj}_SOURCE_DIR}/build/linux ./autogen.sh
       BUILD_COMMAND
-        ${CMAKE_COMMAND} -E env ${cmd} ${ASTRA_BUILD_OPTIONS} --prefix=${${proj}_INSTALL_DIR} --with-install-type=prefix --with-python=${PYTHON_EXECUTABLE}
+        ${CMAKE_COMMAND} -E env ${cmd} ${ASTRA_BUILD_OPTIONS} --prefix=${${proj}_INSTALL_DIR} --with-install-type=prefix --with-python=${Python_EXECUTABLE}
       INSTALL_COMMAND
         ${CMAKE_COMMAND} -E chdir ${${proj}_BINARY_DIR}/ make -j2 install-libraries
       DEPENDS
         ${${proj}_DEPENDENCIES}
     )
 
-    
+
 
 
   set(${proj}_ROOT        ${${proj}_SOURCE_DIR})

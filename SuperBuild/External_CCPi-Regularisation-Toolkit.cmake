@@ -48,7 +48,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   message(STATUS "${proj} URL " ${${proj}_URL}  )
   message(STATUS "${proj} TAG " ${${proj}_TAG}  )
-  
+
   set (CIL_VERSION ${${prog}_TAG})
   # conda build should never get here
   if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
@@ -56,7 +56,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     # $PYTHONPATH directory
 
     # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
-    
+
     ExternalProject_Add(${proj}
       ${${proj}_EP_ARGS}
       ${${proj}_EP_ARGS_GIT}
@@ -72,9 +72,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         -DPYTHON_DEST_DIR:PATH=${PYTHON_DEST}
 
       BUILD_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} ${CMAKE_COMMAND} --build .
-      INSTALL_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} ${CMAKE_COMMAND} --build . --target install && 
-       ${PYTHON_EXECUTABLE} -m pip install ${${proj}_SOURCE_DIR}/src/Python
-      #TEST_COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -s ${${proj}_SOURCE_DIR}/test/ -p test*.py
+      INSTALL_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} ${CMAKE_COMMAND} --build . --target install &&
+       ${Python_EXECUTABLE} -m pip install ${${proj}_SOURCE_DIR}/src/Python
+      #TEST_COMMAND ${Python_EXECUTABLE} -m unittest discover -s ${${proj}_SOURCE_DIR}/test/ -p test*.py
       DEPENDS
         ${${proj}_DEPENDENCIES}
     )
@@ -88,7 +88,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         ${${proj}_EP_ARGS_DIRS}
         CONFIGURE_COMMAND ""
         BUILD_COMMAND ""
-        INSTALL_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} SRC_DIR=${${proj}_BINARY_DIR} RECIPE_DIR=${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe PYTHON=${PYTHON_EXECUTABLE} bash ${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe/build.sh
+        INSTALL_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} SRC_DIR=${${proj}_BINARY_DIR} RECIPE_DIR=${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe PYTHON=${Python_EXECUTABLE} bash ${${proj}_SOURCE_DIR}/Wrappers/Python/conda-recipe/build.sh
         CMAKE_ARGS
            -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
         DEPENDS
@@ -100,7 +100,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set(${proj}_ROOT        ${${proj}_SOURCE_DIR})
     set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
     add_test(NAME CIL_REGULARISATION_TEST_CPU
-             COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -s test -p test_CPU_*.py
+             COMMAND ${Python_EXECUTABLE} -m unittest discover -s test -p test_CPU_*.py
     WORKING_DIRECTORY ${${proj}_SOURCE_DIR})
 
   else()
