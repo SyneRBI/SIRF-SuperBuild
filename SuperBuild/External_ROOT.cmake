@@ -44,8 +44,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   mark_as_advanced(ROOT_opengl ROOT_x11)
 
   set(${proj}_CMAKE_ARGS
-      -DPython_EXECUTABLE:FILE=${Python_EXECUTABLE}
-      -DPython3_EXECUTABLE:FILE=${Python_EXECUTABLE}
+      ${PYTHONLIBS_CMAKE_ARGS}
       -Dopengl=${ROOT_opengl}
       -Dx11=${ROOT_x11}
   )
