@@ -32,9 +32,9 @@ SetCanonicalDirectoryNames(${proj})
 
 if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalProjName}}" ) )
   message(STATUS "${__indent}Adding project ${proj}")
-  
+
   ### --- Project specific additions here
- 
+
   if (DISABLE_OpenMP)
     message(FATAL_ERROR "CCPi-Framework requries OpenMP")
   endif()
@@ -43,7 +43,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   SetGitTagAndRepo("${proj}")
 
   # Pass IPP_INCLUDE And IPP_LIBRARY if they exist
-  
+
   if (IPP_LIBRARY)
     set(DIPP_LIBRARY "-DIPP_LIBRARY:STRING=${IPP_LIBRARY}")
   endif()
@@ -53,7 +53,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   # conda build should never get here
   if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
-    # in case of PYTHONPATH it is sufficient to copy the files to the 
+    # in case of PYTHONPATH it is sufficient to copy the files to the
     # $PYTHONPATH directory
     ExternalProject_Add(${proj}
       ${${proj}_EP_ARGS}
@@ -61,7 +61,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       ${${proj}_EP_ARGS_DIRS}
       # apparently this is the only way to pass environment variables to
       # external projects
-      PATCH_COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/patches/cil-patch.py ${${proj}_SOURCE_DIR}/Wrappers/Python/cil/utilities/dataexample.py
+      PATCH_COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/patches/cil-patch.py ${${proj}_SOURCE_DIR}/Wrappers/Python/cil/utilities/dataexample.py
       UPDATE_COMMAND ""
       CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG}
         ${CMAKE_COMMAND} ${${proj}_SOURCE_DIR}
@@ -71,12 +71,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
           -DCIL_VERSION:STRING=${${proj}_TAG}
           ${DIPP_INCLUDE}
           ${DIPP_LIBRARY}
-      INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install && ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/Wrappers/Python/data ${SUPERBUILD_INSTALL_DIR}/share/cil/
+      INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install
+        && ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/Wrappers/Python/data ${SUPERBUILD_INSTALL_DIR}/share/cil/
       DEPENDS ${${proj}_DEPENDENCIES}
     )
 
   else()
-    # if SETUP_PY one can launch the conda build.sh script setting 
+    # if SETUP_PY one can launch the conda build.sh script setting
     # the appropriate variables.
     message(FATAL_ERROR "Only PYTHONPATH install method is currently supported. Got ${PYTHON_STRATEGY}")
   endif()
@@ -86,56 +87,56 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(${proj}_INCLUDE_DIR ${${proj}_SOURCE_DIR})
 
   add_test(NAME CIL_FRAMEWORK_TESTS_1
-           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_DataContainer.py 
+           COMMAND ${Python_EXECUTABLE} -m unittest discover -p test_DataContainer.py
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   add_test(NAME CIL_FRAMEWORK_TESTS_2
-           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_algor*.py 
+           COMMAND ${Python_EXECUTABLE} -m unittest discover -p test_algor*.py
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   add_test(NAME CIL_FRAMEWORK_TESTS_3
-           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_run_*.py
+           COMMAND ${Python_EXECUTABLE} -m unittest discover -p test_run_*.py
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   add_test(NAME CIL_SIRF_TESTS
-          COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_SIRF*.py
+           COMMAND ${Python_EXECUTABLE} -m unittest discover -p test_SIRF*.py
           WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   add_test(NAME CIL_FRAMEWORK_TESTS_4
-           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_Block_*.py
+           COMMAND ${Python_EXECUTABLE} -m unittest discover -p test_Block_*.py
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   add_test(NAME CIL_FRAMEWORK_TESTS_5
-           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_dataexample.py
+           COMMAND ${Python_EXECUTABLE} -m unittest discover -p test_dataexample.py
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   add_test(NAME CIL_FRAMEWORK_TESTS_6
-           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_functions.py
+           COMMAND ${Python_EXECUTABLE} -m unittest discover -p test_functions.py
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   add_test(NAME CIL_FRAMEWORK_TESTS_7
-           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_Gradient.py
+           COMMAND ${Python_EXECUTABLE} -m unittest discover -p test_Gradient.py
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   add_test(NAME CIL_FRAMEWORK_TESTS_8
-           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_NexusReaderWriter.py
+           COMMAND ${Python_EXECUTABLE} -m unittest discover -p test_NexusReaderWriter.py
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   add_test(NAME CIL_FRAMEWORK_TESTS_9
-           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_Operator.py
+           COMMAND ${Python_EXECUTABLE} -m unittest discover -p test_Operator.py
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   add_test(NAME CIL_FRAMEWORK_TESTS_10
-           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_PluginsRegularisation.py
+           COMMAND ${Python_EXECUTABLE} -m unittest discover -p test_PluginsRegularisation.py
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   add_test(NAME CIL_FRAMEWORK_TESTS_11
-           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_quality_measures.py
+           COMMAND ${Python_EXECUTABLE} -m unittest discover -p test_quality_measures.py
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   add_test(NAME CIL_FRAMEWORK_TESTS_12
-           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_smoothMixedL21Norm.py
+           COMMAND ${Python_EXECUTABLE} -m unittest discover -p test_smoothMixedL21Norm.py
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   add_test(NAME CIL_FRAMEWORK_TESTS_13
-           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_subset.py
+           COMMAND ${Python_EXECUTABLE} -m unittest discover -p test_subset.py
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   add_test(NAME CIL_FRAMEWORK_TESTS_14
-           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_SumFunction.py
+           COMMAND ${Python_EXECUTABLE} -m unittest discover -p test_SumFunction.py
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   add_test(NAME CIL_FRAMEWORK_TESTS_15
-           COMMAND ${PYTHON_EXECUTABLE} -m unittest discover -p test_TranslateFunction.py
+           COMMAND ${Python_EXECUTABLE} -m unittest discover -p test_TranslateFunction.py
            WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
 
   # add_test(NAME CIL_FRAMEWORK_TESTS_ALL
-  #          COMMAND ${PYTHON_EXECUTABLE} -m unittest discover
+  #          COMMAND ${Python_EXECUTABLE} -m unittest discover
   #          WORKING_DIRECTORY ${${proj}_SOURCE_DIR}/Wrappers/Python/test)
   else()
     ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"

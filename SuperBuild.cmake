@@ -95,24 +95,13 @@ if (DISABLE_PYTHON)
   message(STATUS "Python support disabled")
 else()
 
-  # only Python 3 is supported
-  find_package(PythonInterp 3)
-  
-  if (PYTHONINTERP_FOUND)
-    set(Python_ADDITIONAL_VERSIONS ${PYTHON_VERSION_STRING})
-    message(STATUS "Found PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}")
-    message(STATUS "Python version ${PYTHON_VERSION_STRING}")
-  endif()
-  
-  find_package(PythonLibs 3)
-  
-  if (PYTHONLIBS_FOUND)
-    message(STATUS "Found PYTHON_INCLUDE_DIRS=${PYTHON_INCLUDE_DIRS}")
-    message(STATUS "Found PYTHON_LIBRARIES=${PYTHON_LIBRARIES}")
-  endif()
+  find_package(Python 3 REQUIRED COMPONENTS Interpreter Development)
+  # for CMP0148=OLD
+  set(Python_ADDITIONAL_VERSIONS "${Python_VERSION}")
+  set(PYTHON_EXECUTABLE "${Python_EXECUTABLE}")
 
   # Set destinations for Python files
-  set (BUILD_PYTHON ${PYTHONLIBS_FOUND})
+  set (BUILD_PYTHON ${Python_FOUND})
   if (BUILD_PYTHON)
     set(PYTHON_DEST_DIR "" CACHE PATH "Directory of the Python modules (if not set, use ${CMAKE_INSTALL_PREFIX}/python)")
     if (PYTHON_DEST_DIR)
@@ -125,24 +114,19 @@ else()
 
     set(PYTHON_STRATEGY "PYTHONPATH" CACHE STRING "\
       PYTHONPATH: prefix PYTHONPATH \n\
-      SETUP_PY:   execute ${PYTHON_EXECUTABLE} setup.py install \n\
+      SETUP_PY:   execute ${Python_EXECUTABLE} setup.py install \n\
       CONDA:      do nothing")
     set_property(CACHE PYTHON_STRATEGY PROPERTY STRINGS PYTHONPATH SETUP_PY CONDA)
   endif()
 
   # set PYTHONLIBS_CMAKE_ARGS to be used in the ExternalProject_add calls
-  # note: Find_package(PythonLibs) takes PYTHON_INCLUDE_DIR and PYTHON_LIBRARY as input
-  set (PYTHONLIBS_CMAKE_ARGS -DPYTHON_EXECUTABLE:FILEPATH=${PYTHON_EXECUTABLE})
-  if (EXISTS "${PYTHON_INCLUDE_DIR}")
-    set (PYTHONLIBS_CMAKE_ARGS ${PYTHONLIBS_CMAKE_ARGS}
-      -DPYTHON_INCLUDE_DIR:PATH=${PYTHON_INCLUDE_DIR})
-  endif()
-  if (EXISTS "${PYTHON_LIBRARY}")
-    set (PYTHONLIBS_CMAKE_ARGS ${PYTHONLIBS_CMAKE_ARGS}
-      -DPYTHON_LIBRARY:FILEPATH=${PYTHON_LIBRARY})
-  endif()
-
-
+  set (PYTHONLIBS_CMAKE_ARGS
+    -DPython_EXECUTABLE:FILEPATH=${Python_EXECUTABLE}
+    -DPython3_EXECUTABLE:FILEPATH=${Python_EXECUTABLE}
+    # for CMP0148=OLD
+    -DPYTHON_EXECUTABLE:FILEPATH=${Python_EXECUTABLE}
+    -DPython_ADDITIONAL_VERSIONS=${Python_VERSION}
+  )
   message(STATUS "PYTHONLIBS_CMAKE_ARGS= " "${PYTHONLIBS_CMAKE_ARGS}")
 endif()
 
@@ -171,8 +155,8 @@ else()
 endif()
 
 # Include macro to sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
-# If the user doesn't want git checkout to be performed, 
-# these will be set to blank strings. Else, they'll be set to 
+# If the user doesn't want git checkout to be performed,
+# these will be set to blank strings. Else, they'll be set to
 # ${${proj}_URL} and ${${proj}_TAG}, respectively.
 include(${CMAKE_SOURCE_DIR}/CMake/SetGitTagAndRepo.cmake)
 # Include macro to set SOURCE_DIR etc
@@ -221,8 +205,8 @@ if (NOT DISABLE_OpenMP)
   find_package(OpenMP)
   if (OPENMP_FOUND)
      message(STATUS "OpenMP found, support enabled. If you get compiler errors saying \"omp.h not found\", set the following CMake variables: OpenMP_CXX_INCLUDE_DIR, OpenMP_C_INCLUDE_DIR. For linking errors, check other \"OpenMP\*\" CMake variables as well.")
-  
-    mark_as_superbuild(ALL_PROJECTS VARS 
+
+    mark_as_superbuild(ALL_PROJECTS VARS
       OpenMP_CXX_FLAGS:STRING OpenMP_C_FLAGS:STRING
       OpenMP_C_LIB_NAMES:STRING OpenMP_CXX_LIB_NAMES:STRING
       )
@@ -365,7 +349,7 @@ endif()
 
 set(ENV_PYTHON_BASH "#####    Python not found    #####")
 set(ENV_PYTHON_CSH  "#####    Python not found    #####")
-if(PYTHONINTERP_FOUND)
+if(Python_Interpreter_FOUND)
   if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
     set(COMMENT_OUT_PREFIX "")
   else()
@@ -377,12 +361,12 @@ if(PYTHONINTERP_FOUND)
     ${COMMENT_OUT_PREFIX}  setenv PYTHONPATH ${PYTHON_DEST}:$PYTHONPATH \n\
     ${COMMENT_OUT_PREFIX}else \n\
     ${COMMENT_OUT_PREFIX}  setenv PYTHONPATH ${PYTHON_DEST} \n\
-    setenv SIRF_PYTHON_EXECUTABLE ${PYTHON_EXECUTABLE} \n\
+    setenv SIRF_PYTHON_EXECUTABLE ${Python_EXECUTABLE} \n\
     ${COMMENT_OUT_PREFIX}endif")
 
   set (ENV_PYTHON_BASH "\
     ${COMMENT_OUT_PREFIX}export PYTHONPATH=\"${PYTHON_DEST}\${PYTHONPATH:+:\${PYTHONPATH}}\" \n\
-    export SIRF_PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}")
+    export SIRF_PYTHON_EXECUTABLE=${Python_EXECUTABLE}")
 endif()
 
 set(ENV_MATLAB_BASH "#####     Matlab not found     #####")
@@ -429,9 +413,9 @@ if (WIN32)
     endif()
     cmake_path(NATIVE_PATH Matlab_MAIN_PROGRAM WIN_Matlab_MAIN_PROGRAM)
   endif()
-  if (PYTHONINTERP_FOUND)
+  if (Python_Interpreter_FOUND)
     cmake_path(NATIVE_PATH PYTHON_DEST WIN_PYTHON_DEST)
-    cmake_path(NATIVE_PATH PYTHON_EXECUTABLE WIN_PYTHON_EXECUTABLE)
+    cmake_path(NATIVE_PATH Python_EXECUTABLE WIN_PYTHON_EXECUTABLE)
   endif()
   configure_file(env_sirf.PS1.in ${SyneRBI_INSTALL}/bin/env_sirf.PS1)
 endif()

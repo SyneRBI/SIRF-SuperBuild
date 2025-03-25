@@ -46,7 +46,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   ELSE()
     message(STATUS "NiftyPET currently only supports python2,"
       " so using that for NiftyPET compilation...")
-    find_package (Python2 REQUIRED COMPONENTS Interpreter Development)
+    find_package(Python2 REQUIRED COMPONENTS Interpreter Development)
     SET(NiftyPET_PYTHON_EXECUTABLE ${Python2_EXECUTABLE} CACHE PATH "Path to python2 executable for NiftyPET installation")
     SET(NiftyPET_PYTHON_INCLUDE_DIR ${Python2_INCLUDE_DIRS} CACHE PATH "Path to python2 include directories for NiftyPET installation")
     SET(NiftyPET_PYTHON_LIBRARY ${Python2_LIBRARIES} CACHE PATH "Path to python2 libraries for NiftyPET installation")
@@ -68,9 +68,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DCMAKE_PREFIX_PATH=${SUPERBUILD_INSTALL_DIR}
       -DCMAKE_LIBRARY_PATH=${SUPERBUILD_INSTALL_DIR}/lib
       -DCMAKE_INSTALL_PREFIX=${${proj}_INSTALL_DIR}
+      -DPython_EXECUTABLE=${NiftyPET_PYTHON_EXECUTABLE}
+      -DPython2_EXECUTABLE=${NiftyPET_PYTHON_EXECUTABLE}
       -DPYTHON_EXECUTABLE=${NiftyPET_PYTHON_EXECUTABLE}
-      -DPYTHON_INCLUDE_DIR:PATH=${NiftyPET_PYTHON_INCLUDE_DIR}
-      -DPYTHON_LIBRARY=${NiftyPET_PYTHON_LIBRARY}
       ${${proj}_EXTRA_CMAKE_ARGS}
     DEPENDS
         ${${proj}_DEPENDENCIES}
