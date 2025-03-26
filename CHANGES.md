@@ -4,8 +4,7 @@
 - Updated Versions:
   - CIL: 4f6e3cfb0648d08071974eba35c1369a892d4924
 - CMake:
-  - Use new CMake `FindPython` module. You might need to help it to find the correct python version, e.g. by setting the `Python_EXECUTABLE` CMake variable. Check [its documentation](https://cmake.org/cmake/help/latest/module/FindPython.html) for more information.
-
+  - Use [new `FindPython` module](https://cmake.org/cmake/help/latest/module/FindPython.html). You might need to help it find the correct Python path, e.g. by setting `Python_ROOT_DIR`.
 
 ## v3.8.0
 - Removed ACE as no longer needed by Gadgetron
