@@ -1,4 +1,5 @@
 # syntax=docker/dockerfile:1
+# debug revert
 ARG BASE_CONTAINER=quay.io/jupyter/scipy-notebook:latest
 FROM ${BASE_CONTAINER} as base
 
