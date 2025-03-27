@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_CONTAINER=quay.io/jupyter/scipy-notebook:latest
+ARG BASE_CONTAINER=quay.io/jupyter/scipy-notebook:ubuntu-22.04
 FROM ${BASE_CONTAINER} as base
 
 USER root
