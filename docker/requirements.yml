@@ -26,13 +26,15 @@ dependencies:
   - ccpi-regulariser  # cil
   - dxchange          # cil
   - h5py              # cil
+  - cxx-compiler      # cil
+  - c-compiler        # cil
   - pillow            # cil
   - olefile >=0.46    # cil
   - pywavelets        # cil
   - cil-data >=21.3.0 # cil
   - ipp >=2021.10     # cil
   - tqdm              # cil
-  - numba             # cil 
+  - numba             # cil
   # - tigre          # cil (GPU)
   # - astra-toolbox  # cil (GPU)
   - pip:
