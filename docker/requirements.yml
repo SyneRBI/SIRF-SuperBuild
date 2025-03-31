@@ -26,6 +26,9 @@ dependencies:
   - ccpi-regulariser  # cil
   - dxchange          # cil
   - h5py              # cil
+  - cxx-compiler=1.5.2 # g++ 11.4 on Linux, same as Ubuntu 22.04 (supported by current Gadgetron has)
+  - boost             # Ubuntu 22.04 cxx-compiler
+  - fftw              # Ubuntu 22.04 cxx-compiler
   - pillow            # cil
   - olefile >=0.46    # cil
   - pywavelets        # cil
