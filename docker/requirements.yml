@@ -26,6 +26,8 @@ dependencies:
   - ccpi-regulariser  # cil
   - dxchange          # cil
   - h5py              # cil
+  - cxx-compiler      # cil
+  - c-compiler        # cil
   - pillow            # cil
   - olefile >=0.46    # cil
   - pywavelets        # cil
