@@ -156,7 +156,7 @@ Note that this cache is different from the "normal" `ccache` of your host. (If y
 
 <https://github.com/jupyter/docker-stacks> is used to gradually build up images:
 
-- `BASE_CONTAINER=nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04`
+- `BASE_IMAGE=nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04`
 - `docker-stacks-foundation` -> `synerbi/jupyter:foundation`
 - `base-notebook` -> `synerbi/jupyter:base`
 - `minimal-notebook` -> `synerbi/jupyter:minimal`
