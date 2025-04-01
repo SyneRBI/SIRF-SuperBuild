@@ -26,8 +26,9 @@ dependencies:
   - ccpi-regulariser  # cil
   - dxchange          # cil
   - h5py              # cil
-  - cxx-compiler      # cil
-  - c-compiler        # cil
+  - cxx-compiler
+  - c-compiler
+  - boost             # system boost is too old on 22.04 for conda gcc
   - pillow            # cil
   - olefile >=0.46    # cil
   - pywavelets        # cil
