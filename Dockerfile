@@ -90,6 +90,7 @@ RUN BUILD_FLAGS="-G Ninja\
  -DGadgetron_USE_CUDA=${Gadgetron_USE_CUDA}\
  -DBUILD_CIL=${BUILD_CIL}" \
  EXTRA_BUILD_FLAGS="${EXTRA_BUILD_FLAGS}" \
+ FFTW3_ROOT_DIR="${CONDA_DIR}" \
  bash /opt/scripts/user_sirf-ubuntu.sh \
  && fix-permissions /opt/SIRF-SuperBuild /opt/ccache
 
