@@ -55,15 +55,23 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     # in case of PYTHONPATH it is sufficient to copy the files to the
     # $PYTHONPATH directory
 
+    # Set CMAKE_CONFIG for use in BUILD_COMMAND etc
+    if (NOT CMAKE_BUILD_TYPE)
+       # default to Release
+       # TODO possibly this could be done via a generator expression to find out how we build.
+       set(CMAKE_CONFIG Release)
+    else()
+       set(CMAKE_CONFIG ${CMAKE_BUILD_TYPE})
+    endif()
     # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
-
     ExternalProject_Add(${proj}
       ${${proj}_EP_ARGS}
       ${${proj}_EP_ARGS_GIT}
       ${${proj}_EP_ARGS_DIRS}
       # apparently this is the only way to pass environment variables to
       # external projects
-      CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} ${CMAKE_COMMAND} ${${proj}_SOURCE_DIR}
+      CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG}
+       ${CMAKE_COMMAND}  -G "${CMAKE_GENERATOR}" -S ${${proj}_SOURCE_DIR}
         -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
         -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
         -DBUILD_PYTHON_WRAPPER:BOOL=ON
@@ -71,8 +79,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         ${PYTHONLIBS_CMAKE_ARGS}
         -DPYTHON_DEST_DIR:PATH=${PYTHON_DEST}
 
-      BUILD_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} ${CMAKE_COMMAND} --build .
-      INSTALL_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} ${CMAKE_COMMAND} --build . --target install &&
+      BUILD_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} ${CMAKE_COMMAND} --build . --config ${CMAKE_CONFIG}
+      INSTALL_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} ${CMAKE_COMMAND} --build . --config ${CMAKE_CONFIG} --target install &&
        ${Python_EXECUTABLE} -m pip install ${${proj}_SOURCE_DIR}/src/Python
       #TEST_COMMAND ${Python_EXECUTABLE} -m unittest discover -s ${${proj}_SOURCE_DIR}/test/ -p test*.py
       DEPENDS
