@@ -27,7 +27,10 @@ if (WIN32)
     message(STATUS "CMAKE_GENERATOR: ${CMAKE_GENERATOR}")
     message(STATUS "CMAKE_GENERATOR_PLATFORM: ${CMAKE_GENERATOR_PLATFORM}")
     message(STATUS "CMAKE_VS_PLATFORM_NAME: ${CMAKE_VS_PLATFORM_NAME}")
-    message( FATAL_ERROR "The SuperBuild currently has Win64 hard-wired for dependent libraries. Please use a Win64 generator/toolset. Currently using platform '${CMAKE_VS_PLATFORM_NAME}'.")
+    if (MSVC) # really should check on the generator, but that's more complicated
+      # Issue a warning (as maybe it will work anyway)
+      message(WARNING "The SuperBuild currently has Win64 hard-wired for dependent libraries. Please use a Win64 generator/toolset. Currently using platform '${CMAKE_VS_PLATFORM_NAME}'.")
+     endif()
  endif()
 endif()
 
