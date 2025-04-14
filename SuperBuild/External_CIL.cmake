@@ -56,13 +56,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     # in case of PYTHONPATH it is sufficient to copy the files to the
     # $PYTHONPATH directory
 
-    # Set CMAKE_CONFIG for use in BUILD_COMMAND etc
+    # Set _config for use in BUILD_COMMAND etc
     if (NOT CMAKE_BUILD_TYPE)
        # default to Release
-       # TODO possibly this could be done via a generator expression to find out how we build.
-       set(CMAKE_CONFIG Release)
+       # TODO could add a loop over all CONFIGURATION_TYPES
+       set(_config Release)
     else()
-       set(CMAKE_CONFIG ${CMAKE_BUILD_TYPE})
+       set(_config ${CMAKE_BUILD_TYPE})
     endif()
 
     ExternalProject_Add(${proj}
@@ -82,8 +82,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
           -DCIL_VERSION:STRING=${${proj}_TAG}
           ${DIPP_INCLUDE}
           ${DIPP_LIBRARY}
-      BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_CONFIG}
-      INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_CONFIG}  --target install
+      BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${_config}
+      INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${_config}  --target install
         && ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/Wrappers/Python/data ${SUPERBUILD_INSTALL_DIR}/share/cil/
       DEPENDS ${${proj}_DEPENDENCIES}
     )

@@ -55,13 +55,13 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     # in case of PYTHONPATH it is sufficient to copy the files to the
     # $PYTHONPATH directory
 
-    # Set CMAKE_CONFIG for use in BUILD_COMMAND etc
+    # Set _config for use in BUILD_COMMAND etc
     if (NOT CMAKE_BUILD_TYPE)
        # default to Release
-       # TODO possibly this could be done via a generator expression to find out how we build.
-       set(CMAKE_CONFIG Release)
+       # TODO could add a loop over all CONFIGURATION_TYPES
+       set(_config Release)
     else()
-       set(CMAKE_CONFIG ${CMAKE_BUILD_TYPE})
+       set(_config ${CMAKE_BUILD_TYPE})
     endif()
     # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
     ExternalProject_Add(${proj}
@@ -79,8 +79,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         ${PYTHONLIBS_CMAKE_ARGS}
         -DPYTHON_DEST_DIR:PATH=${PYTHON_DEST}
 
-      BUILD_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} ${CMAKE_COMMAND} --build . --config ${CMAKE_CONFIG}
-      INSTALL_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} ${CMAKE_COMMAND} --build . --config ${CMAKE_CONFIG} --target install &&
+      BUILD_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} ${CMAKE_COMMAND} --build . --config ${_config}
+      INSTALL_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG} ${CMAKE_COMMAND} --build . --config ${_config} --target install &&
        ${Python_EXECUTABLE} -m pip install ${${proj}_SOURCE_DIR}/src/Python
       #TEST_COMMAND ${Python_EXECUTABLE} -m unittest discover -s ${${proj}_SOURCE_DIR}/test/ -p test*.py
       DEPENDS
