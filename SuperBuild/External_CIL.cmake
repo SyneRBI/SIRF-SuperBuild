@@ -55,6 +55,16 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
     # in case of PYTHONPATH it is sufficient to copy the files to the
     # $PYTHONPATH directory
+
+    # Set _config for use in BUILD_COMMAND etc
+    if (NOT CMAKE_BUILD_TYPE)
+       # default to Release
+       # TODO could add a loop over all CONFIGURATION_TYPES
+       set(_config Release)
+    else()
+       set(_config ${CMAKE_BUILD_TYPE})
+    endif()
+
     ExternalProject_Add(${proj}
       ${${proj}_EP_ARGS}
       ${${proj}_EP_ARGS_GIT}
@@ -64,14 +74,16 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       PATCH_COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/patches/cil-patch.py ${${proj}_SOURCE_DIR}/Wrappers/Python/cil/utilities/dataexample.py
       UPDATE_COMMAND ""
       CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CIL_VERSION=${${proj}_TAG}
-        ${CMAKE_COMMAND} ${${proj}_SOURCE_DIR}
+        ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" -S ${${proj}_SOURCE_DIR}
           -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
+          -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
           ${PYTHONLIBS_CMAKE_ARGS}
           -DPYTHON_DEST_DIR:PATH=${PYTHON_DEST}
           -DCIL_VERSION:STRING=${${proj}_TAG}
           ${DIPP_INCLUDE}
           ${DIPP_LIBRARY}
-      INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install
+      BUILD_COMMAND ${CMAKE_COMMAND} --build . --config ${_config}
+      INSTALL_COMMAND ${CMAKE_COMMAND} --build . --config ${_config}  --target install
         && ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/Wrappers/Python/data ${SUPERBUILD_INSTALL_DIR}/share/cil/
       DEPENDS ${${proj}_DEPENDENCIES}
     )
