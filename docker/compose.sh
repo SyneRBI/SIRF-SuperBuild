@@ -11,7 +11,7 @@ Options:
 $(sed -rn 's/^\s*(\w)\) .*;; # (.*)$/  -\1: \2/p' "$0")
 Docker Compose Options:
   Forwarded to 'docker compose build/run', e.g.:
-    $0 -b -- --build-arg BUILD_CIL=ON --build-arg EXTRA_BUILD_FLAGS="-DCIL_TAG=origin/master"
+    $0 -b -- --build-arg USE_ITK=OFF --build-arg EXTRA_BUILD_FLAGS="-DCIL_TAG=origin/master"
 Detected config files:
   Dockerfile docker-compose.yml $(echo docker/docker-compose.*.yml)
 EOF

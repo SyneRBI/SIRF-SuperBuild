@@ -21,19 +21,20 @@ dependencies:
   - jupytext
   - tensorboard
   - tensorboardx
-  - ccpi-regulariser  # cil
-  - dxchange          # cil
-  #- boost            # Ubuntu 22.04 cxx-compiler
-  #- fftw             # Ubuntu 22.04 cxx-compiler
-  - pillow            # cil
-  - olefile >=0.46    # cil
-  - pywavelets        # cil
-  - cil-data >=21.3.0 # cil
-  - ipp >=2021.10     # cil
-  - tqdm              # cil
-  - numba             # cil
-  - tigre             # cil (GPU)
-  - astra-toolbox     # cil (GPU)
+  - ccpi::ccpi-regulariser =24.0.1 # cil
+  - ccpi::cil-data >=22            # cil
+  - ccpi::tomophantom =2.0.0       # cil
+  - ipp-devel =2021.12.*   # cil
+  - ipp-include =2021.12.* # cil
+  - ipp =2021.12.*         # cil
+  - dxchange       # cil
+  - pillow         # cil
+  - olefile >=0.46 # cil
+  - pywavelets     # cil
+  - tqdm           # cil
+  - numba          # cil
+  - ccpi::tigre             # cil (GPU)
+  - astra-toolbox=2.1=cuda* # cil (GPU)
   - pip
   - pip:
     - git+https://github.com/TomographicImaging/CIL@skbuild

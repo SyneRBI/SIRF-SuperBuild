@@ -88,7 +88,7 @@ jobs:
       name: build
       run: |
         # rebuild sirf image
-        ./docker/compose.sh -bR${{ matrix.type == 'gpu' && 'g' || 'c' }} -- --build-arg BUILD_CIL=ON
+        ./docker/compose.sh -bR${{ matrix.type == 'gpu' && 'g' || 'c' }}
         image=synerbi/sirf:latest${{ steps.pull.outputs.suffix }}
         echo "image=$image" >> "$GITHUB_OUTPUT"
         # tag potentially newer core image

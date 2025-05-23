@@ -184,7 +184,6 @@ SuperBuild_install(){
         -DUSE_ITK=ON \
         -DDEVEL_BUILD="$DEVEL_BUILD" \
         -DNIFTYREG_USE_CUDA=OFF\
-        -DBUILD_CIL=ON\
         -DPython_EXECUTABLE="$PYTHON_EXECUTABLE"\
         -DPYTHON_EXECUTABLE="$PYTHON_EXECUTABLE"\
         -DBUILD_pet_rd_tools=ON
