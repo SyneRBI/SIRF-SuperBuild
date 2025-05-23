@@ -21,24 +21,22 @@ dependencies:
   - jupytext
   - tensorboard
   - tensorboardx
+  - ccpi-regulariser  # cil
+  - dxchange          # cil
+  #- boost            # Ubuntu 22.04 cxx-compiler
+  #- fftw             # Ubuntu 22.04 cxx-compiler
+  - pillow            # cil
+  - olefile >=0.46    # cil
+  - pywavelets        # cil
+  - cil-data >=21.3.0 # cil
+  - ipp >=2021.10     # cil
+  - tqdm              # cil
+  - numba             # cil
+  - tigre             # cil (GPU)
+  - astra-toolbox     # cil (GPU)
   - pip
-  #- cil               # cil
-  #- ccpi-regulariser  # cil
-  #- dxchange          # cil
-  #- h5py              # cil
-  #- cxx-compiler=1.5.2 # g++ 11.4 on Linux, same as Ubuntu 22.04 (supported by current Gadgetron has)
-  #- boost             # Ubuntu 22.04 cxx-compiler
-  #- fftw              # Ubuntu 22.04 cxx-compiler
-  #- pillow            # cil
-  #- olefile >=0.46    # cil
-  #- pywavelets        # cil
-  #- cil-data >=21.3.0 # cil
-  #- ipp >=2021.10     # cil
-  #- tqdm              # cil
-  #- numba             # cil
-  # - tigre          # cil (GPU)
-  # - astra-toolbox  # cil (GPU)
   - pip:
+    - git+https://github.com/TomographicImaging/CIL@skbuild
     - git+https://github.com/ismrmrd/ismrmrd-python-tools.git@master#egg=ismrmrd-python-tools
     # TODO: labextension @jupyter-widgets/jupyterlab-manager (jupyterlab_widgets ipywidgets ipympl)
     # is broken because `conda-forge::cil` downgrades `ipywidgets<8` -> breaks `%matplotlib widgets`.
