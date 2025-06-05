@@ -85,6 +85,7 @@ RUN BUILD_FLAGS="-G Ninja\
  -DUSE_ITK=${USE_ITK}\
  -DUSE_SYSTEM_SWIG=${USE_SYSTEM_SWIG}\
  -DUSE_NiftyPET=${USE_NiftyPET}\
+ -DPATCH_ISMRMRD=ON\
  -DBUILD_siemens_to_ismrmrd=${BUILD_siemens_to_ismrmrd}\
  -DBUILD_pet_rd_tools=${BUILD_pet_rd_tools}\
  -DGadgetron_USE_CUDA=${Gadgetron_USE_CUDA}\
