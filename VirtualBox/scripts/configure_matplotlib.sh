@@ -1,12 +1,10 @@
 #! /bin/bash
 
 #========================================================================
-# Author: Kris Thielemans
-# Copyright 2018 University College London
+# Author: Edoardo Pasca
+# Copyright 2018 Science Technology Facilities Council
 #
-# This is software developed for the Collaborative Computational
-# Project in Synergistic Reconstruction for Biomedical Imaging (formerly PETMR)
-# (http://www.ccpsynerbi.ac.uk/).
+# This file is part of the CCP PETMR Synergistic Image Reconstruction Framework (SIRF) virtual machine.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,22 +19,5 @@
 # limitations under the License.
 #
 #=========================================================================
-
-
-location=`dirname $0`
-
-# script to adjust gnome settings and other bits to be run only once 
-# after VM is created
-
-echo "Configuring GNOME"
-"$location/configure_gnome.sh"
-
-echo "configuring jupyter server"
-"$location/configure_jupyter.sh"
-
-echo "configuring matplotlib backend"
-"$location/configure_matplotlib.sh"
-
-echo "Done"
-echo "Before exporting the VM, please run either $location/zero_fill.sh or $location/clean_before_VM_export.sh."
-
+mkdir -p ~/.config/matplotlib
+echo "backend : tkagg" > ~/.config/matplotlib/matplotlibrc
