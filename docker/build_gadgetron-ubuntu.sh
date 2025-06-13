@@ -43,4 +43,3 @@ if apt-cache show libgmock-dev >& /dev/null; then
 else
   apt install -yq libgtest-dev
 fi
-
