@@ -87,7 +87,7 @@ jupyter notebook password
 jupyter lab --ip=0.0.0.0 --port=8888 --no-browser
 ```
 10. Open the jupyterlab from outside the VM
-- open a browser (preferably not safari) and go to [http//localhost:8888](http//localhost:8888)
+- open a browser (preferably not safari) and go to [http://localhost:8888](http://localhost:8888)
 
 
 
