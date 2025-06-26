@@ -3,6 +3,8 @@
 A pre-built VM can be downloaded from this [Zenodo page](https://zenodo.org/records/10887535). Here we explain
 how to install it, once downloaded. (If you want to build a new VM yourself, then check the [vagrant/README.md](vagrant/README.md) for instructions.)
 
+For macOS systems with Apple Silicon (ARM64), follow the dedicated section below.
+
 ## Initial download and installation
 
 
@@ -31,6 +33,71 @@ Warning: this file can be ~4.9GB. (You can download to a USB stick or hard drive
 7. Press Import and wait for a few minutes (everything will be decompressed etc).
 
 8. In the VirtualBox window, select your new VM and press the Settings icon. In the "General" category, "Advanced" tab, check that "Shared Clipboard" is set to "bidirectional".
+
+## macOS(ARM64)
+
+
+> [!NOTE]
+> These instructions are best-effort and we hope they work for you. However, we recommend using our [docker image](../docker/README.md) instead.
+
+1. Make sure you have enough free disk-space on your laptop (~10GB for installation).
+2. Make sure you have Xcode Command Line Tools installed:
+```bash
+xcode-select --install
+```
+3. Install Homebrew if not already installed:
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+4. Install QEMU:
+```bash
+brew install qemu
+```
+5. Download the preinstalled virtual machine from [Zenodo](https://doi.org/10.5281/zenodo.3552234).
+6. extract the .ova file and convert the disk image to .qcow2 format
+```bash
+tar -xvf "SIRF 3.8.1.ova"
+qemu-img convert -f vmdk -O qcow2 "SIRF 3.8.1-disk002.vmdk" SIRF_3.8.1_disk.qcow2
+```
+7. Run the VM with QEMU:
+```bash
+qemu-system-x86_64 \
+  -machine accel=tcg \
+  -cpu Haswell \
+  -m 8192 \
+  -smp 4 \
+  -drive file=SIRF_3.8.1_disk.qcow2,format=qcow2 \
+  -net nic \
+  -net user,hostfwd=tcp::8888-:8888 \
+  -display cocoa \
+  -vga std
+```
+- -m specifies the RAM size. Use about half of your laptop’s total RAM. Assigning too much RAM can slow down your host machine, while too little will slow down the virtual machine 
+- -smp sets the number of CPU cores to emulate (x86_64).
+- -net user,hostfwd=tcp::8888-:8888 exposes port 8888 of the VM to the host.
+
+
+8. Log in and set up JupyterLab:
+   > [!NOTE]
+   > In our experience, the GUI performance through QEMU is quite laggy, so we recommend to either access JupyterLab through your browser (see below), or you can use `ssh -X`.**
+If everything works, you should see a window where Ubuntu boots. Once it has started:
+- Log in with username: stiruser (password = virtual)
+- Open a terminal inside the VM
+- Set a password for the Jupyter server:
+```bash
+jupyter notebook password
+```
+9. Launch the jupyter server with port forwarding:
+```bash
+jupyter lab --ip=0.0.0.0 --port=8888 --no-browser
+```
+10. Open the jupyterlab from outside the VM
+- open a browser (preferably not safari) and go to [http://localhost:8888](http://localhost:8888)
+
+
+
+
+		
 
 
 ## Usage
