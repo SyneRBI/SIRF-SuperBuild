@@ -36,6 +36,10 @@ Warning: this file can be ~4.9GB. (You can download to a USB stick or hard drive
 
 ## macOS(ARM64)
 
+
+> [!NOTE]
+> These instructions are best-effort and we hope they work for you. However, we recommend using our [docker image](../docker/README.md) instead.
+
 1. Make sure you have enough free disk-space on your laptop (~10GB for installation).
 2. Make sure you have Xcode Command Line Tools installed:
 ```bash
@@ -74,7 +78,8 @@ qemu-system-x86_64 \
 
 
 8. Log in and set up JupyterLab:
-   
+   > [!NOTE]
+   > In our experience, the GUI performance through QEMU is quite laggy, so we recommend to either access JupyterLab through your browser (see below), or you can use `ssh -X`.**
 If everything works, you should see a window where Ubuntu boots. Once it has started:
 - Log in with username: stiruser (password = virtual)
 - Open a terminal inside the VM
