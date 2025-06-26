@@ -1,6 +1,6 @@
 # SyneRBI Virtual Machine: Installation and running of pre-built machine
 
-A pre-built VM can be downloaded from this [Zenodo page](https://zenodo.org/records/10887535). Here we explain
+A pre-built VM can be downloaded from this [Zenodo page](https://doi.org/10.5281/zenodo.3228198). Here we explain
 how to install it, once downloaded. (If you want to build a new VM yourself, then check the [vagrant/README.md](vagrant/README.md) for instructions.)
 
 For macOS systems with Apple Silicon (ARM64), follow the dedicated section below.
