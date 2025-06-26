@@ -122,6 +122,7 @@ endif()
       -DUSE_CUDA:BOOL=${${proj}_USE_CUDA}
       -DUSE_OPENMP:BOOL=${${proj}_ENABLE_OPENMP}
       -DBUILD_TESTING:BOOL=${BUILD_TESTING_${proj}}
+      -DBUILD_SUPPRESS_WARNINGS=ON # avoid Gadgetron's conversion of warnings to errors
       )
 
 
@@ -130,7 +131,9 @@ endif()
     ${${proj}_EP_ARGS_GIT}
     ${${proj}_EP_ARGS_DIRS}
 
-    CMAKE_ARGS ${${proj}_CMAKE_ARGS}
+    CMAKE_ARGS
+       ${${proj}_CMAKE_ARGS}
+       ${${proj}_EXTRA_CMAKE_ARGS}
     DEPENDS ${${proj}_DEPENDENCIES}
   )
 
