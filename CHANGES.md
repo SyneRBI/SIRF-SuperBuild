@@ -6,6 +6,8 @@
   - CIL: 4f6e3cfb0648d08071974eba35c1369a892d4924
 - CMake:
   - Use [new `FindPython` module](https://cmake.org/cmake/help/latest/module/FindPython.html). You might need to help it find the correct Python path, e.g. by setting `Python_ROOT_DIR`.
+  - Suppress compilation warnings for Gadgetron for future compatibility (as Gadgetron converts them to errors)
+  - Support the Gadgetron_EXTRA_CMAKE_ARGS option
 
 ## v3.8.0
 - Removed ACE as no longer needed by Gadgetron
