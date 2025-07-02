@@ -1,16 +1,16 @@
 # syntax=docker/dockerfile:1
-ARG BASE_CONTAINER=quay.io/jupyter/scipy-notebook:latest
-FROM ${BASE_CONTAINER} as base
+ARG BASE_IMAGE=quay.io/jupyter/scipy-notebook:ubuntu-22.04
+FROM ${BASE_IMAGE} AS base
 
 USER root
 
 # suppress warnings
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 COPY docker/raw-ubuntu.sh /opt/scripts/
 RUN bash /opt/scripts/raw-ubuntu.sh
-#ENV LC_ALL en_GB.UTF-8
-ENV LANG en_GB.UTF-8
-ENV LANGUAGE en_GB:en
+#ENV LC_ALL=en_GB.UTF-8
+ENV LANG=en_GB.UTF-8
+ENV LANGUAGE=en_GB:en
 
 COPY docker/build_gadgetron-ubuntu.sh /opt/scripts/
 RUN bash /opt/scripts/build_gadgetron-ubuntu.sh
@@ -21,22 +21,18 @@ RUN bash /opt/scripts/build_system-ubuntu.sh
 
 # SIRF python deps
 ARG BUILD_GPU=0
-ARG BUILD_CIL="OFF"
 COPY docker/requirements.yml /opt/scripts/
 # https://jupyter-docker-stacks.readthedocs.io/en/latest/using/common.html#conda-environments
 # https://github.com/TomographicImaging/CIL/blob/master/Dockerfile
 RUN if test "$BUILD_GPU" != 0; then \
   sed -ri 's/^(\s*)#\s*(- \S+.*#.*GPU.*)$/\1\2/' /opt/scripts/requirements.yml; \
  fi \
- && if test "$BUILD_CIL" != "OFF"; then \
-  sed -r -i -e '/^\s*- (cil|ccpi-regulariser).*/d' /opt/scripts/requirements.yml; \
- fi \
  && conda config --env --set channel_priority strict \
  && for ch in defaults ccpi conda-forge; do conda config --env --add channels $ch; done \
  && mamba env update -n base -f /opt/scripts/requirements.yml \
  && mamba clean --all -f -y && fix-permissions "${CONDA_DIR}" /home/${NB_USER}
 
-FROM base as build
+FROM base AS build
 
 COPY docker/update_nvidia_keys.sh /opt/scripts/
 RUN bash /opt/scripts/update_nvidia_keys.sh
@@ -69,8 +65,6 @@ ARG USE_NiftyPET="OFF"
 ARG BUILD_siemens_to_ismrmrd="ON"
 ARG BUILD_pet_rd_tools="ON"
 ARG Gadgetron_USE_CUDA="ON"
-# BUILD_CIL is defined in the previous stage
-ARG BUILD_CIL
 ARG EXTRA_BUILD_FLAGS=""
 
 # build, install in /opt/SIRF-SuperBuild/{INSTALL,sources/SIRF}, test (if RUN_CTEST)
@@ -81,19 +75,19 @@ RUN BUILD_FLAGS="-G Ninja\
  -DUSE_SYSTEM_Armadillo=${USE_SYSTEM_Armadillo}\
  -DUSE_SYSTEM_Boost=${USE_SYSTEM_Boost}\
  -DUSE_SYSTEM_FFTW3=${USE_SYSTEM_FFTW3}\
+ -DFFTW3_ROOT_DIR=${CONDA_DIR}\
  -DUSE_SYSTEM_HDF5=${USE_SYSTEM_HDF5}\
  -DUSE_ITK=${USE_ITK}\
  -DUSE_SYSTEM_SWIG=${USE_SYSTEM_SWIG}\
  -DUSE_NiftyPET=${USE_NiftyPET}\
  -DBUILD_siemens_to_ismrmrd=${BUILD_siemens_to_ismrmrd}\
  -DBUILD_pet_rd_tools=${BUILD_pet_rd_tools}\
- -DGadgetron_USE_CUDA=${Gadgetron_USE_CUDA}\
- -DBUILD_CIL=${BUILD_CIL}" \
+ -DGadgetron_USE_CUDA=${Gadgetron_USE_CUDA}" \
  EXTRA_BUILD_FLAGS="${EXTRA_BUILD_FLAGS}" \
  bash /opt/scripts/user_sirf-ubuntu.sh \
  && fix-permissions /opt/SIRF-SuperBuild /opt/ccache
 
-FROM base as sirf
+FROM base AS sirf
 
 # X11 forwarding
 RUN apt update -qq && apt install -yq --no-install-recommends \
@@ -113,14 +107,13 @@ COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/INSTALL/ /opt/S
 #COPY --from=build --link /opt/conda/ /opt/conda/
 
 # install {SIRF-Exercises,CIL-Demos}
-ARG BUILD_CIL
 COPY docker/user_demos.sh /opt/scripts/
-RUN BUILD_CIL="${BUILD_CIL}" bash /opt/scripts/user_demos.sh \
+RUN bash /opt/scripts/user_demos.sh \
  && fix-permissions /opt/SIRF-Exercises /opt/CIL-Demos "${CONDA_DIR}" /home/${NB_USER}
 
 # docker-stacks notebook
 USER ${NB_UID}
-ENV DEBIAN_FRONTEND ''
+ENV DEBIAN_FRONTEND=''
 #ENV DOCKER_STACKS_JUPYTER_CMD="notebook"
 ENV RESTARTABLE="yes"
 #ENV USE_HTTPS="yes"

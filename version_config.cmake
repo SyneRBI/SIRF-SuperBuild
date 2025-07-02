@@ -118,14 +118,6 @@ set(DEFAULT_siemens_to_ismrmrd_TAG v1.2.11)
 set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron)
 set(DEFAULT_Gadgetron_TAG 6202fb7352a14fb82817b57a97d928c988eb0f4b)
 
-## ASTRA
-set(DEFAULT_astra-toolbox_URL https://github.com/astra-toolbox/astra-toolbox)
-set(DEFAULT_astra-toolbox_TAG origin/master)
-
-## TomoPhantom
-set(DEFAULT_TomoPhantom_URL https://github.com/dkazanc/TomoPhantom)
-set(DEFAULT_TomoPhantom_TAG v2.0.0)
-
 ## NiftyPET
 set(DEFAULT_NiftyPET_URL https://github.com/pjmark/NIPET)
 set(DEFAULT_NiftyPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
@@ -137,7 +129,7 @@ set(DEFAULT_parallelproj_TAG v1.9.1)
 ## STIR
 set(STIR_REQUIRED_VERSION "6.0.0")
 set(DEFAULT_STIR_URL https://github.com/UCL/STIR)
-set(DEFAULT_STIR_TAG rel_6.2.0)
+set(DEFAULT_STIR_TAG 4f73a6cf9b9ba78c4b0e259c3fd4d890b592077d) # https://github.com/UCL/STIR/pull/1580
 
 ## SIRF
 set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF)
@@ -157,14 +149,6 @@ set(DEFAULT_SPM_TAG r7771)
 
 set(DEFAULT_JSON_URL https://github.com/nlohmann/json)
 set(DEFAULT_JSON_TAG v3.11.3)
-
-# CCPi CIL
-# minimum supported version of CIL supported is > 22.1.0 or from commit a6062410028c9872c5b355be40b96ed1497fed2a
-set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL)
-set(DEFAULT_CIL_TAG 4f6e3cfb0648d08071974eba35c1369a892d4924) # 23/08/24
-
-set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/TomographicImaging/CCPi-Regularisation-Toolkit)
-set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v24.0.1")
 
 # CERN ROOT
 set(DEFAULT_ROOT_URL https://github.com/root-project/root)
@@ -215,10 +199,6 @@ if (DEVEL_BUILD)
   # set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools)
   # set(DEFAULT_pet_rd_tools_TAG origin/master)
 
-  # CCPi CIL
-  set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL)
-  set(DEFAULT_CIL_TAG origin/master)
-
   # Gadgetron
   # set(DEFAULT_Gadgetron_TAG origin/master)
 
@@ -253,18 +233,6 @@ SET(glog_TAG ${DEFAULT_glog_TAG} CACHE STRING ON)
 
 set(JSON_URL ${DEFAULT_JSON_URL} CACHE STRING ON)
 set(JSON_TAG ${DEFAULT_JSON_TAG} CACHE STRING ON)
-
-
-set(CCPi-Regularisation-Toolkit_URL ${DEFAULT_CCPi-Regularisation-Toolkit_URL} CACHE STRING ON)
-set(CCPi-Regularisation-Toolkit_TAG ${DEFAULT_CCPi-Regularisation-Toolkit_TAG} CACHE STRING ON)
-set(CIL_URL ${DEFAULT_CIL_URL} CACHE STRING ON)
-set(CIL_TAG ${DEFAULT_CIL_TAG} CACHE STRING ON)
-set(astra-toolbox_URL ${DEFAULT_astra-toolbox_URL} CACHE STRING ON)
-set(astra-toolbox_TAG ${DEFAULT_astra-toolbox_TAG} CACHE STRING ON)
-set(astra-python-wrapper_URL ${DEFAULT_astra-toolbox_URL} CACHE STRING ON)
-set(astra-python-wrapper_TAG ${DEFAULT_astra-toolbox_TAG} CACHE STRING ON)
-set(TomoPhantom_URL ${DEFAULT_TomoPhantom_URL} CACHE STRING ON)
-set(TomoPhantom_TAG ${DEFAULT_TomoPhantom_TAG} CACHE STRING ON)
 
 set(ROOT_URL ${DEFAULT_ROOT_URL} CACHE STRING ON)
 set(ROOT_TAG ${DEFAULT_ROOT_TAG} CACHE STRING ON)
@@ -316,8 +284,6 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   pet_rd_tools_URL pet_rd_tools_TAG
   glog_URL glog_TAG
   NIFTYREG_URL NIFTYREG_TAG
-  CIL_URL CIL_TAG
-  CCPi-Regularisation-Toolkit_URL CCPi-Regularisation-Toolkit_TAG
   NiftyPET_URL NiftyPET_TAG
   parallelproj_URL parallelproj_TAG
   SIRF-Contribs_URL SIRF-Contribs_TAG
@@ -326,8 +292,6 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   JSON_URL JSON_TAG
   range-v3_URL range-v3_TAG
   ROOT_URL ROOT_TAG
-  astra-toolbox_URL astra-toolbox_TAG
-  astra-python-wrapper_URL astra-python-wrapper_TAG
   RocksDB_URL RocksDB_TAG
   mrd-storage-server_URL mrd-storage-server_TAG
   Date_URL Date_TAG
