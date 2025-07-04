@@ -2,13 +2,13 @@
 
 This folder contains a series of files and scripts to create and install a virtual machine running [SIRF](https://github.com/SyneRBI/SIRF) and its prerequisites.
 
-## Downloading a pre-built VM
+## Getting the pre-built VM
 
 Check the [installation instructions](INSTALL.md).
 
 ## Using the VM
 
-Check the [documentation](documentation/README.md) for installation and usage.
+Check the [documentation](documentation/README.md) for usage.
 
 ## Machine creation
 
