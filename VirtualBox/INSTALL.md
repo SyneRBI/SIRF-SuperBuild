@@ -1,25 +1,24 @@
 # SyneRBI Virtual Machine: Installation and running of pre-built machine
 
-A pre-built VM can be downloaded from this [Zenodo page](https://doi.org/10.5281/zenodo.3228198). Here we explain
-how to install it, once downloaded. (If you want to build a new VM yourself, then check the [vagrant/README.md](vagrant/README.md) for instructions.)
+Here we explain how to install our pre-built VM. (If you want to build a new VM yourself, then check the [vagrant/README.md](vagrant/README.md) for instructions.)
 
 For macOS systems with Apple Silicon (ARM64), follow the dedicated section below.
 
 ## Initial download and installation
 
-
 1. Make sure you have enough free disk-space on your laptop (~10GB for installation).
 
-2. Install VirtualBox (VB). Please note that this will require administrator permissions on your computer. The "host" operating system refers to your computer. 
+2. Download the pre-built virtual machine from [Zenodo](https://doi.org/10.5281/zenodo.3228198).
+
+   Warning: this file can be ~5GB. (You can download to a USB stick or external hard drive to save space on your hard-disk).
+
+3. Install [VirtualBox](https://www.virtualbox.org/) (VB). Please note that this will require administrator permissions on your computer. The "host" operating system refers to your computer. 
 You do not need to install the Oracle extensions to VirtualBox, although it might come in handy for USB support. 
 Although other Virtual Machine software might work, we have not tried this and will not be able to help to get this going.
     
    For Macs, the installation of Virtual Box might require you to alter your security settings. 
     - If you receive an error along the lines of `kernel driver not installed (rc=-1908)`, the following might help. Click on the Apple icon in the top-left of your screen and then `System Preferences->Security & Privacy->General`. Click the padlock in the bottom-left and enter your password to be able to make changes to this page. Click `Allow` next to the Virtual Box text. Hopefully the problem will have been sorted.
     - If the installation takes you directly to the `Security and Privacy` window, select `Allow` (the VB is labelled as from Oracle). When the installer asks if it should Move to Trash, say `Keep` because you need to re-run the installation again with this revised security setting. Second time around, you can move it to trash.
-
-3. Download the preinstalled virtual machine from [Zenodo](https://doi.org/10.5281/zenodo.3552234).
-Warning: this file can be ~4.9GB. (You can download to a USB stick or hard drive to save space on your hard-disk).
 
 4. Open the downloaded OVA file (double-click or whatever is appropriate for your system). This should start VirtualBox with the "Import" dialog box.
 
@@ -53,8 +52,9 @@ xcode-select --install
 ```bash
 brew install qemu
 ```
-5. Download the preinstalled virtual machine from [Zenodo](https://doi.org/10.5281/zenodo.3552234).
-6. extract the .ova file and convert the disk image to .qcow2 format
+5. Download the pre-built virtual machine from [Zenodo](https://doi.org/10.5281/zenodo.3228198).
+
+6. Extract the .ova file and convert the disk image to .qcow2 format (adjust the version number in the commands below of course).
 ```bash
 tar -xvf "SIRF 3.8.1.ova"
 qemu-img convert -f vmdk -O qcow2 "SIRF 3.8.1-disk002.vmdk" SIRF_3.8.1_disk.qcow2

@@ -2,13 +2,23 @@
 
 Here we describe how to configure and use the VM. Check the [README.md](README.md) for installation and other pointers.
 
+## TL;DR: minimal instructions for experts
+
+Start the VM, open a terminal, type
+```sh
+cd /home/sirfuser/devel/SIRF-SuperBuild/VirtualBox/scripts/
+./first_run.sh
+sudo ./update_VGA.sh
+sudo shutdown -r now
+```
+
 ## Minimal information on VirtualBox
 
 The main VirtualBox documentation is [here](https://www.virtualbox.org/wiki/End-user_documentation). Hopefully it's
 rather straightforward however. For instance, once the machine is running, you can use the "View" menu
 to set a scale factor if the font is too large or too small, and that you can resize the window. This should resize your Ubuntu desktop accordingly.
 
-[VirtualBox Guest Additions](https://www.virtualbox.org/manual/ch04.html) (VGA) are used to let the VM integrate with your "host" OS, for instance to allow
+[VirtualBox Guest Additions](https://www.virtualbox.org/manual/topics/guestadditions.html) (VGA) are used to let the VM integrate with your "host" OS, for instance to allow
 copy-pasting between your host and guest. We have these installed in the VM but if you use our pre-built VM, you will have to update them to match your version of VirtualBox, see below.
 
 ## Initial configuration of the virtual machine
@@ -18,13 +28,18 @@ If you see a dialog box about "starting in scaled mode", you can press OK to all
 
 1. You should get a window where Ubuntu 22.04 will be starting (might take a few minutes). Wait until you see the log-in prompt.
 
-2. Log in as user "sirfuser" with password "virtual" (please note that the default keyboard is with `en_GB` locale: if you have an Azerty-type keyboard, you will have to type "virtuql" until you change your VM keyboard settings). You should get the [Gnome3](https://www.gnome.org/gnome-3/) desktop. The main thing to note is the "Activities" at the top-left of the screen. Click that to be able to launch a terminal, for instance by clicking on the "grid" icon on the lower-left, or typing "terminal" in the search box.
+2. Log in as user "sirfuser" with password "virtual" (please note that the default keyboard is normally set to the `en_GB` locale: if you have an Azerty-type keyboard, you will have to type "virtuql" until you change your VM keyboard settings). You should get the [Gnome3](https://www.gnome.org/gnome-3/) desktop. The main thing to note is the "Activities" at the top-left of the screen. Click that to be able to launch a terminal, for instance by clicking on the "grid" icon on the lower-left, or typing "terminal" in the search box.
 
-3. Adjust your Ubuntu settings:
-    - Default settings should allow you to access the internet from in the virtual machine.
-      If not, please check [the Virtual Box documentation](http://www.virtualbox.org/manual/ch03.html#settings-network).
+3. Initial configuration:
+    - Default settings should allow you to access the internet in the virtual machine.
+      If not, please check [the Virtual Box documentation](https://www.virtualbox.org/manual/topics/networkingdetails.html#network-manager).
     - The keyboard type is set to English-UK. There are currently a few preinstalled layouts, including en_GB, en_US, Portuguese, Spanish etc.
-      You can change keyboard-type by clicking on the relevant icon in the top-right of the VM.
+      You can change keyboard-type by clicking on the relevant icon (currently a down-arrow on the left of the "speaker" in the top-right of the VM).
+      > If there is no list of keyboard configurations, the pre-built VM still needs a first configure. Please run
+      > ```
+      > /home/sirfuser/devel/SIRF-SuperBuild/VirtualBox/scripts/first_run.sh
+      > ```
+
       If you cannot find the layout that you need (e.g. to switch to a Mac keyboard), open a terminal by clicking "Activities" at top left and type "terminal" in the search box, then use
 
       ```
@@ -60,10 +75,10 @@ and use "Send the shutdown signal".
 
 ## Optional: use shared folders
 
-You might want to configure a shared directory between the host and the guest machine such that your virtual machine can "see" your "normal" files. Please read [the Virtualbox documentation on Folder Sharing](http://www.virtualbox.org/manual/ch04.html#sharedfolders). 
+You might want to configure a shared directory between the host and the guest machine such that your virtual machine can "see" your "normal" files. Please read [the Virtualbox documentation on Folder Sharing](https://www.virtualbox.org/manual/topics/guestadditions.html#sharedfolders).
 Summary of steps (courtesy Nikos Efthimiou):
  
- 1. Right click on the SyneRBI VM in the .VirtualBox main window and choose Settings.
+ 1. Right click on the SyneRBI VM in the VirtualBox main window and choose Settings.
  2. Choose "Shared Folders".
  3. Add new folder (use small + button near the right edge of the dialog), select the folder you want, and give it a name, e.g. MyLaptop.
  4. Select folder and check "make permanent" and "auto mount".
@@ -82,9 +97,9 @@ Summary of steps (courtesy Nikos Efthimiou):
 
 ## Updating your VM
 
-We  provide a script to update an existing VM to a new version of course software. Note however that in some cases (e.g. when updating to SIRF 3.5.0) this won't work as the underlying Ubuntu OS needs updating as well. It is then probably easiest to download the new VM instead. (You could try to update Ubuntu first if you really wish to).
+We  provide a script to update an existing VM to a new version of our software. Note however that in some cases (e.g. when updating to SIRF 3.5.0) this won't work as the underlying Ubuntu OS needs updating as well. It is then probably easiest to download the new VM instead. (You could try to update Ubuntu in your VM if you really wish to).
 
-If you have decided to upgrade your existing VM, type the following in a terminal
+If you have decided to upgrade your existing VM to the latest release, type the following in a terminal
 
      cd ~/devel
      rm -rf install/lib install/include
@@ -93,13 +108,19 @@ If you have decided to upgrade your existing VM, type the following in a termina
 
 The `-s` option will update your system dependencies via APT. If you are a developer and have made specific changes to your system, you might not want to execute the steps removing existing files.
 
+> [!TIP]
+> If you have run any of the jupyter notebooks in the exercises/demos, we recommend replacing
+> `update_VM.sh` with `update_with_backup_for_exercises.sh`
+
 The script has some additional options for advanced usage only. For instance, if you
 are a developer and want to use the latest version of the software and want
 to run 10 build processes simultaneously, you could do
 
      update_VM.sh -t master -j 10
 
-Note that this will currently update the SIRF-SuperBuild software, but still use the `DEVEL_BUILD=OFF` option, see [here](https://github.com/SyneRBI/SIRF-SuperBuild#Building-with-specific-versions-of-dependencies) for more information.
+> [!NOTE]
+> Note that this will currently update the SIRF-SuperBuild software, but still use the `DEVEL_BUILD=OFF` option, see [here](https://github.com/SyneRBI/SIRF-SuperBuild#Building-with-specific-versions-of-dependencies) for more information.
 
-Of course, we recommend making a copy of your VM, or a [snapshot](https://docs.oracle.com/en/virtualization/virtualbox/6.0/user/snapshots.html) before doing an update.
+
+Of course, we recommend making a copy of your VM, or a [snapshot](https://www.virtualbox.org/manual/topics/Introduction.html#snapshots) before doing an update.
 
