@@ -34,6 +34,10 @@ echo "Configuring GNOME"
 echo "configuring jupyter server"
 "$location/configure_jupyter.sh"
 
+echo "configuring matplotlib backend"
+"$location/configure_matplotlib.sh"
+
 echo "Done"
-echo "Before exporting the VM, please run either $location/zero_fill.sh or $location/clean_before_VM_export.sh."
+echo ""
+echo "Maintainers only: if you want to export this VM, please run either $location/zero_fill.sh or $location/clean_before_VM_export.sh."
 

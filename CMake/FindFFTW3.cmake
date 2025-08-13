@@ -80,6 +80,11 @@ if (WIN32)
 
       find_library(${_LIB}_LIBRARY lib${_lib}-3
         HINTS $ENV{FFTW3_ROOT_DIR} PATH_SUFFIXES lib)
+      if (NOT ${_LIB}_LIBRARY)
+        # attempt without lib prefix and -3 suffix (as per conda install for instance)
+        find_library(${_LIB}_LIBRARY ${_lib}
+          HINTS $ENV{FFTW3_ROOT_DIR} PATH_SUFFIXES lib)
+      endif()
       mark_as_advanced(${_LIB}_LIBRARY)
       list(APPEND FFTW3_LIBRARIES ${${_LIB}_LIBRARY})
       list(APPEND _check_list ${_LIB}_LIBRARY)

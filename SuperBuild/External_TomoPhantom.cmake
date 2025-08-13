@@ -43,7 +43,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     ${${proj}_EP_ARGS}
     ${${proj}_EP_ARGS_GIT}
     ${${proj}_EP_ARGS_DIRS}
-    
+
 
     CMAKE_ARGS
       -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
