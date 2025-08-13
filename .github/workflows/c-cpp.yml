@@ -63,7 +63,7 @@ jobs:
           DEVEL_BUILD: "ON"
         - os: ubuntu-22.04
           compiler_version: 11
-          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_ROOT:BOOL=ON -DUSE_SYSTEM_ROOT=ON -DSIRF_EXTRA_CMAKE_ARGS=-DCMAKE_POLICY_DEFAULT_CMP0074=NEW" # note: SIRF needs CMP0074 with older versions of pre-built ROOT (see below)
+          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=OFF -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_ROOT:BOOL=ON -DUSE_SYSTEM_ROOT=ON -DSIRF_EXTRA_CMAKE_ARGS=-DCMAKE_POLICY_DEFAULT_CMP0074=NEW" # note: SIRF needs CMP0074 with older versions of pre-built ROOT (see below)
           DEVEL_BUILD: "OFF"
       fail-fast: false # don't terminate matrix if one job fails
     steps:
@@ -76,9 +76,9 @@ jobs:
       working-directory: docker
       run: |
         sudo ./raw-ubuntu.sh
-        sudo ./build_system-ubuntu.sh
+        USE_UBUNTU_SYSTEM_LIBRARIES=1 sudo ./build_system-ubuntu.sh
         sudo ./build_essential-ubuntu.sh
-        sudo ./build_gadgetron-ubuntu.sh
+        USE_UBUNTU_SYSTEM_LIBRARIES=1 sudo ./build_gadgetron-ubuntu.sh
         sudo ./build_python-ubuntu.sh
         echo "python-version=$(python3 --version | awk '{print $2}')" >> $GITHUB_OUTPUT
 
@@ -167,7 +167,7 @@ jobs:
     - name: cmake --build
       run: |
         source ~/virtualenv/bin/activate
-        cmake --build ./build -j 2
+        cmake --build ./build -j 1
     # tmate ssh debugging
     - if: github.event_name == 'workflow_dispatch' && github.event.inputs.tmate == 'true'
       uses: mxschmitt/action-tmate@v3
