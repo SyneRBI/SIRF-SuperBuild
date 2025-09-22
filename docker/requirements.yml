@@ -21,23 +21,28 @@ dependencies:
   - jupytext
   - tensorboard
   - tensorboardx
+  - cil >=25 # cil
+  # auto-uncommented in Dockerfile in GPU builds
+  ## - tigre          # cil (GPU) # TODO: remove second # prefix once tigre is built for numpy>=2
+  # - astra-toolbox 2.* cuda* # cil (GPU)
+  - ipp =2021.12.*         # cil
+  - ipp-devel =2021.12.*   # cil
+  - ipp-include =2021.12.* # cil
+  - ccpi-regulariser >=25 # cil
+  - cil-data >=22            # cil
+  #- tomophantom =2.0.0      # cil # TODO: uncomment once tomophantom is built for numpy>=2
+  - dxchange       # cil
+  - h5py           # cil
+  - numba          # cil
+  - numpy >=2      # cil
+  - olefile >=0.46 # cil
+  - pillow         # cil
+  - pywavelets     # cil
+  - tqdm           # cil
+  - cxx-compiler=1.5.2 # Ubuntu 22.04 version of g++ (11.4) for Gadgetron
+  - boost              # Ubuntu 22.04 cxx-compiler
+  - fftw               # Ubuntu 22.04 cxx-compiler
   - pip
-  - cil               # cil
-  - ccpi-regulariser  # cil
-  - dxchange          # cil
-  - h5py              # cil
-  - cxx-compiler=1.5.2 # g++ 11.4 on Linux, same as Ubuntu 22.04 (supported by current Gadgetron has)
-  - boost             # Ubuntu 22.04 cxx-compiler
-  - fftw              # Ubuntu 22.04 cxx-compiler
-  - pillow            # cil
-  - olefile >=0.46    # cil
-  - pywavelets        # cil
-  - cil-data >=21.3.0 # cil
-  - ipp >=2021.10     # cil
-  - tqdm              # cil
-  - numba             # cil
-  ## - tigre          # cil (GPU) # TODO: remove second # prefix once tigre is build for numpy>=2
-  # - astra-toolbox 2 cuda* # cil (GPU)
   - pip:
     - git+https://github.com/ismrmrd/ismrmrd-python-tools.git@master#egg=ismrmrd-python-tools
     # TODO: labextension @jupyter-widgets/jupyterlab-manager (jupyterlab_widgets ipywidgets ipympl)
