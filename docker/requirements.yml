@@ -21,6 +21,7 @@ dependencies:
   - jupytext
   - tensorboard
   - tensorboardx
+  - libgomp # parallelproj
   - cil >=25 # cil
   # auto-uncommented in Dockerfile in GPU builds
   ## - tigre          # cil (GPU) # TODO: remove second # prefix once tigre is built for numpy>=2
