@@ -2,8 +2,8 @@
 
 ## v3.9.0
 - VM: set the matplotlib backend to tkagg
-- Updated versions (when building the packages):
-  - CIL: 4f6e3cfb0648d08071974eba35c1369a892d4924
+- Updated Versions:
+  - CIL: v25.0.0
   - STIR: 6.3.0
   - SIRF: 3.9.0
   - ITK: 5.4.4
@@ -11,6 +11,7 @@
   - boost: 1.88.0
 - CMake:
   - Use [new `FindPython` module](https://cmake.org/cmake/help/latest/module/FindPython.html). You might need to help it find the correct Python path, e.g. by setting `Python_ROOT_DIR`.
+  - Use `IPP_ROOT` instead of `IPP_LIBRARY` (for `BUILD_CIL`)
   - Suppress compilation warnings for Gadgetron for future compatibility (as Gadgetron converts them to errors)
   - Support the `Gadgetron_EXTRA_CMAKE_ARGS` option
 
