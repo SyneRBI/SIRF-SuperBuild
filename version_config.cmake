@@ -23,15 +23,17 @@
 
 ## BOOST
 if (BUILD_GADGETRON)
-# https://github.com/gadgetron/gadgetron/blob/12ffc43debb9bad2e170713006d29dea78d966bf/CMakeLists.txt#L205-L209
+  # https://github.com/gadgetron/gadgetron/blob/12ffc43debb9bad2e170713006d29dea78d966bf/CMakeLists.txt#L205-L209
+  # now using our own version of Gadgetron, based on master, which needs 1.80.0
+  # However, we can't require this yet.
   set(Boost_REQUIRED_VERSION 1.71.0)
 else()
   # ISMRMRD needs more recent 1.68.0 so let's just say 1.71.0 as well
   set(Boost_REQUIRED_VERSION 1.71.0)
 endif()
-set(Boost_VERSION 1.78.0)
-set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_78_0.zip)
-set(Boost_MD5 e193e5089060ed6ce5145c8eb05e67e3)
+set(Boost_VERSION 1.88.0)
+set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_88_0.zip)
+set(Boost_MD5 2f3b4bc30f3b2cb33a4b51af02831013)
 
 
 ## Armadillo
