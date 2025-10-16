@@ -135,9 +135,9 @@ set(DEFAULT_parallelproj_URL https://github.com/gschramm/parallelproj)
 set(DEFAULT_parallelproj_TAG v1.10.2)
 
 ## STIR
-set(STIR_REQUIRED_VERSION "6.0.0")
+set(STIR_REQUIRED_VERSION "6.2.0")
 set(DEFAULT_STIR_URL https://github.com/UCL/STIR)
-set(DEFAULT_STIR_TAG rel_6.2.0)
+set(DEFAULT_STIR_TAG 19ef64e9669425f0d2a7cb0d0fef665eea8cbc32) # 16Oct2025
 
 ## SIRF
 set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF)
