@@ -132,7 +132,7 @@ set(DEFAULT_NiftyPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
 
 ## parallelproj
 set(DEFAULT_parallelproj_URL https://github.com/gschramm/parallelproj)
-set(DEFAULT_parallelproj_TAG v1.9.1)
+set(DEFAULT_parallelproj_TAG v1.10.2)
 
 ## STIR
 set(STIR_REQUIRED_VERSION "6.0.0")
