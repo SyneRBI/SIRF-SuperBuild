@@ -2,8 +2,12 @@
 
 ## v3.x.x
 - VM: set the matplotlib backend to tkagg
-- Updated Versions:
+- Updated versions (when building the packages):
   - CIL: 4f6e3cfb0648d08071974eba35c1369a892d4924
+  - STIR: version 16Oct2025 (require 6.2.0)
+  - ITK: 5.4.4
+  - parallelproj: 1.10.2
+  - boost: 1.88.0
 - CMake:
   - Use [new `FindPython` module](https://cmake.org/cmake/help/latest/module/FindPython.html). You might need to help it find the correct Python path, e.g. by setting `Python_ROOT_DIR`.
   - Suppress compilation warnings for Gadgetron for future compatibility (as Gadgetron converts them to errors)

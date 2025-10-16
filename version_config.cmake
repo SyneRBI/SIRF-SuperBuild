@@ -23,15 +23,17 @@
 
 ## BOOST
 if (BUILD_GADGETRON)
-# https://github.com/gadgetron/gadgetron/blob/12ffc43debb9bad2e170713006d29dea78d966bf/CMakeLists.txt#L205-L209
+  # https://github.com/gadgetron/gadgetron/blob/12ffc43debb9bad2e170713006d29dea78d966bf/CMakeLists.txt#L205-L209
+  # now using our own version of Gadgetron, based on master, which needs 1.80.0
+  # However, we can't require this yet.
   set(Boost_REQUIRED_VERSION 1.71.0)
 else()
   # ISMRMRD needs more recent 1.68.0 so let's just say 1.71.0 as well
   set(Boost_REQUIRED_VERSION 1.71.0)
 endif()
-set(Boost_VERSION 1.78.0)
-set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_78_0.zip)
-set(Boost_MD5 e193e5089060ed6ce5145c8eb05e67e3)
+set(Boost_VERSION 1.88.0)
+set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_88_0.zip)
+set(Boost_MD5 2f3b4bc30f3b2cb33a4b51af02831013)
 
 
 ## Armadillo
@@ -98,7 +100,7 @@ set(DEFAULT_glog_TAG v0.6.0)
 
 ## ITK
 set(DEFAULT_ITK_URL https://github.com/InsightSoftwareConsortium/ITK)
-set(DEFAULT_ITK_TAG v5.2.1)
+set(DEFAULT_ITK_TAG v5.4.4)
 
 ## NIFTYREG
 set(DEFAULT_NIFTYREG_URL https://github.com/KCL-BMEIS/niftyreg)
@@ -132,12 +134,12 @@ set(DEFAULT_NiftyPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
 
 ## parallelproj
 set(DEFAULT_parallelproj_URL https://github.com/gschramm/parallelproj)
-set(DEFAULT_parallelproj_TAG v1.9.1)
+set(DEFAULT_parallelproj_TAG v1.10.2)
 
 ## STIR
-set(STIR_REQUIRED_VERSION "6.0.0")
+set(STIR_REQUIRED_VERSION "6.2.0")
 set(DEFAULT_STIR_URL https://github.com/UCL/STIR)
-set(DEFAULT_STIR_TAG rel_6.2.0)
+set(DEFAULT_STIR_TAG 19ef64e9669425f0d2a7cb0d0fef665eea8cbc32) # 16Oct2025
 
 ## SIRF
 set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF)
