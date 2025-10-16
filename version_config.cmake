@@ -98,7 +98,7 @@ set(DEFAULT_glog_TAG v0.6.0)
 
 ## ITK
 set(DEFAULT_ITK_URL https://github.com/InsightSoftwareConsortium/ITK)
-set(DEFAULT_ITK_TAG v5.2.1)
+set(DEFAULT_ITK_TAG v5.4.4)
 
 ## NIFTYREG
 set(DEFAULT_NIFTYREG_URL https://github.com/KCL-BMEIS/niftyreg)
