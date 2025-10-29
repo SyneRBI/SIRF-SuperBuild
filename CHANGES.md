@@ -1,10 +1,10 @@
 # ChangeLog
 
-## v3.x.x
+## v3.9.0
 - VM: set the matplotlib backend to tkagg
 - Updated versions (when building the packages):
   - CIL: 4f6e3cfb0648d08071974eba35c1369a892d4924
-  - STIR: version 16Oct2025 (require 6.2.0)
+  - STIR: version 29Oct2025 (require 6.3.0)
   - ITK: 5.4.4
   - parallelproj: 1.10.2
   - boost: 1.88.0
