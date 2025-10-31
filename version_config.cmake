@@ -138,8 +138,9 @@ set(DEFAULT_parallelproj_TAG v1.10.2)
 
 ## STIR
 set(STIR_REQUIRED_VERSION "6.3.0")
-set(DEFAULT_STIR_URL https://github.com/UCL/STIR)
-set(DEFAULT_STIR_TAG 548abfad5c3c777867cb61fd1327648971fd52d8) # 24Oct2025
+#set(DEFAULT_STIR_URL https://github.com/UCL/STIR)
+set(DEFAULT_STIR_URL https://github.com/KrisThielemans/STIR-1)
+set(DEFAULT_STIR_TAG f409ab6817a21d181186325ae8ee32e92afaee92) # 31Oct2025
 
 ## SIRF
 set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF)
