@@ -79,7 +79,7 @@ else()
 endif()
 
 ## SWIG
-set (SWIG_REQUIRED_VERSION 2)
+set (SWIG_REQUIRED_VERSION 3)
 if (WIN32)
   set(SWIG_URL http://downloads.sourceforge.net/swig/swigwin-4.0.2.zip)
   set(SWIG_MD5 009926b512aee9318546bdd4c7eab6f9)
@@ -139,11 +139,11 @@ set(DEFAULT_parallelproj_TAG v1.10.2)
 ## STIR
 set(STIR_REQUIRED_VERSION "6.3.0")
 set(DEFAULT_STIR_URL https://github.com/UCL/STIR)
-set(DEFAULT_STIR_TAG 548abfad5c3c777867cb61fd1327648971fd52d8) # 24Oct2025
+set(DEFAULT_STIR_TAG rel_6.3.0)
 
 ## SIRF
 set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF)
-set(DEFAULT_SIRF_TAG a7d4e9d700c2d320946437b5c9e15a94d282cef1)
+set(DEFAULT_SIRF_TAG v3.9.0)
 
 ## pet-rd-tools
 set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools)
@@ -151,7 +151,7 @@ set(DEFAULT_pet_rd_tools_TAG v2.0.2)
 
 ## SIRF-Contribs
 set(DEFAULT_SIRF-Contribs_URL https://github.com/SyneRBI/SIRF-Contribs)
-set(DEFAULT_SIRF-Contribs_TAG v3.8.0)
+set(DEFAULT_SIRF-Contribs_TAG v3.9.0)
 
 ## SPM
 set(DEFAULT_SPM_URL https://github.com/spm/SPM12)
