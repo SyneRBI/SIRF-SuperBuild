@@ -165,7 +165,7 @@ set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL)
 set(DEFAULT_CIL_TAG "numpy-2")
 
 set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/TomographicImaging/CCPi-Regularisation-Toolkit)
-set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v24.0.1")
+set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v25.0.0")
 
 # CERN ROOT
 set(DEFAULT_ROOT_URL https://github.com/root-project/root)
