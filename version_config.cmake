@@ -143,7 +143,7 @@ set(DEFAULT_STIR_TAG rel_6.3.0)
 
 ## SIRF
 set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF)
-set(DEFAULT_SIRF_TAG v3.9.0)
+set(DEFAULT_SIRF_TAG "0ba22c9b5d8b6c2f008e0b1e1846c059703a88c3") # 2025-11-03
 
 ## pet-rd-tools
 set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools)
@@ -161,9 +161,8 @@ set(DEFAULT_JSON_URL https://github.com/nlohmann/json)
 set(DEFAULT_JSON_TAG v3.11.3)
 
 # CCPi CIL
-# minimum supported version of CIL supported is > 22.1.0 or from commit a6062410028c9872c5b355be40b96ed1497fed2a
 set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL)
-set(DEFAULT_CIL_TAG 4f6e3cfb0648d08071974eba35c1369a892d4924) # 23/08/24
+set(DEFAULT_CIL_TAG "numpy-2")
 
 set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/TomographicImaging/CCPi-Regularisation-Toolkit)
 set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v24.0.1")
