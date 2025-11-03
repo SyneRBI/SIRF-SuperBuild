@@ -1,4 +1,3 @@
-version: '3.2'
 services:
  foundation:
   command: echo nop
@@ -6,26 +5,26 @@ services:
   build:
    context: docker/docker-stacks/images/docker-stacks-foundation
    args:
-    ROOT_CONTAINER: ubuntu:22.04
-    PYTHON_VERSION: "3.10"
+    ROOT_IMAGE: ubuntu:22.04
+    PYTHON_VERSION: 3.12
  base:
   command: echo nop
   image: synerbi/jupyter:base-cpu
   build:
    context: docker/docker-stacks/images/base-notebook
-   args: {BASE_CONTAINER: synerbi/jupyter:foundation-cpu}
+   args: {BASE_IMAGE: synerbi/jupyter:foundation-cpu}
  minimal:
   command: echo nop
   image: synerbi/jupyter:minimal-cpu
   build:
    context: docker/docker-stacks/images/minimal-notebook
-   args: {BASE_CONTAINER: synerbi/jupyter:base-cpu}
+   args: {BASE_IMAGE: synerbi/jupyter:base-cpu}
  scipy:
   command: echo nop
   image: synerbi/jupyter:scipy-cpu
   build:
    context: docker/docker-stacks/images/scipy-notebook
-   args: {BASE_CONTAINER: synerbi/jupyter:minimal-cpu}
+   args: {BASE_IMAGE: synerbi/jupyter:minimal-cpu}
  sirf-build:
   # convenience volume & command to copy image::/opt/ccache to localhost::./docker/devel/.ccache
   # (executed in ./docker/compose.sh by `docker compose up sirf-build`)
@@ -36,7 +35,7 @@ services:
    context: .
    target: build
    args:
-    BASE_CONTAINER: synerbi/jupyter:scipy-cpu
+    BASE_IMAGE: synerbi/jupyter:scipy-cpu
     Gadgetron_USE_CUDA: "OFF"
     BUILD_GPU: 0
  sirf:
@@ -45,7 +44,7 @@ services:
   build:
    context: .
    args:
-    BASE_CONTAINER: synerbi/jupyter:scipy-cpu
+    BASE_IMAGE: synerbi/jupyter:scipy-cpu
     Gadgetron_USE_CUDA: "OFF"
     BUILD_GPU: 0
    cache_from: [synerbi/jupyter:sirf-build-cpu]

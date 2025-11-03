@@ -1,16 +1,16 @@
 # syntax=docker/dockerfile:1
-ARG BASE_CONTAINER=quay.io/jupyter/scipy-notebook:latest
-FROM ${BASE_CONTAINER} as base
+ARG BASE_IMAGE=quay.io/jupyter/scipy-notebook:ubuntu-22.04
+FROM ${BASE_IMAGE} AS base
 
 USER root
 
 # suppress warnings
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 COPY docker/raw-ubuntu.sh /opt/scripts/
 RUN bash /opt/scripts/raw-ubuntu.sh
-#ENV LC_ALL en_GB.UTF-8
-ENV LANG en_GB.UTF-8
-ENV LANGUAGE en_GB:en
+#ENV LC_ALL=en_GB.UTF-8
+ENV LANG=en_GB.UTF-8
+ENV LANGUAGE=en_GB:en
 
 COPY docker/build_gadgetron-ubuntu.sh /opt/scripts/
 RUN bash /opt/scripts/build_gadgetron-ubuntu.sh
@@ -36,7 +36,7 @@ RUN if test "$BUILD_GPU" != 0; then \
  && mamba env update -n base -f /opt/scripts/requirements.yml \
  && mamba clean --all -f -y && fix-permissions "${CONDA_DIR}" /home/${NB_USER}
 
-FROM base as build
+FROM base AS build
 
 COPY docker/update_nvidia_keys.sh /opt/scripts/
 RUN bash /opt/scripts/update_nvidia_keys.sh
@@ -93,7 +93,7 @@ RUN BUILD_FLAGS="-G Ninja\
  bash /opt/scripts/user_sirf-ubuntu.sh \
  && fix-permissions /opt/SIRF-SuperBuild /opt/ccache
 
-FROM base as sirf
+FROM base AS sirf
 
 # X11 forwarding
 RUN apt update -qq && apt install -yq --no-install-recommends \
@@ -120,7 +120,7 @@ RUN BUILD_CIL="${BUILD_CIL}" bash /opt/scripts/user_demos.sh \
 
 # docker-stacks notebook
 USER ${NB_UID}
-ENV DEBIAN_FRONTEND ''
+ENV DEBIAN_FRONTEND=''
 #ENV DOCKER_STACKS_JUPYTER_CMD="notebook"
 ENV RESTARTABLE="yes"
 #ENV USE_HTTPS="yes"

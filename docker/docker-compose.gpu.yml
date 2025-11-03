@@ -1,30 +1,28 @@
-
-version: '3.2'
 services:
  foundation:
   image: synerbi/jupyter:foundation-gpu
   build:
    args:
-    ROOT_CONTAINER: nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04
-    PYTHON_VERSION: "3.10"
+    ROOT_IMAGE: nvidia/cuda:12.8.1-cudnn-devel-ubuntu22.04
+    PYTHON_VERSION: 3.12
  base:
   image: synerbi/jupyter:base-gpu
   build:
-   args: {BASE_CONTAINER: synerbi/jupyter:foundation-gpu}
+   args: {BASE_IMAGE: synerbi/jupyter:foundation-gpu}
  minimal:
   image: synerbi/jupyter:minimal-gpu
   build:
-   args: {BASE_CONTAINER: synerbi/jupyter:base-gpu}
+   args: {BASE_IMAGE: synerbi/jupyter:base-gpu}
  scipy:
   image: synerbi/jupyter:scipy-gpu
   build:
-   args: {BASE_CONTAINER: synerbi/jupyter:minimal-gpu}
+   args: {BASE_IMAGE: synerbi/jupyter:minimal-gpu}
  sirf-build:
   image: synerbi/jupyter:sirf-build-gpu
   build:
    target: build
    args:
-    BASE_CONTAINER: synerbi/jupyter:scipy-gpu
+    BASE_IMAGE: synerbi/jupyter:scipy-gpu
     BUILD_GPU: 1
     Gadgetron_USE_CUDA: "ON"
     BUILD_CIL: "ON"
@@ -33,7 +31,7 @@ services:
   image: synerbi/sirf:latest-gpu
   build:
    args:
-    BASE_CONTAINER: synerbi/jupyter:scipy-gpu
+    BASE_IMAGE: synerbi/jupyter:scipy-gpu
     BUILD_GPU: 1
     Gadgetron_USE_CUDA: "ON"
     BUILD_CIL: "ON"
