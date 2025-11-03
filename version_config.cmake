@@ -162,7 +162,7 @@ set(DEFAULT_JSON_TAG v3.11.3)
 
 # CCPi CIL
 set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL)
-set(DEFAULT_CIL_TAG "v25.0.0")
+set(DEFAULT_CIL_TAG "numpy-2")
 
 set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/TomographicImaging/CCPi-Regularisation-Toolkit)
 set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v24.0.1")
