@@ -66,7 +66,7 @@ ARG USE_SYSTEM_HDF5="OFF"
 ARG USE_ITK="ON"
 ARG USE_SYSTEM_SWIG="ON"
 ARG USE_NiftyPET="OFF"
-ARG BUILD_siemens_to_ismrmrd="ON"
+ARG BUILD_siemens_to_ismrmrd="OFF"
 ARG BUILD_pet_rd_tools="ON"
 ARG Gadgetron_USE_CUDA="ON"
 # BUILD_CIL is defined in the previous stage
