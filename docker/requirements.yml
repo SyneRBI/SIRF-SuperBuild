@@ -1,8 +1,9 @@
 name: base
 channels:
   - conda-forge
-  - https://software.repos.intel.com/python/conda # cil
-  - ccpi  # cil
+  - https://tomography.stfc.ac.uk/conda # cil
+  #- https://software.repos.intel.com/python/conda # cil
+  #- ccpi  # cil
   - defaults
 dependencies:
   - setuptools
