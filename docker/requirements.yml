@@ -25,7 +25,9 @@ dependencies:
   - cil >=25 # cil
   # auto-uncommented in Dockerfile in GPU builds
   ## - tigre          # cil (GPU) # TODO: remove second # prefix once tigre is built for numpy>=2
-  # - astra-toolbox 2.* cuda* # cil (GPU)
+  ## - astra-toolbox 2.* cuda* # cil (GPU)
+  - astra-toolbox 2.* # cil
+  # - cuda-version 12.8.* # cil (GPU)
   - ipp =2021.12.*         # cil
   - ipp-devel =2021.12.*   # cil
   - ipp-include =2021.12.* # cil
