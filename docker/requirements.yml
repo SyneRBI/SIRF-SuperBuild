@@ -10,6 +10,7 @@ dependencies:
   - pytest
   - pytest-cov
   - scipy
+  - numpy >=2
   - docopt
   - matplotlib
   - pandas

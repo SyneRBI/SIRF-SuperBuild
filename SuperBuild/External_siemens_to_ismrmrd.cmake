@@ -58,6 +58,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DCMAKE_INSTALL_PREFIX:PATH=${siemens_to_ismrmrd_INSTALL_DIR}
       ${Boost_CMAKE_ARGS}
       -DISMRMRD_DIR:PATH=${ISMRMRD_DIR}
+      -DBOOST_BIND_GLOBAL_PLACEHOLDERS
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
