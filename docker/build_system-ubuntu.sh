@@ -11,7 +11,7 @@ add-apt-repository -y universe # needed for hdf5 for instance
 # of a pinned version of libunwind that then creates problems later
 # (we allow the remove/install to failthough)
 apt-get remove libunwind-14 -y || true
-${APT_GET_INSTALL} libunwind || true
+${APT_GET_INSTALL} libunwind || ${APT_GET_INSTALL} libunwind8 || true
 
 # echo "Installing boost 1.71 or later (required for gadgetron)
 # first find current boost version (if any)
@@ -24,7 +24,7 @@ function find_boost_version() {
 find_boost_version
 
 # echo "Found Boost major version ${boost_major}, minor ${boost_minor}"
-if [ "$boost_major" -gt 1 -o "$boost_minor" -gt 70 ]
+if [ "$boost_major" -gt 1 -o "$boost_minor" -ge 80 ]
 then
     echo "installing Boost ${boost_major}.${boost_minor} from system apt"
     ${APT_GET_INSTALL} libboost-dev libboost-chrono-dev \
@@ -38,6 +38,7 @@ else
     # we need to find a ppa that has it. This is unsafe and likely prone to falling over
     # when the ppa is no longer maintained
     echo "Please submit a PR with a recent PPA for boost for your OS."
+    if test "${BOOST_MISSING:-ERROR}" = ERROR; then
     exit 1
     # the mhier PPA is no longer supported
     echo "trying to find boost from ppa:mhier/libboost-latest"
@@ -51,6 +52,7 @@ else
     find_boost_version
     echo "installing Boost ${boost_major}.${boost_minor} from ppa:mhier apt"
     ${APT_GET_INSTALL} "libboost${boost_major}.${boost_minor}-all-dev"
+    fi
 fi
 
 ${APT_GET_INSTALL} \

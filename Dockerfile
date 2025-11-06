@@ -17,7 +17,7 @@ RUN bash /opt/scripts/build_gadgetron-ubuntu.sh
 
 # SIRF external deps
 COPY docker/build_system-ubuntu.sh /opt/scripts/
-RUN bash /opt/scripts/build_system-ubuntu.sh
+RUN BOOST_MISSING=WARN bash /opt/scripts/build_system-ubuntu.sh
 
 # SIRF python deps
 ARG BUILD_GPU=0
@@ -60,8 +60,8 @@ ARG NUM_PARALLEL_BUILDS=" "
 ARG CMAKE_BUILD_TYPE="Release"
 ARG STIR_ENABLE_OPENMP="ON"
 ARG USE_SYSTEM_Armadillo="ON"
-ARG USE_SYSTEM_Boost="ON"
-ARG USE_SYSTEM_FFTW3="ON"
+ARG USE_SYSTEM_Boost="OFF"
+ARG USE_SYSTEM_FFTW3="OFF"
 ARG USE_SYSTEM_HDF5="ON"
 ARG USE_ITK="ON"
 ARG USE_SYSTEM_SWIG="ON"
