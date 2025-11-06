@@ -60,7 +60,7 @@ ARG NUM_PARALLEL_BUILDS=" "
 ARG CMAKE_BUILD_TYPE="Release"
 ARG STIR_ENABLE_OPENMP="ON"
 ARG USE_SYSTEM_Armadillo="ON"
-ARG USE_SYSTEM_Boost="ON"
+ARG USE_SYSTEM_Boost="OFF"
 ARG USE_SYSTEM_FFTW3="ON"
 ARG USE_SYSTEM_HDF5="ON"
 ARG USE_ITK="ON"
@@ -90,7 +90,6 @@ RUN BUILD_FLAGS="-G Ninja\
  -DGadgetron_USE_CUDA=${Gadgetron_USE_CUDA}\
  -DBUILD_CIL=${BUILD_CIL}" \
  EXTRA_BUILD_FLAGS="${EXTRA_BUILD_FLAGS}" \
- FFTW3_ROOT_DIR="${CONDA_DIR}" \
  bash /opt/scripts/user_sirf-ubuntu.sh \
  && fix-permissions /opt/SIRF-SuperBuild /opt/ccache
 
