@@ -31,9 +31,10 @@ else()
   # ISMRMRD needs more recent 1.68.0 so let's just say 1.71.0 as well
   set(Boost_REQUIRED_VERSION 1.71.0)
 endif()
-set(Boost_VERSION 1.88.0)
-set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_88_0.zip)
-set(Boost_MD5 2f3b4bc30f3b2cb33a4b51af02831013)
+# 1.86 dropped boost::process::child, causing gadgetron build failures
+set(Boost_VERSION 1.85.0)
+set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_85_0.zip)
+set(Boost_MD5 90c1ca9bd3c29016b90c5a01ffc2cac1)
 
 
 ## Armadillo
