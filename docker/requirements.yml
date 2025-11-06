@@ -43,9 +43,6 @@ dependencies:
   - pillow         # cil
   - pywavelets     # cil
   - tqdm           # cil
-  - cxx-compiler=1.5.2 # Ubuntu 22.04 version of g++ (11.4) for Gadgetron
-  - boost              # Ubuntu 22.04 cxx-compiler
-  - fftw               # Ubuntu 22.04 cxx-compiler
   - pip
   - pip:
     - git+https://github.com/ismrmrd/ismrmrd-python-tools.git@master#egg=ismrmrd-python-tools
