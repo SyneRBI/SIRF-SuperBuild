@@ -23,6 +23,7 @@ if (WIN32)
   cmake_minimum_required( VERSION 3.20.0 FATAL_ERROR)
 else()
   cmake_minimum_required( VERSION 3.16.2 FATAL_ERROR)
+  add_compile_options(-w)
 endif()
 
 # define how to behave with option when a variable of the same name exists
