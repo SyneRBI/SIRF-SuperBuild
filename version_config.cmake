@@ -31,9 +31,9 @@ else()
   # ISMRMRD needs more recent 1.68.0 so let's just say 1.71.0 as well
   set(Boost_REQUIRED_VERSION 1.71.0)
 endif()
-set(Boost_VERSION 1.88.0)
-set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_88_0.zip)
-set(Boost_MD5 2f3b4bc30f3b2cb33a4b51af02831013)
+set(Boost_VERSION 1.85.0)
+set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_85_0.zip)
+set(Boost_MD5 90c1ca9bd3c29016b90c5a01ffc2cac1)
 
 
 ## Armadillo
@@ -138,8 +138,8 @@ set(DEFAULT_parallelproj_TAG v1.10.2)
 
 ## STIR
 set(STIR_REQUIRED_VERSION "6.3.0")
-set(DEFAULT_STIR_URL https://github.com/UCL/STIR)
-set(DEFAULT_STIR_TAG rel_6.3.0)
+set(DEFAULT_STIR_URL https://github.com/KrisThielemans/STIR-1)
+set(DEFAULT_STIR_TAG merge_libraries)
 
 ## SIRF
 set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF)

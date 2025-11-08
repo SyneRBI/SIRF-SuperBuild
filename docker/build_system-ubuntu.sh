@@ -11,7 +11,7 @@ add-apt-repository -y universe # needed for hdf5 for instance
 # of a pinned version of libunwind that then creates problems later
 # (we allow the remove/install to failthough)
 apt-get remove libunwind-14 -y || true
-${APT_GET_INSTALL} libunwind || true
+${APT_GET_INSTALL} libunwind || ${APT_GET_INSTALL} libunwind8 || true
 
 # echo "Installing boost 1.71 or later (required for gadgetron)
 # first find current boost version (if any)
