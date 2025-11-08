@@ -24,7 +24,7 @@ function find_boost_version() {
 find_boost_version
 
 # echo "Found Boost major version ${boost_major}, minor ${boost_minor}"
-if [ "$boost_major" -gt 1 -o "$boost_minor" -ge 80 ]
+if [ "$boost_major" -gt 1 -o "$boost_minor" -gt 70 ]
 then
     echo "installing Boost ${boost_major}.${boost_minor} from system apt"
     ${APT_GET_INSTALL} libboost-dev libboost-chrono-dev \
@@ -38,7 +38,6 @@ else
     # we need to find a ppa that has it. This is unsafe and likely prone to falling over
     # when the ppa is no longer maintained
     echo "Please submit a PR with a recent PPA for boost for your OS."
-    if test "${BOOST_MISSING:-ERROR}" = ERROR; then
     exit 1
     # the mhier PPA is no longer supported
     echo "trying to find boost from ppa:mhier/libboost-latest"
@@ -52,7 +51,6 @@ else
     find_boost_version
     echo "installing Boost ${boost_major}.${boost_minor} from ppa:mhier apt"
     ${APT_GET_INSTALL} "libboost${boost_major}.${boost_minor}-all-dev"
-    fi
 fi
 
 ${APT_GET_INSTALL} \

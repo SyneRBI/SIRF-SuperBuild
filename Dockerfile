@@ -17,7 +17,7 @@ RUN bash /opt/scripts/build_gadgetron-ubuntu.sh
 
 # SIRF external deps
 COPY docker/build_system-ubuntu.sh /opt/scripts/
-RUN BOOST_MISSING=WARN bash /opt/scripts/build_system-ubuntu.sh
+RUN bash /opt/scripts/build_system-ubuntu.sh
 
 # SIRF python deps
 ARG BUILD_GPU=0
