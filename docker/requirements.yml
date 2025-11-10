@@ -35,7 +35,7 @@ dependencies:
   - tqdm              # cil
   - numba             # cil
   ## - tigre          # cil (GPU) # TODO: remove second # prefix once tigre is build for numpy>=2
-  # - astra-toolbox=*=cuda* # cil (GPU)
+  ## - astra-toolbox=*=cuda* # cil (GPU)
   - pip:
     - git+https://github.com/ismrmrd/ismrmrd-python-tools.git@master#egg=ismrmrd-python-tools
     # TODO: labextension @jupyter-widgets/jupyterlab-manager (jupyterlab_widgets ipywidgets ipympl)
