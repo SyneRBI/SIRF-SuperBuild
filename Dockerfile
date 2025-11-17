@@ -21,7 +21,7 @@ RUN bash /opt/scripts/build_system-ubuntu.sh
 
 # SIRF python deps
 ARG BUILD_GPU=0
-ARG BUILD_CIL="OFF"
+ARG BUILD_CIL="ON"
 COPY docker/requirements.yml /opt/scripts/
 # https://jupyter-docker-stacks.readthedocs.io/en/latest/using/common.html#conda-environments
 # https://github.com/TomographicImaging/CIL/blob/master/Dockerfile
@@ -115,9 +115,8 @@ COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/INSTALL/ /opt/S
 #COPY --from=build --link /opt/conda/ /opt/conda/
 
 # install {SIRF-Exercises,CIL-Demos}
-ARG BUILD_CIL
 COPY docker/user_demos.sh /opt/scripts/
-RUN BUILD_CIL="${BUILD_CIL}" bash /opt/scripts/user_demos.sh \
+RUN bash /opt/scripts/user_demos.sh \
  && fix-permissions /opt/SIRF-Exercises /opt/CIL-Demos "${CONDA_DIR}" /home/${NB_USER}
 
 # docker-stacks notebook
