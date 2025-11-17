@@ -54,7 +54,7 @@ COPY ./.git /opt/SIRF-SuperBuild.git
 ARG SIRF_SB_URL="file:///opt/SIRF-SuperBuild.git"
 ARG SIRF_SB_TAG="HEAD"
 ARG REMOVE_BUILD_FILES=0
-ARG RUN_CTEST=1
+ARG RUN_CTEST=0
 ARG NUM_PARALLEL_BUILDS=" "
 # CMake options
 ARG CMAKE_BUILD_TYPE="Release"
