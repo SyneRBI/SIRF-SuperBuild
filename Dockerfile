@@ -111,11 +111,13 @@ COPY --chown=${NB_USER} --chmod=644 --link docker/.bashrc /home/${NB_USER}/
 # install from build
 COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/INSTALL/ /opt/SIRF-SuperBuild/INSTALL/
 #COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/sources/SIRF/ /opt/SIRF-SuperBuild/sources/SIRF/
-#COPY --from=build --link /opt/conda/ /opt/conda/
+# PYTHON_VERSION site-packages
+COPY --from=build --link /opt/conda/lib/python3.12/site-packages/ /opt/conda/lib/python3.12/site-packages/
 
 # install {SIRF-Exercises,CIL-Demos}
 COPY docker/user_demos.sh /opt/scripts/
-RUN bash /opt/scripts/user_demos.sh \
+ARG BUILD_GPU
+RUN BUILD_GPU=${BUILD_GPU} bash /opt/scripts/user_demos.sh \
  && fix-permissions /opt/SIRF-Exercises /opt/CIL-Demos "${CONDA_DIR}" /home/${NB_USER}
 
 # docker-stacks notebook
