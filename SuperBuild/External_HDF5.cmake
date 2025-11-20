@@ -93,7 +93,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
  else()
     if(${USE_SYSTEM_${externalProjName}})
-      find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
+      find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED COMPONENTS C CXX)
       message(STATUS "USING the system ${externalProjName}, found HDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}, HDF5_C_LIBRARY_hdf5=${HDF5_C_LIBRARY_hdf5},HDF5_LIBRARIES=${HDF5_LIBRARIES}")
       set(HDF5_CMAKE_ARGS
          -DHDF5_INCLUDE_DIRS:PATH=${HDF5_INCLUDE_DIRS}
