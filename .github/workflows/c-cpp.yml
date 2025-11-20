@@ -67,7 +67,7 @@ jobs:
           DEVEL_BUILD: "OFF"
       fail-fast: false # don't terminate matrix if one job fails
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - if: contains(matrix.os, fromJSON('["ubuntu","macos"]'))
       name: increase disk space
       run: sudo .github/workflows/GHA_increase_disk_space.sh
@@ -163,11 +163,11 @@ jobs:
         export superbuild=`pwd`
         export BUILD_FLAGS="-DCMAKE_INSTALL_PREFIX=~/install -DPYVER=3 -DUSE_SYSTEM_RocksDB=OFF -DBUILD_TESTING_Gadgetron:BOOL=ON"
         source ~/virtualenv/bin/activate
-        cmake -S ${GITHUB_WORKSPACE} -B ./build ${BUILD_FLAGS} ${EXTRA_BUILD_FLAGS} ${DEVEL_BUILD};
+        cmake -G Ninja -S ${GITHUB_WORKSPACE} -B ./build ${BUILD_FLAGS} ${EXTRA_BUILD_FLAGS} ${DEVEL_BUILD};
     - name: cmake --build
       run: |
         source ~/virtualenv/bin/activate
-        cmake --build ./build -j 2
+        cmake --build ./build
     # tmate ssh debugging
     - if: github.event_name == 'workflow_dispatch' && github.event.inputs.tmate == 'true'
       uses: mxschmitt/action-tmate@v3
