@@ -88,7 +88,7 @@ jobs:
       name: build
       run: |
         # rebuild sirf image
-        ./docker/compose.sh -bR${{ matrix.type == 'gpu' && 'g' || 'c' }}
+        ./docker/compose.sh -bR${{ matrix.type == 'gpu' && 'g' || 'c' }} -- --build-arg STIR_DISABLE_HDF5=ON
         image=synerbi/sirf:latest${{ steps.pull.outputs.suffix }}
         echo "image=$image" >> "$GITHUB_OUTPUT"
         # tag potentially newer core image
@@ -172,7 +172,7 @@ jobs:
       name: build
       run: |
         # rebuild sirf image
-        ./docker/compose.sh -dbR${{ matrix.type == 'gpu' && 'g' || 'c' }}
+        ./docker/compose.sh -dbR${{ matrix.type == 'gpu' && 'g' || 'c' }} -- --build-arg STIR_DISABLE_HDF5=ON
         image=synerbi/sirf:devel${{ steps.pull.outputs.suffix }}
         echo "image=$image" >> "$GITHUB_OUTPUT"
     - name: test CIL
