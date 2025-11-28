@@ -15,6 +15,7 @@
   - Use `IPP_ROOT` instead of `IPP_LIBRARY` (for `BUILD_CIL`)
   - Suppress compilation warnings for Gadgetron for future compatibility (as Gadgetron converts them to errors)
   - Support the `Gadgetron_EXTRA_CMAKE_ARGS` option
+  - Fix problems in HDF5, related to finding C and CXX components and version restrictions, PR #973
 
 ## v3.8.0
 - Removed ACE as no longer needed by Gadgetron

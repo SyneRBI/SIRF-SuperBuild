@@ -94,7 +94,11 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
  else()
     if(${USE_SYSTEM_${externalProjName}})
       find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED COMPONENTS C CXX)
+      if (${externalProjName}_VERSION VERSION_LESS ${externalProjName}_MINIMUM_VERSION)
+         message(FATAL_ERROR "Found version ${${externalProjName}_VERSION}, but minimum is  ${HDF5_MINIMUM_VERSION}. Set HDF5_ROOT or HDF_DIR to a more recent version.")
+      endif()
       message(STATUS "USING the system ${externalProjName}, found HDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}, HDF5_C_LIBRARY_hdf5=${HDF5_C_LIBRARY_hdf5},HDF5_LIBRARIES=${HDF5_LIBRARIES}")
+      ## TODO we probably want to remove these
       set(HDF5_CMAKE_ARGS
          -DHDF5_INCLUDE_DIRS:PATH=${HDF5_INCLUDE_DIRS}
          -DHDF5_LIBRARIES:STRING=${HDF5_LIBRARIES}
@@ -103,6 +107,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       )
       if (HDF5_ROOT)
         set(HDF5_CMAKE_ARGS ${HDF5_CMAKE_ARGS} -DHDF5_ROOT:PATH=${HDF5_ROOT})
+      endif()
+      if (HDF5_DIR)
+        set(HDF5_CMAKE_ARGS ${HDF5_CMAKE_ARGS} -DHDF5_DIR:PATH=${HDF5_DIR})
       endif()
   endif()
   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
