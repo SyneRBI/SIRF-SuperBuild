@@ -59,11 +59,11 @@ set(FFTW3double_MD5 ${FFTW3_MD5})
 ## HDF5
 set(DEFAULT_HDF5_URL https://github.com/HDFGroup/hdf5/)
 if (WIN32)
-  set(HDF5_REQUIRED_VERSION 1.8.12)
+  set(HDF5_MINIMUM_VERSION 1.8.12)
   # 1.8.15 hdf5-targets.cmake refers to non-existent zlib files
   # (or at least this was the case for older Anaconda installations)
 else()
-  set(HDF5_REQUIRED_VERSION 1.8)
+  set(HDF5_MINIMUM_VERSION 1.8)
 endif()
 if (BUILD_MATLAB)
   # Ideally would call MATLAB and use "[majnum,minnum,relnum]=H5.get_libversion()"
