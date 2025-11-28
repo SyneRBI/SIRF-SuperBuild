@@ -51,6 +51,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
     CMAKE_ARGS ${${proj}_CMAKE_ARGS}
     ${${proj}_EXTRA_CMAKE_ARGS}
+    -DSKIP_CUDA_LIB=${DISABLE_CUDA}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
