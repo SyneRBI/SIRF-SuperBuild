@@ -22,25 +22,6 @@
 #This needs to be unique globally
 set(proj SIRF)
 
-# Set dependency list
-set(${proj}_DEPENDENCIES "Boost;HDF5;ISMRMRD;FFTW3;SWIG")
-
-if (${BUILD_Gadgetron})
-    set(${proj}_DEPENDENCIES "${${proj}_DEPENDENCIES};Gadgetron")
-endif()
-if (${BUILD_NIFTYREG})
-  set(${proj}_DEPENDENCIES "${${proj}_DEPENDENCIES};NIFTYREG")
-endif()
-if (${BUILD_STIR})
-  set(${proj}_DEPENDENCIES "${${proj}_DEPENDENCIES};STIR")
-endif()
-if (${BUILD_SPM})
-  set(${proj}_DEPENDENCIES "${${proj}_DEPENDENCIES};SPM")
-endif()
-
-# Include dependent projects if any
-ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
-
 # Set external name (same as internal for now)
 set(externalProjName ${proj})
 
@@ -55,6 +36,28 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   ### --- Project specific additions here
 
+  # Set dependency list
+  set(${proj}_DEPENDENCIES "Boost;HDF5;ISMRMRD;FFTW3;SWIG")
+
+  option(SIRF_DISABLE_Gadgetron_toolboxes "Disable use of Gadgetron toolboxes for NUFFT etc" OFF)    
+  mark_as_advanced(SIRF_DISABLE_Gadgetron_toolboxes)
+
+  if (BUILD_Gadgetron AND NOT SIRF_DISABLE_Gadgetron_toolboxes)
+    set(${proj}_DEPENDENCIES "${${proj}_DEPENDENCIES};Gadgetron")
+  endif()
+  if (BUILD_NIFTYREG)
+    set(${proj}_DEPENDENCIES "${${proj}_DEPENDENCIES};NIFTYREG")
+  endif()
+  if (BUILD_STIR)
+    set(${proj}_DEPENDENCIES "${${proj}_DEPENDENCIES};STIR")
+  endif()
+  if (BUILD_SPM)
+    set(${proj}_DEPENDENCIES "${${proj}_DEPENDENCIES};SPM")
+  endif()
+
+  # Include dependent projects if any
+  ExternalProject_Include_Dependencies(${proj} DEPENDS_VAR ${proj}_DEPENDENCIES)
+
   option(BUILD_TESTING_${proj} "Build tests for ${proj}" ON)
 
   message(STATUS "HDF5_ROOT in External_SIRF: " ${HDF5_ROOT})
@@ -68,6 +71,10 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
   if (BUILD_SPM)
     set(extra_args ${extra_args} "-DSPM_DIR:PATH=${SPM_DIR}")
+  endif()
+
+  if (SIRF_DISABLE_Gadgetron_toolboxes)
+    set(extra_args ${extra_args} "-DDISABLE_Gadgetron_toolboxes:BOOL=ON")
   endif()
 
   # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
