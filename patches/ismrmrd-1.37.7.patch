@@ -1,0 +1,19 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 26eb693..3f8dbc3 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -230,7 +230,13 @@ set_target_properties(ismrmrd
+   PROPERTIES
+   EXPORT_NAME ISMRMRD)
+ 
+-target_link_libraries(ismrmrd ${ISMRMRD_TARGET_LINK_LIBS})
++find_package(CURL REQUIRED)
++if (CURL_FOUND)
++  include_directories(${CURL_INCLUDE_DIRS})
++  target_link_libraries(ismrmrd ${ISMRMRD_TARGET_LINK_LIBS} ${CURL_LIBRARIES})
++else()
++  target_link_libraries(ismrmrd ${ISMRMRD_TARGET_LINK_LIBS})
++endif()
+ list(APPEND ISMRMRD_LIBRARIES ismrmrd) # Add to list of libraries to be found
+ list(APPEND ISMRMRD_LIBRARY_DIRS ${CMAKE_BINARY_DIR} ) # Add to list of directories to find libraries
+ 
