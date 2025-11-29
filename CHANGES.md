@@ -10,6 +10,7 @@
   - parallelproj: 1.10.2
   - boost: 1.88.0
   - CCPi-Regularisation-Toolkit: v25.0.0
+  - SWIG: 4.4
 - CMake:
   - Use [new `FindPython` module](https://cmake.org/cmake/help/latest/module/FindPython.html). You might need to help it find the correct Python path, e.g. by setting `Python_ROOT_DIR`.
   - Use `IPP_ROOT` instead of `IPP_LIBRARY` (for `BUILD_CIL`)
