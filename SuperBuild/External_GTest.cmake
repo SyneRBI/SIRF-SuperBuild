@@ -70,6 +70,7 @@ else()
       if(${USE_SYSTEM_${externalProjName}})
         message(STATUS "USING the system ${externalProjName}, set GTest_DIR (or GTEST_ROOT for GTest < 1.8.1) if needed.")
         find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
+        get_filename_component(GTEST_ROOT ${GTEST_LIBRARIES} DIRECTORY)
     endif()
     ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
       ${${proj}_EP_ARGS_DIRS})
