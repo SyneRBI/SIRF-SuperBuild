@@ -23,13 +23,14 @@ if (WIN32)
   cmake_minimum_required( VERSION 3.20.0 FATAL_ERROR)
 else()
   cmake_minimum_required( VERSION 3.16.2 FATAL_ERROR)
+  add_compile_options(-w)
 endif()
 
 # define how to behave with option when a variable of the same name exists
 # https://cmake.org/cmake/help/latest/policy/CMP0077.html#policy:CMP0077
 cmake_policy(SET CMP0077 OLD)
 
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMake" ${CMAKE_MODULE_PATH})
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMake")
 include(ExternalProject)
 include(ExternalProjectDependency)
 

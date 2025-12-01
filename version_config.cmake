@@ -31,9 +31,10 @@ else()
   # ISMRMRD needs more recent 1.68.0 so let's just say 1.71.0 as well
   set(Boost_REQUIRED_VERSION 1.71.0)
 endif()
-set(Boost_VERSION 1.88.0)
-set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_88_0.zip)
-set(Boost_MD5 2f3b4bc30f3b2cb33a4b51af02831013)
+# 1.86 dropped boost::process::child, causing gadgetron build failures
+set(Boost_VERSION 1.85.0)
+set(Boost_URL http://downloads.sourceforge.net/project/boost/boost/${Boost_VERSION}/boost_1_85_0.zip)
+set(Boost_MD5 90c1ca9bd3c29016b90c5a01ffc2cac1)
 
 
 ## Armadillo
@@ -110,15 +111,15 @@ set(NIFTYREG_REQUIRED_VERSION 1.5.68)
 ## ISMRMRD
 set(ISMRMRD_REQUIRED_VERSION "1.11.1")
 set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd)
-set(DEFAULT_ISMRMRD_TAG v1.13.7)
+set(DEFAULT_ISMRMRD_TAG v1.14.3)
 
 ## siemens_to_ismrmrd
 set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
 set(DEFAULT_siemens_to_ismrmrd_TAG v1.2.11)
 
 ## Gadgetron
-set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron)
-set(DEFAULT_Gadgetron_TAG 6202fb7352a14fb82817b57a97d928c988eb0f4b)
+set(DEFAULT_Gadgetron_URL https://github.com/SyneRBI/gadgetron.git)
+set(DEFAULT_Gadgetron_TAG avoid_test_compilation_error)
 
 ## ASTRA
 set(DEFAULT_astra-toolbox_URL https://github.com/astra-toolbox/astra-toolbox)
@@ -139,7 +140,7 @@ set(DEFAULT_parallelproj_TAG v1.10.2)
 ## STIR
 set(STIR_REQUIRED_VERSION "6.3.0")
 set(DEFAULT_STIR_URL https://github.com/UCL/STIR)
-set(DEFAULT_STIR_TAG rel_6.3.0)
+set(DEFAULT_STIR_TAG "ec3a5670f9b63cb10f4bebce6edf22d6f028a6fb") # 2024-11-28
 
 ## SIRF
 set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF)

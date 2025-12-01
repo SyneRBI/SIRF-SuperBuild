@@ -24,27 +24,19 @@ if [ "$PYTHON" = "miniconda" ]; then
       # delete GPU deps
       sed -r -e '/^\s*- (astra-toolbox|tigre).*/d' -e '/^\s*- \S+.*#.*GPU/d' environment.yml > environment-sirf.yml
     fi
-    # do not install CIL from conda if BUILD_CIL is set
-if test "${BUILD_CIL:-OFF}" != "OFF"; then
-      # delete CIL package from the environment file
-      echo "Deleting CIL from the environment file BUILD_CIL is set to >${BUILD_CIL}<"
-      sed -r -i -e '/^\s*- (cil|ccpi-regulariser).*/d' environment-sirf.yml
-      cat environment-sirf.yml
-    else
-      echo "Not deleting CIL from the environment file BUILD_CIL is set to >${BUILD_CIL}<"
-    fi
+    echo "delete CIL, CCP-Regulariser packages from the environment file"
+    sed -r -i -e '/^\s*- (cil|ccpi-regulariser).*/d' environment-sirf.yml
+    cat environment-sirf.yml
     conda env update --file environment-sirf.yml
+  elif [ -f requirements.txt ]; then
+    cat requirements.txt
+    # installing the requirements.txt with conda requires some cleaning of the requirements.txt
+    # Also the requirements.txt contains some packages that are not found on conda-forge, i.e. brainweb
+    # Therefore, these need to be installed by pip.
+    # This is handled by the install-sirf-exercises-dep.py script
+    python ~/install-sirf-exercises-dep.py requirements.txt
   else
-    if [ -f requirements.txt ]; then
-      cat requirements.txt
-      # installing the requirements.txt with conda requires some cleaning of the requirements.txt
-      # Also the requirements.txt contains some packages that are not found on conda-forge, i.e. brainweb
-      # Therefore, these need to be installed by pip.
-      # This is handled by the install-sirf-exercises-dep.py script
-      python ~/install-sirf-exercises-dep.py requirements.txt
-    else
-      echo "SIRF-Exercises requirements: did not find requirements.txt nor environment.yml. Skipping"
-    fi
+    echo "SIRF-Exercises requirements: did not find requirements.txt nor environment.yml. Skipping"
   fi
 else
   if [ -f requirements.txt ]; then
