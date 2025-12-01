@@ -8,6 +8,7 @@ channels:
 dependencies:
   - setuptools
   - wheel
+  - cxx-compiler=1.5.2
   - pytest
   - pytest-cov
   - scipy
@@ -36,13 +37,36 @@ dependencies:
   - cil-data >=22            # cil
   #- tomophantom =2.0.0      # cil # TODO: uncomment once tomophantom is built for numpy>=2
   - dxchange       # cil
-  - h5py           # cil
+  - h5py           # cil etc
   - numba          # cil
   - numpy >=2      # cil
   - olefile >=0.46 # cil
   - pillow         # cil
   - pywavelets     # cil
   - tqdm           # cil
+  - armadillo=12.8.4   # Gadgetron
+  - dcmtk              # Gadgetron
+  - howardhinnant_date # Gadgetron
+  - eigen              # Gadgetron
+  - libcurl            # Gadgetron
+  - mkl                # Gadgetron
+  - mkl-include        # Gadgetron
+  - range-v3           # Gadgetron
+  - libblas=*=*mkl     # Gadgetron
+  - gtest              # Gadgetron
+  - gmock              # Gadgetron
+  - plplot             # Gadgetron
+  - pugixml            # Gadgetron
+  - six                # Gadgetron?
+  - go                 # mrd-storage-server
+  - python-wget
+  - boost
+  - libitk-devel
+  - libitk
+  - nlohmann_json
+  - libparallelproj
+  - fftw
+  - niftyreg
   - pip
   - pip:
     - git+https://github.com/ismrmrd/ismrmrd-python-tools.git@master#egg=ismrmrd-python-tools

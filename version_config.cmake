@@ -111,15 +111,15 @@ set(NIFTYREG_REQUIRED_VERSION 1.5.68)
 ## ISMRMRD
 set(ISMRMRD_REQUIRED_VERSION "1.11.1")
 set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd)
-set(DEFAULT_ISMRMRD_TAG v1.13.7)
+set(DEFAULT_ISMRMRD_TAG v1.14.3)
 
 ## siemens_to_ismrmrd
 set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
 set(DEFAULT_siemens_to_ismrmrd_TAG v1.2.11)
 
 ## Gadgetron
-set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron)
-set(DEFAULT_Gadgetron_TAG 6202fb7352a14fb82817b57a97d928c988eb0f4b)
+set(DEFAULT_Gadgetron_URL https://github.com/SyneRBI/gadgetron.git)
+set(DEFAULT_Gadgetron_TAG avoid_test_compilation_error)
 
 ## ASTRA
 set(DEFAULT_astra-toolbox_URL https://github.com/astra-toolbox/astra-toolbox)
