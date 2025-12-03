@@ -53,3 +53,4 @@ dependencies:
     - jupyterlab_widgets
     - ipywidgets>=8
     - ipympl
+    - unittest-parametrize # cil

@@ -1,5 +1,6 @@
 setuptools
 wheel
+unittest-parametrize # CIL
 numpy        # CIL
 scipy        # CIL
 docopt
