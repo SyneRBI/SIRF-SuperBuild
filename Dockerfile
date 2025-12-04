@@ -93,6 +93,11 @@ RUN BUILD_FLAGS="-G Ninja\
  -DGadgetron_USE_CUDA=${Gadgetron_USE_CUDA}\
  -DBUILD_CIL=${BUILD_CIL}" \
  EXTRA_BUILD_FLAGS="${EXTRA_BUILD_FLAGS}" \
+ RUN_CTEST=0 \
+ bash /opt/scripts/user_sirf-ubuntu.sh \
+ && fix-permissions /opt/SIRF-SuperBuild /opt/ccache
+# test (if RUN_CTEST)
+RUN RUN_BUILD=0 \
  bash /opt/scripts/user_sirf-ubuntu.sh \
  && fix-permissions /opt/SIRF-SuperBuild /opt/ccache
 
