@@ -1,8 +1,9 @@
 name: base
 channels:
   - conda-forge
-  - https://software.repos.intel.com/python/conda # cil
-  - ccpi  # cil
+  - https://tomography.stfc.ac.uk/conda # cil
+  #- https://software.repos.intel.com/python/conda # cil
+  #- ccpi  # cil
   - defaults
 dependencies:
   - setuptools
@@ -21,20 +22,28 @@ dependencies:
   - jupytext
   - tensorboard
   - tensorboardx
+  - libgomp # parallelproj
+  - cil >=25 # cil
+  # auto-uncommented in Dockerfile in GPU builds
+  ## - tigre          # cil (GPU) # TODO: remove second # prefix once tigre is built for numpy>=2
+  ## - astra-toolbox 2.* cuda* # cil (GPU)
+  - astra-toolbox 2.* # cil
+  # - cuda-version 12.8.* # cil (GPU)
+  - ipp =2021.12.*         # cil
+  - ipp-devel =2021.12.*   # cil
+  - ipp-include =2021.12.* # cil
+  - ccpi-regulariser >=25 # cil
+  - cil-data >=22            # cil
+  #- tomophantom =2.0.0      # cil # TODO: uncomment once tomophantom is built for numpy>=2
+  - dxchange       # cil
+  - h5py           # cil
+  - numba          # cil
+  - numpy >=2      # cil
+  - olefile >=0.46 # cil
+  - pillow         # cil
+  - pywavelets     # cil
+  - tqdm           # cil
   - pip
-  - cil               # cil
-  - ccpi-regulariser  # cil
-  - dxchange          # cil
-  - h5py              # cil
-  - pillow            # cil
-  - olefile >=0.46    # cil
-  - pywavelets        # cil
-  - cil-data >=21.3.0 # cil
-  - ipp >=2021.10     # cil
-  - tqdm              # cil
-  - numba             # cil
-  ## - tigre          # cil (GPU) # TODO: remove second # prefix once tigre is build for numpy>=2
-  # - astra-toolbox 2 cuda* # cil (GPU)
   - pip:
     - git+https://github.com/ismrmrd/ismrmrd-python-tools.git@master#egg=ismrmrd-python-tools
     # TODO: labextension @jupyter-widgets/jupyterlab-manager (jupyterlab_widgets ipywidgets ipympl)
@@ -44,3 +53,4 @@ dependencies:
     - jupyterlab_widgets
     - ipywidgets>=8
     - ipympl
+    - unittest-parametrize # cil
