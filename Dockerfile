@@ -21,7 +21,7 @@ RUN bash /opt/scripts/build_system-ubuntu.sh
 
 # SIRF python deps
 ARG BUILD_GPU=0
-ARG BUILD_CIL="OFF"
+ARG BUILD_CIL="ON"
 COPY docker/requirements.yml /opt/scripts/
 # https://jupyter-docker-stacks.readthedocs.io/en/latest/using/common.html#conda-environments
 # https://github.com/TomographicImaging/CIL/blob/master/Dockerfile
@@ -59,8 +59,9 @@ ARG NUM_PARALLEL_BUILDS=" "
 # CMake options
 ARG CMAKE_BUILD_TYPE="Release"
 ARG STIR_ENABLE_OPENMP="ON"
+ARG STIR_DISABLE_HDF5="OFF"
 ARG USE_SYSTEM_Armadillo="ON"
-ARG USE_SYSTEM_Boost="ON"
+ARG USE_SYSTEM_Boost="OFF"
 ARG USE_SYSTEM_FFTW3="ON"
 ARG USE_SYSTEM_HDF5="ON"
 ARG USE_ITK="ON"
@@ -78,6 +79,7 @@ COPY docker/user_sirf-ubuntu.sh /opt/scripts/
 RUN BUILD_FLAGS="-G Ninja\
  -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}\
  -DSTIR_ENABLE_OPENMP=${STIR_ENABLE_OPENMP}\
+ -DSTIR_DISABLE_HDF5=${STIR_DISABLE_HDF5}\
  -DUSE_SYSTEM_Armadillo=${USE_SYSTEM_Armadillo}\
  -DUSE_SYSTEM_Boost=${USE_SYSTEM_Boost}\
  -DUSE_SYSTEM_FFTW3=${USE_SYSTEM_FFTW3}\
@@ -85,11 +87,17 @@ RUN BUILD_FLAGS="-G Ninja\
  -DUSE_ITK=${USE_ITK}\
  -DUSE_SYSTEM_SWIG=${USE_SYSTEM_SWIG}\
  -DUSE_NiftyPET=${USE_NiftyPET}\
+ -DPATCH_ISMRMRD=ON\
  -DBUILD_siemens_to_ismrmrd=${BUILD_siemens_to_ismrmrd}\
  -DBUILD_pet_rd_tools=${BUILD_pet_rd_tools}\
  -DGadgetron_USE_CUDA=${Gadgetron_USE_CUDA}\
  -DBUILD_CIL=${BUILD_CIL}" \
  EXTRA_BUILD_FLAGS="${EXTRA_BUILD_FLAGS}" \
+ RUN_CTEST=0 \
+ bash /opt/scripts/user_sirf-ubuntu.sh \
+ && fix-permissions /opt/SIRF-SuperBuild /opt/ccache
+# test (if RUN_CTEST)
+RUN RUN_BUILD=0 \
  bash /opt/scripts/user_sirf-ubuntu.sh \
  && fix-permissions /opt/SIRF-SuperBuild /opt/ccache
 
@@ -110,12 +118,13 @@ COPY --chown=${NB_USER} --chmod=644 --link docker/.bashrc /home/${NB_USER}/
 # install from build
 COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/INSTALL/ /opt/SIRF-SuperBuild/INSTALL/
 #COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/sources/SIRF/ /opt/SIRF-SuperBuild/sources/SIRF/
-#COPY --from=build --link /opt/conda/ /opt/conda/
+# PYTHON_VERSION site-packages
+COPY --from=build --link /opt/conda/lib/python3.12/site-packages/ /opt/conda/lib/python3.12/site-packages/
 
 # install {SIRF-Exercises,CIL-Demos}
-ARG BUILD_CIL
 COPY docker/user_demos.sh /opt/scripts/
-RUN BUILD_CIL="${BUILD_CIL}" bash /opt/scripts/user_demos.sh \
+ARG BUILD_GPU
+RUN BUILD_GPU=${BUILD_GPU} bash /opt/scripts/user_demos.sh \
  && fix-permissions /opt/SIRF-Exercises /opt/CIL-Demos "${CONDA_DIR}" /home/${NB_USER}
 
 # docker-stacks notebook

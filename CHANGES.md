@@ -3,14 +3,18 @@
 ## v3.9.0
 - VM: set the matplotlib backend to tkagg
 - Updated Versions:
-  - CIL: numpy-2 branch (v25.0.0+) 
+  - CIL: numpy-2 branch (v25+)
   - STIR: 6.3.0
   - SIRF: 3.9.0
   - ITK: 5.4.4
   - parallelproj: 1.10.2
-  - boost: 1.88.0
+  - boost: 1.85.0 (maximum supported by Gadgetron)
   - CCPi-Regularisation-Toolkit: v25.0.0
   - SWIG: 4.4
+- Docker:
+  - separate build & test steps
+  - fix missing `site-packages`
+  - `STIR_DISABLE_HDF5=ON` pending future fix
 - CMake:
   - Use [new `FindPython` module](https://cmake.org/cmake/help/latest/module/FindPython.html). You might need to help it find the correct Python path, e.g. by setting `Python_ROOT_DIR`.
   - Use `IPP_ROOT` instead of `IPP_LIBRARY` (for `BUILD_CIL`)
@@ -18,6 +22,8 @@
   - Support the `Gadgetron_EXTRA_CMAKE_ARGS` option
   - Add `SIRF_DISABLE_Gadgetron_toolboxes` convenience flag
   - Fix problems in HDF5, related to finding C and CXX components and version restrictions, PR #973
+  - update & cleanup CIL tests, add `unittest-parametrize`
+  - fix ISMRMRD build (c++17, cURL docker patch)
 
 ## v3.8.0
 - Removed ACE as no longer needed by Gadgetron

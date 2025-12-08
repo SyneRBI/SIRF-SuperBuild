@@ -16,8 +16,9 @@ INSTALL_DIR="${1:-/opt}"
 : ${REMOVE_BUILD_FILES:=1}
 # set default for running ctest during the build
 : ${RUN_CTEST:=1}
+: ${RUN_BUILD:=1}
 
-git clone "$SIRF_SB_URL" --recursive "$INSTALL_DIR"/SIRF-SuperBuild
+[ -d "$INSTALL_DIR"/SIRF-SuperBuild ] || git clone "$SIRF_SB_URL" --recursive "$INSTALL_DIR"/SIRF-SuperBuild
 cd $INSTALL_DIR/SIRF-SuperBuild
 git checkout "$SIRF_SB_TAG"
 
@@ -28,11 +29,12 @@ echo "PATH: $PATH"
 echo "COMPILER_FLAGS: $COMPILER_FLAGS"
 echo "BUILD+EXTRA FLAGS: $BUILD_FLAGS $EXTRA_BUILD_FLAGS"
 
-cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS $COMPILER_FLAGS .
+if [ "$RUN_BUILD" = 1 ]; then
+  cmake $BUILD_FLAGS $EXTRA_BUILD_FLAGS $COMPILER_FLAGS .
+  cmake --build . -j ${NUM_PARALLEL_BUILDS}
+fi
 # save installation location for below
 CMAKE_INSTALL_PREFIX="${INSTALL_DIR}/SIRF-SuperBuild/INSTALL"
-
-cmake --build . -j ${NUM_PARALLEL_BUILDS}
 
 if [ "$RUN_CTEST" = 1 ]; then
     source "$CMAKE_INSTALL_PREFIX"/bin/env_sirf.sh
