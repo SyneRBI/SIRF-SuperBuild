@@ -18,7 +18,6 @@
 # limitations under the License.
 #
 #=========================================================================
-
 #This needs to be unique globally
 set(proj SIRF-Contribs)
 
@@ -43,10 +42,10 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         ${${proj}_EP_ARGS}
         ${${proj}_EP_ARGS_GIT}
         ${${proj}_EP_ARGS_DIRS}
-
+        UPDATE_COMMAND ""
         CONFIGURE_COMMAND ""
         BUILD_COMMAND ""
-        INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory ${${proj}_SOURCE_DIR}/src/Python/sirf/ ${PYTHON_DEST}/sirf
+        INSTALL_COMMAND ${CMAKE_COMMAND} -E env ${Python_EXECUTABLE} -m pip install ${${proj}_SOURCE_DIR}
       )
     else()
       # if SETUP_PY one can launch the conda build.sh script setting 

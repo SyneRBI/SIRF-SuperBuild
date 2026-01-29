@@ -1,5 +1,9 @@
 # ChangeLog
 
+## v3.X.x
+- Updated versions:
+  - SIRF-Contribs: v3.9.1
+
 ## v3.9.0
 - VM: set the matplotlib backend to tkagg
 - Updated Versions:

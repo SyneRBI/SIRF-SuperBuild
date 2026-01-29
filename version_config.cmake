@@ -144,7 +144,7 @@ set(DEFAULT_STIR_TAG rel_6.3.0)
 
 ## SIRF
 set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF)
-set(DEFAULT_SIRF_TAG "0ba22c9b5d8b6c2f008e0b1e1846c059703a88c3") # 2025-11-03
+set(DEFAULT_SIRF_TAG "11a6a50fc13bf52439d0c1ec15ebacfbadada8c5") # 2026-01-29
 
 ## pet-rd-tools
 set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools)
@@ -152,7 +152,7 @@ set(DEFAULT_pet_rd_tools_TAG v2.0.2)
 
 ## SIRF-Contribs
 set(DEFAULT_SIRF-Contribs_URL https://github.com/SyneRBI/SIRF-Contribs)
-set(DEFAULT_SIRF-Contribs_TAG v3.9.0)
+set(DEFAULT_SIRF-Contribs_TAG v3.9.1)
 
 ## SPM
 set(DEFAULT_SPM_URL https://github.com/spm/SPM12)
