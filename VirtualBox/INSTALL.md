@@ -8,7 +8,7 @@ For macOS systems with Apple Silicon (ARM64), follow the dedicated section below
 
 1. Make sure you have enough free disk-space on your laptop (~10GB for installation).
 
-2. Download the pre-built virtual machine from [Zenodo](https://doi.org/10.5281/zenodo.3228198).
+2. [Download](https://doi.org/10.5281/zenodo.3228198) the pre-built virtual machine from Zenodo.
 
    Warning: this file can be ~5GB. (You can download to a USB stick or external hard drive to save space on your hard-disk).
 
