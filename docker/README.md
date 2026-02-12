@@ -30,7 +30,7 @@ docker run --rm -it -p 9999:8888 --gpus all ghcr.io/synerbi/sirf:latest-gpu
 
 The workflow will also build & test all PRs (without pushing any new image tags).
 
-The Jupyter notebook should be accessible at <http://localhost:9999>.
+The Jupyter notebook should be accessible at <http://localhost:9999>. Jupyter password is `virtual`.
 
 > [!WARNING]
 > To sync the container user & host user permissions (useful when sharing folders), use `--user` and `--group-add`.
