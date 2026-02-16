@@ -27,6 +27,7 @@ COPY docker/requirements.yml /opt/scripts/
 # https://github.com/TomographicImaging/CIL/blob/master/Dockerfile
 RUN if test "$BUILD_GPU" != 0; then \
   sed -ri 's/^(\s*)#\s*(- \S+.*#.*GPU.*)$/\1\2/' /opt/scripts/requirements.yml; \
+  echo 'cuda-version 12.9.*' >> "${CONDA_DIR}/conda-meta/pinned"; \
  fi \
  && mamba env update -n base -f /opt/scripts/requirements.yml \
  && mamba clean --all -f -y && fix-permissions "${CONDA_DIR}" /home/${NB_USER}
