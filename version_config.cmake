@@ -144,7 +144,7 @@ set(DEFAULT_STIR_TAG rel_6.3.0)
 
 ## SIRF
 set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF)
-set(DEFAULT_SIRF_TAG "11a6a50fc13bf52439d0c1ec15ebacfbadada8c5") # 2026-01-29
+set(DEFAULT_SIRF_TAG "4198e7f17ef17ff8b1913e20d1db3e7c9383d4da") # 2026-03-12
 
 ## pet-rd-tools
 set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools)
@@ -162,6 +162,7 @@ set(DEFAULT_JSON_URL https://github.com/nlohmann/json)
 set(DEFAULT_JSON_TAG v3.11.3)
 
 # CCPi CIL
+# test different branch of CIL to test fix
 set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL)
 set(DEFAULT_CIL_TAG "numpy-2")
 
@@ -204,7 +205,8 @@ mark_as_advanced(DEVEL_BUILD)
 
 if (DEVEL_BUILD)
 
-  set (DEFAULT_SIRF_TAG origin/master)
+  # TODO fix PyTorch unittest
+  # set (DEFAULT_SIRF_TAG origin/master)
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR)
   set(DEFAULT_STIR_TAG origin/master)
@@ -219,7 +221,7 @@ if (DEVEL_BUILD)
 
   # CCPi CIL
   set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL)
-  set(DEFAULT_CIL_TAG origin/master)
+  set(DEFAULT_CIL_TAG origin/numpy-2)
 
   # Gadgetron
   # set(DEFAULT_Gadgetron_TAG origin/master)
