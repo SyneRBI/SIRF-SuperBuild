@@ -1,8 +1,17 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 26eb693..3f8dbc3 100644
+index 26eb693..c3a0f97 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -230,7 +230,13 @@ set_target_properties(ismrmrd
+@@ -17,6 +17,8 @@ project(ISMRMRD)
+ set (ISMRMRD_CMAKE_DIR ${PROJECT_SOURCE_DIR}/cmake CACHE PATH
+   "Location of CMake scripts")
+ 
++set (CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
++
+ # command line options
+ option(USE_HDF5_DATASET_SUPPORT "Compile with support for reading and writing datasets to HDF5 files" ON)
+ option(BUILD_TESTS "Build unit tests " ON)
+@@ -230,7 +232,13 @@ set_target_properties(ismrmrd
    PROPERTIES
    EXPORT_NAME ISMRMRD)
  
