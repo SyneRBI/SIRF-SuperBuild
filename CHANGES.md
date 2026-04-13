@@ -2,10 +2,10 @@
 
 ## v3.X.x
 - CMake:
-  - Patch ISMRMRD CMakeLists.txt to set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE) (#) 
+  - Patch ISMRMRD `CMAKE_INSTALL_RPATH_USE_LINK_PATH` (#991)
 - Updated versions:
   - SIRF-Contribs: v3.9.1
-  - SIRF: 4198e7f17ef17ff8b1913e20d1db3e7c9383d4da both for default and devel #2026-03-12
+  - SIRF: 4198e7f17ef17ff8b1913e20d1db3e7c9383d4da (2026-03-12)
 
 ## v3.9.0
 - VM: set the matplotlib backend to tkagg

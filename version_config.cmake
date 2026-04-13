@@ -162,7 +162,6 @@ set(DEFAULT_JSON_URL https://github.com/nlohmann/json)
 set(DEFAULT_JSON_TAG v3.11.3)
 
 # CCPi CIL
-# test different branch of CIL to test fix
 set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL)
 set(DEFAULT_CIL_TAG "numpy-2")
 
@@ -205,8 +204,7 @@ mark_as_advanced(DEVEL_BUILD)
 
 if (DEVEL_BUILD)
 
-  # TODO fix PyTorch unittest
-  # set (DEFAULT_SIRF_TAG origin/master)
+  set (DEFAULT_SIRF_TAG origin/master)
   ## STIR
   set(DEFAULT_STIR_URL https://github.com/UCL/STIR)
   set(DEFAULT_STIR_TAG origin/master)
