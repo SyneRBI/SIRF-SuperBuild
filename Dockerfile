@@ -27,6 +27,7 @@ COPY docker/requirements.yml /opt/scripts/
 # https://github.com/TomographicImaging/CIL/blob/master/Dockerfile
 RUN if test "$BUILD_GPU" != 0; then \
   sed -ri 's/^(\s*)#\s*(- \S+.*#.*GPU.*)$/\1\2/' /opt/scripts/requirements.yml; \
+  echo 'cuda-version 12.8.*' >> "${CONDA_DIR}/conda-meta/pinned"; \
  fi \
  && if test "$BUILD_CIL" != "OFF"; then \
   sed -r -i -e '/^\s*- (cil|ccpi-regulariser).*/d' /opt/scripts/requirements.yml; \
@@ -137,8 +138,6 @@ ENV RESTARTABLE="yes"
 EXPOSE 9002
 ENV GADGETRON_RELAY_HOST="0.0.0.0"
 
-# run gadgetron in the background before start-notebook.py
-COPY --link --chown=${NB_USER} docker/start-gadgetron-notebook.sh /opt/scripts/
 # COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/INSTALL/lib /opt/conda/lib
-COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/INSTALL/bin/env_sirf.sh /opt/conda/etc/conda/activate.d
-CMD ["/opt/scripts/start-gadgetron-notebook.sh"]
+COPY --link docker/15source-sirf.sh docker/25clone-work.sh docker/35gadgetron.sh /usr/local/bin/before-notebook.d/
+ENV NOTEBOOK_ARGS=--PasswordIdentityProvider.hashed_password='sha1:cbf03843d2bb:8729d2fbec60cacf6485758752789cd9989e756c'
