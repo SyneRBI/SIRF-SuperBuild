@@ -71,17 +71,23 @@ jobs:
     - if: contains(matrix.os, fromJSON('["ubuntu","macos"]'))
       name: increase disk space
       run: sudo .github/workflows/GHA_increase_disk_space.sh
+    - uses: conda-incubator/setup-miniconda@v4
+      with:
+        auto-activate: true
+        activate-environment: ""
+        channels: conda-forge,defaults
+        mamba-version: "*"
     - id: deps
       name: install dependencies
       working-directory: docker
       run: |
+        mamba env update -n base -f requirements.yml
+        echo "Python_ROOT_DIR=$CONDA_PREFIX" >> $GITHUB_ENV
+        echo "Python3_ROOT_DIR=$CONDA_PREFIX" >> $GITHUB_ENV
         sudo ./raw-ubuntu.sh
         sudo ./build_system-ubuntu.sh
         sudo ./build_essential-ubuntu.sh
         sudo ./build_gadgetron-ubuntu.sh
-        sudo ./build_python-ubuntu.sh
-        echo "python-version=$(python3 --version | awk '{print $2}')" >> $GITHUB_OUTPUT
-
     - name: optionally install ROOT
       env:
         EXTRA_BUILD_FLAGS: ${{ matrix.EXTRA_BUILD_FLAGS }}
@@ -115,18 +121,6 @@ jobs:
                 ;;
             esac
         fi
-
-    - uses: actions/setup-python@v5
-      with:
-        python-version: '${{ steps.deps.outputs.python-version }}'
-        cache: pip
-    - name: pip install
-      working-directory: docker
-      run: |
-        PYTHON_EXECUTABLE=python3 PYTHON_INSTALL_DIR="$HOME/virtualenv" ./user_python-ubuntu.sh
-        echo "Python_ROOT_DIR=$HOME/virtualenv" >> $GITHUB_ENV
-        echo "Python2_ROOT_DIR=$HOME/virtualenv" >> $GITHUB_ENV
-        echo "Python3_ROOT_DIR=$HOME/virtualenv" >> $GITHUB_ENV
     - uses: hendrikmuhs/ccache-action@v1
       with:
         key: ${{ matrix.os }}-${{ env.COMPILER }}-${{ matrix.compiler_version }}-${{ env.BUILD_TYPE }}-${{ github.ref_name }}-${{ github.run_id }}
@@ -162,12 +156,8 @@ jobs:
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         export superbuild=`pwd`
         export BUILD_FLAGS="-DCMAKE_INSTALL_PREFIX=~/install -DPYVER=3 -DUSE_SYSTEM_RocksDB=OFF -DBUILD_TESTING_Gadgetron:BOOL=ON"
-        source ~/virtualenv/bin/activate
         cmake -G Ninja -S ${GITHUB_WORKSPACE} -B ./build ${BUILD_FLAGS} ${EXTRA_BUILD_FLAGS} ${DEVEL_BUILD};
-    - name: cmake --build
-      run: |
-        source ~/virtualenv/bin/activate
-        cmake --build ./build
+    - run: cmake --build ./build
     # tmate ssh debugging
     - if: github.event_name == 'workflow_dispatch' && github.event.inputs.tmate == 'true'
       uses: mxschmitt/action-tmate@v3

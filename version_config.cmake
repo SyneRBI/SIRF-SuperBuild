@@ -121,14 +121,6 @@ set(DEFAULT_siemens_to_ismrmrd_TAG v1.2.11)
 set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron)
 set(DEFAULT_Gadgetron_TAG 6202fb7352a14fb82817b57a97d928c988eb0f4b)
 
-## ASTRA
-set(DEFAULT_astra-toolbox_URL https://github.com/astra-toolbox/astra-toolbox)
-set(DEFAULT_astra-toolbox_TAG origin/master)
-
-## TomoPhantom
-set(DEFAULT_TomoPhantom_URL https://github.com/dkazanc/TomoPhantom)
-set(DEFAULT_TomoPhantom_TAG v2.0.0)
-
 ## NiftyPET
 set(DEFAULT_NiftyPET_URL https://github.com/pjmark/NIPET)
 set(DEFAULT_NiftyPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
@@ -164,9 +156,6 @@ set(DEFAULT_JSON_TAG v3.11.3)
 # CCPi CIL
 set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL)
 set(DEFAULT_CIL_TAG "numpy-2")
-
-set(DEFAULT_CCPi-Regularisation-Toolkit_URL https://github.com/TomographicImaging/CCPi-Regularisation-Toolkit)
-set(DEFAULT_CCPi-Regularisation-Toolkit_TAG "v25.0.0")
 
 # CERN ROOT
 set(DEFAULT_ROOT_URL https://github.com/root-project/root)
@@ -257,16 +246,8 @@ set(JSON_URL ${DEFAULT_JSON_URL} CACHE STRING ON)
 set(JSON_TAG ${DEFAULT_JSON_TAG} CACHE STRING ON)
 
 
-set(CCPi-Regularisation-Toolkit_URL ${DEFAULT_CCPi-Regularisation-Toolkit_URL} CACHE STRING ON)
-set(CCPi-Regularisation-Toolkit_TAG ${DEFAULT_CCPi-Regularisation-Toolkit_TAG} CACHE STRING ON)
 set(CIL_URL ${DEFAULT_CIL_URL} CACHE STRING ON)
 set(CIL_TAG ${DEFAULT_CIL_TAG} CACHE STRING ON)
-set(astra-toolbox_URL ${DEFAULT_astra-toolbox_URL} CACHE STRING ON)
-set(astra-toolbox_TAG ${DEFAULT_astra-toolbox_TAG} CACHE STRING ON)
-set(astra-python-wrapper_URL ${DEFAULT_astra-toolbox_URL} CACHE STRING ON)
-set(astra-python-wrapper_TAG ${DEFAULT_astra-toolbox_TAG} CACHE STRING ON)
-set(TomoPhantom_URL ${DEFAULT_TomoPhantom_URL} CACHE STRING ON)
-set(TomoPhantom_TAG ${DEFAULT_TomoPhantom_TAG} CACHE STRING ON)
 
 set(ROOT_URL ${DEFAULT_ROOT_URL} CACHE STRING ON)
 set(ROOT_TAG ${DEFAULT_ROOT_TAG} CACHE STRING ON)
@@ -319,7 +300,6 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   glog_URL glog_TAG
   NIFTYREG_URL NIFTYREG_TAG
   CIL_URL CIL_TAG
-  CCPi-Regularisation-Toolkit_URL CCPi-Regularisation-Toolkit_TAG
   NiftyPET_URL NiftyPET_TAG
   parallelproj_URL parallelproj_TAG
   SIRF-Contribs_URL SIRF-Contribs_TAG
@@ -328,8 +308,6 @@ mark_as_advanced(SIRF_URL SIRF_TAG STIR_URL STIR_TAG
   JSON_URL JSON_TAG
   range-v3_URL range-v3_TAG
   ROOT_URL ROOT_TAG
-  astra-toolbox_URL astra-toolbox_TAG
-  astra-python-wrapper_URL astra-python-wrapper_TAG
   RocksDB_URL RocksDB_TAG
   mrd-storage-server_URL mrd-storage-server_TAG
   Date_URL Date_TAG

@@ -6,6 +6,7 @@
 - Updated versions:
   - SIRF-Contribs: v3.9.1
   - SIRF: 4198e7f17ef17ff8b1913e20d1db3e7c9383d4da (2026-03-12)
+  - CCPi-Regularisation-Toolkit, astra-toolbox, TomoPhantom: moved to conda
 
 ## v3.9.0
 - VM: set the matplotlib backend to tkagg
