@@ -155,7 +155,7 @@ jobs:
         set -ex
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         export superbuild=`pwd`
-        export BUILD_FLAGS="-DCMAKE_INSTALL_PREFIX=~/install -DPYVER=3 -DUSE_SYSTEM_RocksDB=OFF -DBUILD_TESTING_Gadgetron:BOOL=ON"
+        export BUILD_FLAGS="-DCMAKE_INSTALL_PREFIX=~/install -DPYVER=3 -DUSE_SYSTEM_RocksDB=OFF -DBUILD_TESTING_Gadgetron:BOOL=ON -DSTIR_DISABLE_HDF5:BOOL=ON"
         cmake -G Ninja -S ${GITHUB_WORKSPACE} -B ./build ${BUILD_FLAGS} ${EXTRA_BUILD_FLAGS} ${DEVEL_BUILD};
     - run: cmake --build ./build
     # tmate ssh debugging
