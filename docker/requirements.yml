@@ -34,7 +34,7 @@ dependencies:
   - ccpi-regulariser >=25  # cil
   - cil-data >=22          # cil
   - httomo::tomophantom    # cil
-  - dxchange       # cil
+  - ccpi::dxchange >=0.2.1 # cil
   - h5py           # cil
   - numba          # cil
   - numpy >=2      # cil
