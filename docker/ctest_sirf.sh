@@ -1,17 +1,17 @@
 #! /bin/bash
-# source env 
+# source env
 export INSTALL_DIR=~/install
 source ${INSTALL_DIR}/bin/env_sirf.sh
 
 # append the path of virtualenv
 export PATH=~/.local/bin:$PATH
-source ~/virtualenv/bin/activate 
+source ~/virtualenv/bin/activate
 
 # print for debugging
 cat $GITHUB_WORKSPACE/build/builds/SIRF/build/CMakeCache.txt
 cd $GITHUB_WORKSPACE/build
 gadgetron >& gadgetron.log&
-ctest --output-on-failure; test_fail=$?
+ctest --verbose --output-on-failure; test_fail=$?
 # echo "----------- Killing gadgetron server"
 # killall gadgetron
 if [[ $test_fail -ne 0 ]]; then

@@ -169,5 +169,7 @@ jobs:
         name: build_log_files-${{ matrix.os }}-${{ env.COMPILER }}${{ matrix.compiler_version }}-${{ env.BUILD_TYPE }}-DEVEL=${{ matrix.DEVEL_BUILD }}
         path: ${{ github.workspace }}/build/**/*.log
         retention-days: 7
+    - name: pip install torch
+      run: pip install torch --index-url https://download.pytorch.org/whl/cpu
     - name: ctest
       run: ./docker/ctest_sirf.sh
