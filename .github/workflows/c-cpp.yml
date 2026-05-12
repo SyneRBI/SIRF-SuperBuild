@@ -32,7 +32,7 @@ on:
         default: false
         required: true
 jobs:
-  build-test:
+  test:
     runs-on: ${{ matrix.os }}
     defaults: {run: {shell: 'bash -el {0}'}}
     env:
@@ -41,30 +41,24 @@ jobs:
     strategy:
       matrix:
         include:
-        - os: ubuntu-22.04
-          compiler_version: 9
-          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=OFF -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
-          DEVEL_BUILD: "OFF"
-        - os: ubuntu-22.04
-          compiler_version: 9
-          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=OFF -DUSE_SYSTEM_HDF5=OFF -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=OFF"
-          DEVEL_BUILD: "OFF"
-        #- os: ubuntu-latest
-        #  compiler_version: 9
-        #  EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=OFF -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=ON -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON"
-        #  DEVEL_BUILD: "OFF"
-        - os: ubuntu-22.04
-          compiler_version: 9
-          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_Armadillo=ON -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=OFF -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_SYSTEM_GTest=OFF"
-          DEVEL_BUILD: "OFF"
-        - os: ubuntu-22.04
-          compiler_version: 11
-          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=OFF -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_ROOT:BOOL=ON -DUSE_SYSTEM_ROOT=ON -DSIRF_EXTRA_CMAKE_ARGS=-DCMAKE_POLICY_DEFAULT_CMP0074=NEW" # note: SIRF needs CMP0074 with older versions of pre-built ROOT (see below)
-          DEVEL_BUILD: "ON"
-        - os: ubuntu-22.04
-          compiler_version: 11
-          EXTRA_BUILD_FLAGS: "-DUSE_ITK=ON -DBUILD_CIL=ON -DUSE_SYSTEM_Armadillo=OFF -DUSE_SYSTEM_Boost=ON -DUSE_SYSTEM_FFTW3=ON -DUSE_SYSTEM_HDF5=OFF -DBUILD_siemens_to_ismrmrd=ON -DUSE_SYSTEM_SWIG=ON -DUSE_ROOT:BOOL=ON -DUSE_SYSTEM_ROOT=ON -DSIRF_EXTRA_CMAKE_ARGS=-DCMAKE_POLICY_DEFAULT_CMP0074=NEW" # note: SIRF needs CMP0074 with older versions of pre-built ROOT (see below)
-          DEVEL_BUILD: "OFF"
+        - cxx-ver: 9
+          flags: -devel -armadillo -boost -fftw3 +hdf5 -swig
+          os: ubuntu-22.04
+        - cxx-ver: 9
+          flags: -devel -armadillo -boost +fftw3 +hdf5 +swig
+          os: ubuntu-22.04
+        #- cxx-ver: 9
+        #  flags: -devel -armadillo +boost -fftw3 +hdf5 -swig
+        #  os: ubuntu-latest
+        - cxx-ver: 9
+          flags: -devel -armadillo -boost -fftw3 +hdf5 -swig +gtest
+          os: ubuntu-22.04
+        - cxx-ver: 11
+          flags: +devel +armadillo -boost -fftw3 +hdf5 -swig -root
+          os: ubuntu-22.04
+        - cxx-ver: 11
+          flags: -devel +armadillo -boost -fftw3 +hdf5 -swig -root
+          os: ubuntu-22.04
       fail-fast: false # don't terminate matrix if one job fails
     steps:
     - uses: actions/checkout@v5
@@ -89,12 +83,9 @@ jobs:
         sudo ./build_essential-ubuntu.sh
         sudo ./build_gadgetron-ubuntu.sh
     - name: optionally install ROOT
-      env:
-        EXTRA_BUILD_FLAGS: ${{ matrix.EXTRA_BUILD_FLAGS }}
       run: |
         sh -ex
-        if expr match "${EXTRA_BUILD_FLAGS}" ".*-DUSE_SYSTEM_ROOT=ON.*" >/dev/null
-        then
+        if [[ " ${{ matrix.flags }} " =~ " -root " ]]; then
             # Install ROOT (warning: currently only valid on Ubuntu)
             ROOT_file=root_v6.28.12.Linux-ubuntu20-x86_64-gcc9.4.tar.gz
             wget https://root.cern/download/"$ROOT_file"
@@ -123,10 +114,10 @@ jobs:
         fi
     - uses: hendrikmuhs/ccache-action@v1
       with:
-        key: ${{ matrix.os }}-${{ env.COMPILER }}-${{ matrix.compiler_version }}-${{ env.BUILD_TYPE }}-${{ github.ref_name }}-${{ github.run_id }}
+        key: ${{ matrix.os }}-${{ env.COMPILER }}-${{ matrix.cxx-ver }}-${{ env.BUILD_TYPE }}-${{ github.ref_name }}-${{ github.run_id }}
         restore-keys: |
-          ${{ matrix.os }}-${{ env.COMPILER }}-${{ matrix.compiler_version }}-${{ env.BUILD_TYPE }}-${{ github.ref_name }}
-          ${{ matrix.os }}-${{ env.COMPILER }}-${{ matrix.compiler_version }}-${{ env.BUILD_TYPE }}
+          ${{ matrix.os }}-${{ env.COMPILER }}-${{ matrix.cxx-ver }}-${{ env.BUILD_TYPE }}-${{ github.ref_name }}
+          ${{ matrix.os }}-${{ env.COMPILER }}-${{ matrix.cxx-ver }}-${{ env.BUILD_TYPE }}
         append-timestamp: false
     - name: export CC CXX
       run: |
@@ -138,9 +129,9 @@ jobs:
           CC=gcc
           CXX=g++
         fi
-        if test -n '${{ matrix.compiler_version }}'; then
-          CC=${CC}-${{ matrix.compiler_version }}
-          CXX=${CXX}-${{ matrix.compiler_version }}
+        if test -n '${{ matrix.cxx-ver }}'; then
+          CC=${CC}-${{ matrix.cxx-ver }}
+          CXX=${CXX}-${{ matrix.cxx-ver }}
           sudo apt install -yq ${CXX} ${CC}
         fi
         # make available to jobs below
@@ -148,15 +139,29 @@ jobs:
         echo "CXX=$CXX" >> $GITHUB_ENV
     - name: cmake -S .
       env:
-        EXTRA_BUILD_FLAGS: ${{ matrix.EXTRA_BUILD_FLAGS }}
         CMAKE_BUILD_TYPE: ${{ env.BUILD_TYPE }}
-        DEVEL_BUILD: "-DDEVEL_BUILD=${{ matrix.DEVEL_BUILD }}"
       run: |
         set -ex
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         export superbuild=`pwd`
-        export BUILD_FLAGS="-DCMAKE_INSTALL_PREFIX=~/install -DPYVER=3 -DUSE_SYSTEM_RocksDB=OFF -DBUILD_TESTING_Gadgetron:BOOL=ON -DSTIR_DISABLE_HDF5:BOOL=ON"
-        cmake -G Ninja -S ${GITHUB_WORKSPACE} -B ./build ${BUILD_FLAGS} ${EXTRA_BUILD_FLAGS} ${DEVEL_BUILD};
+        BUILD_FLAGS="-DCMAKE_INSTALL_PREFIX=~/install -DPYVER=3 -DUSE_SYSTEM_RocksDB:BOOL=OFF -DBUILD_TESTING_Gadgetron:BOOL=ON -DSTIR_DISABLE_HDF5:BOOL=ON -DUSE_ITK:BOOL=ON -DBUILD_CIL:BOOL=ON -DBUILD_siemens_to_ismrmrd:BOOL=ON"
+        [[ " ${{ matrix.flags }} " =~ " +armadillo " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_Armadillo:BOOL=OFF"
+        [[ " ${{ matrix.flags }} " =~ " -armadillo " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_Armadillo:BOOL=ON"
+        [[ " ${{ matrix.flags }} " =~ " +boost " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_Boost:BOOL=OFF"
+        [[ " ${{ matrix.flags }} " =~ " -boost " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_Boost:BOOL=ON"
+        [[ " ${{ matrix.flags }} " =~ " +fftw3 " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_FFTW3:BOOL=OFF"
+        [[ " ${{ matrix.flags }} " =~ " -fftw3 " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_FFTW3:BOOL=ON"
+        [[ " ${{ matrix.flags }} " =~ " +hdf5 " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_HDF5:BOOL=OFF"
+        [[ " ${{ matrix.flags }} " =~ " -hdf5 " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_HDF5:BOOL=ON"
+        [[ " ${{ matrix.flags }} " =~ " +swig " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_SWIG:BOOL=OFF"
+        [[ " ${{ matrix.flags }} " =~ " -swig " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_SWIG:BOOL=ON"
+        [[ " ${{ matrix.flags }} " =~ " +gtest " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_GTest:BOOL=OFF"
+        [[ " ${{ matrix.flags }} " =~ " -gtest " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_GTest:BOOL=ON"
+        # note: SIRF needs CMP0074 with older versions of pre-built ROOT (see above)
+        [[ " ${{ matrix.flags }} " =~ " -root " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_ROOT:BOOL=ON -DUSE_SYSTEM_ROOT:BOOL=ON -DSIRF_EXTRA_CMAKE_ARGS=-DCMAKE_POLICY_DEFAULT_CMP0074=NEW"
+        [[ " ${{ matrix.flags }} " =~ " +devel " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DDEVEL_BUILD:BOOL=ON"
+        [[ " ${{ matrix.flags }} " =~ " -devel " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DDEVEL_BUILD:BOOL=OFF"
+        cmake -G Ninja -S ${GITHUB_WORKSPACE} -B ./build ${BUILD_FLAGS}
     - run: cmake --build ./build
     # tmate ssh debugging
     - if: github.event_name == 'workflow_dispatch' && github.event.inputs.tmate == 'true'
@@ -166,7 +171,7 @@ jobs:
       name: Upload build log files for debugging
       uses: actions/upload-artifact@v4
       with:
-        name: build_log_files-${{ matrix.os }}-${{ env.COMPILER }}${{ matrix.compiler_version }}-${{ env.BUILD_TYPE }}-DEVEL=${{ matrix.DEVEL_BUILD }}
+        name: logs-${{ matrix.cxx-ver }}-${{ matrix.flags }}-${{ matrix.os }}
         path: ${{ github.workspace }}/build/**/*.log
         retention-days: 7
     - name: pip install torch
