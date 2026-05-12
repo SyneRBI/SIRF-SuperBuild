@@ -61,7 +61,7 @@ jobs:
           os: ubuntu-22.04
       fail-fast: false # don't terminate matrix if one job fails
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - if: contains(matrix.os, fromJSON('["ubuntu","macos"]'))
       name: increase disk space
       run: sudo .github/workflows/GHA_increase_disk_space.sh
@@ -169,7 +169,7 @@ jobs:
       timeout-minutes: 15
     - if: failure()
       name: Upload build log files for debugging
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: logs-${{ matrix.cxx-ver }}-${{ matrix.flags }}-${{ matrix.os }}
         path: ${{ github.workspace }}/build/**/*.log
