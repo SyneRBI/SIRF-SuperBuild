@@ -33,7 +33,7 @@ dependencies:
   - ipp-include =2021.12.* # cil
   - ccpi-regulariser >=25  # cil
   - cil-data >=22          # cil
-  - httomo::tomophantom    # cil
+  - ccpi::tomophantom    # cil
   - ccpi::dxchange >=0.2.1 # cil
   - h5py           # cil
   - numba          # cil
