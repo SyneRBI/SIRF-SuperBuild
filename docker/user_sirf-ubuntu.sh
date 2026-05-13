@@ -40,7 +40,7 @@ if [ "$RUN_CTEST" = 1 ]; then
     source "$CMAKE_INSTALL_PREFIX"/bin/env_sirf.sh
     # start gadgetron
     [ -f "$CMAKE_INSTALL_PREFIX"/bin/gadgetron ] && "$CMAKE_INSTALL_PREFIX"/bin/gadgetron >& gadgetron.log&
-    ctest --output-on-failure
+    ctest --verbose --output-on-failure
     [ -n "$(pidof gadgetron)" ] && kill -n 15 $(pidof gadgetron)
 fi
 

@@ -28,11 +28,6 @@ COPY docker/requirements.yml /opt/scripts/
 RUN if test "$BUILD_GPU" != 0; then \
   sed -ri 's/^(\s*)#\s*(- \S+.*#.*GPU.*)$/\1\2/' /opt/scripts/requirements.yml; \
  fi \
- && if test "$BUILD_CIL" != "OFF"; then \
-  sed -r -i -e '/^\s*- (cil|ccpi-regulariser).*/d' /opt/scripts/requirements.yml; \
- fi \
- && conda config --env --set channel_priority strict \
- && for ch in defaults ccpi conda-forge; do conda config --env --add channels $ch; done \
  && mamba env update -n base -f /opt/scripts/requirements.yml \
  && mamba clean --all -f -y && fix-permissions "${CONDA_DIR}" /home/${NB_USER}
 
@@ -61,7 +56,7 @@ ARG CMAKE_BUILD_TYPE="Release"
 ARG STIR_ENABLE_OPENMP="ON"
 ARG STIR_DISABLE_HDF5="OFF"
 ARG USE_SYSTEM_Armadillo="ON"
-ARG USE_SYSTEM_Boost="OFF"
+ARG USE_SYSTEM_Boost="ON"
 ARG USE_SYSTEM_FFTW3="ON"
 ARG USE_SYSTEM_HDF5="ON"
 ARG USE_ITK="ON"
