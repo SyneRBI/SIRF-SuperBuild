@@ -3,10 +3,11 @@
 ## v3.X.x
 - CMake:
   - Patch ISMRMRD `CMAKE_INSTALL_RPATH_USE_LINK_PATH` (#991)
+  - CCPi-Regularisation-Toolkit, astra-toolbox, TomoPhantom: moved to conda
 - Updated versions:
   - SIRF-Contribs: v3.9.1
   - SIRF: 6e429c2d1862057086720c543d220730feb3eecb (2026-05-12)
-  - CCPi-Regularisation-Toolkit, astra-toolbox, TomoPhantom: moved to conda
+  - TomoPhantom: 3.1.4
 
 ## v3.9.0
 - VM: set the matplotlib backend to tkagg
