@@ -4,7 +4,7 @@ on:
     branches: [master]
     paths-ignore:
     - 'docker/Dockerfile'
-    - 'docker/*yml'
+    - 'docker/docker*.yml'
     - '**.md'
     - 'VirtualBox/**'
     - '.github/workflows/*docker*'
@@ -16,7 +16,7 @@ on:
     branches: [master]
     paths-ignore:
     - 'docker/Dockerfile'
-    - 'docker/*yml'
+    - 'docker/docker*.yml'
     - '**.md'
     - 'VirtualBox/**'
     - '.github/workflows/*docker*'

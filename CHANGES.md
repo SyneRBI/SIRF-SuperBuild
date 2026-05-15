@@ -1,12 +1,23 @@
 # ChangeLog
 
 ## v3.X.x
+
+## v3.10.0
 - CMake:
   - Patch ISMRMRD `CMAKE_INSTALL_RPATH_USE_LINK_PATH` (#991)
+  - re-enable `BUILD_CIL`
+  - `ctest --verbose`
+  - move CIL-related depdendencies to conda (#993)
+    + CCPi-Regularisation-Toolkit
+    + astra-toolbox
+    + TomoPhantom
+  - `STIR_DISABLE_HDF5=ON`
+  - `USE_SYSTEM_HDF5=OFF`
+  - docker `USE_SYSTEM_BOOST=ON`
 - Updated versions:
   - SIRF-Contribs: v3.9.1
   - SIRF: 6e429c2d1862057086720c543d220730feb3eecb (2026-05-12)
-  - CCPi-Regularisation-Toolkit, astra-toolbox, TomoPhantom: moved to conda
+  - TomoPhantom: 3.1.4
 
 ## v3.9.0
 - VM: set the matplotlib backend to tkagg
