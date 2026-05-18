@@ -24,7 +24,7 @@ dependencies:
   - jupytext
   - tensorboard
   - tensorboardx
-  - libgomp # parallelproj
+  - llvm-openmp
   - jupyterlab_widgets
   - ipywidgets >=8
   - ipympl
