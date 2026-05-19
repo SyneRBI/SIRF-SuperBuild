@@ -24,7 +24,10 @@ dependencies:
   - jupytext
   - tensorboard
   - tensorboardx
-  - libgomp # parallelproj
+  - llvm-openmp
+  - jupyterlab_widgets
+  - ipywidgets >=8
+  - ipympl
   # - ccpi/label/dev::tigre # cil (GPU)
   # - astra-toolbox::astra-toolbox 2.* # cil (GPU)
   # - cuda-version 12.8.* # cil (GPU)
@@ -45,11 +48,4 @@ dependencies:
   - pip
   - pip:
     - git+https://github.com/ismrmrd/ismrmrd-python-tools.git@master#egg=ismrmrd-python-tools
-    # TODO: labextension @jupyter-widgets/jupyterlab-manager (jupyterlab_widgets ipywidgets ipympl)
-    # is broken because `conda-forge::cil` downgrades `ipywidgets<8` -> breaks `%matplotlib widgets`.
-    # - temp fix: install upgraded versions via pip (not conda)
-    # - proper fix: remove after https://github.com/TomographicImaging/CIL/issues/1600
-    - jupyterlab_widgets
-    - ipywidgets>=8
-    - ipympl
     - unittest-parametrize # cil
