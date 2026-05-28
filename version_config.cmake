@@ -80,7 +80,7 @@ else()
 endif()
 
 ## SWIG
-set (SWIG_REQUIRED_VERSION 3)
+set (SWIG_REQUIRED_VERSION 4.2)
 if (WIN32)
   set(SWIG_URL http://downloads.sourceforge.net/swig/swigwin-4.4.0.zip)
   set(SWIG_MD5 16bdcc5f39a172879e93f57cea91dfef)

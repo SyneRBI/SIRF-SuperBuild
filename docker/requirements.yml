@@ -10,6 +10,7 @@ channels:
 dependencies:
   - setuptools
   - wheel
+  - swig >=4.2
   - pytest
   - pytest-cov
   - scipy
