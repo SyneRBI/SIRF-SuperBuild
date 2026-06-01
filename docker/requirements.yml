@@ -29,7 +29,7 @@ dependencies:
   - jupyterlab_widgets
   - ipywidgets >=8
   - ipympl
-  # - ccpi/label/dev::tigre # cil (GPU)
+  # - ccpi::tigre >=3.1.3 # cil (GPU)
   # - astra-toolbox::astra-toolbox 2.* # cil (GPU)
   # - cuda-version 12.8.* # cil (GPU)
   - ipp =2021.12.*         # cil
