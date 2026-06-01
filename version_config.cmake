@@ -2,8 +2,8 @@
 # Author: Edoardo Pasca
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
-# Copyright 2017-2024 University College London
-# Copyright 2017-2024 Science Technology Facilities Council
+# Copyright 2017-2026 University College London
+# Copyright 2017-2026 Science Technology Facilities Council
 #
 # This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -80,7 +80,7 @@ else()
 endif()
 
 ## SWIG
-set (SWIG_REQUIRED_VERSION 3)
+set (SWIG_REQUIRED_VERSION 4.2)
 if (WIN32)
   set(SWIG_URL http://downloads.sourceforge.net/swig/swigwin-4.4.0.zip)
   set(SWIG_MD5 16bdcc5f39a172879e93f57cea91dfef)
@@ -130,9 +130,12 @@ set(DEFAULT_parallelproj_URL https://github.com/gschramm/parallelproj)
 set(DEFAULT_parallelproj_TAG v1.10.2)
 
 ## STIR
-set(STIR_REQUIRED_VERSION "6.3.0")
+# SIRF might work with STIR 6.3.0, but that version has a bug
+# for TOF, and it would be slower with CUDA, so setting minimum
+# to 6.4.0
+set(STIR_REQUIRED_VERSION "6.4.0")
 set(DEFAULT_STIR_URL https://github.com/UCL/STIR)
-set(DEFAULT_STIR_TAG rel_6.3.0)
+set(DEFAULT_STIR_TAG rel_6.4.0)
 
 ## SIRF
 set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF)

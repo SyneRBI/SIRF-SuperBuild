@@ -17,6 +17,7 @@
 - Updated versions:
   - SIRF-Contribs: v3.9.1
   - SIRF: 6e429c2d1862057086720c543d220730feb3eecb (2026-05-12)
+  - STIR: 6.4.0
   - TomoPhantom: 3.1.4
 
 ## v3.9.0
