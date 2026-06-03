@@ -29,12 +29,12 @@ dependencies:
   - jupyterlab_widgets
   - ipywidgets >=8
   - ipympl
-  # - ccpi::tigre >=3.1.3 # cil (GPU)
-  # - astra-toolbox::astra-toolbox 2.* # cil (GPU)
-  # - cuda-version 12.8.* # cil (GPU)
-  - ipp =2021.12.*         # cil
-  - ipp-devel =2021.12.*   # cil
-  - ipp-include =2021.12.* # cil
+  # - ccpi::tigre >=3.1.3  # cil (GPU)
+  # - astra-toolbox::astra-toolbox 2  # cil (GPU)
+  # - cuda-version 12.9.*  # cil (GPU)
+  - ipp =2021.12           # cil
+  - ipp-devel =2021.12     # cil
+  - ipp-include =2021.12   # cil
   - ccpi-regulariser >=25  # cil
   - cil-data >=22          # cil
   - httomo::tomophantom >=3.1.4 # cil
