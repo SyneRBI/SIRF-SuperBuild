@@ -20,6 +20,7 @@
   - STIR: 6.4.0
   - TomoPhantom: 3.1.4
   - parallelproj: 2.0.5
+  - CMake: 3.31.12
 
 ## v3.9.0
 - VM: set the matplotlib backend to tkagg

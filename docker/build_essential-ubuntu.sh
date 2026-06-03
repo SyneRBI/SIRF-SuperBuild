@@ -20,7 +20,7 @@ apt-get clean
 pushd $INSTALL_DIR
 
 # CMake
-curl -o cmake.tgz -L https://github.com/Kitware/CMake/releases/download/v3.29.6/cmake-3.29.6-linux-x86_64.tar.gz
+curl -o cmake.tgz -L https://github.com/Kitware/CMake/releases/download/v3.31.12/cmake-3.31.12-linux-x86_64.tar.gz
 mkdir -p /usr/local
 pushd /usr/local
 tar xzf $INSTALL_DIR/cmake.tgz --strip 1
