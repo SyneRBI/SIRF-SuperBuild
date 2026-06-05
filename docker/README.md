@@ -73,7 +73,7 @@ USER ${NB_UID}
 
 To build and/or run with advanced config, it's recommended to use [Docker Compose](https://docs.docker.com/compose/).
 
-We use an Ubuntu 22.04 base image (optionally with CUDA GPU support for [CIL](https://github.com/TomographicImaging/CIL) GPU features), build <https://github.com/jupyter/docker-stacks> `datascience-notebook` on top, and then install SIRF & its depdendencies.
+We use an Ubuntu 24.04 base image (optionally with CUDA GPU support for [CIL](https://github.com/TomographicImaging/CIL) GPU features), build <https://github.com/jupyter/docker-stacks> `datascience-notebook` on top, and then install SIRF & its depdendencies.
 
 The strategy is:
 

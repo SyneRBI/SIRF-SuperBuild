@@ -41,24 +41,26 @@ jobs:
     strategy:
       matrix:
         include:
+        # note: need +boost on ubuntu 22.04 to get recent enough version (as APT version is too old)
         - cxx-ver: 9
+          flags: -devel -armadillo +boost -fftw3 +hdf5 -swig
+          os: ubuntu-22.04
+        - cxx-ver: 9
+          flags: -devel -armadillo +boost +fftw3 -hdf5 -swig +gtest
+          os: ubuntu-22.04
+        - cxx-ver: 11
+          flags: +devel +armadillo +boost -fftw3 -hdf5 +swig -root
+          os: ubuntu-22.04
+        - cxx-ver: 11
           flags: -devel -armadillo -boost -fftw3 +hdf5 -swig
-          os: ubuntu-22.04
-        - cxx-ver: 9
-          flags: -devel -armadillo -boost +fftw3 +hdf5 +swig
-          os: ubuntu-22.04
-        #- cxx-ver: 9
-        #  flags: -devel -armadillo +boost -fftw3 +hdf5 -swig
-        #  os: ubuntu-latest
-        - cxx-ver: 9
-          flags: -devel -armadillo -boost -fftw3 +hdf5 -swig +gtest
-          os: ubuntu-22.04
+          os: ubuntu-24.04
         - cxx-ver: 11
-          flags: +devel +armadillo -boost -fftw3 +hdf5 -swig -root
-          os: ubuntu-22.04
+          flags: -devel +armadillo -boost +fftw3 -hdf5 -swig
+          os: ubuntu-24.04
         - cxx-ver: 11
-          flags: -devel +armadillo -boost -fftw3 +hdf5 -swig -root
-          os: ubuntu-22.04
+          flags: +devel -armadillo -boost -fftw3 -hdf5 +swig
+          os: ubuntu-24.04
+
       fail-fast: false # don't terminate matrix if one job fails
     steps:
     - uses: actions/checkout@v6
