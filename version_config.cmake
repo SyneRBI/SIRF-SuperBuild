@@ -127,7 +127,7 @@ set(DEFAULT_NiftyPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
 
 ## parallelproj
 set(DEFAULT_parallelproj_URL https://github.com/KUL-recon-lab/libparallelproj)
-set(DEFAULT_parallelproj_TAG v2.0.5)
+set(DEFAULT_parallelproj_TAG v2.0.6)
 
 ## STIR
 # SIRF might work with STIR 6.3.0, but that version has a bug

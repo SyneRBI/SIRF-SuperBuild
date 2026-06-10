@@ -19,7 +19,7 @@
   - SIRF: 6e429c2d1862057086720c543d220730feb3eecb (2026-05-12)
   - STIR: 6.4.0
   - TomoPhantom: 3.1.4
-  - parallelproj: 2.0.5
+  - parallelproj: 2.0.6
   - CMake: 3.31.12
   - TIGRE: 3.1.3
   - CUDA: 12.9.2
