@@ -127,7 +127,7 @@ set(DEFAULT_NiftyPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
 
 ## parallelproj
 set(DEFAULT_parallelproj_URL https://github.com/KUL-recon-lab/libparallelproj)
-set(DEFAULT_parallelproj_TAG v2.0.5)
+set(DEFAULT_parallelproj_TAG v2.0.6)
 
 ## STIR
 # SIRF might work with STIR 6.3.0, but that version has a bug
@@ -158,7 +158,7 @@ set(DEFAULT_JSON_TAG v3.11.3)
 
 # CCPi CIL
 set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL)
-set(DEFAULT_CIL_TAG "numpy-2")
+set(DEFAULT_CIL_TAG "2d03882d4348409f810b2161574e70bb2aac82fe")
 
 # CERN ROOT
 set(DEFAULT_ROOT_URL https://github.com/root-project/root)
@@ -211,7 +211,7 @@ if (DEVEL_BUILD)
 
   # CCPi CIL
   set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL)
-  set(DEFAULT_CIL_TAG origin/numpy-2)
+  set(DEFAULT_CIL_TAG origin/master)
 
   # Gadgetron
   # set(DEFAULT_Gadgetron_TAG origin/master)
