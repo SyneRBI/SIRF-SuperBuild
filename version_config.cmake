@@ -158,7 +158,7 @@ set(DEFAULT_JSON_TAG v3.11.3)
 
 # CCPi CIL
 set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL)
-set(DEFAULT_CIL_TAG "numpy-2")
+set(DEFAULT_CIL_TAG "2d03882d4348409f810b2161574e70bb2aac82fe")
 
 # CERN ROOT
 set(DEFAULT_ROOT_URL https://github.com/root-project/root)
@@ -211,7 +211,7 @@ if (DEVEL_BUILD)
 
   # CCPi CIL
   set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL)
-  set(DEFAULT_CIL_TAG origin/numpy-2)
+  set(DEFAULT_CIL_TAG "2d03882d4348409f810b2161574e70bb2aac82fe")
 
   # Gadgetron
   # set(DEFAULT_Gadgetron_TAG origin/master)

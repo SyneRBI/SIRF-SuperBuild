@@ -23,6 +23,7 @@
   - CMake: 3.31.12
   - TIGRE: 3.1.3
   - CUDA: 12.9.2
+  - CIL: 2d03882d4348409f810b2161574e70bb2aac82fe (2026-06-11)
 
 ## v3.9.0
 - VM: set the matplotlib backend to tkagg
