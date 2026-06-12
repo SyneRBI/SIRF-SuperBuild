@@ -22,7 +22,7 @@ if [ "$PYTHON" = "miniconda" ]; then
       sed -r 's/^(\s*)#\s*(- \S+.*#.*GPU.*)$/\1\2/' environment.yml > environment-sirf.yml
     else
       # delete GPU deps
-      sed -r -e '/^\s*- (astra-toolbox|tigre).*/d' -e '/^\s*- \S+.*#.*GPU/d' environment.yml > environment-sirf.yml
+      sed -r '/- (.*tigre|\S+.*#.*GPU).*/d' environment.yml > environment-sirf.yml
     fi
     echo "delete CIL, CCP-Regulariser packages from the environment file"
     sed -r -i -e '/^\s*- (cil|ccpi-regulariser).*/d' environment-sirf.yml

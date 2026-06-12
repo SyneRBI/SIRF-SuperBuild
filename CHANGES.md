@@ -8,16 +8,23 @@
   - re-enable `BUILD_CIL`
   - `ctest --verbose`
   - move CIL-related depdendencies to conda (#993)
-    + CCPi-Regularisation-Toolkit
-    + astra-toolbox
-    + TomoPhantom
+    - CCPi-Regularisation-Toolkit
+    - astra-toolbox
+    - TomoPhantom
+- docker image updates:
   - `STIR_DISABLE_HDF5=ON`
   - `USE_SYSTEM_HDF5=OFF`
-  - docker `USE_SYSTEM_BOOST=ON`
+  - `USE_SYSTEM_BOOST=ON`
 - Updated versions:
   - SIRF-Contribs: v3.9.1
   - SIRF: 6e429c2d1862057086720c543d220730feb3eecb (2026-05-12)
+  - STIR: 6.4.0
   - TomoPhantom: 3.1.4
+  - parallelproj: 2.0.6
+  - CMake: 3.31.12
+  - TIGRE: 3.1.3
+  - CUDA: 12.9.2
+  - CIL: 2d03882d4348409f810b2161574e70bb2aac82fe (2026-06-11)
 
 ## v3.9.0
 - VM: set the matplotlib backend to tkagg

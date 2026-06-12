@@ -16,7 +16,7 @@ else
     INSTALL_LOC=$1
 fi
 # default version, but can be set externally
-: ${ver=3.29.6}
+: ${ver=3.31.12}
 
 echo "Downloading CMake $ver in /tmp"
 cd /tmp

@@ -75,7 +75,7 @@ jobs:
       name: install dependencies
       working-directory: docker
       run: |
-        mamba env update -n base -f requirements.yml
+        conda env update -n base -f requirements.yml
         echo "Python_ROOT_DIR=$CONDA_PREFIX" >> $GITHUB_ENV
         echo "Python3_ROOT_DIR=$CONDA_PREFIX" >> $GITHUB_ENV
         sudo ./raw-ubuntu.sh

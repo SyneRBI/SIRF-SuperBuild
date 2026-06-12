@@ -175,7 +175,7 @@ SuperBuild_install(){
   cmake -S ../SIRF-SuperBuild -B . \
         -DCMAKE_INSTALL_PREFIX="$SIRF_INSTALL_PATH" \
         -U\*_URL -U\*_TAG \
-        -DUSE_SYSTEM_SWIG=On \
+        -DUSE_SYSTEM_SWIG=OFF \
         -DUSE_SYSTEM_Boost=On \
         -DUSE_SYSTEM_Armadillo=On \
         -DUSE_SYSTEM_FFTW3=On \
