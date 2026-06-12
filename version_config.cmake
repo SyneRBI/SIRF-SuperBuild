@@ -144,7 +144,7 @@ set(DEFAULT_pet_rd_tools_TAG v2.0.2)
 
 ## SIRF-Contribs
 set(DEFAULT_SIRF-Contribs_URL https://github.com/SyneRBI/SIRF-Contribs)
-set(DEFAULT_SIRF-Contribs_TAG v3.9.1)
+set(DEFAULT_SIRF-Contribs_TAG v3.10.0)
 
 ## SPM
 set(DEFAULT_SPM_URL https://github.com/spm/SPM12)
