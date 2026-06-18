@@ -139,7 +139,7 @@ set(DEFAULT_STIR_TAG rel_6.4.0)
 
 ## SIRF
 set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF)
-set(DEFAULT_SIRF_TAG "6e429c2d1862057086720c543d220730feb3eecb") # https://github.com/SyneRBI/SIRF/pull/1400
+set(DEFAULT_SIRF_TAG "v3.10.1")
 
 ## pet-rd-tools
 set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools)
@@ -147,7 +147,7 @@ set(DEFAULT_pet_rd_tools_TAG v2.0.2)
 
 ## SIRF-Contribs
 set(DEFAULT_SIRF-Contribs_URL https://github.com/SyneRBI/SIRF-Contribs)
-set(DEFAULT_SIRF-Contribs_TAG v3.9.1)
+set(DEFAULT_SIRF-Contribs_TAG v3.10.0)
 
 ## SPM
 set(DEFAULT_SPM_URL https://github.com/spm/SPM12)
@@ -158,7 +158,7 @@ set(DEFAULT_JSON_TAG v3.11.3)
 
 # CCPi CIL
 set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL)
-set(DEFAULT_CIL_TAG "2d03882d4348409f810b2161574e70bb2aac82fe")
+set(DEFAULT_CIL_TAG "v26.0.0")
 
 # CERN ROOT
 set(DEFAULT_ROOT_URL https://github.com/root-project/root)
