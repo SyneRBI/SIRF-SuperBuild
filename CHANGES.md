@@ -1,6 +1,11 @@
 # ChangeLog
 
-## v3.X.x
+## v3.10.1
+- Updated versions:
+  - SIRF: v3.10.1
+  - SIRF-Contribs: v.3.10.0
+  - CIL: v26.0.0
+  - CCPi-Regularisation toolkit: v26
 
 ## v3.10.0
 - CMake:
