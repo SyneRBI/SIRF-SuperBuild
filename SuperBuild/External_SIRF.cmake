@@ -86,8 +86,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     ${${proj}_EP_ARGS_DIRS}
 
     CMAKE_ARGS
-      -DCMAKE_PREFIX_PATH:PATH=${SUPERBUILD_INSTALL_DIR}
-      -DCMAKE_LIBRARY_PATH:PATH=${SUPERBUILD_INSTALL_DIR}/lib
+      ${${proj}_CMAKE_ARGS_DIRS}
       ${Boost_CMAKE_ARGS}
       -DDISABLE_Matlab:BOOL=${DISABLE_Matlab}
       -DMatlab_ROOT_DIR:PATH=${Matlab_ROOT_DIR}
