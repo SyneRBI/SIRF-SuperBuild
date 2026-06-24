@@ -47,7 +47,9 @@ echo "cpu: $cpu, gpu: $gpu, update ccache: $update_ccache, regen ccache: $regen_
 
 # compose binary
 DCC="${DCC:-docker compose}"
-which docker-compose 2>&1 >> /dev/null && DCC=$(which docker-compose)
+if ! $DCC version 2>&1 >> /dev/null; then
+  which docker-compose 2>&1 >> /dev/null && DCC=$(which docker-compose)
+fi
 # CPU config
 DCC_CPU="$DCC -f docker-compose.yml"
 test $devel = 1 && DCC_CPU+=" -f docker/docker-compose.devel.yml"
