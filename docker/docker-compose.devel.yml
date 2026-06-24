@@ -3,7 +3,6 @@ services:
   image: synerbi/jupyter:sirf-build-devel-cpu
   build:
    args:
-    BUILD_CIL: "ON"
     EXTRA_BUILD_FLAGS: >
      -DDEVEL_BUILD=ON
  sirf:
@@ -11,8 +10,8 @@ services:
   image: synerbi/sirf:devel
   build:
    context: .
+   target: sirf-dev
    args:
-    BUILD_CIL: "ON"
     EXTRA_BUILD_FLAGS: >
      -DDEVEL_BUILD=ON
    cache_from: [synerbi/jupyter:sirf-build-devel-cpu]

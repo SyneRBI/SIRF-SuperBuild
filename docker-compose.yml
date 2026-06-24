@@ -29,7 +29,8 @@ services:
   # convenience volume & command to copy image::/opt/ccache to localhost::./docker/devel/.ccache
   # (executed in ./docker/compose.sh by `docker compose up sirf-build`)
   volumes: [./docker/devel/.ccache:/ccache]
-  command: "bash -c 'cp -r /opt/ccache/* /ccache/'"
+  entrypoint: "/bin/bash -c"
+  command: ["cp -r /opt/ccache/* /ccache/"]
   image: synerbi/jupyter:sirf-build-cpu
   build:
    context: .
@@ -43,6 +44,7 @@ services:
   image: synerbi/sirf:latest
   build:
    context: .
+   target: sirf
    args:
     BASE_IMAGE: synerbi/jupyter:scipy-cpu
     Gadgetron_USE_CUDA: "OFF"

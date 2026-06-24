@@ -7,17 +7,17 @@ USER root
 # suppress warnings
 ENV DEBIAN_FRONTEND=noninteractive
 COPY docker/raw-ubuntu.sh /opt/scripts/
-RUN bash /opt/scripts/raw-ubuntu.sh
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked bash /opt/scripts/raw-ubuntu.sh
 #ENV LC_ALL=en_GB.UTF-8
 ENV LANG=en_GB.UTF-8
 ENV LANGUAGE=en_GB:en
 
 COPY docker/build_gadgetron-ubuntu.sh /opt/scripts/
-RUN bash /opt/scripts/build_gadgetron-ubuntu.sh
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked bash /opt/scripts/build_gadgetron-ubuntu.sh
 
 # SIRF external deps
 COPY docker/build_system-ubuntu.sh /opt/scripts/
-RUN bash /opt/scripts/build_system-ubuntu.sh
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked bash /opt/scripts/build_system-ubuntu.sh
 
 # SIRF python deps
 ARG BUILD_GPU=0
@@ -35,13 +35,12 @@ RUN if test "$BUILD_GPU" != 0; then \
 FROM base AS build
 
 COPY docker/update_nvidia_keys.sh /opt/scripts/
-RUN bash /opt/scripts/update_nvidia_keys.sh
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked bash /opt/scripts/update_nvidia_keys.sh
 
 COPY docker/build_essential-ubuntu.sh /opt/scripts/
-RUN bash /opt/scripts/build_essential-ubuntu.sh
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked bash /opt/scripts/build_essential-ubuntu.sh
 
 # ccache
-COPY --link docker/devel/.ccache/ /opt/ccache/
 RUN ccache -o cache_dir=/opt/ccache
 ENV PATH="/usr/lib/ccache:${PATH}"
 
@@ -72,7 +71,7 @@ ARG EXTRA_BUILD_FLAGS=""
 
 # build, install in /opt/SIRF-SuperBuild/{INSTALL,sources/SIRF}, test (if RUN_CTEST)
 COPY docker/user_sirf-ubuntu.sh /opt/scripts/
-RUN BUILD_FLAGS="-G Ninja\
+RUN --mount=type=cache,target=/opt/ccache BUILD_FLAGS="-G Ninja\
  -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}\
  -DSTIR_ENABLE_OPENMP=${STIR_ENABLE_OPENMP}\
  -DSTIR_DISABLE_HDF5=${STIR_DISABLE_HDF5}\
@@ -97,12 +96,10 @@ RUN RUN_BUILD=0 \
  bash /opt/scripts/user_sirf-ubuntu.sh \
  && fix-permissions /opt/SIRF-SuperBuild /opt/ccache
 
-FROM base AS sirf
-
 # X11 forwarding
-RUN apt update -qq && apt install -yq --no-install-recommends \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked apt update -qq && apt install -yq --no-install-recommends \
   libx11-xcb1 \
-  && apt clean \
+  && rm -rf /var/lib/apt/lists \
   && mkdir -p /usr/share/X11/xkb \
   && test -e /usr/bin/X || ln -s /usr/bin/Xorg /usr/bin/X
 
@@ -110,6 +107,34 @@ RUN echo 'test -z "$OMP_NUM_THREADS" && export OMP_NUM_THREADS=$(python -c "impo
 
 COPY --chown=${NB_USER} --chmod=644 --link docker/.bashrc /home/${NB_USER}/
 # RUN sed -i s:PYTHON_INSTALL_DIR:${CONDA_DIR}:g /home/${NB_USER}/.bashrc
+
+# docker-stacks notebook
+#ENV DOCKER_STACKS_JUPYTER_CMD="notebook"
+ENV RESTARTABLE="yes"
+#ENV USE_HTTPS="yes"
+# gadgetron
+EXPOSE 9002
+ENV GADGETRON_RELAY_HOST="0.0.0.0"
+COPY --link docker/15source-sirf.sh docker/25clone-work.sh docker/35gadgetron.sh /usr/local/bin/before-notebook.d/
+ENV NOTEBOOK_ARGS=--PasswordIdentityProvider.hashed_password='sha1:cbf03843d2bb:8729d2fbec60cacf6485758752789cd9989e756c'
+
+# copy ccache from cache mount
+RUN --mount=type=cache,target=/opt/ccache cp -a /opt/ccache /opt/tmp-ccache
+RUN rm -rf /opt/ccache && mv /opt/tmp-ccache /opt/ccache && fix-permissions /opt/ccache
+
+FROM build AS sirf-dev
+
+# install {SIRF-Exercises,CIL-Demos}
+COPY docker/user_demos.sh /opt/scripts/
+ARG BUILD_GPU
+RUN BUILD_GPU=${BUILD_GPU} bash /opt/scripts/user_demos.sh \
+ && fix-permissions /opt "${CONDA_DIR}" /home/${NB_USER}
+
+# docker-stacks notebook
+USER ${NB_UID}
+ENV DEBIAN_FRONTEND=''
+
+FROM base AS sirf
 
 # install from build
 COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/INSTALL/ /opt/SIRF-SuperBuild/INSTALL/
@@ -126,13 +151,3 @@ RUN BUILD_GPU=${BUILD_GPU} bash /opt/scripts/user_demos.sh \
 # docker-stacks notebook
 USER ${NB_UID}
 ENV DEBIAN_FRONTEND=''
-#ENV DOCKER_STACKS_JUPYTER_CMD="notebook"
-ENV RESTARTABLE="yes"
-#ENV USE_HTTPS="yes"
-# gadgetron
-EXPOSE 9002
-ENV GADGETRON_RELAY_HOST="0.0.0.0"
-
-# COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/INSTALL/lib /opt/conda/lib
-COPY --link docker/15source-sirf.sh docker/25clone-work.sh docker/35gadgetron.sh /usr/local/bin/before-notebook.d/
-ENV NOTEBOOK_ARGS=--PasswordIdentityProvider.hashed_password='sha1:cbf03843d2bb:8729d2fbec60cacf6485758752789cd9989e756c'

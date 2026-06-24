@@ -25,7 +25,6 @@ services:
     BASE_IMAGE: synerbi/jupyter:scipy-gpu
     BUILD_GPU: 1
     Gadgetron_USE_CUDA: "ON"
-    BUILD_CIL: "ON"
  sirf:
   deploy: {resources: {reservations: {devices: [{driver: nvidia, count: all, capabilities: [gpu]}]}}}
   image: synerbi/sirf:latest-gpu
@@ -34,5 +33,4 @@ services:
     BASE_IMAGE: synerbi/jupyter:scipy-gpu
     BUILD_GPU: 1
     Gadgetron_USE_CUDA: "ON"
-    BUILD_CIL: "ON"
    cache_from: [synerbi/jupyter:sirf-build-gpu]
