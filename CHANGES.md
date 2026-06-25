@@ -1,21 +1,34 @@
 # ChangeLog
 
+## v3.xx
+- Updated versions:
+  - ISMRMRD: v1.14.3 (#1003)
+  - Gadgetron: https://github.com/SyneRBI/gadgetron/tree/avoid_test_compilation_error (#1003)
+  - Boost: minimum version 1.80.0 when building Gadgetron (#1003)
+- Build system:
+  - better use of `RPATH` avoiding the need for setting `LD_LIBRARY_PATH/DYLD_FALLBACK_LIBRARY_PATH` in `env_sirf.*` (#1003)
+- Docker:
+  - Use Ubuntu 24.04 as base-image (#1003)
+- VM:
+  - Use Ubuntu 24.04 as base-image (#1003)
+
 ## v3.10.1
 - Updated versions:
-  - SIRF: v3.10.1
-  - SIRF-Contribs: v.3.10.0
-  - CIL: v26.0.0
-  - CCPi-Regularisation toolkit: v26
+  - SIRF: 3.10.1
+  - SIRF-Contribs: 3.10.0
+  - CIL: 26.0.0
+  - CCPi-Regularisation toolkit: 26
 
 ## v3.10.0
 - CMake:
   - Patch ISMRMRD `CMAKE_INSTALL_RPATH_USE_LINK_PATH` (#991)
   - re-enable `BUILD_CIL`
   - `ctest --verbose`
-  - move CIL-related depdendencies to conda (#993)
+  - move CIL-related dependencies to conda (#993)
     - CCPi-Regularisation-Toolkit
     - astra-toolbox
     - TomoPhantom
+  - Note: building parallelproj requires CMake 3.31.
 - docker image updates:
   - `STIR_DISABLE_HDF5=ON`
   - `USE_SYSTEM_HDF5=OFF`
@@ -30,6 +43,7 @@
   - TIGRE: 3.1.3
   - CUDA: 12.9.2
   - CIL: 2d03882d4348409f810b2161574e70bb2aac82fe (2026-06-11)
+  - Boost: 1.85 when using `USE_SYSTEM_Boost=OFF`
 
 ## v3.9.0
 - VM: set the matplotlib backend to tkagg

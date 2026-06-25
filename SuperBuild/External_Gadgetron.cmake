@@ -108,10 +108,9 @@ endif()
   # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
   SetGitTagAndRepo("${proj}")
   set (${proj}_CMAKE_ARGS 
+      ${${proj}_CMAKE_ARGS_DIRS}
       -DBUILD_PYTHON_SUPPORT:BOOL=${${proj}_BUILD_PYTHON_SUPPORT}
       -DBUILD_MATLAB_SUPPORT:BOOL=${${proj}_BUILD_MATLAB_SUPPORT}
-      -DCMAKE_PREFIX_PATH:PATH=${SUPERBUILD_INSTALL_DIR}
-      -DCMAKE_INSTALL_PREFIX:PATH=${${proj}_INSTALL_DIR}
       ${Boost_CMAKE_ARGS}
       ${PYTHONLIBS_CMAKE_ARGS}
       ${GTest_CMAKE_ARGS}

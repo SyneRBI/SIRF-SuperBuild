@@ -23,12 +23,10 @@
 
 ## BOOST
 if (BUILD_GADGETRON)
-  # https://github.com/gadgetron/gadgetron/blob/12ffc43debb9bad2e170713006d29dea78d966bf/CMakeLists.txt#L205-L209
   # now using our own version of Gadgetron, based on master, which needs 1.80.0
-  # However, we can't require this yet.
-  set(Boost_REQUIRED_VERSION 1.71.0)
+  set(Boost_REQUIRED_VERSION 1.80.0)
 else()
-  # ISMRMRD needs more recent 1.68.0 so let's just say 1.71.0 as well
+  # This could probably be older, but best to be sure
   set(Boost_REQUIRED_VERSION 1.71.0)
 endif()
 # 1.86 dropped boost::process::child, causing gadgetron build failures
@@ -111,15 +109,15 @@ set(NIFTYREG_REQUIRED_VERSION 1.5.68)
 ## ISMRMRD
 set(ISMRMRD_REQUIRED_VERSION "1.11.1")
 set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd)
-set(DEFAULT_ISMRMRD_TAG v1.13.7)
+set(DEFAULT_ISMRMRD_TAG v1.14.3)
 
 ## siemens_to_ismrmrd
 set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
 set(DEFAULT_siemens_to_ismrmrd_TAG v1.2.11)
 
 ## Gadgetron
-set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron)
-set(DEFAULT_Gadgetron_TAG 6202fb7352a14fb82817b57a97d928c988eb0f4b)
+set(DEFAULT_Gadgetron_URL https://github.com/SyneRBI/gadgetron)
+set(DEFAULT_Gadgetron_TAG avoid_test_compilation_error)
 
 ## NiftyPET
 set(DEFAULT_NiftyPET_URL https://github.com/pjmark/NIPET)

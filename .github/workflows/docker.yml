@@ -61,7 +61,8 @@ jobs:
         password: ${{ secrets.DOCKER_PWD }}
     - uses: jlumbroso/free-disk-space@v1.3.1
       with:
-        docker-images: false
+        docker-images: true
+        # don't remove these APT packages until we need the space (includes clang-* and some libs that we'd reinstall)
         large-packages: false
     - name: cache
       uses: actions/cache@v5

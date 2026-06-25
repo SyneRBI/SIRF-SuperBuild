@@ -26,7 +26,7 @@ copy-pasting between your host and guest. We have these installed in the VM but 
 Start your virtual machine. If it fails to start with an error like "*virtualbox vt-x is disabled in the bios*", [check here](http://www.howtogeek.com/213795/how-to-enable-intel-vt-x-in-your-computers-bios-or-uefi-firmware/).
 If you see a dialog box about "starting in scaled mode", you can press OK to allow VirtualBox to scale the display larger or smaller, or you can press Cancel and start the machine again without scaling. (See [the Virtualbox site](https://www.virtualbox.org/manual/) for some info on the Host-Key etc).
 
-1. You should get a window where Ubuntu 22.04 will be starting (might take a few minutes). Wait until you see the log-in prompt.
+1. You should get a window where Ubuntu 24.04 will be starting (might take a few minutes). Wait until you see the log-in prompt.
 
 2. Log in as user "sirfuser" with password "virtual" (please note that the default keyboard is normally set to the `en_GB` locale: if you have an Azerty-type keyboard, you will have to type "virtuql" until you change your VM keyboard settings). You should get the [Gnome3](https://www.gnome.org/gnome-3/) desktop. The main thing to note is the "Activities" at the top-left of the screen. Click that to be able to launch a terminal, for instance by clicking on the "grid" icon on the lower-left, or typing "terminal" in the search box.
 
