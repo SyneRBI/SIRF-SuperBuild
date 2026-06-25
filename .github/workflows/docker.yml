@@ -28,10 +28,12 @@ jobs:
         type: [gpu, cpu]
     permissions: {contents: read, packages: write}
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       with:
         fetch-depth: 0
         ref: ${{ github.event.pull_request.head.sha || github.ref }} # fix SHA
+    - uses: docker/setup-buildx-action@v4
+      id: buildx
     - uses: docker/metadata-action@v6
       id: meta
       with:
@@ -64,16 +66,20 @@ jobs:
         docker-images: true
         # don't remove these APT packages until we need the space (includes clang-* and some libs that we'd reinstall)
         large-packages: false
-    - name: cache
-      uses: actions/cache@v5
+    - uses: actions/cache@v6
+      id: cache
       with:
-        key: ccache-docker-${{ matrix.type }}-${{ github.ref_name }}-${{ github.run_id }}
+        key: cache-docker-${{ matrix.type }}-${{ github.ref_name }}-${{ github.run_id }}
         restore-keys: |
-          ccache-docker-${{ matrix.type }}-${{ github.ref_name }}
-          ccache-docker-${{ matrix.type }}
-          ccache-docker
-          ccache
-        path: docker/devel/.ccache
+          cache-docker-${{ matrix.type }}-${{ github.ref_name }}
+          cache-docker-${{ matrix.type }}
+          cache-docker
+        path: docker/devel/cache
+    - uses: reproducible-containers/buildkit-cache-dance@v3
+      with:
+        builder: ${{ steps.buildx.outputs.name }}
+        cache-dir: docker/devel/cache
+        skip-extraction: ${{ steps.cache.outputs.cache-hit }}
     - id: pull
       name: pull
       run: |
@@ -89,7 +95,7 @@ jobs:
       name: build
       run: |
         # rebuild sirf image
-        ./docker/compose.sh -bR${{ matrix.type == 'gpu' && 'g' || 'c' }}
+        ./docker/compose.sh -b${{ matrix.type == 'gpu' && 'g' || 'c' }}
         image=synerbi/sirf:latest${{ steps.pull.outputs.suffix }}
         echo "image=$image" >> "$GITHUB_OUTPUT"
         # tag potentially newer core image
@@ -119,10 +125,12 @@ jobs:
         type: [gpu, cpu]
     permissions: {contents: read, packages: write}
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       with:
         fetch-depth: 0
         ref: ${{ github.event.pull_request.head.sha || github.ref }} # fix SHA
+    - uses: docker/setup-buildx-action@v4
+      id: buildx
     - uses: docker/metadata-action@v6
       id: meta
       with:
@@ -148,16 +156,20 @@ jobs:
       with:
         docker-images: false
         large-packages: false
-    - name: cache
-      uses: actions/cache@v5
+    - uses: actions/cache@v6
+      id: cache
       with:
-        key: ccache-docker-${{ matrix.type }}-${{ github.ref_name }}-${{ github.run_id }}
+        key: cache-docker-${{ matrix.type }}-${{ github.ref_name }}-${{ github.run_id }}
         restore-keys: |
-          ccache-docker-${{ matrix.type }}-${{ github.ref_name }}
-          ccache-docker-${{ matrix.type }}
-          ccache-docker
-          ccache
-        path: docker/devel/.ccache
+          cache-docker-${{ matrix.type }}-${{ github.ref_name }}
+          cache-docker-${{ matrix.type }}
+          cache-docker
+        path: docker/devel/cache
+    - uses: reproducible-containers/buildkit-cache-dance@v3
+      with:
+        builder: ${{ steps.buildx.outputs.name }}
+        cache-dir: docker/devel/cache
+        skip-extraction: ${{ steps.cache.outputs.cache-hit }}
     - id: pull
       name: pull
       run: |
@@ -173,7 +185,7 @@ jobs:
       name: build
       run: |
         # rebuild sirf image
-        ./docker/compose.sh -dbR${{ matrix.type == 'gpu' && 'g' || 'c' }}
+        ./docker/compose.sh -db${{ matrix.type == 'gpu' && 'g' || 'c' }}
         image=synerbi/sirf:devel${{ steps.pull.outputs.suffix }}
         echo "image=$image" >> "$GITHUB_OUTPUT"
     - name: test CIL

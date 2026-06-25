@@ -6,18 +6,23 @@ USER root
 
 # suppress warnings
 ENV DEBIAN_FRONTEND=noninteractive
+# for --mount=cache
+RUN echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' >/etc/apt/apt.conf.d/keep-cache
 COPY docker/raw-ubuntu.sh /opt/scripts/
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked bash /opt/scripts/raw-ubuntu.sh
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  bash /opt/scripts/raw-ubuntu.sh
 #ENV LC_ALL=en_GB.UTF-8
 ENV LANG=en_GB.UTF-8
 ENV LANGUAGE=en_GB:en
 
 COPY docker/build_gadgetron-ubuntu.sh /opt/scripts/
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked bash /opt/scripts/build_gadgetron-ubuntu.sh
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  bash /opt/scripts/build_gadgetron-ubuntu.sh
 
 # SIRF external deps
 COPY docker/build_system-ubuntu.sh /opt/scripts/
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked bash /opt/scripts/build_system-ubuntu.sh
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  bash /opt/scripts/build_system-ubuntu.sh
 
 # SIRF python deps
 ARG BUILD_GPU=0
@@ -35,10 +40,12 @@ RUN if test "$BUILD_GPU" != 0; then \
 FROM base AS build
 
 COPY docker/update_nvidia_keys.sh /opt/scripts/
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked bash /opt/scripts/update_nvidia_keys.sh
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  bash /opt/scripts/update_nvidia_keys.sh
 
 COPY docker/build_essential-ubuntu.sh /opt/scripts/
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked bash /opt/scripts/build_essential-ubuntu.sh
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  bash /opt/scripts/build_essential-ubuntu.sh
 
 # ccache
 RUN ccache -o cache_dir=/opt/ccache
@@ -97,9 +104,9 @@ RUN RUN_BUILD=0 \
  && fix-permissions /opt/SIRF-SuperBuild /opt/ccache
 
 # X11 forwarding
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked apt update -qq && apt install -yq --no-install-recommends \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  apt update -qq && apt install -yq --no-install-recommends \
   libx11-xcb1 \
-  && rm -rf /var/lib/apt/lists \
   && mkdir -p /usr/share/X11/xkb \
   && test -e /usr/bin/X || ln -s /usr/bin/Xorg /usr/bin/X
 
