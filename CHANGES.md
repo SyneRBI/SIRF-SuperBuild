@@ -2,7 +2,7 @@
 
 ## v3.xx
 - Updated versions:
-  - ISMRMRD: v1.14.3 (#1003)
+  - ISMRMRD: v1.15.0 (#1015)
   - Gadgetron: https://github.com/SyneRBI/gadgetron/tree/avoid_test_compilation_error (#1003)
   - Boost: minimum version 1.80.0 when building Gadgetron (#1003)
 - Build system:
