@@ -9,6 +9,7 @@
   - better use of `RPATH` avoiding the need for setting `LD_LIBRARY_PATH/DYLD_FALLBACK_LIBRARY_PATH` in `env_sirf.*` (#1003)
 - Docker:
   - Use Ubuntu 24.04 as base-image (#1003)
+  - `STIR_DISABLE_HDF5=OFF`
 - VM:
   - Use Ubuntu 24.04 as base-image (#1003)
 
