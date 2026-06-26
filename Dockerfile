@@ -112,8 +112,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked --mount=type=cache,t
 
 RUN echo 'test -z "$OMP_NUM_THREADS" && export OMP_NUM_THREADS=$(python -c "import multiprocessing as mc; print(max(1, mc.cpu_count() - 2))")' > /usr/local/bin/before-notebook.d/omp_num_threads.sh
 
-COPY --chown=${NB_USER} --chmod=644 --link docker/.bashrc /home/${NB_USER}/
-# RUN sed -i s:PYTHON_INSTALL_DIR:${CONDA_DIR}:g /home/${NB_USER}/.bashrc
+COPY --chown=${NB_UID} --chmod=644 --link docker/.bashrc /home/${NB_USER}/
+# RUN sed -i s:PYTHON_INSTALL_DIR:${CONDA_DIR}:g /home/${NB_UID}/.bashrc
 
 # docker-stacks notebook
 #ENV DOCKER_STACKS_JUPYTER_CMD="notebook"
@@ -144,8 +144,8 @@ ENV DEBIAN_FRONTEND=''
 FROM base AS sirf
 
 # install from build
-COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/INSTALL/ /opt/SIRF-SuperBuild/INSTALL/
-#COPY --from=build --link --chown=${NB_USER} /opt/SIRF-SuperBuild/sources/SIRF/ /opt/SIRF-SuperBuild/sources/SIRF/
+COPY --from=build --link --chown=${NB_UID} /opt/SIRF-SuperBuild/INSTALL/ /opt/SIRF-SuperBuild/INSTALL/
+#COPY --from=build --link --chown=${NB_UID} /opt/SIRF-SuperBuild/sources/SIRF/ /opt/SIRF-SuperBuild/sources/SIRF/
 # PYTHON_VERSION site-packages
 COPY --from=build --link /opt/conda/lib/python3.12/site-packages/ /opt/conda/lib/python3.12/site-packages/
 
