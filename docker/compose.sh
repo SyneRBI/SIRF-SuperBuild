@@ -61,16 +61,6 @@ pushd "$(dirname "$(dirname "${BASH_SOURCE[0]}")")" >> /dev/null
 git submodule update --init --recursive
 
 if test $build = 1; then
-  echo build base stack
-  for image in foundation base minimal scipy; do
-    test $cpu = 1 && $DCC_CPU build "$@" $image
-    test $gpu = 1 && $DCC_GPU build "$@" $image
-  done
-
-  echo build cache
-  test $cpu = 1 && $DCC_CPU build "$@" sirf-build
-  test $gpu = 1 && $DCC_GPU build "$@" sirf-build
-
   echo build
   test $cpu = 1 && $DCC_CPU build "$@"
   test $gpu = 1 && $DCC_GPU build "$@"
