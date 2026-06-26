@@ -10,6 +10,7 @@
 - Docker:
   - Use Ubuntu 24.04 as base-image (#1003)
   - `STIR_DISABLE_HDF5=OFF`
+  - improve caching, devel with full build env (#1013)
 - VM:
   - Use Ubuntu 24.04 as base-image (#1003)
 
