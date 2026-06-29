@@ -73,7 +73,7 @@ USER ${NB_UID}
 
 To build and/or run with advanced config, it's recommended to use [Docker Compose](https://docs.docker.com/compose/).
 
-We use an Ubuntu 22.04 base image (optionally with CUDA GPU support for [CIL](https://github.com/TomographicImaging/CIL) GPU features), build <https://github.com/jupyter/docker-stacks> `datascience-notebook` on top, and then install SIRF & its depdendencies.
+We use an Ubuntu 24.04 base image (optionally with CUDA GPU support for [CIL](https://github.com/TomographicImaging/CIL) GPU features), build <https://github.com/jupyter/docker-stacks> `datascience-notebook` on top, and then install SIRF & its depdendencies.
 
 The strategy is:
 
@@ -135,22 +135,6 @@ compose.sh -b -- --build-arg SIRF_SB_TAG=<git ref>
 
 By default, the CTests are run while building the docker image. Note that this takes a few minutes.
 You can switch this off by setting `--build-arg  RUN_CTEST=0` before building the image.
-
-#### `ccache`
-
-`ccache` is used in the container to speed up rebuilding images from scratch.
-The cache is pulled from the host machine via the `devel/.ccache` folder.
-
-Building (`compose.sh -b`) automatically updates the cache.
-
-To disable updating the cache, `-b`uild with `-U`.
-
-To regenerate the cache, remove it and then `-b`uild with `-R`.
-
-This way, the cache will be used when you update SIRF in the container, or when you build another container.
-
-Note that this cache is different from the "normal" `ccache` of your host. (If you are only doing SIRF development, you could decide to copy that to
-`SIRF-SuperBuild/docker/devel/.ccache` but we will leave that up to you).
 
 #### `docker-stacks`
 

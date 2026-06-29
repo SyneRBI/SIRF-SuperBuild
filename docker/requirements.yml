@@ -10,6 +10,7 @@ channels:
 dependencies:
   - setuptools
   - wheel
+  - swig >=4.2
   - pytest
   - pytest-cov
   - scipy
@@ -28,14 +29,14 @@ dependencies:
   - jupyterlab_widgets
   - ipywidgets >=8
   - ipympl
-  # - ccpi/label/dev::tigre # cil (GPU)
-  # - astra-toolbox::astra-toolbox 2.* # cil (GPU)
-  # - cuda-version 12.8.* # cil (GPU)
+  # - ccpi::tigre >=3.1.3  # cil (GPU)
+  # - cuda-version 12.9.*  # cil (GPU)
   - ipp =2021.12.*         # cil
   - ipp-devel =2021.12.*   # cil
   - ipp-include =2021.12.* # cil
-  - ccpi-regulariser >=25  # cil
+  - ccpi-regulariser 26.*  cuda.* # cil
   - cil-data >=22          # cil
+  - astra-toolbox::astra-toolbox 2.* # cil
   - httomo::tomophantom >=3.1.4 # cil
   - ccpi::dxchange >=0.2.1 # cil
   - h5py           # cil

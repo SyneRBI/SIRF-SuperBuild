@@ -2,8 +2,8 @@
 # Author: Edoardo Pasca
 # Author: Benjamin A Thomas
 # Author: Kris Thielemans
-# Copyright 2017-2024 University College London
-# Copyright 2017-2024 Science Technology Facilities Council
+# Copyright 2017-2026 University College London
+# Copyright 2017-2026 Science Technology Facilities Council
 #
 # This file is part of the CCP SyneRBI (formerly PETMR) Synergistic Image Reconstruction Framework (SIRF) SuperBuild.
 #
@@ -23,12 +23,10 @@
 
 ## BOOST
 if (BUILD_GADGETRON)
-  # https://github.com/gadgetron/gadgetron/blob/12ffc43debb9bad2e170713006d29dea78d966bf/CMakeLists.txt#L205-L209
   # now using our own version of Gadgetron, based on master, which needs 1.80.0
-  # However, we can't require this yet.
-  set(Boost_REQUIRED_VERSION 1.71.0)
+  set(Boost_REQUIRED_VERSION 1.80.0)
 else()
-  # ISMRMRD needs more recent 1.68.0 so let's just say 1.71.0 as well
+  # This could probably be older, but best to be sure
   set(Boost_REQUIRED_VERSION 1.71.0)
 endif()
 # 1.86 dropped boost::process::child, causing gadgetron build failures
@@ -80,7 +78,7 @@ else()
 endif()
 
 ## SWIG
-set (SWIG_REQUIRED_VERSION 3)
+set (SWIG_REQUIRED_VERSION 4.2)
 if (WIN32)
   set(SWIG_URL http://downloads.sourceforge.net/swig/swigwin-4.4.0.zip)
   set(SWIG_MD5 16bdcc5f39a172879e93f57cea91dfef)
@@ -111,32 +109,35 @@ set(NIFTYREG_REQUIRED_VERSION 1.5.68)
 ## ISMRMRD
 set(ISMRMRD_REQUIRED_VERSION "1.11.1")
 set(DEFAULT_ISMRMRD_URL https://github.com/ismrmrd/ismrmrd)
-set(DEFAULT_ISMRMRD_TAG v1.13.7)
+set(DEFAULT_ISMRMRD_TAG v1.14.3)
 
 ## siemens_to_ismrmrd
 set(DEFAULT_siemens_to_ismrmrd_URL https://github.com/ismrmrd/siemens_to_ismrmrd)
 set(DEFAULT_siemens_to_ismrmrd_TAG v1.2.11)
 
 ## Gadgetron
-set(DEFAULT_Gadgetron_URL https://github.com/gadgetron/gadgetron)
-set(DEFAULT_Gadgetron_TAG 6202fb7352a14fb82817b57a97d928c988eb0f4b)
+set(DEFAULT_Gadgetron_URL https://github.com/SyneRBI/gadgetron)
+set(DEFAULT_Gadgetron_TAG avoid_test_compilation_error)
 
 ## NiftyPET
 set(DEFAULT_NiftyPET_URL https://github.com/pjmark/NIPET)
 set(DEFAULT_NiftyPET_TAG 70b97da0a4eea9445e34831f7393947a37bc77e7)
 
 ## parallelproj
-set(DEFAULT_parallelproj_URL https://github.com/gschramm/parallelproj)
-set(DEFAULT_parallelproj_TAG v1.10.2)
+set(DEFAULT_parallelproj_URL https://github.com/KUL-recon-lab/libparallelproj)
+set(DEFAULT_parallelproj_TAG v2.0.6)
 
 ## STIR
-set(STIR_REQUIRED_VERSION "6.3.0")
+# SIRF might work with STIR 6.3.0, but that version has a bug
+# for TOF, and it would be slower with CUDA, so setting minimum
+# to 6.4.0
+set(STIR_REQUIRED_VERSION "6.4.0")
 set(DEFAULT_STIR_URL https://github.com/UCL/STIR)
-set(DEFAULT_STIR_TAG rel_6.3.0)
+set(DEFAULT_STIR_TAG rel_6.4.0)
 
 ## SIRF
 set(DEFAULT_SIRF_URL https://github.com/SyneRBI/SIRF)
-set(DEFAULT_SIRF_TAG "6e429c2d1862057086720c543d220730feb3eecb") # https://github.com/SyneRBI/SIRF/pull/1400
+set(DEFAULT_SIRF_TAG "v3.10.1")
 
 ## pet-rd-tools
 set(DEFAULT_pet_rd_tools_URL https://github.com/UCL/pet-rd-tools)
@@ -144,7 +145,7 @@ set(DEFAULT_pet_rd_tools_TAG v2.0.2)
 
 ## SIRF-Contribs
 set(DEFAULT_SIRF-Contribs_URL https://github.com/SyneRBI/SIRF-Contribs)
-set(DEFAULT_SIRF-Contribs_TAG v3.9.1)
+set(DEFAULT_SIRF-Contribs_TAG v3.10.0)
 
 ## SPM
 set(DEFAULT_SPM_URL https://github.com/spm/SPM12)
@@ -155,7 +156,7 @@ set(DEFAULT_JSON_TAG v3.11.3)
 
 # CCPi CIL
 set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL)
-set(DEFAULT_CIL_TAG "numpy-2")
+set(DEFAULT_CIL_TAG "v26.0.0")
 
 # CERN ROOT
 set(DEFAULT_ROOT_URL https://github.com/root-project/root)
@@ -208,7 +209,7 @@ if (DEVEL_BUILD)
 
   # CCPi CIL
   set(DEFAULT_CIL_URL https://github.com/TomographicImaging/CIL)
-  set(DEFAULT_CIL_TAG origin/numpy-2)
+  set(DEFAULT_CIL_TAG origin/master)
 
   # Gadgetron
   # set(DEFAULT_Gadgetron_TAG origin/master)
