@@ -2,9 +2,10 @@
 
 ## v3.xx
 - Updated versions:
-  - ISMRMRD: v1.15.0 (#1015)
+  - ISMRMRD: 1.15.0 (#1015)
   - Gadgetron: https://github.com/SyneRBI/gadgetron/tree/avoid_test_compilation_error (#1003)
   - Boost: minimum version 1.80.0 when building Gadgetron (#1003)
+  - parallelproj: 2.0.7 (#1017)
 - Build system:
   - better use of `RPATH` avoiding the need for setting `LD_LIBRARY_PATH/DYLD_FALLBACK_LIBRARY_PATH` in `env_sirf.*` (#1003)
 - Docker:
