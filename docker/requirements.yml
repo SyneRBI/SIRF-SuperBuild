@@ -14,7 +14,7 @@ dependencies:
   - pytest
   - pytest-cov
   - scipy
-  - docopt
+  - docopt-ng
   - matplotlib
   - pandas
   - tifffile
