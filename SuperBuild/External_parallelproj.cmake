@@ -43,6 +43,11 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
  set(${proj}_CMAKE_ARGS
       ${PYTHONLIBS_CMAKE_ARGS}
   )
+ if(DISABLE_CUDA)
+   set(USE_CUDA OFF)
+ else()
+   set(USE_CUDA ON)
+ endif()
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
@@ -53,7 +58,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         ${${proj}_CMAKE_ARGS_DIRS}
         ${${proj}_CMAKE_ARGS}
         ${${proj}_EXTRA_CMAKE_ARGS}
-        -DSKIP_CUDA_LIB=${DISABLE_CUDA}
+        -DUSE_CUDA=${USE_CUDA}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
