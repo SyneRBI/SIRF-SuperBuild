@@ -53,7 +53,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
         ${${proj}_CMAKE_ARGS_DIRS}
         ${${proj}_CMAKE_ARGS}
         ${${proj}_EXTRA_CMAKE_ARGS}
-        -DSKIP_CUDA_LIB=${DISABLE_CUDA}
+        -DUSE_CUDA:BOOL=${USE_CUDA}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )

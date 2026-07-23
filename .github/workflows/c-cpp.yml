@@ -154,7 +154,7 @@ jobs:
         [[ " ${{ matrix.flags }} " =~ " +fftw3 " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_FFTW3:BOOL=OFF"
         [[ " ${{ matrix.flags }} " =~ " -fftw3 " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_FFTW3:BOOL=ON"
         [[ " ${{ matrix.flags }} " =~ " +hdf5 " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_HDF5:BOOL=OFF"
-        [[ " ${{ matrix.flags }} " =~ " -hdf5 " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_HDF5:BOOL=ON"
+        [[ " ${{ matrix.flags }} " =~ " -hdf5 " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_HDF5:BOOL=ON -DPATCH_ISMRMRD:BOOL=ON"
         [[ " ${{ matrix.flags }} " =~ " +swig " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_SWIG:BOOL=OFF"
         [[ " ${{ matrix.flags }} " =~ " -swig " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_SWIG:BOOL=ON"
         [[ " ${{ matrix.flags }} " =~ " +gtest " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_GTest:BOOL=OFF"

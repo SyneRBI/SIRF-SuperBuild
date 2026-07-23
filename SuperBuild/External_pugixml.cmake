@@ -39,23 +39,14 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   # Sets ${proj}_URL_MODIFIED and ${proj}_TAG_MODIFIED
   SetGitTagAndRepo("${proj}")
 
-  # conda build should never get here
-  if("${PYTHON_STRATEGY}" STREQUAL "PYTHONPATH")
-    # in case of PYTHONPATH it is sufficient to copy the files to the 
-    # $PYTHONPATH directory
-    ExternalProject_Add(${proj}
+  ExternalProject_Add(${proj}
       ${${proj}_EP_ARGS}
       ${${proj}_EP_ARGS_GIT}
       ${${proj}_EP_ARGS_DIRS}
       CMAKE_ARGS -DCMAKE_INSTALL_INCLUDEDIR:PATH=${SUPERBUILD_INSTALL_DIR}/include
+        -DBUILD_SHARED_LIBS:BOOL=ON -DPUGIXML_BUILD_SHARED_AND_STATIC_LIBS:BOOL=ON
       DEPENDS ${${proj}_DEPENDENCIES}
-    )
-
-  else()
-    # if SETUP_PY one can launch the conda build.sh script setting 
-    # the appropriate variables.
-    message(FATAL_ERROR "Only PYTHONPATH install method is currently supported")
-  endif()
+  )
 
 else()
     ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"

@@ -49,9 +49,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(HDF5_BUILD_HL_LIB ${${proj}_USE_CUDA})
 
   if (WIN32 AND (${HDF5_TAG} STREQUAL hdf5-1_8_12))
-    find_program(GIT "git")
+    find_program(GIT "git" REQUIRED)
     set(PATCHFILE "${CMAKE_SOURCE_DIR}/patches/hdf5-${HDF5_DOWNLOAD_VERSION}.patch")
-    set(PATCH_COMMAND git apply -v --ignore-space-change --ignore-whitespace ${PATCHFILE})
+    set(PATCH_COMMAND "${GIT}" apply -v --ignore-space-change --ignore-whitespace "${PATCHFILE}")
   else()
     #make it empty, just to be sure
     set(PATCH_COMMAND )

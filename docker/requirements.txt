@@ -3,7 +3,7 @@ wheel
 unittest-parametrize # CIL
 numpy        # CIL
 scipy        # CIL
-docopt
+docopt-ng
 matplotlib
 git+https://github.com/ismrmrd/ismrmrd-python-tools.git@master#egg=ismrmrd-python-tools
 Cython       # CIL

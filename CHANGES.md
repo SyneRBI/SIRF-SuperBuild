@@ -5,9 +5,13 @@
   - ISMRMRD: 1.15.0 (#1015)
   - Gadgetron: https://github.com/SyneRBI/gadgetron/tree/avoid_test_compilation_error (#1003)
   - Boost: minimum version 1.80.0 when building Gadgetron (#1003)
-  - parallelproj: 2.0.7 (#1017)
+  - parallelproj: 2.0.7 (#1017, #1020)
+  - pugixml: 1.16 (#1023)
+  - docopt-ng (#1018)
 - Build system:
   - better use of `RPATH` avoiding the need for setting `LD_LIBRARY_PATH/DYLD_FALLBACK_LIBRARY_PATH` in `env_sirf.*` (#1003)
+  - provide optional patch for ISMRMRD 1.15.0 to fix CURL linking errors on Ubuntu/debian etc (#1022)
+  - Build static and shared libraries for pugixml, avoiding problems with ISMRMRD (#1023)
 - Docker:
   - Use Ubuntu 24.04 as base-image (#1003)
   - `STIR_DISABLE_HDF5=OFF`
