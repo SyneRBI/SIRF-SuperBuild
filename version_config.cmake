@@ -178,7 +178,7 @@ set(DEFAULT_Date_URL https://github.com/SyneRBI/date )
 set(DEFAULT_Date_TAG fixgitattributes)
 
 set(DEFAULT_pugixml_URL https://github.com/zeux/pugixml)
-set(DEFAULT_pugixml_TAG v1.13)
+set(DEFAULT_pugixml_TAG v1.16)
 
 # works only for Linux
 set(Go_URL https://go.dev/dl/go1.19.3.linux-amd64.tar.gz)
