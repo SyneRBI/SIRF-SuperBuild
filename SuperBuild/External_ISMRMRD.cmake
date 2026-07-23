@@ -64,6 +64,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set(PATCHFILE "${CMAKE_SOURCE_DIR}/patches/ismrmrd-1.37.7.patch")
     set(PATCH_COMMAND git apply -v --ignore-space-change --ignore-whitespace ${PATCHFILE})
   endif()
+  if (${${proj}_TAG} STREQUAL "v1.15.0" AND DEFINED PATCH_ISMRMRD)
+    message(STATUS "patching ISMRMRD to fix cURL linking error")
+    find_program(GIT "git")
+    set(PATCHFILE "${CMAKE_SOURCE_DIR}/patches/ismrmrd-1.15.0.patch")
+    set(PATCH_COMMAND git apply -v --ignore-space-change --ignore-whitespace ${PATCHFILE})
+  endif()
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}

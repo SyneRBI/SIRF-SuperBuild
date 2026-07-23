@@ -7,6 +7,7 @@
   - Boost: minimum version 1.80.0 when building Gadgetron (#1003)
 - Build system:
   - better use of `RPATH` avoiding the need for setting `LD_LIBRARY_PATH/DYLD_FALLBACK_LIBRARY_PATH` in `env_sirf.*` (#1003)
+  - provide optional patch for ISMRMRD 1.15.0 to fix CURL linking errors on Ubuntu/debian etc (#1022)
 - Docker:
   - Use Ubuntu 24.04 as base-image (#1003)
   - `STIR_DISABLE_HDF5=OFF`
