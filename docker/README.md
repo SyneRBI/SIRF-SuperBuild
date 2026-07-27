@@ -1,6 +1,6 @@
 # SIRF Docker image
 
-The image contains SIRF & all dependencies required by JupyterHub.
+The image contains SIRF & all dependencies required by Jupyter.
 
 ## Usage
 
@@ -73,12 +73,12 @@ USER ${NB_UID}
 
 To build and/or run with advanced config, it's recommended to use [Docker Compose](https://docs.docker.com/compose/).
 
-We use an Ubuntu 24.04 base image (optionally with CUDA GPU support for [CIL](https://github.com/TomographicImaging/CIL) GPU features), build <https://github.com/jupyter/docker-stacks> `datascience-notebook` on top, and then install SIRF & its depdendencies.
+We use an Ubuntu 24.04 base image (optionally with CUDA GPU support for [CIL](https://github.com/TomographicImaging/CIL) GPU features), build <https://github.com/jupyter/docker-stacks> `scipy-notebook` on top, and then install SIRF & its depdendencies.
 
 The strategy is:
 
 1. Use either `ubuntu:latest` or a recent Ubuntu CuDNN runtime image from <https://hub.docker.com/r/nvidia/cuda> as base
-2. Build <https://github.com/jupyter/docker-stacks/tree/main/images/datascience-notebook> on top
+2. Build <https://github.com/jupyter/docker-stacks/tree/main/images/scipy-notebook> on top
 3. Copy & run the SIRF `docker/build_*.sh` scripts
 4. Clone the SIRF-SuperBuild & run `cmake`
 5. Copy some example notebooks & startup scripts
@@ -92,20 +92,21 @@ All of this is done by [`compose.sh`](./compose.sh).
 
    ```bash
    git clone https://github.com/SyneRBI/SIRF-SuperBuild
-   ./SIRF-SuperBuild/docker/compose.sh -h  # prints help
+   cd SIRF-SuperBuild
+   docker/compose.sh -h  # prints help
    ```
 
 > [!TIP]
 > For example, to `-b`uild the `-d`evelopment (`master`) branches of SIRF and its dependencies, including `-g`pu support and skipping tests:
 >
 > ```bash
-> compose.sh -bdg -- --build-arg RUN_CTEST=0
+> docker/compose.sh -bdg -- --build-arg RUN_CTEST=0
 > ```
 >
 > Then to `-r`un the container:
 >
 > ```bash
-> compose.sh -rdg
+> docker/compose.sh -rdg
 > ```
 
 ### More info
@@ -113,7 +114,7 @@ All of this is done by [`compose.sh`](./compose.sh).
 > [!TIP]
 >
 > ```bash
-> compose.sh -h # prints help
+> docker/compose.sh -h # prints help
 > ```
 
 #### Useful `--build-arg`s
@@ -123,14 +124,14 @@ CMake build arguments (e.g. for dependency version config) are (in increasing or
 - [`../version_config.cmake`](../version_config.cmake)
 - [`../Dockerfile`](../Dockerfile)
 - docker-compose.*.yml files
-- `compose.sh -- --build-arg` arguments
+- `docker/compose.sh -- --build-arg` arguments
 
 Useful `--build-arg`s:
 
 You can determine which version of the `SIRF-SuperBuild` is built in the docker image:
 
 ```bash
-compose.sh -b -- --build-arg SIRF_SB_TAG=<git ref>
+docker/compose.sh -b -- --build-arg SIRF_SB_TAG=<git ref>
 ```
 
 By default, the CTests are run while building the docker image. Note that this takes a few minutes.
@@ -145,7 +146,6 @@ You can switch this off by setting `--build-arg  RUN_CTEST=0` before building th
 - `base-notebook` -> `synerbi/jupyter:base`
 - `minimal-notebook` -> `synerbi/jupyter:minimal`
 - `scipy-notebook` -> `synerbi/jupyter:scipy`
-- `datascience-notebook` -> `synerbi/jupyter:datascience`
 - [`Dockerfile`](./Dockerfile) -> `synerbi/jupyter:sirf`
   + Copy & run the SIRF `build_{gadgetron,system}.sh` scripts
   + Copy `/opt/SIRF-SuperBuild/{INSTALL,sources/SIRF}` directories from the `synerbi/sirf:latest` image
