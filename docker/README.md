@@ -36,7 +36,7 @@ The Jupyter notebook should be accessible at <http://localhost:9999>. Jupyter pa
 > To sync the container user & host user permissions (useful when sharing folders), use `--user` and `--group-add`.
 >
 > ```sh
-> docker run --rm -it -p 9999:8888 --user $(id -u) --group-add users \
+> docker run --rm -it -p 9999:8888 --user $(id -u):$(id -g) --group-add users \
 >   -v ./devel:/home/jovyan/work \
 >   ghcr.io/synerbi/sirf:latest
 > ```
@@ -47,7 +47,7 @@ More config: <https://jupyter-docker-stacks.readthedocs.io/en/latest/using/commo
 > To pass arguments to [`SIRF-Exercises/scripts/download_data.sh`](https://github.com/SyneRBI/SIRF-Exercises/blob/master/scripts/download_data.sh), use the docker environment variable `SIRF_DOWNLOAD_DATA_ARGS`.
 >
 > ```sh
-> docker run --rm -it -p 9999:8888 --user $(id -u) --group-add users \
+> docker run --rm -it -p 9999:8888 --user $(id -u):$(id -g) --group-add users \
 >   -v /mnt/data:/share -e SIRF_DOWNLOAD_DATA_ARGS="-pm -D /share" \
 >   ghcr.io/synerbi/sirf:latest
 > ```
