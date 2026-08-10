@@ -1,0 +1,8 @@
+services:
+  sirf-build: {build: {args: {RUN_CTEST: 0}}}
+  sirf:
+    group_add: [1000] # set this to $GROUPS or similar for access to host mounts
+    ports: !override [9002, 8888]
+    stdin_open: !reset null
+    tty: !reset null
+    volumes: !reset null

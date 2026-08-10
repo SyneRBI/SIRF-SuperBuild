@@ -2,36 +2,41 @@
 /// config: https://github.com/devcontainers/templates/tree/main/src/docker-existing-docker-compose
 /// example: https://github.com/devcontainers-community/templates-jupyter-datascience-notebooks/tree/main/.devcontainer
 {
-	/// CPU
-	// "initializeCommand": "./docker/compose.sh -bdc -- --build-arg RUN_CTEST=0",
-	// "dockerComposeFile": ["docker-compose.yml", "docker/docker-compose.devel.yml", "docker/docker-compose.devcontainer.yml"],
-	"image": "synerbi/sirf:devel",
-	/// GPU
-	// "initializeCommand": "./docker/compose.sh -bdg -- --build-arg RUN_CTEST=0",
-	// "dockerComposeFile": ["docker-compose.yml", "docker/docker-compose.devel.yml", "docker/docker-compose.gpu.yml", "docker/docker-compose.gpu-devel.yml", "docker/docker-compose.devcontainer.yml"],
-	// "image": "synerbi/sirf:devel-gpu",
-	// "hostRequirements": {"gpu": true},
-	"name": "SyneRBI SIRF",
-	// "service": "sirf", "runServices": ["sirf"],
-	/// https://aka.ms/dev-containers-non-root
-	//"runArgs": ["--user=1000:${localEnv:GROUPS}", "--group-add=users"],  // NOTE: you likely need to hardcode replace `${localEnv:GROUPS}` with your local group ID to fix workspace access permissions
-	"runArgs": ["--user=1000:1000", "--group-add=users"],
-	"overrideCommand": false, // use docker-stacks default
-	/// https://containers.dev/features
-	"customizations": {"vscode": {
-		"extensions": [
-			"ms-python.python",
-			"ms-toolsai.jupyter",
-			"ms-python.vscode-pylance",
-			"ms-vscode.cmake-tools",
-			"ms-python.isort",
-			"tamasfe.even-better-toml",
-			"GitHub.vscode-github-actions"
-		],
-		"settings": {
-			"python.defaultInterpreterPath": "/opt/conda/bin/python"}}},
-	"forwardPorts": [8888, 9002],
-	"portsAttributes": {
-		"8888": {"label": "Jupyter", "requireLocalPort": true, "onAutoForward": "ignore"},
-		"9002": {"label": "Gadgetron", "onAutoForward": "silent"}}
+/// CPU
+"dockerComposeFile": ["docker-compose.yml", "docker/docker-compose.devel.yml", "docker/docker-compose.devcontainer.yml"],
+/// GPU
+// "dockerComposeFile": ["docker-compose.yml", "docker/docker-compose.devel.yml", "docker/docker-compose.gpu.yml", "docker/docker-compose.devel-gpu.yml", "docker/docker-compose.devcontainer.yml"], "hostRequirements": {"gpu": true},
+/// Common
+"name": "SyneRBI SIRF",
+"service": "sirf", "runServices": ["sirf"],
+"workspaceFolder": "/opt/SIRF-SuperBuild",
+"mounts": [
+	{"source": "persistent", "target": "/opt/SIRF-SuperBuild", "type": "volume"},
+	{"source": "${localWorkspaceFolder}/.devcontainer.json", "target": "/opt/.devcontainer.json", "type": "bind"}],
+/// https://aka.ms/dev-containers-non-root
+"containerUser": "1000:1000",
+"overrideCommand": false, // use docker-stacks default
+/// https://containers.dev/features
+// "features": {},
+"customizations": {"vscode": {
+	"extensions": [
+		"ms-python.python",
+		"ms-toolsai.jupyter",
+		"ms-python.vscode-pylance",
+		"twxs.cmake",
+		"yzhang.markdown-all-in-one",
+		"ms-vscode.cpptools",
+		"ms-python.isort",
+		"tamasfe.even-better-toml",
+		"GitHub.vscode-github-actions"
+	],
+	"settings": {
+		"python.defaultInterpreterPath": "/opt/conda/bin/python",
+		"C_Cpp.default.includePath": [
+			"/opt/SIRF-SuperBuild/sources/**/include",
+			"/opt/SIRF-SuperBuild/INSTALL/include/STIR-6.4"]}}},
+"forwardPorts": [8888, 9002],
+"portsAttributes": {
+	"8888": {"label": "Jupyter", "requireLocalPort": true, "onAutoForward": "ignore"},
+	"9002": {"label": "Gadgetron", "onAutoForward": "silent"}}
 }

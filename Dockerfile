@@ -137,8 +137,9 @@ ARG BUILD_GPU
 RUN BUILD_GPU=${BUILD_GPU} bash /opt/scripts/user_demos.sh \
  && fix-permissions /opt "${CONDA_DIR}" /home/${NB_USER}
 
-# devcontainer support: create group alias
+# devcontainer support: create group alias & set repository ownership
 RUN groupadd -o -g ${NB_GID} ${NB_USER}
+RUN chown -R ${NB_UID} /opt/SIRF-SuperBuild
 # docker-stacks notebook
 USER ${NB_UID}
 ENV DEBIAN_FRONTEND=''
