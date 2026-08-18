@@ -1,3 +1,4 @@
+set -x
 if test $UID -eq 0; then
   sudo --preserve-env --set-home --user "$NB_USER" "$0" "$@"
   exit $?
