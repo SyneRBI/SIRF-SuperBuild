@@ -10,7 +10,7 @@ done
 ./SIRF-Exercises/scripts/download_data.sh ${SIRF_DOWNLOAD_DATA_ARGS:-}
 
 echo "link SIRF-Contrib into ~/work"
-if test ! -r SIRF-contrib; then
+if test ! -d SIRF-contrib || test ! -L SIRF-contrib ; then
   echo "Creating link to SIRF-contrib"
   ln -s "${SIRF_INSTALL_PATH}/python/sirf/contrib" SIRF-contrib
 fi
