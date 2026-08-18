@@ -48,6 +48,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   set(default_STIR_BUILD_SWIG_PYTHON ON)
   RenameVariable(BUILD_STIR_SWIG_PYTHON STIR_BUILD_SWIG_PYTHON default_STIR_BUILD_SWIG_PYTHON)
   option(STIR_BUILD_SWIG_PYTHON "Build STIR Python interface" ${default_STIR_BUILD_SWIG_PYTHON})
+  option(STIR_BUILD_SHARED_LIBS "Use STIR shared (rather than static) libraries; may be changed to default ON in future" OFF)
   option(STIR_DISABLE_LLN_MATRIX "Disable STIR Louvain-la-Neuve Matrix library for ECAT7 support" ON)
   option(STIR_DISABLE_HDF5 "Disable STIR use of HDF5 libraries (and hence GE Raw Data support)" OFF)
   option(STIR_ENABLE_EXPERIMENTAL "Enable STIR experimental code" OFF)
@@ -90,6 +91,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     ${${proj}_CMAKE_ARGS_DIRS}
     -DSWIG_EXECUTABLE:FILEPATH=${SWIG_EXECUTABLE}
     -DBUILD_EXECUTABLES:BOOL=${STIR_BUILD_EXECUTABLES}
+    -DBUILD_SHARED_LIBS:BOOL=${STIR_BUILD_SHARED_LIBS}
     -DBUILD_SWIG_PYTHON:BOOL=${STIR_BUILD_SWIG_PYTHON}
     -DPYTHON_DEST:PATH=${PYTHON_DEST}
     ${PYTHONLIBS_CMAKE_ARGS}
@@ -114,7 +116,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
   #     2.  USE_ITK &&  USE_SYSTEM_ITK  <- Need to set ITK_DIR, set with find_package in External_ITK.cmake
   #     3.  USE_ITK && !USE_SYSTEM_ITK  <- No need to do anything (CMake will find it in CMAKE_INSTALL_PREFIX)
   # STIR enables ITK by default (If it is found, so no need to set -DDISABLE_ITK=OFF for cases 2 and 3)
-  if (NOT USE_ITK) 
+  if (NOT USE_ITK)
     set(STIR_local_extra_cmake_args ${STIR_local_extra_cmake_args} -DDISABLE_ITK:BOOL=ON)
   else()
     set(STIR_local_extra_cmake_args ${STIR_local_extra_cmake_args} -DDISABLE_ITK:BOOL=OFF)
