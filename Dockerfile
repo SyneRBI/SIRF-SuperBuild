@@ -99,11 +99,13 @@ RUN --mount=type=cache,target=/opt/ccache BUILD_FLAGS="-G Ninja\
  EXTRA_BUILD_FLAGS="${EXTRA_BUILD_FLAGS}" \
  RUN_CTEST=0 \
  bash /opt/scripts/user_sirf-ubuntu.sh \
- && fix-permissions /opt/SIRF-SuperBuild /opt/ccache
+ && fix-permissions /opt/SIRF-SuperBuild /opt/ccache \
+ && for d in /opt/SIRF-SuperBuild /opt/ccache; do find $d ! -user ${NB_UID} -exec chown ${NB_UID} {} +; done
 # test (if RUN_CTEST)
 RUN RUN_BUILD=0 \
  bash /opt/scripts/user_sirf-ubuntu.sh \
- && fix-permissions /opt/SIRF-SuperBuild /opt/ccache
+ && fix-permissions /opt/SIRF-SuperBuild /opt/ccache \
+ && for d in /opt/SIRF-SuperBuild /opt/ccache; do find $d ! -user ${NB_UID} -exec chown ${NB_UID} {} +; done
 
 # X11 forwarding
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked --mount=type=cache,target=/var/lib/apt,sharing=locked \
@@ -129,7 +131,7 @@ ENV NOTEBOOK_ARGS=--PasswordIdentityProvider.hashed_password='sha1:cbf03843d2bb:
 
 # copy ccache from cache mount
 RUN --mount=type=cache,target=/opt/ccache cp -a /opt/ccache /opt/tmp-ccache
-RUN rm -rf /opt/ccache && mv /opt/tmp-ccache /opt/ccache && fix-permissions /opt/ccache
+RUN rm -rf /opt/ccache && mv /opt/tmp-ccache /opt/ccache && fix-permissions /opt/ccache && find /opt/ccache ! -user ${NB_UID} -exec chown ${NB_UID} {} +
 
 FROM build AS sirf-dev
 
@@ -139,9 +141,8 @@ ARG BUILD_GPU
 RUN BUILD_GPU=${BUILD_GPU} bash /opt/scripts/user_demos.sh \
  && fix-permissions /opt "${CONDA_DIR}" /home/${NB_USER}
 
-# devcontainer support: create group alias & set repository ownership
+# devcontainer support: create group alias
 RUN groupadd -o -g ${NB_GID} ${NB_USER}
-RUN chown -R ${NB_UID} /opt/SIRF-SuperBuild
 # docker-stacks notebook
 USER ${NB_UID}
 ENV DEBIAN_FRONTEND=''
