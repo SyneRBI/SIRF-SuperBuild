@@ -37,6 +37,8 @@ RUN if test "$BUILD_GPU" != 0; then \
  && mamba env update -n base -f /opt/scripts/requirements.yml \
  && mamba clean --all -f -y && fix-permissions "${CONDA_DIR}" /home/${NB_USER}
 
+RUN git config --global --add safe.directory '*'
+
 FROM base AS build
 
 COPY docker/update_nvidia_keys.sh /opt/scripts/
