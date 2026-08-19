@@ -20,21 +20,37 @@
 // "features": {},
 "customizations": {"vscode": {
 	"extensions": [
-		"ms-python.python",
-		"ms-toolsai.jupyter",
-		"ms-python.vscode-pylance",
-		"twxs.cmake",
-		"yzhang.markdown-all-in-one",
-		"ms-vscode.cpptools",
+		"GitHub.vscode-github-actions",
 		"ms-python.isort",
+		"ms-python.python",
+		"ms-python.vscode-pylance",
+		"ms-toolsai.jupyter",
+		"ms-vscode.cmake-tools",
+		"ms-vscode.cpptools",
 		"tamasfe.even-better-toml",
-		"GitHub.vscode-github-actions"
+		"twxs.cmake",
+		"yzhang.markdown-all-in-one"
 	],
 	"settings": {
-		"python.defaultInterpreterPath": "/opt/conda/bin/python",
+		"C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+		// fallback if above paths doesn't work (microsoft/vscode-cmake-tools#1370, microsoft/vscode-cmake-tools#575, microsoft/vscode-cmake-tools#4293,microsoft/vscode-cmake-tools#1373)
 		"C_Cpp.default.includePath": [
 			"/opt/SIRF-SuperBuild/sources/**/include",
-			"/opt/SIRF-SuperBuild/INSTALL/include/STIR-6.4"]}}},
+			"/opt/SIRF-SuperBuild/INSTALL/include",
+			"/opt/SIRF-SuperBuild/INSTALL/include/*/"
+		],
+		"cmake.automaticReconfigure": false,
+		"cmake.buildDirectory": "${workspaceFolder}",
+		"cmake.clearOutputBeforeBuild": false,
+		"cmake.cmakePath": "/usr/local/bin/cmake",
+		"cmake.configureOnEdit": false,
+		"cmake.configureOnOpen": false,
+		"cmake.deleteBuildDirOnCleanConfigure": false,
+		"cmake.enableAutomaticKitScan": false,
+		"cmake.generator": "Ninja",
+		"cmake.ignoreKitEnv": true,
+		"cmake.skipConfigureIfCachePresent": true,
+		"python.defaultInterpreterPath": "/opt/conda/bin/python"}}},
 "forwardPorts": [8888, 9002],
 "portsAttributes": {
 	"8888": {"label": "Jupyter", "requireLocalPort": true, "onAutoForward": "ignore"},

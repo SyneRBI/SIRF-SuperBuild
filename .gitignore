@@ -8,6 +8,10 @@ INSTALL/
 cmake_install.cmake
 CMakeCache.txt
 CMakeFiles/
+# devcontainer/ms-vscode.cmake-tools
+/.cmake/
+/downloads/
+/Testing/
 
 # backup files
 *~
