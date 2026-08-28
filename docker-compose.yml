@@ -10,20 +10,20 @@ services:
   image: synerbi/jupyter:base-cpu
   build:
    context: docker/docker-stacks/images/base-notebook
-   args: {BASE_IMAGE: img}
-   additional_contexts: {img: service:foundation}
+   args: {BASE_IMAGE: hello-world}
+   additional_contexts: {hello-world: service:foundation}
  minimal:
   image: synerbi/jupyter:minimal-cpu
   build:
    context: docker/docker-stacks/images/minimal-notebook
-   args: {BASE_IMAGE: img}
-   additional_contexts: {img: service:base}
+   args: {BASE_IMAGE: hello-world}
+   additional_contexts: {hello-world: service:base}
  scipy:
   image: synerbi/jupyter:scipy-cpu
   build:
    context: docker/docker-stacks/images/scipy-notebook
-   args: {BASE_IMAGE: img}
-   additional_contexts: {img: service:minimal}
+   args: {BASE_IMAGE: hello-world}
+   additional_contexts: {hello-world: service:minimal}
  sirf-build:
   image: synerbi/jupyter:sirf-build-cpu
   build:
@@ -32,8 +32,8 @@ services:
    args:
     Gadgetron_USE_CUDA: "OFF"
     BUILD_GPU: 0
-    BASE_IMAGE: img
-   additional_contexts: {img: service:scipy}
+    BASE_IMAGE: hello-world
+   additional_contexts: {hello-world: service:scipy}
  sirf:
   container_name: sirf  # for scaling, comment this out https://github.com/docker/compose/issues/3729
   image: synerbi/sirf:latest
@@ -43,8 +43,8 @@ services:
    args:
     Gadgetron_USE_CUDA: "OFF"
     BUILD_GPU: 0
-    BASE_IMAGE: img
-   additional_contexts: {img: service:scipy, build: service:sirf-build}
+    BASE_IMAGE: hello-world
+   additional_contexts: {hello-world: service:scipy, build: service:sirf-build}
    cache_from: [synerbi/jupyter:sirf-build-cpu]
   stdin_open: true
   tty: true

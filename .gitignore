@@ -1,21 +1,17 @@
-*-prefix/
-Boost/
-FFTW3*/
-HDF5/
-INSTALL/
-Makefile
-SIRF/
-STIR/
-ISMRMRD/
-Gadgetron/
-SWIG/
-Armadillo/
-googletest/
-
 # CMake output files
+.ninja_log
+CTestTestfile.cmake
+build.ninja
+builds/
+sources/
+INSTALL/
 cmake_install.cmake
 CMakeCache.txt
 CMakeFiles/
+# devcontainer/ms-vscode.cmake-tools
+/.cmake/
+/downloads/
+/Testing/
 
 # backup files
 *~

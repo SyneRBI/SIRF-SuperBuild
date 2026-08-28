@@ -37,6 +37,8 @@ RUN if test "$BUILD_GPU" != 0; then \
  && mamba env update -n base -f /opt/scripts/requirements.yml \
  && mamba clean --all -f -y && fix-permissions "${CONDA_DIR}" /home/${NB_USER}
 
+RUN git config --global --add safe.directory '*'
+
 FROM base AS build
 
 COPY docker/update_nvidia_keys.sh /opt/scripts/
@@ -62,6 +64,7 @@ ARG NUM_PARALLEL_BUILDS=" "
 ARG CMAKE_BUILD_TYPE="Release"
 ARG STIR_ENABLE_OPENMP="ON"
 ARG STIR_DISABLE_HDF5="OFF"
+ARG STIR_BUILD_SHARED_LIBS="ON"
 ARG USE_SYSTEM_Armadillo="ON"
 ARG USE_SYSTEM_Boost="ON"
 ARG USE_SYSTEM_FFTW3="ON"
@@ -82,6 +85,7 @@ RUN --mount=type=cache,target=/opt/ccache BUILD_FLAGS="-G Ninja\
  -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}\
  -DSTIR_ENABLE_OPENMP=${STIR_ENABLE_OPENMP}\
  -DSTIR_DISABLE_HDF5=${STIR_DISABLE_HDF5}\
+ -DSTIR_BUILD_SHARED_LIBS:BOOL=${STIR_BUILD_SHARED_LIBS}\
  -DUSE_SYSTEM_Armadillo=${USE_SYSTEM_Armadillo}\
  -DUSE_SYSTEM_Boost=${USE_SYSTEM_Boost}\
  -DUSE_SYSTEM_FFTW3=${USE_SYSTEM_FFTW3}\
@@ -97,11 +101,13 @@ RUN --mount=type=cache,target=/opt/ccache BUILD_FLAGS="-G Ninja\
  EXTRA_BUILD_FLAGS="${EXTRA_BUILD_FLAGS}" \
  RUN_CTEST=0 \
  bash /opt/scripts/user_sirf-ubuntu.sh \
- && fix-permissions /opt/SIRF-SuperBuild /opt/ccache
+ && fix-permissions /opt/SIRF-SuperBuild /opt/ccache \
+ && for d in /opt/SIRF-SuperBuild /opt/ccache; do find $d ! -user ${NB_UID} -exec chown ${NB_UID} {} +; done
 # test (if RUN_CTEST)
 RUN RUN_BUILD=0 \
  bash /opt/scripts/user_sirf-ubuntu.sh \
- && fix-permissions /opt/SIRF-SuperBuild /opt/ccache
+ && fix-permissions /opt/SIRF-SuperBuild /opt/ccache \
+ && for d in /opt/SIRF-SuperBuild /opt/ccache; do find $d ! -user ${NB_UID} -exec chown ${NB_UID} {} +; done
 
 # X11 forwarding
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked --mount=type=cache,target=/var/lib/apt,sharing=locked \
@@ -127,7 +133,7 @@ ENV NOTEBOOK_ARGS=--PasswordIdentityProvider.hashed_password='sha1:cbf03843d2bb:
 
 # copy ccache from cache mount
 RUN --mount=type=cache,target=/opt/ccache cp -a /opt/ccache /opt/tmp-ccache
-RUN rm -rf /opt/ccache && mv /opt/tmp-ccache /opt/ccache && fix-permissions /opt/ccache
+RUN rm -rf /opt/ccache && mv /opt/tmp-ccache /opt/ccache && fix-permissions /opt/ccache && find /opt/ccache ! -user ${NB_UID} -exec chown ${NB_UID} {} +
 
 FROM build AS sirf-dev
 
@@ -137,6 +143,8 @@ ARG BUILD_GPU
 RUN BUILD_GPU=${BUILD_GPU} bash /opt/scripts/user_demos.sh \
  && fix-permissions /opt "${CONDA_DIR}" /home/${NB_USER}
 
+# devcontainer support: create group alias
+RUN groupadd -o -g ${NB_GID} ${NB_USER}
 # docker-stacks notebook
 USER ${NB_UID}
 ENV DEBIAN_FRONTEND=''
