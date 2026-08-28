@@ -1,6 +1,8 @@
+/// Intended for local VSCode development - CMake build flags (`DEVEL_BUILD=ON`, `STIR_BUILD_SHARED_LIBS=ON`, `STIR_BUILD_EXECUTABLES=ON`, `RUN_CTEST=0`), VSCode extensions (Python, Jupyter, CMake, etc.)
 /// format: https://aka.ms/devcontainer.json
 /// config: https://github.com/devcontainers/templates/tree/main/src/docker-existing-docker-compose
 /// example: https://github.com/devcontainers-community/templates-jupyter-datascience-notebooks/tree/main/.devcontainer
+/// NOTE: this is NOT the same approach as https://github.com/SyneRBI/SIRF-Exercises/tree/master/.devcontainer
 {
 /// CPU
 "dockerComposeFile": ["docker-compose.yml", "docker/docker-compose.devel.yml", "docker/docker-compose.devcontainer.yml"],
@@ -11,7 +13,14 @@
 "service": "sirf", "runServices": ["sirf"],
 "workspaceFolder": "/opt/SIRF-SuperBuild",
 "mounts": [
+	// - a persistent working directory is created with the image's `/opt/SIRF-SuperBuild` on first run
+	// - it is NOT updated with the image's `/opt/SIRF-SuperBuild` on subsequent runs
+	// - on subsequent runs, the image's `/opt/SIRF-SuperBuild` is hidden/overriden by the persistent volume
+	// - to discard & recreate the persistent volume (e.g. after an image update),
+	//   CLOSE the Dev Container and run (on the host, in this repository):
+	//   `docker compose down; docker volume rm sirf-superbuild_persistent`
 	{"source": "persistent", "target": "/opt/SIRF-SuperBuild", "type": "volume"},
+	// For easier editing of this file from both the host and the container
 	{"source": "${localWorkspaceFolder}/.devcontainer.json", "target": "/opt/.devcontainer.json", "type": "bind"}],
 /// https://aka.ms/dev-containers-non-root
 "containerUser": "1000:1000",

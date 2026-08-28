@@ -15,7 +15,13 @@
 - Docker:
   - Use Ubuntu 24.04 as base-image (#1003)
   - `STIR_DISABLE_HDF5=OFF`
+  - `STIR_BUILD_SHARED_LIBS=ON`
   - improve caching, devel with full build env (#1013)
+- Devcontainer (#1026) intended for local VSCode development:
+  - `DEVEL_BUILD=ON`
+  - `STIR_BUILD_EXECUTABLES=ON`
+  - `RUN_CTEST=0`
+  - extensions (Python, Jupyter, CMake, ...)
 - VM:
   - Use Ubuntu 24.04 as base-image (#1003)
 
