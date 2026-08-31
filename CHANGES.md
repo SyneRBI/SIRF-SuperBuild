@@ -17,6 +17,7 @@
   - `STIR_DISABLE_HDF5=OFF`
   - `STIR_BUILD_SHARED_LIBS=ON`
   - improve caching, devel with full build env (#1013)
+  - SWIG: <4.5 (#1030)
 - Devcontainer (#1026) intended for local VSCode development:
   - `DEVEL_BUILD=ON`
   - `STIR_BUILD_EXECUTABLES=ON`
