@@ -3,27 +3,31 @@ on:
   push:
     branches: [master]
     paths-ignore:
-    - 'docker/Dockerfile'
-    - 'docker/docker*.yml'
     - '**.md'
-    - 'VirtualBox/**'
     - '.github/workflows/*docker*'
-    - 'CITATION.cff'
     - '.mailmap'
-    - 'NOTICE.txt'
+    - 'CHANGES.md'
+    - 'CITATION.cff'
+    - 'docker/[0-9]5*.sh'
+    - 'docker/docker-compose.*'
+    - 'docker/Dockerfile'
     - 'LICENSE.txt'
+    - 'NOTICE.txt'
+    - 'VirtualBox/**'
   pull_request:
     branches: [master]
     paths-ignore:
-    - 'docker/Dockerfile'
-    - 'docker/docker*.yml'
     - '**.md'
-    - 'VirtualBox/**'
     - '.github/workflows/*docker*'
-    - 'CITATION.cff'
     - '.mailmap'
-    - 'NOTICE.txt'
+    - 'CHANGES.md'
+    - 'CITATION.cff'
+    - 'docker/[0-9]5*.sh'
+    - 'docker/Dockerfile'
+    - 'docker/docker-compose.*'
     - 'LICENSE.txt'
+    - 'NOTICE.txt'
+    - 'VirtualBox/**'
   workflow_dispatch:
     inputs:
       tmate:

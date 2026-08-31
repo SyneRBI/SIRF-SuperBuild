@@ -4,19 +4,25 @@ on:
     branches: [master]
     paths-ignore:
     - '**.md'
-    - 'VirtualBox/**'
     - '.github/workflows/c-cpp.yml'
-    - 'CITATION.cff'
     - '.mailmap'
+    - 'CHANGES.md'
+    - 'CITATION.cff'
+    - 'LICENSE.txt'
+    - 'NOTICE.txt'
+    - 'VirtualBox/**'
   push:
     branches: [master]
     tags: ['v**']
     paths-ignore:
     - '**.md'
-    - 'VirtualBox/**'
     - '.github/workflows/c-cpp.yml'
-    - 'CITATION.cff'
     - '.mailmap'
+    - 'CHANGES.md'
+    - 'CITATION.cff'
+    - 'LICENSE.txt'
+    - 'NOTICE.txt'
+    - 'VirtualBox/**'
   schedule: [{cron: '37 13 * * SUN'}] # Sunday at 13:37
 defaults: {run: {shell: 'bash -el {0}'}}
 jobs:
