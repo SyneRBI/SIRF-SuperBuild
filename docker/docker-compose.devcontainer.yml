@@ -5,7 +5,6 @@ services:
         RUN_CTEST: 0
         EXTRA_BUILD_FLAGS: >
           -DDEVEL_BUILD:BOOL=ON
-          -DSTIR_BUILD_EXECUTABLES:BOOL=ON
   sirf:
     group_add: [1007] # set this to $GROUPS or similar for access to host mounts
     ports: !override [9002, 8888]
