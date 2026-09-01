@@ -146,7 +146,7 @@ jobs:
         set -ex
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         export superbuild=`pwd`
-        BUILD_FLAGS="-DCMAKE_INSTALL_PREFIX=~/install -DPYVER=3 -DUSE_SYSTEM_RocksDB:BOOL=OFF -DBUILD_TESTING_Gadgetron:BOOL=ON -DSTIR_DISABLE_HDF5:BOOL=ON -DUSE_ITK:BOOL=ON -DBUILD_CIL:BOOL=ON -DBUILD_siemens_to_ismrmrd:BOOL=ON"
+        BUILD_FLAGS="-DCMAKE_INSTALL_PREFIX=~/install -DPYVER=3 -DUSE_SYSTEM_RocksDB:BOOL=OFF -DBUILD_TESTING_Gadgetron:BOOL=ON -DUSE_ITK:BOOL=ON -DBUILD_CIL:BOOL=ON -DBUILD_siemens_to_ismrmrd:BOOL=ON"
         [[ " ${{ matrix.flags }} " =~ " +armadillo " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_Armadillo:BOOL=OFF"
         [[ " ${{ matrix.flags }} " =~ " -armadillo " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_Armadillo:BOOL=ON"
         [[ " ${{ matrix.flags }} " =~ " +boost " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_Boost:BOOL=OFF"
