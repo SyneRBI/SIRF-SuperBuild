@@ -1,29 +1,20 @@
 name: native
 on:
-  push:
+  push: &triggers
     branches: [master]
     paths-ignore:
-    - 'docker/Dockerfile'
-    - 'docker/docker*.yml'
     - '**.md'
-    - 'VirtualBox/**'
     - '.github/workflows/*docker*'
-    - 'CITATION.cff'
     - '.mailmap'
-    - 'NOTICE.txt'
-    - 'LICENSE.txt'
-  pull_request:
-    branches: [master]
-    paths-ignore:
+    - 'CHANGES.md'
+    - 'CITATION.cff'
+    - 'docker/[0-9]5*.sh'
+    - 'docker/docker-compose.*'
     - 'docker/Dockerfile'
-    - 'docker/docker*.yml'
-    - '**.md'
-    - 'VirtualBox/**'
-    - '.github/workflows/*docker*'
-    - 'CITATION.cff'
-    - '.mailmap'
-    - 'NOTICE.txt'
     - 'LICENSE.txt'
+    - 'NOTICE.txt'
+    - 'VirtualBox/**'
+  pull_request: *triggers
   workflow_dispatch:
     inputs:
       tmate:

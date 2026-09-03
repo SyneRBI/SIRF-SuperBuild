@@ -1,22 +1,20 @@
 name: docker
 on:
-  pull_request:
-    branches: [master]
-    paths-ignore:
-    - '**.md'
-    - 'VirtualBox/**'
-    - '.github/workflows/c-cpp.yml'
-    - 'CITATION.cff'
-    - '.mailmap'
   push:
     branches: [master]
     tags: ['v**']
-    paths-ignore:
+    paths-ignore: &ignore_paths
     - '**.md'
-    - 'VirtualBox/**'
     - '.github/workflows/c-cpp.yml'
-    - 'CITATION.cff'
     - '.mailmap'
+    - 'CHANGES.md'
+    - 'CITATION.cff'
+    - 'LICENSE.txt'
+    - 'NOTICE.txt'
+    - 'VirtualBox/**'
+  pull_request:
+    branches: [master]
+    paths-ignore: *ignore_paths
   schedule: [{cron: '37 13 * * SUN'}] # Sunday at 13:37
 defaults: {run: {shell: 'bash -el {0}'}}
 jobs:
