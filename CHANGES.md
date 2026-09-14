@@ -1,6 +1,9 @@
 # ChangeLog
 
-## v3.xx
+## v3.m.p
+- Updated versions:
+
+## v3.10.2
 - Updated versions:
   - ISMRMRD: 1.15.0 (#1015)
   - Gadgetron: https://github.com/SyneRBI/gadgetron/tree/avoid_test_compilation_error (#1003)
