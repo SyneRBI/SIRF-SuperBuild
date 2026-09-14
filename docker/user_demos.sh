@@ -19,7 +19,7 @@ if [ "$PYTHON" = "miniconda" ]; then
     sed -r -i -e '/^\s*- (intel).*/d' environment.yml;
     if test "${BUILD_GPU:-0}" != 0; then
       # uncomment GPU deps
-      sed -r 's/^(\s*)#\s*(- \S+.*#.*GPU.*)$/\1\2/' environment.yml > environment-sirf.yml
+      sed -r -e 's/^(\s*)#\s*(- \S+.*#.*GPU.*)$/\1\2/' -e 's/^(\s*)(- \S+.*#.*CPU.*)$/\1#\2/' environment.yml > environment-sirf.yml
     else
       # delete GPU deps
       sed -r '/- (.*tigre|\S+.*#.*GPU).*/d' environment.yml > environment-sirf.yml

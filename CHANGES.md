@@ -2,6 +2,7 @@
 
 ## v3.m.p
 - Updated versions:
+  - CCPi-Regularisation toolkit: CPU/GPU-only
 
 ## v3.10.2
 - Updated versions:
@@ -17,11 +18,11 @@
   - Build static and shared libraries for pugixml, avoiding problems with ISMRMRD (#1023)
 - Docker:
   - Use Ubuntu 24.04 as base-image (#1003)
-  - `STIR_DISABLE_HDF5=OFF`
+  - `STIR_DISABLE_HDF5=OFF` (#1014)
   - `STIR_BUILD_SHARED_LIBS=ON`
-  - `STIR_BUILD_EXECUTABLES=ON`
+  - `STIR_BUILD_EXECUTABLES=ON` (#1033)
   - improve caching, devel with full build env (#1013)
-  - SWIG: <4.5 (#1030)
+  - SWIG: <4.5 (#1031 <- #1030)
 - Devcontainer (#1026) intended for local VSCode development:
   - `DEVEL_BUILD=ON`
   - `RUN_CTEST=0`
@@ -31,10 +32,10 @@
 
 ## v3.10.1
 - Updated versions:
-  - SIRF: 3.10.1
-  - SIRF-Contribs: 3.10.0
-  - CIL: 26.0.0
-  - CCPi-Regularisation toolkit: 26
+  - SIRF: 3.10.1 (#1009)
+  - SIRF-Contribs: 3.10.0 (#1009)
+  - CIL: 26.0.0 (#1009)
+  - CCPi-Regularisation toolkit: 26 (#1009)
 
 ## v3.10.0
 - CMake:
