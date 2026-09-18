@@ -18,6 +18,7 @@ The SuperBuild can:
 
 - [Running SIRF with Docker](#running-sirf-with-docker)
 - [Running SIRF with VirtualBox](#running-sirf-with-virtualbox)
+- [Running SIRF in a devcontainer](#running-sirf-in-a-devcontainer)
 - [Building and Running SIRF manually](#building-and-running-sirf-manually)
   - [Dependencies](#dependencies)
   - [Create the SuperBuild directory](#create-the-superbuild-directory)
@@ -54,6 +55,20 @@ For running (or even building) docker containers, see [`docker/README.md`](docke
 ## Running SIRF with VirtualBox
 
 See [`VirtualBox/README.md`](VirtualBox/README.md).
+
+## Running SIRF in a devcontainer
+[devcontainers](https://code.visualstudio.com/docs/devcontainers/containers) are handy to install an isolated environment for code development. Steps:
+- In VS Code, install the Dev Containers Extension.
+- On MacOS or Windows, start Docker Desktop.
+- Clone the SIRF-SuperBuild.
+- Open the SIRF-SuperBuild in VS Code. It will prompt you to re-open in a devcontainer.
+- Do something else while VS Code downloads lots of things, and compiles everything (can take ~40 minutes depending on system and network).
+- You will now see the SIRF-SuperBuild files, as well as all dependencies in `sources/`.
+
+You can now edit files, rebuild (via `ninja`), run notebooks, submit PRs etc from inside the devcontainer.
+
+> [!TIP]
+> If you are modifying the SIRF/STIR code, check [Building from your own source](#building-from-your-own-source).
 
 ## Building and Running SIRF manually
 
