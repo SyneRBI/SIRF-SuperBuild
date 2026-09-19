@@ -61,6 +61,7 @@ See [`VirtualBox/README.md`](VirtualBox/README.md).
 - In VS Code, install the Dev Containers Extension.
 - On MacOS or Windows, start Docker Desktop.
 - Clone the SIRF-SuperBuild.
+  - For GPU support, (un)comment the relevant lines in `.devcontainer.json` in the repository root.
 - Open the SIRF-SuperBuild in VS Code. It will prompt you to re-open in a devcontainer.
 - Do something else while VS Code downloads lots of things, and compiles everything (can take ~40 minutes depending on system and network).
 - You will now see the SIRF-SuperBuild files, as well as all dependencies in `sources/`.
