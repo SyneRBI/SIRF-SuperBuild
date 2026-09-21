@@ -3,9 +3,11 @@
 ## v3.m.p
 - Updated versions:
   - CCPi-Regularisation toolkit: CPU/GPU-only
-  - HDF5: 1.14.3 when CMake>=4 (1.10.1 otherwise) (#1038)
+  - HDF5: 1.14.3 UNIX (win remains 1.13.1) (#1038)
 - Build system:
-  - `USE_SYSTEM_HDF5`: fix `HDF5_LIBRARIES` list using `CMAKE_CACHE_ARGS` (#990, #980)
+  - `USE_SYSTEM_HDF5`: pass `HDF5_LIBRARIES` list downstream on CMake>=3.27 (#990, #980)
+  - enforce `HDF5_MINIMUM_VERSION` (#1040)
+  - CI: `STIR_DISABLE_HDF5=ON` only on ubuntu-22.04 with system HDF5 (#1016)
 
 ## v3.10.2
 - Updated versions:

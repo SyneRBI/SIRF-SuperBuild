@@ -73,11 +73,7 @@ else()
     # need a recent version of HDF5 for ITK, see https://github.com/SyneRBI/SIRF-SuperBuild/issues/680
     set(DEFAULT_HDF5_TAG hdf5-1_13_1)
   else()
-    if (CMAKE_VERSION VERSION_GREATER_EQUAL 4.0)
-      set(DEFAULT_HDF5_TAG hdf5-1_14_3)
-    else()
-      set(DEFAULT_HDF5_TAG hdf5-1_10_1) # cmake_minimum_required(3.2.2)
-    endif()
+    set(DEFAULT_HDF5_TAG hdf5-1_14_3) # cmake_minimum_required(3.8.2)
   endif()
 endif()
 
