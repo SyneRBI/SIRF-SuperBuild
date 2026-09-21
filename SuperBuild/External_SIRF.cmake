@@ -106,6 +106,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 		  ${extra_args}
       -DGadgetron_USE_CUDA=${Gadgetron_USE_CUDA}
       ${${proj}_EXTRA_CMAKE_ARGS}
+    ${HDF5_EP_ARGS}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )

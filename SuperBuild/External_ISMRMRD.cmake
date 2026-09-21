@@ -78,6 +78,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       ${HDF5_CMAKE_ARGS}
       ${FFTW3_CMAKE_ARGS}
       ${Boost_CMAKE_ARGS}
+    ${HDF5_EP_ARGS}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )

@@ -3,6 +3,9 @@
 ## v3.m.p
 - Updated versions:
   - CCPi-Regularisation toolkit: CPU/GPU-only
+  - HDF5: 1.14.3 when CMake>=4 (1.10.1 otherwise) (#1038)
+- Build system:
+  - `USE_SYSTEM_HDF5`: fix `HDF5_LIBRARIES` list using `CMAKE_CACHE_ARGS` (#990)
 
 ## v3.10.2
 - Updated versions:

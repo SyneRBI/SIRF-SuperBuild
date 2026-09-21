@@ -133,6 +133,7 @@ endif()
     CMAKE_ARGS
        ${${proj}_CMAKE_ARGS}
        ${${proj}_EXTRA_CMAKE_ARGS}
+    ${HDF5_EP_ARGS}
     DEPENDS ${${proj}_DEPENDENCIES}
   )
 

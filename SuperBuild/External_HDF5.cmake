@@ -100,17 +100,17 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       endif()
       message(STATUS "USING the system ${externalProjName}, found HDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS}, HDF5_C_LIBRARY_hdf5=${HDF5_C_LIBRARY_hdf5},HDF5_LIBRARIES=${HDF5_LIBRARIES}")
       ## TODO we probably want to remove these
-      set(HDF5_CMAKE_ARGS
+      set(HDF5_CACHE_ARGS
          -DHDF5_INCLUDE_DIRS:PATH=${HDF5_INCLUDE_DIRS}
          -DHDF5_LIBRARIES:STRING=${HDF5_LIBRARIES}
          -DHDF5_C_LIBRARIES:STRING=${HDF5_C_LIBRARY_hdf5}
          -DHDF5_FIND_DEBUG:BOOL=ON
       )
       if (HDF5_ROOT)
-        set(HDF5_CMAKE_ARGS ${HDF5_CMAKE_ARGS} -DHDF5_ROOT:PATH=${HDF5_ROOT})
+        set(HDF5_CACHE_ARGS ${HDF5_CACHE_ARGS} -DHDF5_ROOT:PATH=${HDF5_ROOT})
       endif()
       if (HDF5_DIR)
-        set(HDF5_CMAKE_ARGS ${HDF5_CMAKE_ARGS} -DHDF5_DIR:PATH=${HDF5_DIR})
+        set(HDF5_CACHE_ARGS ${HDF5_CACHE_ARGS} -DHDF5_DIR:PATH=${HDF5_DIR})
       endif()
   endif()
   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
@@ -119,3 +119,12 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 endif()
 
 message(STATUS "HDF5_CMAKE_ARGS=${HDF5_CMAKE_ARGS}")
+set(HDF5_EP_ARGS)
+if(HDF5_CACHE_ARGS)
+  if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.27)
+    set(HDF5_EP_ARGS CMAKE_CACHE_ARGS ${HDF5_CACHE_ARGS})
+  else()
+    message(WARNING "CMake>=3.27 required to pass USE_SYSTEM_HDF5 downstream (https://github.com/SyneRBI/SIRF-SuperBuild/issues/990)")
+  endif()
+endif()
+message(STATUS "HDF5_EP_ARGS=[${HDF5_EP_ARGS}]")

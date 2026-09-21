@@ -94,6 +94,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     set(ITK_CMAKE_FLAGS ${ITK_CMAKE_FLAGS}
       ${HDF5_CMAKE_ARGS}
       )
+    set(ITK_HDF5_EP_ARGS ${HDF5_EP_ARGS})
   endif()
 
   ExternalProject_Add(${proj}
@@ -109,6 +110,7 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
       -DITK_SKIP_PATH_LENGTH_CHECKS:BOOL=${ITK_SKIP_PATH_LENGTH_CHECKS}
       ${ITK_CMAKE_FLAGS}
       ${${proj}_EXTRA_CMAKE_ARGS}
+    ${ITK_HDF5_EP_ARGS}
     DEPENDS ${${proj}_DEPENDENCIES}
   )
 
