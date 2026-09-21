@@ -438,6 +438,8 @@ By the way, if you build with `USE_SYSTEM_FFTW3=OFF` (the default except on Wind
 
 CMake does come with `FindArmadillo.cmake` but it currently (at least up to CMake 3.12) has no variable to specify its location at all. This implies that when using `USE_SYSTEM_ARMADILLO=On`, you have to install armadillo in a system location, unless some extra work is done. See [this post on stackoverflow](https://stackoverflow.com/questions/35304513/cmake-find-armadillo-library-installed-in-a-custom-location) for some suggestions, which we haven't tried.
 
+[![git-fame](https://git-fame.cdcl.ml/gh/SyneRBI/SIRF-SuperBuild?min=1&w=1&M=1&C=1&enum=1&auth=share)](https://git-fame.cdcl.ml/gh/SyneRBI/SIRF-SuperBuild?w=1&M=1&C=1&enum=1&auth=share)
+
 [gh-action-badge]: https://github.com/SyneRBI/SIRF-SuperBuild/actions/workflows/c-cpp.yml/badge.svg
 [gh-action-link]: https://github.com/SyneRBI/SIRF-SuperBuild/actions/workflows/c-cpp.yml
 [CI-badge]: https://github.com/SyneRBI/SIRF-SuperBuild/actions/workflows/docker.yml/badge.svg
