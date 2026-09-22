@@ -75,30 +75,30 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
 
     CMAKE_ARGS
       ${${proj}_CMAKE_ARGS_DIRS}
-      ${HDF5_CMAKE_ARGS}
       ${FFTW3_CMAKE_ARGS}
       ${Boost_CMAKE_ARGS}
+    ${HDF5_EP_ARGS}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )
 
-    set(ISMRMRD_DIR        ${ISMRMRD_INSTALL_DIR}/lib/cmake/ISMRMRD)
+  set(ISMRMRD_DIR        ${ISMRMRD_INSTALL_DIR}/lib/cmake/ISMRMRD)
 
   if (BUILD_TESTING_${proj})
     add_test(NAME ${proj}_TESTS
-          COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION> --output-on-failure
+         COMMAND ${CMAKE_CTEST_COMMAND} -C $<CONFIGURATION> --output-on-failure
          WORKING_DIRECTORY ${${proj}_BINARY_DIR})
   endif()
 
-  else()
-      if(${USE_SYSTEM_${externalProjName}})
-        find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
-        message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
-   endif()
-   ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
-    ${${proj}_EP_ARGS_DIRS}
-   )
+else()
+  if(${USE_SYSTEM_${externalProjName}})
+    find_package(${proj} ${${externalProjName}_REQUIRED_VERSION} REQUIRED)
+    message(STATUS "USING the system ${externalProjName}, set ${externalProjName}_DIR=${${externalProjName}_DIR}")
   endif()
+  ExternalProject_Add_Empty(${proj} DEPENDS "${${proj}_DEPENDENCIES}"
+    ${${proj}_EP_ARGS_DIRS}
+  )
+endif()
 
   mark_as_superbuild(
     VARS

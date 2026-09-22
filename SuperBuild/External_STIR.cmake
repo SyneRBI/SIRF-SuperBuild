@@ -149,8 +149,8 @@ if(NOT ( DEFINED "USE_SYSTEM_${externalProjName}" AND "${USE_SYSTEM_${externalPr
     CMAKE_ARGS
        ${STIR_local_extra_cmake_args}
        ${Boost_CMAKE_ARGS}
-       ${HDF5_CMAKE_ARGS}
        ${${proj}_EXTRA_CMAKE_ARGS}
+    ${HDF5_EP_ARGS}
     DEPENDS
         ${${proj}_DEPENDENCIES}
   )

@@ -114,7 +114,6 @@ endif()
       ${Boost_CMAKE_ARGS}
       ${PYTHONLIBS_CMAKE_ARGS}
       ${GTest_CMAKE_ARGS}
-      ${HDF5_CMAKE_ARGS}
       ${FFTW3_CMAKE_ARGS}
       -DISMRMRD_DIR:PATH=${ISMRMRD_DIR}
       -DUSE_MKL:BOOL=${${proj}_USE_MKL}
@@ -133,6 +132,7 @@ endif()
     CMAKE_ARGS
        ${${proj}_CMAKE_ARGS}
        ${${proj}_EXTRA_CMAKE_ARGS}
+    ${HDF5_EP_ARGS}
     DEPENDS ${${proj}_DEPENDENCIES}
   )
 

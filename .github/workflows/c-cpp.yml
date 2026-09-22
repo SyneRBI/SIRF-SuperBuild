@@ -137,7 +137,7 @@ jobs:
         set -ex
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         export superbuild=`pwd`
-        BUILD_FLAGS="-DCMAKE_INSTALL_PREFIX=~/install -DPYVER=3 -DUSE_SYSTEM_RocksDB:BOOL=OFF -DBUILD_TESTING_Gadgetron:BOOL=ON -DSTIR_DISABLE_HDF5:BOOL=ON -DUSE_ITK:BOOL=ON -DBUILD_CIL:BOOL=ON -DBUILD_siemens_to_ismrmrd:BOOL=ON"
+        BUILD_FLAGS="-DCMAKE_INSTALL_PREFIX=~/install -DPYVER=3 -DUSE_SYSTEM_RocksDB:BOOL=OFF -DBUILD_TESTING_Gadgetron:BOOL=ON -DUSE_ITK:BOOL=ON -DBUILD_CIL:BOOL=ON -DBUILD_siemens_to_ismrmrd:BOOL=ON"
         [[ " ${{ matrix.flags }} " =~ " +armadillo " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_Armadillo:BOOL=OFF"
         [[ " ${{ matrix.flags }} " =~ " -armadillo " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_Armadillo:BOOL=ON"
         [[ " ${{ matrix.flags }} " =~ " +boost " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_Boost:BOOL=OFF"
@@ -146,6 +146,8 @@ jobs:
         [[ " ${{ matrix.flags }} " =~ " -fftw3 " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_FFTW3:BOOL=ON"
         [[ " ${{ matrix.flags }} " =~ " +hdf5 " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_HDF5:BOOL=OFF"
         [[ " ${{ matrix.flags }} " =~ " -hdf5 " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_HDF5:BOOL=ON -DPATCH_ISMRMRD:BOOL=ON"
+        # on ubuntu-22.04 the (conda) HDF5 libs don't link with our g++; keep STIR's HDF5 disabled there (see #1016)
+        [[ "${{ matrix.os }}" == "ubuntu-22.04" && " ${{ matrix.flags }} " =~ " -hdf5 " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DSTIR_DISABLE_HDF5:BOOL=ON"
         [[ " ${{ matrix.flags }} " =~ " +swig " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_SWIG:BOOL=OFF"
         [[ " ${{ matrix.flags }} " =~ " -swig " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_SWIG:BOOL=ON"
         [[ " ${{ matrix.flags }} " =~ " +gtest " ]] && BUILD_FLAGS="${BUILD_FLAGS} -DUSE_SYSTEM_GTest:BOOL=OFF"
