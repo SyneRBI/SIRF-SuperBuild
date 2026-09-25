@@ -12,6 +12,8 @@ CMakeFiles/
 /.cmake/
 /downloads/
 /Testing/
+# rattler-build
+/output/
 
 # backup files
 *~

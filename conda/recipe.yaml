@@ -1,0 +1,260 @@
+# Usage: rattler-build build -r conda -c conda-forge -c ismrmrd -c ccpi --target-platform linux-64
+# TODO:
+# - [ ] CUDA
+# - [ ] conda-forge
+# - [ ] upstream stir>6.4
+# - [ ] upstream gadgetron?
+# - [ ] upstream pet-rd-tools
+#
+# stir requirements mirror conda-forge's stir-feedstock (run relaxed, host kept
+# exact): host pins ITK 5.3.0 / hdf5 1.14.3 (ITK 5.4.7 is a STIR 6.4.0 compile
+# risk; libitk 5.3.0 caps hdf5 at 1.14.3). Deliberate deviations from conda-forge:
+#
+#   * boost-cpp (not libboost-headers): BUILD_EXECUTABLES=ON links boost libs
+#     (MR_TESTS->libboost_thread, upenn->libboost_system), so headers alone fail.
+#   * hdf5 / libgomp / root_base stay in run: STIR links libhdf5.so.310,
+#     libgomp.so.1 and the minor-locked libCore.so.6.36 directly; conda-forge
+#     omits these (a latent bug) but our build needs them at runtime.
+#   * swig unpinned: our 6.4.0 carries the in-tree SWIG 4.5 fix (#1743).
+#   * stir builds on python 3.11 (python_min), not bare python: a single-python
+#     build would otherwise pick the channel's newest python (3.14) and stamp
+#     python_abi 3.14 into the package, breaking the sirf solve (CIL 26 and
+#     ismrmrd's boost->libboost-python-devel top out at py313). conda-forge's
+#     bare python works only because they build STIR per-python.
+#
+# NOTE: conda-forge STIR 6.4.0 is NOT usable here -- it pins root_base 6.36.10
+# (-> libxml2-16 2.15.3 -> icu 78), which is mutually exclusive with the
+# boost-cpp 1.84 -> icu 73/75 forced by ismrmrd (boost >=1.84,<1.85). Building
+# STIR from source with `root_base <6.38` lets the solver pick root_base 6.36.06
+# (libxml2 2.15.1, icu 75), which coexists with ismrmrd.
+
+schema_version: 1
+
+context:
+  boost: 1.84.0.*
+  python_min: "3.11"
+
+recipe:
+  name: sirf-superbuild
+  version: "3.10.1"
+
+about:
+  license: Apache-2.0
+  license_family: Apache
+  homepage: https://github.com/SyneRBI/SIRF-SuperBuild
+  repository: https://github.com/SyneRBI/SIRF-SuperBuild
+
+outputs:
+  - package:
+      name: stir
+      version: "6.4.0"
+    inherit: null
+    source:
+      git: https://github.com/UCL/STIR.git
+      # SWIG 4.5 fix (#1743) newer than tag rel_6.4.0
+      rev: 5a96cbe91e614257b6bb5275447de105657aa204
+    build:
+      number: 0
+      script:
+        - bash $RECIPE_DIR/build-stir.sh
+    requirements:
+      build:
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+        - cmake
+        - ninja
+        - swig
+      host:
+        - boost-cpp ${{ boost }}
+        # ITK 5.3's find_package(Eigen3) needs Eigen 3.x, but libitk declares a
+        # bare "eigen" (lets the solver pick 5.0.1, which ITK 5.3 can't use);
+        # pin 3.4.* to keep it compatible. (conda-forge's bare set predates
+        # eigen 5.x, so their recipe doesn't hit this.)
+        - eigen 3.4.*
+        - hdf5 ==1.14.3
+        - libgomp
+        - libitk ==5.3.0
+        - libitk-devel ==5.3.0
+        - libparallelproj ~=2.0 cpu*
+        - nlohmann_json
+        - numpy
+        - python ${{ python_min }}.*
+        - root_base <6.38
+      run:
+        - boost-cpp ${{ boost }}
+        - hdf5 ~=1.14.3
+        - libgomp
+        - libitk-devel ~=5.3.0
+        - libparallelproj * cpu*
+        - numpy
+        - python >=${{ python_min }}
+        - root_base <6.38
+    tests:
+      - script:
+          - test -x $PREFIX/bin/stir_config
+          - $PREFIX/bin/stir_config --config-dir
+          - python -c "import stir"
+    about:
+      summary: Standardisation of Tomographic Image Reconstruction (v6.4.0, CERN ROOT)
+      homepage: https://github.com/UCL/STIR
+      repository: https://github.com/UCL/STIR
+
+  - package:
+      name: gadgetron
+      version: "4.7.2"
+    inherit: null
+    source:
+      git: https://github.com/SyneRBI/gadgetron.git
+      # fix_werror_and_cblas (#1)
+      rev: 9d31e855448e29a06dc276c930f2ed2da0328e42
+    build:
+      number: 0
+      script:
+        - bash $RECIPE_DIR/build-gadgetron.sh
+    requirements:
+      build:
+        - cmake
+        - ninja
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+      host:
+        - armadillo >=12,<13
+        - boost-cpp ${{ boost }}
+        - fftw
+        - hdf5 ==1.14.3
+        - howardhinnant_date
+        - ismrmrd
+        - libblas 3.11.0.* *_netlib
+        - libcblas 3.11.0.* *_netlib
+        - libcurl
+        - libgomp
+        - liblapack 3.11.0.* *_netlib
+        - liblapacke 3.11.0.* *_netlib
+        - nlohmann_json
+        - pugixml
+        - range-v3
+      run:
+        - armadillo >=12,<13
+        - boost-cpp ${{ boost }}
+        - fftw
+        - hdf5 ~=1.14.3
+        - howardhinnant_date
+        - ismrmrd
+        - libblas 3.11.0.* *_netlib
+        - libcblas 3.11.0.* *_netlib
+        - libcurl
+        - libgomp
+        - liblapack 3.11.0.* *_netlib
+        - liblapacke 3.11.0.* *_netlib
+        - mrd-storage-server
+        - nlohmann_json
+        - pugixml
+        - range-v3
+    tests:
+      - script:
+          - test -x $PREFIX/bin/gadgetron
+          - test -f $PREFIX/lib/cmake/gadgetron/gadgetron-config.cmake
+    about:
+      summary: GPU/PET/MR reconstruction relay (SyneRBI fork, CPU-only)
+      homepage: https://github.com/SyneRBI/gadgetron
+      repository: https://github.com/SyneRBI/gadgetron
+
+  - package:
+      name: pet-rd-tools
+      version: "2.0.2"
+    inherit: null
+    source:
+      git: https://github.com/UCL/pet-rd-tools.git
+      tag: v2.0.2
+    build:
+      number: 0
+      script:
+        - bash $RECIPE_DIR/build-pet-rd-tools.sh
+    requirements:
+      build:
+        - cmake
+        - ninja
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+      host:
+        - boost-cpp ${{ boost }}
+        - eigen 3.4.*
+        - glog
+        - libitk ==5.3.0
+        - libitk-devel ==5.3.0
+      run:
+        - boost-cpp ${{ boost }}
+        - glog
+        - libitk ~=5.3.0
+    tests:
+      - script:
+          - test -x $PREFIX/bin/nm_validate
+    about:
+      summary: PET Raw Data (rd) tools
+      homepage: https://github.com/UCL/pet-rd-tools
+      repository: https://github.com/UCL/pet-rd-tools
+
+  - package:
+      name: sirf
+      version: "3.10.1"
+    inherit: null
+    source:
+      git: https://github.com/SyneRBI/SIRF.git
+      tag: v3.10.1
+    build:
+      number: 0
+      script:
+        - bash $RECIPE_DIR/build-sirf.sh
+    requirements:
+      build:
+        - cmake
+        - git
+        - ninja
+        - pip
+        - swig
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+      host:
+        - ${{ pin_subpackage('gadgetron', exact=True) }}
+        - ${{ pin_subpackage('pet-rd-tools', exact=True) }}
+        - ${{ pin_subpackage('stir', exact=True) }}
+        - boost-cpp ${{ boost }}
+        - eigen 3.4.*
+        - fftw
+        - hdf5 ==1.14.3
+        - ismrmrd
+        - niftyreg
+        - libitk ==5.3.0
+        - libitk-devel ==5.3.0
+        - numpy >=2
+        - pip
+        - python
+      run:
+        - boost-cpp ${{ boost }}
+        - array-api-compat
+        - ccpi::cil >=26 # calver so no need to have upper bound
+        - ${{ pin_subpackage('gadgetron') }}
+        - ${{ pin_subpackage('pet-rd-tools') }}
+        - ${{ pin_subpackage('stir') }}
+        - deprecation
+        - fftw
+        - hdf5 ~=1.14.3
+        - ismrmrd
+        - niftyreg
+        - numpy >=2
+        - pip
+        - python
+    tests:
+      - python:
+          imports:
+            - sirf
+            - sirf.contrib
+            - sirf.STIR
+            - sirf.Gadgetron
+            - sirf.Utilities
+            - sirf.Reg
+            - sirf.SIRF
+    about:
+      summary: Synergistic Image Reconstruction Framework (CPU)
+      homepage: https://github.com/SyneRBI/SIRF
+      repository: https://github.com/SyneRBI/SIRF
