@@ -235,7 +235,7 @@ outputs:
       run:
         - boost-cpp ${{ boost }}
         - array-api-compat
-        - ccpi::cil >=26 # calver so no need to have upper bound
+        - cil >=26  # calver so no upper bound
         - ${{ pin_subpackage('gadgetron') }}
         - ${{ pin_subpackage('pet-rd-tools') }}
         - ${{ pin_subpackage('stir') }}
@@ -257,6 +257,7 @@ outputs:
             - sirf.Utilities
             - sirf.Reg
             - sirf.SIRF
+          pip_check: false  # skip sirf-contrib's optional deps (brainweb/docopt/matplotlib)
     about:
       summary: Synergistic Image Reconstruction Framework (CPU)
       homepage: https://github.com/SyneRBI/SIRF
