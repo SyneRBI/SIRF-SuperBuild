@@ -59,7 +59,7 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USR }}
         password: ${{ secrets.DOCKER_PWD }}
-    - uses: jlumbroso/free-disk-space@v1.3.1
+    - uses: jlumbroso/free-disk-space@v2
       with:
         docker-images: true
         # don't remove these APT packages until we need the space (includes clang-* and some libs that we'd reinstall)
@@ -150,7 +150,7 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USR }}
         password: ${{ secrets.DOCKER_PWD }}
-    - uses: jlumbroso/free-disk-space@v1.3.1
+    - uses: jlumbroso/free-disk-space@v2
       with:
         docker-images: false
         large-packages: false
