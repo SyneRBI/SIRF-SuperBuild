@@ -1,0 +1,56 @@
+name: conda
+on:
+  push: &triggers
+    branches: [master]
+    tags: ['v**']
+    paths:
+    - 'conda/**'
+    - '.github/workflows/conda.yml'
+  pull_request: *triggers
+  workflow_dispatch:
+
+defaults: {run: {shell: 'bash -el {0}'}}
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    env:
+      CCACHE_DIR: ${{ github.workspace }}/.ccache
+      CCACHE_MAXSIZE: 3G
+      CMAKE_C_COMPILER_LAUNCHER: ccache
+      CMAKE_CXX_COMPILER_LAUNCHER: ccache
+    steps:
+    - uses: actions/checkout@v7
+    - uses: jlumbroso/free-disk-space@v2
+      with: {large-packages: false}
+    - name: Install ccache
+      run: sudo apt-get update -qq && sudo apt-get install -y -qq ccache
+    - name: Cache rattler # conda, git, repodata
+      uses: actions/cache@v6
+      with:
+        path: ~/.cache/rattler
+        key: rattler-${{ runner.os }}-${{ hashFiles('conda/recipe.yaml') }}
+        restore-keys: rattler-${{ runner.os }}-
+    - name: Cache ccache
+      uses: actions/cache@v6
+      with:
+        path: ${{ env.CCACHE_DIR }}
+        key: ccache-${{ runner.os }}-py311-${{ hashFiles('conda/recipe.yaml', 'conda/build-*.sh') }}
+        restore-keys: ccache-${{ runner.os }}-
+    - uses: prefix-dev/rattler-build-action@v0.2.39
+      with:
+        recipe-path: conda/recipe.yaml
+        rattler-build-version: v0.76.1
+        # ccache: --no-build-id --env-isolation none
+        build-args: --target-platform linux-64 -c conda-forge -c ismrmrd -c ccpi --variant python=3.11 --no-build-id --env-isolation none
+        artifact-name: conda-linux-64
+    - name: ccache stats
+      if: always()
+      run: ccache -s || true
+    - if: failure()
+      name: Upload debug build logs
+      uses: actions/upload-artifact@v7
+      with:
+        name: conda-build-logs
+        path: output/bld
+        retention-days: 7
