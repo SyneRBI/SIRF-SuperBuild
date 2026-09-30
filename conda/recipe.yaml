@@ -83,8 +83,8 @@ outputs:
       version: "4.7.2"
     source:
       git: https://github.com/SyneRBI/gadgetron.git
-      # -Werror/cblas, boost>=1.90
-      rev: a15881f6ce4bd89a533436dfef3e0c3521e71b5d
+      # -Werror/cblas, boost>=1.90, CUDA BOOST_CURRENT_FUNCTION
+      rev: e563bb5298c49c68736c7d1e566ab766d2bb6190
     build:
       number: 0
       string: ${{ cuda_build_prefix }}
