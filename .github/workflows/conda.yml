@@ -64,7 +64,7 @@ jobs:
     env:
       CMAKE_C_COMPILER_LAUNCHER: ccache
       CMAKE_CXX_COMPILER_LAUNCHER: ccache
-      CONDA_OVERRIDE_CUDA: "12.6"
+      CONDA_OVERRIDE_CUDA: "12.9"
     steps:
     - uses: actions/checkout@v7
     - uses: prefix-dev/rattler-build-action@v0.2.39
@@ -75,7 +75,7 @@ jobs:
         # cuda_compiler_version matches CONDA_OVERRIDE_CUDA so compiler('cuda')
         # resolves to the real cuda-nvcc_linux-64 package (see variants.yaml).
         build-args: --target-platform linux-64 -c conda-forge -c ismrmrd -c ccpi -c nvidia --variant python=3.11 --variant cuda_compiler_version=${{ env.CONDA_OVERRIDE_CUDA }} --no-build-id --env-isolation none
-        artifact-name: conda-py311-cuda126-linux-64
+        artifact-name: conda-py311-cuda129-linux-64
     - name: ccache stats
       if: always()
       run: ccache -s || true
@@ -83,6 +83,6 @@ jobs:
       name: Upload debug build logs
       uses: actions/upload-artifact@v7
       with:
-        name: conda-build-logs-py311-cuda126
+        name: conda-build-logs-py311-cuda129
         path: output/bld
         retention-days: 7
