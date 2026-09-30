@@ -72,7 +72,9 @@ jobs:
         recipe-path: conda/recipe.yaml
         rattler-build-version: v0.76.1
         # ccache: --no-build-id --env-isolation none
-        build-args: --target-platform linux-64 -c conda-forge -c ismrmrd -c ccpi -c nvidia --variant python=3.11 --no-build-id --env-isolation none
+        # cuda_compiler_version matches CONDA_OVERRIDE_CUDA so compiler('cuda')
+        # resolves to the real cuda-nvcc_linux-64 package (see variants.yaml).
+        build-args: --target-platform linux-64 -c conda-forge -c ismrmrd -c ccpi -c nvidia --variant python=3.11 --variant cuda_compiler_version=${{ env.CONDA_OVERRIDE_CUDA }} --no-build-id --env-isolation none
         artifact-name: conda-py311-cuda126-linux-64
     - name: ccache stats
       if: always()
