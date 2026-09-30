@@ -59,13 +59,8 @@ cmake --install $BUILD_PREFIX/build --config Release
 
 # SIRF-Contribs (pure-Python, extends the sirf namespace with sirf.contrib).
 # pip runs without build isolation (rattler-build sets PIP_NO_BUILD_ISOLATION,
-# which pip >=26 treats as "isolation off"), so the setuptools backend is
-# imported from this env. Force the vendored distutils: a stray
-# SETUPTOOLS_USE_DISTUTILS=stdlib in the inherited CI env breaks the import
-# on py>=3.12 (stdlib distutils was removed). The bare import below prints
-# the real traceback if something else is wrong.
-export SETUPTOOLS_USE_DISTUTILS=local
-$PREFIX/bin/python -c "import setuptools.build_meta"
+# which pip >=26 interprets as "isolation off"), so the setuptools backend is
+# imported from the host env — hence the explicit setuptools host dep.
 $PREFIX/bin/python -m pip install "git+https://github.com/SyneRBI/SIRF-Contribs.git@v3.10.0"
 
 # SIRF runtime env vars on activation (examples_data_path, Gadgetron relay)
