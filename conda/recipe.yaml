@@ -23,10 +23,10 @@ context:
   with_cuda: ${{ "true" if cuda_version != "None" else "" }}
   cuda_major: ${{ (cuda_version | split(".") | first) if with_cuda else "0" }}
   cuda_build_prefix: ${{ "cuda" ~ (cuda_version | version_to_buildstring) if with_cuda else "cpu" }}
-
-recipe:
-  name: sirf-superbuild
-  version: "3.10.1"
+  c_cache_c: ${{ env.get("CMAKE_C_COMPILER_LAUNCHER", default="ccache") }}
+  c_cache_cxx: ${{ env.get("CMAKE_CXX_COMPILER_LAUNCHER", default="ccache") }}
+  ccache_dir: ${{ env.get("CCACHE_DIR", default="") }}
+  ccache_maxsize: ${{ env.get("CCACHE_MAXSIZE", default="5G") }}
 
 about:
   license: Apache-2.0
@@ -51,8 +51,14 @@ outputs:
           - cmake -G Ninja $SRC_DIR -B $BUILD_PREFIX/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_PREFIX_PATH=$PREFIX -DBUILD_STATIC:BOOL=OFF -DBUILD_TESTS:BOOL=OFF -DBUILD_UTILITIES:BOOL=OFF -DBUILD_EXAMPLES:BOOL=OFF
           - cmake --build $BUILD_PREFIX/build --config Release
           - cmake --install $BUILD_PREFIX/build --config Release
+        env:
+          CMAKE_C_COMPILER_LAUNCHER: ${{ c_cache_c }}
+          CMAKE_CXX_COMPILER_LAUNCHER: ${{ c_cache_cxx }}
+          CCACHE_DIR: ${{ ccache_dir }}
+          CCACHE_MAXSIZE: ${{ ccache_maxsize }}
     requirements:
       build:
+        - ccache
         - cmake
         - ninja
         - ${{ compiler('c') }}
@@ -97,8 +103,13 @@ outputs:
         env:
           cuda_compiler_version: ${{ cuda_version }}
           USE_CUDA: ${{ 'ON' if with_cuda else 'OFF' }}
+          CMAKE_C_COMPILER_LAUNCHER: ${{ c_cache_c }}
+          CMAKE_CXX_COMPILER_LAUNCHER: ${{ c_cache_cxx }}
+          CCACHE_DIR: ${{ ccache_dir }}
+          CCACHE_MAXSIZE: ${{ ccache_maxsize }}
     requirements:
       build:
+        - ccache
         - cmake
         - ninja
         - ${{ compiler('c') }}
@@ -191,8 +202,14 @@ outputs:
           - cmake -G Ninja $SRC_DIR -B $BUILD_PREFIX/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_PREFIX_PATH=$PREFIX -DBUILD_TESTING:BOOL=OFF
           - cmake --build $BUILD_PREFIX/build --config Release
           - cmake --install $BUILD_PREFIX/build --config Release
+        env:
+          CMAKE_C_COMPILER_LAUNCHER: ${{ c_cache_c }}
+          CMAKE_CXX_COMPILER_LAUNCHER: ${{ c_cache_cxx }}
+          CCACHE_DIR: ${{ ccache_dir }}
+          CCACHE_MAXSIZE: ${{ ccache_maxsize }}
     requirements:
       build:
+        - ccache
         - cmake
         - ninja
         - ${{ compiler('c') }}
@@ -235,8 +252,13 @@ outputs:
         env:
           cuda_compiler_version: ${{ cuda_version }}
           GADGETRON_USE_CUDA: ${{ 'ON' if with_cuda else 'OFF' }}
+          CMAKE_C_COMPILER_LAUNCHER: ${{ c_cache_c }}
+          CMAKE_CXX_COMPILER_LAUNCHER: ${{ c_cache_cxx }}
+          CCACHE_DIR: ${{ ccache_dir }}
+          CCACHE_MAXSIZE: ${{ ccache_maxsize }}
     requirements:
       build:
+        - ccache
         - cmake
         - git
         - ninja
