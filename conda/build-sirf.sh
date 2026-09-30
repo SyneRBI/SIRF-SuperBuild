@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# SIRF 3.10.1 — C++ + Python (CPU). Gadgetron / ISMRMRD / pet-rd-tools come from
-# the sibling conda outputs; STIR from conda-forge; NIFTYREG from conda-forge.
+# SIRF 3.10.1 — C++ + Python. CPU by default; CUDA (cGadgetron) when
+# GADGETRON_USE_CUDA=ON. Gadgetron / ISMRMRD / pet-rd-tools come from the sibling
+# conda outputs; STIR from conda-forge (CPU); NIFTYREG from conda-forge.
 set -euxo pipefail
 
 # NiftyReg 1.5.69.6 (the only conda-forge build) ships a broken inline getter in
@@ -23,6 +24,11 @@ sed -i 's/return this->InputTransform;/return nullptr;/' "$PREFIX/include/_reg_a
 "$BUILD_PREFIX/bin/x86_64-conda-linux-gnu-ar" rcs \
   "$BUILD_PREFIX/libstir_math_shim.a" "$BUILD_PREFIX/stir-math-shim.o"
 
+if [ "${GADGETRON_USE_CUDA:-OFF}" = "ON" ]; then
+  export CUDA_TOOLKIT_ROOT_DIR="${PREFIX}"
+  export CUDA_ROOT="${PREFIX}"
+fi
+
 cmake -G Ninja $SRC_DIR \
   -B $BUILD_PREFIX/build \
   -DCMAKE_BUILD_TYPE=Release \
@@ -34,7 +40,8 @@ cmake -G Ninja $SRC_DIR \
   -DPython_EXECUTABLE=$(which python) \
   -DPYTHON_DEST_DIR=$SP_DIR \
   -DDISABLE_Registration:BOOL=OFF \
-  -DDISABLE_Gadgetron:BOOL=OFF
+  -DDISABLE_Gadgetron:BOOL=OFF \
+  -DGadgetron_USE_CUDA:BOOL=${GADGETRON_USE_CUDA:-OFF}
 
 # append the shim .a to every link line that pulls in STIR's static build block
 # (libstir_buildblock.a) — these are the targets whose STIR .a objects reference
