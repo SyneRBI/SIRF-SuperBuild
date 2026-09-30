@@ -84,7 +84,7 @@ outputs:
     source:
       git: https://github.com/SyneRBI/gadgetron.git
       # -Werror/cblas, boost>=1.90, CUDA BOOST_CURRENT_FUNCTION
-      rev: e563bb5298c49c68736c7d1e566ab766d2bb6190
+      rev: 79c1a501e75b5316bf7fdb6db792519446411759
     build:
       number: 0
       string: ${{ cuda_build_prefix }}
@@ -130,7 +130,7 @@ outputs:
               then: cuda-cudart-dev
             # GPU toolbox links the CUDA math libs; -dev ships the headers,
             # and each build pins its own cuda-version so the solver picks
-            # the matching CUDA (e.g. libcufft 11.3 for 12.6).
+            # the matching CUDA (e.g. libcufft 11.4 for 12.9).
             - libcublas-dev
             - libcufft-dev
             - libcusparse-dev
@@ -264,6 +264,10 @@ outputs:
             - cuda-version ==${{ cuda_version }}
             - if: (cuda_major | int) >= 12
               then: cuda-cudart-dev
+            # cGadgetron links the CUDA math libs (headers via -dev).
+            - libcublas-dev
+            - libcufft-dev
+            - libcusparse-dev
       run:
         - libboost-devel ${{ boost }}
         - array-api-compat
@@ -285,6 +289,8 @@ outputs:
             - cuda-version ~=${{ cuda_version }}
             - cuda-cudart
             - libcublas
+            - libcufft
+            - libcusparse
             - libcurand
             # CUDA regulariser (the GPU CIL) for the GPU variant.
             - ccpi-regulariser >=26 cuda${{ cuda_major }}*

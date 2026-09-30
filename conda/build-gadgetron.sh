@@ -10,6 +10,10 @@ if [ "${USE_CUDA:-OFF}" = "ON" ]; then
   export PATH="${BUILD_PREFIX}/nvvm/bin:${PATH}"
 fi
 
+# Standalone GPU apps are host .cpp files whose thrust symbol mangling
+# mismatches the GPU toolbox on CUDA 12.6; not needed by SIRF. The disable
+# flag must be the final cmake arg: rattler-build mangles further
+# backslash-continued lines, and comments would end the logical line.
 cmake -G Ninja $SRC_DIR \
   -B $BUILD_PREFIX/build \
   -DCMAKE_BUILD_TYPE=Release \
@@ -20,7 +24,7 @@ cmake -G Ninja $SRC_DIR \
   -DBUILD_PYTHON_SUPPORT:BOOL=OFF \
   -DBUILD_MATLAB_SUPPORT:BOOL=OFF \
   -DBUILD_TESTING:BOOL=OFF \
-  -DBUILD_SUPPRESS_WARNINGS:BOOL=ON
+  -DBUILD_SUPPRESS_WARNINGS:BOOL=ON -DDISABLE_STANDALONE_GPU_APPS:BOOL=${USE_CUDA:-OFF}
 
 cmake --build $BUILD_PREFIX/build --config Release
 cmake --install $BUILD_PREFIX/build --config Release
