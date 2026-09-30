@@ -128,6 +128,12 @@ outputs:
             - cuda-version ==${{ cuda_version }}
             - if: (cuda_major | int) >= 12
               then: cuda-cudart-dev
+            # GPU toolbox links the CUDA math libs; -dev ships the headers,
+            # and each build pins its own cuda-version so the solver picks
+            # the matching CUDA (e.g. libcufft 11.3 for 12.6).
+            - libcublas-dev
+            - libcufft-dev
+            - libcusparse-dev
       run:
         - armadillo >=12,<13
         - libboost-devel ${{ boost }}
@@ -151,6 +157,8 @@ outputs:
             - cuda-version ~=${{ cuda_version }}
             - cuda-cudart
             - libcublas
+            - libcufft
+            - libcusparse
             - libcurand
       ignore_run_exports:
         by_name:
@@ -250,6 +258,7 @@ outputs:
         - numpy >=2
         - pip
         - python
+        - setuptools  # pip runs without build isolation (see build-sirf.sh); the cpython-split python pkgs don't pull it in
         - if: with_cuda
           then:
             - cuda-version ==${{ cuda_version }}
