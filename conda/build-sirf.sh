@@ -29,6 +29,24 @@ if [ "${GADGETRON_USE_CUDA:-OFF}" = "ON" ]; then
   export CUDA_ROOT="${PREFIX}"
 fi
 
+# STIR 6.3.0 (conda-forge) ships STIRTargets.cmake with absolute paths from the
+# feedstock build env (h_env prefix and _build_env sysroot libs) in
+# INTERFACE_LINK_LIBRARIES/INCLUDE_DIRECTORIES; linking SIRF targets against the
+# STIR targets puts the nonexistent paths on the link line. Rewrite the h_env
+# prefix to $PREFIX and drop the sysroot entries (pthread/dl/m are no-ops on
+# glibc >= 2.34). No-op for STIR 6.4.0 (clean exports).
+python - <<'EOF'
+import glob, os, re
+prefix = os.environ['PREFIX']
+for p in glob.glob(os.path.join(prefix, 'lib', 'cmake', 'STIR-6.*', '*.cmake')):
+    s = open(p).read()
+    if 'feedstock_root' not in s:
+        continue
+    s = re.sub(r';/home/conda/feedstock_root/build_artifacts/[a-z0-9_]+/_build_env/[^;\s"]*', '', s)
+    s = re.sub(r'/home/conda/feedstock_root/build_artifacts/[a-z0-9_]+/[a-z0-9_]+(?=/)', prefix, s)
+    open(p, 'w').write(s)
+EOF
+
 cmake -G Ninja $SRC_DIR \
   -B $BUILD_PREFIX/build \
   -DCMAKE_BUILD_TYPE=Release \
