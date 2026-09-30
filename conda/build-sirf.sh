@@ -44,10 +44,11 @@ cmake -G Ninja $SRC_DIR \
   -DGadgetron_USE_CUDA:BOOL=${GADGETRON_USE_CUDA:-OFF}
 
 # append the shim .a to every link line that pulls in STIR's static build block
-# (libstir_buildblock.a) — these are the targets whose STIR .a objects reference
-# the glibc __*_finite symbols — so the refs resolve; then verify it landed
+# (libstir_buildblock.a in 6.4.0, libbuildblock.a in 6.3.0) — these are the
+# targets whose STIR .a objects reference the glibc __*_finite symbols — so the
+# refs resolve; then verify it landed
 awk -v shim="$BUILD_PREFIX/libstir_math_shim.a" '
-  /^  LINK_LIBRARIES =/ && $0 ~ /libstir_buildblock/ && $0 !~ /stir_math_shim/ { sub(/$/, " " shim) }
+  /^  LINK_LIBRARIES =/ && ($0 ~ /libstir_buildblock/ || $0 ~ /libbuildblock/) && $0 !~ /stir_math_shim/ { sub(/$/, " " shim) }
   { print }
 ' "$BUILD_PREFIX/build/build.ninja" > "$BUILD_PREFIX/build/build.ninja.new" \
   && mv "$BUILD_PREFIX/build/build.ninja.new" "$BUILD_PREFIX/build/build.ninja"
