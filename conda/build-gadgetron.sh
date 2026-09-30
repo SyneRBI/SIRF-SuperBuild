@@ -5,6 +5,9 @@ set -euxo pipefail
 if [ "${USE_CUDA:-OFF}" = "ON" ]; then
   export CUDA_TOOLKIT_ROOT_DIR="${PREFIX}"
   export CUDA_ROOT="${PREFIX}"
+  # CUDA 12.6+ splits the nvvm device compiler (cicc) into <toolkit>/nvvm/bin,
+  # which nvcc locates via PATH; the toolkit (cuda-nvcc) lives in the build env.
+  export PATH="${BUILD_PREFIX}/nvvm/bin:${PATH}"
 fi
 
 cmake -G Ninja $SRC_DIR \
