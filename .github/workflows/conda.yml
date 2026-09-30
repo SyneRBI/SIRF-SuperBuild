@@ -21,14 +21,10 @@ jobs:
     env:
       CCACHE_DIR: ${{ github.workspace }}/.ccache
       CCACHE_MAXSIZE: 3G
-      CMAKE_C_COMPILER_LAUNCHER: ccache
-      CMAKE_CXX_COMPILER_LAUNCHER: ccache
     steps:
     - uses: actions/checkout@v7
     - uses: jlumbroso/free-disk-space@v2
       with: {large-packages: false}
-    - name: Install ccache
-      run: sudo apt-get update -qq && sudo apt-get install -y -qq ccache
     - name: Cache rattler # conda, git, repodata
       uses: actions/cache@v6
       with:
@@ -45,12 +41,12 @@ jobs:
       with:
         recipe-path: conda/recipe.yaml
         rattler-build-version: v0.76.1
-        # ccache: --no-build-id --env-isolation none
-        build-args: --target-platform linux-64 -c conda-forge -c ismrmrd -c ccpi --variant python=${{ matrix.python }} --no-build-id --env-isolation none
+        # --no-build-id: required for ccache
+        build-args: --target-platform linux-64 -c conda-forge -c ismrmrd -c ccpi --variant python=${{ matrix.python }} --no-build-id
         artifact-name: conda-py${{ matrix.python }}-linux-64
     - name: ccache stats
       if: always()
-      run: ccache -s || true
+      run: conda install -yq conda-forge::ccache && ccache -s || true
     - if: failure()
       name: Upload debug build logs
       uses: actions/upload-artifact@v7
@@ -62,8 +58,6 @@ jobs:
     runs-on: [self-hosted, cuda]
     timeout-minutes: 300
     env:
-      CMAKE_C_COMPILER_LAUNCHER: ccache
-      CMAKE_CXX_COMPILER_LAUNCHER: ccache
       CONDA_OVERRIDE_CUDA: "12.9"
     steps:
     - uses: actions/checkout@v7
@@ -71,10 +65,10 @@ jobs:
       with:
         recipe-path: conda/recipe.yaml
         rattler-build-version: v0.76.1
-        # ccache: --no-build-id --env-isolation none
+        # --no-build-id: required for ccache
         # cuda_compiler_version matches CONDA_OVERRIDE_CUDA so compiler('cuda')
         # resolves to the real cuda-nvcc_linux-64 package (see variants.yaml).
-        build-args: --target-platform linux-64 -c conda-forge -c ismrmrd -c ccpi -c nvidia --variant python=3.11 --variant cuda_compiler_version=${{ env.CONDA_OVERRIDE_CUDA }} --no-build-id --env-isolation none
+        build-args: --target-platform linux-64 -c conda-forge -c ismrmrd -c ccpi -c nvidia --variant python=3.11 --variant cuda_compiler_version=${{ env.CONDA_OVERRIDE_CUDA }} --no-build-id
         artifact-name: conda-py311-cuda129-linux-64
     - name: ccache stats
       if: always()
