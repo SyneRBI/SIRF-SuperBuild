@@ -55,7 +55,7 @@ cmake -G Ninja $SRC_DIR \
   -DRUN_ISMRMRD_SHEPP_LOGAN:BOOL=OFF \
   -DDISABLE_Matlab:BOOL=ON \
   -DDISABLE_PYTHON:BOOL=OFF \
-  -DPython_EXECUTABLE=$(which python) \
+  -DPython_EXECUTABLE=$PREFIX/bin/python \
   -DPYTHON_DEST_DIR=$SP_DIR \
   -DDISABLE_Registration:BOOL=OFF \
   -DDISABLE_Gadgetron:BOOL=OFF \
@@ -64,9 +64,21 @@ cmake -G Ninja $SRC_DIR \
 # append the shim .a to every link line that pulls in STIR's static build block
 # (libstir_buildblock.a in 6.4.0, libbuildblock.a in 6.3.0) — these are the
 # targets whose STIR .a objects reference the glibc __*_finite symbols — so the
-# refs resolve; then verify it landed
-awk -v shim="$BUILD_PREFIX/libstir_math_shim.a" '
-  /^  LINK_LIBRARIES =/ && ($0 ~ /libstir_buildblock/ || $0 ~ /libbuildblock/) && $0 !~ /stir_math_shim/ { sub(/$/, " " shim) }
+# refs resolve. Also: with STIR 6.3.0 (bare-name STIR_LIBRARIES), the STIR
+# archives' mutual references (e.g. final libbuildblock.a -> libIO.a) and their
+# H5::H5File refs can't be resolved in a single left-to-right pass; wrap
+# _pyreg's link line in --start-group/--end-group (archive re-scanning) and put
+# the hdf5 libs + shim after the group (no-op for 6.4.0, whose CMake target
+# interface already orders everything correctly). Then verify the shim landed.
+awk -v shim="$BUILD_PREFIX/libstir_math_shim.a" -v hdf5="$PREFIX/lib/libhdf5_cpp.so $PREFIX/lib/libhdf5.so" '
+  /^build / { inpyreg = ($0 ~ /_pyreg\.so/) }
+  /^  LINK_LIBRARIES =/ {
+    if (($0 ~ /libstir_buildblock/ || $0 ~ /libbuildblock/) && $0 !~ /stir_math_shim/) sub(/$/, " " shim)
+    if (inpyreg) {
+      sub(/^  LINK_LIBRARIES = /, "  LINK_LIBRARIES = -Wl,--start-group ")
+      sub(/$/, " -Wl,--end-group " hdf5 " " shim)
+    }
+  }
   { print }
 ' "$BUILD_PREFIX/build/build.ninja" > "$BUILD_PREFIX/build/build.ninja.new" \
   && mv "$BUILD_PREFIX/build/build.ninja.new" "$BUILD_PREFIX/build/build.ninja"
