@@ -3,8 +3,8 @@
 # Channel includes:
 # - ismrmrd::mrd-storage-server (gadgetron run dep)
 # - ccpi::cil
+# cuda: CONDA_OVERRIDE_CUDA={12.9,13.0,...} rattler-build -c nvidia ...
 # TODO:
-# - [ ] CUDA
 # - [ ] conda-forge::sirf
 # - [ ] conda-forge::gadgetron?
 # - [ ] conda-forge::pet-rd-tools
@@ -19,6 +19,10 @@ schema_version: 1
 context:
   boost: 1.92.0.*
   hdf5: 1.14.6
+  cuda_version: ${{ env.get("CONDA_OVERRIDE_CUDA", default="None") }}
+  with_cuda: ${{ "true" if cuda_version != "None" else "" }}
+  cuda_major: ${{ (cuda_version | split(".") | first) if with_cuda else "0" }}
+  cuda_build_prefix: ${{ "cuda" ~ (cuda_version | version_to_buildstring) if with_cuda else "cpu" }}
 
 recipe:
   name: sirf-superbuild
@@ -83,15 +87,24 @@ outputs:
       rev: a15881f6ce4bd89a533436dfef3e0c3521e71b5d
     build:
       number: 0
-      string: cpu
+      string: ${{ cuda_build_prefix }}
+      variant:
+        use_keys:
+          - ${{ "cuda" if with_cuda }}
+        down_prioritize_variant: ${{ 0 if with_cuda else 1 }}
       script:
-        - bash $RECIPE_DIR/build-gadgetron.sh
+        file: build-gadgetron.sh
+        env:
+          cuda_compiler_version: ${{ cuda_version }}
+          USE_CUDA: ${{ 'ON' if with_cuda else 'OFF' }}
     requirements:
       build:
         - cmake
         - ninja
         - ${{ compiler('c') }}
         - ${{ compiler('cxx') }}
+        - if: with_cuda
+          then: ${{ compiler('cuda') }}
       host:
         # armadillo 12 (libar2) — Gadgetron 4.7 requires Armadillo 12+.
         - armadillo >=12,<13
@@ -110,6 +123,11 @@ outputs:
         - nlohmann_json
         - pugixml
         - range-v3
+        - if: with_cuda
+          then:
+            - cuda-version ==${{ cuda_version }}
+            - if: (cuda_major | int) >= 12
+              then: cuda-cudart-dev
       run:
         - armadillo >=12,<13
         - libboost-devel ${{ boost }}
@@ -127,6 +145,19 @@ outputs:
         - nlohmann_json
         - pugixml
         - range-v3
+        - if: with_cuda
+          then:
+            - __cuda
+            - cuda-version ~=${{ cuda_version }}
+            - cuda-cudart
+            - libcublas
+            - libcurand
+      ignore_run_exports:
+        by_name:
+          - if: with_cuda
+            then:
+              - cuda-version
+              - cuda-cudart-dev
     tests:
       - script:
           - test -x $PREFIX/bin/gadgetron
@@ -186,9 +217,16 @@ outputs:
       rev: 502d8ecbb8a861578fc877c980a03407a2876e22
     build:
       number: 0
-      string: py${{ python | replace('.', '') }}
+      string: py${{ python | replace('.', '') }}${{ '_' ~ cuda_build_prefix if with_cuda else '' }}
+      variant:
+        use_keys:
+          - ${{ "cuda" if with_cuda }}
+        down_prioritize_variant: ${{ 0 if with_cuda else 1 }}
       script:
-        - bash $RECIPE_DIR/build-sirf.sh
+        file: build-sirf.sh
+        env:
+          cuda_compiler_version: ${{ cuda_version }}
+          GADGETRON_USE_CUDA: ${{ 'ON' if with_cuda else 'OFF' }}
     requirements:
       build:
         - cmake
@@ -198,11 +236,18 @@ outputs:
         - swig
         - ${{ compiler('c') }}
         - ${{ compiler('cxx') }}
+        - if: with_cuda
+          then: ${{ compiler('cuda') }}
       host:
         - ${{ pin_subpackage('gadgetron', exact=True) }}
         - ${{ pin_subpackage('pet-rd-tools', exact=True) }}
-        # STIR from conda-forge (static libs, linked into _pystir.so).
-        - stir 6.4.0.*
+        # STIR from conda-forge (static libs, linked into _pystir.so). STIR 6.4.0 has no
+        # CUDA build on conda-forge, so the CUDA variant uses the 6.3.0 CUDA build.
+        - if: with_cuda
+          then:
+            - stir 6.3.0.* ${{ cuda_build_prefix }}*
+          else:
+            - stir 6.4.0.*
         - libboost-devel ${{ boost }}
         - fftw
         - hdf5 ==${{ hdf5 }}
@@ -211,13 +256,22 @@ outputs:
         - numpy >=2
         - pip
         - python
+        - if: with_cuda
+          then:
+            - cuda-version ==${{ cuda_version }}
+            - if: (cuda_major | int) >= 12
+              then: cuda-cudart-dev
       run:
         - libboost-devel ${{ boost }}
         - array-api-compat
         - cil >=26  # calver so no upper bound
         - ${{ pin_subpackage('gadgetron') }}
         - ${{ pin_subpackage('pet-rd-tools') }}
-        - stir 6.4.0.*
+        - if: with_cuda
+          then:
+            - stir 6.3.0.* ${{ cuda_build_prefix }}*
+          else:
+            - stir 6.4.0.*
         - deprecation
         - fftw
         - hdf5 ~=${{ hdf5 }}
@@ -226,6 +280,21 @@ outputs:
         - numpy >=2
         - pip
         - python
+        - if: with_cuda
+          then:
+            - __cuda
+            - cuda-version ~=${{ cuda_version }}
+            - cuda-cudart
+            - libcublas
+            - libcurand
+            # CUDA regulariser (the GPU CIL) for the GPU variant.
+            - ccpi-regulariser >=26 cuda${{ cuda_major }}*
+      ignore_run_exports:
+        by_name:
+          - if: with_cuda
+            then:
+              - cuda-version
+              - cuda-cudart-dev
     tests:
       - python:
           imports:
