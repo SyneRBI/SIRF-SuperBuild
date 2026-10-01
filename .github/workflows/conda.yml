@@ -55,10 +55,20 @@ jobs:
         path: output/bld
         retention-days: 7
   build-cuda:
+    name: "cuda py${{ matrix.python }} cuda${{ matrix.cuda }}"
     runs-on: [self-hosted, cuda]
     timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      # min & max
+      matrix:
+        include:
+        - python: "3.11"
+          cuda: "12.9"
+        - python: "3.13"
+          cuda: "13.0" # TODO: bump after stir>=6.4
     env:
-      CONDA_OVERRIDE_CUDA: "12.9"
+      CONDA_OVERRIDE_CUDA: ${{ matrix.cuda }}
     steps:
     - uses: actions/checkout@v7
     - uses: prefix-dev/rattler-build-action@v0.2.39
@@ -68,8 +78,8 @@ jobs:
         # --no-build-id: required for ccache
         # cuda_compiler_version matches CONDA_OVERRIDE_CUDA so compiler('cuda')
         # resolves to the real cuda-nvcc_linux-64 package (see variants.yaml).
-        build-args: --target-platform linux-64 -c conda-forge -c ismrmrd -c ccpi -c nvidia --variant python=3.11 --variant cuda_compiler_version=${{ env.CONDA_OVERRIDE_CUDA }} --no-build-id
-        artifact-name: conda-py311-cuda129-linux-64
+        build-args: --target-platform linux-64 -c conda-forge -c ismrmrd -c ccpi -c nvidia --variant python=${{ matrix.python }} --variant cuda_compiler_version=${{ matrix.cuda }} --no-build-id
+        artifact-name: conda-py${{ matrix.python }}-cu${{ matrix.cuda }}-linux-64
     - name: ccache stats
       if: always()
       run: ccache -s || true
@@ -77,6 +87,6 @@ jobs:
       name: Upload debug build logs
       uses: actions/upload-artifact@v7
       with:
-        name: conda-build-logs-py311-cuda129
+        name: conda-build-logs-py${{ matrix.python }}-cu${{ matrix.cuda }}
         path: output/bld
         retention-days: 7
