@@ -76,7 +76,7 @@ cmake -G Ninja $SRC_DIR \
 awk -v shim="$BUILD_PREFIX/libstir_math_shim.a" -v hdf5="$PREFIX/lib/libhdf5_cpp.so $PREFIX/lib/libhdf5.so" '
   /^build / { inpyreg = ($0 ~ /_pyreg\.so/) }
   /^  LINK_LIBRARIES =/ {
-    if (($0 ~ /libstir_buildblock/ || $0 ~ /libbuildblock/) && $0 !~ /stir_math_shim/) sub(/$/, " " shim)
+    if (($0 ~ /buildblock/) && $0 !~ /stir_math_shim/) sub(/$/, " " shim)  # bare STIR names (6.3.0), lib*/libstir_* (6.4.0)
     if (inpyreg) {
       sub(/^  LINK_LIBRARIES = /, "  LINK_LIBRARIES = -Wl,--start-group ")
       sub(/$/, " -Wl,--end-group " hdf5 " " shim)
