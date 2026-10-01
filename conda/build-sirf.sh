@@ -27,6 +27,9 @@ sed -i 's/return this->InputTransform;/return nullptr;/' "$PREFIX/include/_reg_a
 if [ "${GADGETRON_USE_CUDA:-OFF}" = "ON" ]; then
   export CUDA_TOOLKIT_ROOT_DIR="${PREFIX}"
   export CUDA_ROOT="${PREFIX}"
+  # FindCUDA fix for conda cuda>=13.1
+  export CUDA_INC_PATH="${PREFIX}/targets/x86_64-linux"
+  export CUDA_LIB_PATH="${PREFIX}/targets/x86_64-linux"
 fi
 
 # STIR 6.3.0 (conda-forge) ships STIRTargets.cmake with absolute paths from the
