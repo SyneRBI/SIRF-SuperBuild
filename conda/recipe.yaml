@@ -160,7 +160,7 @@ outputs:
       # -Werror/cblas, boost>=1.90, CUDA BOOST_CURRENT_FUNCTION, Windows process stub,
       # Sfndam write() decl/def mismatch (Clang/macOS), portable execvpe-less exec,
       # NUL-terminated argv, Windows FindCBLAS direct netlib link
-      rev: dc6c6f7a662abf9d19a766047c7c749228d756f8
+      rev: 0415352eebd5d88fee9ad49866b7c201158d1825
     build:
       number: 0
       string: ${{ cuda_build_prefix }}
