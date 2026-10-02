@@ -157,8 +157,9 @@ outputs:
       version: "4.7.2"
     source:
       git: https://github.com/SyneRBI/gadgetron.git
-      # -Werror/cblas, boost>=1.90, CUDA BOOST_CURRENT_FUNCTION, Windows process stub
-      rev: 76612ed0499a8c22ad210e851dbf09bec3ff0269
+      # -Werror/cblas, boost>=1.90, CUDA BOOST_CURRENT_FUNCTION, Windows process stub,
+      # Sfndam write() decl/def mismatch (Clang/macOS)
+      rev: d8bcf74ffe95db0d281a218e31e411e393d5721f
     build:
       number: 0
       string: ${{ cuda_build_prefix }}
