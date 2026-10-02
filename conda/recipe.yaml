@@ -85,6 +85,53 @@ outputs:
       repository: https://github.com/ismrmrd/ismrmrd
 
   - package:
+      name: siemens_to_ismrmrd
+      version: "1.3.0"
+    inherit: null
+    source:
+      git: https://github.com/ismrmrd/siemens_to_ismrmrd.git
+      tag: v1.3.0
+    build:
+      number: 0
+      script:
+        content:
+          - cmake -G Ninja $SRC_DIR -B $BUILD_PREFIX/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PREFIX -DBUILD_DYNAMIC:BOOL=ON
+          - cmake --build $BUILD_PREFIX/build --config Release
+          - cmake --install $BUILD_PREFIX/build --config Release
+        env:
+          CMAKE_C_COMPILER_LAUNCHER: ${{ c_cache_c }}
+          CMAKE_CXX_COMPILER_LAUNCHER: ${{ c_cache_cxx }}
+          CCACHE_DIR: ${{ ccache_dir }}
+          CCACHE_MAXSIZE: ${{ ccache_maxsize }}
+    requirements:
+      build:
+        - ccache
+        - cmake
+        - ninja
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+      host:
+        - ${{ pin_subpackage('ismrmrd', exact=True) }}
+        - libboost-devel ${{ boost }}
+        - libxml2-devel
+        - libxslt
+      run:
+        - ${{ pin_subpackage('ismrmrd') }}
+        - libboost-devel ${{ boost }}
+        - libxml2-devel
+        - libxslt
+    tests:
+      - script:
+          - siemens_to_ismrmrd --help
+          - ismrmrd_to_siemens --help
+    about:
+      summary: "Siemens MR-PET raw data to ISMRMRD converter"
+      homepage: https://github.com/ismrmrd/siemens_to_ismrmrd
+      license: LicenseRef-siemens-to-ismrmrd
+      license_file: LICENSE
+      repository: https://github.com/ismrmrd/siemens_to_ismrmrd
+
+  - package:
       name: gadgetron
       version: "4.7.2"
     source:
@@ -316,6 +363,8 @@ outputs:
             - libcurand
             # CUDA regulariser (the GPU CIL) for the GPU variant.
             - ccpi-regulariser >=26 cuda${{ cuda_major }}*
+      run_constraints:
+        - ${{ pin_subpackage('siemens_to_ismrmrd') }}
       ignore_run_exports:
         by_name:
           - if: with_cuda
