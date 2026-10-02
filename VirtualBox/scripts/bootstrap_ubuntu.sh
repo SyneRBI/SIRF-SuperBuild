@@ -43,7 +43,7 @@ set -ex
 
 # avoid Ubuntu throwing up dialog boxes about outdated services that need to be restarted
 # see https://github.com/SyneRBI/SIRF-SuperBuild/issues/881
-echo "\$nrconf{restart} = 'a'\;" >> /etc/needrestart/needrestart.conf
+echo "\$nrconf{restart} = 'a';" >> /etc/needrestart/needrestart.conf
 
 # update the apt-get database
 export DEBIAN_FRONTEND=noninteractive
@@ -70,7 +70,7 @@ sudo locale-gen pt_BR.UTF-8
 sudo locale-gen ja_JP.UTF-8
 sudo locale-gen zh_CN.UTF-8
 sudo update-locale LANG=en_GB.UTF-8
-sudo localectl set-x11-keymap uk
+#sudo localectl set-keymap en_GB.UTF-8
 sudo localectl status
 
 
@@ -92,7 +92,12 @@ if [ ! -d $userHOME/devel ]; then
 fi
 cd $userHOME/devel
 
-if [ ! -d $userHOME/devel/SIRF-SuperBuild ]; then
+if [ -d /vagrant_sirf_superbuild ] && [ -f /vagrant_sirf_superbuild/CMakeLists.txt ]; then
+  echo "Copying local SIRF-SuperBuild from /vagrant_sirf_superbuild..."
+  rsync -a --exclude='.git' --exclude='.vagrant' --exclude='build*' /vagrant_sirf_superbuild/ $userHOME/devel/SIRF-SuperBuild/
+  cd $userHOME/devel/SIRF-SuperBuild
+  EXTRA_ARGS="-t none"
+elif [ ! -d $userHOME/devel/SIRF-SuperBuild ]; then
   git clone https://github.com/SyneRBI/SIRF-SuperBuild.git
   cd SIRF-SuperBuild
 else
@@ -101,4 +106,4 @@ else
 fi
 
 chown -R $SIRFUSERNAME:users $userHOME
-sudo -u $SIRFUSERNAME -H bash $userHOME/devel/SIRF-SuperBuild/VirtualBox/scripts/UPDATE.sh -s $*
+sudo -u $SIRFUSERNAME -H bash $userHOME/devel/SIRF-SuperBuild/VirtualBox/scripts/UPDATE.sh -s $EXTRA_ARGS $*

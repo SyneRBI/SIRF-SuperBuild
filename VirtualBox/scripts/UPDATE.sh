@@ -97,17 +97,19 @@ if [ $apt_install == 1 ]; then
   sudo -H ./INSTALL_CMake.sh
 fi
 
-# best to use full path for python3
-PYTHON_EXECUTABLE=$(which python3)
-if which python3; then
-  PYTHON_EXECUTABLE=$(which python3)
-else
-  PYTHON_EXECUTABLE=$(which python)
+# Ensure Python virtual environment exists
+if [ ! -d "$SIRF_VIRTUAL_ENV" ]; then
+  echo "Creating Python virtual environment in $SIRF_VIRTUAL_ENV..."
+  python3 -m venv "$SIRF_VIRTUAL_ENV"
 fi
 
-# Add ~/.local/bin (or whatever it has to be) to the PATH as this is where pip installs executables
+# Activate the virtual environment
+source "$SIRF_VIRTUAL_ENV/bin/activate"
+PYTHON_EXECUTABLE="$SIRF_VIRTUAL_ENV/bin/python"
+
+# Add virtual environment bin and user bin to PATH
 PY_USER_BIN=`"$PYTHON_EXECUTABLE" -c 'import site; import os; print ( os.path.join(site.USER_BASE , "bin") )'`
-export PATH=${PY_USER_BIN}:${PATH}
+export PATH="$SIRF_VIRTUAL_ENV/bin:${PY_USER_BIN}:${PATH}"
 
 # Optionally install/update python packages
 if [ $apt_install == 1 ]; then
@@ -115,7 +117,7 @@ if [ $apt_install == 1 ]; then
 fi
 
 # ignore notebook keys, https://github.com/CCPPETMR/SIRF-Exercises/issues/20
-"$PYTHON_EXECUTABLE" -m pip install -U --user nbstripout
+"$PYTHON_EXECUTABLE" -m pip install -U nbstripout
 git config --global filter.nbstripout.extrakeys '
   metadata.celltoolbar metadata.language_info.codemirror_mode.version
   metadata.language_info.pygments_lexer metadata.language_info.version'
@@ -144,11 +146,14 @@ if [ -d STIR-exercises ]; then
   git pull
 fi
 
-if [ -r ~/.sirfc ]; then
-  echo "Moving existing ~/.sirfc to a backup copy"
-  mv -v ~/.sirfc ~/.sirfc.old
+if [ -r ~/.sirfrc ]; then
+  echo "Moving existing ~/.sirfrc to a backup copy"
+  mv -v ~/.sirfrc ~/.sirfrc.old
 fi
 echo "export SIRF_SRC_PATH=$SIRF_SRC_PATH" > ~/.sirfrc
+if [ -f "$SIRF_VIRTUAL_ENV/bin/activate" ]; then
+  echo "source $SIRF_VIRTUAL_ENV/bin/activate" >> ~/.sirfrc
+fi
 echo "source ${SIRF_INSTALL_PATH}/bin/env_sirf.sh" >> ~/.sirfrc
 # add local python-bin to PATH
 echo "export PATH=${PY_USER_BIN}:\${PATH}" >> ~/.sirfrc

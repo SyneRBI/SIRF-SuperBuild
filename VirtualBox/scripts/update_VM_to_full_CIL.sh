@@ -36,7 +36,7 @@ else
 fi
 
 #make sure nbstripout is installed and apply filter to CIL-Demos repo
-python3 -m pip install --user nbstripout
+${SIRF_PYTHON_EXECUTABLE:-python3} -m pip install nbstripout
 nbstripout --install
 
 echo "All done"
