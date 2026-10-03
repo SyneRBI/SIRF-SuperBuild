@@ -10,7 +10,7 @@ $s = Get-Content $h -Raw
 if ($s -notmatch 'return this->InputTransform;') { throw "niftyreg _reg_aladin.h: expected pattern not found" }
 Set-Content -Path $h -Value ($s -replace 'return this->InputTransform;', 'return nullptr;') -NoNewline
 
-cmake -G Ninja $env:SRC_DIR -B (Join-Path $env:BUILD_PREFIX "build") -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$env:PREFIX -DCMAKE_PREFIX_PATH="$env:LIBRARY_PREFIX;$env:PREFIX" -DRUN_ISMRMRD_SHEPP_LOGAN:BOOL=OFF -DDISABLE_Matlab:BOOL=ON -DDISABLE_PYTHON:BOOL=OFF -DPython_EXECUTABLE="$env:PREFIX\python.exe" -DPYTHON_DEST_DIR=$env:SP_DIR -DDISABLE_Registration:BOOL=OFF -DDISABLE_Gadgetron:BOOL=OFF -DGadgetron_USE_CUDA:BOOL=OFF
+cmake -G Ninja $env:SRC_DIR -B "$env:BUILD_PREFIX\build" "-DCMAKE_BUILD_TYPE=Release" "-DCMAKE_INSTALL_PREFIX=$env:PREFIX" "-DCMAKE_PREFIX_PATH=$env:LIBRARY_PREFIX;$env:PREFIX" "-DRUN_ISMRMRD_SHEPP_LOGAN:BOOL=OFF" "-DDISABLE_Matlab:BOOL=ON" "-DDISABLE_PYTHON:BOOL=OFF" "-DPython_EXECUTABLE=$env:PREFIX\python.exe" "-DPYTHON_DEST_DIR=$env:SP_DIR" "-DDISABLE_Registration:BOOL=OFF" "-DDISABLE_Gadgetron:BOOL=OFF" "-DGadgetron_USE_CUDA:BOOL=OFF"
 cmake --build (Join-Path $env:BUILD_PREFIX "build") --config Release
 cmake --install (Join-Path $env:BUILD_PREFIX "build") --config Release
 
