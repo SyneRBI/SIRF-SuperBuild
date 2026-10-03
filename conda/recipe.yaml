@@ -348,7 +348,7 @@ outputs:
       # + Windows stat() portability + GeometricalInfo.h <cmath> (libc++) +
       # Apple: skip the cGadgetron C++ test + Windows FindFFTW3 (conda-forge
       # fftw import libs are <name>.lib, no 'lib' prefix)
-      rev: f8c47c639b7dc674ef64ecf9189473f1b8d24537
+      rev: 42f3ce079e90b0504a6f01e5cba7043fd0d03b84
     build:
       number: 0
       string: py${{ python | replace('.', '') }}${{ '_' ~ cuda_build_prefix if with_cuda else '' }}
@@ -457,7 +457,7 @@ outputs:
           # macOS: the sirf.STIR import segfaults (runtime crash in the STIR
           # module); run it under lldb to capture a backtrace of the fault.
           - if: osx
-            then: lldb -b -o run -o "thread backtrace all" -o quit -- python -c "import sirf.STIR; print('sirf.STIR OK')"
+            then: lldb -b -o "run" -o "bt 40" -o "register read x0 x1 x2 x3" -o "quit" -- python -c "import sirf.STIR; print('sirf.STIR OK')"
           - if: not osx
             then: python -c "import sirf.STIR; print('sirf.STIR OK')"
           - python -c "import sirf.Utilities; print('sirf.Utilities OK')"
