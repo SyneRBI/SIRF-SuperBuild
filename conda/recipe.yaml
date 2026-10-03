@@ -346,10 +346,9 @@ outputs:
       git: https://github.com/SyneRBI/SIRF.git
       # Boost 1.90 asio fix + optional STIR-shim hook (SyneRBI/SIRF PR #1420, branch boost190-asio)
       # + Windows stat() portability + GeometricalInfo.h <cmath> (libc++) +
-      # Apple: skip the cGadgetron C++ test (static exe can't bind the toolbox
-      # .dylibs' weak NFFT vtables/members on Mach-O; the Python module is a
-      # dylib and binds fine, and the recipe only runs Python imports)
-      rev: 022928c553e7d85a2ba18fcb2f914e0481ed955e
+      # Apple: skip the cGadgetron C++ test + Windows FindFFTW3 (conda-forge
+      # fftw import libs are <name>.lib, no 'lib' prefix)
+      rev: 5390811b0a0d53c446e25a18a224d6cb43419477
     build:
       number: 0
       string: py${{ python | replace('.', '') }}${{ '_' ~ cuda_build_prefix if with_cuda else '' }}

@@ -69,6 +69,16 @@ if [ "${GADGETRON_USE_CUDA:-OFF}" = "ON" ]; then
   export CUDA_LIB_PATH="${PREFIX}/targets/x86_64-linux"
 fi
 
+# On Apple (Mach-O) a static archive merged into an executable/Python bundle
+# cannot bind the gadgetron toolboxes' weak_odr NFFT vtables/member functions,
+# so disable the CPU radial-gridding toolboxes (NonCartesianEncoding) on Apple.
+# The Gadgetron client (server-based reconstruction) and the sirf.Gadgetron
+# Python module still build and work; the rest of SIRF is unaffected.
+EXTRA_CMAKE_ARGS=""
+if [ "$(uname -s)" = "Darwin" ]; then
+  EXTRA_CMAKE_ARGS="$EXTRA_CMAKE_ARGS -DDISABLE_Gadgetron_TOOLBOXES:BOOL=ON"
+fi
+
 cmake -G Ninja $SRC_DIR \
   -B $BUILD_PREFIX/build \
   -DCMAKE_BUILD_TYPE=Release \
@@ -81,7 +91,8 @@ cmake -G Ninja $SRC_DIR \
   -DPYTHON_DEST_DIR=$SP_DIR \
   -DDISABLE_Registration:BOOL=OFF \
   -DDISABLE_Gadgetron:BOOL=OFF \
-  -DGadgetron_USE_CUDA:BOOL=${GADGETRON_USE_CUDA:-OFF}
+  -DGadgetron_USE_CUDA:BOOL=${GADGETRON_USE_CUDA:-OFF} \
+  $EXTRA_CMAKE_ARGS
 
 if [ "$(uname -s)" = "Linux" ]; then
   # append the shim .a to every link line that pulls in STIR's static build block
