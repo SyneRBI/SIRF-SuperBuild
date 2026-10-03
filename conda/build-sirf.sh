@@ -39,15 +39,15 @@ if [ "$(uname -s)" = "Linux" ]; then
   # prefix to $PREFIX and drop the sysroot entries (pthread/dl/m are no-ops on
   # glibc >= 2.34). No-op for STIR 6.4.0 (clean exports).
   python - <<'EOF'
-  import glob, os, re
-  prefix = os.environ['PREFIX']
-  for p in glob.glob(os.path.join(prefix, 'lib', 'cmake', 'STIR-6.*', '*.cmake')):
-      s = open(p).read()
-      if 'feedstock_root' not in s:
-          continue
-      s = re.sub(r';/home/conda/feedstock_root/build_artifacts/[a-z0-9_]+/_build_env/[^;\s"]*', '', s)
-      s = re.sub(r'/home/conda/feedstock_root/build_artifacts/[a-z0-9_]+/[a-z0-9_]+(?=/)', prefix, s)
-      open(p, 'w').write(s)
+import glob, os, re
+prefix = os.environ['PREFIX']
+for p in glob.glob(os.path.join(prefix, 'lib', 'cmake', 'STIR-6.*', '*.cmake')):
+    s = open(p).read()
+    if 'feedstock_root' not in s:
+        continue
+    s = re.sub(r';/home/conda/feedstock_root/build_artifacts/[a-z0-9_]+/_build_env/[^;\s"]*', '', s)
+    s = re.sub(r'/home/conda/feedstock_root/build_artifacts/[a-z0-9_]+/[a-z0-9_]+(?=/)', prefix, s)
+    open(p, 'w').write(s)
 EOF
 fi
 
