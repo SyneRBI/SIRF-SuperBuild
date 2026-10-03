@@ -22,6 +22,27 @@ if ($s -match 'return this->InputTransform;') {
     throw "niftyreg _reg_aladin.h: not a _reg_aladin.h (no GetInputTransform)"
 }
 
+# conda-forge's libzlib (win-64) ships only zlib.dll -- no import library -- so
+# CMake's find_library(z) cannot link the niftyreg 'z' dependency. Generate the
+# import lib from the DLL's exported symbols (dumpbin + lib /def).
+$zlib_dll = Join-Path $env:PREFIX "Library\bin\zlib.dll"
+if (Test-Path $zlib_dll) {
+    $zlib_lib_dir = Join-Path $env:PREFIX "Library\lib"
+    New-Item -ItemType Directory -Force -Path $zlib_lib_dir | Out-Null
+    $zlib_lib = Join-Path $zlib_lib_dir "zlib.lib"
+    if (-not (Test-Path $zlib_lib)) {
+        $def = Join-Path $zlib_lib_dir "zlib.def"
+        $exports = & dumpbin /exports /noheaders $zlib_dll
+        $names = @($exports | ForEach-Object {
+            if ($_ -match '^\s+[0-9a-f]+\s+[0-9a-f]+\s+(\S+)') { $matches[1] }
+        } | Where-Object { $_ -match '^[A-Za-z_]' })
+        if ($names.Count -eq 0) { throw "dumpbin: no exports parsed from zlib.dll" }
+        ("LIBRARY zlib", "EXPORTS") + ("  " + $names) | Set-Content -Path $def -Encoding ASCII
+        & lib /def:$def /out:$zlib_lib /nologo
+        Assert-Zero "lib (zlib import lib)"
+    }
+    Copy-Item -Force $zlib_lib (Join-Path $zlib_lib_dir "z.lib")
+}
 cmake -G Ninja $env:SRC_DIR -B "$env:BUILD_PREFIX\build" "-DCMAKE_BUILD_TYPE=Release" "-DCMAKE_INSTALL_PREFIX=$env:PREFIX" "-DCMAKE_PREFIX_PATH=$env:LIBRARY_PREFIX;$env:PREFIX" "-DRUN_ISMRMRD_SHEPP_LOGAN:BOOL=OFF" "-DDISABLE_Matlab:BOOL=ON" "-DDISABLE_PYTHON:BOOL=OFF" "-DPython_EXECUTABLE=$env:PREFIX\python.exe" "-DPYTHON_DEST_DIR=$env:SP_DIR" "-DDISABLE_Registration:BOOL=OFF" "-DDISABLE_Gadgetron:BOOL=OFF" "-DGadgetron_USE_CUDA:BOOL=OFF"
 Assert-Zero "cmake configure"
 cmake --build (Join-Path $env:BUILD_PREFIX "build") --config Release
