@@ -38,9 +38,11 @@ if (Test-Path $zlib_dll) {
         $names = @($exports | ForEach-Object {
             $c = $_.Trim() -split '\s+'
             if ($c.Count -ge 4 -and $c[0] -match '^[0-9a-f]+$') { $c[$c.Count - 1] }
-        } | Where-Object { $_ -match '^[A-Za-z_]' })
+        } | Where-Object { $_ -match '^[A-Za-z_][A-Za-z0-9_]*$' })
         if ($names.Count -eq 0) { throw "dumpbin: no exports parsed from zlib.dll" }
-        ("LIBRARY zlib", "EXPORTS") + ("  " + $names) | Set-Content -Path $def -Encoding ASCII
+        $def_lines = @("LIBRARY zlib", "EXPORTS") + ("  " + $names)
+        [System.IO.File]::WriteAllLines($def, $def_lines, [System.Text.ASCIIEncoding]::new($false))
+        Write-Host "zlib.def (first 6):"; $def_lines | Select-Object -First 6 | ForEach-Object { Write-Host $_ }
         & lib /def:$def /out:$zlib_lib /nologo
         Assert-Zero "lib (zlib import lib)"
     }
