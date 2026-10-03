@@ -348,7 +348,7 @@ outputs:
       # + Windows stat() portability + GeometricalInfo.h <cmath> (libc++) +
       # Apple: skip the cGadgetron C++ test + Windows FindFFTW3 (conda-forge
       # fftw import libs are <name>.lib, no 'lib' prefix)
-      rev: 96cdf001443397db9da96fb133b374066a539949
+      rev: f8c47c639b7dc674ef64ecf9189473f1b8d24537
     build:
       number: 0
       string: py${{ python | replace('.', '') }}${{ '_' ~ cuda_build_prefix if with_cuda else '' }}
