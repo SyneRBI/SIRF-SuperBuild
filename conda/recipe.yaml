@@ -454,7 +454,12 @@ outputs:
           # without saying which module faulted).
           - python -c "import sirf; print('sirf OK')"
           - python -c "import sirf.contrib; print('sirf.contrib OK')"
-          - python -c "import sirf.STIR; print('sirf.STIR OK')"
+          # macOS: the sirf.STIR import segfaults (runtime crash in the STIR
+          # module); run it under lldb to capture a backtrace of the fault.
+          - if: osx
+            then: lldb -b -o run -o "thread backtrace all" -o quit -- python -c "import sirf.STIR; print('sirf.STIR OK')"
+          - if: not osx
+            then: python -c "import sirf.STIR; print('sirf.STIR OK')"
           - python -c "import sirf.Utilities; print('sirf.Utilities OK')"
           - python -c "import sirf.Reg; print('sirf.Reg OK')"
           - python -c "import sirf.SIRF; print('sirf.SIRF OK')"
