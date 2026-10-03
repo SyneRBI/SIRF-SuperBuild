@@ -157,13 +157,13 @@ outputs:
       version: "4.7.2"
     source:
       git: https://github.com/SyneRBI/gadgetron.git
-      # -Werror/cblas, boost>=1.90, CUDA BOOST_CURRENT_FUNCTION, Windows process stub
-      # (+ Process::child id()), Sfndam write() decl/def mismatch (Clang/macOS),
-      # portable execvpe-less exec, NUL-terminated argv, Windows FindCBLAS direct
-      # netlib link, ProcessHelper.h rename (MSVC <process.h> clash), MSVC lapack
-      # types, libc++-safe BufferKey ordering, Apple: toolboxes/core static so a
-      # static SIRF archive can bind their weak_odr vtables/members (Mach-O)
-      rev: 3281f9c62620b1be5695d4d1da67c58887c56328
+      # -Werror/cblas, boost>=1.90, CUDA BOOST_CURRENT_FUNCTION, Windows process
+      # stub (+ Process::child id(), _popen/_pclose in capture_output), Sfndam
+      # write() decl/def mismatch (Clang/macOS), portable execvpe-less exec,
+      # NUL-terminated argv, Windows FindCBLAS direct netlib link,
+      # ProcessHelper.h rename (MSVC <process.h> clash), MSVC lapack types,
+      # libc++-safe BufferKey ordering
+      rev: 0023ee1587a2f1010b38838d5d2fc615a91e0477
     build:
       number: 0
       string: ${{ cuda_build_prefix }}
@@ -341,8 +341,9 @@ outputs:
     source:
       git: https://github.com/SyneRBI/SIRF.git
       # Boost 1.90 asio fix + optional STIR-shim hook (SyneRBI/SIRF PR #1420, branch boost190-asio)
-      # + Windows stat() portability
-      rev: 50741fabf340747fb066a3913d78b5be070805b8
+      # + Windows stat() portability + GeometricalInfo.h <cmath> (libc++) +
+      # Apple: build cgadgetron as a shared library (Mach-O weak-symbol binding)
+      rev: ad258641e4a7e732ac799aec4787c95fa6a1b079
     build:
       number: 0
       string: py${{ python | replace('.', '') }}${{ '_' ~ cuda_build_prefix if with_cuda else '' }}
