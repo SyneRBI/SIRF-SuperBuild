@@ -455,12 +455,9 @@ outputs:
           - python -c "import sirf; print('sirf OK')"
           - python -c "import sirf.contrib; print('sirf.contrib OK')"
           # macOS: the sirf.STIR import segfaults (runtime crash in the STIR
-          # module). Run it under lldb, save a core dump of the crash, then
-          # re-open the core for a full backtrace (live unwinding stops at frame 0).
+          # module); run it under lldb to capture the faulting frame.
           - if: osx
-            then:
-            - lldb -b -o run -o "process save-core /tmp/sirf_core" -o quit -- python -c "import sirf.STIR; print('sirf.STIR OK')"
-            - lldb -b -c /tmp/sirf_core -o "bt 50" -o quit
+            then: lldb -b -o run -o "thread backtrace all" -o quit -- python -c "import sirf.STIR; print('sirf.STIR OK')"
           - if: not osx
             then: python -c "import sirf.STIR; print('sirf.STIR OK')"
           - python -c "import sirf.Utilities; print('sirf.Utilities OK')"

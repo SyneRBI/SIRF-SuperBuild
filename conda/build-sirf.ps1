@@ -33,8 +33,11 @@ if (Test-Path $zlib_dll) {
     if (-not (Test-Path $zlib_lib)) {
         $def = Join-Path $zlib_lib_dir "zlib.def"
         $exports = & dumpbin /exports /noheaders $zlib_dll
+        Write-Host "zlib.dll exports (first 5):"; $exports | Select-Object -First 5 | ForEach-Object { Write-Host $_ }
+        # dumpbin /exports lines: <ordinal> <hint> <rva> <name> (name is last).
         $names = @($exports | ForEach-Object {
-            if ($_ -match '^\s+[0-9a-f]+\s+[0-9a-f]+\s+(\S+)') { $matches[1] }
+            $c = $_.Trim() -split '\s+'
+            if ($c.Count -ge 4 -and $c[0] -match '^[0-9a-f]+$') { $c[$c.Count - 1] }
         } | Where-Object { $_ -match '^[A-Za-z_]' })
         if ($names.Count -eq 0) { throw "dumpbin: no exports parsed from zlib.dll" }
         ("LIBRARY zlib", "EXPORTS") + ("  " + $names) | Set-Content -Path $def -Encoding ASCII
