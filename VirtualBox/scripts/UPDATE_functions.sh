@@ -61,13 +61,13 @@ process_options(){
   update_remote=0
   apt_install=0
   DEVEL_BUILD=OFF
-  while getopts hrsSDt:j: option
+  while getopts hrsSDR:t:j: option
    do
    case "${option}"
    in
     r) update_remote=1;;
     s) apt_install=1;;
-    R) SB_REPO=$OPTARG;;
+    R) SB_repo=$OPTARG;;
     t) SB_TAG=$OPTARG;;
     D) DEVEL_BUILD=ON;;
     S) SB_build=0;;
@@ -130,13 +130,21 @@ initialise_environment(){
   fi
 
   # location of sources
-  if [ -z $SIRF_SRC_PATH ]
+  if [ -z "$SIRF_SRC_PATH" ]
   then
     export SIRF_SRC_PATH=~/devel
   fi
 
   SIRF_INSTALL_PATH=$SIRF_SRC_PATH/install
 
+  # virtual environment location
+  if [ -z "$SIRF_VIRTUAL_ENV" ]; then
+    if [ -n "$VIRTUAL_ENV" ]; then
+      export SIRF_VIRTUAL_ENV="$VIRTUAL_ENV"
+    else
+      export SIRF_VIRTUAL_ENV=~/virtualenv
+    fi
+  fi
 }
 
 # SuperBuild software (checkout appropriate version)
@@ -152,7 +160,12 @@ SuperBuild_git_update(){
     git fetch --tags --all
   fi
   # go to SB_TAG
-  if [ $1 = 'default' ]
+  if [ "$1" = 'none' ] || [ "$1" = 'HEAD' ]; then
+    echo "Keeping current SuperBuild ref ($1)"
+    cd ..
+    return 0
+  fi
+  if [ "$1" = 'default' ]
   then
    # get the latest tag matching v
    #SB_TAG=`git fetch; git for-each-ref refs/tags/v* --sort=-taggerdate --format='%(refname:short)' --count=1`
