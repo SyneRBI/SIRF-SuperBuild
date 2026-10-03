@@ -264,7 +264,7 @@ outputs:
           - if: unix
             then: test -x $PREFIX/bin/gadgetron_ismrmrd_client
           - if: unix
-            then: test -f $PREFIX/lib/libgadgetron_core.so
+            then: test -f $PREFIX/lib/libgadgetron_core.so -o -f $PREFIX/lib/libgadgetron_core.dylib
           - if: win
             then: if not exist "%LIBRARY_PREFIX%\bin\gadgetron.exe" exit 1
           - if: win
