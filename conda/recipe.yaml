@@ -159,8 +159,10 @@ outputs:
       git: https://github.com/SyneRBI/gadgetron.git
       # -Werror/cblas, boost>=1.90, CUDA BOOST_CURRENT_FUNCTION, Windows process stub,
       # Sfndam write() decl/def mismatch (Clang/macOS), portable execvpe-less exec,
-      # NUL-terminated argv, Windows FindCBLAS direct netlib link
-      rev: 0415352eebd5d88fee9ad49866b7c201158d1825
+      # NUL-terminated argv, Windows FindCBLAS direct netlib link,
+      # ProcessHelper.h rename (MSVC <process.h> clash), MSVC lapack types,
+      # libc++-safe BufferKey ordering
+      rev: a0a871ed3865a54f54e30a51b90750a36c115936
     build:
       number: 0
       string: ${{ cuda_build_prefix }}
