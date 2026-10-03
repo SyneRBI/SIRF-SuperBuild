@@ -1,0 +1,140 @@
+name: conda
+on:
+  push: &triggers
+    branches: [master]
+    tags: ['v**']
+    paths:
+    - 'conda/**'
+    - '.github/workflows/conda.yml'
+  pull_request: *triggers
+  workflow_dispatch:
+
+defaults: {run: {shell: 'bash -el {0}'}}
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        python: [3.11, 3.12, 3.13]
+    env:
+      CCACHE_DIR: ${{ github.workspace }}/.ccache
+      CCACHE_MAXSIZE: 3G
+    steps:
+    - uses: actions/checkout@v7
+    - uses: jlumbroso/free-disk-space@v2
+      with: {large-packages: false}
+    - name: Cache rattler # conda, git, repodata
+      uses: actions/cache@v6
+      with:
+        path: ~/.cache/rattler
+        key: rattler-${{ runner.os }}-${{ hashFiles('conda/recipe.yaml') }}
+        restore-keys: rattler-${{ runner.os }}-
+    - name: Cache ccache
+      uses: actions/cache@v6
+      with:
+        path: ${{ env.CCACHE_DIR }}
+        key: ccache-${{ runner.os }}-py${{ matrix.python }}-${{ hashFiles('conda/recipe.yaml', 'conda/build-*.sh', 'conda/build-*.ps1') }}
+        restore-keys: ccache-${{ runner.os }}-
+    - name: Disable git commit-graph (avoids flaky "hardlink different from source" on local clones)
+      run: git config --global core.commitGraph false
+    - uses: prefix-dev/rattler-build-action@v0.2.39
+      with:
+        recipe-path: conda/recipe.yaml
+        rattler-build-version: v0.76.1
+        # --no-build-id: required for ccache
+        build-args: --target-platform linux-64 -c conda-forge -c ismrmrd -c ccpi --variant python=${{ matrix.python }} --no-build-id
+        artifact-name: conda-py${{ matrix.python }}-linux-64
+    - name: ccache stats
+      if: always()
+      run: conda install -yq conda-forge::ccache && ccache -s || true
+    - if: failure()
+      name: Upload debug build logs
+      uses: actions/upload-artifact@v7
+      with:
+        name: conda-build-logs-py${{ matrix.python }}
+        path: output/bld
+        retention-days: 7
+
+  build-macos:
+    runs-on: macos-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        python: [3.12]
+    env:
+      CCACHE_DIR: ${{ github.workspace }}/.ccache
+      CCACHE_MAXSIZE: 3G
+    steps:
+    - uses: actions/checkout@v7
+    - name: Cache rattler # conda, git, repodata
+      uses: actions/cache@v6
+      with:
+        path: ~/.cache/rattler
+        key: rattler-${{ runner.os }}-${{ hashFiles('conda/recipe.yaml') }}
+        restore-keys: rattler-${{ runner.os }}-
+    - name: Cache ccache
+      uses: actions/cache@v6
+      with:
+        path: ${{ env.CCACHE_DIR }}
+        key: ccache-${{ runner.os }}-py${{ matrix.python }}-${{ hashFiles('conda/recipe.yaml', 'conda/build-*.sh', 'conda/build-*.ps1') }}
+        restore-keys: ccache-${{ runner.os }}-
+    - name: Disable git commit-graph (avoids flaky "hardlink different from source" on local clones)
+      run: git config --global core.commitGraph false
+    - uses: prefix-dev/rattler-build-action@v0.2.39
+      with:
+        recipe-path: conda/recipe.yaml
+        rattler-build-version: v0.76.1
+        # --no-build-id: required for ccache
+        build-args: --target-platform osx-arm64 -c conda-forge -c ismrmrd -c ccpi --variant python=${{ matrix.python }} --no-build-id
+        artifact-name: conda-py${{ matrix.python }}-osx-arm64
+    - if: failure()
+      name: Upload debug build logs
+      uses: actions/upload-artifact@v7
+      with:
+        name: conda-build-logs-py${{ matrix.python }}-osx
+        path: output/bld
+        retention-days: 7
+
+  build-windows:
+    runs-on: windows-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        python: [3.12]
+    env:
+      CCACHE_DIR: ${{ github.workspace }}\.ccache
+      CCACHE_MAXSIZE: 3G
+    steps:
+    - uses: actions/checkout@v7
+    - name: Cache rattler # conda, git, repodata
+      uses: actions/cache@v6
+      with:
+        path: ~/.cache/rattler
+        key: rattler-${{ runner.os }}-${{ hashFiles('conda/recipe.yaml') }}
+        restore-keys: rattler-${{ runner.os }}-
+    - name: Cache ccache
+      uses: actions/cache@v6
+      with:
+        path: ${{ env.CCACHE_DIR }}
+        key: ccache-${{ runner.os }}-py${{ matrix.python }}-${{ hashFiles('conda/recipe.yaml', 'conda/build-*.sh', 'conda/build-*.ps1') }}
+        restore-keys: ccache-${{ runner.os }}-
+    - name: Disable git commit-graph (avoids flaky "hardlink different from source" on local clones)
+      run: git config --global core.commitGraph false
+    - uses: prefix-dev/rattler-build-action@v0.2.39
+      with:
+        recipe-path: conda/recipe.yaml
+        rattler-build-version: v0.76.1
+        # --no-build-id: required for ccache
+        build-args: --target-platform win-64 -c conda-forge -c ismrmrd -c ccpi --variant python=${{ matrix.python }} --no-build-id
+        artifact-name: conda-py${{ matrix.python }}-win-64
+    - if: failure()
+      name: Upload debug build logs
+      uses: actions/upload-artifact@v7
+      with:
+        name: conda-build-logs-py${{ matrix.python }}-win
+        path: output/bld
+        retention-days: 7

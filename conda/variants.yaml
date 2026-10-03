@@ -1,0 +1,8 @@
+python:
+  - "3.11"
+  - "3.12"
+  - "3.13"
+# conda-forge CUDA compiler package (see cuda-feedstock); makes compiler('cuda')
+# resolve to cuda-nvcc_linux-64 instead of the dead cuda_linux-64 metapackage.
+cuda_compiler:
+  - cuda-nvcc
