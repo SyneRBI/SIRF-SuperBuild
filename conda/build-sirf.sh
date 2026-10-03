@@ -12,11 +12,21 @@ set -euxo pipefail
 # NiftyAladinSym.cpp). SIRF never calls GetInputTransform(), so neutralise it.
 # (The SuperBuild instead builds NiftyReg from commit a328efb, which lacks this bug.)
 python - "$PREFIX/include/_reg_aladin.h" <<'EOF'
-import sys
+import os, sys
 p = sys.argv[1]
 s = open(p).read()
-assert "return this->InputTransform;" in s, "niftyreg _reg_aladin.h: expected pattern not found"
-open(p, "w").write(s.replace("return this->InputTransform;", "return nullptr;"))
+if "return this->InputTransform;" in s:
+    # os.replace puts the patched header on a NEW inode: writing in place would
+    # also modify the rattler package cache (files are hardlinked out of it),
+    # poisoning later builds whose cache restore reuses the extracted dir.
+    t = p + "~"
+    with open(t, "w") as f:
+        f.write(s.replace("return this->InputTransform;", "return nullptr;"))
+    os.replace(t, p)
+elif "GetInputTransform" in s:
+    print(f"niftyreg {p}: buggy getter absent (already patched or fixed upstream), skipping")
+else:
+    sys.exit(f"niftyreg {p}: not a _reg_aladin.h (no GetInputTransform); aborting")
 EOF
 
 if [ "$(uname -s)" = "Linux" ]; then

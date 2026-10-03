@@ -7,8 +7,17 @@ $ErrorActionPreference = "Stop"
 # _reg_aladin.h (see build-sirf.sh); SIRF never calls it, so neutralise it.
 $h = Join-Path $env:LIBRARY_PREFIX "include\_reg_aladin.h"
 $s = Get-Content $h -Raw
-if ($s -notmatch 'return this->InputTransform;') { throw "niftyreg _reg_aladin.h: expected pattern not found" }
-Set-Content -Path $h -Value ($s -replace 'return this->InputTransform;', 'return nullptr;') -NoNewline
+if ($s -match 'return this->InputTransform;') {
+    # Replace (not in-place write): files are hardlinked out of the rattler
+    # package cache; in-place edits would poison later builds' cache restores.
+    $t = "$h~"
+    Set-Content -Path $t -Value ($s -replace 'return this->InputTransform;', 'return nullptr;') -NoNewline
+    Move-Item -Force $t $h
+} elseif ($s -match 'GetInputTransform') {
+    Write-Host "niftyreg: buggy getter absent (already patched or fixed upstream), skipping"
+} else {
+    throw "niftyreg _reg_aladin.h: not a _reg_aladin.h (no GetInputTransform)"
+}
 
 cmake -G Ninja $env:SRC_DIR -B "$env:BUILD_PREFIX\build" "-DCMAKE_BUILD_TYPE=Release" "-DCMAKE_INSTALL_PREFIX=$env:PREFIX" "-DCMAKE_PREFIX_PATH=$env:LIBRARY_PREFIX;$env:PREFIX" "-DRUN_ISMRMRD_SHEPP_LOGAN:BOOL=OFF" "-DDISABLE_Matlab:BOOL=ON" "-DDISABLE_PYTHON:BOOL=OFF" "-DPython_EXECUTABLE=$env:PREFIX\python.exe" "-DPYTHON_DEST_DIR=$env:SP_DIR" "-DDISABLE_Registration:BOOL=OFF" "-DDISABLE_Gadgetron:BOOL=OFF" "-DGadgetron_USE_CUDA:BOOL=OFF"
 cmake --build (Join-Path $env:BUILD_PREFIX "build") --config Release
