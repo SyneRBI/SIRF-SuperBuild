@@ -162,7 +162,7 @@ outputs:
       # NUL-terminated argv, Windows FindCBLAS direct netlib link,
       # ProcessHelper.h rename (MSVC <process.h> clash), MSVC lapack types,
       # libc++-safe BufferKey ordering
-      rev: d0feafd1f006b0cdf12f29e1fa61aabcddd6790a
+      rev: 4bc7e2a0fb02d5de49964a1531eeed99a8b9d677
     build:
       number: 0
       string: ${{ cuda_build_prefix }}
