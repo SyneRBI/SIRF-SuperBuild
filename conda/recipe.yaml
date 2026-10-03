@@ -283,8 +283,12 @@ outputs:
       name: pet-rd-tools
       version: "2.0.2"
     source:
-      git: https://github.com/UCL/pet-rd-tools.git
-      tag: v2.0.2
+      git: https://github.com/SyneRBI/pet-rd-tools.git
+      # Fork of UCL/pet-rd-tools @ v2.0.2 (branch win-compat): Windows
+      # portability — glog severity is google::GLOG_INFO (not google::INFO),
+      # and log streams use path.string() (narrow) instead of path.native()
+      # (std::wstring on Windows, no narrow operator<<).
+      rev: 9413dda8ac5f44f6d9346a2c121a366a92ad3ba4
     build:
       number: 0
       script:
@@ -342,8 +346,10 @@ outputs:
       git: https://github.com/SyneRBI/SIRF.git
       # Boost 1.90 asio fix + optional STIR-shim hook (SyneRBI/SIRF PR #1420, branch boost190-asio)
       # + Windows stat() portability + GeometricalInfo.h <cmath> (libc++) +
-      # Apple: build cgadgetron as a shared library (Mach-O weak-symbol binding)
-      rev: ad258641e4a7e732ac799aec4787c95fa6a1b079
+      # Apple: skip the cGadgetron C++ test (static exe can't bind the toolbox
+      # .dylibs' weak NFFT vtables/members on Mach-O; the Python module is a
+      # dylib and binds fine, and the recipe only runs Python imports)
+      rev: 022928c553e7d85a2ba18fcb2f914e0481ed955e
     build:
       number: 0
       string: py${{ python | replace('.', '') }}${{ '_' ~ cuda_build_prefix if with_cuda else '' }}
