@@ -37,6 +37,8 @@ jobs:
         path: ${{ env.CCACHE_DIR }}
         key: ccache-${{ runner.os }}-py${{ matrix.python }}-${{ hashFiles('conda/recipe.yaml', 'conda/build-*.sh', 'conda/build-*.ps1') }}
         restore-keys: ccache-${{ runner.os }}-
+    - name: Disable git commit-graph (avoids flaky "hardlink different from source" on local clones)
+      run: git config --global core.commitGraph false
     - uses: prefix-dev/rattler-build-action@v0.2.39
       with:
         recipe-path: conda/recipe.yaml
@@ -79,6 +81,8 @@ jobs:
         path: ${{ env.CCACHE_DIR }}
         key: ccache-${{ runner.os }}-py${{ matrix.python }}-${{ hashFiles('conda/recipe.yaml', 'conda/build-*.sh', 'conda/build-*.ps1') }}
         restore-keys: ccache-${{ runner.os }}-
+    - name: Disable git commit-graph (avoids flaky "hardlink different from source" on local clones)
+      run: git config --global core.commitGraph false
     - uses: prefix-dev/rattler-build-action@v0.2.39
       with:
         recipe-path: conda/recipe.yaml
@@ -118,6 +122,8 @@ jobs:
         path: ${{ env.CCACHE_DIR }}
         key: ccache-${{ runner.os }}-py${{ matrix.python }}-${{ hashFiles('conda/recipe.yaml', 'conda/build-*.sh', 'conda/build-*.ps1') }}
         restore-keys: ccache-${{ runner.os }}-
+    - name: Disable git commit-graph (avoids flaky "hardlink different from source" on local clones)
+      run: git config --global core.commitGraph false
     - uses: prefix-dev/rattler-build-action@v0.2.39
       with:
         recipe-path: conda/recipe.yaml
