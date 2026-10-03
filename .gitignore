@@ -44,3 +44,4 @@ WIN32/
 
 # Vagrant
 .vagrant/
+*.ova
