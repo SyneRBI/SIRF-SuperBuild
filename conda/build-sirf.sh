@@ -48,7 +48,7 @@ if [ "$(uname -s)" = "Linux" ]; then
       s = re.sub(r';/home/conda/feedstock_root/build_artifacts/[a-z0-9_]+/_build_env/[^;\s"]*', '', s)
       s = re.sub(r'/home/conda/feedstock_root/build_artifacts/[a-z0-9_]+/[a-z0-9_]+(?=/)', prefix, s)
       open(p, 'w').write(s)
-  EOF
+EOF
 fi
 
 if [ "${GADGETRON_USE_CUDA:-OFF}" = "ON" ]; then
