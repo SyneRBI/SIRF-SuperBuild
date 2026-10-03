@@ -162,7 +162,7 @@ outputs:
       # NUL-terminated argv, Windows FindCBLAS direct netlib link,
       # ProcessHelper.h rename (MSVC <process.h> clash), MSVC lapack types,
       # libc++-safe BufferKey ordering
-      rev: 7595ea661c6325c608c36323ee8381f4962007ab
+      rev: 5f2a05f492d634b847aabd1ffc8da233ca4e720d
     build:
       number: 0
       string: ${{ cuda_build_prefix }}
@@ -341,7 +341,7 @@ outputs:
       git: https://github.com/SyneRBI/SIRF.git
       # Boost 1.90 asio fix + optional STIR-shim hook (SyneRBI/SIRF PR #1420, branch boost190-asio)
       # + Windows stat() portability
-      rev: 30ae3e45ce39296772f4278b1aed5798917cff5b
+      rev: 50741fabf340747fb066a3913d78b5be070805b8
     build:
       number: 0
       string: py${{ python | replace('.', '') }}${{ '_' ~ cuda_build_prefix if with_cuda else '' }}

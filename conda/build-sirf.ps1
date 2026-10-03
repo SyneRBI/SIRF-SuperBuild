@@ -3,6 +3,9 @@
 # (%LIBRARY_PREFIX%); STIR + NIFTYREG from conda-forge. Unix: build-sirf.sh.
 $ErrorActionPreference = "Stop"
 
+# PowerShell 5.1 does not treat native exit codes as errors, so check them explicitly.
+function Assert-Zero($msg) { if ($LASTEXITCODE -ne 0) { throw "$msg failed with exit code $LASTEXITCODE" } }
+
 # NiftyReg 1.5.69.6 (the only conda-forge build) ships a broken inline getter in
 # _reg_aladin.h (see build-sirf.sh); SIRF never calls it, so neutralise it.
 $h = Join-Path $env:LIBRARY_PREFIX "include\_reg_aladin.h"
@@ -20,8 +23,11 @@ if ($s -match 'return this->InputTransform;') {
 }
 
 cmake -G Ninja $env:SRC_DIR -B "$env:BUILD_PREFIX\build" "-DCMAKE_BUILD_TYPE=Release" "-DCMAKE_INSTALL_PREFIX=$env:PREFIX" "-DCMAKE_PREFIX_PATH=$env:LIBRARY_PREFIX;$env:PREFIX" "-DRUN_ISMRMRD_SHEPP_LOGAN:BOOL=OFF" "-DDISABLE_Matlab:BOOL=ON" "-DDISABLE_PYTHON:BOOL=OFF" "-DPython_EXECUTABLE=$env:PREFIX\python.exe" "-DPYTHON_DEST_DIR=$env:SP_DIR" "-DDISABLE_Registration:BOOL=OFF" "-DDISABLE_Gadgetron:BOOL=OFF" "-DGadgetron_USE_CUDA:BOOL=OFF"
+Assert-Zero "cmake configure"
 cmake --build (Join-Path $env:BUILD_PREFIX "build") --config Release
+Assert-Zero "cmake build"
 cmake --install (Join-Path $env:BUILD_PREFIX "build") --config Release
+Assert-Zero "cmake install"
 
 # SIRF-Contribs (pure-Python, extends the sirf namespace with sirf.contrib)
 & "$env:PREFIX\python.exe" -m pip install "git+https://github.com/SyneRBI/SIRF-Contribs.git@v3.10.0"
