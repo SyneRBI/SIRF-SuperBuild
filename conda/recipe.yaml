@@ -348,7 +348,7 @@ outputs:
       # + Windows stat() portability + GeometricalInfo.h <cmath> (libc++) +
       # Apple: skip the cGadgetron C++ test + Windows FindFFTW3 (conda-forge
       # fftw import libs are <name>.lib, no 'lib' prefix)
-      rev: 5390811b0a0d53c446e25a18a224d6cb43419477
+      rev: 96cdf001443397db9da96fb133b374066a539949
     build:
       number: 0
       string: py${{ python | replace('.', '') }}${{ '_' ~ cuda_build_prefix if with_cuda else '' }}
@@ -448,19 +448,18 @@ outputs:
               - cuda-version
               - cuda-cudart-dev
     tests:
-      - python:
-          imports:
-            - sirf
-            - sirf.contrib
-            - sirf.STIR
-            - sirf.Utilities
-            - sirf.Reg
-            - sirf.SIRF
-          pip_check: false  # skip sirf-contrib's optional deps (brainweb/docopt/matplotlib)
       - script:
-          # the Gadgetron variant (cGadgetron) is only built on unix for now
+          # Import each module in its own process so a crash in one is isolated
+          # and identified (a single-process import would abort the whole test
+          # without saying which module faulted).
+          - python -c "import sirf; print('sirf OK')"
+          - python -c "import sirf.contrib; print('sirf.contrib OK')"
+          - python -c "import sirf.STIR; print('sirf.STIR OK')"
+          - python -c "import sirf.Utilities; print('sirf.Utilities OK')"
+          - python -c "import sirf.Reg; print('sirf.Reg OK')"
+          - python -c "import sirf.SIRF; print('sirf.SIRF OK')"
           - if: unix
-            then: python -c "import sirf.Gadgetron"
+            then: python -c "import sirf.Gadgetron; print('sirf.Gadgetron OK')"
     about:
       summary: Synergistic Image Reconstruction Framework (CPU)
       homepage: https://github.com/SyneRBI/SIRF
