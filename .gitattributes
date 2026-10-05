@@ -8,6 +8,8 @@
 
 # Declare files that will always have CRLF line endings on checkout.
 *.sln text eol=crlf
+*.ps1 text eol=crlf
+*.bat text eol=crlf
 
 # Shell scripts should have LF
 *.sh text eol=lf

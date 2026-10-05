@@ -10,9 +10,15 @@ cd SIRF-SuperBuild
 
 ## rattler-build (with ccache)
 
+Targets: `linux-64`, `osx-arm64`, `win-64`.
+CUDA is linux-only (`--variant cuda_compiler_version=X.Y`).
+
 ### CPU-only
+One of these depending on OS:
 ```sh
 rattler-build build -r conda -c conda-forge -c ismrmrd -c ccpi --no-build-id --target-platform linux-64 --variant python=3.13
+rattler-build build -r conda -c conda-forge -c ismrmrd -c ccpi --no-build-id --target-platform osx-arm64 --variant python=3.13
+rattler-build build -r conda -c conda-forge -c ismrmrd -c ccpi --no-build-id --target-platform win-64 --variant python=3.13
 ```
 ### CUDA 13.4
 ```sh
@@ -32,7 +38,7 @@ rattler-build build -r conda -c nvidia --variant cuda_compiler_version=12.9 -c c
 ## install
 
 ```sh
-rattler-build publish output/linux-64/*.conda --to ./channel
+rattler-build publish output/*64/*.conda --to ./channel
 # install in sirf env
 conda create -n sirf python=3.13 -c file://$PWD/channel -c conda-forge -c ismrmrd -c ccpi sirf siemens_to_ismrmrd
 conda activate sirf
