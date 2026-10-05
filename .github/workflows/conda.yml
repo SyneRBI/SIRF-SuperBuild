@@ -12,20 +12,19 @@ on:
 defaults: {run: {shell: 'bash -el {0}'}}
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}-latest
     timeout-minutes: 300
     strategy:
       fail-fast: false
       matrix:
-        python: [3.11, 3.12, 3.13]
+        os: [ubuntu, macos, windows]
+        python: [3.11, 3.13]
     env:
-      CCACHE_DIR: ${{ github.workspace }}/.ccache
+      CCACHE_DIR: ${{ github.workspace }}${{ matrix.os == 'windows' && '\' || '/' }}.ccache
       CCACHE_MAXSIZE: 3G
       RATTLER_CACHE_DIR: ${{ github.workspace }}${{ matrix.os == 'windows' && '\' || '/' }}.rattler
     steps:
     - uses: actions/checkout@v7
-    - uses: jlumbroso/free-disk-space@v2
-      with: {large-packages: false}
     - name: Cache rattler # conda, git, repodata
       uses: actions/cache@v6
       with:
@@ -36,23 +35,37 @@ jobs:
       uses: actions/cache@v6
       with:
         path: ${{ env.CCACHE_DIR }}
-        key: ccache-${{ runner.os }}-py${{ matrix.python }}-${{ hashFiles('conda/recipe.yaml', 'conda/build-*.sh') }}
+        key: ccache-${{ runner.os }}-py${{ matrix.python }}-${{ hashFiles('conda/recipe.yaml', 'conda/build-*') }}
         restore-keys: ccache-${{ runner.os }}-
+    - name: config
+      id: config
+      run: |
+        # avoid "hardlink different from source"
+        git config --global core.commitGraph false
+        # ratter-build config
+        case ${{ matrix.os }} in
+          windows)
+            echo target=win-64 >> $GITHUB_OUTPUT
+            ;;
+          macos)
+            echo target=osx-arm64 >> $GITHUB_OUTPUT
+            ;;
+          *)
+            echo target=linux-64 >> $GITHUB_OUTPUT
+            ;;
+        esac
     - uses: prefix-dev/rattler-build-action@v0.2.39
       with:
         recipe-path: conda/recipe.yaml
         rattler-build-version: v0.76.1
         # --no-build-id: required for ccache
-        build-args: --target-platform linux-64 -c conda-forge -c ismrmrd -c ccpi --variant python=${{ matrix.python }} --no-build-id
-        artifact-name: conda-py${{ matrix.python }}-linux-64
-    - name: ccache stats
-      if: always()
-      run: conda install -yq conda-forge::ccache && ccache -s || true
+        build-args: --target-platform ${{ steps.config.outputs.target }} -c conda-forge -c ismrmrd -c ccpi --variant python=${{ matrix.python }} --no-build-id
+        artifact-name: conda-py${{ matrix.python }}-${{ steps.config.outputs.target }}
     - if: failure()
       name: Upload debug build logs
       uses: actions/upload-artifact@v7
       with:
-        name: conda-build-logs-py${{ matrix.python }}
+        name: conda-build-logs-py${{ matrix.python }}-${{ matrix.os }}
         path: output/bld
         retention-days: 7
   build-cuda:
