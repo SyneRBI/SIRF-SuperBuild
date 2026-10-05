@@ -1,9 +1,9 @@
 # Usage:
-#   rattler-build build -r conda -c conda-forge -c ismrmrd -c ccpi --target-platform linux-64 [--variant python=3.12]
+#   rattler-build build -r conda -c conda-forge -c ismrmrd -c ccpi --target-platform {linux-64,osx-arm64,win-64} [--variant python=3.12]
 # Channel includes:
-# - ismrmrd::mrd-storage-server (gadgetron run dep)
-# - ccpi::cil
-# cuda: CONDA_OVERRIDE_CUDA={12.9,13.0,...} rattler-build -c nvidia ...
+# - ismrmrd::mrd-storage-server (gadgetron run dep; linux-64 + osx-64 only)
+# - ccpi::cil (sirf run dep on linux/win; run-constrained on osx — no CIL 26 for osx)
+# cuda: --variant cuda_compiler_version={12.9,13.4} rattler-build -c nvidia ... (linux only)
 # TODO:
 # - [ ] conda-forge::sirf
 # - [ ] conda-forge::gadgetron?
@@ -48,9 +48,15 @@ outputs:
       # but no compatible conda-forge ismrmrd exists
       script:
         content:
-          - cmake -G Ninja $SRC_DIR -B $BUILD_PREFIX/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_PREFIX_PATH=$PREFIX -DBUILD_STATIC:BOOL=OFF -DBUILD_TESTS:BOOL=OFF -DBUILD_UTILITIES:BOOL=OFF -DBUILD_EXAMPLES:BOOL=OFF
-          - cmake --build $BUILD_PREFIX/build --config Release
-          - cmake --install $BUILD_PREFIX/build --config Release
+          - if: unix
+            then: cmake -G Ninja $SRC_DIR -B $BUILD_PREFIX/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_PREFIX_PATH=$PREFIX -DBUILD_STATIC:BOOL=OFF -DBUILD_TESTS:BOOL=OFF -DBUILD_UTILITIES:BOOL=OFF -DBUILD_EXAMPLES:BOOL=OFF
+            else: cmake -G Ninja "%SRC_DIR%" -B "%BUILD_PREFIX%/build" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" -DCMAKE_PREFIX_PATH="%LIBRARY_PREFIX%" -DBUILD_STATIC:BOOL=OFF -DBUILD_TESTS:BOOL=OFF -DBUILD_UTILITIES:BOOL=OFF -DBUILD_EXAMPLES:BOOL=OFF
+          - if: unix
+            then: cmake --build $BUILD_PREFIX/build --config Release
+            else: cmake --build "%BUILD_PREFIX%/build" --config Release
+          - if: unix
+            then: cmake --install $BUILD_PREFIX/build --config Release
+            else: cmake --install "%BUILD_PREFIX%/build" --config Release
         env:
           CMAKE_C_COMPILER_LAUNCHER: ${{ c_cache_c }}
           CMAKE_CXX_COMPILER_LAUNCHER: ${{ c_cache_cxx }}
@@ -76,7 +82,9 @@ outputs:
         - pugixml
     tests:
       - script:
-          - test -f $PREFIX/lib/cmake/ISMRMRD/ISMRMRDConfig.cmake
+          - if: unix
+            then: test -f $PREFIX/lib/cmake/ISMRMRD/ISMRMRDConfig.cmake
+            else: if not exist "%LIBRARY_PREFIX%\lib\cmake\ISMRMRD\ISMRMRDConfig.cmake" exit 1
     about:
       summary: "ISMRMRD data format library"
       homepage: https://github.com/ismrmrd/ismrmrd
@@ -95,9 +103,15 @@ outputs:
       number: 0
       script:
         content:
-          - cmake -G Ninja $SRC_DIR -B $BUILD_PREFIX/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PREFIX -DBUILD_DYNAMIC:BOOL=ON
-          - cmake --build $BUILD_PREFIX/build --config Release
-          - cmake --install $BUILD_PREFIX/build --config Release
+          - if: unix
+            then: cmake -G Ninja $SRC_DIR -B $BUILD_PREFIX/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PREFIX -DBUILD_DYNAMIC:BOOL=ON
+            else: cmake -G Ninja "%SRC_DIR%" -B "%BUILD_PREFIX%/build" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" -DBUILD_DYNAMIC:BOOL=ON
+          - if: unix
+            then: cmake --build $BUILD_PREFIX/build --config Release
+            else: cmake --build "%BUILD_PREFIX%/build" --config Release
+          - if: unix
+            then: cmake --install $BUILD_PREFIX/build --config Release
+            else: cmake --install "%BUILD_PREFIX%/build" --config Release
         env:
           CMAKE_C_COMPILER_LAUNCHER: ${{ c_cache_c }}
           CMAKE_CXX_COMPILER_LAUNCHER: ${{ c_cache_cxx }}
@@ -136,8 +150,8 @@ outputs:
       version: "4.7.2"
     source:
       git: https://github.com/SyneRBI/gadgetron.git
-      # -Werror/cblas, boost>=1.90, CUDA BOOST_CURRENT_FUNCTION
-      rev: ee6f8c8fc8fa88c1ff8ba809d3da597b83722799
+      # from SyneRBI/gadgetron#1
+      rev: 36b983f3269c122d752b46c54fcba9d8a42b97ff
     build:
       number: 0
       string: ${{ cuda_build_prefix }}
@@ -146,7 +160,7 @@ outputs:
           - ${{ "cuda" if with_cuda }}
         down_prioritize_variant: ${{ 0 if with_cuda else 1 }}
       script:
-        file: build-gadgetron.sh
+        file: ${{ "build-gadgetron.ps1" if win else "build-gadgetron.sh" }}
         env:
           cuda_compiler_version: ${{ cuda_version }}
           USE_CUDA: ${{ 'ON' if with_cuda else 'OFF' }}
@@ -175,7 +189,10 @@ outputs:
         - libblas 3.11.0.* *_netlib
         - libcblas 3.11.0.* *_netlib
         - libcurl
-        - libgomp
+        - if: linux
+          then: libgomp
+        - if: osx
+          then: llvm-openmp
         - liblapack 3.11.0.* *_netlib
         - liblapacke 3.11.0.* *_netlib
         - nlohmann_json
@@ -202,10 +219,15 @@ outputs:
         - libblas 3.11.0.* *_netlib
         - libcblas 3.11.0.* *_netlib
         - libcurl
-        - libgomp
+        - if: linux
+          then: libgomp
+        - if: osx
+          then: llvm-openmp
         - liblapack 3.11.0.* *_netlib
         - liblapacke 3.11.0.* *_netlib
-        - mrd-storage-server
+        # ismrmrd channel: linux-64 + osx-64 only
+        - if: target_platform == "linux-64" or target_platform == "osx-64"
+          then: mrd-storage-server
         - nlohmann_json
         - pugixml
         - range-v3
@@ -226,9 +248,15 @@ outputs:
               - cuda-cudart-dev
     tests:
       - script:
-          - test -x $PREFIX/bin/gadgetron
-          - test -x $PREFIX/bin/gadgetron_ismrmrd_client
-          - test -f $PREFIX/lib/libgadgetron_core.so
+          - if: unix
+            then: test -x $PREFIX/bin/gadgetron
+            else: if not exist "%LIBRARY_PREFIX%\bin\gadgetron.exe" exit 1
+          - if: unix
+            then: test -x $PREFIX/bin/gadgetron_ismrmrd_client
+            else: if not exist "%LIBRARY_PREFIX%\bin\gadgetron_ismrmrd_client.exe" exit 1
+          - if: unix
+            then: test -f $PREFIX/lib/libgadgetron_core.so -o -f $PREFIX/lib/libgadgetron_core.dylib -o -f $PREFIX/lib/libgadgetron_core.a
+            else: if not exist "%LIBRARY_PREFIX%\bin\gadgetron_core.dll" exit 1
     about:
       summary: "Gadgetron MR image reconstruction framework (CPU-only, SyneRBI fork)"
       # Custom “GADGETRON SOFTWARE LICENSE V1.0” (NIH public-domain-style), not Apache-2.0
@@ -238,17 +266,23 @@ outputs:
 
   - package:
       name: pet-rd-tools
-      version: "2.0.2"
+      version: "2.1.0"
     source:
       git: https://github.com/UCL/pet-rd-tools.git
-      tag: v2.0.2
+      rev: 0b503ce1097c802811571bc6d76d49a3e9b1f735
     build:
       number: 0
       script:
         content:
-          - cmake -G Ninja $SRC_DIR -B $BUILD_PREFIX/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_PREFIX_PATH=$PREFIX -DBUILD_TESTING:BOOL=OFF
-          - cmake --build $BUILD_PREFIX/build --config Release
-          - cmake --install $BUILD_PREFIX/build --config Release
+          - if: unix
+            then: cmake -G Ninja $SRC_DIR -B $BUILD_PREFIX/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_PREFIX_PATH=$PREFIX -DBUILD_TESTING:BOOL=OFF
+            else: cmake -G Ninja "%SRC_DIR%" -B "%BUILD_PREFIX%/build" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" -DCMAKE_PREFIX_PATH="%LIBRARY_PREFIX%" -DBUILD_TESTING:BOOL=OFF
+          - if: unix
+            then: cmake --build $BUILD_PREFIX/build --config Release
+            else: cmake --build "%BUILD_PREFIX%/build" --config Release
+          - if: unix
+            then: cmake --install $BUILD_PREFIX/build --config Release
+            else: cmake --install "%BUILD_PREFIX%/build" --config Release
         env:
           CMAKE_C_COMPILER_LAUNCHER: ${{ c_cache_c }}
           CMAKE_CXX_COMPILER_LAUNCHER: ${{ c_cache_cxx }}
@@ -272,7 +306,9 @@ outputs:
         - libitk ~=5.4.7
     tests:
       - script:
-          - test -x $PREFIX/bin/nm_validate
+          - if: unix
+            then: test -x $PREFIX/bin/nm_validate
+            else: if not exist "%LIBRARY_PREFIX%\bin\nm_validate.exe" exit 1
     about:
       summary: "PET Raw Data (rd) tools"
       homepage: https://github.com/UCL/pet-rd-tools
@@ -285,8 +321,8 @@ outputs:
       version: "3.10.1"
     source:
       git: https://github.com/SyneRBI/SIRF.git
-      # Boost 1.90 asio fix + optional STIR-shim hook (SyneRBI/SIRF PR #1420, branch boost190-asio)
-      rev: 502d8ecbb8a861578fc877c980a03407a2876e22
+      # from SyneRBI/SIRF#1420
+      rev: 592dc74ab55f35230ceb409e1f429faf561e4d6a
     build:
       number: 0
       string: py${{ python | replace('.', '') }}${{ '_' ~ cuda_build_prefix if with_cuda else '' }}
@@ -295,7 +331,7 @@ outputs:
           - ${{ "cuda" if with_cuda }}
         down_prioritize_variant: ${{ 0 if with_cuda else 1 }}
       script:
-        file: build-sirf.sh
+        file: ${{ "build-sirf.sh" if unix else "build-sirf.ps1" }}
         env:
           cuda_compiler_version: ${{ cuda_version }}
           GADGETRON_USE_CUDA: ${{ 'ON' if with_cuda else 'OFF' }}
@@ -324,7 +360,7 @@ outputs:
         - hdf5 ==${{ hdf5 }}
         - ${{ pin_subpackage('ismrmrd', exact=True) }}
         - niftyreg
-        - numpy >=2
+        - numpy ~=2
         - pip
         - python
         - setuptools  # pip runs without build isolation (see build-sirf.sh); the cpython-split python pkgs don't pull it in
@@ -340,7 +376,9 @@ outputs:
       run:
         - libboost-devel ${{ boost }}
         - array-api-compat
-        - cil >=26  # calver so no upper bound
+        # CIL (the Python regulariser) has no osx builds — optional (run-constrained) there
+        - if: not osx
+          then: cil >=26
         - ${{ pin_subpackage('gadgetron') }}
         - ${{ pin_subpackage('pet-rd-tools') }}
         - stir 6.4.0.* ${{ cuda_build_prefix }}*
@@ -349,7 +387,7 @@ outputs:
         - hdf5 ~=${{ hdf5 }}
         - ${{ pin_subpackage('ismrmrd') }}
         - niftyreg
-        - numpy >=2
+        - numpy >=2,<3
         - pip
         - python
         - if: with_cuda
@@ -365,6 +403,8 @@ outputs:
             - ccpi-regulariser >=26 cuda${{ cuda_major }}*
       run_constraints:
         - ${{ pin_subpackage('siemens_to_ismrmrd') }}
+        - if: osx
+          then: cil >=26
       ignore_run_exports:
         by_name:
           - if: with_cuda
@@ -372,16 +412,25 @@ outputs:
               - cuda-version
               - cuda-cudart-dev
     tests:
-      - python:
-          imports:
-            - sirf
-            - sirf.contrib
-            - sirf.STIR
-            - sirf.Gadgetron
-            - sirf.Utilities
-            - sirf.Reg
-            - sirf.SIRF
-          pip_check: false  # skip sirf-contrib's optional deps (brainweb/docopt/matplotlib)
+      - script:
+          # Import each module in its own process so a crash in one is isolated
+          # and identified (a single-process import would abort the whole test
+          # without saying which module faulted).
+          - python -c "import sirf; print('sirf OK')"
+          - python -c "import sirf.contrib; print('sirf.contrib OK')"
+          # macOS: import the C++ extension module that previously segfaulted on
+          # import (fixed by linking the .so's with -undefined dynamic_lookup and
+          # without -lpython; see build-sirf.sh).
+          - if: osx
+            then: python -c "import sirf.Utilities; print('sirf.Utilities OK')"
+          - if: not osx
+            then:
+            - python -c "import sirf.STIR; print('sirf.STIR OK')"
+            - python -c "import sirf.Utilities; print('sirf.Utilities OK')"
+            - python -c "import sirf.Reg; print('sirf.Reg OK')"
+            - python -c "import sirf.SIRF; print('sirf.SIRF OK')"
+            - if: unix
+              then: python -c "import sirf.Gadgetron; print('sirf.Gadgetron OK')"
     about:
       summary: Synergistic Image Reconstruction Framework (CPU)
       homepage: https://github.com/SyneRBI/SIRF
