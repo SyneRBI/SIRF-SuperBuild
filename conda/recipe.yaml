@@ -150,8 +150,8 @@ outputs:
       version: "4.7.2"
     source:
       git: https://github.com/SyneRBI/gadgetron.git
-      # from SyneRBI/gadgetron#1
-      rev: 9ba4115118b03f62884c87b505b21efb9902e9a7
+      # branch synerbi
+      rev: 602455cad327ce08c509e4acdebf58b5b9dbd59b
     build:
       number: 0
       string: ${{ cuda_build_prefix }}
