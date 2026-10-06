@@ -151,7 +151,7 @@ outputs:
     source:
       git: https://github.com/SyneRBI/gadgetron.git
       # from SyneRBI/gadgetron#1
-      rev: 36b983f3269c122d752b46c54fcba9d8a42b97ff
+      rev: 9ba4115118b03f62884c87b505b21efb9902e9a7
     build:
       number: 0
       string: ${{ cuda_build_prefix }}
@@ -178,14 +178,14 @@ outputs:
         - if: with_cuda
           then: ${{ compiler('cuda') }}
       host:
-        # armadillo 12 (libar2) — Gadgetron 4.7 requires Armadillo 12+.
+        # armadillo>-12 (libar2) required by Gadgetron 4.7
         - armadillo >=12,<13
         - libboost-devel ${{ boost }}
         - fftw
         - hdf5 ==${{ hdf5 }}
         - howardhinnant_date
         - ${{ pin_subpackage('ismrmrd', exact=True) }}
-        # BLAS/LAPACK pinned to the netlib 3.11.0 builds (see comment in sirf).
+        # BLAS/LAPACK pinned to the netlib 3.11.0 builds (see comment in sirf)
         - libblas 3.11.0.* *_netlib
         - libcblas 3.11.0.* *_netlib
         - libcurl
@@ -203,9 +203,6 @@ outputs:
             - cuda-version ==${{ cuda_version }}
             - if: (cuda_major | int) >= 12
               then: cuda-cudart-dev
-            # GPU toolbox links the CUDA math libs; -dev ships the headers,
-            # and each build pins its own cuda-version so the solver picks
-            # the matching CUDA (e.g. libcufft 11.4 for 12.9).
             - libcublas-dev
             - libcufft-dev
             - libcusparse-dev
@@ -225,7 +222,7 @@ outputs:
           then: llvm-openmp
         - liblapack 3.11.0.* *_netlib
         - liblapacke 3.11.0.* *_netlib
-        # ismrmrd channel: linux-64 + osx-64 only
+        # ismrmrd::mrd-storage-server doesn't exist on all platforms
         - if: target_platform == "linux-64" or target_platform == "osx-64"
           then: mrd-storage-server
         - nlohmann_json
@@ -259,7 +256,7 @@ outputs:
             else: if not exist "%LIBRARY_PREFIX%\bin\gadgetron_core.dll" exit 1
     about:
       summary: "Gadgetron MR image reconstruction framework (CPU-only, SyneRBI fork)"
-      # Custom “GADGETRON SOFTWARE LICENSE V1.0” (NIH public-domain-style), not Apache-2.0
+      # Custom "GADGETRON SOFTWARE LICENSE V1.0" (NIH public-domain-style)
       license: LicenseRef-GADGETRON
       license_file: LICENSE
       repository: https://github.com/SyneRBI/gadgetron
@@ -363,20 +360,19 @@ outputs:
         - numpy ~=2
         - pip
         - python
-        - setuptools  # pip runs without build isolation (see build-sirf.sh); the cpython-split python pkgs don't pull it in
+        - setuptools
         - if: with_cuda
           then:
             - cuda-version ==${{ cuda_version }}
             - if: (cuda_major | int) >= 12
               then: cuda-cudart-dev
-            # cGadgetron links the CUDA math libs (headers via -dev).
             - libcublas-dev
             - libcufft-dev
             - libcusparse-dev
       run:
         - libboost-devel ${{ boost }}
         - array-api-compat
-        # CIL (the Python regulariser) has no osx builds — optional (run-constrained) there
+        # ccpi::cil has no osx builds
         - if: not osx
           then: cil >=26
         - ${{ pin_subpackage('gadgetron') }}
@@ -399,10 +395,10 @@ outputs:
             - libcufft
             - libcusparse
             - libcurand
-            # CUDA regulariser (the GPU CIL) for the GPU variant.
             - ccpi-regulariser >=26 cuda${{ cuda_major }}*
       run_constraints:
         - ${{ pin_subpackage('siemens_to_ismrmrd') }}
+        # ccpi::cil has no osx builds
         - if: osx
           then: cil >=26
       ignore_run_exports:
@@ -413,26 +409,19 @@ outputs:
               - cuda-cudart-dev
     tests:
       - script:
-          # Import each module in its own process so a crash in one is isolated
-          # and identified (a single-process import would abort the whole test
-          # without saying which module faulted).
           - python -c "import sirf; print('sirf OK')"
           - python -c "import sirf.contrib; print('sirf.contrib OK')"
-          # macOS: import the C++ extension module that previously segfaulted on
-          # import (fixed by linking the .so's with -undefined dynamic_lookup and
-          # without -lpython; see build-sirf.sh).
           - if: osx
             then: python -c "import sirf.Utilities; print('sirf.Utilities OK')"
-          - if: not osx
-            then:
+            else:
             - python -c "import sirf.STIR; print('sirf.STIR OK')"
             - python -c "import sirf.Utilities; print('sirf.Utilities OK')"
             - python -c "import sirf.Reg; print('sirf.Reg OK')"
             - python -c "import sirf.SIRF; print('sirf.SIRF OK')"
-            - if: unix
-              then: python -c "import sirf.Gadgetron; print('sirf.Gadgetron OK')"
+          - if: linux
+            then: python -c "import sirf.Gadgetron; print('sirf.Gadgetron OK')"
     about:
-      summary: Synergistic Image Reconstruction Framework (CPU)
+      summary: Synergistic Image Reconstruction Framework
       homepage: https://github.com/SyneRBI/SIRF
       repository: https://github.com/SyneRBI/SIRF
       license: Apache-2.0

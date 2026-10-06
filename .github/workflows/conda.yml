@@ -18,25 +18,24 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu, macos, windows]
-        python: [3.11, 3.13]
+        python: [3.11, 3.12, 3.13]
+        cuda: [None, 12.9, 13.4]
+        exclude:
+        - { os: macos, cuda: 12.9 }
+        - { os: macos, cuda: 13.4 }
+        - { os: windows, cuda: 12.9 }
+        - { os: windows, cuda: 13.4 }
     env:
-      CCACHE_DIR: ${{ github.workspace }}${{ matrix.os == 'windows' && '\' || '/' }}.ccache
-      CCACHE_MAXSIZE: 3G
-      RATTLER_CACHE_DIR: ${{ github.workspace }}${{ matrix.os == 'windows' && '\' || '/' }}.rattler
+      CCACHE_DIR: ${{ github.workspace }}/.ccache
+      CCACHE_MAXSIZE: 100M
     steps:
     - uses: actions/checkout@v7
-    - name: Cache rattler # conda, git, repodata
-      uses: actions/cache@v6
-      with:
-        path: ${{ env.RATTLER_CACHE_DIR }}
-        key: rattler-${{ runner.os }}-${{ hashFiles('conda/recipe.yaml') }}
-        restore-keys: rattler-${{ runner.os }}-
     - name: Cache ccache
       uses: actions/cache@v6
       with:
         path: ${{ env.CCACHE_DIR }}
-        key: ccache-${{ runner.os }}-py${{ matrix.python }}-${{ hashFiles('conda/recipe.yaml', 'conda/build-*') }}
-        restore-keys: ccache-${{ runner.os }}-
+        key: ccache-${{ runner.os }}-py${{ matrix.python }}-cu${{ matrix.cuda }}-${{ hashFiles('conda/recipe.yaml', 'conda/build-*') }}
+        restore-keys: ccache-${{ runner.os }}-py${{ matrix.python }}-cu${{ matrix.cuda }}-
     - name: config
       id: config
       run: |
@@ -55,48 +54,39 @@ jobs:
             ;;
         esac
     - uses: prefix-dev/rattler-build-action@v0.2.39
+      env:
+        CONDA_OVERRIDE_CUDA: ${{ matrix.cuda != 'None' && matrix.cuda || '' }}
       with:
         recipe-path: conda/recipe.yaml
         rattler-build-version: v0.76.1
         # --no-build-id: required for ccache
-        build-args: --target-platform ${{ steps.config.outputs.target }} -c conda-forge -c ismrmrd -c ccpi --variant python=${{ matrix.python }} --no-build-id
-        artifact-name: conda-py${{ matrix.python }}-${{ steps.config.outputs.target }}
+        build-args: >
+          --target-platform ${{ steps.config.outputs.target }}
+          -c conda-forge -c ismrmrd -c ccpi
+          ${{ matrix.cuda != 'None' && '--test skip' || '' }} --variant cuda_compiler_version=${{ matrix.cuda }}
+          --variant python=${{ matrix.python }} --no-build-id
+        artifact-name: conda-py${{ matrix.python }}-cu${{ matrix.cuda }}-${{ steps.config.outputs.target }}
     - if: failure()
       name: Upload debug build logs
       uses: actions/upload-artifact@v7
       with:
-        name: conda-build-logs-py${{ matrix.python }}-${{ matrix.os }}
+        name: conda-build-logs-py${{ matrix.python }}-cu${{ matrix.cuda }}-${{ matrix.os }}
         path: output/bld
         retention-days: 7
-  build-cuda:
-    name: "cuda py${{ matrix.python }} cuda${{ matrix.cuda }}"
-    runs-on: [self-hosted, cuda]
-    timeout-minutes: 300
-    strategy:
-      fail-fast: false
-      # min & max
-      matrix:
-        include:
-        - python: "3.11"
-          cuda: "12.9"
-        - python: "3.13"
-          cuda: "13.4"
+  upload:
+    if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags')
+    runs-on: ubuntu-slim
+    needs: build
+    defaults: {run: {working-directory: output}}
     steps:
     - uses: actions/checkout@v7
     - uses: prefix-dev/rattler-build-action@v0.2.39
-      with:
-        recipe-path: conda/recipe.yaml
-        rattler-build-version: v0.76.1
-        # --no-build-id: required for ccache
-        build-args: --target-platform linux-64 -c conda-forge -c ismrmrd -c ccpi -c nvidia --variant python=${{ matrix.python }} --variant cuda_compiler_version=${{ matrix.cuda }} --no-build-id
-        artifact-name: conda-py${{ matrix.python }}-cu${{ matrix.cuda }}-linux-64
-    - name: ccache stats
-      if: always()
-      run: ccache -s || true
-    - if: failure()
-      name: Upload debug build logs
-      uses: actions/upload-artifact@v7
-      with:
-        name: conda-build-logs-py${{ matrix.python }}-cu${{ matrix.cuda }}
-        path: output/bld
-        retention-days: 7
+      with: {setup-only: true}
+    - uses: actions/download-artifact@v8
+      with: {pattern: conda-py*, path: output, merge-multiple: true}
+    - name: conda upload -c synerbi
+      run: >
+        rattler-build upload anaconda */*.conda -f
+        -o synerbi -c ${{ startsWith(github.ref, 'refs/tags') && 'main' || 'dev' }}
+      env:
+        ANACONDA_API_KEY: ${{ secrets.ANACONDA_API_KEY }}
