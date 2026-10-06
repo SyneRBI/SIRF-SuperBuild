@@ -23,8 +23,6 @@ jobs:
         exclude:
         - { os: macos, cuda: 12.9 }
         - { os: macos, cuda: 13.4 }
-        - { os: windows, cuda: 12.9 }
-        - { os: windows, cuda: 13.4 }
     env:
       CCACHE_DIR: ${{ github.workspace }}/.ccache
       CCACHE_MAXSIZE: 100M

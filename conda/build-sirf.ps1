@@ -1,6 +1,6 @@
-# SIRF 3.10.1 (Windows) - C++ + Python, CPU only.
+# SIRF 3.10.1 (Windows) - C++ + Python, cGadgetron GADGETRON_USE_CUDA=OFF default.
 # Gadgetron / ISMRMRD / pet-rd-tools come from the sibling conda outputs
-# (%LIBRARY_PREFIX%); STIR + NIFTYREG from conda-forge. Unix: build-sirf.sh.
+# (%LIBRARY_PREFIX%); STIR + NIFTYREG from conda-forge.
 $ErrorActionPreference = "Stop"
 
 # PowerShell 5.1 does not treat native exit codes as errors, so check them explicitly.
@@ -91,7 +91,16 @@ if (Test-Path $arma) {
         Write-Host "armadillo arma_cmath.hpp: #undef'd isnan macro (MSVC std::_isnan)"
     }
 }
-cmake -G Ninja $env:SRC_DIR -B "$env:BUILD_PREFIX\build" "-DCMAKE_BUILD_TYPE=Release" "-DCMAKE_INSTALL_PREFIX=$env:PREFIX" "-DCMAKE_PREFIX_PATH=$env:LIBRARY_PREFIX;$env:PREFIX" "-DRUN_ISMRMRD_SHEPP_LOGAN:BOOL=OFF" "-DDOWNLOAD_ZENODO_TEST_DATA:BOOL=OFF" "-DDISABLE_Matlab:BOOL=ON" "-DDISABLE_PYTHON:BOOL=OFF" "-DPython_EXECUTABLE=$env:PREFIX\python.exe" "-DPYTHON_DEST_DIR=$env:SP_DIR" "-DDISABLE_Registration:BOOL=OFF" "-DDISABLE_Gadgetron:BOOL=OFF" "-DGadgetron_USE_CUDA:BOOL=OFF"
+# same conda host/build env fix as build-gadgetron.ps1
+$gadgetron_cuda = if ($env:GADGETRON_USE_CUDA) { $env:GADGETRON_USE_CUDA } else { "OFF" }
+if ($gadgetron_cuda -eq "ON") {
+    $env:CUDA_TOOLKIT_ROOT_DIR = $env:PREFIX
+    $env:CUDA_ROOT = $env:PREFIX
+    $env:CUDA_INC_PATH = $env:LIBRARY_PREFIX
+    $env:CUDA_LIB_PATH = $env:LIBRARY_PREFIX
+    $env:PATH = "$env:BUILD_PREFIX\Library\nvvm\bin;" + $env:PATH
+}
+cmake -G Ninja $env:SRC_DIR -B "$env:BUILD_PREFIX\build" "-DCMAKE_BUILD_TYPE=Release" "-DCMAKE_INSTALL_PREFIX=$env:PREFIX" "-DCMAKE_PREFIX_PATH=$env:LIBRARY_PREFIX;$env:PREFIX" "-DRUN_ISMRMRD_SHEPP_LOGAN:BOOL=OFF" "-DDOWNLOAD_ZENODO_TEST_DATA:BOOL=OFF" "-DDISABLE_Matlab:BOOL=ON" "-DDISABLE_PYTHON:BOOL=OFF" "-DPython_EXECUTABLE=$env:PREFIX\python.exe" "-DPYTHON_DEST_DIR=$env:SP_DIR" "-DDISABLE_Registration:BOOL=OFF" "-DDISABLE_Gadgetron:BOOL=OFF" "-DGadgetron_USE_CUDA:BOOL=$gadgetron_cuda"
 Assert-Zero "cmake configure"
 cmake --build "$env:BUILD_PREFIX\build" --config Release
 Assert-Zero "cmake build"
