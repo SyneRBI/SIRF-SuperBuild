@@ -1,12 +1,9 @@
 # Usage:
-#   rattler-build build -r conda -c conda-forge -c ismrmrd -c ccpi --target-platform {linux-64,osx-arm64,win-64} [--variant python=3.12]
+#   rattler-build build -r conda -c conda-forge -c ismrmrd -c ccpi -c synerbi --target-platform {linux-64,osx-arm64,win-64} [--variant python={3.11,3.12,...}] [-c nvidia --variant cuda_compiler_version={12.9,13.4}]
 # Channel includes:
 # - ismrmrd::mrd-storage-server (gadgetron run dep; linux-64 + osx-64 only)
 # - ccpi::cil (sirf run dep on linux/win; run-constrained on osx — no CIL 26 for osx)
-# cuda: --variant cuda_compiler_version={12.9,13.4} rattler-build -c nvidia ... (linux only)
-# TODO:
-# - [ ] conda-forge::sirf
-# - [ ] conda-forge::gadgetron?
+# - synerbi::gadgetron
 #
 # STIR 6.4.0 is consumed from conda-forge;
 # forcing the rest of the stack up (ITK 5.4.7, ROOT 6.36.10,
@@ -152,128 +149,12 @@ outputs:
       repository: https://github.com/ismrmrd/siemens_to_ismrmrd
 
   - package:
-      name: gadgetron
-      version: "4.7.2"
-    source:
-      git: https://github.com/SyneRBI/gadgetron.git
-      # branch synerbi
-      rev: dd6cb7bededcb08e04612251af4c83c03da60fd5
-    build:
-      number: 0
-      string: ${{ cuda_build_prefix }}
-      variant:
-        use_keys:
-          - ${{ "cuda" if with_cuda }}
-        down_prioritize_variant: ${{ 0 if with_cuda else 1 }}
-      script:
-        file: ${{ "build-gadgetron.ps1" if win else "build-gadgetron.sh" }}
-        env:
-          cuda_compiler_version: ${{ cuda_version }}
-          USE_CUDA: ${{ 'ON' if with_cuda else 'OFF' }}
-          CMAKE_C_COMPILER_LAUNCHER: ${{ c_cache_c }}
-          CMAKE_CXX_COMPILER_LAUNCHER: ${{ c_cache_cxx }}
-          CCACHE_DIR: ${{ ccache_dir }}
-          CCACHE_MAXSIZE: ${{ ccache_maxsize }}
-    requirements:
-      build:
-        - ccache
-        - cmake
-        - ninja
-        - ${{ compiler('c') }}
-        - ${{ compiler('cxx') }}
-        - if: with_cuda
-          then: ${{ compiler('cuda') }}
-      host:
-        # armadillo>-12 (libar2) required by Gadgetron 4.7
-        - armadillo >=12,<13
-        - libboost-devel ${{ boost }}
-        - fftw
-        - hdf5 ==${{ hdf5 }}
-        - howardhinnant_date
-        - ${{ pin_subpackage('ismrmrd', exact=True) }}
-        # BLAS/LAPACK pinned to the netlib 3.11.0 builds (see comment in sirf)
-        - libblas 3.11.0.* *_netlib
-        - libcblas 3.11.0.* *_netlib
-        - libcurl
-        - if: linux
-          then: libgomp
-        - if: osx
-          then: llvm-openmp
-        - liblapack 3.11.0.* *_netlib
-        - liblapacke 3.11.0.* *_netlib
-        - nlohmann_json
-        - pugixml
-        - range-v3
-        - if: with_cuda
-          then:
-            - cuda-version ==${{ cuda_version }}
-            - if: (cuda_major | int) >= 12
-              then: cuda-cudart-dev
-            - libcublas-dev
-            - libcufft-dev
-            - libcusparse-dev
-      run:
-        - armadillo >=12,<13
-        - libboost-devel ${{ boost }}
-        - fftw
-        - hdf5 ~=${{ hdf5 }}
-        - howardhinnant_date
-        - ${{ pin_subpackage('ismrmrd') }}
-        - libblas 3.11.0.* *_netlib
-        - libcblas 3.11.0.* *_netlib
-        - libcurl
-        - if: linux
-          then: libgomp
-        - if: osx
-          then: llvm-openmp
-        - liblapack 3.11.0.* *_netlib
-        - liblapacke 3.11.0.* *_netlib
-        # ismrmrd::mrd-storage-server doesn't exist on all platforms
-        - if: target_platform == "linux-64" or target_platform == "osx-64"
-          then: mrd-storage-server
-        - nlohmann_json
-        - pugixml
-        - range-v3
-        - if: with_cuda
-          then:
-            - __cuda
-            - cuda-version ~=${{ cuda_version }}
-            - cuda-cudart
-            - libcublas
-            - libcufft
-            - libcusparse
-            - libcurand
-      ignore_run_exports:
-        by_name:
-          - if: with_cuda
-            then:
-              - cuda-version
-              - cuda-cudart-dev
-    tests:
-      - script:
-          - if: unix
-            then: test -x $PREFIX/bin/gadgetron
-            else: if not exist "%LIBRARY_PREFIX%\bin\gadgetron.exe" exit 1
-          - if: unix
-            then: test -x $PREFIX/bin/gadgetron_ismrmrd_client
-            else: if not exist "%LIBRARY_PREFIX%\bin\gadgetron_ismrmrd_client.exe" exit 1
-          - if: unix
-            then: test -f $PREFIX/lib/libgadgetron_core.so -o -f $PREFIX/lib/libgadgetron_core.dylib -o -f $PREFIX/lib/libgadgetron_core.a
-            else: if not exist "%LIBRARY_PREFIX%\bin\gadgetron_core.dll" exit 1
-    about:
-      summary: "Gadgetron MR image reconstruction framework (CPU-only, SyneRBI fork)"
-      # Custom "GADGETRON SOFTWARE LICENSE V1.0" (NIH public-domain-style)
-      license: LicenseRef-GADGETRON
-      license_file: LICENSE
-      repository: https://github.com/SyneRBI/gadgetron
-
-  - package:
       name: sirf
       version: "3.10.1"
     source:
       git: https://github.com/SyneRBI/SIRF.git
       # from SyneRBI/SIRF#1420
-      rev: d8683cc4e6899fb86942e504b2b820511e8650bd
+      rev: 0ab4773c0b5821ae94620ef4a4b814801a5a348d
     build:
       number: 0
       string: py${{ python | replace('.', '') }}${{ '_' ~ cuda_build_prefix if with_cuda else '' }}
@@ -303,7 +184,7 @@ outputs:
         - if: with_cuda
           then: ${{ compiler('cuda') }}
       host:
-        - ${{ pin_subpackage('gadgetron', exact=True) }}
+        - gadgetron 4.7.2.* ${{ cuda_build_prefix }}*
         - stir 6.4.0.* ${{ cuda_build_prefix }}*
         - libboost-devel ${{ boost }}
         - fftw
@@ -328,7 +209,7 @@ outputs:
         # ccpi::cil has no osx builds
         - if: not osx
           then: cil >=26
-        - ${{ pin_subpackage('gadgetron') }}
+        - gadgetron 4.7.2.* ${{ cuda_build_prefix }}*
         - pet-rd-tools
         - stir 6.4.0.* ${{ cuda_build_prefix }}*
         - deprecation
