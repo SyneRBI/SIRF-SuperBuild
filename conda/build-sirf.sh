@@ -169,5 +169,42 @@ cmake --install $BUILD_PREFIX/build --config Release
 $PREFIX/bin/python -m pip install "git+https://github.com/SyneRBI/SIRF-Contribs.git@v3.10.0"
 
 # SIRF runtime env vars on activation (examples_data_path, Gadgetron relay)
-mkdir -p "$PREFIX/etc/conda/activate.d"
-cp "$RECIPE_DIR/activate-sirf.sh" "$PREFIX/etc/conda/activate.d/sirf-activate.sh"
+mkdir -p "$PREFIX/etc/conda/activate.d" "$PREFIX/etc/conda/deactivate.d"
+for ext in sh csh tcsh fish bat ps1; do
+  cp "$RECIPE_DIR/activate-sirf.$ext" "$PREFIX/etc/conda/activate.d/sirf-activate.$ext"
+  cp "$RECIPE_DIR/deactivate-sirf.$ext" "$PREFIX/etc/conda/deactivate.d/sirf-deactivate.$ext"
+done
+
+# --- test suite (C++ tests; the python tests run in the rattler test phase) ---
+# ctest needs the build tree, so it runs here. The MR/Gadgetron tests talk to a
+# live gadgetron server (relay 127.0.0.1:9002) and, for CUDA builds, to a GPU;
+# skip them for CUDA builds without a GPU (standard CI runners).
+SERVER_TESTS=ON
+if [ "${GADGETRON_USE_CUDA:-OFF}" = "ON" ] && ! nvidia-smi -L >/dev/null 2>&1; then
+  SERVER_TESTS=OFF
+fi
+EXCLUDES='_PYTHON|_DEMOS'
+[ "$SERVER_TESTS" = OFF ] && EXCLUDES+='|MR_|GADGETRON'
+CTEST_ARGS=(--test-dir "$BUILD_PREFIX/build" --verbose --output-on-failure -E "$EXCLUDES")
+
+GADGETRON_PID=""
+if [ "$SERVER_TESTS" = ON ]; then
+  "$PREFIX/bin/gadgetron" > "$BUILD_PREFIX/gadgetron.log" 2>&1 &
+  GADGETRON_PID=$!
+  # wait for the relay port (up to 60s)
+  for i in $(seq 1 60); do
+    (exec 3<>/dev/tcp/127.0.0.1/9002) 2>/dev/null && { exec 3>&-; break; }
+    sleep 1
+  done
+fi
+export GADGETRON_HOME="$PREFIX"  # relay config lookup, cf. activate-sirf.sh
+set +e
+ctest "${CTEST_ARGS[@]}"
+test_fail=$?
+set -e
+[ -n "$GADGETRON_PID" ] && kill "$GADGETRON_PID" 2>/dev/null || true
+if [ "$test_fail" -ne 0 ]; then
+  echo "----------- Last 70 lines of gadgetron.log"
+  tail -n 70 "$BUILD_PREFIX/gadgetron.log" 2>/dev/null || true
+  exit "$test_fail"
+fi

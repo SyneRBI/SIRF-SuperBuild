@@ -225,18 +225,77 @@ outputs:
         - if: osx
           then: cil >=26
     tests:
+      - python:
+          imports:
+            - sirf
+            - sirf.contrib
+            - sirf.Utilities
+            - if: not osx
+              then:
+                - sirf.STIR
+                - sirf.Reg
+                - sirf.SIRF
+            - if: linux
+              then: sirf.Gadgetron
+      - requirements:
+          run:
+            - pytest
+            - docopt
+            - matplotlib
+        files:
+          source:
+            - src/Synergistic/pSyn/tests/
+            - src/Synergistic/tests/test_pSynergistic.py
+            - src/Registration/pReg/tests/
+            - src/xSTIR/pSTIR/tests/
+            - examples/Python/PET/
+            - src/torch/tests/
+            - src/xGadgetron/pGadgetron/tests/
+            - examples/Python/MR/
+        script:
+          - python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          - if: unix
+            then: |
+              "$PREFIX/bin/gadgetron" > gadgetron.log 2>&1 &
+              gadgetron_pid=$!
+              python -c "import socket, sys, time\nfor i in range(60):\n    s = socket.socket(); s.settimeout(1)\n    ok = s.connect_ex(('127.0.0.1', 9002)) == 0; s.close()\n    if ok: break\n    time.sleep(1)\nsys.exit(0 if ok else 1)"
+          - if: win
+            then: |
+              $gadgetron = Start-Process -FilePath "$env:PREFIX\gadgetron.exe" -RedirectStandardOutput gadgetron.log -PassThru
+              python -c "import socket, sys, time\nfor i in range(60):\n    s = socket.socket(); s.settimeout(1)\n    ok = s.connect_ex(('127.0.0.1', 9002)) == 0; s.close()\n    if ok: break\n    time.sleep(1)\nsys.exit(0 if ok else 1)"
+          - python -m pytest src/Synergistic/pSyn/tests
+          - python -m pytest src/Synergistic/tests/test_pSynergistic.py
+          - python -m pytest src/Registration/pReg/tests
+          - python -m pytest src/xSTIR/pSTIR/tests
+          - python -m pytest examples/Python/PET
+          - python -m pytest src/torch/tests
+          - python -m pytest src/xGadgetron/pGadgetron/tests
+          - python -m pytest examples/Python/MR
+          - if: unix
+            then: kill "$gadgetron_pid" 2>/dev/null || true
+          - if: win
+            then: Stop-Process -Id $gadgetron.Id -Force -ErrorAction SilentlyContinue
       - script:
-          - python -c "import sirf; print('sirf OK')"
-          - python -c "import sirf.contrib; print('sirf.contrib OK')"
-          - if: osx
-            then: python -c "import sirf.Utilities; print('sirf.Utilities OK')"
-            else:
-            - python -c "import sirf.STIR; print('sirf.STIR OK')"
-            - python -c "import sirf.Utilities; print('sirf.Utilities OK')"
-            - python -c "import sirf.Reg; print('sirf.Reg OK')"
-            - python -c "import sirf.SIRF; print('sirf.SIRF OK')"
           - if: linux
-            then: python -c "import sirf.Gadgetron; print('sirf.Gadgetron OK')"
+            then: |
+              set -uxo pipefail
+              mkdir cil_sirf_test
+              touch cil_sirf_test/__init__.py
+              DEFAULT_CIL_TAG=$(python -c 'import cil; print(f"v{cil.version.version}" if cil.version.commit_hash == "-1" else cil.version.commit_hash[1:])' | tail -n1)
+              for fname in test_SIRF.py utils.py testclass.py; do
+                curl -fsSL "https://raw.githubusercontent.com/TomographicImaging/CIL/$DEFAULT_CIL_TAG/Wrappers/Python/test/$fname" > "cil_sirf_test/$fname"
+              done
+              "$PREFIX/bin/gadgetron" > gadgetron.log 2>&1 &
+              gadgetron_pid=$!
+              # wait for the relay port (up to 60s)
+              for i in $(seq 1 60); do
+                (exec 3<>/dev/tcp/127.0.0.1/9002) 2>/dev/null && { exec 3>&-; break; }
+                sleep 1
+              done
+              python -m unittest discover -v ./cil_sirf_test
+              ret=$?
+              kill -n 15 "$gadgetron_pid" 2>/dev/null || true
+              exit "$ret"
     about:
       summary: Synergistic Image Reconstruction Framework
       homepage: https://github.com/SyneRBI/SIRF

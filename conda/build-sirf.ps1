@@ -111,4 +111,44 @@ Assert-Zero "cmake install"
 
 # SIRF runtime env vars on activation (examples_data_path, Gadgetron relay)
 New-Item -ItemType Directory -Force "$env:PREFIX\etc\conda\activate.d" | Out-Null
-Copy-Item "$env:RECIPE_DIR\activate-sirf.bat" "$env:PREFIX\etc\conda\activate.d\sirf-activate.bat"
+New-Item -ItemType Directory -Force "$env:PREFIX\etc\conda\deactivate.d" | Out-Null
+foreach ($ext in @('sh','csh','tcsh','fish','bat','ps1')) {
+  Copy-Item "$env:RECIPE_DIR\activate-sirf.$ext" "$env:PREFIX\etc\conda\activate.d\sirf-activate.$ext"
+  Copy-Item "$env:RECIPE_DIR\deactivate-sirf.$ext" "$env:PREFIX\etc\conda\deactivate.d\sirf-deactivate.$ext"
+}
+
+# --- test suite (C++ tests; the python tests run in the rattler test phase) ---
+# ctest needs the build tree, so it runs here. The MR/Gadgetron tests talk to a
+# live gadgetron server (relay 127.0.0.1:9002) and, for CUDA builds, to a GPU;
+# skip them for CUDA builds without a GPU (standard CI runners).
+$server_tests = $true
+if ($gadgetron_cuda -eq "ON") {
+    $nvidia = Get-Command nvidia-smi -ErrorAction SilentlyContinue
+    if (-not $nvidia) { $server_tests = $false }
+    else { & nvidia-smi -L *> $null; if ($LASTEXITCODE -ne 0) { $server_tests = $false } }
+}
+$exclude = '_PYTHON|_DEMOS'
+if (-not $server_tests) { $exclude += '|MR_|GADGETRON' }
+$ctest_args = @("--test-dir", "$env:BUILD_PREFIX\build", "--verbose", "--output-on-failure", "-E", $exclude)
+
+$gadgetron_pid = $null
+if ($server_tests) {
+    $gadgetron_pid = Start-Process -FilePath "$env:PREFIX\Library\bin\gadgetron.exe" `
+        -RedirectStandardOutput "$env:BUILD_PREFIX\gadgetron.log" `
+        -RedirectStandardError "$env:BUILD_PREFIX\gadgetron-err.log" -PassThru
+    # wait for the relay port (up to 60s)
+    for ($i = 0; $i -lt 60; $i++) {
+        $c = New-Object Net.Sockets.TcpClient
+        try { $c.Connect("127.0.0.1", 9002); $c.Close(); break } catch { Start-Sleep -Seconds 1 }
+    }
+}
+$env:GADGETRON_HOME = $env:PREFIX  # relay config lookup, cf. sirf-activate.bat
+ctest @ctest_args
+$test_fail = $LASTEXITCODE
+if ($gadgetron_pid) { Stop-Process -Id $gadgetron_pid.Id -Force -ErrorAction SilentlyContinue }
+if ($test_fail -ne 0) {
+    Write-Host "----------- Last 70 lines of gadgetron.log"
+    Get-Content "$env:BUILD_PREFIX\gadgetron.log" -Tail 70 -ErrorAction SilentlyContinue
+    exit $test_fail
+}
+
