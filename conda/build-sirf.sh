@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # SIRF 3.10.1 — C++ + Python (Linux + macOS). CPU by default; CUDA
-# (cGadgetron) on Linux when GADGETRON_USE_CUDA=ON. Gadgetron / ISMRMRD /
-# pet-rd-tools come from the sibling conda outputs; STIR from conda-forge;
-# NIFTYREG from conda-forge. Windows: see build-sirf.ps1.
+# (cGadgetron) on Linux when GADGETRON_USE_CUDA=ON.
+# Windows: see build-sirf.ps1.
 set -euxo pipefail
 
 # NiftyReg 1.5.69.6 (the only conda-forge build) ships a broken inline getter in

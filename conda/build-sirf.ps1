@@ -1,6 +1,5 @@
 # SIRF 3.10.1 (Windows) - C++ + Python, cGadgetron GADGETRON_USE_CUDA=OFF default.
-# Gadgetron / ISMRMRD / pet-rd-tools come from the sibling conda outputs
-# (%LIBRARY_PREFIX%); STIR + NIFTYREG from conda-forge.
+# Gadgetron & ISMRMRD come from the sibling conda outputs (%LIBRARY_PREFIX%)
 $ErrorActionPreference = "Stop"
 
 # PowerShell 5.1 does not treat native exit codes as errors, so check them explicitly.
