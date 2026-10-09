@@ -7,7 +7,6 @@
 # TODO:
 # - [ ] conda-forge::sirf
 # - [ ] conda-forge::gadgetron?
-# - [ ] conda-forge::pet-rd-tools
 #
 # STIR 6.4.0 is consumed from conda-forge;
 # forcing the rest of the stack up (ITK 5.4.7, ROOT 6.36.10,
@@ -17,7 +16,9 @@
 schema_version: 1
 
 context:
-  boost: 1.92.0.*
+  # pet-rd-tools==2.2.0 needs boost==1.90
+  # stir==6.4.0 needs boost>=1.90
+  boost: 1.90.0.*
   hdf5: 1.14.6
   cuda_version: ${{ cuda_compiler_version if cuda_compiler_version is defined and cuda_compiler_version != "None" else "None" }}
   with_cuda: ${{ "true" if cuda_version != "None" else "" }}
@@ -262,58 +263,6 @@ outputs:
       repository: https://github.com/SyneRBI/gadgetron
 
   - package:
-      name: pet-rd-tools
-      version: "2.1.0"
-    source:
-      git: https://github.com/UCL/pet-rd-tools.git
-      rev: 0b503ce1097c802811571bc6d76d49a3e9b1f735
-    build:
-      number: 0
-      script:
-        content:
-          - if: unix
-            then: cmake -G Ninja $SRC_DIR -B $BUILD_PREFIX/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_PREFIX_PATH=$PREFIX -DBUILD_TESTING:BOOL=OFF
-            else: cmake -G Ninja "%SRC_DIR%" -B "%BUILD_PREFIX%/build" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" -DCMAKE_PREFIX_PATH="%LIBRARY_PREFIX%" -DBUILD_TESTING:BOOL=OFF
-          - if: unix
-            then: cmake --build $BUILD_PREFIX/build --config Release
-            else: cmake --build "%BUILD_PREFIX%/build" --config Release
-          - if: unix
-            then: cmake --install $BUILD_PREFIX/build --config Release
-            else: cmake --install "%BUILD_PREFIX%/build" --config Release
-        env:
-          CMAKE_C_COMPILER_LAUNCHER: ${{ c_cache_c }}
-          CMAKE_CXX_COMPILER_LAUNCHER: ${{ c_cache_cxx }}
-          CCACHE_DIR: ${{ ccache_dir }}
-          CCACHE_MAXSIZE: ${{ ccache_maxsize }}
-    requirements:
-      build:
-        - ccache
-        - cmake
-        - ninja
-        - ${{ compiler('c') }}
-        - ${{ compiler('cxx') }}
-      host:
-        - libboost-devel ${{ boost }}
-        - glog
-        - libitk ==5.4.7
-        - libitk-devel ==5.4.7
-      run:
-        - libboost-devel ${{ boost }}
-        - glog
-        - libitk ~=5.4.7
-    tests:
-      - script:
-          - if: unix
-            then: test -x $PREFIX/bin/nm_validate
-            else: if not exist "%LIBRARY_PREFIX%\bin\nm_validate.exe" exit 1
-    about:
-      summary: "PET Raw Data (rd) tools"
-      homepage: https://github.com/UCL/pet-rd-tools
-      license: Apache-2.0
-      license_file: LICENSE.txt
-      repository: https://github.com/UCL/pet-rd-tools
-
-  - package:
       name: sirf
       version: "3.10.1"
     source:
@@ -350,7 +299,6 @@ outputs:
           then: ${{ compiler('cuda') }}
       host:
         - ${{ pin_subpackage('gadgetron', exact=True) }}
-        - ${{ pin_subpackage('pet-rd-tools', exact=True) }}
         - stir 6.4.0.* ${{ cuda_build_prefix }}*
         - libboost-devel ${{ boost }}
         - fftw
@@ -376,7 +324,7 @@ outputs:
         - if: not osx
           then: cil >=26
         - ${{ pin_subpackage('gadgetron') }}
-        - ${{ pin_subpackage('pet-rd-tools') }}
+        - pet-rd-tools
         - stir 6.4.0.* ${{ cuda_build_prefix }}*
         - deprecation
         - fftw
