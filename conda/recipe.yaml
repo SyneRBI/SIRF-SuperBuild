@@ -100,6 +100,11 @@ outputs:
     source:
       git: https://github.com/ismrmrd/siemens_to_ismrmrd.git
       tag: v1.3.0
+      patches:
+        # boost::system is header-only, but
+        # conda-forge boost=1.90 ships no boost_system CMake component config (fixed in 1.92).
+        # drop the `system` component; nothing here needs it:
+        - siemens_to_ismrmrd-drop-boost-system.patch
     build:
       number: 0
       script:
@@ -152,7 +157,7 @@ outputs:
     source:
       git: https://github.com/SyneRBI/gadgetron.git
       # branch synerbi
-      rev: 602455cad327ce08c509e4acdebf58b5b9dbd59b
+      rev: dd6cb7bededcb08e04612251af4c83c03da60fd5
     build:
       number: 0
       string: ${{ cuda_build_prefix }}
@@ -268,7 +273,7 @@ outputs:
     source:
       git: https://github.com/SyneRBI/SIRF.git
       # from SyneRBI/SIRF#1420
-      rev: 592dc74ab55f35230ceb409e1f429faf561e4d6a
+      rev: d8683cc4e6899fb86942e504b2b820511e8650bd
     build:
       number: 0
       string: py${{ python | replace('.', '') }}${{ '_' ~ cuda_build_prefix if with_cuda else '' }}
