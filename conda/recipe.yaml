@@ -73,11 +73,6 @@ outputs:
         - libboost-devel ${{ boost }}
         - nlohmann_json
         - pugixml
-      run:
-        - fftw
-        - hdf5 ~=${{ hdf5 }}
-        - libboost-devel ${{ boost }}
-        - pugixml
     tests:
       - script:
           - if: unix
@@ -134,9 +129,6 @@ outputs:
         - libxslt
       run:
         - ${{ pin_subpackage('ismrmrd') }}
-        - libboost-devel ${{ boost }}
-        - libxml2-devel
-        - libxslt
     tests:
       - script:
           - siemens_to_ismrmrd --help
@@ -204,7 +196,6 @@ outputs:
             - libcufft-dev
             - libcusparse-dev
       run:
-        - libboost-devel ${{ boost }}
         - array-api-compat
         # ccpi::cil has no osx builds
         - if: not osx
@@ -213,8 +204,6 @@ outputs:
         - pet-rd-tools
         - stir 6.4.0.* ${{ cuda_build_prefix }}*
         - deprecation
-        - fftw
-        - hdf5 ~=${{ hdf5 }}
         - ${{ pin_subpackage('ismrmrd') }}
         - niftyreg
         - numpy >=2,<3
@@ -235,12 +224,6 @@ outputs:
         # ccpi::cil has no osx builds
         - if: osx
           then: cil >=26
-      ignore_run_exports:
-        by_name:
-          - if: with_cuda
-            then:
-              - cuda-version
-              - cuda-cudart-dev
     tests:
       - script:
           - python -c "import sirf; print('sirf OK')"
