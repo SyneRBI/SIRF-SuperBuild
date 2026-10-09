@@ -60,7 +60,7 @@ jobs:
         # --no-build-id: required for ccache
         build-args: >
           --target-platform ${{ steps.config.outputs.target }}
-          -c conda-forge -c ismrmrd -c ccpi
+          -c conda-forge -c ismrmrd -c ccpi -c synerbi/label/dev
           ${{ matrix.cuda != 'None' && '--test skip' || '' }} --variant cuda_compiler_version=${{ matrix.cuda }}
           --variant python=${{ matrix.python }} --no-build-id
         artifact-name: conda-py${{ matrix.python }}-cu${{ matrix.cuda }}-${{ steps.config.outputs.target }}
