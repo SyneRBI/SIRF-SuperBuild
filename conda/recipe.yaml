@@ -5,10 +5,7 @@
 # - ccpi::cil (sirf run dep on linux/win; run-constrained on osx — no CIL 26 for osx)
 # - synerbi::gadgetron
 #
-# STIR 6.4.0 is consumed from conda-forge;
-# forcing the rest of the stack up (ITK 5.4.7, ROOT 6.36.10,
-# Boost 1.90, hdf5 1.14.6), which also unifies everything on icu 78. ismrmrd is
-# built from source here because conda-forge has no pre-built ismrmrd for Boost 1.90.
+# conda-forge::stir==6.4.0 forces the rest of the stack up (ITK 5.4.7, ROOT 6.36.10, Boost 1.90, hdf5 1.14.6), which also unifies everything on icu 78.
 
 schema_version: 1
 
@@ -16,7 +13,9 @@ context:
   # pet-rd-tools==2.2.0 needs boost==1.90
   # stir==6.4.0 needs boost>=1.90
   boost: 1.90.0.*
+  # gadgetron & stir need hdf5==1.14.6
   hdf5: 1.14.6
+  sirf_contribs: 3.10.0
   cuda_version: ${{ cuda_compiler_version if cuda_compiler_version is defined and cuda_compiler_version != "None" else "None" }}
   with_cuda: ${{ "true" if cuda_version != "None" else "" }}
   cuda_major: ${{ (cuda_version | split(".") | first) if with_cuda else "0" }}
@@ -163,6 +162,7 @@ outputs:
           CMAKE_CXX_COMPILER_LAUNCHER: ${{ c_cache_cxx }}
           CCACHE_DIR: ${{ ccache_dir }}
           CCACHE_MAXSIZE: ${{ ccache_maxsize }}
+          SIRF_CONTRIBS_VERSION: ${{ sirf_contribs }}
     requirements:
       build:
         - ccache

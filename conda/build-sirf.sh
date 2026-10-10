@@ -166,7 +166,7 @@ cmake --install $BUILD_PREFIX/build --config Release
 # pip runs without build isolation (rattler-build sets PIP_NO_BUILD_ISOLATION,
 # which pip >=26 interprets as "isolation off"), so the setuptools backend is
 # imported from the host env — hence the explicit setuptools host dep.
-$PREFIX/bin/python -m pip install "git+https://github.com/SyneRBI/SIRF-Contribs.git@v3.10.0"
+$PREFIX/bin/python -m pip install "git+https://github.com/SyneRBI/SIRF-Contribs.git@v${SIRF_CONTRIBS_VERSION}"
 
 # SIRF runtime env vars on activation (examples_data_path, Gadgetron relay)
 mkdir -p "$PREFIX/etc/conda/activate.d" "$PREFIX/etc/conda/deactivate.d"

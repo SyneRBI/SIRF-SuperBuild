@@ -107,7 +107,7 @@ cmake --install "$env:BUILD_PREFIX\build" --config Release
 Assert-Zero "cmake install"
 
 # SIRF-Contribs (pure-Python, extends the sirf namespace with sirf.contrib)
-& "$env:PREFIX\python.exe" -m pip install "git+https://github.com/SyneRBI/SIRF-Contribs.git@v3.10.0"
+& "$env:PREFIX\python.exe" -m pip install "git+https://github.com/SyneRBI/SIRF-Contribs.git@v${env:SIRF_CONTRIBS_VERSION}"
 
 # SIRF runtime env vars on activation (examples_data_path, Gadgetron relay)
 New-Item -ItemType Directory -Force "$env:PREFIX\etc\conda\activate.d" | Out-Null
