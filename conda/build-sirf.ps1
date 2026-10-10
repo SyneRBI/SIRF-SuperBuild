@@ -109,9 +109,13 @@ Assert-Zero "cmake install"
 # SIRF-Contribs (pure-Python, sirf.contrib) is now built as a separate output
 # (the sirf-contrib output in recipe.yaml); not installed here.
 
-# SIRF runtime env vars on activation (Windows runs .bat, not .sh)
+# SIRF runtime env vars on activation (examples_data_path, Gadgetron relay)
 New-Item -ItemType Directory -Force "$env:PREFIX\etc\conda\activate.d" | Out-Null
-Copy-Item "$env:RECIPE_DIR\activate-sirf.bat" "$env:PREFIX\etc\conda\activate.d\sirf-activate.bat"
+New-Item -ItemType Directory -Force "$env:PREFIX\etc\conda\deactivate.d" | Out-Null
+foreach ($ext in @('sh','csh','fish','bat','ps1')) {
+  Copy-Item "$env:RECIPE_DIR\activate-sirf.$ext" "$env:PREFIX\etc\conda\activate.d\sirf-activate.$ext"
+  Copy-Item "$env:RECIPE_DIR\deactivate-sirf.$ext" "$env:PREFIX\etc\conda\deactivate.d\sirf-deactivate.$ext"
+}
 
 # --- test suite (C++ tests; the python tests run in the rattler test phase) ---
 # ctest needs the build tree, so it runs here. The MR/Gadgetron tests talk to a

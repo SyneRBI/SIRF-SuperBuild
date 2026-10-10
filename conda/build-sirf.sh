@@ -166,8 +166,11 @@ cmake --install $BUILD_PREFIX/build --config Release
 # (the sirf-contrib output in recipe.yaml); not installed here.
 
 # SIRF runtime env vars on activation (examples_data_path, Gadgetron relay)
-mkdir -p "$PREFIX/etc/conda/activate.d"
-cp "$RECIPE_DIR/activate-sirf.sh" "$PREFIX/etc/conda/activate.d/sirf-activate.sh"
+mkdir -p "$PREFIX/etc/conda/activate.d" "$PREFIX/etc/conda/deactivate.d"
+for ext in sh csh fish bat ps1; do
+  cp "$RECIPE_DIR/activate-sirf.$ext" "$PREFIX/etc/conda/activate.d/sirf-activate.$ext"
+  cp "$RECIPE_DIR/deactivate-sirf.$ext" "$PREFIX/etc/conda/deactivate.d/sirf-deactivate.$ext"
+done
 
 # --- test suite (C++ tests; the python tests run in the rattler test phase) ---
 # ctest needs the build tree, so it runs here. The MR/Gadgetron tests talk to a
