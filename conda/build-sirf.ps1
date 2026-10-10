@@ -112,7 +112,7 @@ Assert-Zero "cmake install"
 # SIRF runtime env vars on activation (examples_data_path, Gadgetron relay)
 New-Item -ItemType Directory -Force "$env:PREFIX\etc\conda\activate.d" | Out-Null
 New-Item -ItemType Directory -Force "$env:PREFIX\etc\conda\deactivate.d" | Out-Null
-foreach ($ext in @('sh','csh','tcsh','fish','bat','ps1')) {
+foreach ($ext in @('sh','csh','fish','bat','ps1')) {
   Copy-Item "$env:RECIPE_DIR\activate-sirf.$ext" "$env:PREFIX\etc\conda\activate.d\sirf-activate.$ext"
   Copy-Item "$env:RECIPE_DIR\deactivate-sirf.$ext" "$env:PREFIX\etc\conda\deactivate.d\sirf-deactivate.$ext"
 }

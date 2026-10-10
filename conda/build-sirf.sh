@@ -167,7 +167,7 @@ cmake --install $BUILD_PREFIX/build --config Release
 
 # SIRF runtime env vars on activation (examples_data_path, Gadgetron relay)
 mkdir -p "$PREFIX/etc/conda/activate.d" "$PREFIX/etc/conda/deactivate.d"
-for ext in sh csh tcsh fish bat ps1; do
+for ext in sh csh fish bat ps1; do
   cp "$RECIPE_DIR/activate-sirf.$ext" "$PREFIX/etc/conda/activate.d/sirf-activate.$ext"
   cp "$RECIPE_DIR/deactivate-sirf.$ext" "$PREFIX/etc/conda/deactivate.d/sirf-deactivate.$ext"
 done
