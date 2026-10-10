@@ -16,6 +16,8 @@ context:
   # gadgetron & stir need hdf5==1.14.6
   hdf5: 1.14.6
   sirf_contribs: 3.10.0
+  # example-data install prefix (share/SIRF-<minor>/data); must match SIRF project() MAJOR.MINOR
+  sirf_minor: 3.10
   cuda_version: ${{ cuda_compiler_version if cuda_compiler_version is defined and cuda_compiler_version != "None" else "None" }}
   with_cuda: ${{ "true" if cuda_version != "None" else "" }}
   cuda_major: ${{ (cuda_version | split(".") | first) if with_cuda else "0" }}
@@ -140,12 +142,41 @@ outputs:
       repository: https://github.com/ismrmrd/siemens_to_ismrmrd
 
   - package:
+      name: sirf-data
+      version: "3.10.1"
+    inherit: null
+    source:
+      git: https://github.com/SyneRBI/SIRF_data.git
+      # from SyneRBI/SIRF:/data submodule
+      rev: 8bf9b6d1f5da6d4da7cdc5d30ac80414aa1cbe69
+    build:
+      number: 0
+      noarch: generic
+      script:
+        interpreter: ${{ "powershell" if win else "bash" }}
+        content:
+          - if: unix
+            then: |
+              mkdir -p "$PREFIX/share/SIRF-${{ sirf_minor }}/data"
+              cp -r "$SRC_DIR/." "$PREFIX/share/SIRF-${{ sirf_minor }}/data/"
+              rm -rf "$PREFIX/share/SIRF-${{ sirf_minor }}/data/.git"
+            else: |
+              New-Item -ItemType Directory -Force "$env:PREFIX\share\SIRF-${{ sirf_minor }}\data" | Out-Null
+              Copy-Item -Recurse -Force "$env:SRC_DIR\*" "$env:PREFIX\share\SIRF-${{ sirf_minor }}\data\"
+              Remove-Item -Recurse -Force "$env:PREFIX\share\SIRF-${{ sirf_minor }}\data\.git" -ErrorAction SilentlyContinue
+    about:
+      summary: SIRF example data (MR/PET/Registration/SPECT)
+      homepage: https://github.com/CCPPETMR/SIRF_data
+      repository: https://github.com/CCPPETMR/SIRF_data
+      license: Apache-2.0
+
+  - package:
       name: sirf
       version: "3.10.1"
     source:
       git: https://github.com/SyneRBI/SIRF.git
       # from SyneRBI/SIRF#1420
-      rev: 0ab4773c0b5821ae94620ef4a4b814801a5a348d
+      rev: 2184768362d4ac3d61b330a143e84e090d0de6d6
     build:
       number: 0
       string: py${{ python | replace('.', '') }}${{ '_' ~ cuda_build_prefix if with_cuda else '' }}
@@ -206,7 +237,7 @@ outputs:
         - deprecation
         - ${{ pin_subpackage('ismrmrd') }}
         - niftyreg
-        - numpy >=2,<3
+        - numpy ~=2
         - pip
         - python
         - if: with_cuda
@@ -221,6 +252,8 @@ outputs:
             - ccpi-regulariser >=26 cuda${{ cuda_major }}*
       run_constraints:
         - ${{ pin_subpackage('siemens_to_ismrmrd') }}
+        - ${{ pin_subpackage('sirf-data') }}
+        - sirf-contrib ${{ sirf_contribs }}.*
         # ccpi::cil has no osx builds
         - if: osx
           then: cil >=26
@@ -228,7 +261,6 @@ outputs:
       - python:
           imports:
             - sirf
-            - sirf.contrib
             - sirf.Utilities
             - if: not osx
               then:
@@ -239,7 +271,9 @@ outputs:
               then: sirf.Gadgetron
       - requirements:
           run:
+            - ${{ pin_subpackage('sirf-data') }}
             - pytest
+            - pytest-cov
             - docopt
             - matplotlib
         files:
@@ -253,28 +287,56 @@ outputs:
             - src/xGadgetron/pGadgetron/tests/
             - examples/Python/MR/
         script:
-          - python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
-          - if: unix
-            then: |
-              "$PREFIX/bin/gadgetron" > gadgetron.log 2>&1 &
-              gadgetron_pid=$!
-              python -c "import socket, sys, time\nfor i in range(60):\n    s = socket.socket(); s.settimeout(1)\n    ok = s.connect_ex(('127.0.0.1', 9002)) == 0; s.close()\n    if ok: break\n    time.sleep(1)\nsys.exit(0 if ok else 1)"
-          - if: win
-            then: |
-              $gadgetron = Start-Process -FilePath "$env:PREFIX\gadgetron.exe" -RedirectStandardOutput gadgetron.log -PassThru
-              python -c "import socket, sys, time\nfor i in range(60):\n    s = socket.socket(); s.settimeout(1)\n    ok = s.connect_ex(('127.0.0.1', 9002)) == 0; s.close()\n    if ok: break\n    time.sleep(1)\nsys.exit(0 if ok else 1)"
-          - python -m pytest src/Synergistic/pSyn/tests
-          - python -m pytest src/Synergistic/tests/test_pSynergistic.py
-          - python -m pytest src/Registration/pReg/tests
-          - python -m pytest src/xSTIR/pSTIR/tests
-          - python -m pytest examples/Python/PET
-          - python -m pytest src/torch/tests
-          - python -m pytest src/xGadgetron/pGadgetron/tests
-          - python -m pytest examples/Python/MR
-          - if: unix
-            then: kill "$gadgetron_pid" 2>/dev/null || true
-          - if: win
-            then: Stop-Process -Id $gadgetron.Id -Force -ErrorAction SilentlyContinue
+          interpreter: ${{ "powershell" if win else "bash" }}
+          content:
+            - python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+            - if: unix
+              then: |
+                export SIRF_DATA_PATH="$PREFIX/share/SIRF-${{ sirf_minor }}/data"
+                mkdir -p "$SIRF_DATA_PATH/examples/MR/zenodo"
+              else: |
+                $env:SIRF_DATA_PATH = "$env:PREFIX\share\SIRF-${{ sirf_minor }}\data"
+                New-Item -ItemType Directory -Force "$env:SIRF_DATA_PATH\examples\MR\zenodo" | Out-Null
+            - >
+              python -c "import os,urllib.request as u; b=os.environ['SIRF_DATA_PATH']; f={'SIRF_recon.h5':'https://zenodo.org/record/3571228/files/SIRF_recon.h5?download=1','dicom_as_nifti.nii':'https://zenodo.org/record/3571228/files/dicom_as_nifti.nii?download=1'}; [(os.makedirs(z,exist_ok=True), [u.urlretrieve(url, os.path.join(z,n)) for n,url in f.items() if not os.path.exists(os.path.join(z,n))]) for z in (os.path.join(b,'examples','MR','zenodo'), os.path.join(b,'zenodo'))]; print('fetched zenodo MR test data under', b)"
+            - if: unix
+              then: |
+                "$PREFIX/bin/gadgetron" > gadgetron.log 2>&1 &
+                gadgetron_pid=$!
+                # wait for the relay port (up to 60s)
+                for i in $(seq 1 60); do
+                  (exec 3<>/dev/tcp/127.0.0.1/9002) 2>/dev/null && { exec 3>&-; break; }
+                  sleep 1
+                done
+              else: |
+                $gadgetron = Start-Process -FilePath "$env:PREFIX\Library\bin\gadgetron.exe" -RedirectStandardOutput gadgetron.log -PassThru
+                # wait for the relay port (up to 60s)
+                for ($i = 0; $i -lt 60; $i++) {
+                  python -c "import socket,sys; s=socket.socket(); s.settimeout(1); sys.exit(0 if s.connect_ex(('127.0.0.1',9002))==0 else 1)"
+                  if ($LASTEXITCODE -eq 0) { break }
+                  Start-Sleep -Seconds 1
+                }
+            # manually accumulate (pytest cannot accumulate due to same-basename import collisions & C++ segfault under --import-mode=importlib)
+            - if: unix
+              then: |
+                ret=0
+                for d in src/Synergistic/pSyn/tests src/Synergistic/tests/test_pSynergistic.py src/Registration/pReg/tests src/xSTIR/pSTIR/tests examples/Python/PET src/torch/tests src/xGadgetron/pGadgetron/tests examples/Python/MR; do
+                  echo "=== pytest: $d ==="
+                  python -m pytest "$d" || ret=1
+                done
+              else: |
+                $ret = 0
+                foreach ($d in @('src/Synergistic/pSyn/tests', 'src/Synergistic/tests/test_pSynergistic.py', 'src/Registration/pReg/tests', 'src/xSTIR/pSTIR/tests', 'examples/Python/PET', 'src/torch/tests', 'src/xGadgetron/pGadgetron/tests', 'examples/Python/MR')) {
+                  Write-Host "=== pytest: $d ==="
+                  python -m pytest $d
+                  if ($LASTEXITCODE -ne 0) { $ret = 1 }
+                }
+            - if: unix
+              then: kill "$gadgetron_pid" 2>/dev/null || true
+              else: Stop-Process -Id $gadgetron.Id -Force -ErrorAction SilentlyContinue
+            - if: unix
+              then: exit "$ret"
+              else: exit $ret
       - script:
           - if: linux
             then: |
@@ -302,3 +364,48 @@ outputs:
       repository: https://github.com/SyneRBI/SIRF
       license: Apache-2.0
       license_file: LICENSE.txt
+  - package:
+      name: sirf-contrib
+      version: ${{ sirf_contribs }}
+    inherit: null
+    source:
+      git: https://github.com/SyneRBI/SIRF-Contribs.git
+      tag: v${{ sirf_contribs }}
+    build:
+      number: 0
+      noarch: python
+      script:
+        content:
+          # rattler puts the build prefix on PATH with its site-packages
+          # pointing at $PREFIX, so a plain `pip install .` lands the files in
+          # the package. --no-deps keeps only sirf/contrib/ (the deps stay as
+          # conda run deps rather than being bundled in)
+          - SETUPTOOLS_SCM_PRETEND_VERSION=${{ sirf_contribs }} python -m pip install . --no-deps -vv
+    requirements:
+      build:
+        - python
+        - pip
+        - setuptools
+        - setuptools-scm
+      run:
+        # version-only (not pin_subpackage): this is noarch but depends on the
+        # platform-specific sirf, so a build-string pin would be too tight
+        - sirf 3.10.1.*
+        - numpy ~=2
+        - scipy
+        - matplotlib
+        - docopt
+        - array-api-compat
+    tests:
+      - python:
+          imports:
+            - sirf.contrib
+          # the upstream pyproject over-declares brainweb (only used by the
+          # brainweb-utilities sub-contrib, not a top-level import); skip the
+          # pip check that would otherwise fail on it
+          pip_check: false
+    about:
+      summary: SIRF contributions (sirf.contrib)
+      homepage: https://github.com/SyneRBI/SIRF-Contribs
+      repository: https://github.com/SyneRBI/SIRF-Contribs
+      license: Apache-2.0

@@ -99,15 +99,15 @@ if ($gadgetron_cuda -eq "ON") {
     $env:CUDA_LIB_PATH = $env:LIBRARY_PREFIX
     $env:PATH = "$env:BUILD_PREFIX\Library\nvvm\bin;" + $env:PATH
 }
-cmake -G Ninja $env:SRC_DIR -B "$env:BUILD_PREFIX\build" "-DCMAKE_BUILD_TYPE=Release" "-DCMAKE_INSTALL_PREFIX=$env:PREFIX" "-DCMAKE_PREFIX_PATH=$env:LIBRARY_PREFIX;$env:PREFIX" "-DRUN_ISMRMRD_SHEPP_LOGAN:BOOL=OFF" "-DDOWNLOAD_ZENODO_TEST_DATA:BOOL=OFF" "-DDISABLE_Matlab:BOOL=ON" "-DDISABLE_PYTHON:BOOL=OFF" "-DPython_EXECUTABLE=$env:PREFIX\python.exe" "-DPYTHON_DEST_DIR=$env:SP_DIR" "-DDISABLE_Registration:BOOL=OFF" "-DDISABLE_Gadgetron:BOOL=OFF" "-DGadgetron_USE_CUDA:BOOL=$gadgetron_cuda"
+cmake -G Ninja $env:SRC_DIR -B "$env:BUILD_PREFIX\build" "-DCMAKE_BUILD_TYPE=Release" "-DCMAKE_INSTALL_PREFIX=$env:PREFIX" "-DCMAKE_PREFIX_PATH=$env:LIBRARY_PREFIX;$env:PREFIX" "-DRUN_ISMRMRD_SHEPP_LOGAN:BOOL=OFF" "-DDOWNLOAD_ZENODO_TEST_DATA:BOOL=ON" "-DDISABLE_Matlab:BOOL=ON" "-DDISABLE_PYTHON:BOOL=OFF" "-DPython_EXECUTABLE=$env:PREFIX\python.exe" "-DPYTHON_DEST_DIR=$env:SP_DIR" "-DDISABLE_Registration:BOOL=OFF" "-DDISABLE_Gadgetron:BOOL=OFF" "-DGadgetron_USE_CUDA:BOOL=$gadgetron_cuda"
 Assert-Zero "cmake configure"
 cmake --build "$env:BUILD_PREFIX\build" --config Release
 Assert-Zero "cmake build"
 cmake --install "$env:BUILD_PREFIX\build" --config Release
 Assert-Zero "cmake install"
 
-# SIRF-Contribs (pure-Python, extends the sirf namespace with sirf.contrib)
-& "$env:PREFIX\python.exe" -m pip install "git+https://github.com/SyneRBI/SIRF-Contribs.git@v${env:SIRF_CONTRIBS_VERSION}"
+# SIRF-Contribs (pure-Python, sirf.contrib) is now built as a separate output
+# (the sirf-contrib output in recipe.yaml); not installed here.
 
 # SIRF runtime env vars on activation (examples_data_path, Gadgetron relay)
 New-Item -ItemType Directory -Force "$env:PREFIX\etc\conda\activate.d" | Out-Null
@@ -151,4 +151,8 @@ if ($test_fail -ne 0) {
     Get-Content "$env:BUILD_PREFIX\gadgetron.log" -Tail 70 -ErrorAction SilentlyContinue
     exit $test_fail
 }
+
+# The example data ships in the separate (optional) sirf-data package; strip the copy
+# the CMake installed so it isn't duplicated into the sirf package.
+Remove-Item -Recurse -Force "$env:PREFIX\share\SIRF-*\data" -ErrorAction SilentlyContinue
 

@@ -84,7 +84,7 @@ cmake -G Ninja $SRC_DIR \
   -DCMAKE_INSTALL_PREFIX=$PREFIX \
   -DCMAKE_PREFIX_PATH=$PREFIX \
   -DRUN_ISMRMRD_SHEPP_LOGAN:BOOL=OFF \
-  -DDOWNLOAD_ZENODO_TEST_DATA:BOOL=OFF \
+  -DDOWNLOAD_ZENODO_TEST_DATA:BOOL=ON \
   -DDISABLE_Matlab:BOOL=ON \
   -DDISABLE_PYTHON:BOOL=OFF \
   -DPython_EXECUTABLE=$PREFIX/bin/python \
@@ -162,11 +162,8 @@ fi
 cmake --build $BUILD_PREFIX/build --config Release
 cmake --install $BUILD_PREFIX/build --config Release
 
-# SIRF-Contribs (pure-Python, extends the sirf namespace with sirf.contrib).
-# pip runs without build isolation (rattler-build sets PIP_NO_BUILD_ISOLATION,
-# which pip >=26 interprets as "isolation off"), so the setuptools backend is
-# imported from the host env — hence the explicit setuptools host dep.
-$PREFIX/bin/python -m pip install "git+https://github.com/SyneRBI/SIRF-Contribs.git@v${SIRF_CONTRIBS_VERSION}"
+# SIRF-Contribs (pure-Python, sirf.contrib) is now built as a separate output
+# (the sirf-contrib output in recipe.yaml); not installed here.
 
 # SIRF runtime env vars on activation (examples_data_path, Gadgetron relay)
 mkdir -p "$PREFIX/etc/conda/activate.d" "$PREFIX/etc/conda/deactivate.d"
@@ -208,3 +205,7 @@ if [ "$test_fail" -ne 0 ]; then
   tail -n 70 "$BUILD_PREFIX/gadgetron.log" 2>/dev/null || true
   exit "$test_fail"
 fi
+
+# The example data ships in the separate (optional) sirf-data package; strip the copy
+# the CMake installed so it isn't duplicated into the sirf package.
+rm -rf "$PREFIX"/share/SIRF-*/data
