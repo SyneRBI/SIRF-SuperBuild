@@ -6,11 +6,12 @@
  * public <fn>(x) minus errno handling (which STIR does not use), so thin
  * wrappers satisfy the references.
  *
- * Covers the __*_finite symbols referenced by conda-forge STIR 6.3.0/6.4.0
- * (verified via `nm -u` on the .a archives). The STIR 6.3.0 CUDA 13 build
- * additionally references the C++ vector-call-ABI variants (_ZGVbN*) of some of
- * these plus cos/sin — glibc exports the plain C symbols from libm but not the
- * mangled vector-call ones, so asm-labelled wrappers provide them.
+ * Covers the __*_finite symbols referenced by conda-forge STIR 6.3.0
+ * (verified via `nm -u` on the .a archives); no longer required for 6.4.0.
+ * The STIR 6.3.0 CUDA 13 build additionally references the C++ vector-call-ABI
+ * variants (_ZGVbN*) of some of these plus cos/sin — glibc exports the plain C
+ * symbols from libm but not the mangled vector-call ones, so asm-labelled
+ * wrappers provide them.
  */
 #include <math.h>
 
