@@ -336,9 +336,13 @@ outputs:
                 # relay-dependent tests (pGadgetron, MR reconstructions, test_pSynergistic)
                 # need mrd-storage-server, linux-only
                 [ -x "$PREFIX/bin/mrd-storage-server" ] && suites+=(src/xGadgetron/pGadgetron/tests examples/Python/MR src/Synergistic/tests/test_pSynergistic.py)
-                # STIR NIfTI IO is unavailable on osx-arm64: skip the NIfTI-reading test there
+                # Non-linux has no Gadgetron relay (mrd-storage-server is linux-only):
+                # exclude the MR reconstruction tests. osx-arm64 also lacks STIR NIfTI IO.
                 extra_args=()
-                [ "$(uname -s)" = "Darwin" ] && extra_args=('-k' 'not test_nifti_image_data_3d')
+                case "$(uname -s)" in
+                  Darwin) extra_args+=('-k' 'not MR and not test_nifti_image_data_3d') ;;
+                  *)      [ "$(uname -s)" != "Linux" ] && extra_args+=('-k' 'not MR') ;;
+                esac
                 for d in "${suites[@]}"; do
                   echo "=== pytest: $d ==="
                   python -m pytest "${extra_args[@]}" "$d" || ret=1
@@ -376,15 +380,18 @@ outputs:
             - if: linux
               then: |
                 set -uxo pipefail
-                export SIRF_DATA_PATH="$PREFIX/share/SIRF-${{ sirf_minor }}/data"  # separate script: env from the main test block does not carry over
-                export GADGETRON_HOME="$PREFIX"  # relay config lookup, cf. activate-sirf.sh
+                # $PREFIX is unreliable here (a rattler-build placeholder in one script,
+                # expanded in another); use sys.prefix (the test env's prefix) instead.
+                SIRF_PREFIX=$(python -c "import sys; print(sys.prefix)")
+                export SIRF_DATA_PATH="$SIRF_PREFIX/share/SIRF-${{ sirf_minor }}/data"  # separate script: env from the main test block does not carry over
+                export GADGETRON_HOME="$SIRF_PREFIX"  # relay config lookup, cf. activate-sirf.sh
                 mkdir cil_sirf_test
                 touch cil_sirf_test/__init__.py
                 DEFAULT_CIL_TAG=$(python -c 'import cil; ch = cil.version.commit_hash; print(ch if ch else "v" + cil.version.version)' | tail -n1)
                 for fname in test_SIRF.py utils.py testclass.py; do
                   curl -fsSL "https://raw.githubusercontent.com/TomographicImaging/CIL/$DEFAULT_CIL_TAG/Wrappers/Python/test/$fname" > "cil_sirf_test/$fname"
                 done
-                "$PREFIX/bin/gadgetron" > gadgetron.log 2>&1 &
+                "$SIRF_PREFIX/bin/gadgetron" > gadgetron.log 2>&1 &
                 gadgetron_pid=$!
                 # wait for the relay port (up to 60s)
                 for i in $(seq 1 60); do
