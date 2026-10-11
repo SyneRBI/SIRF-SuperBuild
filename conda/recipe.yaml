@@ -176,7 +176,7 @@ outputs:
     source:
       git: https://github.com/SyneRBI/SIRF.git
       # from SyneRBI/SIRF#1420
-      rev: e7f30d53cf9a2a9df20a0ae9b9c34434c9609de0
+      rev: 71fa637a5c263e0a8a0057833d113254fb5114c8
     build:
       number: 0
       string: py${{ python | replace('.', '') }}${{ '_' ~ cuda_build_prefix if with_cuda else '' }}
@@ -301,9 +301,10 @@ outputs:
                 $env:SIRF_DATA_PATH = "$env:PREFIX\share\SIRF-${{ sirf_minor }}\data"
                 New-Item -ItemType Directory -Force "$env:SIRF_DATA_PATH\examples\MR\zenodo" | Out-Null
             - >
-              python -c "import os,urllib.request as u; b=os.environ['SIRF_DATA_PATH']; f={'SIRF_recon.h5':'https://zenodo.org/record/3571228/files/SIRF_recon.h5?download=1','dicom_as_nifti.nii':'https://zenodo.org/record/3571228/files/dicom_as_nifti.nii?download=1'}; [(os.makedirs(z,exist_ok=True), [u.urlretrieve(url, os.path.join(z,n)) for n,url in f.items() if not os.path.exists(os.path.join(z,n))]) for z in (os.path.join(b,'examples','MR','zenodo'), os.path.join(b,'zenodo'))]; print('fetched zenodo MR test data under', b)"
+              python -c "import os,urllib.request as u; b=os.environ['SIRF_DATA_PATH']; f={'SIRF_recon.h5':'https://zenodo.org/record/3571228/files/SIRF_recon.h5?download=1','dicom_as_nifti.nii':'https://zenodo.org/record/3571228/files/dicom_as_nifti.nii?download=1','3D_RPE_Lowres.h5':'https://zenodo.org/record/4600937/files/3DRPE_Lowres.h5?download=1'}; [(os.makedirs(z,exist_ok=True), [u.urlretrieve(url, os.path.join(z,n)) for n,url in f.items() if not os.path.exists(os.path.join(z,n))]) for z in (os.path.join(b,'examples','MR','zenodo'), os.path.join(b,'zenodo'))]; print('fetched zenodo MR test data under', b)"
             - if: unix
               then: |
+                export GADGETRON_HOME="$PREFIX"  # relay config lookup, cf. activate-sirf.sh
                 "$PREFIX/bin/gadgetron" > gadgetron.log 2>&1 &
                 gadgetron_pid=$!
                 # wait for the relay port (up to 60s)
@@ -312,6 +313,7 @@ outputs:
                   sleep 1
                 done
               else: |
+                $env:GADGETRON_HOME = $env:PREFIX  # relay config lookup, cf. sirf-activate.bat
                 $gadgetron = Start-Process -FilePath "$env:PREFIX\Library\bin\gadgetron.exe" -RedirectStandardOutput gadgetron.log -PassThru
                 # wait for the relay port (up to 60s)
                 for ($i = 0; $i -lt 60; $i++) {
@@ -338,8 +340,18 @@ outputs:
               then: kill "$gadgetron_pid" 2>/dev/null || true
               else: Stop-Process -Id $gadgetron.Id -Force -ErrorAction SilentlyContinue
             - if: unix
-              then: exit "$ret"
-              else: exit $ret
+              then: |
+                if [ "$ret" -ne 0 ]; then
+                  echo "----------- Last 40 lines of gadgetron.log (relay)"
+                  tail -n 40 gadgetron.log 2>/dev/null || true
+                fi
+                exit "$ret"
+              else: |
+                if ($ret -ne 0) {
+                  Write-Host "----------- Last 40 lines of gadgetron.log (relay)"
+                  Get-Content gadgetron.log -Tail 40 -ErrorAction SilentlyContinue
+                }
+                exit $ret
       - script:
           - if: linux
             then: |
