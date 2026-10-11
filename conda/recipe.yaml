@@ -325,13 +325,25 @@ outputs:
             - if: unix
               then: |
                 ret=0
-                for d in src/Synergistic/pSyn/tests src/Synergistic/tests/test_pSynergistic.py src/Registration/pReg/tests src/xSTIR/pSTIR/tests examples/Python/PET src/torch/tests src/xGadgetron/pGadgetron/tests examples/Python/MR; do
+                suites=(src/Synergistic/pSyn/tests src/Synergistic/tests/test_pSynergistic.py src/Registration/pReg/tests src/xSTIR/pSTIR/tests examples/Python/PET src/torch/tests)
+                # pGadgetron needs the Gadgetron relay (mrd-storage-server), linux-only
+                [ -x "$PREFIX/bin/mrd-storage-server" ] && suites+=(src/xGadgetron/pGadgetron/tests)
+                suites+=(examples/Python/MR)
+                # STIR NIfTI IO + the Gadgetron relay are unavailable on osx-arm64: skip
+                # the NIfTI-reading tests there.
+                dselect=''
+                [ "$(uname -s)" = "Darwin" ] && dselect="--deselect src/Synergistic/pSyn/tests/tests_syn.py::test_nifti_image_data_3d[STIR] --deselect src/Synergistic/tests/test_pSynergistic.py::test"
+                for d in "${suites[@]}"; do
                   echo "=== pytest: $d ==="
-                  python -m pytest "$d" || ret=1
+                  python -m pytest $dselect "$d" || ret=1
                 done
               else: |
                 $ret = 0
-                foreach ($d in @('src/Synergistic/pSyn/tests', 'src/Synergistic/tests/test_pSynergistic.py', 'src/Registration/pReg/tests', 'src/xSTIR/pSTIR/tests', 'examples/Python/PET', 'src/torch/tests', 'src/xGadgetron/pGadgetron/tests', 'examples/Python/MR')) {
+                $suites = @('src/Synergistic/pSyn/tests', 'src/Synergistic/tests/test_pSynergistic.py', 'src/Registration/pReg/tests', 'src/xSTIR/pSTIR/tests', 'examples/Python/PET', 'src/torch/tests')
+                # pGadgetron needs the Gadgetron relay (mrd-storage-server), linux-only
+                if (Test-Path "$env:PREFIX\Library\bin\mrd-storage-server.exe") { $suites += 'src/xGadgetron/pGadgetron/tests' }
+                $suites += 'examples/Python/MR'
+                foreach ($d in $suites) {
                   Write-Host "=== pytest: $d ==="
                   python -m pytest $d
                   if ($LASTEXITCODE -ne 0) { $ret = 1 }
@@ -358,7 +370,7 @@ outputs:
               set -uxo pipefail
               mkdir cil_sirf_test
               touch cil_sirf_test/__init__.py
-              DEFAULT_CIL_TAG=$(python -c 'import cil; print(f"v{cil.version.version}" if cil.version.commit_hash == "-1" else cil.version.commit_hash[1:])' | tail -n1)
+              DEFAULT_CIL_TAG=$(python -c 'import cil; ch = cil.version.commit_hash; print(ch if ch else "v" + cil.version.version)' | tail -n1)
               for fname in test_SIRF.py utils.py testclass.py; do
                 curl -fsSL "https://raw.githubusercontent.com/TomographicImaging/CIL/$DEFAULT_CIL_TAG/Wrappers/Python/test/$fname" > "cil_sirf_test/$fname"
               done

@@ -127,9 +127,12 @@ if ($gadgetron_cuda -eq "ON") {
     if (-not $nvidia) { $server_tests = $false }
     else { & nvidia-smi -L *> $null; if ($LASTEXITCODE -ne 0) { $server_tests = $false } }
 }
-# SYN_TEST_CPLUSPLUS runs a Gadgetron resampler sub-test that needs the relay, so
-# exclude it too when the relay is off (its STIR/Nifti sibling stays in the set).
-$exclude = '_PYTHON|_DEMOS'
+# the Gadgetron relay needs mrd-storage-server (linux-64/osx-64 only; absent on
+# osx-arm64/win-64), so the relay-dependent C++ tests (MR_/GADGETRON/SYN_TEST) can't
+# run without it. (SYN_TEST_CPLUSPLUS runs a Gadgetron resampler sub-test.)
+if (-not (Test-Path "$env:PREFIX\Library\bin\mrd-storage-server.exe")) { $server_tests = $false }
+# PET_TESTS_CPLUSPLUS_6 (listmode sensitivity caching) does not work on win-64.
+$exclude = '_PYTHON|_DEMOS|PET_TESTS_CPLUSPLUS_6'
 if (-not $server_tests) { $exclude += '|MR_|GADGETRON|SYN_TEST_CPLUSPLUS' }
 $ctest_args = @("--test-dir", "$env:BUILD_PREFIX\build", "--verbose", "--output-on-failure", "-E", $exclude)
 

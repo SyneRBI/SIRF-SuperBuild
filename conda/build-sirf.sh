@@ -183,8 +183,10 @@ SERVER_TESTS=ON
 if [ "${GADGETRON_USE_CUDA:-OFF}" = "ON" ] && ! nvidia-smi -L >/dev/null 2>&1; then
   SERVER_TESTS=OFF
 fi
-# SYN_TEST_CPLUSPLUS runs a Gadgetron resampler sub-test that needs the relay, so
-# exclude it too when the relay is off (its STIR/Nifti sibling stays in the set).
+# the Gadgetron relay needs mrd-storage-server (linux-64/osx-64 only; absent on
+# osx-arm64/win-64), so the relay-dependent C++ tests (MR_/GADGETRON/SYN_TEST) can't
+# run without it. (SYN_TEST_CPLUSPLUS runs a Gadgetron resampler sub-test.)
+[ ! -x "$PREFIX/bin/mrd-storage-server" ] && SERVER_TESTS=OFF
 EXCLUDES='_PYTHON|_DEMOS'
 [ "$SERVER_TESTS" = OFF ] && EXCLUDES+='|MR_|GADGETRON|SYN_TEST_CPLUSPLUS'
 CTEST_ARGS=(--test-dir "$BUILD_PREFIX/build" --verbose --output-on-failure -E "$EXCLUDES")
