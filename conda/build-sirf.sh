@@ -148,7 +148,10 @@ if [ "$(uname -s)" = "Darwin" ]; then
           if (parts[i] ~ /\/lib[A-Za-z0-9_]+\.a$/) { out = out " -Wl,-force_load," parts[i]; continue }
           out = out " " parts[i]
         }
-        out = out " -Wl,-undefined -Wl,dynamic_lookup"
+        # -lpng: a force-loaded static lib (an ITK PNG IO object) references
+        # png_create_info_struct; with -undefined dynamic_lookup that ref is left
+        # undefined and only resolves at load if libpng is a direct dep of the .so.
+        out = out " -Wl,-undefined -Wl,dynamic_lookup -lpng"
         $0 = out
       }
     }
@@ -180,10 +183,14 @@ SERVER_TESTS=ON
 if [ "${GADGETRON_USE_CUDA:-OFF}" = "ON" ] && ! nvidia-smi -L >/dev/null 2>&1; then
   SERVER_TESTS=OFF
 fi
+# SYN_TEST_CPLUSPLUS runs a Gadgetron resampler sub-test that needs the relay, so
+# exclude it too when the relay is off (its STIR/Nifti sibling stays in the set).
 EXCLUDES='_PYTHON|_DEMOS'
-[ "$SERVER_TESTS" = OFF ] && EXCLUDES+='|MR_|GADGETRON'
+[ "$SERVER_TESTS" = OFF ] && EXCLUDES+='|MR_|GADGETRON|SYN_TEST_CPLUSPLUS'
 CTEST_ARGS=(--test-dir "$BUILD_PREFIX/build" --verbose --output-on-failure -E "$EXCLUDES")
 
+# relay config lookup (port/bind); set BEFORE starting the relay, cf. activate-sirf.sh
+export GADGETRON_HOME="$PREFIX"
 GADGETRON_PID=""
 if [ "$SERVER_TESTS" = ON ]; then
   "$PREFIX/bin/gadgetron" > "$BUILD_PREFIX/gadgetron.log" 2>&1 &
@@ -194,7 +201,6 @@ if [ "$SERVER_TESTS" = ON ]; then
     sleep 1
   done
 fi
-export GADGETRON_HOME="$PREFIX"  # relay config lookup, cf. activate-sirf.sh
 set +e
 ctest "${CTEST_ARGS[@]}"
 test_fail=$?

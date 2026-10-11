@@ -176,7 +176,7 @@ outputs:
     source:
       git: https://github.com/SyneRBI/SIRF.git
       # from SyneRBI/SIRF#1420
-      rev: 2184768362d4ac3d61b330a143e84e090d0de6d6
+      rev: e7f30d53cf9a2a9df20a0ae9b9c34434c9609de0
     build:
       number: 0
       string: py${{ python | replace('.', '') }}${{ '_' ~ cuda_build_prefix if with_cuda else '' }}
@@ -214,6 +214,7 @@ outputs:
         - hdf5 ==${{ hdf5 }}
         - ${{ pin_subpackage('ismrmrd', exact=True) }}
         - niftyreg
+        - libpng
         - numpy ~=2
         - pip
         - python
@@ -237,6 +238,7 @@ outputs:
         - deprecation
         - ${{ pin_subpackage('ismrmrd') }}
         - niftyreg
+        - libpng
         - numpy ~=2
         - pip
         - python
@@ -282,6 +284,7 @@ outputs:
             - src/Synergistic/tests/test_pSynergistic.py
             - src/Registration/pReg/tests/
             - src/xSTIR/pSTIR/tests/
+            - examples/parameter_files/
             - examples/Python/PET/
             - src/torch/tests/
             - src/xGadgetron/pGadgetron/tests/
