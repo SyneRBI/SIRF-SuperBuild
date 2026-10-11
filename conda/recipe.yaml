@@ -302,47 +302,53 @@ outputs:
                 New-Item -ItemType Directory -Force "$env:SIRF_DATA_PATH\examples\MR\zenodo" | Out-Null
             - >
               python -c "import os,urllib.request as u; b=os.environ['SIRF_DATA_PATH']; f={'SIRF_recon.h5':'https://zenodo.org/record/3571228/files/SIRF_recon.h5?download=1','dicom_as_nifti.nii':'https://zenodo.org/record/3571228/files/dicom_as_nifti.nii?download=1','3D_RPE_Lowres.h5':'https://zenodo.org/record/4600937/files/3DRPE_Lowres.h5?download=1'}; [(os.makedirs(z,exist_ok=True), [u.urlretrieve(url, os.path.join(z,n)) for n,url in f.items() if not os.path.exists(os.path.join(z,n))]) for z in (os.path.join(b,'examples','MR','zenodo'), os.path.join(b,'zenodo'))]; print('fetched zenodo MR test data under', b)"
+            # the Gadgetron relay (gadgetron + mrd-storage-server) only works where
+            # mrd-storage-server is installed (linux-64 in CI; absent on osx-arm64/win-64).
+            # Start it only when available; the relay-dependent tests are skipped otherwise.
             - if: unix
               then: |
-                export GADGETRON_HOME="$PREFIX"  # relay config lookup, cf. activate-sirf.sh
-                "$PREFIX/bin/gadgetron" > gadgetron.log 2>&1 &
-                gadgetron_pid=$!
-                # wait for the relay port (up to 60s)
-                for i in $(seq 1 60); do
-                  (exec 3<>/dev/tcp/127.0.0.1/9002) 2>/dev/null && { exec 3>&-; break; }
-                  sleep 1
-                done
+                gadgetron_pid=''
+                if [ -x "$PREFIX/bin/mrd-storage-server" ]; then
+                  export GADGETRON_HOME="$PREFIX"  # relay config lookup, cf. activate-sirf.sh
+                  "$PREFIX/bin/gadgetron" > gadgetron.log 2>&1 &
+                  gadgetron_pid=$!
+                  # wait for the relay port (up to 60s)
+                  for i in $(seq 1 60); do
+                    (exec 3<>/dev/tcp/127.0.0.1/9002) 2>/dev/null && { exec 3>&-; break; }
+                    sleep 1
+                  done
+                fi
               else: |
-                $env:GADGETRON_HOME = $env:PREFIX  # relay config lookup, cf. sirf-activate.bat
-                $gadgetron = Start-Process -FilePath "$env:PREFIX\Library\bin\gadgetron.exe" -RedirectStandardOutput gadgetron.log -PassThru
-                # wait for the relay port (up to 60s)
-                for ($i = 0; $i -lt 60; $i++) {
-                  python -c "import socket,sys; s=socket.socket(); s.settimeout(1); sys.exit(0 if s.connect_ex(('127.0.0.1',9002))==0 else 1)"
-                  if ($LASTEXITCODE -eq 0) { break }
-                  Start-Sleep -Seconds 1
+                if (Test-Path "$env:PREFIX\Library\bin\mrd-storage-server.exe") {
+                  $env:GADGETRON_HOME = $env:PREFIX  # relay config lookup, cf. sirf-activate.bat
+                  $gadgetron = Start-Process -FilePath "$env:PREFIX\Library\bin\gadgetron.exe" -RedirectStandardOutput gadgetron.log -PassThru
+                  # wait for the relay port (up to 60s)
+                  $c = New-Object Net.Sockets.TcpClient
+                  for ($i = 0; $i -lt 60; $i++) {
+                    try { $c.Connect("127.0.0.1", 9002); $c.Close(); break } catch { Start-Sleep -Seconds 1 }
+                  }
                 }
             # manually accumulate (pytest cannot accumulate due to same-basename import collisions & C++ segfault under --import-mode=importlib)
             - if: unix
               then: |
                 ret=0
-                suites=(src/Synergistic/pSyn/tests src/Synergistic/tests/test_pSynergistic.py src/Registration/pReg/tests src/xSTIR/pSTIR/tests examples/Python/PET src/torch/tests)
-                # pGadgetron needs the Gadgetron relay (mrd-storage-server), linux-only
-                [ -x "$PREFIX/bin/mrd-storage-server" ] && suites+=(src/xGadgetron/pGadgetron/tests)
-                suites+=(examples/Python/MR)
-                # STIR NIfTI IO + the Gadgetron relay are unavailable on osx-arm64: skip
-                # the NIfTI-reading tests there.
-                dselect=''
-                [ "$(uname -s)" = "Darwin" ] && dselect="--deselect src/Synergistic/pSyn/tests/tests_syn.py::test_nifti_image_data_3d[STIR] --deselect src/Synergistic/tests/test_pSynergistic.py::test"
+                suites=(src/Synergistic/pSyn/tests src/Registration/pReg/tests src/xSTIR/pSTIR/tests examples/Python/PET src/torch/tests)
+                # relay-dependent tests (pGadgetron, MR reconstructions, test_pSynergistic)
+                # need mrd-storage-server, linux-only
+                [ -x "$PREFIX/bin/mrd-storage-server" ] && suites+=(src/xGadgetron/pGadgetron/tests examples/Python/MR src/Synergistic/tests/test_pSynergistic.py)
+                # STIR NIfTI IO is unavailable on osx-arm64: skip the NIfTI-reading test there
+                extra_args=''
+                [ "$(uname -s)" = "Darwin" ] && extra_args="-k 'not test_nifti_image_data_3d'"
                 for d in "${suites[@]}"; do
                   echo "=== pytest: $d ==="
-                  python -m pytest $dselect "$d" || ret=1
+                  python -m pytest $extra_args "$d" || ret=1
                 done
               else: |
                 $ret = 0
-                $suites = @('src/Synergistic/pSyn/tests', 'src/Synergistic/tests/test_pSynergistic.py', 'src/Registration/pReg/tests', 'src/xSTIR/pSTIR/tests', 'examples/Python/PET', 'src/torch/tests')
-                # pGadgetron needs the Gadgetron relay (mrd-storage-server), linux-only
-                if (Test-Path "$env:PREFIX\Library\bin\mrd-storage-server.exe") { $suites += 'src/xGadgetron/pGadgetron/tests' }
-                $suites += 'examples/Python/MR'
+                $suites = @('src/Synergistic/pSyn/tests', 'src/Registration/pReg/tests', 'src/xSTIR/pSTIR/tests', 'examples/Python/PET', 'src/torch/tests')
+                # relay-dependent tests (pGadgetron, MR reconstructions, test_pSynergistic)
+                # need mrd-storage-server, linux-only
+                if (Test-Path "$env:PREFIX\Library\bin\mrd-storage-server.exe") { $suites += @('src/xGadgetron/pGadgetron/tests', 'examples/Python/MR', 'src/Synergistic/tests/test_pSynergistic.py') }
                 foreach ($d in $suites) {
                   Write-Host "=== pytest: $d ==="
                   python -m pytest $d
@@ -350,7 +356,7 @@ outputs:
                 }
             - if: unix
               then: kill "$gadgetron_pid" 2>/dev/null || true
-              else: Stop-Process -Id $gadgetron.Id -Force -ErrorAction SilentlyContinue
+              else: if ($gadgetron) { Stop-Process -Id $gadgetron.Id -Force -ErrorAction SilentlyContinue }
             - if: unix
               then: |
                 if [ "$ret" -ne 0 ]; then
@@ -368,6 +374,8 @@ outputs:
           - if: linux
             then: |
               set -uxo pipefail
+              export SIRF_DATA_PATH="$PREFIX/share/SIRF-${{ sirf_minor }}/data"  # separate script: env from the main test block does not carry over
+              export GADGETRON_HOME="$PREFIX"  # relay config lookup, cf. activate-sirf.sh
               mkdir cil_sirf_test
               touch cil_sirf_test/__init__.py
               DEFAULT_CIL_TAG=$(python -c 'import cil; ch = cil.version.commit_hash; print(ch if ch else "v" + cil.version.version)' | tail -n1)
