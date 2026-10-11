@@ -473,13 +473,11 @@ outputs:
       noarch: python
       script:
         content:
-          # rattler puts the build prefix on PATH with its site-packages
-          # pointing at $PREFIX, so a plain `pip install .` lands the files in
-          # the package. --no-deps keeps only sirf/contrib/ (the deps stay as
-          # conda run deps rather than being bundled in)
-          - SETUPTOOLS_SCM_PRETEND_VERSION=${{ sirf_contribs }} python -m pip install . --no-deps -vv
+          - ${{ PYTHON }} -m pip install . -vv --no-deps
+        env:
+          SETUPTOOLS_SCM_PRETEND_VERSION: ${{ sirf_contribs }}
     requirements:
-      build:
+      host:
         - python
         - pip
         - setuptools
@@ -491,16 +489,50 @@ outputs:
         - matplotlib
         - docopt
         - array-api-compat
+        - ${{ pin_subpackage('brainweb') }}
     tests:
       - python:
           imports:
+            - sirf
             - sirf.contrib
-          # the upstream pyproject over-declares brainweb (only used by the
-          # brainweb-utilities sub-contrib, not a top-level import); skip the
-          # pip check that would otherwise fail on it
-          pip_check: false
+          pip_check: true
     about:
       summary: SIRF contributions (sirf.contrib)
       homepage: https://github.com/SyneRBI/SIRF-Contribs
       repository: https://github.com/SyneRBI/SIRF-Contribs
       license: Apache-2.0
+  - package:
+      name: brainweb
+      version: "1.7.0"
+    inherit: null
+    source:
+      git: https://github.com/casperdcl/brainweb
+      tag: v1.7.0
+    build:
+      number: 0
+      noarch: python
+      script:
+        content:
+          - ${{ PYTHON }} -m pip install . -vv --no-deps
+        env:
+          SETUPTOOLS_SCM_PRETEND_VERSION: "1.7.0"
+    requirements:
+      host:
+        - python
+        - pip
+        - setuptools
+        - setuptools-scm
+      run:
+        - numpy ~=2
+        - requests
+        - scikit-image
+        - tqdm
+    tests:
+      - python:
+          imports:
+            - brainweb
+    about:
+      summary: BrainWeb-based multimodal models of 20 normal brains
+      homepage: https://github.com/casperdcl/brainweb
+      repository: https://github.com/casperdcl/brainweb
+      license: MPL-2.0
