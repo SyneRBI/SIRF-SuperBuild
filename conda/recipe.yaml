@@ -1,0 +1,455 @@
+# Usage:
+#   rattler-build build -r conda -c conda-forge -c ismrmrd -c ccpi -c synerbi --target-platform {linux-64,osx-arm64,win-64} [--variant python={3.11,3.12,...}] [-c nvidia --variant cuda_compiler_version={12.9,13.4}]
+# Channel includes:
+# - ismrmrd::mrd-storage-server (gadgetron run dep; linux-64 + osx-64 only)
+# - ccpi::cil (sirf run dep on linux/win; run-constrained on osx — no CIL 26 for osx)
+# - synerbi::gadgetron
+#
+# conda-forge::stir==6.4.0 forces the rest of the stack up (ITK 5.4.7, ROOT 6.36.10, Boost 1.90, hdf5 1.14.6), which also unifies everything on icu 78.
+
+schema_version: 1
+
+context:
+  # pet-rd-tools==2.2.0 needs boost==1.90
+  # stir==6.4.0 needs boost>=1.90
+  boost: 1.90.0.*
+  # gadgetron & stir need hdf5==1.14.6
+  hdf5: 1.14.6
+  sirf_contribs: 3.10.0
+  # example-data install prefix (share/SIRF-<minor>/data); must match SIRF project() MAJOR.MINOR
+  sirf_minor: 3.10
+  cuda_version: ${{ cuda_compiler_version if cuda_compiler_version is defined and cuda_compiler_version != "None" else "None" }}
+  with_cuda: ${{ "true" if cuda_version != "None" else "" }}
+  cuda_major: ${{ (cuda_version | split(".") | first) if with_cuda else "0" }}
+  cuda_build_prefix: ${{ "cuda" ~ (cuda_version | version_to_buildstring) if with_cuda else "cpu" }}
+  c_cache_c: ${{ env.get("CMAKE_C_COMPILER_LAUNCHER", default="ccache") }}
+  c_cache_cxx: ${{ env.get("CMAKE_CXX_COMPILER_LAUNCHER", default="ccache") }}
+  ccache_dir: ${{ env.get("CCACHE_DIR", default="") }}
+  ccache_maxsize: ${{ env.get("CCACHE_MAXSIZE", default="5G") }}
+
+about:
+  license: Apache-2.0
+  license_family: Apache
+  homepage: https://github.com/SyneRBI/SIRF-SuperBuild
+  repository: https://github.com/SyneRBI/SIRF-SuperBuild
+
+outputs:
+  - package:
+      name: ismrmrd
+      version: "1.15.0"
+    inherit: null
+    source:
+      git: https://github.com/ismrmrd/ismrmrd.git
+      tag: v1.15.0
+    build:
+      number: 0
+      # conda-forge STIR 6.4.0 needs Boost 1.90
+      # but no compatible conda-forge ismrmrd exists
+      script:
+        content:
+          - if: unix
+            then: cmake -G Ninja $SRC_DIR -B $BUILD_PREFIX/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_PREFIX_PATH=$PREFIX -DBUILD_STATIC:BOOL=OFF -DBUILD_TESTS:BOOL=OFF -DBUILD_UTILITIES:BOOL=OFF -DBUILD_EXAMPLES:BOOL=OFF
+            else: cmake -G Ninja "%SRC_DIR%" -B "%BUILD_PREFIX%/build" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" -DCMAKE_PREFIX_PATH="%LIBRARY_PREFIX%" -DBUILD_STATIC:BOOL=OFF -DBUILD_TESTS:BOOL=OFF -DBUILD_UTILITIES:BOOL=OFF -DBUILD_EXAMPLES:BOOL=OFF
+          - if: unix
+            then: cmake --build $BUILD_PREFIX/build --config Release
+            else: cmake --build "%BUILD_PREFIX%/build" --config Release
+          - if: unix
+            then: cmake --install $BUILD_PREFIX/build --config Release
+            else: cmake --install "%BUILD_PREFIX%/build" --config Release
+        env:
+          CMAKE_C_COMPILER_LAUNCHER: ${{ c_cache_c }}
+          CMAKE_CXX_COMPILER_LAUNCHER: ${{ c_cache_cxx }}
+          CCACHE_DIR: ${{ ccache_dir }}
+          CCACHE_MAXSIZE: ${{ ccache_maxsize }}
+    requirements:
+      build:
+        - ccache
+        - cmake
+        - ninja
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+      host:
+        - fftw
+        - hdf5 ==${{ hdf5 }}
+        - libboost-devel ${{ boost }}
+        - nlohmann_json
+        - pugixml
+    tests:
+      - script:
+          - if: unix
+            then: test -f $PREFIX/lib/cmake/ISMRMRD/ISMRMRDConfig.cmake
+            else: if not exist "%LIBRARY_PREFIX%\lib\cmake\ISMRMRD\ISMRMRDConfig.cmake" exit 1
+    about:
+      summary: "ISMRMRD data format library"
+      homepage: https://github.com/ismrmrd/ismrmrd
+      license: LicenseRef-ISMRMRD
+      license_file: LICENSE
+      repository: https://github.com/ismrmrd/ismrmrd
+
+  - package:
+      name: siemens_to_ismrmrd
+      version: "1.3.0"
+    inherit: null
+    source:
+      git: https://github.com/ismrmrd/siemens_to_ismrmrd.git
+      tag: v1.3.0
+      patches:
+        # boost::system is header-only, but
+        # conda-forge boost=1.90 ships no boost_system CMake component config (fixed in 1.92).
+        # drop the `system` component; nothing here needs it:
+        - siemens_to_ismrmrd-drop-boost-system.patch
+    build:
+      number: 0
+      script:
+        content:
+          - if: unix
+            then: cmake -G Ninja $SRC_DIR -B $BUILD_PREFIX/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PREFIX -DBUILD_DYNAMIC:BOOL=ON
+            else: cmake -G Ninja "%SRC_DIR%" -B "%BUILD_PREFIX%/build" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" -DBUILD_DYNAMIC:BOOL=ON
+          - if: unix
+            then: cmake --build $BUILD_PREFIX/build --config Release
+            else: cmake --build "%BUILD_PREFIX%/build" --config Release
+          - if: unix
+            then: cmake --install $BUILD_PREFIX/build --config Release
+            else: cmake --install "%BUILD_PREFIX%/build" --config Release
+        env:
+          CMAKE_C_COMPILER_LAUNCHER: ${{ c_cache_c }}
+          CMAKE_CXX_COMPILER_LAUNCHER: ${{ c_cache_cxx }}
+          CCACHE_DIR: ${{ ccache_dir }}
+          CCACHE_MAXSIZE: ${{ ccache_maxsize }}
+    requirements:
+      build:
+        - ccache
+        - cmake
+        - ninja
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+      host:
+        - ${{ pin_subpackage('ismrmrd', exact=True) }}
+        - libboost-devel ${{ boost }}
+        - libxml2-devel
+        - libxslt
+      run:
+        - ${{ pin_subpackage('ismrmrd') }}
+    tests:
+      - script:
+          - siemens_to_ismrmrd --help
+          - ismrmrd_to_siemens --help
+    about:
+      summary: "Siemens MR-PET raw data to ISMRMRD converter"
+      homepage: https://github.com/ismrmrd/siemens_to_ismrmrd
+      license: LicenseRef-siemens-to-ismrmrd
+      license_file: LICENSE
+      repository: https://github.com/ismrmrd/siemens_to_ismrmrd
+
+  - package:
+      name: sirf-data
+      version: "3.10.1"
+    inherit: null
+    source:
+      git: https://github.com/SyneRBI/SIRF_data.git
+      # from SyneRBI/SIRF:/data submodule
+      rev: 8bf9b6d1f5da6d4da7cdc5d30ac80414aa1cbe69
+    build:
+      number: 0
+      noarch: generic
+      script:
+        interpreter: ${{ "powershell" if win else "bash" }}
+        content:
+          - if: unix
+            then: |
+              mkdir -p "$PREFIX/share/SIRF-${{ sirf_minor }}/data"
+              cp -r "$SRC_DIR/." "$PREFIX/share/SIRF-${{ sirf_minor }}/data/"
+              rm -rf "$PREFIX/share/SIRF-${{ sirf_minor }}/data/.git"
+            else: |
+              New-Item -ItemType Directory -Force "$env:PREFIX\share\SIRF-${{ sirf_minor }}\data" | Out-Null
+              Copy-Item -Recurse -Force "$env:SRC_DIR\*" "$env:PREFIX\share\SIRF-${{ sirf_minor }}\data\"
+              Remove-Item -Recurse -Force "$env:PREFIX\share\SIRF-${{ sirf_minor }}\data\.git" -ErrorAction SilentlyContinue
+    about:
+      summary: SIRF example data (MR/PET/Registration/SPECT)
+      homepage: https://github.com/CCPPETMR/SIRF_data
+      repository: https://github.com/CCPPETMR/SIRF_data
+      license: Apache-2.0
+
+  - package:
+      name: sirf
+      version: "3.10.1"
+    source:
+      git: https://github.com/SyneRBI/SIRF.git
+      # from SyneRBI/SIRF#1420
+      rev: 71fa637a5c263e0a8a0057833d113254fb5114c8
+    build:
+      number: 0
+      string: py${{ python | replace('.', '') }}${{ '_' ~ cuda_build_prefix if with_cuda else '' }}
+      variant:
+        use_keys:
+          - ${{ "cuda" if with_cuda }}
+        down_prioritize_variant: ${{ 0 if with_cuda else 1 }}
+      script:
+        file: ${{ "build-sirf.sh" if unix else "build-sirf.ps1" }}
+        env:
+          cuda_compiler_version: ${{ cuda_version }}
+          GADGETRON_USE_CUDA: ${{ 'ON' if with_cuda else 'OFF' }}
+          CMAKE_C_COMPILER_LAUNCHER: ${{ c_cache_c }}
+          CMAKE_CXX_COMPILER_LAUNCHER: ${{ c_cache_cxx }}
+          CCACHE_DIR: ${{ ccache_dir }}
+          CCACHE_MAXSIZE: ${{ ccache_maxsize }}
+          SIRF_CONTRIBS_VERSION: ${{ sirf_contribs }}
+    requirements:
+      build:
+        - ccache
+        - cmake
+        - git
+        - ninja
+        - pip
+        - swig
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+        - if: with_cuda
+          then: ${{ compiler('cuda') }}
+      host:
+        - gadgetron 4.7.2.* ${{ cuda_build_prefix }}*
+        - stir 6.4.0.* ${{ cuda_build_prefix }}*
+        - libboost-devel ${{ boost }}
+        - fftw
+        - hdf5 ==${{ hdf5 }}
+        - ${{ pin_subpackage('ismrmrd', exact=True) }}
+        - niftyreg
+        - libpng
+        - numpy ~=2
+        - pip
+        - python
+        - setuptools
+        - if: with_cuda
+          then:
+            - cuda-version ==${{ cuda_version }}
+            - if: (cuda_major | int) >= 12
+              then: cuda-cudart-dev
+            - libcublas-dev
+            - libcufft-dev
+            - libcusparse-dev
+      run:
+        - array-api-compat
+        # ccpi::cil has no osx builds
+        - if: not osx
+          then: cil >=26
+        - gadgetron 4.7.2.* ${{ cuda_build_prefix }}*
+        - pet-rd-tools
+        - stir 6.4.0.* ${{ cuda_build_prefix }}*
+        - deprecation
+        - ${{ pin_subpackage('ismrmrd') }}
+        - niftyreg
+        - libpng
+        - numpy ~=2
+        - pip
+        - python
+        - if: with_cuda
+          then:
+            - __cuda
+            - cuda-version ~=${{ cuda_version }}
+            - cuda-cudart
+            - libcublas
+            - libcufft
+            - libcusparse
+            - libcurand
+            - ccpi-regulariser >=26 cuda${{ cuda_major }}*
+      run_constraints:
+        - ${{ pin_subpackage('siemens_to_ismrmrd') }}
+        - ${{ pin_subpackage('sirf-data') }}
+        - sirf-contrib ${{ sirf_contribs }}.*
+        # ccpi::cil has no osx builds
+        - if: osx
+          then: cil >=26
+    tests:
+      - python:
+          imports:
+            - sirf
+            - sirf.Utilities
+            - if: not osx
+              then:
+                - sirf.STIR
+                - sirf.Reg
+                - sirf.SIRF
+            - if: linux
+              then: sirf.Gadgetron
+      - requirements:
+          run:
+            - ${{ pin_subpackage('sirf-data') }}
+            - pytest
+            - pytest-cov
+            - docopt
+            - matplotlib
+        files:
+          source:
+            - src/Synergistic/pSyn/tests/
+            - src/Synergistic/tests/test_pSynergistic.py
+            - src/Registration/pReg/tests/
+            - src/xSTIR/pSTIR/tests/
+            - examples/parameter_files/
+            - examples/Python/PET/
+            - src/torch/tests/
+            - src/xGadgetron/pGadgetron/tests/
+            - examples/Python/MR/
+        script:
+          interpreter: ${{ "powershell" if win else "bash" }}
+          content:
+            - python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+            - if: unix
+              then: |
+                export SIRF_DATA_PATH="$PREFIX/share/SIRF-${{ sirf_minor }}/data"
+                mkdir -p "$SIRF_DATA_PATH/examples/MR/zenodo"
+              else: |
+                $env:SIRF_DATA_PATH = "$env:PREFIX\share\SIRF-${{ sirf_minor }}\data"
+                New-Item -ItemType Directory -Force "$env:SIRF_DATA_PATH\examples\MR\zenodo" | Out-Null
+            - >
+              python -c "import os,urllib.request as u; b=os.environ['SIRF_DATA_PATH']; f={'SIRF_recon.h5':'https://zenodo.org/record/3571228/files/SIRF_recon.h5?download=1','dicom_as_nifti.nii':'https://zenodo.org/record/3571228/files/dicom_as_nifti.nii?download=1','3D_RPE_Lowres.h5':'https://zenodo.org/record/4600937/files/3DRPE_Lowres.h5?download=1'}; [(os.makedirs(z,exist_ok=True), [u.urlretrieve(url, os.path.join(z,n)) for n,url in f.items() if not os.path.exists(os.path.join(z,n))]) for z in (os.path.join(b,'examples','MR','zenodo'), os.path.join(b,'zenodo'))]; print('fetched zenodo MR test data under', b)"
+            # the Gadgetron relay (gadgetron + mrd-storage-server) only works where
+            # mrd-storage-server is installed (linux-64 in CI; absent on osx-arm64/win-64).
+            # Start it only when available; the relay-dependent tests are skipped otherwise.
+            - if: unix
+              then: |
+                gadgetron_pid=''
+                if [ -x "$PREFIX/bin/mrd-storage-server" ]; then
+                  export GADGETRON_HOME="$PREFIX"  # relay config lookup, cf. activate-sirf.sh
+                  "$PREFIX/bin/gadgetron" > gadgetron.log 2>&1 &
+                  gadgetron_pid=$!
+                  # wait for the relay port (up to 60s)
+                  for i in $(seq 1 60); do
+                    (exec 3<>/dev/tcp/127.0.0.1/9002) 2>/dev/null && { exec 3>&-; break; }
+                    sleep 1
+                  done
+                fi
+              else: |
+                if (Test-Path "$env:PREFIX\Library\bin\mrd-storage-server.exe") {
+                  $env:GADGETRON_HOME = $env:PREFIX  # relay config lookup, cf. sirf-activate.bat
+                  $gadgetron = Start-Process -FilePath "$env:PREFIX\Library\bin\gadgetron.exe" -RedirectStandardOutput gadgetron.log -PassThru
+                  # wait for the relay port (up to 60s)
+                  $c = New-Object Net.Sockets.TcpClient
+                  for ($i = 0; $i -lt 60; $i++) {
+                    try { $c.Connect("127.0.0.1", 9002); $c.Close(); break } catch { Start-Sleep -Seconds 1 }
+                  }
+                }
+            # manually accumulate (pytest cannot accumulate due to same-basename import collisions & C++ segfault under --import-mode=importlib)
+            - if: unix
+              then: |
+                ret=0
+                suites=(src/Synergistic/pSyn/tests src/Registration/pReg/tests src/xSTIR/pSTIR/tests examples/Python/PET src/torch/tests)
+                # relay-dependent tests (pGadgetron, MR reconstructions, test_pSynergistic)
+                # need mrd-storage-server, linux-only
+                [ -x "$PREFIX/bin/mrd-storage-server" ] && suites+=(src/xGadgetron/pGadgetron/tests examples/Python/MR src/Synergistic/tests/test_pSynergistic.py)
+                # Non-linux has no Gadgetron relay (mrd-storage-server is linux-only):
+                # exclude the MR reconstruction tests. osx-arm64 also lacks STIR NIfTI IO.
+                extra_args=()
+                case "$(uname -s)" in
+                  Darwin) extra_args+=('-k' 'not MR and not test_nifti_image_data_3d') ;;
+                  *)      [ "$(uname -s)" != "Linux" ] && extra_args+=('-k' 'not MR') ;;
+                esac
+                for d in "${suites[@]}"; do
+                  echo "=== pytest: $d ==="
+                  python -m pytest "${extra_args[@]}" "$d" || ret=1
+                done
+              else: |
+                $ret = 0
+                $suites = @('src/Synergistic/pSyn/tests', 'src/Registration/pReg/tests', 'src/xSTIR/pSTIR/tests', 'examples/Python/PET', 'src/torch/tests')
+                # relay-dependent tests (pGadgetron, MR reconstructions, test_pSynergistic)
+                # need mrd-storage-server, linux-only
+                if (Test-Path "$env:PREFIX\Library\bin\mrd-storage-server.exe") { $suites += @('src/xGadgetron/pGadgetron/tests', 'examples/Python/MR', 'src/Synergistic/tests/test_pSynergistic.py') }
+                foreach ($d in $suites) {
+                  Write-Host "=== pytest: $d ==="
+                  python -m pytest $d
+                  if ($LASTEXITCODE -ne 0) { $ret = 1 }
+                }
+            - if: unix
+              then: kill "$gadgetron_pid" 2>/dev/null || true
+              else: if ($gadgetron) { Stop-Process -Id $gadgetron.Id -Force -ErrorAction SilentlyContinue }
+            - if: unix
+              then: |
+                if [ "$ret" -ne 0 ]; then
+                  echo "----------- Last 40 lines of gadgetron.log (relay)"
+                  tail -n 40 gadgetron.log 2>/dev/null || true
+                fi
+                exit "$ret"
+              else: |
+                if ($ret -ne 0) {
+                  Write-Host "----------- Last 40 lines of gadgetron.log (relay)"
+                  Get-Content gadgetron.log -Tail 40 -ErrorAction SilentlyContinue
+                }
+                exit $ret
+      - script:
+          interpreter: bash
+          content:
+            - if: linux
+              then: |
+                set -uxo pipefail
+                # $PREFIX is unreliable here (a rattler-build placeholder in one script,
+                # expanded in another); use sys.prefix (the test env's prefix) instead.
+                SIRF_PREFIX=$(python -c "import sys; print(sys.prefix)")
+                export SIRF_DATA_PATH="$SIRF_PREFIX/share/SIRF-${{ sirf_minor }}/data"  # separate script: env from the main test block does not carry over
+                export GADGETRON_HOME="$SIRF_PREFIX"  # relay config lookup, cf. activate-sirf.sh
+                mkdir cil_sirf_test
+                touch cil_sirf_test/__init__.py
+                DEFAULT_CIL_TAG=$(python -c 'import cil; ch = cil.version.commit_hash; print(ch if ch else "v" + cil.version.version)' | tail -n1)
+                for fname in test_SIRF.py utils.py testclass.py; do
+                  curl -fsSL "https://raw.githubusercontent.com/TomographicImaging/CIL/$DEFAULT_CIL_TAG/Wrappers/Python/test/$fname" > "cil_sirf_test/$fname"
+                done
+                "$SIRF_PREFIX/bin/gadgetron" > gadgetron.log 2>&1 &
+                gadgetron_pid=$!
+                # wait for the relay port (up to 60s)
+                for i in $(seq 1 60); do
+                  (exec 3<>/dev/tcp/127.0.0.1/9002) 2>/dev/null && { exec 3>&-; break; }
+                  sleep 1
+                done
+                python -m unittest discover -v ./cil_sirf_test
+                ret=$?
+                kill -n 15 "$gadgetron_pid" 2>/dev/null || true
+                exit "$ret"
+    about:
+      summary: Synergistic Image Reconstruction Framework
+      homepage: https://github.com/SyneRBI/SIRF
+      repository: https://github.com/SyneRBI/SIRF
+      license: Apache-2.0
+      license_file: LICENSE.txt
+  - package:
+      name: sirf-contrib
+      version: ${{ sirf_contribs }}
+    inherit: null
+    source:
+      git: https://github.com/SyneRBI/SIRF-Contribs.git
+      tag: v${{ sirf_contribs }}
+    build:
+      number: 0
+      noarch: python
+      script:
+        content:
+          # rattler puts the build prefix on PATH with its site-packages
+          # pointing at $PREFIX, so a plain `pip install .` lands the files in
+          # the package. --no-deps keeps only sirf/contrib/ (the deps stay as
+          # conda run deps rather than being bundled in)
+          - SETUPTOOLS_SCM_PRETEND_VERSION=${{ sirf_contribs }} python -m pip install . --no-deps -vv
+    requirements:
+      build:
+        - python
+        - pip
+        - setuptools
+        - setuptools-scm
+      run:
+        # version-only (not pin_subpackage): this is noarch but depends on the
+        # platform-specific sirf, so a build-string pin would be too tight
+        - sirf 3.10.1.*
+        - numpy ~=2
+        - scipy
+        - matplotlib
+        - docopt
+        - array-api-compat
+    tests:
+      - python:
+          imports:
+            - sirf.contrib
+          # the upstream pyproject over-declares brainweb (only used by the
+          # brainweb-utilities sub-contrib, not a top-level import); skip the
+          # pip check that would otherwise fail on it
+          pip_check: false
+    about:
+      summary: SIRF contributions (sirf.contrib)
+      homepage: https://github.com/SyneRBI/SIRF-Contribs
+      repository: https://github.com/SyneRBI/SIRF-Contribs
+      license: Apache-2.0
