@@ -328,42 +328,66 @@ outputs:
             # gadgetron requires mrd-storage-server (currently missing on osx-arm64 & win-64)
             - if: unix
               then: |
-                "$PREFIX/bin/gadgetron" > gadgetron.log 2>&1 &
-                gadgetron_pid=$!
-                # wait for the relay port (up to 60s)
-                for i in $(seq 1 60); do
-                  (exec 3<>/dev/tcp/127.0.0.1/9002) 2>/dev/null && { exec 3>&-; break; }
-                  sleep 1
-                done
+                gadgetron_pid=''
+                if [ -x "$PREFIX/bin/mrd-storage-server" ]; then
+                  export GADGETRON_HOME="$PREFIX"  # relay config lookup, cf. activate-sirf.sh
+                  "$PREFIX/bin/gadgetron" > gadgetron.log 2>&1 &
+                  gadgetron_pid=$!
+                  # wait for the relay port (up to 60s)
+                  for i in $(seq 1 60); do
+                    (exec 3<>/dev/tcp/127.0.0.1/9002) 2>/dev/null && { exec 3>&-; break; }
+                    sleep 1
+                  done
+                fi
               else: |
-                $gadgetron = Start-Process -FilePath "$env:PREFIX\Library\bin\gadgetron.exe" -RedirectStandardOutput gadgetron.log -PassThru
-                # wait for the relay port (up to 60s)
-                for ($i = 0; $i -lt 60; $i++) {
-                  python -c "import socket,sys; s=socket.socket(); s.settimeout(1); sys.exit(0 if s.connect_ex(('127.0.0.1',9002))==0 else 1)"
-                  if ($LASTEXITCODE -eq 0) { break }
-                  Start-Sleep -Seconds 1
+                if (Test-Path "$env:PREFIX\Library\bin\mrd-storage-server.exe") {
+                  $env:GADGETRON_HOME = $env:PREFIX  # relay config lookup, cf. sirf-activate.bat
+                  $gadgetron = Start-Process -FilePath "$env:PREFIX\Library\bin\gadgetron.exe" -RedirectStandardOutput gadgetron.log -PassThru
+                  # wait for the relay port (up to 60s)
+                  $c = New-Object Net.Sockets.TcpClient
+                  for ($i = 0; $i -lt 60; $i++) {
+                    try { $c.Connect("127.0.0.1", 9002); $c.Close(); break } catch { Start-Sleep -Seconds 1 }
+                  }
                 }
             # manually accumulate (pytest cannot accumulate due to same-basename import collisions & C++ segfault under --import-mode=importlib)
             - if: unix
               then: |
                 ret=0
-                for d in src/Synergistic/pSyn/tests src/Synergistic/tests/test_pSynergistic.py src/Registration/pReg/tests src/xSTIR/pSTIR/tests examples/Python/PET src/torch/tests src/xGadgetron/pGadgetron/tests examples/Python/MR; do
+                suites=(src/Synergistic/pSyn/tests src/Registration/pReg/tests src/xSTIR/pSTIR/tests examples/Python/PET src/torch/tests)
+                # relay-dependent tests (pGadgetron, MR reconstructions, test_pSynergistic)
+                # need mrd-storage-server, linux-only
+                [ -x "$PREFIX/bin/mrd-storage-server" ] && suites+=(src/xGadgetron/pGadgetron/tests examples/Python/MR src/Synergistic/tests/test_pSynergistic.py)
+                for d in "${suites[@]}"; do
                   echo "=== pytest: $d ==="
                   python -m pytest "$d" || ret=1
                 done
               else: |
                 $ret = 0
-                foreach ($d in @('src/Synergistic/pSyn/tests', 'src/Synergistic/tests/test_pSynergistic.py', 'src/Registration/pReg/tests', 'src/xSTIR/pSTIR/tests', 'examples/Python/PET', 'src/torch/tests', 'src/xGadgetron/pGadgetron/tests', 'examples/Python/MR')) {
+                $suites = @('src/Synergistic/pSyn/tests', 'src/Registration/pReg/tests', 'src/xSTIR/pSTIR/tests', 'examples/Python/PET', 'src/torch/tests')
+                # relay-dependent tests (pGadgetron, MR reconstructions, test_pSynergistic)
+                # need mrd-storage-server, linux-only
+                if (Test-Path "$env:PREFIX\Library\bin\mrd-storage-server.exe") { $suites += @('src/xGadgetron/pGadgetron/tests', 'examples/Python/MR', 'src/Synergistic/tests/test_pSynergistic.py') }
+                foreach ($d in $suites) {
                   Write-Host "=== pytest: $d ==="
                   python -m pytest $d
                   if ($LASTEXITCODE -ne 0) { $ret = 1 }
                 }
             - if: unix
               then: kill "$gadgetron_pid" 2>/dev/null || true
-              else: Stop-Process -Id $gadgetron.Id -Force -ErrorAction SilentlyContinue
+              else: if ($gadgetron) { Stop-Process -Id $gadgetron.Id -Force -ErrorAction SilentlyContinue }
             - if: unix
-              then: exit "$ret"
-              else: exit $ret
+              then: |
+                if [ "$ret" -ne 0 ]; then
+                  echo "----------- Last 40 lines of gadgetron.log (relay)"
+                  tail -n 40 gadgetron.log 2>/dev/null || true
+                fi
+                exit "$ret"
+              else: |
+                if ($ret -ne 0) {
+                  Write-Host "----------- Last 40 lines of gadgetron.log (relay)"
+                  Get-Content gadgetron.log -Tail 40 -ErrorAction SilentlyContinue
+                }
+                exit $ret
       - script:
           - if: linux
             then: |

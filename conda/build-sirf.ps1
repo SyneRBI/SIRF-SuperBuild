@@ -127,10 +127,17 @@ if ($gadgetron_cuda -eq "ON") {
     if (-not $nvidia) { $server_tests = $false }
     else { & nvidia-smi -L *> $null; if ($LASTEXITCODE -ne 0) { $server_tests = $false } }
 }
-$exclude = '_PYTHON|_DEMOS'
-if (-not $server_tests) { $exclude += '|MR_|GADGETRON' }
+# the Gadgetron relay needs mrd-storage-server (linux-64/osx-64 only; absent on
+# osx-arm64/win-64), so the relay-dependent C++ tests (MR_/GADGETRON/SYN_TEST) can't
+# run without it. (SYN_TEST_CPLUSPLUS runs a Gadgetron resampler sub-test.)
+if (-not (Test-Path "$env:PREFIX\Library\bin\mrd-storage-server.exe")) { $server_tests = $false }
+# PET_TESTS_CPLUSPLUS_6 (listmode sensitivity caching) does not work on win-64.
+$exclude = '_PYTHON|_DEMOS|PET_TESTS_CPLUSPLUS_6'
+if (-not $server_tests) { $exclude += '|MR_|GADGETRON|SYN_TEST_CPLUSPLUS' }
 $ctest_args = @("--test-dir", "$env:BUILD_PREFIX\build", "--verbose", "--output-on-failure", "-E", $exclude)
 
+# relay config lookup (port/bind); set BEFORE starting the relay, cf. sirf-activate.bat
+$env:GADGETRON_HOME = $env:PREFIX
 $gadgetron_pid = $null
 if ($server_tests) {
     $gadgetron_pid = Start-Process -FilePath "$env:PREFIX\Library\bin\gadgetron.exe" `
@@ -142,13 +149,14 @@ if ($server_tests) {
         try { $c.Connect("127.0.0.1", 9002); $c.Close(); break } catch { Start-Sleep -Seconds 1 }
     }
 }
-$env:GADGETRON_HOME = $env:PREFIX  # relay config lookup, cf. sirf-activate.bat
 ctest @ctest_args
 $test_fail = $LASTEXITCODE
 if ($gadgetron_pid) { Stop-Process -Id $gadgetron_pid.Id -Force -ErrorAction SilentlyContinue }
 if ($test_fail -ne 0) {
     Write-Host "----------- Last 70 lines of gadgetron.log"
     Get-Content "$env:BUILD_PREFIX\gadgetron.log" -Tail 70 -ErrorAction SilentlyContinue
+    Write-Host "----------- Last 70 lines of gadgetron-err.log"
+    Get-Content "$env:BUILD_PREFIX\gadgetron-err.log" -Tail 70 -ErrorAction SilentlyContinue
     exit $test_fail
 }
 
