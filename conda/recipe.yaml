@@ -383,12 +383,14 @@ outputs:
                 $suites = @('src/Synergistic/pSyn/tests', 'src/Registration/pReg/tests', 'src/xSTIR/pSTIR/tests', 'examples/Python/PET')
                 # mrd-storage-server tests
                 if (Test-Path "$env:PREFIX\Library\bin\mrd-storage-server.exe") { $suites += @('src/xGadgetron/pGadgetron/tests', 'examples/Python/MR', 'src/Synergistic/tests/test_pSynergistic.py') }
-                # torch autograd tests crash (SIGABRT) on non-linux: not added on Windows
+                # torch autograd tests crash (SIGABRT) on non-linux
+                # skip nifti tests (need mrd-storage-server)
+                $kargs = @('-k', 'not test_nifti_image_data_3d')
                 foreach ($d in $suites) {
                   Write-Host "=== pytest: $d ==="
                   $code = 1
                   try {
-                    python -m pytest $d
+                    python -m pytest @kargs $d
                     $code = $LASTEXITCODE
                   } catch {
                     # a non-zero native exit may surface as a NativeCommandExitException (pwsh >= 7.3)
