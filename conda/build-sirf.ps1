@@ -7,7 +7,7 @@ function Assert-Zero($msg) { if ($LASTEXITCODE -ne 0) { throw "$msg failed with 
 
 # NiftyReg 1.5.69.6 (the only conda-forge build) ships a broken inline getter in
 # _reg_aladin.h (see build-sirf.sh); SIRF never calls it, so neutralise it.
-$h = Join-Path $env:LIBRARY_PREFIX "include\_reg_aladin.h"
+$h = "$env:LIBRARY_PREFIX\include\_reg_aladin.h"
 $s = Get-Content $h -Raw
 if ($s -match 'return this->InputTransform;') {
     # Replace (not in-place write): files are hardlinked out of the rattler
@@ -26,11 +26,11 @@ if ($s -match 'return this->InputTransform;') {
 # import lib from the DLL's actual export set (dumpbin /exports + lib /def); a
 # fixed list is too fragile (it misses e.g. the gz* stream API that
 # niftyreg/reg_nifti links against).
-$zlib_dll = Join-Path $env:PREFIX "Library\bin\zlib.dll"
+$zlib_dll = "$env:PREFIX\Library\bin\zlib.dll"
 if (Test-Path $zlib_dll) {
-    $zlib_lib_dir = Join-Path $env:PREFIX "Library\lib"
+    $zlib_lib_dir = "$env:PREFIX\Library\lib"
     New-Item -ItemType Directory -Force -Path $zlib_lib_dir | Out-Null
-    $zlib_lib = Join-Path $zlib_lib_dir "zlib.lib"
+    $zlib_lib = "$zlib_lib_dir\zlib.lib"
     if (-not (Test-Path $zlib_lib)) {
         # Export table rows: <VA> <RVA> <ordinal:8hex> <hint:8hex> <name>.
         # Key off the second-to-last field (hint/ordinal, 4+ hex) and the last
@@ -41,7 +41,7 @@ if (Test-Path $zlib_dll) {
             if ($t.Count -ge 4 -and $t[-2] -match '^[0-9a-fA-F]{4,}$' -and $t[-1] -match '^[A-Za-z_][A-Za-z0-9_]*$') { $t[-1] }
         } | Where-Object { $_ -ne 'Name' } | Sort-Object -Unique
         if (-not $names) { throw "dumpbin /exports returned no export names for $zlib_dll" }
-        $def = Join-Path $zlib_lib_dir "zlib.def"
+        $def = "$zlib_lib_dir\zlib.def"
         $def_lines = @("LIBRARY zlib", "EXPORTS") + ($names | ForEach-Object { "  " + $_ })
         $enc = New-Object System.Text.ASCIIEncoding
         [System.IO.File]::WriteAllLines($def, $def_lines, $enc)
@@ -49,7 +49,7 @@ if (Test-Path $zlib_dll) {
         & lib /def:$def /out:$zlib_lib /nologo
         Assert-Zero "lib (zlib import lib)"
     }
-    Copy-Item -Force $zlib_lib (Join-Path $zlib_lib_dir "z.lib")
+    Copy-Item -Force $zlib_lib "$zlib_lib_dir\z.lib"
 }
 # range-v3 0.12's compressed_pair.hpp guards compressed_tuple_'s converting
 # constructor / tuple operator with a SFINAE default template argument that
@@ -59,7 +59,7 @@ if (Test-Path $zlib_dll) {
 # the noexcept clause compile fine. range-v3 always constructs compressed_tuple_
 # with matching element/argument types, so drop the SFINAE guards; constructi-
 # bility is still enforced by the member initialisers.
-$cp = Join-Path $env:LIBRARY_PREFIX "include\range\v3\utility\compressed_pair.hpp"
+$cp = "$env:LIBRARY_PREFIX\include\range\v3\utility\compressed_pair.hpp"
 if (Test-Path $cp) {
     $s = [System.IO.File]::ReadAllText($cp)
     if ($s -match 'META_IS_CONSTRUCTIBLE\(Ts, Args\)\.\.\.') {
@@ -80,7 +80,7 @@ if (Test-Path $cp) {
 # std::_isnan (C2039). The SYN C++ test TU pulls in <math.h> before Armadillo
 # (the SIRF lib TUs do not, hence only the test fails). Undefine the macro at
 # the top of the header so the C++11 std::isnan function is used.
-$arma = Join-Path $env:LIBRARY_PREFIX "include\armadillo_bits\arma_cmath.hpp"
+$arma = "$env:LIBRARY_PREFIX\include\armadillo_bits\arma_cmath.hpp"
 if (Test-Path $arma) {
     $s = [System.IO.File]::ReadAllText($arma)
     if ($s -match 'std::isnan' -and $s -notmatch '#undef isnan') {
@@ -101,9 +101,9 @@ if ($gadgetron_cuda -eq "ON") {
 }
 cmake -G Ninja $env:SRC_DIR -B "$env:BUILD_PREFIX\build" "-DCMAKE_BUILD_TYPE=Release" "-DCMAKE_INSTALL_PREFIX=$env:PREFIX" "-DCMAKE_PREFIX_PATH=$env:LIBRARY_PREFIX;$env:PREFIX" "-DRUN_ISMRMRD_SHEPP_LOGAN:BOOL=OFF" "-DDOWNLOAD_ZENODO_TEST_DATA:BOOL=ON" "-DDISABLE_Matlab:BOOL=ON" "-DDISABLE_PYTHON:BOOL=OFF" "-DPython_EXECUTABLE=$env:PREFIX\python.exe" "-DPYTHON_DEST_DIR=$env:SP_DIR" "-DDISABLE_Registration:BOOL=OFF" "-DDISABLE_Gadgetron:BOOL=OFF" "-DGadgetron_USE_CUDA:BOOL=$gadgetron_cuda"
 Assert-Zero "cmake configure"
-cmake --build (Join-Path $env:BUILD_PREFIX "build") --config Release
+cmake --build "$env:BUILD_PREFIX\build" --config Release
 Assert-Zero "cmake build"
-cmake --install (Join-Path $env:BUILD_PREFIX "build") --config Release
+cmake --install "$env:BUILD_PREFIX\build" --config Release
 Assert-Zero "cmake install"
 
 # SIRF-Contribs (pure-Python, sirf.contrib) is now built as a separate output
