@@ -361,9 +361,13 @@ outputs:
                 # relay-dependent tests (pGadgetron, MR reconstructions, test_pSynergistic)
                 # need mrd-storage-server, linux-only
                 [ -x "$PREFIX/bin/mrd-storage-server" ] && suites+=(src/xGadgetron/pGadgetron/tests examples/Python/MR src/Synergistic/tests/test_pSynergistic.py)
-                # STIR NIfTI IO is unavailable on osx-arm64: skip the NIfTI-reading test there
+                # Non-linux has no Gadgetron relay (mrd-storage-server is linux-only):
+                # exclude the MR reconstruction tests. osx-arm64 also lacks STIR NIfTI IO.
                 extra_args=()
-                [ "$(uname -s)" = "Darwin" ] && extra_args=('-k' 'not test_nifti_image_data_3d')
+                case "$(uname -s)" in
+                  Darwin) extra_args+=('-k' 'not MR and not test_nifti_image_data_3d') ;;
+                  *)      [ "$(uname -s)" != "Linux" ] && extra_args+=('-k' 'not MR') ;;
+                esac
                 for d in "${suites[@]}"; do
                   echo "=== pytest: $d ==="
                   python -m pytest "${extra_args[@]}" "$d" || ret=1
