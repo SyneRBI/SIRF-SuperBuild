@@ -288,6 +288,7 @@ outputs:
             - src/Synergistic/tests/test_pSynergistic.py
             - src/Registration/pReg/tests/
             - src/xSTIR/pSTIR/tests/
+            - examples/parameter_files/
             - examples/Python/PET/
             - src/torch/tests/
             - src/xGadgetron/pGadgetron/tests/
@@ -303,8 +304,28 @@ outputs:
               else: |
                 $env:SIRF_DATA_PATH = "$env:PREFIX\share\SIRF-${{ sirf_minor }}\data"
                 New-Item -ItemType Directory -Force "$env:SIRF_DATA_PATH\examples\MR\zenodo" | Out-Null
-            - >
-              python -c "import os,urllib.request as u; b=os.environ['SIRF_DATA_PATH']; f={'SIRF_recon.h5':'https://zenodo.org/record/3571228/files/SIRF_recon.h5?download=1','dicom_as_nifti.nii':'https://zenodo.org/record/3571228/files/dicom_as_nifti.nii?download=1'}; [(os.makedirs(z,exist_ok=True), [u.urlretrieve(url, os.path.join(z,n)) for n,url in f.items() if not os.path.exists(os.path.join(z,n))]) for z in (os.path.join(b,'examples','MR','zenodo'), os.path.join(b,'zenodo'))]; print('fetched zenodo MR test data under', b)"
+            # zenodo_retry
+            - |
+              python -c "import os, time, urllib.request as u
+              b = os.environ['SIRF_DATA_PATH']
+              f = {'SIRF_recon.h5': 'https://zenodo.org/record/3571228/files/SIRF_recon.h5?download=1',
+                   'dicom_as_nifti.nii': 'https://zenodo.org/record/3571228/files/dicom_as_nifti.nii?download=1',
+                   '3D_RPE_Lowres.h5': 'https://zenodo.org/record/4600937/files/3DRPE_Lowres.h5?download=1'}
+              def get(url, dst):
+                  for a in range(5):
+                      try:
+                          u.urlretrieve(url, dst); return
+                      except Exception:
+                          if a == 4: raise
+                          time.sleep(5)
+              for z in (os.path.join(b, 'examples', 'MR', 'zenodo'), os.path.join(b, 'zenodo')):
+                  os.makedirs(z, exist_ok=True)
+                  for n, url in f.items():
+                      dst = os.path.join(z, n)
+                      if not os.path.exists(dst):
+                          get(url, dst)
+              print('fetched zenodo MR test data under', b)"
+            # gadgetron requires mrd-storage-server (currently missing on osx-arm64 & win-64)
             - if: unix
               then: |
                 "$PREFIX/bin/gadgetron" > gadgetron.log 2>&1 &
