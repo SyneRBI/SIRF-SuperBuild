@@ -24,6 +24,7 @@ context:
   sirf_contribs: 3.10.0
   # example-data install prefix (share/SIRF-<minor>/data); must match SIRF project() MAJOR.MINOR
   sirf_minor: 3.10
+  sirf_tests_slow: ${{ env.get('SIRF_TESTS_SLOW', default='false') }}
   cuda_version: ${{ cuda_compiler_version if cuda_compiler_version is defined and cuda_compiler_version != "None" else "None" }}
   with_cuda: ${{ "true" if cuda_version != "None" else "" }}
   cuda_major: ${{ (cuda_version | split(".") | first) if with_cuda else "0" }}
@@ -311,6 +312,9 @@ outputs:
             # zenodo_retry
             - |
               python -c "import os, time, urllib.request as u
+              if '${{ sirf_tests_slow }}' == 'false':
+                  print('skipping zenodo fetch (SIRF_TESTS_SLOW unset)')
+                  raise SystemExit
               b = os.environ['SIRF_DATA_PATH']
               f = {'SIRF_recon.h5': 'https://zenodo.org/record/3571228/files/SIRF_recon.h5?download=1',
                    'dicom_as_nifti.nii': 'https://zenodo.org/record/3571228/files/dicom_as_nifti.nii?download=1',
@@ -357,14 +361,22 @@ outputs:
             - if: unix
               then: |
                 ret=0
-                suites=(src/Synergistic/pSyn/tests src/Registration/pReg/tests src/xSTIR/pSTIR/tests examples/Python/PET)
+                suites=(src/Synergistic/pSyn/tests src/Registration/pReg/tests src/xSTIR/pSTIR/tests)
                 # mrd-storage-server tests
                 [ -x "$PREFIX/bin/mrd-storage-server" ] && suites+=(src/xGadgetron/pGadgetron/tests examples/Python/MR src/Synergistic/tests/test_pSynergistic.py)
                 # torch autograd tests crash (SIGABRT) on non-linux
                 [ "$(uname -s)" = "Linux" ] && suites+=(src/torch/tests)
-                # STIR NIfTI IO missing on osx-arm64
+                # slow (examples/Python/PET, noncartesian examples, test_nifti_image_data_3d)
+                [ ${{ sirf_tests_slow }} != false ] && suites+=(examples/Python/PET)
+                kexpr=''
+                if [ ${{ sirf_tests_slow }} == false ]; then
+                  kexpr='not test_nifti_image_data_3d and not noncartesian'
+                elif [ "$(uname -s)" = "Darwin" ]; then
+                  # STIR NIfTI IO missing on osx-arm64
+                  kexpr='not test_nifti_image_data_3d'
+                fi
                 extra_args=()
-                [ "$(uname -s)" = "Darwin" ] && extra_args+=('-k' 'not test_nifti_image_data_3d')
+                [ -n "$kexpr" ] && extra_args+=(-k "$kexpr")
                 for d in "${suites[@]}"; do
                   echo "=== pytest: $d ==="
                   rc=0
@@ -380,12 +392,19 @@ outputs:
                   $PSNativeCommandUseErrorActionPreference = $false
                 }
                 $ret = 0
-                $suites = @('src/Synergistic/pSyn/tests', 'src/Registration/pReg/tests', 'src/xSTIR/pSTIR/tests', 'examples/Python/PET')
+                $suites = @('src/Synergistic/pSyn/tests', 'src/Registration/pReg/tests', 'src/xSTIR/pSTIR/tests')
                 # mrd-storage-server tests
                 if (Test-Path "$env:PREFIX\Library\bin\mrd-storage-server.exe") { $suites += @('src/xGadgetron/pGadgetron/tests', 'examples/Python/MR', 'src/Synergistic/tests/test_pSynergistic.py') }
                 # torch autograd tests crash (SIGABRT) on non-linux
                 # skip nifti tests (need mrd-storage-server)
-                $kargs = @('-k', 'not test_nifti_image_data_3d')
+                $kexpr = 'not test_nifti_image_data_3d'
+                # slow (examples/Python/PET, noncartesian examples)
+                if ('${{ sirf_tests_slow }}' -ne 'true') {
+                  $kexpr += ' and not noncartesian'
+                } else {
+                  $suites += @('examples/Python/PET')
+                }
+                $kargs = @('-k', $kexpr)
                 foreach ($d in $suites) {
                   Write-Host "=== pytest: $d ==="
                   $code = 1
