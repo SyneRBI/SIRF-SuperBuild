@@ -367,9 +367,18 @@ outputs:
                 [ "$(uname -s)" = "Darwin" ] && extra_args+=('-k' 'not test_nifti_image_data_3d')
                 for d in "${suites[@]}"; do
                   echo "=== pytest: $d ==="
-                  python -m pytest "${extra_args[@]}" "$d" || ret=1
+                  rc=0
+                  python -m pytest "${extra_args[@]}" "$d" || rc=$?
+                  # a non-zero exit is a failure unless it's NO_TESTS_RAN (5),
+                  # e.g. a suite where every test was deselected on this platform
+                  if [ "$rc" -ne 0 ] && [ "$rc" -ne 5 ]; then ret=1; fi
                 done
               else: |
+                # A non-zero native exit (e.g. pytest's NO_TESTS_RAN=5) must not become a
+                # terminating NativeCommandExitException (pwsh >= 7.3); inspect $LASTEXITCODE.
+                if (Get-Variable PSNativeCommandUseErrorActionPreference -ErrorAction SilentlyContinue) {
+                  $PSNativeCommandUseErrorActionPreference = $false
+                }
                 $ret = 0
                 $suites = @('src/Synergistic/pSyn/tests', 'src/Registration/pReg/tests', 'src/xSTIR/pSTIR/tests', 'examples/Python/PET')
                 # mrd-storage-server tests
@@ -377,8 +386,20 @@ outputs:
                 # torch autograd tests crash (SIGABRT) on non-linux: not added on Windows
                 foreach ($d in $suites) {
                   Write-Host "=== pytest: $d ==="
-                  python -m pytest $d
-                  if ($LASTEXITCODE -ne 0) { $ret = 1 }
+                  $code = 1
+                  try {
+                    python -m pytest $d
+                    $code = $LASTEXITCODE
+                  } catch {
+                    # a non-zero native exit may surface as a NativeCommandExitException (pwsh >= 7.3)
+                    $ex = $_.Exception
+                    $ep = $ex.PSObject.Properties['ExitCode']
+                    if ($null -ne $ep -and $null -ne $ep.Value) { $code = [int]$ep.Value }
+                    elseif ("$($ex.Message)" -match 'ended with non-zero exit code: (\d+)') { $code = [int]$Matches[1] }
+                    else { Write-Host "pytest error for $d : $($ex.Message)" }
+                  }
+                  # a non-zero exit is a failure unless NO_TESTS_RAN (5)
+                  if ($code -ne 0 -and $code -ne 5) { $ret = 1 }
                 }
             - if: unix
               then: kill "$gadgetron_pid" 2>/dev/null || true
