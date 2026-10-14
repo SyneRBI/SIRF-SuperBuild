@@ -182,7 +182,7 @@ outputs:
     source:
       git: https://github.com/SyneRBI/SIRF.git
       # from SyneRBI/SIRF#1420
-      rev: 2184768362d4ac3d61b330a143e84e090d0de6d6
+      rev: 71fa637a5c263e0a8a0057833d113254fb5114c8
     build:
       number: 0
       string: py${{ python | replace('.', '') }}${{ '_' ~ cuda_build_prefix if with_cuda else '' }}
