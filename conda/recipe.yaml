@@ -1,11 +1,17 @@
 # Usage:
-#   rattler-build build -r conda -c conda-forge -c ismrmrd -c ccpi -c synerbi --target-platform {linux-64,osx-arm64,win-64} [--variant python={3.11,3.12,...}] [-c nvidia --variant cuda_compiler_version={12.9,13.4}]
+#   rattler-build build -r conda -c conda-forge -c ismrmrd -c ccpi -c synerbi --channel-priority disabled [--no-build-id] [--test skip] [--variant python={3.11,3.12,...}] [-c nvidia --variant cuda_compiler_version={12.9,13.4}] [--target-platform {linux-64,osx-arm64,win-64}]
+#
+# Example (CPU, Python 3.13):
+#   rattler-build build -r conda -c conda-forge -c ismrmrd -c ccpi -c synerbi --channel-priority disabled --no-build-id --test skip --variant python=3.13
+#
+# Notes:
+# - --no-build-id: needed for ccache (env defaults CCACHE_DIR='', CCACHE_MAXSIZE=5G)
+# - conda-forge::stir==6.4.0 forces the rest of the stack up (ITK 5.4.7, ROOT 6.36.10, Boost 1.90, hdf5 1.14.6), which also unifies everything on icu 78
+#
 # Channel includes:
 # - ismrmrd::mrd-storage-server (gadgetron run dep; linux-64 only)
 # - ccpi::cil (sirf run dep on linux/win; run-constrained on osx — no CIL 26 for osx)
 # - synerbi::gadgetron
-#
-# conda-forge::stir==6.4.0 forces the rest of the stack up (ITK 5.4.7, ROOT 6.36.10, Boost 1.90, hdf5 1.14.6), which also unifies everything on icu 78.
 
 schema_version: 1
 
