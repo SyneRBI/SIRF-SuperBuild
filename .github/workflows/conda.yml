@@ -68,6 +68,8 @@ jobs:
         artifact-name: conda-py${{ matrix.python }}-cu${{ matrix.cuda }}-${{ steps.config.outputs.target }}
     - if: matrix.cuda == 'None'
       name: test
+      env:
+        SIRF_TESTS_SLOW: ${{ github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags') }}
       run: |
         for pkg in output/*/*.conda; do
           echo "::group::$(basename $pkg)"
