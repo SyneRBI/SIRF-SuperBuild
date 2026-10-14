@@ -180,10 +180,16 @@ SERVER_TESTS=ON
 if [ "${GADGETRON_USE_CUDA:-OFF}" = "ON" ] && ! nvidia-smi -L >/dev/null 2>&1; then
   SERVER_TESTS=OFF
 fi
+# the Gadgetron relay needs mrd-storage-server (linux-64/osx-64 only; absent on
+# osx-arm64/win-64), so the relay-dependent C++ tests (MR_/GADGETRON/SYN_TEST) can't
+# run without it. (SYN_TEST_CPLUSPLUS runs a Gadgetron resampler sub-test.)
+[ ! -x "$PREFIX/bin/mrd-storage-server" ] && SERVER_TESTS=OFF
 EXCLUDES='_PYTHON|_DEMOS'
-[ "$SERVER_TESTS" = OFF ] && EXCLUDES+='|MR_|GADGETRON'
+[ "$SERVER_TESTS" = OFF ] && EXCLUDES+='|MR_|GADGETRON|SYN_TEST_CPLUSPLUS'
 CTEST_ARGS=(--test-dir "$BUILD_PREFIX/build" --verbose --output-on-failure -E "$EXCLUDES")
 
+# relay config lookup (port/bind); set BEFORE starting the relay, cf. activate-sirf.sh
+export GADGETRON_HOME="$PREFIX"
 GADGETRON_PID=""
 if [ "$SERVER_TESTS" = ON ]; then
   "$PREFIX/bin/gadgetron" > "$BUILD_PREFIX/gadgetron.log" 2>&1 &
@@ -194,7 +200,6 @@ if [ "$SERVER_TESTS" = ON ]; then
     sleep 1
   done
 fi
-export GADGETRON_HOME="$PREFIX"  # relay config lookup, cf. activate-sirf.sh
 set +e
 ctest "${CTEST_ARGS[@]}"
 test_fail=$?
