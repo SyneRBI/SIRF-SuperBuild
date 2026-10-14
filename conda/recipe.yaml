@@ -361,9 +361,12 @@ outputs:
                 # relay-dependent tests (pGadgetron, MR reconstructions, test_pSynergistic)
                 # need mrd-storage-server, linux-only
                 [ -x "$PREFIX/bin/mrd-storage-server" ] && suites+=(src/xGadgetron/pGadgetron/tests examples/Python/MR src/Synergistic/tests/test_pSynergistic.py)
+                # STIR NIfTI IO is unavailable on osx-arm64: skip the NIfTI-reading test there
+                extra_args=()
+                [ "$(uname -s)" = "Darwin" ] && extra_args=('-k' 'not test_nifti_image_data_3d')
                 for d in "${suites[@]}"; do
                   echo "=== pytest: $d ==="
-                  python -m pytest "$d" || ret=1
+                  python -m pytest "${extra_args[@]}" "$d" || ret=1
                 done
               else: |
                 $ret = 0
