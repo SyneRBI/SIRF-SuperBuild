@@ -357,27 +357,24 @@ outputs:
             - if: unix
               then: |
                 ret=0
-                suites=(src/Synergistic/pSyn/tests src/Registration/pReg/tests src/xSTIR/pSTIR/tests examples/Python/PET src/torch/tests)
-                # relay-dependent tests (pGadgetron, MR reconstructions, test_pSynergistic)
-                # need mrd-storage-server, linux-only
+                suites=(src/Synergistic/pSyn/tests src/Registration/pReg/tests src/xSTIR/pSTIR/tests examples/Python/PET)
+                # mrd-storage-server tests
                 [ -x "$PREFIX/bin/mrd-storage-server" ] && suites+=(src/xGadgetron/pGadgetron/tests examples/Python/MR src/Synergistic/tests/test_pSynergistic.py)
-                # Non-linux has no Gadgetron relay (mrd-storage-server is linux-only):
-                # exclude the MR reconstruction tests. osx-arm64 also lacks STIR NIfTI IO.
+                # torch autograd tests crash (SIGABRT) on non-linux
+                [ "$(uname -s)" = "Linux" ] && suites+=(src/torch/tests)
+                # STIR NIfTI IO missing on osx-arm64
                 extra_args=()
-                case "$(uname -s)" in
-                  Darwin) extra_args+=('-k' 'not MR and not test_nifti_image_data_3d') ;;
-                  *)      [ "$(uname -s)" != "Linux" ] && extra_args+=('-k' 'not MR') ;;
-                esac
+                [ "$(uname -s)" = "Darwin" ] && extra_args+=('-k' 'not test_nifti_image_data_3d')
                 for d in "${suites[@]}"; do
                   echo "=== pytest: $d ==="
                   python -m pytest "${extra_args[@]}" "$d" || ret=1
                 done
               else: |
                 $ret = 0
-                $suites = @('src/Synergistic/pSyn/tests', 'src/Registration/pReg/tests', 'src/xSTIR/pSTIR/tests', 'examples/Python/PET', 'src/torch/tests')
-                # relay-dependent tests (pGadgetron, MR reconstructions, test_pSynergistic)
-                # need mrd-storage-server, linux-only
+                $suites = @('src/Synergistic/pSyn/tests', 'src/Registration/pReg/tests', 'src/xSTIR/pSTIR/tests', 'examples/Python/PET')
+                # mrd-storage-server tests
                 if (Test-Path "$env:PREFIX\Library\bin\mrd-storage-server.exe") { $suites += @('src/xGadgetron/pGadgetron/tests', 'examples/Python/MR', 'src/Synergistic/tests/test_pSynergistic.py') }
+                # torch autograd tests crash (SIGABRT) on non-linux: not added on Windows
                 foreach ($d in $suites) {
                   Write-Host "=== pytest: $d ==="
                   python -m pytest $d
