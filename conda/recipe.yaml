@@ -220,6 +220,8 @@ outputs:
         - hdf5 ==${{ hdf5 }}
         - ${{ pin_subpackage('ismrmrd', exact=True) }}
         - niftyreg
+        - if: osx
+          then: libpng  # see build-sirf.sh
         - numpy ~=2
         - pip
         - python
@@ -243,6 +245,8 @@ outputs:
         - deprecation
         - ${{ pin_subpackage('ismrmrd') }}
         - niftyreg
+        - if: osx
+          then: libpng  # see build-sirf.sh
         - numpy ~=2
         - pip
         - python
