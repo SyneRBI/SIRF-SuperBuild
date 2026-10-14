@@ -148,7 +148,10 @@ if [ "$(uname -s)" = "Darwin" ]; then
           if (parts[i] ~ /\/lib[A-Za-z0-9_]+\.a$/) { out = out " -Wl,-force_load," parts[i]; continue }
           out = out " " parts[i]
         }
-        out = out " -Wl,-undefined -Wl,dynamic_lookup"
+        # -lpng: a force-loaded static lib (an ITK PNG IO object) references
+        # png_create_info_struct; with -undefined dynamic_lookup that ref is left
+        # undefined and only resolves at load if libpng is a direct dep of the .so.
+        out = out " -Wl,-undefined -Wl,dynamic_lookup -lpng"
         $0 = out
       }
     }
