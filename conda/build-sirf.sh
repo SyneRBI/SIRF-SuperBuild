@@ -175,6 +175,7 @@ for ext in sh csh fish bat ps1; do
   cp "$RECIPE_DIR/deactivate-sirf.$ext" "$PREFIX/etc/conda/deactivate.d/sirf-deactivate.$ext"
 done
 
+if [ "${RUN_CTEST:-true}" = "true" ]; then
 # --- test suite (C++ tests; the python tests run in the rattler test phase) ---
 # ctest needs the build tree, so it runs here. The MR/Gadgetron tests talk to a
 # live gadgetron server (relay 127.0.0.1:9002) and, for CUDA builds, to a GPU;
@@ -213,6 +214,7 @@ if [ "$test_fail" -ne 0 ]; then
   tail -n 70 "$BUILD_PREFIX/gadgetron.log" 2>/dev/null || true
   exit "$test_fail"
 fi
+fi # RUN_CTEST
 
 # The example data ships in the separate (optional) sirf-data package; strip the copy
 # the CMake installed so it isn't duplicated into the sirf package.
