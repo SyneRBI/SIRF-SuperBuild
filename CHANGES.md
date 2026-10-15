@@ -4,6 +4,8 @@
 - Updated versions:
   - CCPi-Regularisation toolkit: CPU/GPU-only
   - HDF5: 1.14.3 on unix (win remains 1.13.1) (#1038)
+  - STIR: 5a96cbe (for SWIG >=4.5) (#1032)
+  - SWIG: >=4.2 (unpin <4.5) (#1032)
 - Build system:
   - `USE_SYSTEM_HDF5`: pass `HDF5_LIBRARIES` list downstream on CMake>=3.27 (#990, #980)
   - CI: `STIR_DISABLE_HDF5=ON` only on ubuntu-22.04 with system HDF5 (#1016)
