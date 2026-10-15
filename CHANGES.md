@@ -9,6 +9,7 @@
 - Build system:
   - `USE_SYSTEM_HDF5`: pass `HDF5_LIBRARIES` list downstream on CMake>=3.27 (#990, #980)
   - CI: `STIR_DISABLE_HDF5=ON` only on ubuntu-22.04 with system HDF5 (#1016)
+  - rattler-build (conda) recipe (#1041)
 
 ## v3.10.2
 - Updated versions:
