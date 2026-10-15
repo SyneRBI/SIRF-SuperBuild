@@ -184,7 +184,7 @@ outputs:
     source:
       git: https://github.com/SyneRBI/SIRF.git
       # from SyneRBI/SIRF#1420
-      rev: 5f971e755015abcbf2b1bf335d5f5264031f2b8b
+      rev: 17745886b9097587714bc2897fdec4526e757269
     build:
       number: 0
       string: py${{ python | replace('.', '') }}${{ '_' ~ cuda_build_prefix if with_cuda else '' }}
@@ -376,6 +376,8 @@ outputs:
                   # STIR NIfTI IO missing on osx-arm64
                   kexpr='not test_nifti_image_data_3d'
                 fi
+                # from SIRF:src/torch/tests/pytest.toml
+                [ -n "$kexpr" ] && kexpr+=' and not (PET and (test_objective_function_gradcheck or test_objective_function_gradient_gradcheck))'
                 extra_args=()
                 [ -n "$kexpr" ] && extra_args+=(-k "$kexpr")
                 for d in "${suites[@]}"; do
