@@ -1,8 +1,8 @@
 # Usage:
 #   rattler-build build -r conda -c conda-forge -c ismrmrd -c ccpi -c synerbi --channel-priority disabled [--no-build-id] [--test skip] [--variant python={3.11,3.12,...}] [-c nvidia --variant cuda_compiler_version={12.9,13.4}] [--target-platform {linux-64,osx-arm64,win-64}]
 #
-# Example (CPU, Python 3.13):
-#   rattler-build build -r conda -c conda-forge -c ismrmrd -c ccpi -c synerbi --channel-priority disabled --no-build-id --test skip --variant python=3.13
+# Example (CPU, Python 3.13, no tests):
+#   SIRF_RUN_CTEST=false rattler-build build -r conda -c conda-forge -c ismrmrd -c ccpi -c synerbi --channel-priority disabled --no-build-id --test skip --variant python=3.13
 #
 # Notes:
 # - --no-build-id: needed for ccache (env defaults CCACHE_DIR='', CCACHE_MAXSIZE=5G)
@@ -25,6 +25,7 @@ context:
   # example-data install prefix (share/SIRF-<minor>/data); must match SIRF project() MAJOR.MINOR
   sirf_minor: 3.10
   sirf_tests_slow: ${{ env.get('SIRF_TESTS_SLOW', default='false') }}
+  sirf_run_ctest: ${{ env.get('SIRF_RUN_CTEST', default='true') }}
   cuda_version: ${{ cuda_compiler_version if cuda_compiler_version is defined and cuda_compiler_version != "None" else "None" }}
   with_cuda: ${{ "true" if cuda_version != "None" else "" }}
   cuda_major: ${{ (cuda_version | split(".") | first) if with_cuda else "0" }}
@@ -201,6 +202,7 @@ outputs:
           CCACHE_DIR: ${{ ccache_dir }}
           CCACHE_MAXSIZE: ${{ ccache_maxsize }}
           SIRF_CONTRIBS_VERSION: ${{ sirf_contribs }}
+          RUN_CTEST: ${{ sirf_run_ctest }}
     requirements:
       build:
         - ccache

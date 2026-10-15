@@ -117,6 +117,8 @@ foreach ($ext in @('sh','csh','fish','bat','ps1')) {
   Copy-Item "$env:RECIPE_DIR\deactivate-sirf.$ext" "$env:PREFIX\etc\conda\deactivate.d\sirf-deactivate.$ext"
 }
 
+$run_ctest = if ($env:RUN_CTEST) { $env:RUN_CTEST } else { "true" }
+if ($run_ctest -eq "true") {
 # --- test suite (C++ tests; the python tests run in the rattler test phase) ---
 # ctest needs the build tree, so it runs here. The MR/Gadgetron tests talk to a
 # live gadgetron server (relay 127.0.0.1:9002) and, for CUDA builds, to a GPU;
@@ -159,8 +161,8 @@ if ($test_fail -ne 0) {
     Get-Content "$env:BUILD_PREFIX\gadgetron-err.log" -Tail 70 -ErrorAction SilentlyContinue
     exit $test_fail
 }
+}
 
 # The example data ships in the separate (optional) sirf-data package; strip the copy
 # the CMake installed so it isn't duplicated into the sirf package.
 Remove-Item -Recurse -Force "$env:PREFIX\share\SIRF-*\data" -ErrorAction SilentlyContinue
-
