@@ -26,7 +26,7 @@ jobs:
     env:
       CCACHE_DIR: ${{ github.workspace }}/.ccache
       CCACHE_MAXSIZE: 100M
-      CHANNELS: -c conda-forge -c ismrmrd -c ccpi -c synerbi --channel-priority disabled
+      CHANNELS: -c conda-forge -c ccpi -c synerbi
     steps:
     - uses: actions/checkout@v7
     - name: Cache ccache
@@ -61,8 +61,7 @@ jobs:
         # --no-build-id: required for ccache
         build-args: >
           --target-platform ${{ steps.config.outputs.target }}
-          -c conda-forge -c ismrmrd -c ccpi -c synerbi
-          --channel-priority disabled
+          -c conda-forge -c ccpi -c synerbi
           --test skip --variant cuda_compiler_version=${{ matrix.cuda }}
           --variant python=${{ matrix.python }} --no-build-id
         artifact-name: conda-py${{ matrix.python }}-cu${{ matrix.cuda }}-${{ steps.config.outputs.target }}

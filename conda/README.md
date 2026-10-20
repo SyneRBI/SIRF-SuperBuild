@@ -21,7 +21,7 @@ See the top of [recipe.yaml](./recipe.yaml) for invocation.
 ```sh
 rattler-build publish output/*64/*.conda --to ./channel
 # install in sirf env
-conda create -n sirf python -c file://$PWD/channel -c conda-forge -c ismrmrd -c ccpi -c synerbi sirf siemens_to_ismrmrd
+conda create -n sirf python -c file://$PWD/channel -c conda-forge -c ccpi -c synerbi sirf sirf-data sirf-contrib siemens_to_ismrmrd
 conda activate sirf
 ```
 
