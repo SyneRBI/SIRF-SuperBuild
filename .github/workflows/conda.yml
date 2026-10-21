@@ -69,7 +69,9 @@ jobs:
       name: test
       env:
         SIRF_TESTS_SLOW: ${{ github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags') }}
+        TMPDIR: ${{ github.workspace }}/.tmp-rattler
       run: |
+        mkdir -p "$TMPDIR"
         for pkg in output/*/*.conda; do
           echo "::group::$(basename $pkg)"
           rattler-build test -p "$pkg" -c ./output $CHANNELS
