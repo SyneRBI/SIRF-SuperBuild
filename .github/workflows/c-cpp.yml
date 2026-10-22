@@ -68,6 +68,10 @@ jobs:
       name: install dependencies
       working-directory: docker
       run: |
+        if [[ " ${{ matrix.flags }} " =~ " -root " ]]; then
+          # root 6.28 needs libtbb.so.12 with CXXABI 1.3.15 (no longer bundled in the root tarball)
+          echo '  - conda-forge::tbb 2021.13.0 h84d6215_0' >> requirements.yml
+        fi
         conda env update -n base -f requirements.yml
         echo "Python_ROOT_DIR=$CONDA_PREFIX" >> $GITHUB_ENV
         echo "Python3_ROOT_DIR=$CONDA_PREFIX" >> $GITHUB_ENV
@@ -79,9 +83,8 @@ jobs:
       run: |
         sh -ex
         if [[ " ${{ matrix.flags }} " =~ " -root " ]]; then
-            # Install ROOT (warning: currently only valid on Ubuntu)
-            ROOT_file=root_v6.28.12.Linux-ubuntu20-x86_64-gcc9.4.tar.gz
-            wget https://root.cern/download/"$ROOT_file"
+            ROOT_file=root.tgz
+            gh release download -R root-project/root v6-28-16 -p '*ubuntu22*gcc${{ matrix.cxx-ver }}*' -O $ROOT_file
             tar -xzf "$ROOT_file"
             rm "$ROOT_file"
             source root/bin/thisroot.sh
