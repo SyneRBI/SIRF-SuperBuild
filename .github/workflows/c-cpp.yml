@@ -39,6 +39,7 @@ jobs:
         - cxx-ver: 9
           flags: -devel -armadillo +boost +fftw3 -hdf5 -swig +gtest
           os: ubuntu-22.04
+        # -root needs OS default gcc
         - cxx-ver: 11
           flags: +devel +armadillo +boost -fftw3 -hdf5 +swig -root
           os: ubuntu-22.04
@@ -50,6 +51,10 @@ jobs:
           os: ubuntu-24.04
         - cxx-ver: 11
           flags: +devel -armadillo -boost -fftw3 -hdf5 +swig
+          os: ubuntu-24.04
+        # -root needs OS default gcc
+        - cxx-ver: 13
+          flags: +devel -armadillo -boost -fftw3 -hdf5 +swig -root
           os: ubuntu-24.04
 
       fail-fast: false # don't terminate matrix if one job fails
@@ -68,10 +73,6 @@ jobs:
       name: install dependencies
       working-directory: docker
       run: |
-        if [[ " ${{ matrix.flags }} " =~ " -root " ]]; then
-          # root 6.28 needs libtbb.so.12 with CXXABI 1.3.15 (no longer bundled in the root tarball)
-          echo '  - conda-forge::tbb 2021.13.0 h84d6215_0' >> requirements.yml
-        fi
         conda env update -n base -f requirements.yml
         echo "Python_ROOT_DIR=$CONDA_PREFIX" >> $GITHUB_ENV
         echo "Python3_ROOT_DIR=$CONDA_PREFIX" >> $GITHUB_ENV
@@ -83,27 +84,30 @@ jobs:
       run: |
         sh -ex
         if [[ " ${{ matrix.flags }} " =~ " -root " ]]; then
+            case ${{matrix.os}} in
+              ubuntu-22*) ROOT_pattern='*ubuntu22*'; sudo apt-get install -yq libtbb-dev ;;
+              ubuntu-24*) ROOT_pattern='*ubuntu24*'; sudo apt-get install -yq libtbb-dev libvdt-dev ;;
+              *) echo "no ROOT pre-built for ${{matrix.os}}"; exit 1 ;;
+            esac
             ROOT_file=root.tgz
-            gh release download -R root-project/root v6-28-16 -p '*ubuntu22*gcc${{ matrix.cxx-ver }}*' -O $ROOT_file
+            gh release download -R root-project/root v6-40-04 -p "$ROOT_pattern" -O $ROOT_file
             tar -xzf "$ROOT_file"
             rm "$ROOT_file"
             source root/bin/thisroot.sh
             echo ROOT_DIR="$ROOTSYS/cmake" >> $GITHUB_ENV
             echo ROOTSYS="$ROOTSYS" >> $GITHUB_ENV
             echo
-            # work-around problem with problem with Vdt for ROOT version pre-6.30.04 as per https://github.com/root-project/root/pull/14178
-            echo Vdt_ROOT="$ROOTSYS" >> $GITHUB_ENV
             # thisroot modifies the following
             case ${{matrix.os}} in
-             (ubuntu*)
-                echo LD_LIBRARY_PATH="${CMAKE_INSTALL_PREFIX}/lib:$LD_LIBRARY_PATH" >> $GITHUB_ENV
+              ubuntu-2[24]*)
+                echo "LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH" >> $GITHUB_ENV
                 echo PATH="$PATH" >> $GITHUB_ENV
                 ;;
-              (macOS*) # future-proof
+              macos*) # future-proof
                 echo DYLD_FALLBACK_LIBRARY_PATH="${CMAKE_INSTALL_PREFIX}/lib:$DYLD_FALLBACK_LIBRARY_PATH" >> $GITHUB_ENV
                 echo PATH="$PATH" >> $GITHUB_ENV
                 ;;
-              (windows*) # future-proof
+              windows*) # future-proof
                 echo PATH="${CMAKE_INSTALL_PREFIX}/lib:${CMAKE_INSTALL_PREFIX}/bin:$PATH" >> $GITHUB_ENV
                 ;;
             esac
