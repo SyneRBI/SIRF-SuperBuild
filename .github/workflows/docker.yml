@@ -9,6 +9,7 @@ on:
     - '.mailmap'
     - 'CHANGES.md'
     - 'CITATION.cff'
+    - 'conda/**'
     - 'LICENSE.txt'
     - 'NOTICE.txt'
     - 'VirtualBox/**'
