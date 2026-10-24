@@ -100,7 +100,7 @@ jobs:
             # thisroot modifies the following
             case ${{matrix.os}} in
               ubuntu-2[24]*)
-                echo "LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH" >> $GITHUB_ENV
+                echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $GITHUB_ENV
                 echo PATH="$PATH" >> $GITHUB_ENV
                 ;;
               macos*) # future-proof
