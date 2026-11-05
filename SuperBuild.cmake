@@ -354,7 +354,24 @@ if(Python_Interpreter_FOUND)
     set(COMMENT_OUT_PREFIX "#")
   endif()
 
+  # Check if Python is inside a virtual environment (has activate script)
+  get_filename_component(_PYTHON_BIN_DIR "${Python_EXECUTABLE}" DIRECTORY)
+  if(EXISTS "${_PYTHON_BIN_DIR}/activate")
+    set(ENV_ACTIVATE_VENV_BASH "\
+if [ -z \"$VIRTUAL_ENV\" ] && [ -f \"${_PYTHON_BIN_DIR}/activate\" ]; then \n\
+  . \"${_PYTHON_BIN_DIR}/activate\" \n\
+fi \n")
+    set(ENV_ACTIVATE_VENV_CSH "\
+if ( ! $?VIRTUAL_ENV ) then \n\
+  if ( -f \"${_PYTHON_BIN_DIR}/activate.csh\" ) source \"${_PYTHON_BIN_DIR}/activate.csh\" \n\
+endif \n")
+  else()
+    set(ENV_ACTIVATE_VENV_BASH "")
+    set(ENV_ACTIVATE_VENV_CSH "")
+  endif()
+
   set (ENV_PYTHON_CSH "\
+${ENV_ACTIVATE_VENV_CSH}\
     ${COMMENT_OUT_PREFIX}if $?PYTHONPATH then \n\
     ${COMMENT_OUT_PREFIX}  setenv PYTHONPATH ${PYTHON_DEST}:$PYTHONPATH \n\
     ${COMMENT_OUT_PREFIX}else \n\
@@ -363,6 +380,7 @@ if(Python_Interpreter_FOUND)
     ${COMMENT_OUT_PREFIX}endif")
 
   set (ENV_PYTHON_BASH "\
+${ENV_ACTIVATE_VENV_BASH}\
     ${COMMENT_OUT_PREFIX}export PYTHONPATH=\"${PYTHON_DEST}\${PYTHONPATH:+:\${PYTHONPATH}}\" \n\
     export SIRF_PYTHON_EXECUTABLE=${Python_EXECUTABLE}")
 endif()

@@ -31,8 +31,9 @@ print_usage()
     echo "Usage:"
     echo "   `basename $prog` --help"
     echo "   `basename $prog` --python 'python-command' [pip-install-options ...]"
+    echo "   `basename $prog` --venv 'venv-path' [pip-install-options ...]"
     echo 'Default Python is $SIRF_PYTHON_EXECUTABLE if it is set or python3 otherwise.'
-    echo "Any options (aside from --help and --python) are passed to the 'pip install' commands."
+    echo "Any options (aside from --help, --python, and --venv) are passed to the 'pip install' commands."
 }
 
 set -e
@@ -48,11 +49,16 @@ else
 fi
 
 PIPOPTIONS=""
+SIRF_VENV_PATH=""
 
 while (( "$#" )); do
   case "$1" in
     --python)
       PYTHON=$2
+      shift 2
+      ;;
+    --venv)
+      SIRF_VENV_PATH=$2
       shift 2
       ;;
     --help)
@@ -66,15 +72,26 @@ while (( "$#" )); do
   esac
 done
 
+if [ -n "$SIRF_VENV_PATH" ]; then
+  if [ ! -d "$SIRF_VENV_PATH" ]; then
+    echo "Creating virtual environment at $SIRF_VENV_PATH..."
+    python3 -m venv "$SIRF_VENV_PATH"
+  fi
+  PYTHON="$SIRF_VENV_PATH/bin/python"
+fi
+
 # TODO would be better to guarantee absolute path for SCRIPTS
 CURDIR="$(dirname $0)"
 SCRIPTS="$CURDIR/../../docker"
-# installs pip
-curl $($PYTHON ${SCRIPTS}/get_pip_download_link.py) > get-pip.py
-${PYTHON} get-pip.py
-rm get-pip.py
 
-${PYTHON} -m pip install $PIPOPTIONS -U setuptools wheel
+# installs pip if not already available
+if ! ${PYTHON} -m pip --version > /dev/null 2>&1; then
+  curl $($PYTHON ${SCRIPTS}/get_pip_download_link.py) > get-pip.py
+  ${PYTHON} get-pip.py
+  rm get-pip.py
+fi
+
+${PYTHON} -m pip install $PIPOPTIONS -U pip setuptools wheel
 ${PYTHON} -m pip install $PIPOPTIONS -U -r ${SCRIPTS}/requirements.txt
 ${PYTHON} -m pip install $PIPOPTIONS -U -r ${CURDIR}/../requirements-jupyter.txt
 

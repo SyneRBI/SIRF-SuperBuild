@@ -1,6 +1,6 @@
 #! /bin/sh
 # script that deletes the build files to reduce VM size
-loc="$SIRF_SRC_PATH"/buildVM/builds
+loc="${SIRF_SRC_PATH:-$HOME/devel}"/buildVM/builds
 echo "Removing all files in $loc in 5s."
 echo 'Press Ctrl-C NOW to abort if you do not want that.'
 echo ''
