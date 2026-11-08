@@ -4,7 +4,7 @@
 
 ```sh
 conda install conda-forge::rattler-build python=3.13
-git clone https://github.com/SyneRBI/SIRF-SuperBuild --branch rattler
+git clone https://github.com/SyneRBI/SIRF-SuperBuild
 cd SIRF-SuperBuild
 ```
 
@@ -33,3 +33,4 @@ conda activate sirf
   ```sh
   CMAKE_CXX_COMPILER_LAUNCHER="" CMAKE_C_COMPILER_LAUNCHER="" rattler-build ...
   ```
+- See [`source:`](https://rattler-build.prefix.dev/latest/reference/recipe_file/#source-section) and [`context:`](https://rattler-build.prefix.dev/latest/reference/recipe_file/#templating-with-jinja) sections can be changed to alter dependencies (local path vs git PR branches, etc) <!-- TODO: #1048 dev build -->
