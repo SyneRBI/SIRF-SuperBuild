@@ -7,7 +7,7 @@
 #
 # Notes:
 # - --no-build-id: needed for ccache (env defaults CCACHE_DIR='', CCACHE_MAXSIZE=5G)
-# - conda-forge::stir==6.4.0 forces the rest of the stack up (ITK 5.4.7, ROOT 6.36.10, Boost 1.90, hdf5 1.14.6), which also unifies everything on icu 78
+# - conda-forge::stir==6.4.0 forces the rest of the stack up (ITK 5.4.x, ROOT 6.36.x, Boost 1.90), which also unifies everything on icu 78
 #
 # Channel includes:
 # - ccpi::cil
@@ -70,7 +70,7 @@ outputs:
       # from SyneRBI/SIRF#1420
       rev: bedf6b022f13c56e94fe19e00ce9894f9c825b18
     build:
-      string: py${{ python | replace('.', '') }}${{ '_' ~ cuda_build_prefix if with_cuda else '' }}
+      string: py${{ python | replace('.', '') }}${{ '_' ~ cuda_build_prefix if with_cuda else '' }}_h${{ hdf5 | version_to_buildstring | replace("*", "x") | replace("~=", "") }}
       variant:
         use_keys:
           - ${{ "cuda" if with_cuda }}
@@ -126,6 +126,7 @@ outputs:
         - gadgetron ${{ gadgetron }}.* ${{ cuda_build_prefix }}*
         - stir ${{ stir }}.* ${{ cuda_build_prefix }}*
         - deprecation
+        - hdf5 ${{ hdf5 }}
         - ismrmrd ${{ ismrmrd }}.*
         - niftyreg
         - if: osx

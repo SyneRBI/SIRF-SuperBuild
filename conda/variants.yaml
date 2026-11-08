@@ -2,6 +2,9 @@ python:
   - "3.11"
   - "3.12"
   - "3.13"
+hdf5:
+  - "1.14.6.*"
+  - "~=2.2"
 # conda-forge CUDA compiler package (see cuda-feedstock); makes compiler('cuda')
 # resolve to cuda-nvcc_linux-64 instead of the dead cuda_linux-64 metapackage.
 cuda_compiler:

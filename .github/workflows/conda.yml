@@ -59,11 +59,13 @@ jobs:
         recipe-path: conda/recipe.yaml
         rattler-build-version: v0.76.1
         # --no-build-id: required for ccache
+        # hdf5~=2.2 STIR/libitk is linux-only
         build-args: >
           --target-platform ${{ steps.config.outputs.target }}
           -c conda-forge -c ccpi -c synerbi
           --test skip --variant cuda_compiler_version=${{ matrix.cuda }}
           --variant python=${{ matrix.python }} --no-build-id
+          ${{ matrix.os == 'ubuntu' && '' || '--variant hdf5=1.14.6.*' }}
         artifact-name: conda-py${{ matrix.python }}-cu${{ matrix.cuda }}-${{ steps.config.outputs.target }}
     - if: matrix.cuda == 'None'
       name: test
