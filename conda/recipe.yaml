@@ -37,11 +37,11 @@ context:
 outputs:
   - package:
       name: sirf-data
-      version: 3.10.1
+      version: 3.10.2
     source:
       git: https://github.com/SyneRBI/SIRF_data.git
       # from SyneRBI/SIRF:/data submodule
-      rev: 8bf9b6d1f5da6d4da7cdc5d30ac80414aa1cbe69
+      rev: 81233395cafdfef3636786d5f5c241eed3745e06
     build:
       noarch: generic
       script:
@@ -68,7 +68,7 @@ outputs:
     source:
       git: https://github.com/SyneRBI/SIRF.git
       # from SyneRBI/SIRF#1420
-      rev: bedf6b022f13c56e94fe19e00ce9894f9c825b18
+      rev: 3b4b95c5d4125048536b4cba3c012f81f8e702bf
     build:
       string: py${{ python | replace('.', '') }}${{ '_' ~ cuda_build_prefix if with_cuda else '' }}_h${{ hdf5 | version_to_buildstring | replace("*", "x") | replace("~=", "") }}
       variant:
