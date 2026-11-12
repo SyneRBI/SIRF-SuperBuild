@@ -1,0 +1,6 @@
+# CI-only: push the build cache to the registry (see compose.sh & .github/workflows/docker.yml).
+# Included only when SIRF_BUILD_CACHE_REF is set (e.g. SIRF_BUILD_CACHE_REF=build-gpu).
+services:
+ sirf-build:
+  build:
+   cache_to: ["type=registry,ref=ghcr.io/synerbi/sirf:${SIRF_BUILD_CACHE_REF},mode=max,ignore-error=true"]
