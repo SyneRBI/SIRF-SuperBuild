@@ -1,2 +1,0 @@
-unsetenv SIRF_INSTALL_PATH
-unsetenv GADGETRON_HOME

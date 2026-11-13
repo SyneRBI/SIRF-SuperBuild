@@ -169,11 +169,13 @@ cmake --install $BUILD_PREFIX/build --config Release
 # (the sirf-contrib output in recipe.yaml); not installed here.
 
 # SIRF runtime env vars on activation (examples_data_path, Gadgetron relay)
-mkdir -p "$PREFIX/etc/conda/activate.d" "$PREFIX/etc/conda/deactivate.d"
-for ext in sh csh fish bat ps1; do
-  cp "$RECIPE_DIR/activate-sirf.$ext" "$PREFIX/etc/conda/activate.d/sirf-activate.$ext"
-  cp "$RECIPE_DIR/deactivate-sirf.$ext" "$PREFIX/etc/conda/deactivate.d/sirf-deactivate.$ext"
-done
+mkdir -p "$PREFIX/etc/conda/env_vars.d"
+cat > "$PREFIX/etc/conda/env_vars.d/sirf.json" << EOF
+{
+  "SIRF_INSTALL_PATH": "$PREFIX",
+  "GADGETRON_HOME": "$PREFIX"
+}
+EOF
 
 if [ "${RUN_CTEST:-true}" = "true" ]; then
 # --- test suite (C++ tests; the python tests run in the rattler test phase) ---
@@ -191,7 +193,7 @@ EXCLUDES='_PYTHON|_DEMOS'
 [ "$SERVER_TESTS" = OFF ] && EXCLUDES+='|MR_|GADGETRON|SYN_TEST_CPLUSPLUS'
 CTEST_ARGS=(--test-dir "$BUILD_PREFIX/build" --verbose --output-on-failure -E "$EXCLUDES")
 
-# relay config lookup (port/bind); set BEFORE starting the relay, cf. activate-sirf.sh
+# relay config lookup (port/bind); set BEFORE starting the relay, cf. env_vars.d/sirf.json
 export GADGETRON_HOME="$PREFIX"
 GADGETRON_PID=""
 if [ "$SERVER_TESTS" = ON ]; then

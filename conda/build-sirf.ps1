@@ -110,12 +110,15 @@ Assert-Zero "cmake install"
 # (the sirf-contrib output in recipe.yaml); not installed here.
 
 # SIRF runtime env vars on activation (examples_data_path, Gadgetron relay)
-New-Item -ItemType Directory -Force "$env:PREFIX\etc\conda\activate.d" | Out-Null
-New-Item -ItemType Directory -Force "$env:PREFIX\etc\conda\deactivate.d" | Out-Null
-foreach ($ext in @('sh','csh','fish','bat','ps1')) {
-  Copy-Item "$env:RECIPE_DIR\activate-sirf.$ext" "$env:PREFIX\etc\conda\activate.d\sirf-activate.$ext"
-  Copy-Item "$env:RECIPE_DIR\deactivate-sirf.$ext" "$env:PREFIX\etc\conda\deactivate.d\sirf-deactivate.$ext"
+New-Item -ItemType Directory -Force "$env:PREFIX\etc\conda\env_vars.d" | Out-Null
+$forward = $env:PREFIX -replace '\\', '/'
+$json = @"
+{
+  "SIRF_INSTALL_PATH": "$forward",
+  "GADGETRON_HOME": "$forward"
 }
+"@
+Set-Content -Path "$env:PREFIX\etc\conda\env_vars.d\sirf.json" -Value $json
 
 $run_ctest = if ($env:RUN_CTEST) { $env:RUN_CTEST } else { "true" }
 if ($run_ctest -eq "true") {
@@ -140,7 +143,7 @@ $exclude = '_PYTHON|_DEMOS|PET_TESTS_CPLUSPLUS_6'
 if (-not $server_tests) { $exclude += '|MR_|GADGETRON|SYN_TEST_CPLUSPLUS' }
 $ctest_args = @("--test-dir", "$env:BUILD_PREFIX\build", "--verbose", "--output-on-failure", "-E", $exclude)
 
-# relay config lookup (port/bind); set BEFORE starting the relay, cf. sirf-activate.bat
+# relay config lookup (port/bind); set BEFORE starting the relay, cf. env_vars.d/sirf.json
 $env:GADGETRON_HOME = $env:PREFIX
 $gadgetron_pid = $null
 if ($server_tests) {

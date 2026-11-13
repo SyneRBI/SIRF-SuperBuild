@@ -163,6 +163,8 @@ outputs:
                 - sirf.SIRF
             - if: linux
               then: sirf.Gadgetron
+      - script:
+          - python -c "import os; assert os.path.isdir(os.environ['SIRF_INSTALL_PATH']) and os.path.isdir(os.environ['GADGETRON_HOME'])"
       - requirements:
           run:
             - ${{ pin_subpackage('sirf-data') }}
@@ -219,7 +221,7 @@ outputs:
             - if: unix
               then: |
                 gadgetron_pid=''
-                export GADGETRON_HOME="$PREFIX"  # relay config lookup, cf. activate-sirf.sh
+                export GADGETRON_HOME="$PREFIX"  # relay config lookup, cf. env_vars.d/sirf.json
                 "$PREFIX/bin/gadgetron" > gadgetron.log 2>&1 &
                 gadgetron_pid=$!
                 # wait for the relay port (up to 60s)
@@ -228,7 +230,7 @@ outputs:
                   sleep 1
                 done
               else: |
-                $env:GADGETRON_HOME = $env:PREFIX  # relay config lookup, cf. sirf-activate.bat
+                $env:GADGETRON_HOME = $env:PREFIX  # relay config lookup, cf. env_vars.d/sirf.json
                 $gadgetron = Start-Process -FilePath "$env:PREFIX\Library\bin\gadgetron.exe" -RedirectStandardOutput gadgetron.log -PassThru
                 # wait for the relay port (up to 60s)
                 $c = New-Object Net.Sockets.TcpClient
