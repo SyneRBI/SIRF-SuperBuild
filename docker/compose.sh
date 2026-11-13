@@ -47,6 +47,8 @@ if ! $DCC version 2>&1 >> /dev/null; then
 fi
 # CPU config
 DCC_CPU="$DCC -f docker-compose.yml"
+# CI-only registry build cache (vis. docker-compose.gha.yml)
+test -n "${SIRF_BUILD_CACHE_REF:-}" && DCC_CPU+=" -f docker/docker-compose.gha.yml"
 test $devel = 1 && DCC_CPU+=" -f docker/docker-compose.devel.yml"
 # GPU config
 DCC_GPU="$DCC_CPU -f docker/docker-compose.gpu.yml"

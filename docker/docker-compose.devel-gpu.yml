@@ -4,5 +4,5 @@ services:
  sirf:
   image: synerbi/sirf:devel-gpu
   build:
-   cache_from: [synerbi/jupyter:sirf-build-devel-gpu]
+   cache_from: !override [ghcr.io/synerbi/sirf:build-devel-gpu]
    target: sirf-dev

@@ -6,10 +6,12 @@
   - HDF5: 1.14.3 on unix (win remains 1.13.1) (#1038)
   - STIR: 5a96cbe (for SWIG >=4.5) (#1032)
   - SWIG: >=4.2 (unpin <4.5) (#1032)
+  - SIRF: 3b4b95c (SyneRBI/SIRF#1420)
 - Build system:
   - `USE_SYSTEM_HDF5`: pass `HDF5_LIBRARIES` list downstream on CMake>=3.27 (#990, #980)
   - CI: `STIR_DISABLE_HDF5=ON` only on ubuntu-22.04 with system HDF5 (#1016)
-  - CI: use GitHub root-project/root@v6-40-04
+  - CI: use GitHub root-project/root@v6-40-04 (#1046)
+  - rattler-build (conda) recipe (#1041)
 
 ## v3.10.2
 - Updated versions:
