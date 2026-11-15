@@ -45,7 +45,7 @@ services:
     BUILD_GPU: 0
     BASE_IMAGE: hello-world
    additional_contexts: {hello-world: service:scipy, build: service:sirf-build}
-   cache_from: [synerbi/jupyter:sirf-build-cpu]
+   cache_from: [ghcr.io/synerbi/sirf:build-cpu]
   stdin_open: true
   tty: true
   # Probably requires `export USER_ID UID` to work.
