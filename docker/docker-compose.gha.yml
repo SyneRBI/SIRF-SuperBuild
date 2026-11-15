@@ -1,6 +1,16 @@
-# CI-only: push the build cache to the registry (see compose.sh & .github/workflows/docker.yml).
-# Included only when SIRF_BUILD_CACHE_REF is set (e.g. SIRF_BUILD_CACHE_REF=build-gpu).
+# CI-only (vis. compose.sh & .github/workflows/docker.yml) when SIRF_CORE_REF & SIRF_BUILD_CACHE_REF are both set
+# (e.g. SIRF_CORE_REF=core-gpu SIRF_BUILD_CACHE_REF=build-gpu)
+# - uses core (scipy) image build context instead of building it (12GB, 12min saved)
+# - pushes build cache to registry to survive job cancellation
+# Core images are not rebuilt in CI; update them locally:
+#   ./docker/compose.sh -bc -- foundation base minimal scipy
+#   docker tag synerbi/jupyter:scipy-cpu ghcr.io/synerbi/sirf:core-cpu && docker push ghcr.io/synerbi/sirf:core-cpu
+#   (same for -g / core-gpu)
 services:
  sirf-build:
   build:
+   additional_contexts: !override {hello-world: "docker-image://ghcr.io/synerbi/sirf:${SIRF_CORE_REF}"}
    cache_to: ["type=registry,ref=ghcr.io/synerbi/sirf:${SIRF_BUILD_CACHE_REF},mode=max,ignore-error=true"]
+ sirf:
+  build:
+   additional_contexts: !override {hello-world: "docker-image://ghcr.io/synerbi/sirf:${SIRF_CORE_REF}", build: service:sirf-build}

@@ -65,6 +65,7 @@ jobs:
         docker-images: true
         # don't remove these APT packages until we need the space (includes clang-* and some libs that we'd reinstall)
         large-packages: false
+        tool-cache: true
     - uses: actions/cache/restore@v6
       id: cache
       with:
@@ -85,7 +86,7 @@ jobs:
         suffix=${{ matrix.type == 'gpu' && '-gpu' || '' }}
         # pull core image
         core_image=ghcr.io/synerbi/sirf:core$suffix
-        docker pull $core_image || :
+        docker pull $core_image
         # pull sirf image
         docker pull ghcr.io/synerbi/sirf:${{ fromJSON(steps.meta.outputs.json).tags[0] }} || :
         echo "suffix=$suffix" >> "$GITHUB_OUTPUT"
@@ -93,12 +94,10 @@ jobs:
     - id: build
       name: build
       run: |
-        # rebuild sirf image
-        SIRF_BUILD_CACHE_REF=build-${{ matrix.type }} ./docker/compose.sh -b${{ matrix.type == 'gpu' && 'g' || 'c' }}
+        # rebuild sirf image on the prebuilt core image (skip scipy to conserve space)
+        SIRF_BUILD_CACHE_REF=build-${{ matrix.type }} SIRF_CORE_REF=core-${{ matrix.type }} ./docker/compose.sh -b${{ matrix.type == 'gpu' && 'g' || 'c' }} -- sirf
         image=synerbi/sirf:latest${{ steps.pull.outputs.suffix }}
         echo "image=$image" >> "$GITHUB_OUTPUT"
-        # tag potentially newer core image
-        docker tag synerbi/jupyter:scipy-${{ matrix.type }} ${{ steps.pull.outputs.core_image }}
         # make a dummy Dockerfile to use with build-push-action
         context=$(mktemp -d)
         echo "FROM $image" >> "$context/Dockerfile"
@@ -118,9 +117,6 @@ jobs:
       with:
         key: cache-docker-${{ matrix.type }}-${{ github.ref_name }}-${{ github.run_id }}
         path: docker/devel/cache
-    - if: github.ref == 'refs/heads/master'
-      name: push core image
-      run: docker push ${{ steps.pull.outputs.core_image }}
   devel:
     if: github.event_name == 'schedule' || github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
@@ -160,6 +156,7 @@ jobs:
       with:
         docker-images: false
         large-packages: false
+        tool-cache: true
     - uses: actions/cache/restore@v6
       id: cache
       with:
@@ -180,7 +177,7 @@ jobs:
         suffix=${{ matrix.type == 'gpu' && '-gpu' || '' }}
         # pull core image
         core_image=ghcr.io/synerbi/sirf:core$suffix
-        docker pull $core_image || :
+        docker pull $core_image
         # pull sirf image
         docker pull ghcr.io/synerbi/sirf:${{ fromJSON(steps.meta.outputs.json).tags[0] }} || :
         echo "suffix=$suffix" >> "$GITHUB_OUTPUT"
@@ -188,8 +185,8 @@ jobs:
     - id: build
       name: build
       run: |
-        # rebuild sirf image
-        SIRF_BUILD_CACHE_REF=build-devel-${{ matrix.type }} ./docker/compose.sh -db${{ matrix.type == 'gpu' && 'g' || 'c' }}
+        # rebuild sirf image on the prebuilt core image (skip scipy to conserve space)
+        SIRF_BUILD_CACHE_REF=build-devel-${{ matrix.type }} SIRF_CORE_REF=core-${{ matrix.type }} ./docker/compose.sh -db${{ matrix.type == 'gpu' && 'g' || 'c' }} -- sirf
         image=synerbi/sirf:devel${{ steps.pull.outputs.suffix }}
         echo "image=$image" >> "$GITHUB_OUTPUT"
     - name: test CIL
