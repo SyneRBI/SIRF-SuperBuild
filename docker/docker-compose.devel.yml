@@ -11,6 +11,6 @@ services:
   build:
    context: .
    target: sirf-dev
-   cache_from: [synerbi/jupyter:sirf-build-devel-cpu]
+   cache_from: !override [ghcr.io/synerbi/sirf:build-devel-cpu]
   cap_add: [SYS_PTRACE]
   security_opt: [seccomp=unconfined]
