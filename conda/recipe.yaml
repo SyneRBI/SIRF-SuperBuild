@@ -44,6 +44,7 @@ outputs:
       rev: 81233395cafdfef3636786d5f5c241eed3745e06
     build:
       noarch: generic
+      string: ${{ build_number }}  # deduplicate CI matrix jobs
       script:
         interpreter: ${{ "powershell" if win else "bash" }}
         content:
@@ -70,7 +71,7 @@ outputs:
       # from SyneRBI/SIRF#1420
       rev: 3b4b95c5d4125048536b4cba3c012f81f8e702bf
     build:
-      string: py${{ python | replace('.', '') }}${{ '_' ~ cuda_build_prefix if with_cuda else '' }}_h${{ hdf5 | version_to_buildstring | replace("*", "x") | replace("~=", "") }}
+      string: py${{ python | replace('.', '') }}_${{ cuda_build_prefix if with_cuda else 'cpu' }}_h${{ hdf5 | version_to_buildstring | replace("*", "x") | replace("~=", "") }}
       variant:
         use_keys:
           - ${{ "cuda" if with_cuda }}
@@ -109,7 +110,7 @@ outputs:
         - range-v3 # for gadgetron
         - if: osx
           then: libpng  # see build-sirf.sh
-        - numpy ~=2
+        - numpy ~=2.0
         - pip
         - python
         - setuptools
@@ -131,7 +132,7 @@ outputs:
         - niftyreg
         - if: osx
           then: libpng  # see build-sirf.sh
-        - numpy ~=2
+        - numpy ~=2.0
         - python
         - if: with_cuda
           then:
@@ -384,6 +385,7 @@ outputs:
       tag: v${{ sirf_contrib }}
     build:
       noarch: python
+      string: py_${{ build_number }}  # deduplicate CI matrix jobs
       script:
         content:
           - ${{ PYTHON }} -m pip install . -vv --no-deps
@@ -397,7 +399,7 @@ outputs:
         - setuptools-scm
       run:
         - sirf ${{ sirf }}.* # noarch but depends on platform, so build-string (pin_subpackage) would be too tight
-        - numpy ~=2
+        - numpy ~=2.0
         - scipy
         - matplotlib
         - docopt
