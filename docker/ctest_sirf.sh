@@ -5,7 +5,7 @@ source ${INSTALL_DIR}/bin/env_sirf.sh
 
 # append the path of virtualenv
 export PATH=~/.local/bin:$PATH
-source ~/virtualenv/bin/activate
+[ -f ~/virtualenv/bin/activate ] && source ~/virtualenv/bin/activate
 
 # print for debugging
 cat $GITHUB_WORKSPACE/build/builds/SIRF/build/CMakeCache.txt

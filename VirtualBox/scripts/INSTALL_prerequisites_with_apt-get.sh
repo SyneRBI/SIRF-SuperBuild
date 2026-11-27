@@ -35,8 +35,8 @@ $SUDO "$SCRIPTS/build_gadgetron-ubuntu.sh"
 echo "Installing expect"
 ${APT_GET_INSTALL} expect
 
-echo "Installing python-dev and python3-tk APT package"
-# we will use pip for everything else
-${APT_GET_INSTALL} python3-dev python3-tk
+echo "Installing python3-dev, python3-tk and python3-venv APT packages"
+# we will use virtualenv for python packages
+${APT_GET_INSTALL} python3-dev python3-tk python3-venv
 
 echo "Run INSTALL_python_packages.sh after this."

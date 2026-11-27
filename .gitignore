@@ -43,3 +43,7 @@ WIN32/
 
 # macOS
 .DS_Store
+
+# Vagrant
+.vagrant/
+*.ova

@@ -23,6 +23,11 @@
 # script to adjust gnome settings and other bits to be run only once 
 # after VM is created
 
+# if running headless without a dbus session, re-exec with dbus-run-session
+if [ -z "$DBUS_SESSION_BUS_ADDRESS" ] && which dbus-run-session > /dev/null 2>&1; then
+    exec dbus-run-session -- "$0" "$@"
+fi
+
 # add input sources
 gsettings set org.gnome.desktop.input-sources sources "[('xkb','gb'), ('xkb','us'),('xkb','de'),('xkb','fr'),('xkb','es'),('xkb','it'),('xkb','pt'),('xkb','br'),('xkb','jp'),('xkb','cn')]"
 # remove screen lock for sirfuser
